@@ -34,11 +34,7 @@ public class ClientUtils{
 				Minecraft.getInstance().mainWindow.getWidth(),
 				Minecraft.getInstance().mainWindow.getHeight(),
 				Minecraft.getInstance().getFramebuffer(),
-				msg -> {
-					Minecraft.getInstance().addScheduledTask(() -> {
-						Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg);
-					});
-				});
+				msg -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg));
 	}
 
 	/**

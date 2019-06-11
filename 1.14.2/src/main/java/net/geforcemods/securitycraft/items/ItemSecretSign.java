@@ -12,12 +12,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemWallOrFloor;
+import net.minecraft.item.WallOrFloorItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class ItemSecretSign extends ItemWallOrFloor
+public class ItemSecretSign extends WallOrFloorItem
 {
 	public ItemSecretSign()
 	{
@@ -35,7 +35,7 @@ public class ItemSecretSign extends ItemWallOrFloor
 	{
 		return getTranslationKey();
 	}
-	//
+
 	@Override
 	public boolean onBlockPlaced(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state)
 	{

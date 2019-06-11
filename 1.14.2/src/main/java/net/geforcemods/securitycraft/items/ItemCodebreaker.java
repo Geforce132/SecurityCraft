@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,11 +21,11 @@ public class ItemCodebreaker extends Item {
 	}
 
 	/**
-	 * Return an item rarity from EnumRarity
+	 * Return an item rarity from Rarity
 	 */
 	@Override
-	public EnumRarity getRarity(ItemStack stack){
-		return EnumRarity.RARE;
+	public Rarity getRarity(ItemStack stack){
+		return Rarity.RARE;
 	}
 
 	@Override

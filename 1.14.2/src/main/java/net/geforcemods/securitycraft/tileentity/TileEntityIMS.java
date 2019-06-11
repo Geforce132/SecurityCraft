@@ -18,11 +18,10 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.MobEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityIMS extends CustomizableSCTE {
@@ -79,13 +78,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
 
-				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
+				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
 					continue;
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 
 				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
 				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
@@ -105,13 +104,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
-				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
+				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
 					continue;
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().getFormattedText()))
 					continue;
 
 				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
 				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
@@ -234,18 +233,6 @@ public class TileEntityIMS extends CustomizableSCTE {
 		}
 
 
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 
 }

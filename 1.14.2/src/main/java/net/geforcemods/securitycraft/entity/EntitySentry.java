@@ -18,6 +18,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
@@ -54,7 +55,7 @@ public class EntitySentry extends CreatureEntity implements IRangedAttackMob //n
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
 
-	public EntitySentry(World world)
+	public EntitySentry(EntityType<EntitySentry> type, World world)
 	{
 		super(SCContent.eTypeSentry, world);
 	}

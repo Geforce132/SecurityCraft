@@ -153,7 +153,7 @@ public class BlockSecurityCamera extends ContainerBlock{
 		BlockPos placeOnPos = pos.offset(facing.getOpposite());
 		BlockState placeOnState = world.getBlockState(placeOnPos);
 
-		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing));
+		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}
 
 	@Override

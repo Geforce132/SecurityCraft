@@ -11,10 +11,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 
 public class TileEntityProtecto extends CustomizableSCTE {
 
@@ -27,13 +26,13 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof LivingEntity) {
 			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))) ||
-					entity instanceof EntityPigZombie ||
+					entity instanceof ZombiePigmanEntity ||
 					(entity instanceof CreeperEntity && ((CreeperEntity) entity).getPowered()))
 				return false;
 
 			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.posX, entity.posY, entity.posZ, false);
 
-			world.addWeatherEffect(lightning);
+			world.addEntity(lightning);
 			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
 			return true;
 		}
@@ -84,17 +83,5 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 }

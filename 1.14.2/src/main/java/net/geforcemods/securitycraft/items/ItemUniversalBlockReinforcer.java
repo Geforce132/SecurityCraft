@@ -45,7 +45,7 @@ public class ItemUniversalBlockReinforcer extends Item
 				{
 					world.setBlockState(pos, rb.getDefaultState());
 					((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					stack.damageItem(1, player);
+					stack.damageItem(1, player, p -> {});
 					return true;
 				}
 			}

@@ -25,18 +25,18 @@ public class EntityIMSBomb extends FireballEntity {
 	private int launchHeight;
 	public boolean launching = true;
 
-	public EntityIMSBomb(World world){
-		super(SCContent.eTypeImsBomb, world, 0.25F, 0.3F);
+	public EntityIMSBomb(EntityType<EntityIMSBomb> type, World world){
+		super(SCContent.eTypeImsBomb, world);
 	}
 
 	public EntityIMSBomb(World world, PlayerEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(EntityType.FIREBALL, x, y, z, targetX, targetY, targetZ, world, 0.25F, 0.3F);
+		super(world, x, y, z, targetX, targetY, targetZ);
 		playerName = targetEntity.getName().getFormattedText();
 		launchHeight = height;
 	}
 
 	public EntityIMSBomb(World world, LivingEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(EntityType.FIREBALL, targetEntity, targetX, targetY, targetZ, world, 0.25F, 0.3F);
+		super(world, targetEntity, targetX, targetY, targetZ);
 		targetMob = targetEntity;
 		launchHeight = height;
 	}

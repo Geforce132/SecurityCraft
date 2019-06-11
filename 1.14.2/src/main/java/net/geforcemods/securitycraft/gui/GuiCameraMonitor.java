@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.gui;
 
 import java.util.ArrayList;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
@@ -17,8 +19,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,7 +31,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
-	private InventoryPlayer playerInventory;
+	private PlayerInventory playerInventory;
 	private ItemCameraMonitor cameraMonitor;
 	private CompoundNBT nbtTag;
 
@@ -44,14 +45,14 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	private int page = 1;
 
-	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag) {
+	public GuiCameraMonitor(PlayerInventory inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag) {
 		super(new ContainerGeneric());
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
 	}
 
-	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag, int page) {
+	public GuiCameraMonitor(PlayerInventory inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag, int page) {
 		this(inventory, item, itemNBTTag);
 		this.page = page;
 	}

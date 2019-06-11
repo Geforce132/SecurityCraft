@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +26,7 @@ public class PlayerUtils{
 	 */
 	public static PlayerEntity getPlayerFromName(String name){
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
-			List<?> players = Minecraft.getInstance().world.playerEntities;
+			List<AbstractClientPlayerEntity> players = Minecraft.getInstance().world.getPlayers();
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
@@ -56,9 +57,7 @@ public class PlayerUtils{
 	 */
 	public static boolean isPlayerOnline(String name) {
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
-			for(int i = 0; i < Minecraft.getInstance().world.playerEntities.size(); i++){
-				PlayerEntity player = Minecraft.getInstance().world.playerEntities.get(i);
-
+			for(AbstractClientPlayerEntity player : Minecraft.getInstance().world.getPlayers()){
 				if(player != null && player.getName().getFormattedText().equals(name))
 					return true;
 			}

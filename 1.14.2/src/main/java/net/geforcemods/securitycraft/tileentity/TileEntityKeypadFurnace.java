@@ -9,27 +9,22 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.block.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerFurnace;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.SlotFurnaceFuel;
+import net.minecraft.inventory.container.FurnaceContainer;
+import net.minecraft.inventory.container.FurnaceFuelSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -119,12 +114,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			cookTime = 0;
 			markDirty();
 		}
-	}
-
-	@Override
-	public ITextComponent getName()
-	{
-		return new StringTextComponent(hasCustomSCName() ? furnaceCustomName : "container.furnace");
 	}
 
 	@Override
@@ -223,11 +212,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public boolean isBurning()
 	{
 		return furnaceBurnTime > 0;
-	}
-
-	public static boolean isBurning(IInventory inventory)
-	{
-		return inventory.getField(0) > 0;
 	}
 
 	@Override
@@ -372,7 +356,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack)
 	{
-		return index == 2 ? false : (index != 1 ? true : isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack));
+		return index == 2 ? false : (index != 1 ? true : isItemFuel(stack) || FurnaceFuelSlot.isBucket(stack));
 	}
 
 	@Override
@@ -406,52 +390,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return "minecraft:furnace";
 	}
 
-	public Container createContainer(InventoryPlayer playerInventory, PlayerEntity player)
+	public Container createContainer(PlayerInventory playerInventory, PlayerEntity player)
 	{
-		return new ContainerFurnace(playerInventory, this);
-	}
-
-	@Override
-	public int getField(int id)
-	{
-		switch (id)
-		{
-			case 0:
-				return furnaceBurnTime;
-			case 1:
-				return currentItemBurnTime;
-			case 2:
-				return cookTime;
-			case 3:
-				return totalCookTime;
-			default:
-				return 0;
-		}
-	}
-
-	@Override
-	public void setField(int id, int value)
-	{
-		switch (id)
-		{
-			case 0:
-				furnaceBurnTime = value;
-				break;
-			case 1:
-				currentItemBurnTime = value;
-				break;
-			case 2:
-				cookTime = value;
-				break;
-			case 3:
-				totalCookTime = value;
-		}
-	}
-
-	@Override
-	public int getFieldCount()
-	{
-		return 4;
+		return new FurnaceContainer(playerInventory, this);
 	}
 
 	@Override
@@ -459,11 +400,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		for (int i = 0; i < furnaceItemStacks.size(); ++i)
 			furnaceItemStacks.set(i, ItemStack.EMPTY);
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return hasCustomSCName() ? getName() : new TranslationTextComponent(getName().getFormattedText(), new Object[0]);
 	}
 
 	@Override
@@ -511,17 +447,5 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 }

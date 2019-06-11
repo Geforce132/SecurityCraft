@@ -20,7 +20,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
@@ -140,18 +139,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ searchRadiusOption, searchDelayOption, repeatMessageOption, enabledOption };
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 
 }

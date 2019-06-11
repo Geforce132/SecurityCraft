@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
@@ -7,11 +9,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -38,7 +37,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 			int lightmapY = skyBrightness / 65536;
 			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
 
-			OpenGlHelper.glMultiTexCoord2f(OpenGlHelper.GL_TEXTURE1, lightmapX, lightmapY);
+			//			OpenGlHelper.glMultiTexCoord2f(OpenGlHelper.GL_TEXTURE1, lightmapX, lightmapY); TODO
 		}
 
 		GlStateManager.pushMatrix();
@@ -67,7 +66,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 
-		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();

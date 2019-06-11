@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
@@ -7,10 +9,9 @@ import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.network.play.client.CPacketUpdateSign;
+import net.minecraft.network.play.client.CUpdateSignPacket;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,7 +43,7 @@ public class GuiEditSecretSign extends GuiScreen
 		mc.keyboardListener.enableRepeatEvents(false);
 
 		if(mc.getConnection() != null)
-			mc.getConnection().sendPacket(new CPacketUpdateSign(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
+			mc.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
 
 		te.setEditable(true);
 	}
@@ -132,10 +133,10 @@ public class GuiEditSecretSign extends GuiScreen
 		GlStateManager.translatef(0.0F, -1.0625F, 0.0F);
 
 		if(updateCounter / 6 % 2 == 0)
-			te.lineBeingEdited = editLine;
+			te.func_214062_a(editLine, te.func_214065_t(), te.func_214067_u(), te.func_214069_r());
 
 		TileEntityRendererDispatcher.instance.render(te, -0.5D, -0.75D, -0.5D, 0.0F);
-		te.lineBeingEdited = -1;
+		te.func_214062_a(-1, te.func_214065_t(), te.func_214067_u(), te.func_214069_r());
 		GlStateManager.popMatrix();
 		super.render(mouseX, mouseY, partialTicks);
 	}

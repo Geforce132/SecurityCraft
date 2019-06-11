@@ -5,9 +5,10 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.block.BlockFlowingFluid;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
@@ -166,7 +167,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public BlockState getBlockState(IFluidState state)
 	{
-		return SCContent.fakeLavaBlock.getDefaultState().with(BlockFlowingFluid.LEVEL, getLevelFromState(state));
+		return SCContent.fakeLavaBlock.getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
 	}
 
 	@Override
@@ -234,7 +235,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 
 			if(isIn(FluidTags.LAVA) && ifluidstate.isTagged(FluidTags.WATER))
 			{
-				if(blockState.getBlock() instanceof BlockFlowingFluid)
+				if(blockState.getBlock() instanceof FlowingFluidBlock)
 					world.setBlockState(pos, Blocks.STONE.getDefaultState(), 3);
 
 				triggerEffects(world, pos);

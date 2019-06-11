@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 
 public class TileEntityLaserBlock extends CustomizableSCTE {
 
@@ -74,18 +73,6 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ enabledOption };
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 
 }

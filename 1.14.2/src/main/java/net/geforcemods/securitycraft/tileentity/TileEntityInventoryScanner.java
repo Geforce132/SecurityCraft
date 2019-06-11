@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 
 public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
 
@@ -300,18 +299,6 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 
 }

@@ -13,7 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -27,12 +27,12 @@ public class ItemUniversalKeyChanger extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUseFirst(ItemStack stack, ItemUseContext ctx)
+	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
 		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx.getItem());
 	}
 
-	public EnumActionResult onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, ItemStack stack) {
+	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, double hitX, double hitY, double hitZ, ItemStack stack) {
 		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IPasswordProtected) {
 			if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
 			{
@@ -42,10 +42,10 @@ public class ItemUniversalKeyChanger extends Item {
 			else
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
 
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		}
 
-		return EnumActionResult.FAIL;
+		return ActionResultType.FAIL;
 	}
 
 }

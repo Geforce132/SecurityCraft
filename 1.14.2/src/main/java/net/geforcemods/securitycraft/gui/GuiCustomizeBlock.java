@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
@@ -17,9 +19,8 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Rectangle2d;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -37,7 +38,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 	private final String blockName;
 
-	public GuiCustomizeBlock(InventoryPlayer inventory, CustomizableSCTE te)
+	public GuiCustomizeBlock(PlayerInventory inventory, CustomizableSCTE te)
 	{
 		super(new ContainerCustomizeBlock(inventory, te));
 		tileEntity = te;

@@ -2,16 +2,16 @@ package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
-import net.minecraft.block.PortalBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.NetherPortalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
 /**
  * Vanilla code adapted to allow reinforced obsidian
- * Borrowed from PortalBlock$Size
+ * Borrowed from NetherPortalBlock$Size
  */
 public class PortalSize
 {
@@ -19,7 +19,7 @@ public class PortalSize
 	private final Direction.Axis axis;
 	private final Direction rightDir;
 	private final Direction leftDir;
-	private int portalBlockCount;
+	private int NetherPortalBlockCount;
 	private BlockPos bottomLeft;
 	private int height;
 	private int width;
@@ -111,7 +111,7 @@ public class PortalSize
 
 					if (block == Blocks.NETHER_PORTAL)
 					{
-						++this.portalBlockCount;
+						++this.NetherPortalBlockCount;
 					}
 
 					if (i == 0)
@@ -167,7 +167,7 @@ public class PortalSize
 		return this.bottomLeft != null && this.width >= 2 && this.width <= 21 && this.height >= 3 && this.height <= 21;
 	}
 
-	public void placePortalBlocks()
+	public void placeNetherPortalBlocks()
 	{
 		for (int i = 0; i < this.width; ++i)
 		{
@@ -175,13 +175,13 @@ public class PortalSize
 
 			for (int j = 0; j < this.height; ++j)
 			{
-				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(PortalBlock.AXIS, this.axis), 2 | 16);
+				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(NetherPortalBlock.AXIS, this.axis), 2 | 16);
 			}
 		}
 	}
 
-	public int getPortalBlockCount()
+	public int getNetherPortalBlockCount()
 	{
-		return portalBlockCount;
+		return NetherPortalBlockCount;
 	}
 }

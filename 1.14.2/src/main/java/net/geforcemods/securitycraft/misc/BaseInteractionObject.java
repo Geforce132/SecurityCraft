@@ -22,7 +22,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -56,7 +56,7 @@ public class BaseInteractionObject implements IInteractionObject
 	}
 
 	@Override
-	public Container createContainer(InventoryPlayer playerInventory, PlayerEntity player)
+	public Container createContainer(PlayerInventory playerInventory, PlayerEntity player)
 	{
 		if(id.equals(SETUP_KEYCARD_READER) || id.equals(MRAT) || id.equals(USERNAME_LOGGER) || id.equals(SETUP_PASSWORD) || id.equals(INSERT_PASSWORD) || id.equals(IMS) || id.equals(MODULES))
 			return new ContainerGeneric();

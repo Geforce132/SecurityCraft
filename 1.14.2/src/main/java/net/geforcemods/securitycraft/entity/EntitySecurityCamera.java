@@ -19,9 +19,12 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.potion.Effect;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -57,13 +60,13 @@ public class EntitySecurityCamera extends Entity{
 
 	private String playerViewingName = null;
 
-	public EntitySecurityCamera(World world){
+	public EntitySecurityCamera(EntityType<EntitySecurityCamera> type, World world){
 		super(SCContent.eTypeSecurityCamera, world);
 		noClip = true;
 	}
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, PlayerEntity player){
-		this(world);
+		this(SCContent.eTypeSecurityCamera, world);
 		blockPosX = (int) x;
 		blockPosY = (int) y;
 		blockPosZ = (int) z;
@@ -93,7 +96,7 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
-		this(world);
+		this(SCContent.eTypeSecurityCamera, world);
 		blockPosX = (int) x;
 		blockPosY = (int) y;
 		blockPosZ = (int) z;
@@ -410,4 +413,9 @@ public class EntitySecurityCamera extends Entity{
 			cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return new SSpawnObjectPacket(this);
+	}
 }

@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.List;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
@@ -9,10 +11,9 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiUtilRenderComponents;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.model.ModelSign;
+import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.model.SignModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntitySecretSign>
 {
 	private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
-	private static final ModelSign model = new ModelSign();
+	private static final SignModel model = new SignModel();
 
 	@Override
 	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
@@ -73,14 +74,14 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 			for(int i = 0; i < 4; ++i)
 			{
 				String s = te.getRenderText(i, textComponent -> {
-					List<ITextComponent> list = GuiUtilRenderComponents.splitText(textComponent, 90, fontRenderer, false, true);
+					List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, fontRenderer, false, true);
 
 					return list.isEmpty() ? "" : list.get(0).getFormattedText();
 				});
 
 				if(s != null)
 				{
-					if(i == te.lineBeingEdited)
+					if(i == te.func_214064_s())
 						s = "> " + s + " <";
 
 					fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, 0);

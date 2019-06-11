@@ -29,7 +29,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
-import net.geforcemods.securitycraft.util.RegisterBlockItem;
+import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
@@ -37,47 +37,48 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class SCContent
 {
 	//Blocks
-	@RegisterBlockItem public static Block alarm;
-	@RegisterBlockItem(1) public static Block bouncingBetty;
-	@RegisterBlockItem public static Block cageTrap;
-	@RegisterBlockItem(1) public static Block claymore;
-	@RegisterBlockItem(1) public static Block cobblestoneMine;
-	@RegisterBlockItem(1) public static Block diamondOreMine;
-	@RegisterBlockItem(1) public static Block dirtMine;
-	@RegisterBlockItem public static Block frame;
-	@RegisterBlockItem(1) public static Block furnaceMine;
-	@RegisterBlockItem(1) public static Block gravelMine;
-	@RegisterBlockItem(1) public static Block ims;
-	@RegisterBlockItem public static Block inventoryScanner;
+	@RegisterItemBlock public static Block alarm;
+	@RegisterItemBlock(1) public static Block bouncingBetty;
+	@RegisterItemBlock public static Block cageTrap;
+	@RegisterItemBlock(1) public static Block claymore;
+	@RegisterItemBlock(1) public static Block cobblestoneMine;
+	@RegisterItemBlock(1) public static Block diamondOreMine;
+	@RegisterItemBlock(1) public static Block dirtMine;
+	@RegisterItemBlock public static Block frame;
+	@RegisterItemBlock(1) public static Block furnaceMine;
+	@RegisterItemBlock(1) public static Block gravelMine;
+	@RegisterItemBlock(1) public static Block ims;
+	@RegisterItemBlock public static Block inventoryScanner;
 	public static Block inventoryScannerField;
-	@RegisterBlockItem(2) public static Block ironFence;
-	@RegisterBlockItem(2) public static Block ironTrapdoor;
-	@RegisterBlockItem public static Block keycardReader;
-	@RegisterBlockItem public static Block keypad;
+	@RegisterItemBlock(2) public static Block ironFence;
+	@RegisterItemBlock(2) public static Block ironTrapdoor;
+	@RegisterItemBlock public static Block keycardReader;
+	@RegisterItemBlock public static Block keypad;
 	public static Block keypadChest;
-	@RegisterBlockItem public static Block keypadFurnace;
-	@RegisterBlockItem public static Block laserBlock;
+	@RegisterItemBlock public static Block keypadFurnace;
+	@RegisterItemBlock public static Block laserBlock;
 	public static Block laserField;
-	@RegisterBlockItem public static Block motionActivatedLight;
-	@RegisterBlockItem public static Block panicButton;
-	@RegisterBlockItem public static Block portableRadar;
-	@RegisterBlockItem public static Block protecto;
+	@RegisterItemBlock public static Block motionActivatedLight;
+	@RegisterItemBlock public static Block panicButton;
+	@RegisterItemBlock public static Block portableRadar;
+	@RegisterItemBlock public static Block protecto;
 	public static Block reinforcedDoor;
-	@RegisterBlockItem(2) public static Block reinforcedFencegate;
-	@RegisterBlockItem public static Block retinalScanner;
-	@RegisterBlockItem(1) public static Block sandMine;
+	@RegisterItemBlock(2) public static Block reinforcedFencegate;
+	@RegisterItemBlock public static Block retinalScanner;
+	@RegisterItemBlock(1) public static Block sandMine;
 	public static Block scannerDoor;
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
-	@RegisterBlockItem public static Block securityCamera;
-	@RegisterBlockItem(1) public static Block stoneMine;
-	@RegisterBlockItem(1) public static Block trackMine;
-	@RegisterBlockItem public static Block usernameLogger;
-	@RegisterBlockItem(1) public static BlockMine mine;
+	@RegisterItemBlock public static Block securityCamera;
+	@RegisterItemBlock(1) public static Block stoneMine;
+	@RegisterItemBlock(1) public static Block trackMine;
+	@RegisterItemBlock public static Block usernameLogger;
+	@RegisterItemBlock(1) public static BlockMine mine;
 	public static FlowingFluidBlock fakeWaterBlock;
 	public static FlowingFluidBlock fakeLavaBlock;
 
@@ -343,10 +344,16 @@ public class SCContent
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
 
 	//Entity types
+	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
 	public static EntityType<EntityBouncingBetty> eTypeBouncingBetty;
+	@ObjectHolder(SecurityCraft.MODID + ":taserbullet")
 	public static EntityType<EntityTaserBullet> eTypeTaserBullet;
+	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
 	public static EntityType<EntityIMSBomb> eTypeImsBomb;
+	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
 	public static EntityType<EntitySecurityCamera> eTypeSecurityCamera;
+	@ObjectHolder(SecurityCraft.MODID + ":sentry")
 	public static EntityType<EntitySentry> eTypeSentry;
+	@ObjectHolder(SecurityCraft.MODID + ":bullet")
 	public static EntityType<EntityBullet> eTypeBullet;
 }

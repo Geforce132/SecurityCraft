@@ -8,10 +8,10 @@ import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.tileentity.SignTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public class TileEntitySecretSign extends TileEntitySign implements IOwnable
+public class TileEntitySecretSign extends SignTileEntity implements IOwnable
 {
 	private Owner owner = new Owner();
 

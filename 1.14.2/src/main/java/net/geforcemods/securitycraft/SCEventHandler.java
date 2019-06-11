@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.TEInteractionObject;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
@@ -34,7 +33,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.PortalBlock;
+import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -42,11 +41,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -62,7 +64,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBloc
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -120,10 +121,10 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBucketUsed(FillBucketEvent event){
-		if(event.getTarget() == null)
+		if(event.getTarget() == null || event.getTarget().getType() == Type.BLOCK)
 			return;
 
-		ItemStack result = fillBucket(event.getWorld(), event.getTarget().getBlockPos());
+		ItemStack result = fillBucket(event.getWorld(), ((BlockRayTraceResult)event.getTarget()).getPos());
 		if(result.isEmpty())
 			return;
 		event.setFilledBucket(result);
@@ -398,14 +399,14 @@ public class SCEventHandler {
 	//		{
 	//			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
 	//
-	//			if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-	//				portalSize.placePortalBlocks();
+	//			if (portalSize.isValid() && portalSize.getNetherPortalBlockCount() == 0)
+	//				portalSize.placeNetherPortalBlocks();
 	//			else
 	//			{
 	//				portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
 	//
-	//				if (portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-	//					portalSize.placePortalBlocks();
+	//				if (portalSize.isValid() && portalSize.getNetherPortalBlockCount() == 0)
+	//					portalSize.placeNetherPortalBlocks();
 	//			}
 	//		}
 	//	}
@@ -424,7 +425,7 @@ public class SCEventHandler {
 	//				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
 	//				{
 	//					//check if the block is part of a valid portal, and if so move the entity down
-	//					PortalBlock.Size portalSize = new PortalBlock.Size(event.getWorld(), pos, Direction.Axis.X);
+	//					NetherPortalBlock.Size portalSize = new NetherPortalBlock.Size(event.getWorld(), pos, Direction.Axis.X);
 	//
 	//					if (portalSize.isValid())
 	//					{
@@ -438,7 +439,7 @@ public class SCEventHandler {
 	//					}
 	//					else //check other axis
 	//					{
-	//						portalSize = new PortalBlock.Size(event.getWorld(), pos, Direction.Axis.Z);
+	//						portalSize = new NetherPortalBlock.Size(event.getWorld(), pos, Direction.Axis.Z);
 	//
 	//						if (portalSize.isValid())
 	//						{
@@ -494,20 +495,20 @@ public class SCEventHandler {
 		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
 		if(event.getState().getBlock() == Blocks.NETHER_PORTAL)
 		{
-			Direction.Axis axis = event.getState().get(PortalBlock.AXIS);
+			Direction.Axis axis = event.getState().get(NetherPortalBlock.AXIS);
 
 			if (axis == Direction.Axis.X)
 			{
 				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
 
-				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
+				if (portalSize.isValid() || portalSize.getNetherPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
 					event.setCanceled(true);
 			}
 			else if (axis == Direction.Axis.Z)
 			{
 				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
 
-				if (portalSize.isValid() || portalSize.getPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
+				if (portalSize.isValid() || portalSize.getNetherPortalBlockCount() > portalSize.getWidth() * portalSize.getHeight())
 					event.setCanceled(true);
 			}
 		}
@@ -523,7 +524,7 @@ public class SCEventHandler {
 					if(!te.modules.get(i).isEmpty()){
 						ItemStack stack = te.modules.get(i);
 						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
+						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
 						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
@@ -544,13 +545,6 @@ public class SCEventHandler {
 		}
 		else if(event.getTarget() instanceof EntitySentry)
 			((MobEntity)event.getEntity()).setAttackTarget(null);
-	}
-
-	@SubscribeEvent
-	public static void onWorldLoad(WorldEvent.Load event)
-	{
-		if(event.getWorld() instanceof World)
-			((World)event.getWorld()).addEventListener(new SCWorldListener());
 	}
 
 	@SubscribeEvent

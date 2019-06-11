@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -55,7 +55,7 @@ public class InitSentryAnimation
 
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
 	{
-		List<EntityCreature> sentries = Minecraft.getInstance().world.<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+		List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 		if(!sentries.isEmpty())
 		{

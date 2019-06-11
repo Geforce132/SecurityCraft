@@ -28,7 +28,7 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 	@Override
 	public boolean shouldExecute()
 	{
-		List<LivingEntity> list = field_75299_d.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), field_220779_d);
+		List<LivingEntity> list = field_75299_d.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), null);
 
 		if(list.isEmpty())
 			return false;

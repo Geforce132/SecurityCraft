@@ -11,12 +11,13 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion.Mode;
 
 public class TileEntityClaymore extends TileEntitySCTE{
 
@@ -45,7 +46,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 
 			if(cooldown == 0){
 				BlockUtils.destroyBlock(getWorld(), getPos(), false);
-				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
+				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true, Mode.BREAK);
 				return;
 			}
 

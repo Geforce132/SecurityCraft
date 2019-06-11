@@ -2,14 +2,15 @@ package net.geforcemods.securitycraft.gui;
 
 import java.util.Random;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.CloseFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ContainerFurnace;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.FurnaceContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -21,8 +22,8 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	private TileEntityKeypadFurnace tileFurnace;
 	private boolean gurnace = false;
 
-	public GuiKeypadFurnaceInventory(InventoryPlayer inventory, TileEntityKeypadFurnace te){
-		super(new ContainerFurnace(inventory, te));
+	public GuiKeypadFurnaceInventory(PlayerInventory inventory, TileEntityKeypadFurnace te){
+		super(new FurnaceContainer(inventory, te));
 		tileFurnace = te;
 
 		if(new Random().nextInt(100) < 5)

@@ -1,10 +1,14 @@
 package net.geforcemods.securitycraft.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceContext.BlockMode;
+import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class WorldUtils{
 
@@ -17,7 +21,7 @@ public class WorldUtils{
 		if(w.isRemote()) //clientside
 			Minecraft.getInstance().addScheduledTask(r);
 		else //serverside
-			((WorldServer)w).addScheduledTask(r);
+			((ServerWorld)w).addScheduledTask(r);
 	}
 
 	/**
@@ -26,7 +30,7 @@ public class WorldUtils{
 	 *
 	 * Args: Starting X, Y, Z, ending X, Y, Z.
 	 */
-	public static boolean isPathObstructed(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
-		return world.rayTraceBlocks(new Vec3d(x1, y1, z1), new Vec3d(x2, y2, z2)) != null;
+	public static boolean isPathObstructed(Entity entity, World world, double x1, double y1, double z1, double x2, double y2, double z2) {
+		return world.rayTraceBlocks(new RayTraceContext(new Vec3d(x1, y1, z1), new Vec3d(x2, y2, z2), BlockMode.COLLIDER, FluidMode.NONE, entity)) != null;
 	}
 }

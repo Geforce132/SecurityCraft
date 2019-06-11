@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -18,7 +19,7 @@ public class EntityTaserBullet extends ThrowableEntity {
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
 	private boolean powered;
 
-	public EntityTaserBullet(World world){
+	public EntityTaserBullet(EntityType<EntityTaserBullet> type, World world){
 		super(SCContent.eTypeTaserBullet, world);
 	}
 
@@ -27,6 +28,9 @@ public class EntityTaserBullet extends ThrowableEntity {
 		powered = isPowered;
 		this.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
 	}
+
+	@Override
+	protected void registerData() {}
 
 	@Override
 	protected float getGravityVelocity(){

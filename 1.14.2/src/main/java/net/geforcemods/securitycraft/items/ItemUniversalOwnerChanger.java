@@ -16,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -30,12 +30,12 @@ public class ItemUniversalOwnerChanger extends Item
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemUseContext ctx)
+	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
 		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
 	}
 
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction side, float hitX, float hitY, float hitZ)
+	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction side, double hitX, double hitY, double hitZ)
 	{
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName().getFormattedText();
@@ -45,7 +45,7 @@ public class ItemUniversalOwnerChanger extends Item
 			if(!(te instanceof IOwnable))
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
+				return ActionResultType.FAIL;
 			}
 
 			Owner owner = ((IOwnable)te).getOwner();
@@ -54,13 +54,13 @@ public class ItemUniversalOwnerChanger extends Item
 			if(!owner.isOwner(player) && !isDefault)
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
+				return ActionResultType.FAIL;
 			}
 
 			if(!stack.hasDisplayName() && !isDefault)
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
+				return ActionResultType.FAIL;
 			}
 
 			if(isDefault)
@@ -70,7 +70,7 @@ public class ItemUniversalOwnerChanger extends Item
 				else
 				{
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
-					return EnumActionResult.FAIL;
+					return ActionResultType.FAIL;
 				}
 			}
 
@@ -100,9 +100,9 @@ public class ItemUniversalOwnerChanger extends Item
 				world.getServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
 
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		}
 
-		return EnumActionResult.FAIL;
+		return ActionResultType.FAIL;
 	}
 }

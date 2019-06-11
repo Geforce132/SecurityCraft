@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -47,16 +47,16 @@ public class ItemMineRemoteAccessTool extends Item {
 		if(!world.isRemote && player instanceof ServerPlayerEntity)
 			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MRAT));
 
-		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemUseContext ctx)
+	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
 		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
 	}
 
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, float hitX, float hitY, float hitZ){
+	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 
 		if(!world.isRemote)
 			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
@@ -65,12 +65,12 @@ public class ItemMineRemoteAccessTool extends Item {
 
 					if(availSlot == 0){
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
-						return EnumActionResult.FAIL;
+						return ActionResultType.FAIL;
 					}
 
 					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.cantBind"), TextFormatting.RED);
-						return EnumActionResult.FAIL;
+						return ActionResultType.FAIL;
 					}
 
 					if(stack.getTag() == null)
@@ -87,7 +87,7 @@ public class ItemMineRemoteAccessTool extends Item {
 			else if(player instanceof ServerPlayerEntity)
 				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MRAT));
 
-		return EnumActionResult.SUCCESS;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override

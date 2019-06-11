@@ -9,9 +9,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -27,7 +27,7 @@ public class ItemSCManual extends Item {
 		if(player instanceof ServerPlayerEntity)
 			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MANUAL));
 
-		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class ItemSCManual extends Item {
 			ListNBT bookPages = new ListNBT();
 
 			par1ItemStack.setTagInfo("pages", bookPages);
-			par1ItemStack.setTagInfo("author", new NBTTagString("Geforce"));
-			par1ItemStack.setTagInfo("title", new NBTTagString("SecurityCraft"));
+			par1ItemStack.setTagInfo("author", new StringNBT("Geforce"));
+			par1ItemStack.setTagInfo("title", new StringNBT("SecurityCraft"));
 		}
 	}
 

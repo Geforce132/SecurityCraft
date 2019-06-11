@@ -22,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -41,17 +41,17 @@ public class ItemCameraMonitor extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemUseContext ctx)
+	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
 		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
 	}
 
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, float hitX, float hitY, float hitZ){
+	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
 			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
 				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
-					return EnumActionResult.SUCCESS;
+					return ActionResultType.SUCCESS;
 				}
 
 				if(player.inventory.getCurrentItem().getTag() == null)
@@ -62,7 +62,7 @@ public class ItemCameraMonitor extends Item {
 				if(isCameraAdded(player.inventory.getCurrentItem().getTag(), view)){
 					player.inventory.getCurrentItem().getTag().remove(getTagNameFromPosition(player.inventory.getCurrentItem().getTag(), view));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
-					return EnumActionResult.SUCCESS;
+					return ActionResultType.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
@@ -74,19 +74,19 @@ public class ItemCameraMonitor extends Item {
 
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
-				return EnumActionResult.SUCCESS;
+				return ActionResultType.SUCCESS;
 			}
 		}else if(world.isRemote && (BlockUtils.getBlock(world, pos) != SCContent.securityCamera || PlayerUtils.isPlayerMountedOnCamera(player))){
 			if(stack.getTag() == null || stack.getTag().isEmpty()) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return EnumActionResult.SUCCESS;
+				return ActionResultType.SUCCESS;
 			}
 
 			SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.CAMERA_MONITOR, pos));
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		}
 
-		return EnumActionResult.SUCCESS;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Override
@@ -96,13 +96,13 @@ public class ItemCameraMonitor extends Item {
 		if (world.isRemote) {
 			if(!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return ActionResult.newResult(EnumActionResult.PASS, stack);
+				return ActionResult.newResult(ActionResultType.PASS, stack);
 			}
 
 			SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.CAMERA_MONITOR, player.getPosition()));
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(ActionResultType.PASS, stack);
 	}
 
 	@Override

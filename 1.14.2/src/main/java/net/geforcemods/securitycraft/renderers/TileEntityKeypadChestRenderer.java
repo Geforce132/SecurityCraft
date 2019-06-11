@@ -2,14 +2,15 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.minecraft.block.ChestBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.model.ModelChest;
-import net.minecraft.client.renderer.entity.model.ModelLargeChest;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ChestBlock;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.model.ChestModel;
+import net.minecraft.client.renderer.tileentity.model.LargeChestModel;
 import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.IChestLid;
 import net.minecraft.util.Direction;
@@ -26,8 +27,8 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 	private static final ResourceLocation CHRISTMAS_SINGLE = new ResourceLocation("securitycraft:textures/entity/chest/christmas.png");
 	private static final ResourceLocation NORMAL_SINGLE_INACTIVE = new ResourceLocation("securitycraft:textures/entity/chest/chest_unactive.png");
 	private static final ResourceLocation NORMAL_SINGLE_ACTIVE = new ResourceLocation("securitycraft:textures/entity/chest/chest_active.png");
-	private static final ModelChest SMALL_MODEL = new ModelChest();
-	private static final ModelChest LARGE_MODEL = new ModelLargeChest();
+	private static final ChestModel SMALL_MODEL = new ChestModel();
+	private static final ChestModel LARGE_MODEL = new LargeChestModel();
 	private boolean isChristmas;
 
 	public TileEntityKeypadChestRenderer()
@@ -47,7 +48,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 		ChestType chesttype = BlockState.has(ChestBlock.TYPE) ? BlockState.get(ChestBlock.TYPE) : ChestType.SINGLE;
 		if (chesttype != ChestType.LEFT) {
 			boolean flag = chesttype != ChestType.SINGLE;
-			ModelChest modelchest = this.getChestModel(tileEntityIn, destroyStage, flag);
+			ChestModel modelchest = this.getChestModel(tileEntityIn, destroyStage, flag);
 			if (destroyStage >= 0) {
 				GlStateManager.matrixMode(5890);
 				GlStateManager.pushMatrix();
@@ -82,7 +83,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 		}
 	}
 
-	private ModelChest getChestModel(TileEntityKeypadChest te, int partialTicks, boolean flag) {
+	private ChestModel getChestModel(TileEntityKeypadChest te, int partialTicks, boolean flag) {
 		ResourceLocation resourcelocation;
 
 		if (partialTicks >= 0) {
@@ -102,7 +103,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 		return flag ? LARGE_MODEL : SMALL_MODEL;
 	}
 
-	private void rotateLid(TileEntityKeypadChest te, float partialTicks, ModelChest chestModel) {
+	private void rotateLid(TileEntityKeypadChest te, float partialTicks, ChestModel chestModel) {
 		float f = ((IChestLid) te).getLidAngle(partialTicks);
 		f = 1.0F - f;
 		f = 1.0F - f * f * f;

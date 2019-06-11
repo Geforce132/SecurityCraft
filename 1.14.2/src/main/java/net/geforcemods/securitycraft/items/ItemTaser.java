@@ -8,12 +8,12 @@ import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -70,7 +70,7 @@ public class ItemTaser extends Item {
 						player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
 					}
 
-					return ActionResult.newResult(EnumActionResult.PASS, stack);
+					return ActionResult.newResult(ActionResultType.PASS, stack);
 				}
 
 				WorldUtils.addScheduledTask(world, () -> world.addEntity(new EntityTaserBullet(world, player, powered)));
@@ -82,16 +82,16 @@ public class ItemTaser extends Item {
 					{
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
-						taser.damageItem(150, player);
+						taser.damageItem(150, player, p -> {});
 						player.inventory.setInventorySlotContents(player.inventory.currentItem, taser);
 					}
 					else
-						stack.damageItem(150, player);
+						stack.damageItem(150, player, p -> {});
 				}
 			}
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(ActionResultType.PASS, stack);
 	}
 
 	@Override

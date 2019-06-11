@@ -27,9 +27,14 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceContext.BlockMode;
+import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
@@ -66,15 +71,18 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntity()))
+		if(event.getEntity() instanceof LivingEntity && PlayerUtils.isPlayerMountedOnCamera((LivingEntity)event.getEntity()))
 			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	public static void onDrawBlockHighlight(DrawBlockHighlightEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(event.getTarget().getBlockPos()))
-			event.setCanceled(true);
+		if(event.getTarget().getType() == Type.BLOCK)
+		{
+			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(((BlockRayTraceResult)event.getTarget()).getPos()))
+				event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent
@@ -100,9 +108,9 @@ public class SCClientEventHandler {
 				String textureToUse = "camera_not_bound";
 				double eyeHeight = player.getEyeHeight();
 				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-				if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
+				if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof TileEntitySecurityCamera)
 				{
 					CompoundNBT cameras = monitor.getTag();
 
@@ -114,7 +122,7 @@ public class SCClientEventHandler {
 
 							String[] coords = cameras.getString("Camera" + i).split(" ");
 
-							if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
+							if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
 							{
 								textureToUse = "camera_bound";
 								break;

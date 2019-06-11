@@ -1,23 +1,24 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.models.ModelIMSBomb;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderIMSBomb extends Render<EntityIMSBomb> {
+public class RenderIMSBomb extends EntityRenderer<EntityIMSBomb> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
 
 	/** instance of ModelIMSBomb for rendering */
 	protected static final ModelIMSBomb modelBomb = new ModelIMSBomb();
 
-	public RenderIMSBomb(RenderManager renderManager){
+	public RenderIMSBomb(EntityRendererManager renderManager){
 		super(renderManager);
 	}
 

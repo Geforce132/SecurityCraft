@@ -1,22 +1,23 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.models.ModelSentry;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderSentry extends Render<EntitySentry>
+public class RenderSentry extends EntityRenderer<EntitySentry>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private static final ModelSentry MODEL = new ModelSentry();
 
-	public RenderSentry(RenderManager renderManager)
+	public RenderSentry(EntityRendererManager renderManager)
 	{
 		super(renderManager);
 	}

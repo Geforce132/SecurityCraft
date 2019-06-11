@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface RegisterBlockItem
+public @interface RegisterItemBlock
 {
 	/**
 	 * The SecurityCraft creative tab to put the item block in

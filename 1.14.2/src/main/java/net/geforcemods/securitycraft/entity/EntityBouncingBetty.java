@@ -4,9 +4,12 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.ParticleTypes.ParticleTypes;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 
@@ -15,12 +18,12 @@ public class EntityBouncingBetty extends Entity {
 	/** How long the fuse is */
 	public int fuse;
 
-	public EntityBouncingBetty(World world){
+	public EntityBouncingBetty(EntityType<EntityBouncingBetty> type, World world){
 		super(SCContent.eTypeBouncingBetty, world);
 	}
 
 	public EntityBouncingBetty(World world, double x, double y, double z){
-		this(world);
+		this(SCContent.eTypeBouncingBetty, world);
 		setPosition(x, y, z);
 		float f = (float)(Math.random() * Math.PI * 2.0D);
 		setMotion(-((float)Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float)Math.cos(f)) * 0.02F);
@@ -110,5 +113,11 @@ public class EntityBouncingBetty extends Entity {
 	public float getShadowSize()
 	{
 		return 0.0F;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return new SSpawnObjectPacket(this);
 	}
 }

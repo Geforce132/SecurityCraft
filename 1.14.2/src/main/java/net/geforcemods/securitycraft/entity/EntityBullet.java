@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
@@ -13,14 +14,16 @@ import net.minecraft.world.World;
 
 public class EntityBullet extends ArrowEntity
 {
-	public EntityBullet(World world)
+	public EntityBullet(EntityType<EntityBullet> type, World world)
 	{
 		super(SCContent.eTypeBullet, world);
 	}
 
 	public EntityBullet(World world, LivingEntity shooter)
 	{
-		super(SCContent.eTypeBullet, shooter, world);
+		super(SCContent.eTypeBullet, world);
+
+		setShooter(shooter);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -28,7 +28,7 @@ public class ItemAdminTool extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemUseContext ctx) {
+	public ActionResultType onItemUse(ItemUseContext ctx) {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
@@ -76,13 +76,13 @@ public class ItemAdminTool extends Item {
 				if(!hasInfo)
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
-				return EnumActionResult.FAIL;
+				return ActionResultType.FAIL;
 			}
 
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.adminTool.getTranslationKey()), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 		}
 
-		return EnumActionResult.FAIL;
+		return ActionResultType.FAIL;
 	}
 
 }

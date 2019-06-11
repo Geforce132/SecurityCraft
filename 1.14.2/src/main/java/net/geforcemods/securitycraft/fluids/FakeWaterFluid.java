@@ -5,20 +5,20 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.block.BlockFlowingFluid;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.init.ParticleTypes;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.ParticleTypes.IParticleData;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -95,7 +95,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	@Override
 	public BlockState getBlockState(IFluidState state)
 	{
-		return SCContent.fakeWaterBlock.getDefaultState().with(BlockFlowingFluid.LEVEL, getLevelFromState(state));
+		return SCContent.fakeWaterBlock.getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
 	}
 
 	@Override

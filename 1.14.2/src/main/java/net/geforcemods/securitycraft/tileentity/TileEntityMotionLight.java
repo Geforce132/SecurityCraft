@@ -11,8 +11,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 
 public class TileEntityMotionLight extends CustomizableSCTE {
 
@@ -65,23 +63,6 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {searchRadiusOption};
-	}
-
-	@Override
-	public ITextComponent getName() {
-		return new StringTextComponent("Motion-Activated Light");
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 
 }

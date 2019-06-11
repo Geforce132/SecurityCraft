@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -24,12 +24,12 @@ public class ItemBriefcase extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(ItemUseContext ctx)
+	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
 		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
 	}
 
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, float hitX, float hitY, float hitZ) {
+	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
 		if(world.isRemote) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
@@ -42,7 +42,7 @@ public class ItemBriefcase extends Item {
 				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, player.getPosition()));
 		}
 
-		return EnumActionResult.FAIL;
+		return ActionResultType.FAIL;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ItemBriefcase extends Item {
 				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, player.getPosition()));
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(ActionResultType.PASS, stack);
 	}
 
 	@Override

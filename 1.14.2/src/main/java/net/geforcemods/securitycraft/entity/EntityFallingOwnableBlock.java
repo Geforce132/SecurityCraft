@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
@@ -14,7 +15,7 @@ public class EntityFallingOwnableBlock extends FallingBlockEntity
 
 	public EntityFallingOwnableBlock(World world)
 	{
-		super(world);
+		super(EntityType.FALLING_BLOCK, world);
 	}
 
 	public EntityFallingOwnableBlock(World world, double x, double y, double z, BlockState fallingBlockState, Owner owner)

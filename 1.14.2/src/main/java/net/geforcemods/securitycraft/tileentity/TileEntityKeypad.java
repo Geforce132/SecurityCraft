@@ -17,7 +17,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -49,13 +48,13 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
 		if(module == EnumCustomModules.DISGUISE)
-			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.markForRerender(pos);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {
 		if(module == EnumCustomModules.DISGUISE)
-			world.markBlockRangeForRenderUpdate(pos, pos);
+			world.markForRerender(pos);
 	}
 
 	/**
@@ -143,17 +142,5 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ isAlwaysActive };
-	}
-
-	@Override
-	public ITextComponent getCustomName()
-	{
-		return getCustomSCName();
-	}
-
-	@Override
-	public boolean hasCustomName()
-	{
-		return hasCustomSCName();
 	}
 }

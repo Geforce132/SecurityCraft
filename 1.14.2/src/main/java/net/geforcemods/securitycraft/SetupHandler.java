@@ -97,7 +97,7 @@ public class SetupHandler
 		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner"));
 		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner_field"));
 		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cage_trap"));
-		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "portable_radar"));
+		SCContent.portableRadar = new BlockPortableRadar(Material.MISCELLANEOUS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "portable_radar"));
 		SCContent.keypadChest = new BlockKeypadChest().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest"));
 		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger"));
 		SCContent.alarm = new BlockAlarm().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "alarm"));
@@ -126,7 +126,7 @@ public class SetupHandler
 		SCContent.reinforcedPolishedDiorite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_DIORITE, "reinforced_polished_diorite");
 		SCContent.reinforcedAndesite = new BlockReinforcedBase(Material.ROCK, Blocks.ANDESITE, "reinforced_andesite");
 		SCContent.reinforcedPolishedAndesite = new BlockReinforcedBase(Material.ROCK, Blocks.POLISHED_ANDESITE, "reinforced_polished_andesite");
-		SCContent.reinforcedDirt = new BlockReinforcedBase(SoundType.GROUND, Material.GROUND, Blocks.DIRT, "reinforced_dirt");
+		SCContent.reinforcedDirt = new BlockReinforcedBase(SoundType.GROUND, Material.EARTH, Blocks.DIRT, "reinforced_dirt");
 		SCContent.reinforcedCobblestone = new BlockReinforcedBase(Material.ROCK, Blocks.COBBLESTONE, "reinforced_cobblestone");
 		SCContent.reinforcedOakPlanks = new BlockReinforcedBase(SoundType.WOOD, Material.WOOD, Blocks.OAK_PLANKS, "reinforced_oak_planks");
 		SCContent.reinforcedSprucePlanks = new BlockReinforcedBase(SoundType.WOOD, Material.WOOD, Blocks.SPRUCE_PLANKS, "reinforced_spruce_planks");
@@ -135,7 +135,7 @@ public class SetupHandler
 		SCContent.reinforcedAcaciaPlanks = new BlockReinforcedBase(SoundType.WOOD, Material.WOOD, Blocks.ACACIA_PLANKS, "reinforced_acacia_planks");
 		SCContent.reinforcedDarkOakPlanks = new BlockReinforcedBase(SoundType.WOOD, Material.WOOD, Blocks.DARK_OAK_PLANKS, "reinforced_dark_oak_planks");
 		SCContent.reinforcedSand = new BlockReinforcedFalling(SoundType.SAND, Material.SAND, Blocks.SAND, "reinforced_sand");
-		SCContent.reinforcedGravel = new BlockReinforcedFalling(SoundType.GROUND, Material.GROUND, Blocks.GRAVEL, "reinforced_gravel");
+		SCContent.reinforcedGravel = new BlockReinforcedFalling(SoundType.GROUND, Material.EARTH, Blocks.GRAVEL, "reinforced_gravel");
 		SCContent.reinforcedOakLog = new BlockReinforcedRotatedPillar(SoundType.WOOD, Material.WOOD, Blocks.OAK_LOG, "reinforced_oak_log");
 		SCContent.reinforcedSpruceLog = new BlockReinforcedRotatedPillar(SoundType.WOOD, Material.WOOD, Blocks.SPRUCE_LOG, "reinforced_spruce_log");
 		SCContent.reinforcedBirchLog = new BlockReinforcedRotatedPillar(SoundType.WOOD, Material.WOOD, Blocks.BIRCH_LOG, "reinforced_birch_log");
@@ -147,22 +147,22 @@ public class SetupHandler
 		SCContent.reinforcedSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.SANDSTONE, "reinforced_sandstone");
 		SCContent.reinforcedChiseledSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.CHISELED_SANDSTONE, "reinforced_chiseled_sandstone");
 		SCContent.reinforcedCutSandstone = new BlockReinforcedBase(Material.ROCK, Blocks.CUT_SANDSTONE, "reinforced_cut_sandstone");
-		SCContent.reinforcedWhiteWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.WHITE_WOOL, "reinforced_white_wool");
-		SCContent.reinforcedOrangeWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.ORANGE_WOOL, "reinforced_orange_wool");
-		SCContent.reinforcedMagentaWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.MAGENTA_WOOL, "reinforced_magenta_wool");
-		SCContent.reinforcedLightBlueWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.LIGHT_BLUE_WOOL, "reinforced_light_blue_wool");
-		SCContent.reinforcedYellowWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.YELLOW_WOOL, "reinforced_yellow_wool");
-		SCContent.reinforcedLimeWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.LIME_WOOL, "reinforced_lime_wool");
-		SCContent.reinforcedPinkWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.PINK_WOOL, "reinforced_pink_wool");
-		SCContent.reinforcedGrayWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.GRAY_WOOL, "reinforced_gray_wool");
-		SCContent.reinforcedLightGrayWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.LIGHT_GRAY_WOOL, "reinforced_light_gray_wool");
-		SCContent.reinforcedCyanWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.CYAN_WOOL, "reinforced_cyan_wool");
-		SCContent.reinforcedPurpleWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.PURPLE_WOOL, "reinforced_purple_wool");
-		SCContent.reinforcedBlueWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.BLUE_WOOL, "reinforced_blue_wool");
-		SCContent.reinforcedBrownWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.BROWN_WOOL, "reinforced_brown_wool");
-		SCContent.reinforcedGreenWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.GREEN_WOOL, "reinforced_green_wool");
-		SCContent.reinforcedRedWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.RED_WOOL, "reinforced_red_wool");
-		SCContent.reinforcedBlackWool = new BlockReinforcedBase(SoundType.CLOTH, Material.CLOTH, Blocks.BLACK_WOOL, "reinforced_black_wool");
+		SCContent.reinforcedWhiteWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.WHITE_WOOL, "reinforced_white_wool");
+		SCContent.reinforcedOrangeWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.ORANGE_WOOL, "reinforced_orange_wool");
+		SCContent.reinforcedMagentaWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.MAGENTA_WOOL, "reinforced_magenta_wool");
+		SCContent.reinforcedLightBlueWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.LIGHT_BLUE_WOOL, "reinforced_light_blue_wool");
+		SCContent.reinforcedYellowWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.YELLOW_WOOL, "reinforced_yellow_wool");
+		SCContent.reinforcedLimeWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.LIME_WOOL, "reinforced_lime_wool");
+		SCContent.reinforcedPinkWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.PINK_WOOL, "reinforced_pink_wool");
+		SCContent.reinforcedGrayWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.GRAY_WOOL, "reinforced_gray_wool");
+		SCContent.reinforcedLightGrayWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.LIGHT_GRAY_WOOL, "reinforced_light_gray_wool");
+		SCContent.reinforcedCyanWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.CYAN_WOOL, "reinforced_cyan_wool");
+		SCContent.reinforcedPurpleWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.PURPLE_WOOL, "reinforced_purple_wool");
+		SCContent.reinforcedBlueWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.BLUE_WOOL, "reinforced_blue_wool");
+		SCContent.reinforcedBrownWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.BROWN_WOOL, "reinforced_brown_wool");
+		SCContent.reinforcedGreenWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.GREEN_WOOL, "reinforced_green_wool");
+		SCContent.reinforcedRedWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.RED_WOOL, "reinforced_red_wool");
+		SCContent.reinforcedBlackWool = new BlockReinforcedBase(SoundType.CLOTH, Material.WOOL, Blocks.BLACK_WOOL, "reinforced_black_wool");
 		SCContent.reinforcedGoldBlock = new BlockReinforcedBase(SoundType.METAL, Material.IRON, Blocks.GOLD_BLOCK, "reinforced_gold_block");
 		SCContent.reinforcedIronBlock = new BlockReinforcedBase(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK, "reinforced_iron_block");
 		SCContent.reinforcedOakSlab = new BlockReinforcedSlab(SoundType.WOOD, Material.WOOD, Blocks.OAK_SLAB, "reinforced_oak_slab");
@@ -313,17 +313,17 @@ public class SetupHandler
 
 	public static void setupMines()
 	{
-		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "mine"));
-		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dirt_mine"));
+		SCContent.mine = (BlockMine) new BlockMine(Material.MISCELLANEOUS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "mine"));
+		SCContent.dirtMine = new BlockFullMineBase(Material.EARTH, Blocks.DIRT, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dirt_mine"));
 		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE, 2.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "stone_mine"));
 		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE, 2.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cobblestone_mine"));
 		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sand_mine"));
 		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "diamond_mine"));
 		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "furnace_mine"));
-		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "gravel_mine"));
+		SCContent.gravelMine = new BlockFullMineFalling(Material.EARTH, Blocks.GRAVEL, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "gravel_mine"));
 		SCContent.trackMine = new BlockTrackMine().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine"));
-		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncing_betty"));
-		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore"));
+		SCContent.bouncingBetty = new BlockBouncingBetty(Material.MISCELLANEOUS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncing_betty"));
+		SCContent.claymore = new BlockClaymore(Material.MISCELLANEOUS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore"));
 		SCContent.ims = new BlockIMS(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims"));
 	}
 

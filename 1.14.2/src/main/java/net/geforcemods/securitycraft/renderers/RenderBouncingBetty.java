@@ -1,22 +1,23 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
+public class RenderBouncingBetty extends EntityRenderer<EntityBouncingBetty> {
 
-	public RenderBouncingBetty(RenderManager renderManager)
+	public RenderBouncingBetty(EntityRendererManager renderManager)
 	{
 		super(renderManager);
 		shadowSize = 0.5F;
@@ -48,7 +49,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 
 		if (entity.fuse / 5 % 2 == 0)
 		{
-			GlStateManager.disableTexture2D();
+			GlStateManager.disableTexture();
 			GlStateManager.disableLighting();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(770, 772);
@@ -61,7 +62,7 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.disableBlend();
 			GlStateManager.enableLighting();
-			GlStateManager.enableTexture2D();
+			GlStateManager.enableTexture();
 		}
 
 		GlStateManager.popMatrix();
@@ -71,6 +72,6 @@ public class RenderBouncingBetty extends Render<EntityBouncingBetty> {
 	@Override
 	protected ResourceLocation getEntityTexture(EntityBouncingBetty entity)
 	{
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

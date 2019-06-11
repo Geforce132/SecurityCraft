@@ -58,9 +58,10 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
-import net.geforcemods.securitycraft.util.RegisterBlockItem;
+import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -167,9 +168,9 @@ public class RegistrationHandler
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
 					event.getRegistry().register(new ItemReinforcedBlock((Block)field.get(null)));
-				else if(field.isAnnotationPresent(RegisterBlockItem.class))
+				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{
-					int tab = field.getAnnotation(RegisterBlockItem.class).value();
+					int tab = field.getAnnotation(RegisterItemBlock.class).value();
 					Block block = (Block)field.get(null);
 
 					event.getRegistry().register(new BlockItem(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));
@@ -264,12 +265,12 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
 	{
-		SCContent.eTypeBouncingBetty = EntityType.register(SecurityCraft.MODID + ":bouncingbetty", EntityType.Builder.create(EntityBouncingBetty.class, EntityBouncingBetty::new).tracker(128, 1, true));
-		SCContent.eTypeTaserBullet = EntityType.register(SecurityCraft.MODID + ":taserbullet", EntityType.Builder.create(EntityTaserBullet.class, EntityTaserBullet::new).tracker(256, 1, true));
-		SCContent.eTypeImsBomb = EntityType.register(SecurityCraft.MODID + ":imsbomb", EntityType.Builder.create(EntityIMSBomb.class, EntityIMSBomb::new).tracker(256, 1, true));
-		SCContent.eTypeSecurityCamera = EntityType.register(SecurityCraft.MODID + ":securitycamera", EntityType.Builder.create(EntitySecurityCamera.class, EntitySecurityCamera::new).tracker(256, 20, true));
-		SCContent.eTypeSentry = EntityType.register(SecurityCraft.MODID + ":sentry", EntityType.Builder.create(EntitySentry.class, EntitySentry::new).tracker(256, 1, true));
-		SCContent.eTypeBullet = EntityType.register(SecurityCraft.MODID + ":bullet", EntityType.Builder.create(EntityBullet.class, EntityBullet::new).tracker(256, 1, true));
+		event.getRegistry().register(EntityType.Builder.<EntityBouncingBetty>create(EntityBouncingBetty::new, EntityClassification.MISC).size(0.5F, 0.2F).setTrackingRange(128).setUpdateInterval(1).build(SecurityCraft.MODID + ":bouncingbetty").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
+		event.getRegistry().register(EntityType.Builder.<EntityTaserBullet>create(EntityTaserBullet::new, EntityClassification.MISC).size(0.01F, 0.01F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":taserbullet").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "taserbullet")));
+		event.getRegistry().register(EntityType.Builder.<EntityIMSBomb>create(EntityIMSBomb::new, EntityClassification.MISC).size(0.25F, 0.3F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":imsbomb").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
+		event.getRegistry().register(EntityType.Builder.<EntitySecurityCamera>create(EntitySecurityCamera::new, EntityClassification.MISC).size(0.0001F, 0.0001F).setTrackingRange(256).setUpdateInterval(20).build(SecurityCraft.MODID + ":securitycamera").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
+		event.getRegistry().register(EntityType.Builder.<EntitySentry>create(EntitySentry::new, EntityClassification.MISC).size(1.0F, 1.0F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":sentry").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
+		event.getRegistry().register(EntityType.Builder.<EntityBullet>create(EntityBullet::new, EntityClassification.MISC).size(0.15F, 0.1F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":bullet").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
 	}
 
 	public static void registerPackets()
