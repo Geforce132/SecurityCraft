@@ -342,6 +342,7 @@
     "help.securitycraft.ims.info": "The I.M.S, or Intelligent Munitions System, is a four-time-use mine that will target players (or mobs) which enter its firing radius. Once a mine is launched, it will track down the entity and explode. Once all four mines are used, the I.M.S. will self-destruct.",
     "help.securitycraft.protecto.info": "The protecto, inspired by the enemy from the game \"Megaman: Battle Network 2\" made by Capcom, will attack any mob in a 10-block radius with lightning bolts every 10 seconds. It must be raining, and able to see the sky to do so.",
     "help.securitycraft.motion_activated_light.info": "The motion-activated light will emit a light, similar to a redstone lamp, when a player is within a certain range of the block (configurable).",
+    "help.securitycraft.trophy_system.info": "The trophy system, inspired by the gadget first seen in \"Call of Duty: Modern Warfare 3\" published by Activision, targets enemy arrows and fireballs and will destroy them from range after a half-second charge time.",
 
     "help.securitycraft.codebreaker.info": "The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
     "help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
