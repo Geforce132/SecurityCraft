@@ -283,12 +283,12 @@ public class Option<T> {
 		@Override
 		public void onChangeSliderValue(GuiSlider slider)
 		{
-			if(!isSlider())
+			if(!isSlider() || !(slider instanceof NamedSlider))
 				return;
 
 			setValue(slider.getValue());
 			slider.dispString = (ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString());
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), slider.id, getValue()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, getValue()));
 		}
 	}
 

@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.minecraft.block.Block;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +28,7 @@ public class GuiUtils{
 	private static final ResourceLocation nightVis = new ResourceLocation("minecraft:night_vision");
 	private static ItemRenderer itemRender = Minecraft.getInstance().getItemRenderer();
 
-	public static void drawCameraOverlay(Minecraft mc, Gui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
+	public static void drawCameraOverlay(Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.localize(Minecraft.getInstance().gameSettings.keyBindSneak.getKey().getTranslationKey()) + " - " + ClientUtils.localize("gui.securitycraft:camera.exit"), resolution.getScaledWidth() - 98 - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.localize(Minecraft.getInstance().gameSettings.keyBindSneak.getKey().getTranslationKey()) + " - " + ClientUtils.localize("gui.securitycraft:camera.exit")) / 2, resolution.getScaledHeight() - 70, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.localize(KeyBindings.cameraZoomIn.getKey().getTranslationKey()) + "/" + KeyBindings.cameraZoomOut.getKey().getTranslationKey() + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.localize(KeyBindings.cameraZoomIn.getKey().getTranslationKey()) + "/" + ClientUtils.localize(KeyBindings.cameraZoomOut.getKey().getTranslationKey()) + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
@@ -37,20 +38,20 @@ public class GuiUtils{
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.drawTexturedModalRect(5, 0, 0, 0, 90, 20);
-		gui.drawTexturedModalRect(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
+		gui.blit(5, 0, 0, 0, 90, 20);
+		gui.blit(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
 		if(player.getActivePotionEffect(ForgeRegistries.POTIONS.getValue(nightVis)) == null)
-			gui.drawTexturedModalRect(28, 4, 90, 12, 16, 11);
+			gui.blit(28, 4, 90, 12, 16, 11);
 		else{
 			mc.getTextureManager().bindTexture(potionIcons);
-			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
+			gui.blit(25, 2, 70, 218, 19, 16);
 		}
 
 		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
-			gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
+			gui.blit(12, 2, 104, 0, 12, 12);
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
-			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
+			gui.blit(12, 3, 90, 0, 12, 11);
 		else
 			drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);
 	}

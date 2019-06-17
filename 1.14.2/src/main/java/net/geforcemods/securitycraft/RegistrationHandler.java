@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
@@ -58,6 +59,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.util.Ownable;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -239,38 +241,97 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerTileEntities(RegistryEvent.Register<TileEntityType<?>> event)
 	{
-		SCContent.teTypeOwnable = TileEntityType.register(SecurityCraft.MODID + ":ownable", TileEntityType.Builder.create(TileEntityOwnable::new));
-		SCContent.teTypeAbstract = TileEntityType.register(SecurityCraft.MODID + ":abstract", TileEntityType.Builder.create(TileEntitySCTE::new));
-		SCContent.teTypeKeypad = TileEntityType.register(SecurityCraft.MODID + ":keypad", TileEntityType.Builder.create(TileEntityKeypad::new));
-		SCContent.teTypeLaserBlock = TileEntityType.register(SecurityCraft.MODID + ":laser_block", TileEntityType.Builder.create(TileEntityLaserBlock::new));
-		SCContent.teTypeCageTrap = TileEntityType.register(SecurityCraft.MODID + ":cage_trap", TileEntityType.Builder.create(TileEntityCageTrap::new));
-		SCContent.teTypeKeycardReader = TileEntityType.register(SecurityCraft.MODID + ":keycard_reader", TileEntityType.Builder.create(TileEntityKeycardReader::new));
-		SCContent.teTypeInventoryScanner = TileEntityType.register(SecurityCraft.MODID + ":inventory_scanner", TileEntityType.Builder.create(TileEntityInventoryScanner::new));
-		SCContent.teTypePortableRadar = TileEntityType.register(SecurityCraft.MODID + ":portable_radar", TileEntityType.Builder.create(TileEntityPortableRadar::new));
-		SCContent.teTypeSecurityCamera = TileEntityType.register(SecurityCraft.MODID + ":security_camera", TileEntityType.Builder.create(TileEntitySecurityCamera::new));
-		SCContent.teTypeUsernameLogger = TileEntityType.register(SecurityCraft.MODID + ":username_logger", TileEntityType.Builder.create(TileEntityLogger::new));
-		SCContent.teTypeRetinalScanner = TileEntityType.register(SecurityCraft.MODID + ":retinal_scanner", TileEntityType.Builder.create(TileEntityRetinalScanner::new));
-		SCContent.teTypeKeypadChest = TileEntityType.register(SecurityCraft.MODID + ":keypad_chest", TileEntityType.Builder.create(TileEntityKeypadChest::new));
-		SCContent.teTypeAlarm = TileEntityType.register(SecurityCraft.MODID + ":alarm", TileEntityType.Builder.create(TileEntityAlarm::new));
-		SCContent.teTypeClaymore = TileEntityType.register(SecurityCraft.MODID + ":claymore", TileEntityType.Builder.create(TileEntityClaymore::new));
-		SCContent.teTypeKeypadFurnace = TileEntityType.register(SecurityCraft.MODID + ":keypad_furnace", TileEntityType.Builder.create(TileEntityKeypadFurnace::new));
-		SCContent.teTypeIms = TileEntityType.register(SecurityCraft.MODID + ":ims", TileEntityType.Builder.create(TileEntityIMS::new));
-		SCContent.teTypeProtecto = TileEntityType.register(SecurityCraft.MODID + ":protecto", TileEntityType.Builder.create(TileEntityProtecto::new));
-		SCContent.teTypeScannerDoor = TileEntityType.register(SecurityCraft.MODID + ":scanner_door", TileEntityType.Builder.create(TileEntityScannerDoor::new));
-		SCContent.teTypeSecretSign = TileEntityType.register(SecurityCraft.MODID + ":secret_sign", TileEntityType.Builder.create(TileEntitySecretSign::new));
-		SCContent.teTypeMotionLight = TileEntityType.register(SecurityCraft.MODID + ":motion_light", TileEntityType.Builder.create(TileEntityMotionLight::new));
-		SCContent.teTypeTrackMine = TileEntityType.register(SecurityCraft.MODID + ":track_mine", TileEntityType.Builder.create(TileEntityTrackMine::new));
+		List<Block> teOwnableBlocks = new ArrayList<>();
+
+		//find all blocks whose tile entity is TileEntityOwnable
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Ownable.class))
+					teOwnableBlocks.add((Block)field.get(null));
+
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityOwnable::new, teOwnableBlocks.toArray(new Block[teOwnableBlocks.size()])).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ownable")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySCTE::new, SCContent.laserField, SCContent.inventoryScannerField).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityKeypad::new, SCContent.keypad).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityLaserBlock::new, SCContent.laserBlock).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityCageTrap::new, SCContent.cageTrap).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cage_trap")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityKeycardReader::new, SCContent.keycardReader).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_reader")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityInventoryScanner::new, SCContent.inventoryScanner).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityPortableRadar::new, SCContent.portableRadar).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "portable_radar")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySecurityCamera::new, SCContent.securityCamera).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "security_camera")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityLogger::new, SCContent.usernameLogger).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityRetinalScanner::new, SCContent.retinalScanner).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityKeypadChest::new, SCContent.keypadChest).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityAlarm::new, SCContent.alarm).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "alarm")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityClaymore::new, SCContent.claymore).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityKeypadFurnace::new, SCContent.keypadFurnace).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityIMS::new, SCContent.ims).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityProtecto::new, SCContent.protecto).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "protecto")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityScannerDoor::new, SCContent.scannerDoor).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySecretSign::new, SCContent.secretSignWall, SCContent.secretSignStanding).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMotionLight::new, SCContent.motionActivatedLight).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_light")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrackMine::new, SCContent.trackMine).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine")));
 	}
 
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
 	{
-		event.getRegistry().register(EntityType.Builder.<EntityBouncingBetty>create(EntityBouncingBetty::new, EntityClassification.MISC).size(0.5F, 0.2F).setTrackingRange(128).setUpdateInterval(1).build(SecurityCraft.MODID + ":bouncingbetty").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
-		event.getRegistry().register(EntityType.Builder.<EntityTaserBullet>create(EntityTaserBullet::new, EntityClassification.MISC).size(0.01F, 0.01F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":taserbullet").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "taserbullet")));
-		event.getRegistry().register(EntityType.Builder.<EntityIMSBomb>create(EntityIMSBomb::new, EntityClassification.MISC).size(0.25F, 0.3F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":imsbomb").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
-		event.getRegistry().register(EntityType.Builder.<EntitySecurityCamera>create(EntitySecurityCamera::new, EntityClassification.MISC).size(0.0001F, 0.0001F).setTrackingRange(256).setUpdateInterval(20).build(SecurityCraft.MODID + ":securitycamera").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
-		event.getRegistry().register(EntityType.Builder.<EntitySentry>create(EntitySentry::new, EntityClassification.MISC).size(1.0F, 1.0F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":sentry").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
-		event.getRegistry().register(EntityType.Builder.<EntityBullet>create(EntityBullet::new, EntityClassification.MISC).size(0.15F, 0.1F).setTrackingRange(256).setUpdateInterval(1).build(SecurityCraft.MODID + ":bullet").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
+		event.getRegistry().register(SCContent.eTypeBouncingBetty = (EntityType<EntityBouncingBetty>)EntityType.Builder.<EntityBouncingBetty>create(EntityBouncingBetty::new, EntityClassification.MISC)
+				.size(0.5F, 0.2F)
+				.setTrackingRange(128)
+				.setUpdateInterval(1)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new EntityBouncingBetty(SCContent.eTypeBouncingBetty, world))
+				.build(SecurityCraft.MODID + ":bouncingbetty")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
+		event.getRegistry().register(SCContent.eTypeTaserBullet = (EntityType<EntityTaserBullet>)EntityType.Builder.<EntityTaserBullet>create(EntityTaserBullet::new, EntityClassification.MISC)
+				.size(0.01F, 0.01F)
+				.setTrackingRange(256)
+				.setUpdateInterval(1)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new EntityTaserBullet(SCContent.eTypeTaserBullet, world))
+				.build(SecurityCraft.MODID + ":taserbullet")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "taserbullet")));
+		event.getRegistry().register(SCContent.eTypeImsBomb = (EntityType<EntityIMSBomb>)EntityType.Builder.<EntityIMSBomb>create(EntityIMSBomb::new, EntityClassification.MISC)
+				.size(0.25F, 0.3F)
+				.setTrackingRange(256)
+				.setUpdateInterval(1)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new EntityIMSBomb(SCContent.eTypeImsBomb, world))
+				.build(SecurityCraft.MODID + ":imsbomb")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
+		event.getRegistry().register(SCContent.eTypeSecurityCamera = (EntityType<EntitySecurityCamera>)EntityType.Builder.<EntitySecurityCamera>create(EntitySecurityCamera::new, EntityClassification.MISC)
+				.size(0.0001F, 0.0001F)
+				.setTrackingRange(256)
+				.setUpdateInterval(20)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new EntitySecurityCamera(SCContent.eTypeSecurityCamera, world))
+				.build(SecurityCraft.MODID + ":securitycamera")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
+		event.getRegistry().register(SCContent.eTypeSentry = (EntityType<EntitySentry>)EntityType.Builder.<EntitySentry>create(EntitySentry::new, EntityClassification.MISC)
+				.size(1.0F, 1.0F)
+				.setTrackingRange(256)
+				.setUpdateInterval(1)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new EntitySentry(SCContent.eTypeSentry, world))
+				.build(SecurityCraft.MODID + ":sentry")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
+		event.getRegistry().register(SCContent.eTypeBullet = (EntityType<EntityBullet>)EntityType.Builder.<EntityBullet>create(EntityBullet::new, EntityClassification.MISC)
+				.size(0.15F, 0.1F)
+				.setTrackingRange(256)
+				.setUpdateInterval(1)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new EntityBullet(SCContent.eTypeBullet, world))
+				.build(SecurityCraft.MODID + ":bullet")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
 	}
 
 	public static void registerPackets()

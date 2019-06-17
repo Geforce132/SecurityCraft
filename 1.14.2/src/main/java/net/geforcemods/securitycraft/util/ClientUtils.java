@@ -34,7 +34,7 @@ public class ClientUtils{
 				Minecraft.getInstance().mainWindow.getWidth(),
 				Minecraft.getInstance().mainWindow.getHeight(),
 				Minecraft.getInstance().getFramebuffer(),
-				msg -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg));
+				msg -> Minecraft.getInstance().execute(() -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg)));
 	}
 
 	/**

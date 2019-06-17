@@ -11,9 +11,8 @@ import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -21,13 +20,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiKeyChanger extends GuiContainer {
+public class GuiKeyChanger extends ContainerScreen<ContainerGeneric> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
-	private GuiTextField textboxNewPasscode;
-	private GuiTextField textboxConfirmPasscode;
-	private GuiButton confirmButton;
+	private TextFieldWidget textboxNewPasscode;
+	private TextFieldWidget textboxConfirmPasscode;
+	private GuiButtonClick confirmButton;
 
 	private TileEntity tileEntity;
 
@@ -37,20 +36,20 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	public void initGui(){
-		super.initGui();
-		mc.keyboardListener.enableRepeatEvents(true);
+	public void init(){
+		super.init();
+		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(confirmButton = new GuiButtonClick(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
-		confirmButton.enabled = false;
+		confirmButton.active = false;
 
-		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
+		textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, "");
 
 		textboxNewPasscode.setTextColor(-1);
 		textboxNewPasscode.setDisabledTextColour(-1);
 		textboxNewPasscode.setEnableBackgroundDrawing(true);
 		textboxNewPasscode.setMaxStringLength(20);
 
-		textboxConfirmPasscode = new GuiTextField(1, fontRenderer, width / 2 - 57, height / 2 - 7, 110, 12);
+		textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, "");
 
 		textboxConfirmPasscode.setTextColor(-1);
 		textboxConfirmPasscode.setDisabledTextColour(-1);
@@ -60,34 +59,34 @@ public class GuiKeyChanger extends GuiContainer {
 	}
 
 	@Override
-	public void onGuiClosed(){
-		super.onGuiClosed();
-		mc.keyboardListener.enableRepeatEvents(false);
+	public void onClose(){
+		super.onClose();
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
-		textboxNewPasscode.drawTextField(mouseX, mouseY, partialTicks);
-		textboxConfirmPasscode.drawTextField(mouseX, mouseY, partialTicks);
+		textboxNewPasscode.render(mouseX, mouseY, partialTicks);
+		textboxConfirmPasscode.render(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey())) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		font.drawString(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey())) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
@@ -123,7 +122,7 @@ public class GuiKeyChanger extends GuiContainer {
 		if(newPasscode == null || confirmedPasscode == null) return;
 		if(!newPasscode.equals(confirmedPasscode)) return;
 
-		confirmButton.enabled = true;
+		confirmButton.active = true;
 	}
 
 	@Override
@@ -133,7 +132,7 @@ public class GuiKeyChanger extends GuiContainer {
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(GuiButtonClick button){
 		switch(button.id){
 			case 0:
 				((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());

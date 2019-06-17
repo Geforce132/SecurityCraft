@@ -17,8 +17,8 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -29,11 +29,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiCustomizeBlock extends GuiContainer{
+public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 
 	private CustomizableSCTE tileEntity;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
-	private GuiButton[] optionButtons = new GuiButton[5];
+	private Button[] optionButtons = new Button[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 
 	private final String blockName;
@@ -46,11 +46,11 @@ public class GuiCustomizeBlock extends GuiContainer{
 	}
 
 	@Override
-	public void initGui(){
-		super.initGui();
+	public void init(){
+		super.init();
 
 		for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
+			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRenderer, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
 			addButton(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}
@@ -62,12 +62,12 @@ public class GuiCustomizeBlock extends GuiContainer{
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
 					optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).getValue(), true, true, (OptionDouble)option);
-					optionButtons[i].packedFGColor = 14737632;
+					optionButtons[i].setFGColor(14737632);
 				}
 				else
 				{
 					optionButtons[i] = new GuiButtonClick(i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, getOptionButtonTitle(option), this::actionPerformed);
-					optionButtons[i].packedFGColor = option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632;
+					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 				}
 
 				addButton(optionButtons[i]);
@@ -80,14 +80,14 @@ public class GuiCustomizeBlock extends GuiContainer{
 		super.render(mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < tileEntity.getNumberOfCustomizableOptions())
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, mc.fontRenderer);
+					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, font);
 				else
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, mc.fontRenderer);
+					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, font);
 	}
 
 	/**
@@ -96,30 +96,28 @@ public class GuiCustomizeBlock extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = tileEntity.hasCustomSCName() ? tileEntity.getName().getFormattedText() : ClientUtils.localize(tileEntity.getName().getFormattedText(), new Object[0]);
-		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
+		String s = ClientUtils.localize(tileEntity.getCustomSCName().getFormattedText());
+		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
+		minecraft.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(GuiButton button) {
-		if(!(button instanceof GuiPictureButton)) {
-			Option<?> tempOption = tileEntity.customOptions()[button.id];
-			tempOption.toggle();
-			button.packedFGColor = tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632;
-			button.displayString = getOptionButtonTitle(tempOption);
-			SecurityCraft.channel.sendToServer(new ToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), button.id));
-		}
+	protected void actionPerformed(GuiButtonClick button) {
+		Option<?> tempOption = tileEntity.customOptions()[button.id];
+		tempOption.toggle();
+		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
+		button.setMessage(getOptionButtonTitle(tempOption));
+		SecurityCraft.channel.sendToServer(new ToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), button.id));
 	}
 
 	private String getModuleDescription(int buttonID) {
@@ -142,12 +140,12 @@ public class GuiCustomizeBlock extends GuiContainer{
 	{
 		List<Rectangle2d> rects = new ArrayList<>();
 
-		for(GuiButton button : optionButtons)
+		for(Button button : optionButtons)
 		{
 			if(button == null)
 				continue;
 
-			rects.add(new Rectangle2d(button.x, button.y, button.width, button.height));
+			rects.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
 
 		return rects;

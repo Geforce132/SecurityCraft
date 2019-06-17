@@ -10,11 +10,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityIMSBomb extends FireballEntity {
 
@@ -111,4 +113,9 @@ public class EntityIMSBomb extends FireballEntity {
 		return 0.3F;
 	}
 
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
 }

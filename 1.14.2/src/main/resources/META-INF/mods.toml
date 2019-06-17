@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[24,)" #mandatory
+loaderVersion="[26,)" #mandatory
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 displayURL="http://minecraft.curseforge.com/projects/security-craft"
 logoFile="scLogo.png"

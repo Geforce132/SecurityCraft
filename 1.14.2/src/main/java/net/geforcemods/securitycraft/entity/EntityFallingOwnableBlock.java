@@ -5,9 +5,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityFallingOwnableBlock extends FallingBlockEntity
 {
@@ -61,5 +63,11 @@ public class EntityFallingOwnableBlock extends FallingBlockEntity
 		dataManager.set(OWNER, new Owner(name, uuid));
 
 		super.readAdditional(tag);
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

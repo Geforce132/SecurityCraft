@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.CUpdateSignPacket;
@@ -17,8 +17,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
-public class GuiEditSecretSign extends GuiScreen
+@OnlyIn(Dist.CLIENT) //TODO overhaul when adding other secret sign variants
+public class GuiEditSecretSign extends Screen
 {
 	private final TileEntitySecretSign te;
 	private int updateCounter;
@@ -30,22 +30,24 @@ public class GuiEditSecretSign extends GuiScreen
 	}
 
 	@Override
-	protected void initGui()
+	protected void init()
 	{
-		mc.keyboardListener.enableRepeatEvents(true);
-		addButton(new GuiButtonClick(0, width / 2 - 100, height / 4 + 120, I18n.format("gui.done"), button -> close()));
+		minecraft.keyboardListener.enableRepeatEvents(true);
+		addButton(new GuiButtonClick(0, width / 2 - 100, height / 4 + 120, 20, 20, I18n.format("gui.done"), button -> onClose()));
 		te.setEditable(false);
 	}
 
 	@Override
-	public void onGuiClosed()
+	public void onClose()
 	{
-		mc.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardListener.enableRepeatEvents(false);
 
-		if(mc.getConnection() != null)
-			mc.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
+		if(minecraft.getConnection() != null)
+			minecraft.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
 
 		te.setEditable(true);
+		te.markDirty();
+		minecraft.displayGuiScreen((Screen)null);
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class GuiEditSecretSign extends GuiScreen
 		{
 			String line = te.getText(editLine).getString();
 
-			if(SharedConstants.isAllowedCharacter(typedChar) && this.fontRenderer.getStringWidth(line + typedChar) <= 90)
+			if(SharedConstants.isAllowedCharacter(typedChar) && this.font.getStringWidth(line + typedChar) <= 90)
 				line += typedChar;
 
 			te.setText(editLine, new StringTextComponent(line));
@@ -69,13 +71,6 @@ public class GuiEditSecretSign extends GuiScreen
 		}
 
 		return false;
-	}
-
-	@Override
-	public void close()
-	{
-		te.markDirty();
-		mc.displayGuiScreen((GuiScreen)null);
 	}
 
 	@Override
@@ -116,8 +111,8 @@ public class GuiEditSecretSign extends GuiScreen
 		BlockState state = te.getBlockState();
 		float angle;
 
-		drawDefaultBackground();
-		drawCenteredString(fontRenderer, I18n.format("sign.edit"), width / 2, 40, 16777215);
+		renderBackground();
+		drawCenteredString(font, I18n.format("sign.edit"), width / 2, 40, 16777215);
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.pushMatrix();
 		GlStateManager.translatef(width / 2, 0.0F, 50.0F);

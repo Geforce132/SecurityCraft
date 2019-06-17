@@ -29,7 +29,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
 		BlockState state = te.getBlockState();
-		FontRenderer fontRenderer = getFontRenderer();
+		FontRenderer font = getFontRenderer();
 
 		GlStateManager.pushMatrix();
 
@@ -74,7 +74,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 			for(int i = 0; i < 4; ++i)
 			{
 				String s = te.getRenderText(i, textComponent -> {
-					List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, fontRenderer, false, true);
+					List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, font, false, true);
 
 					return list.isEmpty() ? "" : list.get(0).getFormattedText();
 				});
@@ -84,7 +84,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 					if(i == te.func_214064_s())
 						s = "> " + s + " <";
 
-					fontRenderer.drawString(s, -fontRenderer.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, 0);
+					font.drawString(s, -font.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, 0);
 				}
 			}
 		}

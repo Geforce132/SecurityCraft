@@ -10,9 +10,8 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,14 +19,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiCheckPassword extends GuiContainer {
+public class GuiCheckPassword extends ContainerScreen<ContainerGeneric> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
 	private String blockName;
 
-	private GuiTextField keycodeTextbox;
+	private TextFieldWidget keycodeTextbox;
 	private String currentString = "";
 
 	public GuiCheckPassword(TileEntity tileEntity, Block block){
@@ -37,9 +36,9 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	@Override
-	public void initGui(){
-		super.initGui();
-		mc.keyboardListener.enableRepeatEvents(true);
+	public void init(){
+		super.init();
+		minecraft.keyboardListener.enableRepeatEvents(true);
 
 		addButton(new GuiButtonClick(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
 		addButton(new GuiButtonClick(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
@@ -53,7 +52,7 @@ public class GuiCheckPassword extends GuiContainer {
 		addButton(new GuiButtonClick(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
 		addButton(new GuiButtonClick(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
-		keycodeTextbox = new GuiTextField(11, fontRenderer, width / 2 - 37, height / 2 - 67, 77, 12);
+		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, "");
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -62,16 +61,16 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	@Override
-	public void onGuiClosed(){
-		super.onGuiClosed();
-		mc.keyboardListener.enableRepeatEvents(false);
+	public void onClose(){
+		super.onClose();
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
-		keycodeTextbox.drawTextField(mouseX, mouseY, partialTicks);
+		keycodeTextbox.render(mouseX, mouseY, partialTicks);
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class GuiCheckPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+		font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	/**
@@ -87,12 +86,12 @@ public class GuiCheckPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
@@ -125,7 +124,7 @@ public class GuiCheckPassword extends GuiContainer {
 		return false;
 	}
 
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(GuiButtonClick button){
 		switch(button.id){
 			case 0:
 				currentString += "0";
@@ -186,7 +185,7 @@ public class GuiCheckPassword extends GuiContainer {
 		}
 	}
 
-	private void setTextboxCensoredText(GuiTextField textField, String text) {
+	private void setTextboxCensoredText(TextFieldWidget textField, String text) {
 		String x = "";
 		for(int i = 1; i <= text.length(); i++)
 			x += "*";

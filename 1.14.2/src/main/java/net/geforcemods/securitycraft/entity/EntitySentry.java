@@ -28,6 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -40,6 +41,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class EntitySentry extends CreatureEntity implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
@@ -431,6 +433,12 @@ public class EntitySentry extends CreatureEntity implements IRangedAttackMob //n
 	public Random getRNG()
 	{
 		return notRandom;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	private static Random notRandom = new NotRandom();

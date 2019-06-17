@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCExplosives;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCTechnical;
@@ -30,7 +29,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -67,7 +65,6 @@ public class SecurityCraft {
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG_SPEC);
-		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::getClientGuiElement);
 	}
 
 	@SubscribeEvent

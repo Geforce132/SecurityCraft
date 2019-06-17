@@ -7,8 +7,8 @@ import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class WorldUtils{
 
@@ -19,9 +19,9 @@ public class WorldUtils{
 	public static void addScheduledTask(IWorld w, Runnable r)
 	{
 		if(w.isRemote()) //clientside
-			Minecraft.getInstance().addScheduledTask(r);
+			Minecraft.getInstance().execute(r);
 		else //serverside
-			((ServerWorld)w).addScheduledTask(r);
+			ServerLifecycleHooks.getCurrentServer().execute(r);
 	}
 
 	/**

@@ -55,9 +55,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.2-26.0.14'
+    minecraft 'net.minecraftforge:forge:1.14.2-26.0.25'
 	compile "mcp.mobius.waila:Hwyla:1.10.3-B61_1.13.2"
-//    compile "mcjty.theoneprobe:workspace:1.13-1.4.30-1"
+	compile "mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.30-6"
 //    compile "mezz.jei:jei-1.13.2:5.0.0.12:api"
 }
 

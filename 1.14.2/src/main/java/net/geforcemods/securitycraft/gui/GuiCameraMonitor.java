@@ -17,8 +17,8 @@ import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -27,7 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiCameraMonitor extends GuiContainer {
+public class GuiCameraMonitor extends ContainerScreen<ContainerGeneric> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
@@ -35,10 +35,10 @@ public class GuiCameraMonitor extends GuiContainer {
 	private ItemCameraMonitor cameraMonitor;
 	private CompoundNBT nbtTag;
 
-	private GuiButton prevPageButton;
-	private GuiButton nextPageButton;
-	private GuiButton[] cameraButtons = new GuiButton[10];
-	private GuiButton[] unbindButtons = new GuiButton[10];
+	private Button prevPageButton;
+	private Button nextPageButton;
+	private GuiButtonClick[] cameraButtons = new GuiButtonClick[10];
+	private GuiButtonClick[] unbindButtons = new GuiButtonClick[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
 	private int[] cameraViewDim = new int[10];
@@ -58,8 +58,8 @@ public class GuiCameraMonitor extends GuiContainer {
 	}
 
 	@Override
-	public void initGui(){
-		super.initGui();
+	public void init(){
+		super.init();
 
 		prevPageButton = new GuiButtonClick(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed);
 		nextPageButton = new GuiButtonClick(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed);
@@ -89,12 +89,12 @@ public class GuiCameraMonitor extends GuiContainer {
 		unbindButtons[9] = new GuiButtonClick(20, width / 2 + 41, height / 2 + 32, 8, 8, "x", this::actionPerformed);
 
 		for(int i = 0; i < 10; i++) {
-			GuiButton button = cameraButtons[i];
+			GuiButtonClick button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
 
-			button.displayString += camID;
+			button.setMessage(button.getMessage() + camID);
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
@@ -104,7 +104,7 @@ public class GuiCameraMonitor extends GuiContainer {
 				}
 
 				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.securityCamera) {
-					button.enabled = false;
+					button.active = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
@@ -114,8 +114,8 @@ public class GuiCameraMonitor extends GuiContainer {
 			}
 			else
 			{
-				button.enabled = false;
-				unbindButtons[button.id - 1].enabled = false;
+				button.active = false;
+				unbindButtons[button.id - 1].active = false;
 				cameraTEs[button.id - 1] = null;
 				continue;
 			}
@@ -125,13 +125,13 @@ public class GuiCameraMonitor extends GuiContainer {
 			addButton(unbindButtons[i]);
 
 		if(page == 1)
-			prevPageButton.enabled = false;
+			prevPageButton.active = false;
 
 		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1)
-			nextPageButton.enabled = false;
+			nextPageButton.active = false;
 
 		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++)
-			cameraButtons[(i - 1) - ((page - 1) * 10)].enabled = false;
+			cameraButtons[(i - 1) - ((page - 1) * 10)].active = false;
 
 	}
 
@@ -142,18 +142,18 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
+					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, font);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, mc.fontRenderer);
+					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
 			}
 	}
 
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(GuiButtonClick button) {
 		if(button.id == -1)
-			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
+			minecraft.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page - 1));
 		else if(button.id == 0)
-			mc.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
+			minecraft.displayGuiScreen(new GuiCameraMonitor(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
 
@@ -165,7 +165,7 @@ public class GuiCameraMonitor extends GuiContainer {
 				Minecraft.getInstance().player.closeScreen();
 			}
 			else
-				button.enabled = false;
+				button.active = false;
 		}
 		else
 		{
@@ -173,28 +173,28 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			SecurityCraft.channel.sendToServer(new RemoveCameraTag(playerInventory.getCurrentItem(), camID));
 			nbtTag.remove(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
-			button.enabled = false;
-			cameraButtons[(camID - 1) % 10].enabled = false;
+			button.active = false;
+			cameraButtons[(camID - 1) % 10].active = false;
 		}
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	public boolean doesGuiPauseGame() {
+	public boolean isPauseScreen() {
 		return false;
 	}
 

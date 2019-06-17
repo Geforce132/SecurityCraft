@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -37,7 +38,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 			int lightmapY = skyBrightness / 65536;
 			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
 
-			//			OpenGlHelper.glMultiTexCoord2f(OpenGlHelper.GL_TEXTURE1, lightmapX, lightmapY); TODO
+			GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightmapX, lightmapY);
 		}
 
 		GlStateManager.pushMatrix();

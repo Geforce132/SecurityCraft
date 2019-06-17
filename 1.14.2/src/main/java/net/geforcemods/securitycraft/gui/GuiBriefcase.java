@@ -10,34 +10,34 @@ import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiBriefcase extends GuiContainer {
+public class GuiBriefcase extends ContainerScreen<ContainerGeneric> {
 
 	public static final String UP_ARROW  = "\u2191";
 	public static final String DOWN_ARROW  = "\u2193";
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
-	private GuiButton[] keycodeTopButtons = new GuiButton[4];
-	private GuiButton[] keycodeBottomButtons = new GuiButton[4];
-	private GuiTextField[] keycodeTextboxes = new GuiTextField[4];
-	private GuiButton continueButton;
+	private Button[] keycodeTopButtons = new Button[4];
+	private Button[] keycodeBottomButtons = new Button[4];
+	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
+	private Button continueButton;
 
 	public GuiBriefcase() {
 		super(new ContainerGeneric());
 	}
 
 	@Override
-	public void initGui() {
-		super.initGui();
+	public void init() {
+		super.init();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
 			keycodeTopButtons[i] = new GuiButtonClick(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
@@ -53,7 +53,7 @@ public class GuiBriefcase extends GuiContainer {
 		addButton(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
-			keycodeTextboxes[i] = new GuiTextField(9 + i, fontRenderer, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12);
+			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, "");
 
 			keycodeTextboxes[i].setTextColor(-1);
 			keycodeTextboxes[i].setDisabledTextColour(-1);
@@ -68,26 +68,26 @@ public class GuiBriefcase extends GuiContainer {
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
-		for(GuiTextField textfield : keycodeTextboxes)
-			textfield.drawTextField(mouseX, mouseY, partialTicks);
+		for(TextFieldWidget textfield : keycodeTextboxes)
+			textfield.render(mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(GuiButton button) {
+	protected void actionPerformed(GuiButtonClick button) {
 		int[] keys = new int[]{Integer.parseInt(keycodeTextboxes[0].getText()), Integer.parseInt(keycodeTextboxes[1].getText()), Integer.parseInt(keycodeTextboxes[2].getText()), Integer.parseInt(keycodeTextboxes[3].getText())};
 
 		switch(button.id) {

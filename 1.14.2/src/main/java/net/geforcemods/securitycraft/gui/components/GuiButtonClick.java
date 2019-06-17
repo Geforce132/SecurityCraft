@@ -2,24 +2,18 @@ package net.geforcemods.securitycraft.gui.components;
 
 import java.util.function.Consumer;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class GuiButtonClick extends GuiButtonExt
 {
-	private Consumer<GuiButton> onClick;
+	private Consumer<GuiButtonClick> onClick;
+	public int id;
 
-	public GuiButtonClick(int id, int xPos, int yPos, String displayString, Consumer<GuiButton> onClick)
+	public GuiButtonClick(int id, int xPos, int yPos, int width, int height, String displayString, Consumer<GuiButtonClick> onClick)
 	{
-		super(id, xPos, yPos, displayString);
+		super(xPos, yPos, width, height, displayString, b -> {});
 
-		this.onClick = onClick;
-	}
-
-	public GuiButtonClick(int id, int xPos, int yPos, int width, int height, String displayString, Consumer<GuiButton> onClick)
-	{
-		super(id, xPos, yPos, width, height, displayString);
-
+		this.id = id;
 		this.onClick = onClick;
 	}
 

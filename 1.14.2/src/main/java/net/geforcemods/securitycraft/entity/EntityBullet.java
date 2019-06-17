@@ -5,12 +5,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityBullet extends ArrowEntity
 {
@@ -45,5 +47,11 @@ public class EntityBullet extends ArrowEntity
 	protected ItemStack getArrowStack()
 	{
 		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

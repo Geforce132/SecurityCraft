@@ -110,7 +110,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onDamageTaken(LivingHurtEvent event)
 	{
-		if(event.getEntity() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntity())){
+		if(event.getEntity() != null && PlayerUtils.isPlayerMountedOnCamera(event.getEntityLiving())){
 			event.setCanceled(true);
 			return;
 		}
@@ -538,11 +538,8 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if(event.getTarget() instanceof PlayerEntity && event.getTarget() != event.getEntity().getAttackingEntity())
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
-				((MobEntity)event.getEntity()).setAttackTarget(null);
-		}
+		if(event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
+			((MobEntity)event.getEntity()).setAttackTarget(null);
 		else if(event.getTarget() instanceof EntitySentry)
 			((MobEntity)event.getEntity()).setAttackTarget(null);
 	}

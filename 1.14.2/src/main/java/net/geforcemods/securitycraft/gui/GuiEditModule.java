@@ -7,9 +7,8 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -17,11 +16,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiEditModule extends GuiContainer
+public class GuiEditModule extends ContainerScreen<ContainerGeneric>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
-	private GuiTextField inputField;
+	private TextFieldWidget inputField;
 
 	public GuiEditModule(ItemStack item)
 	{
@@ -31,12 +30,12 @@ public class GuiEditModule extends GuiContainer
 	}
 
 	@Override
-	public void initGui()
+	public void init()
 	{
-		super.initGui();
+		super.init();
 
-		mc.keyboardListener.enableRepeatEvents(true);
-		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 100, 15);
+		minecraft.keyboardListener.enableRepeatEvents(true);
+		inputField = new TextFieldWidget(font, width / 2 - 50, height / 2 - 65, 100, 15, "");
 		addButton(new GuiButtonClick(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
 		addButton(new GuiButtonClick(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
 		addButton(new GuiButtonClick(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
@@ -49,16 +48,16 @@ public class GuiEditModule extends GuiContainer
 	}
 
 	@Override
-	public void onGuiClosed(){
-		super.onGuiClosed();
-		mc.keyboardListener.enableRepeatEvents(false);
+	public void onClose(){
+		super.onClose();
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
-		inputField.drawTextField(mouseX, mouseY, partialTicks);
+		inputField.render(mouseX, mouseY, partialTicks);
 	}
 
 	/**
@@ -66,7 +65,7 @@ public class GuiEditModule extends GuiContainer
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, 6, xSize, 4210752);
+		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, 6, xSize, 4210752);
 	}
 
 	/**
@@ -74,12 +73,12 @@ public class GuiEditModule extends GuiContainer
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
@@ -99,7 +98,7 @@ public class GuiEditModule extends GuiContainer
 		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(GuiButtonClick button){
 		switch(button.id){
 			case 0: //add
 				if(inputField.getText().isEmpty())

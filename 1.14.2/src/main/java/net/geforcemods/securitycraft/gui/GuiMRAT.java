@@ -14,8 +14,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -25,12 +24,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiMRAT extends GuiContainer{
+public class GuiMRAT extends ContainerScreen<ContainerGeneric>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private ItemStack mrat;
-	private GuiButton[][] guiButtons = new GuiButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
+	private GuiButtonClick[][] guiButtons = new GuiButtonClick[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 
 	public GuiMRAT(ItemStack item) {
@@ -42,8 +41,8 @@ public class GuiMRAT extends GuiContainer{
 	}
 
 	@Override
-	public void initGui(){
-		super.initGui();
+	public void init(){
+		super.init();
 
 		int padding = 25;
 		int y = padding;
@@ -56,8 +55,8 @@ public class GuiMRAT extends GuiContainer{
 			coords = getMineCoordinates(i);
 
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
-			Block block = mc.world.getBlockState(minePos).getBlock();
-			boolean active = block instanceof IExplosive && ((IExplosive) block).isActive(mc.world, minePos);
+			Block block = minecraft.world.getBlockState(minePos).getBlock();
+			boolean active = block instanceof IExplosive && ((IExplosive) block).isActive(minecraft.world, minePos);
 			boolean defusable = (block instanceof IExplosive && ((IExplosive) block).isDefusable());
 			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
@@ -69,20 +68,20 @@ public class GuiMRAT extends GuiContainer{
 				switch(j)
 				{
 					case DEFUSE:
-						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters), this::actionPerformed);
-						guiButtons[i][j].enabled = active && bound && defusable;
+						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.wireCutters), this::actionPerformed);
+						guiButtons[i][j].active = active && bound && defusable;
 						break;
 					case ACTIVATE:
-						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(Items.FLINT_AND_STEEL), this::actionPerformed);
-						guiButtons[i][j].enabled = !active && bound && defusable;
+						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(Items.FLINT_AND_STEEL), this::actionPerformed);
+						guiButtons[i][j].active = !active && bound && defusable;
 						break;
 					case DETONATE:
 						guiButtons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18, this::actionPerformed);
-						guiButtons[i][j].enabled = active && bound;
+						guiButtons[i][j].active = active && bound;
 						break;
 					case UNBIND:
 						guiButtons[i][j] = new GuiButtonClick(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
-						guiButtons[i][j].enabled = bound;
+						guiButtons[i][j].active = bound;
 						break;
 				}
 
@@ -90,8 +89,8 @@ public class GuiMRAT extends GuiContainer{
 
 				if(!(block instanceof IExplosive))
 				{
-					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.player);
-					guiButtons[i][j].enabled = false;
+					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], minecraft.player);
+					guiButtons[i][j].active = false;
 				}
 			}
 		}
@@ -103,7 +102,7 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), -25 + 13, 0xFF0000);
+		font.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -115,7 +114,7 @@ public class GuiMRAT extends GuiContainer{
 			else
 				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
+			font.drawString(line, xSize / 2 - font.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}
 	}
 
@@ -125,15 +124,15 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(GuiButtonClick button){
 		int mine = button.id / 4;
 		int action = button.id % 4;
 
@@ -144,16 +143,16 @@ public class GuiMRAT extends GuiContainer{
 			case DEFUSE:
 				((IExplosive)Minecraft.getInstance().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getInstance().player.world, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.channel.sendToServer(new SetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
-				guiButtons[mine][DEFUSE].enabled = false;
-				guiButtons[mine][ACTIVATE].enabled = true;
-				guiButtons[mine][DETONATE].enabled = false;
+				guiButtons[mine][DEFUSE].active = false;
+				guiButtons[mine][ACTIVATE].active = true;
+				guiButtons[mine][DETONATE].active = false;
 				break;
 			case ACTIVATE:
 				((IExplosive)Minecraft.getInstance().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getInstance().player.world, new BlockPos(coords[0], coords[1], coords[2]));
 				SecurityCraft.channel.sendToServer(new SetExplosiveState(coords[0], coords[1], coords[2], "activate"));
-				guiButtons[mine][DEFUSE].enabled = true;
-				guiButtons[mine][ACTIVATE].enabled = false;
-				guiButtons[mine][DETONATE].enabled = true;
+				guiButtons[mine][DEFUSE].active = true;
+				guiButtons[mine][ACTIVATE].active = false;
+				guiButtons[mine][DETONATE].active = true;
 				break;
 			case DETONATE:
 				SecurityCraft.channel.sendToServer(new SetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
@@ -161,7 +160,7 @@ public class GuiMRAT extends GuiContainer{
 
 				for(int i = 0; i < 4; i++)
 				{
-					guiButtons[mine][i].enabled = false;
+					guiButtons[mine][i].active = false;
 				}
 
 				break;
@@ -170,7 +169,7 @@ public class GuiMRAT extends GuiContainer{
 
 				for(int i = 0; i < 4; i++)
 				{
-					guiButtons[mine][i].enabled = false;
+					guiButtons[mine][i].active = false;
 				}
 		}
 	}

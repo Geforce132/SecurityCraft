@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class EntityTaserBullet extends ThrowableEntity {
@@ -79,5 +81,11 @@ public class EntityTaserBullet extends ThrowableEntity {
 				}
 			}
 		}
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

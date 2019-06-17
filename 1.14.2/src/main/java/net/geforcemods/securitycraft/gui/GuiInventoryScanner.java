@@ -10,8 +10,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiInventoryScanner extends GuiContainer {
+public class GuiInventoryScanner extends ContainerScreen<ContainerInventoryScanner> {
 	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
 
@@ -43,9 +42,9 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	@Override
-	public void initGui(){
-		super.initGui();
-		mc.keyboardListener.enableRepeatEvents(true);
+	public void init(){
+		super.init();
+		minecraft.keyboardListener.enableRepeatEvents(true);
 
 		if(tileEntity.getOwner().isOwner(playerObj))
 			addButton(new GuiButtonClick(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getScanType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone"), this::actionPerformed));
@@ -57,42 +56,42 @@ public class GuiInventoryScanner extends GuiContainer {
 		GlStateManager.disableLighting();
 
 		if(!buttons.isEmpty()){
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.1"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 38, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.2"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 28, 4210752);
 
-			if(buttons.get(0).displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv"))){
-				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
-				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
+			if(buttons.get(0).getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv"))){
+				font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
+				font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.checkInv.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}else{
-				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
-				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
+				font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.3"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 18, 4210752);
+				font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}
 		}
 		else if(tileEntity.getScanType() != null && tileEntity.getScanType() != ""){
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRenderer.drawString((tileEntity.getScanType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
+			font.drawString((tileEntity.getScanType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override
-	public void onGuiClosed(){
-		super.onGuiClosed();
-		mc.keyboardListener.enableRepeatEvents(false);
+	public void onClose(){
+		super.onClose();
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
-	protected void actionPerformed(GuiButton button){
+	protected void actionPerformed(GuiButtonClick button){
 		switch(button.id){
 			case 0:
-				if(button.displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
-					button.displayString = ClientUtils.localize("gui.securitycraft:invScan.emitRedstone");
-				else if(button.displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
-					button.displayString = ClientUtils.localize("gui.securitycraft:invScan.checkInv");
+				if(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
+					button.setMessage(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone"));
+				else if(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
+					button.setMessage(ClientUtils.localize("gui.securitycraft:invScan.checkInv"));
 
-				saveType(button.displayString.equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
+				saveType(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 
 				break;
 		}
@@ -111,25 +110,25 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString("Prohibited Items", 8, 6, 4210752);
-		fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
+		font.drawString("Prohibited Items", 8, 6, 4210752);
+		font.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
 
 		if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj))
-			fontRenderer.drawString("Storage", 183, 6, 4210752);
+			font.drawString("Storage", 183, 6, 4210752);
 
-		fontRenderer.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 93, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 93, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		drawDefaultBackground();
+		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule)
-			mc.getTextureManager().bindTexture(exhancedInventory);
+			minecraft.getTextureManager().bindTexture(exhancedInventory);
 		else
-			mc.getTextureManager().bindTexture(regularInventory);
+			minecraft.getTextureManager().bindTexture(regularInventory);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize + 30);
+		this.blit(startX, startY, 0, 0, xSize, ySize + 30);
 	}
 }
