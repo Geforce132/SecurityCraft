@@ -30,6 +30,7 @@
 	- Prismarine Stairs
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
+- New: [1.13.2] Italian translation (Thanks Chexet48!)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: [1.13.2] Crash when being targeted by the I.M.S.
 - Fix: [1.13.2] Admin Tool recipe description does not show in JEI
