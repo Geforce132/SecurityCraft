@@ -389,6 +389,7 @@
     "gui.securitycraft:scManual.recipe.limited_use_keycard": "Disattivata",
     "gui.securitycraft:scManual.intro.1": "Primo approccio con la SecurityCraft",
     "gui.securitycraft:scManual.intro.2": "di Geforce e bl4ckscor3",
+	"gui.securitycraft:scManual.author": "Traduzioni di Chexet48",
     "gui.securitycraft:scManual.ownableBlock": "Può essere posseduto: Questo blocco è resistente alle esplosioni e può solo essere distrutto dal giocatore che l'ha piazzato con il rimuovi-blocchi universale.",
     "gui.securitycraft:scManual.passwordProtectedBlock": "Protetto da password: Questo blocco può essere utilizzato solo se la password impostata è stata inserita correttamente.",
     "gui.securitycraft:scManual.viewActivatedBlock": "Controllo retina: Questo blocco può essere attivato puntandoci sopra col cursore (stando abbastanza vicino al blocco).",
