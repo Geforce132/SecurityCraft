@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -17,6 +19,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,6 +39,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -141,17 +145,25 @@ public class BlockSecurityCamera extends ContainerBlock{
 		WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
-		for(Object e : world.loadedEntityList)
-			if(e instanceof MobEntity)
-				if(((MobEntity)e).getAttackTarget() == player)
-					((MobEntity)e).setAttackTarget(null);
+		if(world instanceof ServerWorld)
+		{
+			ServerWorld serverWorld = (ServerWorld)world;
+			List<Entity> loadedEntityList = serverWorld.getEntities().collect(Collectors.toList());
+
+			for(Entity e : loadedEntityList)
+			{
+				if(e instanceof MobEntity)
+				{
+					if(((MobEntity)e).getAttackTarget() == player)
+						((MobEntity)e).setAttackTarget(null);
+				}
+			}
+		}
 	}
 
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
 		Direction facing = state.get(FACING);
-		BlockPos placeOnPos = pos.offset(facing.getOpposite());
-		BlockState placeOnState = world.getBlockState(placeOnPos);
 
 		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}

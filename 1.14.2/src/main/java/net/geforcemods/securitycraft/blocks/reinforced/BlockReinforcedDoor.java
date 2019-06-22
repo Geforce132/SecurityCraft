@@ -14,11 +14,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -218,11 +216,6 @@ public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvide
 	@Override
 	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(SCContent.reinforcedDoorItem);
-	}
-
-	@Override
-	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune){
-		return state.get(HALF) == DoubleBlockHalf.UPPER ? Items.AIR : SCContent.reinforcedDoorItem;
 	}
 
 	@Override

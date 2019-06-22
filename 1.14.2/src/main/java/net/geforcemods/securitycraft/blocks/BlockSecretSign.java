@@ -26,7 +26,6 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -105,12 +104,6 @@ public class BlockSecretSign extends ContainerBlock implements IBucketPickupHand
 	public TileEntity createNewTileEntity(IBlockReader world)
 	{
 		return new TileEntitySecretSign();
-	}
-
-	@Override
-	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune)
-	{
-		return SCContent.secretSignItem;
 	}
 
 	@Override

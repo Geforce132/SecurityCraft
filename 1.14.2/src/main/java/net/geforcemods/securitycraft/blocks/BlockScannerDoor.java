@@ -12,11 +12,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -114,12 +112,6 @@ public class BlockScannerDoor extends DoorBlock implements ITileEntityProvider
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		return new ItemStack(SCContent.scannerDoorItem);
-	}
-
-	@Override
-	public IItemProvider getItemDropped(BlockState state, World world, BlockPos pos, int fortune)
-	{
-		return state.get(HALF) == DoubleBlockHalf.UPPER ? Items.AIR : SCContent.scannerDoorItem;
 	}
 
 	@Override

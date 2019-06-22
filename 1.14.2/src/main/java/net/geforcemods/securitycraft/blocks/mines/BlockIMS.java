@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -127,12 +129,14 @@ public class BlockIMS extends BlockOwnable {
 	}
 
 	@Override
-	public void getDrops(BlockState state, NonNullList<ItemStack> drops, World world, BlockPos pos, int fortune)
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
 	{
+		NonNullList<ItemStack> drops = NonNullList.from(ItemStack.EMPTY);
 		int mines = state.get(MINES);
 
 		if(mines != 0)
 			drops.add(new ItemStack(SCContent.bouncingBetty, mines));
+		return super.getDrops(state, builder);
 	}
 
 	@Override

@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -125,14 +124,6 @@ public class BlockMine extends BlockExplosive {
 			else
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true, Mode.BREAK);
 		}
-	}
-
-	/**
-	 * Returns the ID of the items to drop on destruction.
-	 */
-	@Override
-	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune){
-		return SCContent.mine.asItem();
 	}
 
 	/**

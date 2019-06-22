@@ -19,7 +19,6 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -64,7 +63,7 @@ public class BlockAlarm extends BlockOwnable {
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
 		Direction facing = state.get(FACING);
 
-		return facing == Direction.UP && world.getBlockState(pos.down()).isTopSolid() ? true : BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
+		return facing == Direction.UP && BlockUtils.isSideSolid(world, pos.down(), Direction.UP) ? true : BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
 	}
 
 	@Override
@@ -175,12 +174,6 @@ public class BlockAlarm extends BlockOwnable {
 	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
 	{
 		return new ItemStack(SCContent.alarm.asItem());
-	}
-
-	@Override
-	public IItemProvider getItemDropped(BlockState state, World worldIn, BlockPos pos, int fortune)
-	{
-		return SCContent.alarm.asItem();
 	}
 
 	@Override

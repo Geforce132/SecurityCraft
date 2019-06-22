@@ -19,7 +19,6 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -93,15 +92,6 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		entitytntprimed.setMotion(entitytntprimed.getMotion().mul(1, 0, 1).add(0, 0.05D, 0));
 		WorldUtils.addScheduledTask(world, () -> world.addEntity(entitytntprimed));
 		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("game.tnt.primed")), 1.0F, 1.0F);
-	}
-
-	/**
-	 * Returns the ID of the items to drop on destruction.
-	 */
-	@Override
-	public IItemProvider getItemDropped(BlockState state, World world, BlockPos pos, int fortune)
-	{
-		return asItem();
 	}
 
 	/**
