@@ -1,7 +1,8 @@
 --------------------------Changelog for v1.8.13 of SecurityCraft--------------------------
 
+- New: Italian translation (Thanks Chexet48!)
 - New: [1.12.2+] The Smart Module now works for Security Cameras, enabling others to view cameras at a fixed angle
-- New: [1.13.2] Reinforced blocks
+- New: [1.13.2+] Reinforced blocks
 	- Stripped Oak Log
 	- Stripped Spruce Log
 	- Stripped Birch Log
@@ -30,16 +31,16 @@
 	- Prismarine Stairs
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
-- New: [1.13.2] Italian translation (Thanks Chexet48!)
+- New: [1.13.2+] Finnish translation (Thanks erland!)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
-- Fix: [1.13.2] Crash when being targeted by the I.M.S.
-- Fix: [1.13.2] Admin Tool recipe description does not show in JEI
-- Fix: [1.13.2] Reinforced Stone is unobtainable
-- Fix: [1.13.2] Cannot interact with UI elements when mounted to a camera
-- Fix: [1.13.2] Crash when clicking "Paste List" on a whitelist/blacklist module that does not have any data
-- Fix: [1.13.2] Pressing the inventory key while editing a whitelist/blacklist module closes the GUI
-- Fix: [1.13.2] Disguising a keypad does not work with Forge 25.0.193+
-- Fix: [1.13.2] Password-protected Chest is not resistant to explosions
+- Fix: [1.13.2+] Crash when being targeted by the I.M.S.
+- Fix: [1.13.2+] Admin Tool recipe description does not show in JEI
+- Fix: [1.13.2+] Reinforced Stone is unobtainable
+- Fix: [1.13.2+] Cannot interact with UI elements when mounted to a camera
+- Fix: [1.13.2+] Crash when clicking "Paste List" on a whitelist/blacklist module that does not have any data
+- Fix: [1.13.2+] Pressing the inventory key while editing a whitelist/blacklist module closes the GUI
+- Fix: [1.13.2+] Disguising a keypad does not work with Forge 25.0.193+
+- Fix: [1.13.2+] Password-protected Chest is not resistant to explosions
 - Misc.: [1.13.2] The minimum required Forge build is now 25.0.193
 
 --------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------
