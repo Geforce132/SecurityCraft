@@ -56,9 +56,15 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.2-26.0.63'
-	compile "mcp.mobius.waila:Hwyla:1.10.3-B64_1.14.2"
-	compile "mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.30-6"
-    compile "mezz.jei:jei-1.14.2:6.0.0.2:api"
+
+    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.3-B64_1.14.2") {
+        transitive = false
+    })
+    compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.30-6") {
+        transitive = false
+    })
+	compileOnly fg.deobf("mezz.jei:jei-1.14.2:6.0.0.2:api")
+	runtimeOnly fg.deobf("mezz.jei:jei-1.14.2:6.0.0.2")
 }
 
 jar {
