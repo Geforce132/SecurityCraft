@@ -2,20 +2,22 @@ package net.geforcemods.securitycraft.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 
-public class GuiLogger extends ContainerScreen<ContainerGeneric>{
+public class GuiLogger extends ContainerScreen<ContainerTEGeneric>{
 
 	private TileEntityLogger tileEntity;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
-	public GuiLogger(TileEntityLogger te) {
-		super(new ContainerGeneric());
-		tileEntity = te;
+	public GuiLogger(ContainerTEGeneric container, PlayerInventory inv, ITextComponent name) {
+		super(container, inv, name);
+		tileEntity = (TileEntityLogger)container.te;
 	}
 
 	/**

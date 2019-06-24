@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,10 +39,10 @@ public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 
 	private final String blockName;
 
-	public GuiCustomizeBlock(PlayerInventory inventory, CustomizableSCTE te)
+	public GuiCustomizeBlock(ContainerCustomizeBlock container, PlayerInventory inv, ITextComponent name)
 	{
-		super(new ContainerCustomizeBlock(inventory, te));
-		tileEntity = te;
+		super(container, inv, name);
+		tileEntity = container.tileEntity;
 		blockName = BlockUtils.getBlock(Minecraft.getInstance().world, tileEntity.getPos()).getTranslationKey().substring(5);
 	}
 

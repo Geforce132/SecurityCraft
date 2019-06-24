@@ -14,8 +14,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -49,8 +51,15 @@ public class BlockKeypadChest extends ChestBlock implements IPasswordConvertible
 	}
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){
-		if(!isBlocked(world, pos))
-			player.displayGUIChest(((ChestBlock) BlockUtils.getBlock(world, pos)).getContainer(world.getBlockState(pos), world, pos));
+		if(!world.isRemote) {
+			BlockState state = world.getBlockState(pos);
+			ChestBlock block = (ChestBlock)state.getBlock();
+			INamedContainerProvider inamedcontainerprovider = block.getContainer(state, world, pos);
+			if (inamedcontainerprovider != null) {
+				player.openContainer(inamedcontainerprovider);
+				player.addStat(Stats.CUSTOM.get(Stats.OPEN_CHEST));
+			}
+		}
 	}
 
 	/**

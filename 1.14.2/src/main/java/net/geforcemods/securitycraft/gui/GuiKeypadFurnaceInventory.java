@@ -5,26 +5,27 @@ import java.util.Random;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
 import net.geforcemods.securitycraft.network.server.CloseFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.FurnaceContainer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiKeypadFurnaceInventory extends ContainerScreen<FurnaceContainer>{
+public class GuiKeypadFurnaceInventory extends ContainerScreen<ContainerKeypadFurnace>{
 
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
 	private TileEntityKeypadFurnace tileFurnace;
 	private boolean gurnace = false;
 
-	public GuiKeypadFurnaceInventory(PlayerInventory inventory, TileEntityKeypadFurnace te){
-		super(new FurnaceContainer(inventory, te));
-		tileFurnace = te;
+	public GuiKeypadFurnaceInventory(ContainerKeypadFurnace container, PlayerInventory inv, ITextComponent name){
+		super(container, inv, name);
+		tileFurnace = container.te;
 
 		if(new Random().nextInt(100) < 5)
 			gurnace = true;
@@ -45,7 +46,7 @@ public class GuiKeypadFurnaceInventory extends ContainerScreen<FurnaceContainer>
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getName().getFormattedText() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getFormattedText() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
 		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}

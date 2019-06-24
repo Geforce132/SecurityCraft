@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,9 +17,10 @@ public class ContainerBlockReinforcer extends Container
 	private ItemStack blockReinforcer;
 	private Inventory itemventory = new Inventory(1);
 
-	public ContainerBlockReinforcer(PlayerEntity player, PlayerInventory inventory)
+	public ContainerBlockReinforcer(int windowId, PlayerInventory inventory)
 	{
-		blockReinforcer = player.inventory.getCurrentItem();
+		super(SCContent.cTypeBlockReinforcer, windowId);
+		blockReinforcer = inventory.getCurrentItem();
 		addSlot(new SlotBlockReinforcer(itemventory, 0, 79, 20)); //input & output slot
 
 		//main player inventory

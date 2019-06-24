@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +26,7 @@ public class ItemBriefcase extends Item {
 	@Override
 	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
@@ -37,9 +37,9 @@ public class ItemBriefcase extends Item {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_SETUP, player.getPosition()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), world.getDimension().getType().getId(), player.getPosition()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, player.getPosition()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.getPosition()));
 		}
 
 		return ActionResultType.FAIL;
@@ -56,9 +56,9 @@ public class ItemBriefcase extends Item {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_SETUP, player.getPosition()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), world.getDimension().getType().getId(), player.getPosition()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, player.getPosition()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.getPosition()));
 		}
 
 		return ActionResult.newResult(ActionResultType.PASS, stack);

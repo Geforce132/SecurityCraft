@@ -3,18 +3,20 @@ package net.geforcemods.securitycraft.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiIMS extends ContainerScreen<ContainerGeneric>{
+public class GuiIMS extends ContainerScreen<ContainerTEGeneric>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
@@ -22,9 +24,9 @@ public class GuiIMS extends ContainerScreen<ContainerGeneric>{
 	private GuiButtonClick targetButton;
 	private int targetingOptionIndex = 0;
 
-	public GuiIMS(TileEntityIMS te) {
-		super(new ContainerGeneric());
-		tileEntity = te;
+	public GuiIMS(ContainerTEGeneric container, PlayerInventory inv, ITextComponent name) {
+		super(container, inv, name);
+		tileEntity = (TileEntityIMS)container.te;
 		targetingOptionIndex = tileEntity.getTargetingOption().modeIndex;
 	}
 

@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.BaseInteractionObject;
+import net.geforcemods.securitycraft.gui.GuiSCManual;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
@@ -14,7 +13,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ItemSCManual extends Item {
 
@@ -24,8 +22,8 @@ public class ItemSCManual extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		if(player instanceof ServerPlayerEntity)
-			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MANUAL));
+		if(world.isRemote)
+			Minecraft.getInstance().displayGuiScreen(new GuiSCManual());
 
 		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
 	}

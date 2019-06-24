@@ -1,24 +1,28 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class ContainerInventoryScanner extends Container {
 
 	private final int numRows;
-	private final TileEntityInventoryScanner inventoryScannerTE;
+	public final TileEntityInventoryScanner te;
 
-	public ContainerInventoryScanner(IInventory inventory, TileEntityInventoryScanner te){
+	public ContainerInventoryScanner(int windowId, World world, BlockPos pos, PlayerInventory inventory){
+		super(SCContent.cTypeInventoryScanner, windowId);
+		te = (TileEntityInventoryScanner)world.getTileEntity(pos);
 		numRows = te.getSizeInventory() / 9;
-		inventoryScannerTE = te;
 
 		for(int i = 0; i < 10; i++)
 			addSlot(new SlotOwnerRestricted(te, te, i, (4 + (i * 17)), 16, true));
@@ -75,7 +79,7 @@ public class ContainerInventoryScanner extends Container {
 	{
 		super.onContainerClosed(player);
 
-		Utils.setISinTEAppropriately(player.world, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(inventoryScannerTE.getPos())).getContents(), ((TileEntityInventoryScanner) player.world.getTileEntity(inventoryScannerTE.getPos())).getScanType());
+		Utils.setISinTEAppropriately(player.world, te.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(te.getPos())).getContents(), ((TileEntityInventoryScanner) player.world.getTileEntity(te.getPos())).getScanType());
 	}
 
 	@Override
@@ -88,12 +92,12 @@ public class ContainerInventoryScanner extends Container {
 	{
 		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof SlotOwnerRestricted && ((SlotOwnerRestricted)getSlot(slotId)).isGhostSlot())
 		{
-			if(inventoryScannerTE.getOwner().isOwner(player))
+			if(te.getOwner().isOwner(player))
 			{
 				ItemStack pickedUpStack = player.inventory.getItemStack().copy();
 
 				pickedUpStack.setCount(1);
-				inventoryScannerTE.getContents().set(slotId, pickedUpStack);
+				te.getContents().set(slotId, pickedUpStack);
 			}
 
 			return ItemStack.EMPTY;

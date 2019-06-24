@@ -6,13 +6,13 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.BaseInteractionObject;
+import net.geforcemods.securitycraft.gui.GuiMRAT;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -31,7 +31,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class ItemMineRemoteAccessTool extends Item {
@@ -44,8 +43,8 @@ public class ItemMineRemoteAccessTool extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
-		if(!world.isRemote && player instanceof ServerPlayerEntity)
-			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MRAT));
+		if(world.isRemote)
+			Minecraft.getInstance().displayGuiScreen(new GuiMRAT(player.getHeldItem(hand)));
 
 		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
 	}
@@ -53,12 +52,13 @@ public class ItemMineRemoteAccessTool extends Item {
 	@Override
 	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 
 		if(!world.isRemote)
+		{
 			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
 				if(!isMineAdded(stack, world, pos)){
 					int availSlot = getNextAvaliableSlot(stack);
@@ -84,8 +84,9 @@ public class ItemMineRemoteAccessTool extends Item {
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 				}
 			}
-			else if(player instanceof ServerPlayerEntity)
-				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.MRAT));
+		}
+		else if(world.isRemote && !(BlockUtils.getBlock(world, pos) instanceof IExplosive))
+			Minecraft.getInstance().displayGuiScreen(new GuiMRAT(stack));
 
 		return ActionResultType.SUCCESS;
 	}

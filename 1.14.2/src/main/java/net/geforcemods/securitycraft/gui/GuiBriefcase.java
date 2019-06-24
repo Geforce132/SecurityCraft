@@ -13,8 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,8 +33,8 @@ public class GuiBriefcase extends ContainerScreen<ContainerGeneric> {
 	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
 	private Button continueButton;
 
-	public GuiBriefcase() {
-		super(new ContainerGeneric());
+	public GuiBriefcase(ContainerGeneric container, PlayerInventory inv, ITextComponent text) {
+		super(container, inv, text);
 	}
 
 	@Override
@@ -145,7 +147,7 @@ public class GuiBriefcase extends ContainerScreen<ContainerGeneric> {
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))
-						SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE, Minecraft.getInstance().player.getPosition()));
+						SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition()));
 				}
 
 				break;

@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -33,6 +34,7 @@ import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.crafting.VanillaRecipeTypes;
@@ -58,7 +60,7 @@ public class GuiSCManual extends Screen {
 	private final int subpageLength = 1285;
 
 	public GuiSCManual() {
-		super();
+		super(new TranslationTextComponent(SCContent.scManual.getTranslationKey()));
 	}
 
 	@Override
@@ -279,7 +281,7 @@ public class GuiSCManual extends Screen {
 		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
 			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		else
-			for(IRecipe object : Minecraft.getInstance().world.getRecipeManager().getRecipes(VanillaRecipeTypes.CRAFTING))
+			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes(VanillaRecipeTypes.CRAFTING))
 			{
 				if(object instanceof ShapedRecipe){
 					ShapedRecipe recipe = (ShapedRecipe) object;

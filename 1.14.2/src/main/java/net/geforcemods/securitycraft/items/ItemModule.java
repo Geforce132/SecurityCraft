@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.BaseInteractionObject;
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
+import net.geforcemods.securitycraft.containers.ModuleInventory;
+import net.geforcemods.securitycraft.gui.GuiEditModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,7 +25,6 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -35,24 +40,22 @@ public class ItemModule extends Item{
 	private final EnumCustomModules module;
 	private final boolean nbtCanBeModified;
 	private boolean canBeCustomized;
-	private ResourceLocation guiToOpen;
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
 	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified){
-		this(module, nbtCanBeModified, false, null, 0, 0);
+		this(module, nbtCanBeModified, false, 0, 0);
 	}
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, ResourceLocation guiToOpen){
-		this(module, nbtCanBeModified, canBeCustomized, guiToOpen, 0, 0);
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized){
+		this(module, nbtCanBeModified, canBeCustomized, 0, 0);
 	}
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, ResourceLocation guiToOpen, int itemAddons, int blockAddons){
+	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int itemAddons, int blockAddons){
 		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
 		this.canBeCustomized = canBeCustomized;
-		this.guiToOpen = guiToOpen;
 		numberOfItemAddons = itemAddons;
 		numberOfBlockAddons = blockAddons;
 	}
@@ -62,9 +65,26 @@ public class ItemModule extends Item{
 		ItemStack stack = player.getHeldItem(hand);
 		try
 		{
-			if(!world.isRemote) {
-				if(canBeCustomized() && player instanceof ServerPlayerEntity)
-					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(guiToOpen));
+			if(canBeCustomized())
+			{
+				if(world.isRemote && (module == EnumCustomModules.WHITELIST || module == EnumCustomModules.BLACKLIST))
+					Minecraft.getInstance().displayGuiScreen(new GuiEditModule(stack));
+				else if(!world.isRemote && module == EnumCustomModules.DISGUISE)
+				{
+					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new ContainerDisguiseModule(windowId, inv, new ModuleInventory(player.getHeldItem(hand)));
+						}
+
+						@Override
+						public ITextComponent getDisplayName()
+						{
+							return new TranslationTextComponent(getTranslationKey());
+						}
+					});
+				}
 			}
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}

@@ -5,11 +5,9 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.IFluidState;
@@ -23,6 +21,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -183,9 +182,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public boolean canOtherFlowInto(IFluidState state, Fluid fluid, Direction direction)
+	public boolean func_215665_a(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
 	{
-		return state.getHeight() >= 0.44444445F && fluid.isIn(FluidTags.WATER);
+		return fluidState.func_215679_a(world, pos) >= 0.44444445F && fluid.isIn(FluidTags.WATER);
 	}
 
 	@Override
@@ -195,29 +194,19 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public int getTickRate(World world, IFluidState p_205578_2_, IFluidState p_205578_3_)
+	public int func_215667_a(World world, BlockPos pos, IFluidState fluidState1, IFluidState fluidState2)
 	{
-		int i = this.getTickRate(world);
+		int i = getTickRate(world);
 
-		if(!p_205578_2_.isEmpty() && !p_205578_3_.isEmpty() && !p_205578_2_.get(FALLING) && !p_205578_3_.get(FALLING) && p_205578_3_.getHeight() > p_205578_2_.getHeight() && world.getRandom().nextInt(4) != 0)
+		if(!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.get(FALLING) && !fluidState2.get(FALLING) && fluidState2.func_215679_a(world, pos) > fluidState1.func_215679_a(world, pos) && world.getRandom().nextInt(4) != 0)
 			i *= 4;
 
 		return i;
 	}
 
-	protected void triggerEffects(IWorld p_205581_1_, BlockPos p_205581_2_)
+	protected void triggerEffects(IWorld world, BlockPos pos)
 	{
-		double x = p_205581_2_.getX();
-		double y = p_205581_2_.getY();
-		double z = p_205581_2_.getZ();
-
-		p_205581_1_.playSound((PlayerEntity)null, p_205581_2_, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (p_205581_1_.getRandom().nextFloat() - p_205581_1_.getRandom().nextFloat()) * 0.8F);
-
-		for(int i = 0; i < 8; ++i)
-		{
-			p_205581_1_.addParticle(ParticleTypes.LARGE_SMOKE, x + Math.random(), y + 1.2D, z + Math.random(), 0.0D, 0.0D, 0.0D);
-		}
-
+		world.playEvent(1501, pos, 0);
 	}
 
 	@Override

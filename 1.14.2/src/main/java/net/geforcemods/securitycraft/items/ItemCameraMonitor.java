@@ -6,14 +6,14 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
-import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -43,7 +43,7 @@ public class ItemCameraMonitor extends Item {
 	@Override
 	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z);
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
@@ -82,7 +82,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResultType.SUCCESS;
 			}
 
-			SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.CAMERA_MONITOR, pos));
+			Minecraft.getInstance().displayGuiScreen(new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag()));
 			return ActionResultType.SUCCESS;
 		}
 
@@ -99,7 +99,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResult.newResult(ActionResultType.PASS, stack);
 			}
 
-			SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.CAMERA_MONITOR, player.getPosition()));
+			Minecraft.getInstance().displayGuiScreen(new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag()));
 		}
 
 		return ActionResult.newResult(ActionResultType.PASS, stack);

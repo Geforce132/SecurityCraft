@@ -72,9 +72,9 @@ public class EntityTaserBullet extends ThrowableEntity {
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;
 
-						((LivingEntity) result.getEntity()).addPotionEffect(new EffectInstance(Effect.getPotionById(18), length, strength));
-						((LivingEntity) result.getEntity()).addPotionEffect(new EffectInstance(Effect.getPotionById(9), length, strength));
-						((LivingEntity) result.getEntity()).addPotionEffect(new EffectInstance(Effect.getPotionById(2), length, strength));
+						((LivingEntity) result.getEntity()).addPotionEffect(new EffectInstance(Effect.get(18), length, strength));
+						((LivingEntity) result.getEntity()).addPotionEffect(new EffectInstance(Effect.get(9), length, strength));
+						((LivingEntity) result.getEntity()).addPotionEffect(new EffectInstance(Effect.get(2), length, strength));
 					}
 
 					remove();

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -11,13 +12,16 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class ContainerCustomizeBlock extends Container{
 
-	private CustomizableSCTE tileEntity;
+	public CustomizableSCTE tileEntity;
 
-	public ContainerCustomizeBlock(PlayerInventory inventory, CustomizableSCTE tileEntity) {
-		this.tileEntity = tileEntity;
+	public ContainerCustomizeBlock(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
+		super(SCContent.cTypeCustomizeBlock, windowId);
+		this.tileEntity = (CustomizableSCTE)world.getTileEntity(pos);
 
 		if(tileEntity.getNumberOfCustomizableOptions() == 1)
 			addSlot(new ModuleSlot(tileEntity, 0, 79, 20));

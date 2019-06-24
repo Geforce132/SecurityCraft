@@ -10,6 +10,20 @@ import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.gui.GuiBlockReinforcer;
+import net.geforcemods.securitycraft.gui.GuiBriefcase;
+import net.geforcemods.securitycraft.gui.GuiBriefcaseInventory;
+import net.geforcemods.securitycraft.gui.GuiBriefcaseSetup;
+import net.geforcemods.securitycraft.gui.GuiCheckPassword;
+import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.geforcemods.securitycraft.gui.GuiDisguiseModule;
+import net.geforcemods.securitycraft.gui.GuiIMS;
+import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
+import net.geforcemods.securitycraft.gui.GuiKeyChanger;
+import net.geforcemods.securitycraft.gui.GuiKeycardSetup;
+import net.geforcemods.securitycraft.gui.GuiKeypadFurnaceInventory;
+import net.geforcemods.securitycraft.gui.GuiLogger;
+import net.geforcemods.securitycraft.gui.GuiSetPassword;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
@@ -24,8 +38,12 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
@@ -48,6 +66,25 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
+	}
+
+	@Override
+	public void registerScreens()
+	{
+		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, GuiBlockReinforcer::new);
+		ScreenManager.registerFactory(SCContent.cTypeBriefcase, GuiBriefcase::new);
+		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, GuiBriefcaseInventory::new);
+		ScreenManager.registerFactory(SCContent.cTypeBriefcaseSetup, GuiBriefcaseSetup::new);
+		ScreenManager.registerFactory(SCContent.cTypeCustomizeBlock, GuiCustomizeBlock::new);
+		ScreenManager.registerFactory(SCContent.cTypeDisguiseModule, GuiDisguiseModule::new);
+		ScreenManager.registerFactory(SCContent.cTypeInventoryScanner, GuiInventoryScanner::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeypadFurnace, GuiKeypadFurnaceInventory::new);
+		ScreenManager.registerFactory(SCContent.cTypeCheckPassword, GuiCheckPassword::new);
+		ScreenManager.registerFactory(SCContent.cTypeSetPassword, GuiSetPassword::new);
+		ScreenManager.registerFactory(SCContent.cTypeUsernameLogger, GuiLogger::new);
+		ScreenManager.registerFactory(SCContent.cTypeIMS, GuiIMS::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, GuiKeycardSetup::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, GuiKeyChanger::new);
 	}
 
 	@Override
@@ -90,5 +127,17 @@ public class ClientProxy implements IProxy {
 	public void cleanup()
 	{
 		toTint.clear();
+	}
+
+	@Override
+	public World getClientWorld()
+	{
+		return Minecraft.getInstance().world;
+	}
+
+	@Override
+	public PlayerEntity getClientPlayer()
+	{
+		return Minecraft.getInstance().player;
 	}
 }

@@ -14,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.CUpdateSignPacket;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -26,6 +27,7 @@ public class GuiEditSecretSign extends Screen
 
 	public GuiEditSecretSign(TileEntitySecretSign te)
 	{
+		super(new TranslationTextComponent(SCContent.secretSignItem.getTranslationKey()));
 		this.te = te;
 	}
 

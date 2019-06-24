@@ -2,6 +2,14 @@ package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
+import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
+import net.geforcemods.securitycraft.containers.ContainerBriefcase;
+import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
+import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
+import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
+import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -36,6 +44,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.fluid.FlowingFluid;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.registries.ObjectHolder;
@@ -322,26 +331,47 @@ public class SCContent
 	public static ItemModule whitelistModule;
 
 	//Tile entity typses
+	@ObjectHolder(SecurityCraft.MODID + ":ownable")
 	public static TileEntityType<TileEntityOwnable> teTypeOwnable;
+	@ObjectHolder(SecurityCraft.MODID + ":abstract")
 	public static TileEntityType<TileEntitySCTE> teTypeAbstract;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad")
 	public static TileEntityType<TileEntityKeypad> teTypeKeypad;
+	@ObjectHolder(SecurityCraft.MODID + ":laser_block")
 	public static TileEntityType<TileEntityLaserBlock> teTypeLaserBlock;
+	@ObjectHolder(SecurityCraft.MODID + ":cage_trap")
 	public static TileEntityType<TileEntityCageTrap> teTypeCageTrap;
+	@ObjectHolder(SecurityCraft.MODID + ":keycard_reader")
 	public static TileEntityType<TileEntityKeycardReader> teTypeKeycardReader;
+	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
 	public static TileEntityType<TileEntityInventoryScanner> teTypeInventoryScanner;
+	@ObjectHolder(SecurityCraft.MODID + ":portable_radar")
 	public static TileEntityType<TileEntityPortableRadar> teTypePortableRadar;
+	@ObjectHolder(SecurityCraft.MODID + ":security_camera")
 	public static TileEntityType<TileEntitySecurityCamera> teTypeSecurityCamera;
+	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
 	public static TileEntityType<TileEntityLogger> teTypeUsernameLogger;
+	@ObjectHolder(SecurityCraft.MODID + ":retinal_scanner")
 	public static TileEntityType<TileEntityRetinalScanner> teTypeRetinalScanner;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_chest")
 	public static TileEntityType<TileEntityKeypadChest> teTypeKeypadChest;
+	@ObjectHolder(SecurityCraft.MODID + ":alarm")
 	public static TileEntityType<TileEntityAlarm> teTypeAlarm;
+	@ObjectHolder(SecurityCraft.MODID + ":claymore")
 	public static TileEntityType<TileEntityClaymore> teTypeClaymore;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
 	public static TileEntityType<TileEntityKeypadFurnace> teTypeKeypadFurnace;
+	@ObjectHolder(SecurityCraft.MODID + ":ims")
 	public static TileEntityType<TileEntityIMS> teTypeIms;
+	@ObjectHolder(SecurityCraft.MODID + ":protecto")
 	public static TileEntityType<TileEntityProtecto> teTypeProtecto;
+	@ObjectHolder(SecurityCraft.MODID + ":scanner_door")
 	public static TileEntityType<TileEntityScannerDoor> teTypeScannerDoor;
+	@ObjectHolder(SecurityCraft.MODID + ":secret_sign")
 	public static TileEntityType<TileEntitySecretSign> teTypeSecretSign;
+	@ObjectHolder(SecurityCraft.MODID + ":motion_light")
 	public static TileEntityType<TileEntityMotionLight> teTypeMotionLight;
+	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
 
 	//Entity types
@@ -357,4 +387,34 @@ public class SCContent
 	public static EntityType<EntitySentry> eTypeSentry;
 	@ObjectHolder(SecurityCraft.MODID + ":bullet")
 	public static EntityType<EntityBullet> eTypeBullet;
+
+	//Container types
+	@ObjectHolder(SecurityCraft.MODID + ":block_reinforcer")
+	public static ContainerType<ContainerBlockReinforcer> cTypeBlockReinforcer;
+	@ObjectHolder(SecurityCraft.MODID + ":briefcase")
+	public static ContainerType<ContainerGeneric> cTypeBriefcase;
+	@ObjectHolder(SecurityCraft.MODID + ":briefcase_inventory")
+	public static ContainerType<ContainerBriefcase> cTypeBriefcaseInventory;
+	@ObjectHolder(SecurityCraft.MODID + ":briefcase_setup")
+	public static ContainerType<ContainerGeneric> cTypeBriefcaseSetup;
+	@ObjectHolder(SecurityCraft.MODID + ":customize_block")
+	public static ContainerType<ContainerCustomizeBlock> cTypeCustomizeBlock;
+	@ObjectHolder(SecurityCraft.MODID + ":disguise_module")
+	public static ContainerType<ContainerDisguiseModule> cTypeDisguiseModule;
+	@ObjectHolder(SecurityCraft.MODID + ":inventory_scanner")
+	public static ContainerType<ContainerInventoryScanner> cTypeInventoryScanner;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
+	public static ContainerType<ContainerKeypadFurnace> cTypeKeypadFurnace;
+	@ObjectHolder(SecurityCraft.MODID + ":check_password")
+	public static ContainerType<ContainerTEGeneric> cTypeCheckPassword;
+	@ObjectHolder(SecurityCraft.MODID + ":set_password")
+	public static ContainerType<ContainerTEGeneric> cTypeSetPassword;
+	@ObjectHolder(SecurityCraft.MODID + ":username_logger")
+	public static ContainerType<ContainerTEGeneric> cTypeUsernameLogger;
+	@ObjectHolder(SecurityCraft.MODID + ":ims")
+	public static ContainerType<ContainerTEGeneric> cTypeIMS;
+	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
+	public static ContainerType<ContainerTEGeneric> cTypeKeycardSetup;
+	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
+	public static ContainerType<ContainerTEGeneric> cTypeKeyChanger;
 }

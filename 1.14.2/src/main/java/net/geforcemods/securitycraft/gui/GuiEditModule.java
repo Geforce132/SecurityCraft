@@ -3,20 +3,20 @@ package net.geforcemods.securitycraft.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiEditModule extends ContainerScreen<ContainerGeneric>
+public class GuiEditModule extends Screen
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
@@ -24,7 +24,7 @@ public class GuiEditModule extends ContainerScreen<ContainerGeneric>
 
 	public GuiEditModule(ItemStack item)
 	{
-		super(new ContainerGeneric());
+		super(new TranslationTextComponent(item.getTranslationKey()));
 
 		module = item;
 	}
@@ -55,30 +55,16 @@ public class GuiEditModule extends ContainerScreen<ContainerGeneric>
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
-		super.render(mouseX, mouseY, partialTicks);
-		GlStateManager.disableLighting();
-		inputField.render(mouseX, mouseY, partialTicks);
-	}
-
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, 6, xSize, 4210752);
-	}
-
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		blit(startX, startY, 0, 0, xSize, ySize);
+		int startX = width / 2;
+		int startY = height / 2;
+		blit(startX, startY, 0, 0, width, height);
+		super.render(mouseX, mouseY, partialTicks);
+		GlStateManager.disableLighting();
+		inputField.render(mouseX, mouseY, partialTicks);
+		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, 6, width, 4210752);
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class GivePotionEffect {
 
 	public static void onMessage(GivePotionEffect message, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() -> ctx.get().getSender().addPotionEffect(new EffectInstance(Effect.getPotionById(message.potionID), message.duration, message.amplifier, false, true)));
+		ctx.get().enqueueWork(() -> ctx.get().getSender().addPotionEffect(new EffectInstance(Effect.get(message.potionID), message.duration, message.amplifier, false, true)));
 		ctx.get().setPacketHandled(true);
 	}
 

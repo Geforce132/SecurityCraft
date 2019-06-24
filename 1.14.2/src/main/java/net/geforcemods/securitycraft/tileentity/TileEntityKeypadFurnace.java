@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.BaseInteractionObject;
+import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -15,8 +15,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.FurnaceContainer;
 import net.minecraft.inventory.container.FurnaceFuelSlot;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -26,11 +26,13 @@ import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected {
+public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, INamedContainerProvider {
 
 	private static final int[] slotsTop = new int[] {0};
 	private static final int[] slotsBottom = new int[] {2, 1};
@@ -391,11 +393,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return "minecraft:furnace";
 	}
 
-	public Container createContainer(PlayerInventory playerInventory, PlayerEntity player)
-	{
-		return new FurnaceContainer(playerInventory, this);
-	}
-
 	@Override
 	public void clear()
 	{
@@ -414,14 +411,42 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		if(getPassword() != null)
 		{
 			if(player instanceof ServerPlayerEntity)
-				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
+			{
+				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					@Override
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					{
+						return new ContainerTEGeneric(SCContent.cTypeCheckPassword, windowId, world, pos);
+					}
+
+					@Override
+					public ITextComponent getDisplayName()
+					{
+						return new TranslationTextComponent(SCContent.keypadFurnace.getTranslationKey());
+					}
+				}, pos);
+			}
 		}
 		else
 		{
 			if(getOwner().isOwner(player))
 			{
 				if(player instanceof ServerPlayerEntity)
-					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
+				{
+					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new ContainerTEGeneric(SCContent.cTypeSetPassword, windowId, world, pos);
+						}
+
+						@Override
+						public ITextComponent getDisplayName()
+						{
+							return new TranslationTextComponent(SCContent.keypadFurnace.getTranslationKey());
+						}
+					}, pos);
+				}
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
@@ -448,5 +473,17 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+	}
+
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	{
+		return new ContainerKeypadFurnace(windowId, world, pos, inv);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return new TranslationTextComponent(SCContent.keypadFurnace.getTranslationKey());
 	}
 }

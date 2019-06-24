@@ -1,18 +1,22 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.FurnaceContainer;
+import net.minecraft.inventory.container.AbstractFurnaceContainer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class ContainerKeypadFurnace extends FurnaceContainer{
+public class ContainerKeypadFurnace extends AbstractFurnaceContainer{
 
-	private TileEntityKeypadFurnace te;
+	public TileEntityKeypadFurnace te;
 
-	public ContainerKeypadFurnace(PlayerInventory player, TileEntityKeypadFurnace te) {
-		super(player, te);
-		this.te = te;
+	public ContainerKeypadFurnace(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
+		super(SCContent.cTypeKeypadFurnace, IRecipeType.SMELTING, windowId, inventory);
+		this.te = (TileEntityKeypadFurnace)world.getTileEntity(pos);
 	}
 
 	@Override

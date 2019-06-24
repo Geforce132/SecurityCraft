@@ -5,16 +5,22 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
+import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
+public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory, INamedContainerProvider{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private String scanType = "check";
@@ -301,4 +307,15 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 		return null;
 	}
 
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	{
+		return new ContainerInventoryScanner(windowId, world, pos, inv);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return new TranslationTextComponent(SCContent.inventoryScanner.getTranslationKey());
+	}
 }

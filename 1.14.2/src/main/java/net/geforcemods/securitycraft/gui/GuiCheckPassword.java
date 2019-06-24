@@ -3,23 +3,24 @@ package net.geforcemods.securitycraft.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiCheckPassword extends ContainerScreen<ContainerGeneric> {
+public class GuiCheckPassword extends ContainerScreen<ContainerTEGeneric> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
@@ -29,10 +30,10 @@ public class GuiCheckPassword extends ContainerScreen<ContainerGeneric> {
 	private TextFieldWidget keycodeTextbox;
 	private String currentString = "";
 
-	public GuiCheckPassword(TileEntity tileEntity, Block block){
-		super(new ContainerGeneric());
-		this.tileEntity = tileEntity;
-		blockName = ClientUtils.localize(block.getTranslationKey());
+	public GuiCheckPassword(ContainerTEGeneric container, PlayerInventory inv, ITextComponent name){
+		super(container, inv, name);
+		this.tileEntity = container.te;
+		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
 	}
 
 	@Override

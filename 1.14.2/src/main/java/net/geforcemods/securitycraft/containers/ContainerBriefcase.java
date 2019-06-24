@@ -10,14 +10,12 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerBriefcase extends Container {
 
-	private BriefcaseInventory inventory;
-
-	public ContainerBriefcase(PlayerEntity player, PlayerInventory playerInventory, BriefcaseInventory briefcaseInventory) {
-		inventory = briefcaseInventory;
+	public ContainerBriefcase(int windowId, PlayerInventory playerInventory, BriefcaseInventory briefcaseInventory) {
+		super(SCContent.cTypeBriefcaseInventory, windowId);
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 4; j++)
-				addSlot(new SlotItemRestricted(inventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), SCContent.briefcase));
+				addSlot(new SlotItemRestricted(briefcaseInventory, j + (i * 4), 53 + (j * 18), 17 + (i * 18), SCContent.briefcase));
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)

@@ -6,18 +6,22 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.BaseInteractionObject;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
@@ -98,14 +102,42 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 		if(getPassword() != null)
 		{
 			if(player instanceof ServerPlayerEntity)
-				NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.INSERT_PASSWORD), pos);
+			{
+				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					@Override
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					{
+						return new ContainerTEGeneric(SCContent.cTypeCheckPassword, windowId, world, pos);
+					}
+
+					@Override
+					public ITextComponent getDisplayName()
+					{
+						return new TranslationTextComponent(SCContent.keypad.getTranslationKey());
+					}
+				}, pos);
+			}
 		}
 		else
 		{
 			if(getOwner().isOwner(player))
 			{
 				if(player instanceof ServerPlayerEntity)
-					NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_PASSWORD), pos);
+				{
+					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new ContainerTEGeneric(SCContent.cTypeSetPassword, windowId, world, pos);
+						}
+
+						@Override
+						public ITextComponent getDisplayName()
+						{
+							return new TranslationTextComponent(SCContent.keypad.getTranslationKey());
+						}
+					}, pos);
+				}
 			}
 			else
 				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);

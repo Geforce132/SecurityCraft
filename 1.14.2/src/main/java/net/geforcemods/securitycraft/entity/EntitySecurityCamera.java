@@ -177,7 +177,7 @@ public class EntitySecurityCamera extends Entity{
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GivePotionEffect(Effect.getIdFromPotion(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
+				SecurityCraft.channel.sendToServer(new GivePotionEffect(Effect.getId(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
 		}
 
 		if(!world.isRemote)

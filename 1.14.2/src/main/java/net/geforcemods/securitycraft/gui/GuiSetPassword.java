@@ -2,24 +2,25 @@ package net.geforcemods.securitycraft.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiSetPassword extends ContainerScreen<ContainerGeneric> {
+public class GuiSetPassword extends ContainerScreen<ContainerTEGeneric> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
@@ -30,16 +31,16 @@ public class GuiSetPassword extends ContainerScreen<ContainerGeneric> {
 	private boolean isInvalid = false;
 	private GuiButtonClick saveAndContinueButton;
 
-	public GuiSetPassword(TileEntity tileEntity, Block block){
-		super(new ContainerGeneric());
-		this.tileEntity = tileEntity;
-		blockName = ClientUtils.localize(block.getTranslationKey());
+	public GuiSetPassword(ContainerTEGeneric container, PlayerInventory inv, ITextComponent name){
+		super(container, inv, name);
+		this.tileEntity = container.te;
+		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
 	}
 
 	@Override
 	public void init(){
 		super.init();
-		mc.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(saveAndContinueButton = new GuiButtonClick(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
 		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
@@ -132,7 +133,7 @@ public class GuiSetPassword extends ContainerScreen<ContainerGeneric> {
 				SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 
 				ClientUtils.closePlayerScreen();
-				SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.INSERT_PASSWORD, Minecraft.getInstance().player.getPosition()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeCheckPassword.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition()));
 		}
 	}
 

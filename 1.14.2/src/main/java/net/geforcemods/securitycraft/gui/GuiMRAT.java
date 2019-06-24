@@ -5,7 +5,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.network.server.SetExplosiveState;
@@ -14,30 +13,30 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiMRAT extends ContainerScreen<ContainerGeneric>{
+public class GuiMRAT extends Screen{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private ItemStack mrat;
 	private GuiButtonClick[][] guiButtons = new GuiButtonClick[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
+	private int xSize = 256, ySize = 184;
 
 	public GuiMRAT(ItemStack item) {
-		super(new ContainerGeneric());
+		super(new TranslationTextComponent(item.getTranslationKey()));
 
 		mrat = item;
-		xSize = 256;
-		ySize = 184;
 	}
 
 	@Override
@@ -62,8 +61,8 @@ public class GuiMRAT extends ContainerScreen<ContainerGeneric>{
 
 			for(int j = 0; j < 4; j++)
 			{
-				int btnX = guiLeft + j * padding + 154;
-				int btnY = guiTop + y - 48;
+				int btnX = j * padding + 154;
+				int btnY = y - 48;
 
 				switch(j)
 				{
@@ -96,12 +95,16 @@ public class GuiMRAT extends ContainerScreen<ContainerGeneric>{
 		}
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	public void render(int mouseX, int mouseY, float partialTicks)
 	{
+		renderBackground();
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.blit(startX, startY, 0, 0, xSize, ySize);
+		super.render(mouseX, mouseY, partialTicks);
 		font.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
@@ -116,20 +119,6 @@ public class GuiMRAT extends ContainerScreen<ContainerGeneric>{
 
 			font.drawString(line, xSize / 2 - font.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}
-	}
-
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
-		renderBackground();
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	protected void actionPerformed(GuiButtonClick button){

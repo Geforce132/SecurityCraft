@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
@@ -20,11 +21,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TileEntityIMS extends CustomizableSCTE {
+public class TileEntityIMS extends CustomizableSCTE implements INamedContainerProvider {
 
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
@@ -219,6 +225,18 @@ public class TileEntityIMS extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
+	}
+
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	{
+		return new ContainerTEGeneric(SCContent.cTypeIMS, windowId, world, pos);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return new TranslationTextComponent(SCContent.ims.getTranslationKey());
 	}
 
 	public static enum EnumIMSTargetingMode {

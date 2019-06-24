@@ -3,30 +3,32 @@ package net.geforcemods.securitycraft.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiKeycardSetup extends ContainerScreen<ContainerGeneric>{
+public class GuiKeycardSetup extends ContainerScreen<ContainerTEGeneric>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private TileEntityKeycardReader keypadInventory;
+	private TileEntityKeycardReader te;
 	private GuiButtonClick lvlOfSecurityButton;
 	private GuiButtonClick requiresExactCardButton;
 	private boolean requiresExactCard = false;
 	private int lvlOfSecurity = 0;
 
-	public GuiKeycardSetup(TileEntityKeycardReader tile_entity) {
-		super(new ContainerGeneric());
-		keypadInventory = tile_entity;
+	public GuiKeycardSetup(ContainerTEGeneric container, PlayerInventory inv, ITextComponent name) {
+		super(container, inv, name);
+		te = (TileEntityKeycardReader)container.te;
 	}
 
 	@Override
@@ -94,10 +96,10 @@ public class GuiKeycardSetup extends ContainerScreen<ContainerGeneric>{
 	}
 
 	private void saveLvls() {
-		keypadInventory.setPassword(String.valueOf(lvlOfSecurity));
-		keypadInventory.setRequiresExactKeycard(requiresExactCard);
+		te.setPassword(String.valueOf(lvlOfSecurity));
+		te.setRequiresExactKeycard(requiresExactCard);
 
-		SecurityCraft.channel.sendToServer(new SetKeycardLevel(keypadInventory.getPos().getX(), keypadInventory.getPos().getY(), keypadInventory.getPos().getZ(), lvlOfSecurity, requiresExactCard));
+		SecurityCraft.channel.sendToServer(new SetKeycardLevel(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), lvlOfSecurity, requiresExactCard));
 
 		Minecraft.getInstance().player.closeScreen();
 	}

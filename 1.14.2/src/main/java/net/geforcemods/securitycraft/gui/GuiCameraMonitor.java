@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
@@ -17,17 +16,18 @@ import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
-public class GuiCameraMonitor extends ContainerScreen<ContainerGeneric> {
+public class GuiCameraMonitor extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 
@@ -46,7 +46,7 @@ public class GuiCameraMonitor extends ContainerScreen<ContainerGeneric> {
 	private int page = 1;
 
 	public GuiCameraMonitor(PlayerInventory inventory, ItemCameraMonitor item, CompoundNBT itemNBTTag) {
-		super(new ContainerGeneric());
+		super(new TranslationTextComponent(SCContent.cameraMonitor.getTranslationKey()));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
@@ -137,6 +137,13 @@ public class GuiCameraMonitor extends ContainerScreen<ContainerGeneric> {
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
+		renderBackground();
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = width / 2;
+		int startY = height / 2;
+		this.blit(startX, startY, 0, 0, width, height);
+
 		super.render(mouseX, mouseY, partialTicks);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
@@ -147,6 +154,8 @@ public class GuiCameraMonitor extends ContainerScreen<ContainerGeneric> {
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
 					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
 			}
+
+		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), startX - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
 	protected void actionPerformed(GuiButtonClick button) {
@@ -176,21 +185,6 @@ public class GuiCameraMonitor extends ContainerScreen<ContainerGeneric> {
 			button.active = false;
 			cameraButtons[(camID - 1) % 10].active = false;
 		}
-	}
-
-	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, 6, 4210752);
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		renderBackground();
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

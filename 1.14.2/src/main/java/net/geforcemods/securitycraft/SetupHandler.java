@@ -47,7 +47,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGla
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStairs;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemAdminTool;
 import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
@@ -343,12 +342,12 @@ public class SetupHandler
 		SCContent.fLavaBucket = new BucketItem(SCContent.fakeLava, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava"));
 		SCContent.universalBlockModifier = new Item(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "universal_block_modifier"));
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "redstone_module"));
-		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "whitelist_module"));
-		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true, true, GuiHandler.MODULES).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "blacklist_module"));
+		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true, true).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "whitelist_module"));
+		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true, true).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "blacklist_module"));
 		SCContent.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "harming_module"));
 		SCContent.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "smart_module"));
 		SCContent.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "storage_module"));
-		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE, 0, 1).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module"));
+		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false, true, 0, 1).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module"));
 		SCContent.wireCutters = new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "wire_cutters"));
 		SCContent.keyPanel = new ItemKeyPanel().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_item"));
 		SCContent.adminTool = new ItemAdminTool().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "admin_tool"));

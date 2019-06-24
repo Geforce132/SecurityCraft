@@ -6,15 +6,21 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TileEntityLogger extends TileEntityOwnable {
+public class TileEntityLogger extends TileEntityOwnable implements INamedContainerProvider {
 
 	public String[] players = new String[100];
 
@@ -98,4 +104,15 @@ public class TileEntityLogger extends TileEntityOwnable {
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
 	}
 
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	{
+		return new ContainerTEGeneric(SCContent.cTypeUsernameLogger, windowId, world, pos);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return new TranslationTextComponent(SCContent.usernameLogger.getTranslationKey());
+	}
 }

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
@@ -12,7 +13,8 @@ public class ContainerDisguiseModule extends Container {
 
 	private ModuleInventory inventory;
 
-	public ContainerDisguiseModule(PlayerEntity player, PlayerInventory playerInventory, ModuleInventory moduleInventory) {
+	public ContainerDisguiseModule(int windowId, PlayerInventory playerInventory, ModuleInventory moduleInventory) {
+		super(SCContent.cTypeDisguiseModule, windowId);
 		inventory = moduleInventory;
 		addSlot(new AddonSlot(inventory, 0, 79, 20));
 

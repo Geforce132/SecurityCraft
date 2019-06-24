@@ -5,17 +5,21 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
-import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.BaseInteractionObject;
+import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
+public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected, INamedContainerProvider {
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
@@ -69,7 +73,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	@Override
 	public void openPasswordGUI(PlayerEntity player) {
 		if(getPassword() == null && player instanceof ServerPlayerEntity)
-			NetworkHooks.openGui((ServerPlayerEntity)player, new BaseInteractionObject(GuiHandler.SETUP_KEYCARD_READER), pos);
+			NetworkHooks.openGui((ServerPlayerEntity)player, this, pos);
 	}
 
 	@Override
@@ -97,4 +101,15 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 		return null;
 	}
 
+	@Override
+	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+	{
+		return new ContainerTEGeneric(SCContent.cTypeKeycardSetup, windowId, world, pos);
+	}
+
+	@Override
+	public ITextComponent getDisplayName()
+	{
+		return new TranslationTextComponent(SCContent.keycardReader.getTranslationKey());
+	}
 }

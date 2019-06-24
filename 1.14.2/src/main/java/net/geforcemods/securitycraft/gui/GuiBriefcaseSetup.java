@@ -13,8 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -28,8 +30,8 @@ public class GuiBriefcaseSetup extends ContainerScreen<ContainerGeneric> {
 	private boolean flag = false;
 	private Button saveAndContinueButton;
 
-	public GuiBriefcaseSetup() {
-		super(new ContainerGeneric());
+	public GuiBriefcaseSetup(ContainerGeneric container, PlayerInventory inv, ITextComponent text) {
+		super(container, inv, text);
 	}
 
 	@Override
@@ -124,7 +126,7 @@ public class GuiBriefcaseSetup extends ContainerScreen<ContainerGeneric> {
 
 					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
 					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
-					SecurityCraft.channel.sendToServer(new OpenGui(GuiHandler.BRIEFCASE_INSERT, Minecraft.getInstance().player.getPosition()));
+					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition()));
 				}
 		}
 	}

@@ -36,6 +36,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -73,9 +74,15 @@ public class SecurityCraft {
 		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerPackets();
 		KeycardConditions.registerAll();
+		proxy.registerScreens();
 	}
 
 	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
+	@SubscribeEvent
+	public static void onFMLClientSetup(FMLClientSetupEvent event)
+	{
+		proxy.registerScreens();
+	}
 
 	@SubscribeEvent
 	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3

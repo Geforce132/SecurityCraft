@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -11,9 +10,9 @@ import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,14 +23,12 @@ public class GuiInventoryScanner extends ContainerScreen<ContainerInventoryScann
 	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
 
 	private TileEntityInventoryScanner tileEntity;
-	private PlayerEntity playerObj;
 	private boolean hasStorageModule = false;
 
-	public GuiInventoryScanner(IInventory inventory, TileEntityInventoryScanner te, PlayerEntity player){
-		super(new ContainerInventoryScanner(inventory, te));
-		tileEntity = te;
-		playerObj = player;
-		hasStorageModule = ((CustomizableSCTE) te).hasModule(EnumCustomModules.STORAGE);
+	public GuiInventoryScanner(ContainerInventoryScanner container, PlayerInventory inv, ITextComponent name){
+		super(container, inv, name);
+		tileEntity = container.te;
+		hasStorageModule = tileEntity.hasModule(EnumCustomModules.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;
@@ -46,7 +43,7 @@ public class GuiInventoryScanner extends ContainerScreen<ContainerInventoryScann
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		if(tileEntity.getOwner().isOwner(playerObj))
+		if(tileEntity.getOwner().isOwner(minecraft.player))
 			addButton(new GuiButtonClick(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getScanType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone"), this::actionPerformed));
 	}
 
@@ -111,9 +108,9 @@ public class GuiInventoryScanner extends ContainerScreen<ContainerInventoryScann
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		font.drawString("Prohibited Items", 8, 6, 4210752);
-		font.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
+		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
 
-		if(hasStorageModule && tileEntity.getOwner().isOwner(playerObj))
+		if(hasStorageModule && tileEntity.getOwner().isOwner(minecraft.player))
 			font.drawString("Storage", 183, 6, 4210752);
 
 		font.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 93, 4210752);

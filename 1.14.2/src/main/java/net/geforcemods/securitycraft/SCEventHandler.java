@@ -15,15 +15,14 @@ import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.TEInteractionObject;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
@@ -38,7 +37,10 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -52,6 +54,7 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
@@ -155,7 +158,21 @@ public class SCEventHandler {
 					}
 
 					if(event.getEntityPlayer() instanceof ServerPlayerEntity)
-						NetworkHooks.openGui((ServerPlayerEntity)event.getEntityPlayer(), new TEInteractionObject(GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos()), event.getPos());
+					{
+						NetworkHooks.openGui((ServerPlayerEntity)event.getEntityPlayer(), new INamedContainerProvider() {
+							@Override
+							public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+							{
+								return new ContainerCustomizeBlock(windowId, world, event.getPos(), inv);
+							}
+
+							@Override
+							public ITextComponent getDisplayName()
+							{
+								return new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey());
+							}
+						}, event.getPos());
+					}
 
 					return;
 				}

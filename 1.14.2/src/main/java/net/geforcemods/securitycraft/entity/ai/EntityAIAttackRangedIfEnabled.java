@@ -54,7 +54,7 @@ public class EntityAIAttackRangedIfEnabled extends Goal
 	{
 		double targetDistance = sentry.getDistanceSq(attackTarget.posX, attackTarget.getBoundingBox().minY, attackTarget.posZ);
 
-		sentry.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+		sentry.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
 		if(--rangedAttackTime == 0)
 		{

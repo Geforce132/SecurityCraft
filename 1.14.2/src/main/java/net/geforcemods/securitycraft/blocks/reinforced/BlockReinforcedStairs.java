@@ -218,7 +218,7 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	{
 		Direction direction = ctx.getFace();
 		IFluidState ifluidstate = ctx.getWorld().getFluidState(ctx.getPos());
-		BlockState BlockState = getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, direction != Direction.DOWN && (direction == Direction.UP || !(ctx.func_221532_j().y > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+		BlockState BlockState = getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, direction != Direction.DOWN && (direction == Direction.UP || !(ctx.getHitVec().y > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
 		return BlockState.with(SHAPE, func_208064_n(BlockState, ctx.getWorld(), ctx.getPos()));
 	}
 

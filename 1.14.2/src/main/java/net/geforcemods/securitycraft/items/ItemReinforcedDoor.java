@@ -31,7 +31,7 @@ public class ItemReinforcedDoor extends Item
 	@Override
 	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.func_221532_j().x, ctx.func_221532_j().y, ctx.func_221532_j().z, ctx);
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, ItemUseContext ctx)
@@ -79,8 +79,8 @@ public class ItemReinforcedDoor extends Item
 	{
 		BlockPos left = pos.offset(facing.rotateY());
 		BlockPos right = pos.offset(facing.rotateYCCW());
-		int rightNormalCubeAmount = (world.getBlockState(right).isNormalCube() ? 1 : 0) + (world.getBlockState(right.up()).isNormalCube() ? 1 : 0);
-		int leftNormalCubeAmount = (world.getBlockState(left).isNormalCube() ? 1 : 0) + (world.getBlockState(left.up()).isNormalCube() ? 1 : 0);
+		int rightNormalCubeAmount = (world.getBlockState(right).isNormalCube(world, pos) ? 1 : 0) + (world.getBlockState(right.up()).isNormalCube(world, pos) ? 1 : 0);
+		int leftNormalCubeAmount = (world.getBlockState(left).isNormalCube(world, pos) ? 1 : 0) + (world.getBlockState(left.up()).isNormalCube(world, pos) ? 1 : 0);
 		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.up()).getBlock() == door;
 		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.up()).getBlock() == door;
 

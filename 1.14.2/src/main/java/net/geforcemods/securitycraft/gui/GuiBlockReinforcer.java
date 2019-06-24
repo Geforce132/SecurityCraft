@@ -6,7 +6,9 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -15,9 +17,9 @@ public class GuiBlockReinforcer extends ContainerScreen<ContainerBlockReinforcer
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/customize1.png");
 
-	public GuiBlockReinforcer(Container container)
+	public GuiBlockReinforcer(ContainerBlockReinforcer container, PlayerInventory inv, ITextComponent name)
 	{
-		super(container);
+		super(container, inv, name);
 	}
 
 	@Override

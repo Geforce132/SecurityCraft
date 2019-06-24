@@ -18,7 +18,7 @@ archivesBaseName = 'securitycraft'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190609-1.14.2'
+    mappings channel: 'snapshot', version: '20190624-1.14.2'
 	
     runs {
         client = {
@@ -48,17 +48,17 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-//    maven { // JEI fallback
-//        name = "ModMaven"
-//        url = "https://modmaven.k-4u.nl"
-//    }
+    maven { // JEI fallback
+        name = "ModMaven"
+        url = "https://modmaven.k-4u.nl"
+    }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.2-26.0.25'
-	compile "mcp.mobius.waila:Hwyla:1.10.3-B61_1.13.2"
+    minecraft 'net.minecraftforge:forge:1.14.2-26.0.63'
+	compile "mcp.mobius.waila:Hwyla:1.10.3-B64_1.14.2"
 	compile "mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.30-6"
-//    compile "mezz.jei:jei-1.13.2:5.0.0.12:api"
+    compile "mezz.jei:jei-1.14.2:6.0.0.2:api"
 }
 
 jar {
