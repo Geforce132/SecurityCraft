@@ -61,7 +61,7 @@ public class ModelSecurityCamera extends EntityModel<EntitySecurityCamera> {
 	}
 
 	@Override
-	public void render(EntitySecurityCamera entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void func_78088_a(EntitySecurityCamera entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		cameraRotationPoint.render(scale);
 		shape1.render(scale);
 		shape2.render(scale);

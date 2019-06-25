@@ -55,7 +55,7 @@ public class ModelSentry extends EntityModel<EntitySentry>
 	}
 
 	@Override
-	public void render(EntitySentry entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+	public void func_78088_a(EntitySentry entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
 	{
 		base.render(scale);
 		GlStateManager.pushMatrix();

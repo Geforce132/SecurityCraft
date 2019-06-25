@@ -23,18 +23,18 @@ public class RenderSentry extends EntityRenderer<EntitySentry>
 	}
 
 	@Override
-	public void doRender(EntitySentry entity, double x, double y, double z, float entityYaw, float partialTicks)
+	public void func_76986_a(EntitySentry entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		GlStateManager.pushMatrix();
 		GlStateManager.translated(x, y + 1.5F, z);
 		GlStateManager.scalef(-1, -1, 1); //rotate model rightside up
 		bindEntityTexture(entity);
-		MODEL.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+		MODEL.func_78088_a(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GlStateManager.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySentry entity)
+	protected ResourceLocation func_110775_a(EntitySentry entity)
 	{
 		return TEXTURE;
 	}

@@ -23,19 +23,19 @@ public class RenderIMSBomb extends EntityRenderer<EntityIMSBomb> {
 	}
 
 	@Override
-	public void doRender(EntityIMSBomb imsBomb, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void func_76986_a(EntityIMSBomb imsBomb, double x, double y, double z, float entityYaw, float partialTicks) {
 		GlStateManager.pushMatrix();
 
 		GlStateManager.translatef((float)x - 0.1F, (float)y, (float)z - 0.1F);
 		bindEntityTexture(imsBomb);
 		GlStateManager.scalef(1.4F, 1.4F, 1.4F);
-		modelBomb.render(imsBomb, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		modelBomb.func_78088_a(imsBomb, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GlStateManager.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityIMSBomb imsBomb) {
+	protected ResourceLocation func_110775_a(EntityIMSBomb imsBomb) {
 		return TEXTURE;
 	}
 }

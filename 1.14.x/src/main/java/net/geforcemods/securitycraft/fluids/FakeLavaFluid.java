@@ -21,6 +21,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -82,7 +83,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public void randomTick(World world, BlockPos pos, IFluidState state, Random random)
 	{
-		if (world.getGameRules().getBoolean("doFireTick"))
+		if (world.getGameRules().getBoolean(GameRules.DO_FIRE_TICK))
 		{
 			int i = random.nextInt(3);
 

@@ -37,7 +37,7 @@ public class PlayerUtils{
 
 			return null;
 		}else{
-			List<?> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
+			List<?> players = ServerLifecycleHooks.getCurrentServer().func_184103_al().getPlayers();
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
@@ -65,7 +65,7 @@ public class PlayerUtils{
 			return false;
 		}
 		else
-			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
+			return (ServerLifecycleHooks.getCurrentServer().func_184103_al().getPlayerByUsername(name) != null);
 	}
 
 	public static void sendMessageToPlayer(PlayerEntity player, String prefix, String text, TextFormatting color){

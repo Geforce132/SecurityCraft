@@ -24,7 +24,7 @@ public class RenderBouncingBetty extends EntityRenderer<EntityBouncingBetty> {
 	}
 
 	@Override
-	public void doRender(EntityBouncingBetty entity, double x, double y, double z, float entityYaw, float partialTicks)
+	public void func_76986_a(EntityBouncingBetty entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 		GlStateManager.pushMatrix();
@@ -66,11 +66,11 @@ public class RenderBouncingBetty extends EntityRenderer<EntityBouncingBetty> {
 		}
 
 		GlStateManager.popMatrix();
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+		super.func_76986_a(entity, x, y, z, entityYaw, partialTicks);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBouncingBetty entity)
+	protected ResourceLocation func_110775_a(EntityBouncingBetty entity)
 	{
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}

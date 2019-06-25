@@ -16,14 +16,14 @@ public class Owner {
 	public static final IDataSerializer<Owner> SERIALIZER = new IDataSerializer<Owner>()
 	{
 		@Override
-		public void write(PacketBuffer buf, Owner value)
+		public void func_187160_a(PacketBuffer buf, Owner value)
 		{
 			buf.writeString(value.getName());
 			buf.writeString(value.getUUID());
 		}
 
 		@Override
-		public Owner read(PacketBuffer buf)
+		public Owner func_187159_a(PacketBuffer buf)
 		{
 			String name = buf.readString(Integer.MAX_VALUE / 4);
 			String uuid = buf.readString(Integer.MAX_VALUE / 4);
@@ -38,7 +38,7 @@ public class Owner {
 		}
 
 		@Override
-		public Owner copyValue(Owner value)
+		public Owner func_192717_a(Owner value)
 		{
 			return new Owner(value.getName(), value.getUUID());
 		}

@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[26,)" #mandatory
+loaderVersion="[27,)" #mandatory
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 displayURL="http://minecraft.curseforge.com/projects/security-craft"
 logoFile="scLogo.png"
@@ -25,7 +25,7 @@ Message of the update: Finally! Cameras!
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[26,)"
+    versionRange="[27,)"
     ordering="NONE"
     side="BOTH"
 

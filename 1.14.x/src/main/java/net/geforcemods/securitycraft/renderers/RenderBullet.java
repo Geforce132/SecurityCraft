@@ -23,18 +23,18 @@ public class RenderBullet extends EntityRenderer<EntityBullet>
 	}
 
 	@Override
-	public void doRender(EntityBullet entity, double x, double y, double z, float entityYaw, float partialTicks)
+	public void func_76986_a(EntityBullet entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		GlStateManager.pushMatrix();
 		GlStateManager.translated(x, y, z);
 		GlStateManager.rotatef(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
 		bindEntityTexture(entity);
-		MODEL.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+		MODEL.func_78088_a(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		GlStateManager.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityBullet entity)
+	protected ResourceLocation func_110775_a(EntityBullet entity)
 	{
 		return TEXTURE;
 	}
