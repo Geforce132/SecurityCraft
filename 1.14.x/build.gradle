@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.3-27.0.2'
+    minecraft 'net.minecraftforge:forge:1.14.3-27.0.3'
 
     compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.3-B64_1.14.2") {
         transitive = false

@@ -77,6 +77,10 @@
 	- Fix: Several client and server crashes
 	- Removed: Ability to make a portal out of reinforced obsidian
 
+1.14.x versions:
+- v1.8.12-beta1
+	- Change: Fake Water/Lava recipes are back to how they were in earlier editions
+
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 
 - New: Reinforced Gravel
