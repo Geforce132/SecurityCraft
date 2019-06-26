@@ -20,6 +20,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.FurnaceTileEntity;
@@ -29,7 +30,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, INamedContainerProvider {
@@ -288,7 +288,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			return false;
 		else
 		{
-			ItemStack smeltResult = world.getRecipeManager().getResult(this, world, VanillaRecipeTypes.SMELTING);
+			ItemStack smeltResult = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, world).get().getRecipeOutput();
 			if (smeltResult.isEmpty()) return false;
 			if (furnaceItemStacks.get(2).isEmpty()) return true;
 			if (!furnaceItemStacks.get(2).isItemEqual(smeltResult)) return false;
@@ -301,7 +301,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		if (canSmelt())
 		{
-			ItemStack smeltResult = world.getRecipeManager().getResult(this, world, VanillaRecipeTypes.SMELTING);
+			ItemStack smeltResult = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, world).get().getRecipeOutput();
 
 			if (furnaceItemStacks.get(2).isEmpty())
 				furnaceItemStacks.set(2, smeltResult.copy());

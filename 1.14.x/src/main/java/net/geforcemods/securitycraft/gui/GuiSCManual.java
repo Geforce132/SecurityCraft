@@ -37,7 +37,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.crafting.VanillaRecipeTypes;
 import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
@@ -281,7 +280,7 @@ public class GuiSCManual extends Screen {
 		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
 			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		else
-			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes(VanillaRecipeTypes.CRAFTING))
+			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 			{
 				if(object instanceof ShapedRecipe){
 					ShapedRecipe recipe = (ShapedRecipe) object;
