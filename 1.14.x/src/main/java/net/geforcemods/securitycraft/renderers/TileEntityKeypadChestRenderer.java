@@ -40,7 +40,7 @@ public class TileEntityKeypadChestRenderer extends TileEntityRenderer<TileEntity
 	}
 
 	@Override
-	public void func_199341_a(TileEntityKeypadChest tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TileEntityKeypadChest tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
 		GlStateManager.enableDepthTest();
 		GlStateManager.depthFunc(515);
 		GlStateManager.depthMask(true);

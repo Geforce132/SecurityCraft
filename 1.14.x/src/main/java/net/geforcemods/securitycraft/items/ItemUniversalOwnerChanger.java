@@ -94,10 +94,10 @@ public class ItemUniversalOwnerChanger extends Item
 			if(te instanceof IOwnable)
 				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-			world.getServer().func_184103_al().sendPacketToAllPlayers(te.getUpdatePacket());
+			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
 			if(door)
-				world.getServer().func_184103_al().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
+				world.getServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
 
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return ActionResultType.SUCCESS;

@@ -23,7 +23,7 @@ public class ModelIMSBomb extends EntityModel<EntityIMSBomb> {
 	}
 
 	@Override
-	public void func_78088_a(EntityIMSBomb entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(EntityIMSBomb entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		shape1.render(scale);
 	}
 }

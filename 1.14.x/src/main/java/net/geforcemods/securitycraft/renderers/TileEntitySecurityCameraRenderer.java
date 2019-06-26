@@ -24,7 +24,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
 
 	@Override
-	public void func_199341_a(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
+	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6) {
 		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
 			return;
 
@@ -67,7 +67,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntityRenderer<TileEnt
 
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 
-		modelSecurityCamera.func_78088_a(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();

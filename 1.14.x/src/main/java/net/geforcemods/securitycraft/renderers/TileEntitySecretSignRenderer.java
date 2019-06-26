@@ -26,7 +26,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 	private static final SignModel model = new SignModel();
 
 	@Override
-	public void func_199341_a(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
+	public void render(TileEntitySecretSign te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
 		BlockState state = te.getBlockState();
 		FontRenderer font = getFontRenderer();

@@ -56,7 +56,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				}
 			}
 
-			ServerPlayerEntity owner = world.getServer().func_184103_al().getPlayerByUsername(getOwner().getName());
+			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
 			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().getFormattedText().toLowerCase()))
 				return false;

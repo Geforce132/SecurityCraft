@@ -21,7 +21,7 @@ public class ModelBullet extends EntityModel<EntityBullet>
 	}
 
 	@Override
-	public void func_78088_a(EntityBullet entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+	public void render(EntityBullet entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
 	{
 		bullet.render(scale);
 	}

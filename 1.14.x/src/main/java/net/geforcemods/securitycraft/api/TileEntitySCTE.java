@@ -290,7 +290,7 @@ public class TileEntitySCTE extends TileEntity implements ITickableTileEntity, I
 		if(world.isRemote)
 			ClientUtils.syncTileEntity(this);
 		else
-			ServerLifecycleHooks.getCurrentServer().func_184103_al().sendPacketToAllPlayers(getUpdatePacket());
+			ServerLifecycleHooks.getCurrentServer().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());
 	}
 
 	/**
