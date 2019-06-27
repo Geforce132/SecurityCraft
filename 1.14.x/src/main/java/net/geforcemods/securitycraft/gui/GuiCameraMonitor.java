@@ -42,6 +42,7 @@ public class GuiCameraMonitor extends Screen {
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
 	private int[] cameraViewDim = new int[10];
+	private int xSize = 176, ySize = 166;
 
 	private int page = 1;
 
@@ -140,11 +141,13 @@ public class GuiCameraMonitor extends Screen {
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = width / 2;
-		int startY = height / 2;
-		this.blit(startX, startY, 0, 0, width, height);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		this.blit(startX, startY, 0, 0, xSize, ySize);
 
 		super.render(mouseX, mouseY, partialTicks);
+
+		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
@@ -154,8 +157,6 @@ public class GuiCameraMonitor extends Screen {
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
 					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
 			}
-
-		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), startX - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, 6, 4210752);
 	}
 
 	protected void actionPerformed(GuiButtonClick button) {

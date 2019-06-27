@@ -97,7 +97,7 @@ public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = ClientUtils.localize(tileEntity.getCustomSCName().getFormattedText());
+		String s = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
 		font.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
 	}

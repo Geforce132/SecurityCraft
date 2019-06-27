@@ -58,11 +58,13 @@ public class GuiMRAT extends Screen{
 			boolean active = block instanceof IExplosive && ((IExplosive) block).isActive(minecraft.world, minePos);
 			boolean defusable = (block instanceof IExplosive && ((IExplosive) block).isDefusable());
 			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
+			int startX = (width - xSize) / 2;
+			int startY = (height - ySize) / 2;
 
 			for(int j = 0; j < 4; j++)
 			{
-				int btnX = j * padding + 154;
-				int btnY = y - 48;
+				int btnX = startX + j * padding + 154;
+				int btnY = startY + y - 48;
 
 				switch(j)
 				{
@@ -105,7 +107,7 @@ public class GuiMRAT extends Screen{
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
-		font.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), -25 + 13, 0xFF0000);
+		font.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -117,7 +119,7 @@ public class GuiMRAT extends Screen{
 			else
 				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			font.drawString(line, xSize / 2 - font.getStringWidth(line) + 25, i * 30 + 13, 4210752);
+			font.drawString(line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
 		}
 	}
 
@@ -195,5 +197,11 @@ public class GuiMRAT extends Screen{
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean isPauseScreen()
+	{
+		return false;
 	}
 }

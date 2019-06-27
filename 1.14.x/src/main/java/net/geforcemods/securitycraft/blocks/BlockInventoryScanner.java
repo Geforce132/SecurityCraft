@@ -50,39 +50,6 @@ public class BlockInventoryScanner extends ContainerBlock {
 		return BlockRenderType.MODEL;
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
-	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
-	{
-		super.onBlockAdded(state, world, pos, oldState, flag);
-		setDefaultFacing(world, pos, state);
-	}
-
-	private void setDefaultFacing(World world, BlockPos pos, BlockState state)
-	{
-		if (!world.isRemote)
-		{
-			//			BlockState north = world.getBlockState(pos.north());
-			//			BlockState south = world.getBlockState(pos.south());
-			//			BlockState west = world.getBlockState(pos.west());
-			//			BlockState east = world.getBlockState(pos.east());
-			Direction facing = state.get(FACING);
-
-			if (facing == Direction.NORTH)// && north.isFullCube() && !south.isFullCube())
-				facing = Direction.SOUTH;
-			else if (facing == Direction.SOUTH)// && south.isFullCube() && !north.isFullCube())
-				facing = Direction.NORTH;
-			else if (facing == Direction.WEST)// && west.isFullCube() && !east.isFullCube())
-				facing = Direction.EAST;
-			else if (facing == Direction.EAST)// && east.isFullCube() && !west.isFullCube())
-				facing = Direction.WEST;
-
-			world.setBlockState(pos, state.with(FACING, facing), 2);
-		}
-	}
-
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
@@ -113,23 +80,6 @@ public class BlockInventoryScanner extends ContainerBlock {
 
 		if(world.isRemote)
 			return;
-
-		//		BlockState north = world.getBlockState(pos.north());
-		//		BlockState south = world.getBlockState(pos.south());
-		//		BlockState west = world.getBlockState(pos.west());
-		//		BlockState east = world.getBlockState(pos.east());
-		Direction facing = state.get(FACING);
-
-		if (facing == Direction.NORTH)// && north.isFullCube() && !south.isFullCube())
-			facing = Direction.SOUTH;
-		else if (facing == Direction.SOUTH)// && south.isFullCube() && !north.isFullCube())
-			facing = Direction.NORTH;
-		else if (facing == Direction.WEST)// && west.isFullCube() && !east.isFullCube())
-			facing = Direction.EAST;
-		else if (facing == Direction.EAST)// && east.isFullCube() && !west.isFullCube())
-			facing = Direction.WEST;
-
-		world.setBlockState(pos, state.with(FACING, facing), 2);
 
 		checkAndPlaceAppropriately(world, pos);
 

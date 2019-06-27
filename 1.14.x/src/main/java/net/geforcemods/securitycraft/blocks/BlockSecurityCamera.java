@@ -89,7 +89,7 @@ public class BlockSecurityCamera extends ContainerBlock{
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		Direction dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
+		Direction dir = state.get(FACING);
 
 		if(dir == Direction.SOUTH)
 			return SHAPE_SOUTH;

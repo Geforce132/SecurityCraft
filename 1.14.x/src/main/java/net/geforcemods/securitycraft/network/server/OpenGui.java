@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -17,48 +16,33 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class OpenGui {
 
 	private ResourceLocation id;
 	private int dimId;
-	private int x;
-	private int y;
-	private int z;
+	private BlockPos pos;
 
 	public OpenGui(){}
 
 	public OpenGui(ResourceLocation id, int dimId, BlockPos pos){
-		this(id, dimId, pos.getX(), pos.getY(), pos.getZ());
-	}
-
-
-	public OpenGui(ResourceLocation id, int dimId, int x, int y, int z){
 		this.id = id;
 		this.dimId = dimId;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.pos = pos;
 	}
 
 	public void toBytes(PacketBuffer buf) {
-		buf.writeString(id.toString());
+		buf.writeResourceLocation(id);
 		buf.writeInt(dimId);
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
+		buf.writeBlockPos(pos);
 	}
 
 	public void fromBytes(PacketBuffer buf) {
-		id = new ResourceLocation(buf.readString(Integer.MAX_VALUE / 4));
+		id = buf.readResourceLocation();
 		dimId = buf.readInt();
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
+		pos = buf.readBlockPos();
 	}
 
 	public static void encode(OpenGui message, PacketBuffer packet)
@@ -78,9 +62,7 @@ public class OpenGui {
 	{
 		ctx.get().enqueueWork(() -> {
 			ResourceLocation id = message.id;
-			int x = message.x;
-			int y = message.y;
-			int z = message.z;
+			BlockPos pos = message.pos;
 			ServerPlayerEntity player = ctx.get().getSender();
 
 			if(id.equals(SCContent.cTypeBriefcaseInventory.getRegistryName()))
@@ -97,7 +79,7 @@ public class OpenGui {
 					{
 						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
 					}
-				}, new BlockPos(x, y, z));
+				}, pos);
 			}
 			else if(id.equals(SCContent.cTypeBriefcaseSetup.getRegistryName()))
 			{
@@ -113,7 +95,7 @@ public class OpenGui {
 					{
 						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
 					}
-				}, new BlockPos(x, y, z));
+				}, pos);
 			}
 			else if(id.equals(SCContent.cTypeBriefcase.getRegistryName()))
 			{
@@ -129,23 +111,7 @@ public class OpenGui {
 					{
 						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
 					}
-				}, new BlockPos(x, y, z));
-			}
-			else if(id.equals(SCContent.cTypeCheckPassword.getRegistryName()))
-			{
-				NetworkHooks.openGui(player, new INamedContainerProvider() {
-					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
-						return new ContainerTEGeneric(SCContent.cTypeCheckPassword, windowId, ServerLifecycleHooks.getCurrentServer().getWorld(DimensionType.getById(message.dimId)), new BlockPos(x, y, z));
-					}
-
-					@Override
-					public ITextComponent getDisplayName()
-					{
-						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
-					}
-				}, new BlockPos(x, y, z));
+				}, pos);
 			}
 		});
 

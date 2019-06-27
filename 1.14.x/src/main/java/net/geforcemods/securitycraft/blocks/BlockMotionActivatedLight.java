@@ -61,10 +61,6 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public int getLightValue(BlockState state) {
-		if(state.getBlock() != SCContent.motionActivatedLight)
-			return 0; //Weird if statement I had to include because Waila kept
-		//crashing if I looked at one of these lights then looked away quickly.
-
 		return state.get(LIT) ? 15 : 0;
 	}
 

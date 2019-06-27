@@ -256,7 +256,7 @@ public class BlockInventoryScannerField extends ContainerBlock implements IInter
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		Direction facing = source.getBlockState(pos).get(FACING);
+		Direction facing = state.get(FACING);
 
 		if (facing == Direction.EAST || facing == Direction.WEST)
 			return SHAPE_EW; //ew

@@ -21,6 +21,7 @@ public class GuiEditModule extends Screen
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
 	private TextFieldWidget inputField;
+	private int xSize = 176, ySize = 166;
 
 	public GuiEditModule(ItemStack item)
 	{
@@ -58,13 +59,13 @@ public class GuiEditModule extends Screen
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = width / 2;
-		int startY = height / 2;
-		blit(startX, startY, 0, 0, width, height);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+		blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 		inputField.render(mouseX, mouseY, partialTicks);
-		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, 6, width, 4210752);
+		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override

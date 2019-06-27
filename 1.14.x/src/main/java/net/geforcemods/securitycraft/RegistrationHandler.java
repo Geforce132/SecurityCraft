@@ -296,7 +296,7 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
 	{
-		event.getRegistry().register(SCContent.eTypeBouncingBetty = (EntityType<EntityBouncingBetty>)EntityType.Builder.<EntityBouncingBetty>create(EntityBouncingBetty::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<EntityBouncingBetty>create(EntityBouncingBetty::new, EntityClassification.MISC)
 				.size(0.5F, 0.2F)
 				.setTrackingRange(128)
 				.setUpdateInterval(1)
@@ -304,7 +304,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new EntityBouncingBetty(SCContent.eTypeBouncingBetty, world))
 				.build(SecurityCraft.MODID + ":bouncingbetty")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
-		event.getRegistry().register(SCContent.eTypeTaserBullet = (EntityType<EntityTaserBullet>)EntityType.Builder.<EntityTaserBullet>create(EntityTaserBullet::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<EntityTaserBullet>create(EntityTaserBullet::new, EntityClassification.MISC)
 				.size(0.01F, 0.01F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
@@ -312,7 +312,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new EntityTaserBullet(SCContent.eTypeTaserBullet, world))
 				.build(SecurityCraft.MODID + ":taserbullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "taserbullet")));
-		event.getRegistry().register(SCContent.eTypeImsBomb = (EntityType<EntityIMSBomb>)EntityType.Builder.<EntityIMSBomb>create(EntityIMSBomb::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<EntityIMSBomb>create(EntityIMSBomb::new, EntityClassification.MISC)
 				.size(0.25F, 0.3F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
@@ -320,7 +320,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new EntityIMSBomb(SCContent.eTypeImsBomb, world))
 				.build(SecurityCraft.MODID + ":imsbomb")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "imsbomb")));
-		event.getRegistry().register(SCContent.eTypeSecurityCamera = (EntityType<EntitySecurityCamera>)EntityType.Builder.<EntitySecurityCamera>create(EntitySecurityCamera::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<EntitySecurityCamera>create(EntitySecurityCamera::new, EntityClassification.MISC)
 				.size(0.0001F, 0.0001F)
 				.setTrackingRange(256)
 				.setUpdateInterval(20)
@@ -328,7 +328,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new EntitySecurityCamera(SCContent.eTypeSecurityCamera, world))
 				.build(SecurityCraft.MODID + ":securitycamera")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
-		event.getRegistry().register(SCContent.eTypeSentry = (EntityType<EntitySentry>)EntityType.Builder.<EntitySentry>create(EntitySentry::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<EntitySentry>create(EntitySentry::new, EntityClassification.MISC)
 				.size(1.0F, 1.0F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
@@ -336,7 +336,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new EntitySentry(SCContent.eTypeSentry, world))
 				.build(SecurityCraft.MODID + ":sentry")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
-		event.getRegistry().register(SCContent.eTypeBullet = (EntityType<EntityBullet>)EntityType.Builder.<EntityBullet>create(EntityBullet::new, EntityClassification.MISC)
+		event.getRegistry().register(EntityType.Builder.<EntityBullet>create(EntityBullet::new, EntityClassification.MISC)
 				.size(0.15F, 0.1F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)

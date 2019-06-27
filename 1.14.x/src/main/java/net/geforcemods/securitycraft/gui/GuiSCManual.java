@@ -216,7 +216,7 @@ public class GuiSCManual extends Screen {
 	{
 		super.mouseScrolled(aDouble, p_mouseScrolled_3_, p_mouseScrolled_5_);
 
-		switch((int)Math.signum(aDouble))
+		switch((int)Math.signum(p_mouseScrolled_5_))
 		{
 			case -1: nextPage(); break;
 			case 1: previousPage(); break;

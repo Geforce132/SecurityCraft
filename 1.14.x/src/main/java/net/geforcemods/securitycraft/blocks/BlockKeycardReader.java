@@ -57,23 +57,6 @@ public class BlockKeycardReader extends BlockOwnable  {
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
-
-		//		BlockState north = world.getBlockState(pos.north());
-		//		BlockState south = world.getBlockState(pos.south());
-		//		BlockState west = world.getBlockState(pos.west());
-		//		BlockState east = world.getBlockState(pos.east());
-		Direction facing = state.get(FACING);
-
-		if (facing == Direction.NORTH)// && north.isFullCube() && !south.isFullCube())
-			facing = Direction.SOUTH;
-		else if (facing == Direction.SOUTH)// && south.isFullCube() && !north.isFullCube())
-			facing = Direction.NORTH;
-		else if (facing == Direction.WEST)// && west.isFullCube() && !east.isFullCube())
-			facing = Direction.EAST;
-		else if (facing == Direction.EAST)// && east.isFullCube() && !west.isFullCube())
-			facing = Direction.WEST;
-
-		world.setBlockState(pos, state.with(FACING, facing), 2);
 	}
 
 	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player) {

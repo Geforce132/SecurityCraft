@@ -162,34 +162,6 @@ public class BlockKeypad extends ContainerBlock implements IOverlayDisplay, IPas
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 	}
 
-	/**
-	 * Called whenever the block is added into the world. Args: world, x, y, z
-	 */
-	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
-	{
-		setDefaultFacing(world, pos, state);
-	}
-
-	private void setDefaultFacing(World world, BlockPos pos, BlockState state) {
-		//		BlockState north = world.getBlockState(pos.north());
-		//		BlockState south = world.getBlockState(pos.south());
-		//		BlockState west = world.getBlockState(pos.west());
-		//		BlockState east = world.getBlockState(pos.east());
-		Direction facing = state.get(FACING);
-
-		if (facing == Direction.NORTH)// && north.isFullCube() && !south.isFullCube())
-			facing = Direction.SOUTH;
-		else if (facing == Direction.SOUTH)// && south.isFullCube() && !north.isFullCube())
-			facing = Direction.NORTH;
-		else if (facing == Direction.WEST)// && west.isFullCube() && !east.isFullCube())
-			facing = Direction.EAST;
-		else if (facing == Direction.EAST)// && east.isFullCube() && !west.isFullCube())
-			facing = Direction.WEST;
-
-		world.setBlockState(pos, state.with(FACING, facing), 2);
-	}
-
 	@Override
 	public boolean canProvidePower(BlockState state){
 		return true;

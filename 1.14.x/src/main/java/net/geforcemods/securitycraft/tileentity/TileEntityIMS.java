@@ -84,8 +84,6 @@ public class TileEntityIMS extends CustomizableSCTE implements INamedContainerPr
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
 
-				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
-					continue;
 				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 

@@ -31,6 +31,6 @@ public class WorldUtils{
 	 * Args: Starting X, Y, Z, ending X, Y, Z.
 	 */
 	public static boolean isPathObstructed(Entity entity, World world, double x1, double y1, double z1, double x2, double y2, double z2) {
-		return world.rayTraceBlocks(new RayTraceContext(new Vec3d(x1, y1, z1), new Vec3d(x2, y2, z2), BlockMode.COLLIDER, FluidMode.NONE, entity)) != null;
+		return world.rayTraceBlocks(new RayTraceContext(new Vec3d(x1, y1, z1), new Vec3d(x2, y2, z2), BlockMode.OUTLINE, FluidMode.NONE, entity)) != null;
 	}
 }

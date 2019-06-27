@@ -78,6 +78,7 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		return avoxelshape;
 	}
 
+	@Override
 	public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state)
 	{
 		if(state.get(WATERLOGGED))
@@ -89,16 +90,19 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 			return Fluids.EMPTY;
 	}
 
+	@Override
 	public IFluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
+	@Override
 	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
 	{
 		return !state.get(WATERLOGGED) && fluid == Fluids.WATER;
 	}
 
+	@Override
 	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
 	{
 		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
@@ -186,26 +190,29 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		}
 	}
 
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
-	{
-		IBlockReader iblockreader = ctx.getWorld();
-		BlockPos blockpos = ctx.getPos();
-		IFluidState ifluidstate = ctx.getWorld().getFluidState(ctx.getPos());
-		return this.getDefaultState()
-				.with(NORTH, canPaneConnectTo(iblockreader, blockpos, Direction.NORTH))
-				.with(SOUTH, canPaneConnectTo(iblockreader, blockpos, Direction.SOUTH))
-				.with(WEST, canPaneConnectTo(iblockreader, blockpos, Direction.WEST))
-				.with(EAST, canPaneConnectTo(iblockreader, blockpos, Direction.EAST))
-				.with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		IBlockReader iblockreader = context.getWorld();
+		BlockPos blockpos = context.getPos();
+		IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+		BlockPos blockpos1 = blockpos.north();
+		BlockPos blockpos2 = blockpos.south();
+		BlockPos blockpos3 = blockpos.west();
+		BlockPos blockpos4 = blockpos.east();
+		BlockState blockstate = iblockreader.getBlockState(blockpos1);
+		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
+		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
+		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
+		return getDefaultState().with(NORTH, Boolean.valueOf(canAttachTo(blockstate, Block.hasSolidSide(blockstate, iblockreader, blockpos1, Direction.SOUTH)))).with(SOUTH, Boolean.valueOf(canAttachTo(blockstate1, Block.hasSolidSide(blockstate1, iblockreader, blockpos2, Direction.NORTH)))).with(WEST, Boolean.valueOf(canAttachTo(blockstate2, Block.hasSolidSide(blockstate2, iblockreader, blockpos3, Direction.EAST)))).with(EAST, Boolean.valueOf(canAttachTo(blockstate3, Block.hasSolidSide(blockstate3, iblockreader, blockpos4, Direction.WEST)))).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
 	}
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		if (state.get(WATERLOGGED))
+		if(state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 
-		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canPaneConnectTo(world, currentPos, facing))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canAttachTo(facingState, Block.hasSolidSide(facingState, world, facingPos, facing.getOpposite())))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -244,12 +251,5 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED);
-	}
-
-	private boolean canPaneConnectTo(IBlockReader world, BlockPos pos, Direction facing)
-	{
-		BlockPos offset = pos.offset(facing);
-		BlockState other = world.getBlockState(offset);
-		return other.canBeConnectedTo(world, offset, facing.getOpposite()) || getDefaultState().canBeConnectedTo(world, pos, facing);
 	}
 }

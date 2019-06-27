@@ -9,7 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.AbstractFireballEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -18,7 +18,7 @@ import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class EntityIMSBomb extends FireballEntity {
+public class EntityIMSBomb extends AbstractFireballEntity {
 
 	private String playerName = null;
 	private LivingEntity targetMob = null;
@@ -32,13 +32,13 @@ public class EntityIMSBomb extends FireballEntity {
 	}
 
 	public EntityIMSBomb(World world, PlayerEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(world, x, y, z, targetX, targetY, targetZ);
+		super(SCContent.eTypeImsBomb, x, y, z, targetX, targetY, targetZ, world);
 		playerName = targetEntity.getName().getFormattedText();
 		launchHeight = height;
 	}
 
 	public EntityIMSBomb(World world, LivingEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(world, targetEntity, targetX, targetY, targetZ);
+		super(SCContent.eTypeImsBomb, targetEntity, targetX, targetY, targetZ, world);
 		targetMob = targetEntity;
 		launchHeight = height;
 	}
