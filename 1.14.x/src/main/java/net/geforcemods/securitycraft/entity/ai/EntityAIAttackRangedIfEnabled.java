@@ -25,7 +25,7 @@ public class EntityAIAttackRangedIfEnabled extends Goal
 		attackIntervalMin = maxAttackTime;
 		maxRangedAttackTime = maxAttackTime;
 		attackRadius = maxAttackDistance;
-		setMutexFlags(EnumSet.of(Flag.MOVE));
+		setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
