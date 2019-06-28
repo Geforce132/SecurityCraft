@@ -10,7 +10,7 @@
            "conditions": [
             {
               "condition": "minecraft:block_state_property",
-              "block": "securitycraft:reinforced_iron_door",
+              "block": "securitycraft:iron_door_reinforced",
               "properties": {
                 "half": "lower"
               }

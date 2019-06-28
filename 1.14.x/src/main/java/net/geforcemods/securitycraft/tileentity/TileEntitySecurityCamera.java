@@ -17,7 +17,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 
 	public float cameraRotation = 0.0F;
 	public boolean addToRotation = true;
-	public boolean down = false;
+	public boolean down = false, downSet = false;
 	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
@@ -30,6 +30,12 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	@Override
 	public void tick(){
 		super.tick();
+
+		if(!downSet)
+		{
+			down = getBlockState().get(BlockSecurityCamera.FACING) == Direction.DOWN;
+			downSet = true;
+		}
 
 		if(!shouldRotateOption.asBoolean())
 		{
@@ -68,12 +74,5 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ rotationSpeedOption, shouldRotateOption, customRotationOption };
-	}
-
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
-		down = world.getBlockState(pos).get(BlockSecurityCamera.FACING) == Direction.DOWN;
 	}
 }

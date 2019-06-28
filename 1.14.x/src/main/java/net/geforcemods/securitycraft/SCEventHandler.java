@@ -31,7 +31,9 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -44,6 +46,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -142,7 +145,8 @@ public class SCEventHandler {
 
 			if(!world.isRemote){
 				TileEntity tileEntity = world.getTileEntity(event.getPos());
-				Block block = world.getBlockState(event.getPos()).getBlock();
+				BlockState state  = world.getBlockState(event.getPos());
+				Block block = state.getBlock();
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker) && handleCodebreaking(event)) {
 					event.setCanceled(true);
@@ -362,6 +366,16 @@ public class SCEventHandler {
 							BlockUtils.destroyBlock(world, pos, false);
 
 						BlockUtils.destroyBlock(world, originalPos, false);
+					}else if(block instanceof DoorBlock){
+						BlockPos pos = event.getPos();
+
+						if(state.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+							pos = pos.down();
+
+						world.destroyBlock(pos, true);
+						world.removeTileEntity(pos);
+						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer(), p -> {});
+
 					}else{
 						world.destroyBlock(event.getPos(), true);
 						world.removeTileEntity(event.getPos());
