@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SoundType;
@@ -215,5 +216,11 @@ public class BlockReinforcedSlab extends BlockReinforcedBase implements IBucketP
 			default:
 				return false;
 		}
+	}
+
+	@Override
+	public IBlockState getConvertedState(IBlockState vanillaState)
+	{
+		return getDefaultState().with(TYPE, vanillaState.get(BlockSlab.TYPE)).with(WATERLOGGED, vanillaState.get(BlockSlab.WATERLOGGED));
 	}
 }

@@ -49,4 +49,10 @@ public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBloc
 	{
 		return this == SCContent.reinforcedIronBlock || this == SCContent.reinforcedGoldBlock || this == SCContent.reinforcedDiamondBlock || this == SCContent.reinforcedEmeraldBlock;
 	}
+
+	@Override
+	public IBlockState getConvertedState(IBlockState vanillaState)
+	{
+		return getDefaultState();
+	}
 }

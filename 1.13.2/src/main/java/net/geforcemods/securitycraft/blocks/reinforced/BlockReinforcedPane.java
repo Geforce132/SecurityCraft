@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockPane;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.BlockSixWay;
 import net.minecraft.block.IBucketPickupHandler;
@@ -277,5 +278,11 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 		BlockPos offset = pos.offset(facing);
 		IBlockState other = world.getBlockState(offset);
 		return other.canBeConnectedTo(world, offset, facing.getOpposite()) || getDefaultState().canBeConnectedTo(world, pos, facing);
+	}
+
+	@Override
+	public IBlockState getConvertedState(IBlockState vanillaState)
+	{
+		return getDefaultState().with(NORTH, vanillaState.get(BlockPane.NORTH)).with(EAST, vanillaState.get(BlockPane.EAST)).with(WEST, vanillaState.get(BlockPane.WEST)).with(SOUTH, vanillaState.get(BlockPane.SOUTH)).with(WATERLOGGED, vanillaState.get(BlockPane.WATERLOGGED));
 	}
 }

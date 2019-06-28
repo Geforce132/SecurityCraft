@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -58,5 +59,11 @@ public class BlockReinforcedRotatedPillar extends BlockReinforcedBase
 	public IBlockState getStateForPlacement(BlockItemUseContext context)
 	{
 		return getDefaultState().with(AXIS, context.getFace().getAxis());
+	}
+
+	@Override
+	public IBlockState getConvertedState(IBlockState vanillaState)
+	{
+		return getDefaultState().with(AXIS, vanillaState.get(BlockRotatedPillar.AXIS));
 	}
 }

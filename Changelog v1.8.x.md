@@ -33,9 +33,10 @@
 	- Dark Prismarine Stairs
 - New: [1.13.2+] Finnish translation (Thanks erland!)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
+- Fix: [1.13.2] Reinforced Stone is unobtainable
+- Fix: [1.13.2] Reinforcing blocks does not preserve state from vanilla block
 - Fix: [1.13.2+] Crash when being targeted by the I.M.S.
 - Fix: [1.13.2+] Admin Tool recipe description does not show in JEI
-- Fix: [1.13.2+] Reinforced Stone is unobtainable
 - Fix: [1.13.2+] Cannot interact with UI elements when mounted to a camera
 - Fix: [1.13.2+] Crash when clicking "Paste List" on a whitelist/blacklist module that does not have any data
 - Fix: [1.13.2+] Pressing the inventory key while editing a whitelist/blacklist module closes the GUI
