@@ -104,6 +104,15 @@ public class BlockIronFence extends Block implements IIntersectable {
 		return collisionShapes[getIndex(state)];
 	}
 
+	public boolean func_220111_a(BlockState state, boolean p_220111_2_, Direction direction)
+	{
+		Block block = state.getBlock();
+		boolean flag = block.isIn(BlockTags.FENCES) && state.getMaterial() == material;
+		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.isParallel(state, direction);
+
+		return !cannotAttach(block) && p_220111_2_ || flag || flag1;
+	}
+
 	private static int getMask(Direction facing)
 	{
 		return 1 << facing.getHorizontalIndex();
@@ -167,14 +176,17 @@ public class BlockIronFence extends Block implements IIntersectable {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		IBlockReader world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
-
-		return super.getStateForPlacement(ctx)
-				.with(NORTH, canFenceConnectTo(world, pos, Direction.NORTH))
-				.with(EAST, canFenceConnectTo(world, pos, Direction.EAST))
-				.with(SOUTH, canFenceConnectTo(world, pos, Direction.SOUTH))
-				.with(WEST, canFenceConnectTo(world, pos, Direction.WEST));
+		IBlockReader iblockreader = ctx.getWorld();
+		BlockPos blockpos = ctx.getPos();
+		BlockPos blockpos1 = blockpos.north();
+		BlockPos blockpos2 = blockpos.east();
+		BlockPos blockpos3 = blockpos.south();
+		BlockPos blockpos4 = blockpos.west();
+		BlockState blockstate = iblockreader.getBlockState(blockpos1);
+		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
+		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
+		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
+		return super.getStateForPlacement(ctx).with(NORTH, Boolean.valueOf(func_220111_a(blockstate, Block.hasSolidSide(blockstate, iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH))).with(EAST, Boolean.valueOf(func_220111_a(blockstate1, Block.hasSolidSide(blockstate1, iblockreader, blockpos2, Direction.WEST), Direction.WEST))).with(SOUTH, Boolean.valueOf(func_220111_a(blockstate2, Block.hasSolidSide(blockstate2, iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))).with(WEST, Boolean.valueOf(func_220111_a(blockstate3, Block.hasSolidSide(blockstate3, iblockreader, blockpos4, Direction.EAST), Direction.EAST)));
 	}
 
 	@Override
@@ -186,7 +198,7 @@ public class BlockIronFence extends Block implements IIntersectable {
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canFenceConnectTo(world, currentPos, facing))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(func_220111_a(facingState, Block.hasSolidSide(facingState, world, facingPos, facing.getOpposite()), facing.getOpposite()))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
@@ -200,28 +212,6 @@ public class BlockIronFence extends Block implements IIntersectable {
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
-	}
-
-	@Override
-	public boolean canBeConnectedTo(BlockState state, IBlockReader world, BlockPos pos, Direction facing)
-	{
-		BlockState other = world.getBlockState(pos.offset(facing));
-		return attachesTo(other, Block.hasSolidSide(other, world, pos.offset(facing), facing.getOpposite()), facing.getOpposite());
-	}
-
-	public boolean attachesTo(BlockState p_220111_1_, boolean hasSolidSide, Direction dir)
-	{
-		Block block = p_220111_1_.getBlock();
-		boolean sameFenceOrMaterial = block.isIn(BlockTags.FENCES) && p_220111_1_.getMaterial() == this.material;
-		boolean isValidGate = block instanceof FenceGateBlock && FenceGateBlock.isParallel(p_220111_1_, dir);
-		return !cannotAttach(block) && hasSolidSide || sameFenceOrMaterial || isValidGate;
-	}
-
-	private boolean canFenceConnectTo(IBlockReader world, BlockPos pos, Direction facing)
-	{
-		BlockPos offset = pos.offset(facing);
-		BlockState other = world.getBlockState(offset);
-		return other.canBeConnectedTo(world, offset, facing.getOpposite()) || getDefaultState().canBeConnectedTo(world, pos, facing);
 	}
 
 	@Override

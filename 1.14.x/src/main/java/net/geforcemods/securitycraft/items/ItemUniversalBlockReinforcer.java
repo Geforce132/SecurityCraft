@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -55,13 +56,14 @@ public class ItemUniversalBlockReinforcer extends Item
 		if(!player.isCreative())
 		{
 			World world = player.getEntityWorld();
-			Block block = world.getBlockState(pos).getBlock();
+			BlockState vanillaState = world.getBlockState(pos);
+			Block block = vanillaState.getBlock();
 
 			for(Block rb : IReinforcedBlock.BLOCKS)
 			{
 				if(((IReinforcedBlock)rb).getVanillaBlock() == block)
 				{
-					world.setBlockState(pos, rb.getDefaultState());
+					world.setBlockState(pos, ((IReinforcedBlock)rb).getConvertedState(vanillaState));
 					((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 					stack.damageItem(1, player, p -> {});
 					return true;

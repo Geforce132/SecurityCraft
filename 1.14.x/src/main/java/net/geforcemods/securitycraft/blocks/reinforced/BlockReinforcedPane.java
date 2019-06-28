@@ -8,6 +8,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.PaneBlock;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.SoundType;
@@ -251,5 +252,11 @@ public class BlockReinforcedPane extends BlockReinforcedBase implements IBucketP
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED);
+	}
+
+	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState().with(NORTH, vanillaState.get(PaneBlock.NORTH)).with(EAST, vanillaState.get(PaneBlock.EAST)).with(WEST, vanillaState.get(PaneBlock.WEST)).with(SOUTH, vanillaState.get(PaneBlock.SOUTH)).with(WATERLOGGED, vanillaState.get(PaneBlock.WATERLOGGED));
 	}
 }

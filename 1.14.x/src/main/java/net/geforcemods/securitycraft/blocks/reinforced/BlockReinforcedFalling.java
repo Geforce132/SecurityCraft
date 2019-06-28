@@ -3,14 +3,16 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.entity.EntityFallingOwnableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -54,8 +56,15 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 		{
 			if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
 			{
-				if(!world.isRemote && world.getTileEntity(pos) instanceof IOwnable)
-					world.addEntity(new EntityFallingOwnableBlock(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos), ((IOwnable)world.getTileEntity(pos)).getOwner()));
+				TileEntity te = world.getTileEntity(pos);
+
+				if(!world.isRemote && te instanceof IOwnable)
+				{
+					FallingBlockEntity entity = new FallingBlockEntity(world, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, world.getBlockState(pos));
+
+					entity.tileEntityData = te.write(new CompoundNBT());
+					world.addEntity(entity);
+				}
 			}
 			else
 			{

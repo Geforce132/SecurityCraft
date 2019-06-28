@@ -271,6 +271,7 @@ public class SetupHandler
 		SCContent.reinforcedGreenConcrete = new BlockReinforcedBase(Material.ROCK, Blocks.GREEN_CONCRETE, "reinforced_green_concrete");
 		SCContent.reinforcedRedConcrete = new BlockReinforcedBase(Material.ROCK, Blocks.RED_CONCRETE, "reinforced_red_concrete");
 		SCContent.reinforcedBlackConcrete = new BlockReinforcedBase(Material.ROCK, Blocks.BLACK_CONCRETE, "reinforced_black_concrete");
+		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE_STAIRS, "reinforced_stone_stairs");
 		//ordered by vanilla decoration blocks creative tab order
 		SCContent.reinforcedIronBars = new BlockReinforcedPane(SoundType.METAL, Material.IRON, Blocks.IRON_BARS, "reinforced_iron_bars");
 		SCContent.reinforcedGlassPane = new BlockReinforcedPane(SoundType.GLASS, Material.GLASS, Blocks.GLASS_PANE, "reinforced_glass_pane");
@@ -307,19 +308,18 @@ public class SetupHandler
 		SCContent.reinforcedRedStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
 		SCContent.reinforcedBlackStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
 		//anything else, alphabetical
-		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE, "reinforced_stone_stairs");
 	}
 
 	public static void setupMines()
 	{
 		SCContent.mine = (BlockMine) new BlockMine(Material.MISCELLANEOUS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "mine"));
-		SCContent.dirtMine = new BlockFullMineBase(Material.EARTH, Blocks.DIRT, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dirt_mine"));
-		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE, 2.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "stone_mine"));
-		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE, 2.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cobblestone_mine"));
-		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sand_mine"));
-		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "diamond_mine"));
+		SCContent.dirtMine = new BlockFullMineBase(Material.EARTH, SoundType.GROUND, Blocks.DIRT, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dirt_mine"));
+		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, SoundType.STONE, Blocks.STONE, 2.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "stone_mine"));
+		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, SoundType.STONE, Blocks.COBBLESTONE, 2.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cobblestone_mine"));
+		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, SoundType.SAND, Blocks.SAND, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sand_mine"));
+		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, SoundType.STONE, Blocks.DIAMOND_ORE, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "diamond_mine"));
 		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "furnace_mine"));
-		SCContent.gravelMine = new BlockFullMineFalling(Material.EARTH, Blocks.GRAVEL, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "gravel_mine"));
+		SCContent.gravelMine = new BlockFullMineFalling(Material.EARTH, SoundType.GROUND, Blocks.GRAVEL, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "gravel_mine"));
 		SCContent.trackMine = new BlockTrackMine().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine"));
 		SCContent.bouncingBetty = new BlockBouncingBetty(Material.MISCELLANEOUS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncing_betty"));
 		SCContent.claymore = new BlockClaymore(Material.MISCELLANEOUS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore"));

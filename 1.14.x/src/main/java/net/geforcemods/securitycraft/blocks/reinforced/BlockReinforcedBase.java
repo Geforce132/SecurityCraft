@@ -1,15 +1,20 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBlock
 {
@@ -45,8 +50,20 @@ public class BlockReinforcedBase extends BlockOwnable implements IReinforcedBloc
 	}
 
 	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState();
+	}
+
+	@Override
 	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon)
 	{
 		return this == SCContent.reinforcedIronBlock || this == SCContent.reinforcedGoldBlock || this == SCContent.reinforcedDiamondBlock || this == SCContent.reinforcedEmeraldBlock;
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, Builder builder)
+	{
+		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 }

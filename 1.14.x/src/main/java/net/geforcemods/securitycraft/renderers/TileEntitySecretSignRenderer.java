@@ -22,7 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntitySecretSign>
 {
-	private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
+	private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/signs/oak.png");
 	private static final SignModel model = new SignModel();
 
 	@Override

@@ -135,12 +135,11 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
 	{
-		NonNullList<ItemStack> drops = NonNullList.from(ItemStack.EMPTY);
 		int mines = state.get(MINES);
 
 		if(mines != 0)
-			drops.add(new ItemStack(SCContent.bouncingBetty, mines));
-		return super.getDrops(state, builder);
+			return NonNullList.from(ItemStack.EMPTY, new ItemStack(SCContent.bouncingBetty, mines));
+		else return super.getDrops(state, builder);
 	}
 
 	@Override

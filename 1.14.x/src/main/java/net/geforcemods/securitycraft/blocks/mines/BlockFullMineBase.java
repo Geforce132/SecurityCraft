@@ -28,10 +28,18 @@ import net.minecraft.world.World;
 public class BlockFullMineBase extends BlockExplosive implements IIntersectable, IOverlayDisplay {
 
 	private final Block blockDisguisedAs;
+	private final SoundType soundType;
 
-	public BlockFullMineBase(Material material, Block disguisedBlock, float baseHardness) {
-		super(material == Material.SAND ? SoundType.SAND : (material == Material.EARTH ? SoundType.GROUND : SoundType.STONE), material, baseHardness);
+	public BlockFullMineBase(Material material, SoundType soundType, Block disguisedBlock, float baseHardness) {
+		super(soundType, material, baseHardness);
 		blockDisguisedAs = disguisedBlock;
+		this.soundType = soundType;
+	}
+
+	@Override
+	public SoundType getSoundType(BlockState state)
+	{
+		return soundType;
 	}
 
 	@Override

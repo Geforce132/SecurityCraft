@@ -10,6 +10,7 @@ import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -384,5 +385,11 @@ public class BlockReinforcedStairs extends BlockReinforcedBase implements IBucke
 	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
 	{
 		return false;
+	}
+
+	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState().with(FACING, vanillaState.get(StairsBlock.FACING)).with(HALF, vanillaState.get(StairsBlock.HALF)).with(SHAPE, vanillaState.get(StairsBlock.SHAPE)).with(WATERLOGGED, vanillaState.get(StairsBlock.WATERLOGGED));
 	}
 }

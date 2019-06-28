@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
@@ -176,5 +177,11 @@ public class BlockReinforcedSlab extends BlockReinforcedBase implements IBucketP
 			default:
 				return false;
 		}
+	}
+
+	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState().with(TYPE, vanillaState.get(SlabBlock.TYPE)).with(WATERLOGGED, vanillaState.get(SlabBlock.WATERLOGGED));
 	}
 }

@@ -35,7 +35,7 @@ public class GuiEditSecretSign extends Screen
 	protected void init()
 	{
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(new GuiButtonClick(0, width / 2 - 100, height / 4 + 120, 20, 20, I18n.format("gui.done"), button -> onClose()));
+		addButton(new GuiButtonClick(0, width / 2 - 100, height / 4 + 120, 200, 20, I18n.format("gui.done"), button -> onClose()));
 		te.setEditable(false);
 	}
 
