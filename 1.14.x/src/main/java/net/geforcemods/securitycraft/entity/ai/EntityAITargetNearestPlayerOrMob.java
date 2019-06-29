@@ -28,7 +28,7 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 	@Override
 	public boolean shouldExecute()
 	{
-		List<LivingEntity> list = field_75299_d.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> true);
+		List<LivingEntity> list = goalOwner.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> true);
 
 		if(list.isEmpty())
 			return false;
@@ -37,8 +37,8 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 			int i;
 
 			Collections.sort(list, (e1, e2) -> {
-				double distTo1 = field_75299_d.getDistanceSq(e1);
-				double distTo2 = field_75299_d.getDistanceSq(e2);
+				double distTo1 = goalOwner.getDistanceSq(e1);
+				double distTo2 = goalOwner.getDistanceSq(e2);
 
 				if(distTo1 < distTo2)
 					return -1;
@@ -50,7 +50,7 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 			{
 				LivingEntity potentialTarget = list.get(i);
 
-				if(potentialTarget instanceof PlayerEntity && !((PlayerEntity)potentialTarget).isSpectator() && !((PlayerEntity)potentialTarget).isCreative() && !((EntitySentry)field_75299_d).getOwner().isOwner(((PlayerEntity)potentialTarget)))
+				if(potentialTarget instanceof PlayerEntity && !((PlayerEntity)potentialTarget).isSpectator() && !((PlayerEntity)potentialTarget).isCreative() && !((EntitySentry)goalOwner).getOwner().isOwner(((PlayerEntity)potentialTarget)))
 					break;
 				else if(potentialTarget instanceof MonsterEntity && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
 					break;
@@ -60,8 +60,8 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 			{
 				if(isCloseEnough(list.get(i)))
 				{
-					field_75309_a = list.get(i);
-					field_75299_d.setAttackTarget(field_75309_a);
+					nearestTarget = list.get(i);
+					goalOwner.setAttackTarget(nearestTarget);
 					return true;
 				}
 			}
@@ -73,12 +73,12 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 	@Override
 	public boolean shouldContinueExecuting()
 	{
-		return (field_75309_a instanceof MonsterEntity || field_75309_a instanceof PlayerEntity) && isCloseEnough(field_75309_a) && shouldExecute() && super.shouldContinueExecuting();
+		return (nearestTarget instanceof MonsterEntity || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && super.shouldContinueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)
 	{
-		return entity != null && field_75299_d.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
+		return entity != null && goalOwner.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
 	}
 
 	@Override
