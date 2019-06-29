@@ -20,6 +20,8 @@ public class BlockFakeLava extends FlowingFluidBlock
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
+		super.onEntityCollision(state, world, pos, entity);
+
 		if(!world.isRemote)
 			if(entity instanceof PlayerEntity){
 				((PlayerEntity) entity).heal(4);
