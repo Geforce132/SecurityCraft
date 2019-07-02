@@ -18,7 +18,7 @@ archivesBaseName = 'securitycraft'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190629-1.14.3'
+    mappings channel: 'snapshot', version: '20190702-1.14.3'
 	
     runs {
         client = {
@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.3-27.0.15'
+    minecraft 'net.minecraftforge:forge:1.14.3-27.0.17'
 
     compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.3-B64_1.14.2") {
         transitive = false
@@ -63,8 +63,8 @@ dependencies {
     compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.30-6") {
         transitive = false
     })
-	compileOnly fg.deobf("mezz.jei:jei-1.14.2:6.0.0.2:api")
-	runtimeOnly fg.deobf("mezz.jei:jei-1.14.2:6.0.0.2")
+	compileOnly fg.deobf("mezz.jei:jei-1.14.3:6.0.0.7:api")
+	runtimeOnly fg.deobf("mezz.jei:jei-1.14.3:6.0.0.7")
 }
 
 jar {

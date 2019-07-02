@@ -81,7 +81,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 
 				if(s != null)
 				{
-					if(i == te.func_214064_s())
+					if(i == te.getLineBeingEdited())
 						s = "> " + s + " <";
 
 					font.drawString(s, -font.getStringWidth(s) / 2, i * 10 - te.signText.length * 5, 0);
