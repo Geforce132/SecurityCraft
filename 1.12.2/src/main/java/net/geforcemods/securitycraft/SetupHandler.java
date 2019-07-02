@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.blocks.mines.BlockFullMineBase;
@@ -238,6 +239,8 @@ public class SetupHandler
 
 		SCContent.reinforcedSand = new BlockReinforcedFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_sand").setTranslationKey("securitycraft:reinforcedSand");
 		SCContent.reinforcedGravel = new BlockReinforcedFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_gravel").setTranslationKey("securitycraft:reinforcedGravel");
+
+		SCContent.trophySystem = new BlockTrophySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("trophy_system").setTranslationKey("securitycraft:trophy_system");
 	}
 
 	public static void setupMines()

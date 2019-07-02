@@ -234,6 +234,7 @@ tile.securitycraft:reinforcedGlowstone.name=Reinforced Glowstone
 tile.securitycraft:gravelMine.name=Gravel Mine
 tile.securitycraft:reinforcedSand.name=Reinforced Sand
 tile.securitycraft:reinforcedGravel.name=Reinforced Gravel
+tile.securitycraft:trophy_system.name=Trophy System
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -328,6 +329,7 @@ help.securitycraft:reinforcedStairsRedSandstone.info=Reinforced red sandstone st
 help.securitycraft:reinforcedStairsPurpur.info=Reinforced purpur stairs are the same as vanilla stairs, except only the person who placed it down can destroy it using the universal block remover.
 help.securitycraft:motionActivatedLight.info=The motion-activated light will emit a light, similar to a redstone lamp, when a player is within a certain range of the block (configurable).
 help.securitycraft:reinforcedStainedHardenedClay.info=Reinforced stained terracotta is the same as vanilla stained terracotta, except only the person who placed it down can destroy it using the universal block remover.
+help.securitycraft:trophy_system.info=The trophy system, inspired by the gadget first seen in "Call of Duty: Modern Warfare 3" published by Activision, targets enemy arrows and fireballs and will destroy them from range after a half-second charge time.
 
 help.securitycraft:codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.

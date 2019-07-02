@@ -112,6 +112,7 @@ public class SCContent
 	public static BlockMine mineCut;
 	public static BlockStaticLiquid bogusLava;
 	public static BlockStaticLiquid bogusWater;
+	public static Block trophySystem;
 
 	//Items
 	public static Item adminTool;
