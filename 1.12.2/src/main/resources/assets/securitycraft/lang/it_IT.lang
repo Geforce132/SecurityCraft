@@ -248,6 +248,7 @@ tile.securitycraft:stairsCrystalQuartz.name=Scalini di quarzo cristallino
 tile.securitycraft:reinforcedStairsCrystalQuartz.name=Scalini di quarzo cristallino rinforzati
 tile.securitycraft:blockPocketWall.name=Muro di blocco tascabile
 tile.securitycraft:blockPocketManager.name=Manager del blocco tascabile
+tile.securitycraft.trophy_system.name=Sistema Trophy
 
 item.securitycraft:codebreaker.name=Decrittatore
 item.securitycraft:doorIndestructibleIronItem.name=Porta di ferro rinforzata
@@ -344,6 +345,7 @@ help.securitycraft:reinforcedStainedHardenedClay.info=La terracotta colorata rin
 help.securitycraft:crystalQuartz.info=I blocchi di quarzo cristallino sono dei normali blocchi da costruzione che possono essere rinforzati nella solita maniera.
 help.securitycraft:reinforcedCrystalQuartz.info=I blocchi di quarzo cristallino rinforzati vengono utilizzati per costruire il blocco tascabile. Per ulteriori informazioni, visita la pagina del manager del blocco tascabile.
 help.securitycraft:blockPocketWall.info=I muri di blocco tascabile vengono utilizzati per costruire il blocco tascabile. Per ulteriori informazioni, visita la pagina del manager del blocco tascabile.
+help.securitycraft.trophy_system.info=Il sistema Trophy, ispirato dal gadget apparso per la prima volta in \"Call of Duty: Modern Warfare 3\" pubblicato da Activision, bersaglia il nemico con frecce e palle di fuoco e li distruggerà a distanza dopo un mezzo secondo di ricarica.
 
 help.securitycraft:codebreaker.info=Il decrittatore è capace di craccare il codice di qualsiasi tastiera o blocco protetto da password (fornace e baule) cliccando il blocco col tasto destro. (5 utilizzi con una possibilità di 2/3 di funzionare)
 help.securitycraft:doorIndestructibleIronItem.info=La porta di ferro rinforzata è come una normale porta di ferro, ma è indistruttibile. Può essere aperta solo da tastiere, scanner dell'inventario, ecc. Il proprietario della porta può utilizzare il rimuovi-blocchi universale per distruggerla.
@@ -385,6 +387,7 @@ help.securitycraft:crystalQuartzItem.info=Il quarzo cristallino viene utilizzato
 gui.securitycraft:scManual.disabled=Disattivata
 gui.securitycraft:scManual.intro.1=Primo approccio con la SecurityCraft
 gui.securitycraft:scManual.intro.2=di Geforce e bl4ckscor3
+gui.securitycraft:scManual.author=Traduzioni di Chexet48
 gui.securitycraft:scManual.ownableBlock=Può essere posseduto: Questo blocco è resistente alle esplosioni e può solo essere distrutto dal giocatore che l'ha piazzato con il rimuovi-blocchi universale.
 gui.securitycraft:scManual.passwordProtectedBlock=Protetto da password: Questo blocco può essere utilizzato solo se la password impostata è stata inserita correttamente.
 gui.securitycraft:scManual.viewActivatedBlock=Controllo retina: Questo blocco può essere attivato puntandoci sopra col cursore (stando abbastanza vicino al blocco).

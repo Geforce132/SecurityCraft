@@ -257,6 +257,7 @@
     "block.securitycraft.reinforced_dark_prismarine_stairs": "Verstärkte dunkle Prismarintreppe",
     "block.securitycraft.reinforced_prismarine_stairs": "Verstärkte Prismarintreppe",
     "block.securitycraft.reinforced_prismarine_brick_stairs": "Verstärkte Prismarinziegeltreppe",
+    "block.securitycraft.trophy_system": "Trophy-System",
     
     "item.securitycraft.codebreaker": "Codebrecher",
     "item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
@@ -340,6 +341,7 @@
     "help.securitycraft.ims.info": "Das I.M.S., oder Intelligentes Munitions System, ist eine Mine mit 4 Sprengsätzen, die Spieler oder Mobs (konfigurierbar im GUI des I.M.S.) in ihrem Radius attackieren. Sobald alle Sprengsätze verbraucht sind, zerstört die Mine sich selbst.",
     "help.securitycraft.protecto.info": "Der Protecto, inspiriert von dem Spiel \"Megaman: Battle Network 2\" von Capcom, attakiert jeden Mob innerhalb eines 10 Blöcke Radius mit einem Blitz alle 10 Sekunden. Der Protecto darf keinen Block über sich haben und es muss regnen, damit er angreift.",
     "help.securitycraft.motion_activated_light.info": "Das Automatische Licht geht an, sobald sich ein Spieler in seiner Nähe befindet. Es wird ausgeschaltet, wenn sich in dem Radius kein Spieler mehr befindet (Radius konfigurierbar).",
+    "help.securitycraft.trophy_system.info": "Das Trophy-System, inspiriert von dem gleichnamigen Gegenstand in \"Call of Duty: Modern Warfare 3\" publiziert von Activision, visiert gegnerische Pfeile und Feuerbälle an und zerstört sie von Weitem nach einer halbsekündigen Aufladezeit.",
 
     "help.securitycraft.codebreaker.info": "Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
     "help.securitycraft.door_indestructible_iron_item.info": "Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt und durch Nummernschlösser, Inventar Scanner, etc. geöffnet werden.",

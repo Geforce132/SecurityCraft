@@ -235,6 +235,7 @@ tile.securitycraft:reinforcedGlowstone.name=Verstärkter Glowstone
 tile.securitycraft:gravelMine.name=Kiesmine
 tile.securitycraft:reinforcedSand.name=Verstärkter Sand
 tile.securitycraft:reinforcedGravel.name=Verstärkter Kies
+tile.securitycraft:trophy_system.name=Trophy-System
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -329,6 +330,7 @@ help.securitycraft:reinforcedStairsRedSandstone.info=Verstärkte rote Sandsteint
 help.securitycraft:reinforcedStairsPurpur.info=Verstärkte Purpurtreppen sind wie normale Treppen, jedoch können sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.securitycraft:motionActivatedLight.info=Das Automatische Licht geht an, sobald sich ein Spieler in seiner Nähe befindet. Es wird ausgeschaltet, wenn sich in dem Radius kein Spieler mehr befindet (Radius konfigurierbar).
 help.securitycraft:reinforcedStainedHardenedClay.info=Verstärkter gefärbtes Ton ist wie normaler gefärbter Ton, jedoch kann er nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
+help.securitycraft:trophy_system.info=Das Trophy-System, inspiriert von dem gleichnamigen Gegenstand in "Call of Duty: Modern Warfare 3" publiziert von Activision, visiert gegnerische Pfeile und Feuerbälle an und zerstört sie von Weitem nach einer halbsekündigen Aufladezeit.
 
 help.securitycraft:codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.securitycraft:doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt und durch Nummernschlösser, Inventar Scanner, etc. geöffnet werden.
