@@ -59,7 +59,7 @@
 - Fix: [1.12.2] French translation does not work
 - Fix: [1.12.2] Password-protected Chest doesn't show in the inventory under certain circumstances
 
-1.13.2 versions:
+1.13.2 beta versions:
 - v1.8.12-beta1
 	- Change: Fake Water/Lava recipes now require their respective raw brewing ingredients (glass bottle, nether wart, glistering melon, glowstone...)
 	- Removed: Functionality of Disguise Module for Keypad (may come back later)
@@ -79,9 +79,9 @@
 	- Fix: Several client and server crashes
 	- Removed: Ability to make a portal out of reinforced obsidian
 
-1.14.x versions:
+1.14.3 beta versions:
 - v1.8.12-beta1
-	- Change: Fake Water/Lava recipes are back to how they were in earlier editions
+	- Change: Fake Water/Lava recipes are back to how they were before 1.13.2
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 
