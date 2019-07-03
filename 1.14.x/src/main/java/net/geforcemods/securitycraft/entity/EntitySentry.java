@@ -240,6 +240,7 @@ public class EntitySentry extends CreatureEntity implements IRangedAttackMob //n
 		double z = target.posZ - posZ;
 		float f = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
+		throwableEntity.posY -= 0.1F;
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, d2 + f, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));

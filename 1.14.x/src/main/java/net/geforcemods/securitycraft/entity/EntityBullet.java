@@ -29,10 +29,11 @@ public class EntityBullet extends AbstractArrowEntity
 	@Override
 	protected void onHit(RayTraceResult raytraceResult)
 	{
-		if(raytraceResult.getType() == Type.ENTITY)
+		if(raytraceResult.getType() == Type.ENTITY && !(((EntityRayTraceResult)raytraceResult).getEntity() instanceof EntitySentry))
+		{
 			((EntityRayTraceResult)raytraceResult).getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
-
-		remove();
+			remove();
+		}
 	}
 
 	@Override

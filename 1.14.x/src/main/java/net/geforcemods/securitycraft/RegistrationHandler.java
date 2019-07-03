@@ -333,7 +333,7 @@ public class RegistrationHandler
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> SCContent.eTypeBullet.create(world))
+				.setCustomClientFactory((spawnEntity, world) -> new EntityBullet(SCContent.eTypeBullet, world))
 				.build(SecurityCraft.MODID + ":bullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
 	}
