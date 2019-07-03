@@ -321,7 +321,7 @@ public class RegistrationHandler
 				.build(SecurityCraft.MODID + ":securitycamera")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
 		event.getRegistry().register(EntityType.Builder.<EntitySentry>create(EntitySentry::new, EntityClassification.MISC)
-				.size(1.0F, 1.0F)
+				.size(1.0F, 2.0F)
 				.setTrackingRange(256)
 				.setUpdateInterval(1)
 				.setShouldReceiveVelocityUpdates(true)
