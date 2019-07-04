@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiSCManual;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -23,7 +21,7 @@ public class ItemSCManual extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		if(world.isRemote)
-			Minecraft.getInstance().displayGuiScreen(new GuiSCManual());
+			SecurityCraft.proxy.displaySCManualGui();
 
 		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
 	}

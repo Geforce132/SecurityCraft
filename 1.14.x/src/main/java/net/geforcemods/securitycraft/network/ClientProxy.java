@@ -14,16 +14,22 @@ import net.geforcemods.securitycraft.gui.GuiBlockReinforcer;
 import net.geforcemods.securitycraft.gui.GuiBriefcase;
 import net.geforcemods.securitycraft.gui.GuiBriefcaseInventory;
 import net.geforcemods.securitycraft.gui.GuiBriefcaseSetup;
+import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.gui.GuiCheckPassword;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.GuiDisguiseModule;
+import net.geforcemods.securitycraft.gui.GuiEditModule;
+import net.geforcemods.securitycraft.gui.GuiEditSecretSign;
 import net.geforcemods.securitycraft.gui.GuiIMS;
 import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
 import net.geforcemods.securitycraft.gui.GuiKeyChanger;
 import net.geforcemods.securitycraft.gui.GuiKeycardSetup;
 import net.geforcemods.securitycraft.gui.GuiKeypadFurnaceInventory;
 import net.geforcemods.securitycraft.gui.GuiLogger;
+import net.geforcemods.securitycraft.gui.GuiMRAT;
+import net.geforcemods.securitycraft.gui.GuiSCManual;
 import net.geforcemods.securitycraft.gui.GuiSetPassword;
+import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
@@ -41,13 +47,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -56,8 +63,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class ClientProxy implements IProxy {
 	private final List<Block> toTint = new ArrayList<>();
 
-	@SubscribeEvent
-	public static void onModelRegistry(ModelRegistryEvent event)
+	@Override
+	public void clientSetup()
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, manager -> new RenderBouncingBetty(manager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, manager -> new RenderIMSBomb(manager));
@@ -66,11 +73,6 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
-	}
-
-	@Override
-	public void registerScreens()
-	{
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, GuiBlockReinforcer::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, GuiBriefcase::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, GuiBriefcaseInventory::new);
@@ -139,5 +141,35 @@ public class ClientProxy implements IProxy {
 	public PlayerEntity getClientPlayer()
 	{
 		return Minecraft.getInstance().player;
+	}
+
+	@Override
+	public void displayMRATGui(ItemStack stack)
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiMRAT(stack));
+	}
+
+	@Override
+	public void displayEditModuleGui(ItemStack stack)
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiEditModule(stack));
+	}
+
+	@Override
+	public void displayCameraMonitorGui(PlayerInventory inv, ItemCameraMonitor item, CompoundNBT stackTag)
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiCameraMonitor(inv, item, stackTag));
+	}
+
+	@Override
+	public void displaySCManualGui()
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiSCManual());
+	}
+
+	@Override
+	public void displayEditSecretSignGui(TileEntitySecretSign te)
+	{
+		Minecraft.getInstance().displayGuiScreen(new GuiEditSecretSign(te));
 	}
 }

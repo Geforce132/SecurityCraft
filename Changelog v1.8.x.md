@@ -82,6 +82,8 @@
 1.14.3 beta versions:
 - v1.8.12-beta1
 	- Change: Fake Water/Lava recipes are back to how they were before 1.13.2
+- v1.8.12-beta2
+	- Fix: Crash on server load
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 

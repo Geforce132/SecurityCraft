@@ -10,10 +10,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
-import net.geforcemods.securitycraft.entity.EntityBullet;
-import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCExplosives;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCTechnical;
@@ -23,16 +19,6 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
-import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
-import net.geforcemods.securitycraft.renderers.RenderBullet;
-import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
-import net.geforcemods.securitycraft.renderers.RenderSentry;
-import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
-import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
-import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -46,8 +32,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -64,8 +48,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	//********************************* This is v1.8.12-beta1 for MC 1.14.2!
-	protected static final String VERSION = "v1.8.12-beta1";
+	//********************************* This is v1.8.12-beta2 for MC 1.14.2!
+	protected static final String VERSION = "v1.8.12-beta2";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
@@ -96,14 +80,7 @@ public class SecurityCraft {
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event)
 	{
-		proxy.registerScreens();
-		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, manager -> new RenderBouncingBetty(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, manager -> new RenderIMSBomb(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, manager -> new RenderSentry(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, manager -> new RenderBullet(manager));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
+		proxy.clientSetup();
 	}
 
 	@SubscribeEvent

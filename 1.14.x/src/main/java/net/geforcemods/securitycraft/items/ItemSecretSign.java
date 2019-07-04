@@ -4,10 +4,8 @@ import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiEditSecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,7 +44,7 @@ public class ItemSecretSign extends WallOrFloorItem
 			te.setPlayer(player);
 
 			if(world.isRemote)
-				Minecraft.getInstance().displayGuiScreen(new GuiEditSecretSign(te));
+				SecurityCraft.proxy.displayEditSecretSignGui(te);
 		}
 
 		return flag;

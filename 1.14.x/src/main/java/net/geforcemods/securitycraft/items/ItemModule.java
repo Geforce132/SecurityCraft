@@ -6,11 +6,9 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
-import net.geforcemods.securitycraft.gui.GuiEditModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -68,7 +66,7 @@ public class ItemModule extends Item{
 			if(canBeCustomized())
 			{
 				if(world.isRemote && (module == EnumCustomModules.WHITELIST || module == EnumCustomModules.BLACKLIST))
-					Minecraft.getInstance().displayGuiScreen(new GuiEditModule(stack));
+					SecurityCraft.proxy.displayEditModuleGui(stack);
 				else if(!world.isRemote && module == EnumCustomModules.DISGUISE)
 				{
 					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {

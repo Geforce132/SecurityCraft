@@ -6,13 +6,11 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.gui.GuiMRAT;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -44,7 +42,7 @@ public class ItemMineRemoteAccessTool extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
 		if(world.isRemote)
-			Minecraft.getInstance().displayGuiScreen(new GuiMRAT(player.getHeldItem(hand)));
+			SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
 
 		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
 	}
@@ -86,7 +84,7 @@ public class ItemMineRemoteAccessTool extends Item {
 			}
 		}
 		else if(world.isRemote && !(BlockUtils.getBlock(world, pos) instanceof IExplosive))
-			Minecraft.getInstance().displayGuiScreen(new GuiMRAT(stack));
+			SecurityCraft.proxy.displayMRATGui(stack);
 
 		return ActionResultType.SUCCESS;
 	}

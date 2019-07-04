@@ -6,14 +6,12 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -82,7 +80,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResultType.SUCCESS;
 			}
 
-			Minecraft.getInstance().displayGuiScreen(new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag()));
+			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag());
 			return ActionResultType.SUCCESS;
 		}
 
@@ -99,7 +97,7 @@ public class ItemCameraMonitor extends Item {
 				return ActionResult.newResult(ActionResultType.PASS, stack);
 			}
 
-			Minecraft.getInstance().displayGuiScreen(new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag()));
+			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag());
 		}
 
 		return ActionResult.newResult(ActionResultType.PASS, stack);
