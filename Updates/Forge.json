@@ -23,8 +23,8 @@
     "1.12.2-recommended": "v1.8.12",
     "1.13.2-latest": "v1.8.12",
     "1.13.2-recommended": "v1.8.12",
-    "1.14.3-latest": "v1.8.12-beta1",
-    "1.14.3-recommended": "v1.8.12-beta1"
+    "1.14.3-latest": "v1.8.12-beta2",
+    "1.14.3-recommended": "v1.8.12-beta2"
   },
   "1.7.10": {
     "v1.8.12": "Fixes"
@@ -60,6 +60,6 @@
     "v1.8.12": "The One Probe integration!"
   },
   "1.14.3": {
-    "v1.8.12-beta1": "The One Probe integration!"
+    "v1.8.12-beta2": "The One Probe integration!"
   } 
 }
