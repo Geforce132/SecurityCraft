@@ -84,6 +84,7 @@
 	- Change: Fake Water/Lava recipes are back to how they were before 1.13.2
 - v1.8.12-beta2
 	- Fix: Crash on server load
+	- Fix: Inserting a module into a linked Laser/Inventory Scanner kicks the player
 
 --------------------------Changelog for v1.8.11 of SecurityCraft--------------------------
 

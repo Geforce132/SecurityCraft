@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -27,7 +26,6 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 /**
  * Simple TileEntity that SecurityCraft uses to easily create blocks like
@@ -287,10 +285,7 @@ public class TileEntitySCTE extends TileEntity implements ITickableTileEntity, I
 	public void sync() {
 		if(world == null) return;
 
-		if(world.isRemote)
-			ClientUtils.syncTileEntity(this);
-		else
-			ServerLifecycleHooks.getCurrentServer().getPlayerList().sendPacketToAllPlayers(getUpdatePacket());
+		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
 	}
 
 	/**
