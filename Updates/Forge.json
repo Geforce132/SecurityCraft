@@ -1,14 +1,14 @@
 {
-  "homepage": "https://minecraft.curseforge.com/projects/security-craft/",
+  "homepage": "https://www.curseforge.com/minecraft/mc-mods/security-craft/",
   "promos": {
     "1.7.10-latest": "v1.8.12",
     "1.7.10-recommended": "v1.8.12",
     "1.8-latest": "v1.8.12.1",
     "1.8-recommended": "v1.8.12.1",
-    "1.8.8-latest": "v1.8.12",
-    "1.8.8-recommended": "v1.8.12",
-    "1.8.9-latest": "v1.8.12",
-    "1.8.9-recommended": "v1.8.12",
+    "1.8.8-latest": "v1.8.12.1",
+    "1.8.8-recommended": "v1.8.12.1",
+    "1.8.9-latest": "v1.8.12.1",
+    "1.8.9-recommended": "v1.8.12.1",
 	"1.9.4-latest": "v1.8.12",
 	"1.9.4-recommended": "v1.8.12",
     "1.10.2-latest": "v1.8.12",
@@ -30,13 +30,13 @@
     "v1.8.12": "Fixes"
   },
   "1.8": {
-    "v1.8.12": "Fix for a potential crash"
+    "v1.8.12": "Fix crash involving the Security Camera"
   },
   "1.8.8": {
-    "v1.8.12": "Fixes"
+    "v1.8.12.1": "Fix crash involving the Security Camera"
   },
   "1.8.9": {
-    "v1.8.12": "Fixes"
+    "v1.8.12.1": "Fix crash involving the Security Camera"
   },
   "1.9.4": {
     "v1.8.12": "Fixes"
