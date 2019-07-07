@@ -57,10 +57,10 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.14.3-27.0.17'
 
-    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.3-B64_1.14.2") {
+    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.4-B65_1.14.2") {
         transitive = false
     })
-    compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.30-6") {
+    compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.31-alpha-8") {
         transitive = false
     })
 	compileOnly fg.deobf("mezz.jei:jei-1.14.3:6.0.0.7:api")
