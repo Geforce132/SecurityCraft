@@ -43,6 +43,7 @@
 - Fix: [1.13.2+] Disguising a keypad does not work with Forge 25.0.193+
 - Fix: [1.13.2+] Password-protected Chest is not resistant to explosions
 - Fix: [1.13.2+] The Admin Tool's description in JEI is not working
+- Fix: [1.13.2+] Crash when clicking the moduel description buttons in the customize GUI
 - Misc.: [1.13.2] The minimum required Forge build is now 25.0.193
 
 --------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------

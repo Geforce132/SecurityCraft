@@ -26,6 +26,7 @@ public class GuiButtonClick extends GuiButtonExt
 	@Override
 	public void onClick(double mouseX, double mouseY)
 	{
-		onClick.accept(this);
+		if(onClick != null)
+			onClick.accept(this);
 	}
 }
