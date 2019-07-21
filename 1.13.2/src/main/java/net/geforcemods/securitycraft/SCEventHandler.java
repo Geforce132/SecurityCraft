@@ -540,6 +540,9 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
+		if(event.getEntityLiving() instanceof EntityPlayer)
+			return;
+
 		if(event.getTarget() instanceof EntityPlayer && event.getTarget() != event.getEntityLiving().getAttackingEntity())
 		{
 			if(PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
