@@ -33,8 +33,7 @@ public class BlockIronTrapDoor extends TrapDoorBlock implements ITileEntityProvi
 
 		if(hasActiveSCBlock != state.get(OPEN))
 		{
-			world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(world, pos))), 2);
-			world.markForRerender(pos);
+			world.setBlockState(pos, state.with(OPEN, hasActiveSCBlock), 2);
 			playSound((PlayerEntity)null, world, pos, hasActiveSCBlock);
 		}
 	}

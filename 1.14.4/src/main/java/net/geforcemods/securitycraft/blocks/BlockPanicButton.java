@@ -59,7 +59,6 @@ public class BlockPanicButton extends AbstractButtonBlock implements ITileEntity
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		BlockUtils.setBlockProperty(world, pos, POWERED, !state.get(POWERED), true);
-		world.markForRerender(pos);
 
 		if(state.get(FACE) == AttachFace.WALL)
 			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));

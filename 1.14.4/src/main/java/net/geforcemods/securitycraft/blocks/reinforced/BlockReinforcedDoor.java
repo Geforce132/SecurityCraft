@@ -103,7 +103,6 @@ public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvide
 					if (hasActiveSCBlock != state.get(OPEN).booleanValue())
 					{
 						world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(hasActiveSCBlock)), 2);
-						world.markForRerender(pos);
 
 						BlockState secondDoorState;
 
@@ -112,19 +111,13 @@ public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvide
 							secondDoorState = world.getBlockState(pos.north());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-							{
 								world.setBlockState(pos.north(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markForRerender(pos.north());
-							}
 							else
 							{
 								secondDoorState = world.getBlockState(pos.south());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-								{
 									world.setBlockState(pos.south(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markForRerender(pos.south());
-								}
 							}
 						}
 						else if(state.get(FACING) == Direction.NORTH)
@@ -132,19 +125,13 @@ public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvide
 							secondDoorState = world.getBlockState(pos.east());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-							{
 								world.setBlockState(pos.east(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markForRerender(pos.east());
-							}
 							else
 							{
 								secondDoorState = world.getBlockState(pos.west());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-								{
 									world.setBlockState(pos.west(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markForRerender(pos.west());
-								}
 							}
 						}
 						else if(state.get(FACING) == Direction.EAST)
@@ -152,19 +139,13 @@ public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvide
 							secondDoorState = world.getBlockState(pos.south());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-							{
 								world.setBlockState(pos.south(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markForRerender(pos.south());
-							}
 							else
 							{
 								secondDoorState = world.getBlockState(pos.north());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-								{
 									world.setBlockState(pos.north(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markForRerender(pos.north());
-								}
 							}
 						}
 						else if(state.get(FACING) == Direction.SOUTH)
@@ -172,19 +153,13 @@ public class BlockReinforcedDoor extends DoorBlock implements ITileEntityProvide
 							secondDoorState = world.getBlockState(pos.west());
 
 							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-							{
 								world.setBlockState(pos.west(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-								world.markForRerender(pos.west());
-							}
 							else
 							{
 								secondDoorState = world.getBlockState(pos.east());
 
 								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN).booleanValue() != hasActiveSCBlock)
-								{
 									world.setBlockState(pos.east(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
-									world.markForRerender(pos.east());
-								}
 							}
 						}
 

@@ -47,8 +47,6 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 
 			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN).booleanValue()), 3);
 			world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN).booleanValue()), 3);
-			world.markForRerender(pos.down());
-			world.markForRerender(pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 			((TileEntityOwnable)world.getTileEntity(pos)).getOwner().set(getOwner());
 			((TileEntityOwnable)world.getTileEntity(pos.down())).getOwner().set(getOwner());
