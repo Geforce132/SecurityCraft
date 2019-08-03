@@ -36,6 +36,7 @@
 - Fix: [1.12.2+] Misc. crashes
 - Fix: [1.13.2] Reinforced Stone is unobtainable
 - Fix: [1.13.2] Reinforcing blocks does not preserve state from vanilla block
+- Fix: [1.13.2] Reinforced Iron Trapdoor does not behave correctly
 - Fix: [1.13.2+] Admin Tool recipe description does not show in JEI
 - Fix: [1.13.2+] Cannot interact with UI elements when mounted to a camera
 - Fix: [1.13.2+] Pressing the inventory key while editing a whitelist/blacklist module closes the GUI
