@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[27,)" #mandatory
+loaderVersion="[28,)" #mandatory
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 displayURL="http://minecraft.curseforge.com/projects/security-craft"
 logoFile="scLogo.png"
@@ -8,7 +8,7 @@ authors="Geforce132, bl4ckscor3"
 
 [[mods]] #mandatory
 modId="securitycraft" #mandatory
-version="v1.8.12" #mandatory
+version="v1.8.12.1" #mandatory
 displayName="SecurityCraft" #mandatory
 updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 description='''
@@ -25,7 +25,7 @@ Message of the update: Finally! Cameras!
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[28.0.34,)"
+    versionRange="[28.0.45,)"
     ordering="NONE"
     side="BOTH"
 
