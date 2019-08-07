@@ -56,7 +56,7 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 
-		if(newState.isAir(world, pos))
+		if(!(newState.getBlock() instanceof BlockIronTrapDoor))
 			world.removeTileEntity(pos);
 	}
 

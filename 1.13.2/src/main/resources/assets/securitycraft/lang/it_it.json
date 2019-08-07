@@ -399,7 +399,7 @@
     "gui.securitycraft:scManual.recipe.keypad_chest": "Piazza un baule e cliccalo col tasto destro (piegandoti) tenendo in mano un tastierino.",
     "gui.securitycraft:scManual.recipe.keypad_furnace": "Piazza una fornace e cliccala col tasto destro (piegandoti) tenendo in mano un tastierino.",
     "gui.securitycraft:scManual.recipe.reinforced": "Qualsiasi blocco rinforzato può essere craftato nel modo seguente, se non altrimenti specificato in questo manuale. Piazza il blocco vanilla che vuoi rinforzare e distruggilo con un rinforza-blocchi universale, o clicca col tasto destro il rinforza-blocchi universale, metti il blocco nello slot e chiudi l'interfaccia.",
-    "gui.securitycraft:scManual.recipe.adminTool": "L'attrezzo dell'amministratore è disponibile solo in creativa, se abilitato nel file di configurazione.",
+    "gui.securitycraft:scManual.recipe.admin_tool": "L'attrezzo dell'amministratore è disponibile solo in creativa, se abilitato nel file di configurazione.",
     "gui.securitycraft:scManual.recipe.sc_manual": "Il manuale della SecurityCraft è disponibile solo in creativa oppure scrivendo \"/sc help\" (senza le virgolette).",
     "gui.securitycraft:scManual.reinforced": "Blocchi rinforzati",
     "gui.securitycraft:scManual.designedBy": "Progettato da: %s",
