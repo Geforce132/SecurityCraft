@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -15,11 +14,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -34,6 +35,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.LogicalSide;
 
 public class BlockInventoryScannerField extends ContainerBlock implements IIntersectable {
@@ -98,14 +100,19 @@ public class BlockInventoryScannerField extends ContainerBlock implements IInter
 
 	public static void checkInventory(PlayerEntity entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
+		boolean hasSmartModule = te.hasModule(EnumCustomModules.SMART);
+		boolean hasStorageModule = te.hasModule(EnumCustomModules.STORAGE);
+
 		if(te.getScanType().equals("redstone"))
 		{
 			for(int i = 1; i <= entity.inventory.mainInventory.size(); i++)
 			{
-				if(!entity.inventory.mainInventory.get(i - 1).isEmpty())
+				ItemStack itemStackChecking = entity.inventory.mainInventory.get(i - 1);
+
+				if(!itemStackChecking.isEmpty())
 				{
-					if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.inventory.mainInventory.get(i - 1), stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory.get(i - 1), stack))
-							|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.inventory.mainInventory.get(i - 1).getItem() == stack.getItem()))
+					if((hasSmartModule && areItemStacksEqual(itemStackChecking, stack) && ItemStack.areItemStackTagsEqual(itemStackChecking, stack))
+							|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()) || checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule))
 					{
 						updateInventoryScannerPower(te);
 					}
@@ -116,12 +123,16 @@ public class BlockInventoryScannerField extends ContainerBlock implements IInter
 		{
 			for(int i = 1; i <= entity.inventory.mainInventory.size(); i++)
 			{
-				if(!entity.inventory.mainInventory.get(i - 1).isEmpty())
+				ItemStack itemStackChecking = entity.inventory.mainInventory.get(i - 1);
+
+				if(!itemStackChecking.isEmpty())
 				{
-					if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.inventory.mainInventory.get(i - 1), stack) && ItemStack.areItemStackTagsEqual(entity.inventory.mainInventory.get(i - 1), stack))
-							|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.inventory.mainInventory.get(i - 1).getItem() == stack.getItem()))
+					checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule);
+
+					if((hasSmartModule && areItemStacksEqual(itemStackChecking, stack) && ItemStack.areItemStackTagsEqual(itemStackChecking, stack))
+							|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()))
 					{
-						if(te.hasModule(EnumCustomModules.STORAGE))
+						if(hasStorageModule)
 							te.addItemToStorage(entity.inventory.mainInventory.get(i - 1));
 
 						entity.inventory.mainInventory.set(i - 1, ItemStack.EMPTY);
@@ -133,25 +144,53 @@ public class BlockInventoryScannerField extends ContainerBlock implements IInter
 
 	public static void checkItemEntity(ItemEntity entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
+		boolean hasSmartModule = te.hasModule(EnumCustomModules.SMART);
+		boolean hasStorageModule = te.hasModule(EnumCustomModules.STORAGE);
+
 		if(te.getScanType().equals("redstone"))
 		{
-			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
-					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getItem().getItem() == stack.getItem()))
+			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
+					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule))
 			{
 				updateInventoryScannerPower(te);
 			}
 		}
 		else if(te.getScanType().equals("check"))
 		{
-			if((((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
-					|| (!((CustomizableSCTE) te).hasModule(EnumCustomModules.SMART) && entity.getItem().getItem() == stack.getItem()))
+			checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule);
+
+			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
+					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()))
 			{
-				if(te.hasModule(EnumCustomModules.STORAGE))
+				if(hasStorageModule)
 					te.addItemToStorage(entity.getItem());
 
 				entity.remove();
 			}
 		}
+	}
+
+	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, TileEntityInventoryScanner te, boolean hasSmartModule, boolean hasStorageModule) {
+		boolean deletedItem = false;
+
+		if(item != null) {
+			if(!item.isEmpty() && item.getTag() != null && Block.getBlockFromItem(item.getItem()) instanceof ShulkerBoxBlock) {
+				ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
+
+				for(int i = 0; i < list.size(); i++) {
+					ItemStack itemInChest = ItemStack.read(list.getCompound(i));
+					if((hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck) && ItemStack.areItemStackTagsEqual(itemInChest, stackToCheck)) || (!hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck))) {
+						list.remove(i);
+						deletedItem = true;
+
+						if(hasStorageModule)
+							te.addItemToStorage(itemInChest);
+					}
+				}
+			}
+		}
+
+		return deletedItem;
 	}
 
 	private static void updateInventoryScannerPower(TileEntityInventoryScanner te)

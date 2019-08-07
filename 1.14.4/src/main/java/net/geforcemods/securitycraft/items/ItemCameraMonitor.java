@@ -7,7 +7,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.CameraView;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -47,7 +49,7 @@ public class ItemCameraMonitor extends Item {
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
 			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
-				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((TileEntitySecurityCamera)world.getTileEntity(pos)).hasModule(EnumCustomModules.SMART)){
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 					return ActionResultType.SUCCESS;
 				}

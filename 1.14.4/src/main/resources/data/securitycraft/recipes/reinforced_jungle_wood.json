@@ -1,0 +1,17 @@
+{
+  "type": "crafting_shaped",
+  "group": "securitycraft_bark",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "securitycraft:reinforced_jungle_log"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_jungle_wood",
+    "count": 3
+  }
+}

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
@@ -69,6 +70,19 @@ public class GuiEditModule extends Screen
 	}
 
 	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_)
+	{
+		if(inputField.isFocused())
+		{
+			if(keyCode == Minecraft.getInstance().gameSettings.keyBindInventory.getKey().getKeyCode())
+				return false;
+			else
+				return inputField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+		}
+		else return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+	}
+
+	@Override
 	public boolean charTyped(char typedChar, int keyCode){
 		if(inputField.isFocused())
 		{
@@ -128,7 +142,8 @@ public class GuiEditModule extends Screen
 			default: return;
 		}
 
-		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
+		if(module.getTag() != null)
+			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 	}
 
 	private int getNextSlot(CompoundNBT tag) {

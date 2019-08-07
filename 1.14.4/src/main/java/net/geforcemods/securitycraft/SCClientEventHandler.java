@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.models.ModelDynamicBakedKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -13,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -30,6 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -37,9 +41,31 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class SCClientEventHandler {
+
+	@EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT, bus=Bus.MOD)
+	private static class ModBus
+	{
+		@SubscribeEvent
+		public static void onModelBake(ModelBakeEvent event)
+		{
+			String[] facings = {"east", "north", "south", "west"};
+			String[] bools = {"true", "false"};
+
+			for(String facing : facings)
+			{
+				for(String bool : bools)
+				{
+					ModelResourceLocation mrl = new ModelResourceLocation("securitycraft:keypad", "facing=" + facing + ",powered=" + bool);
+
+					event.getModelRegistry().put(mrl, new ModelDynamicBakedKeypad(event.getModelRegistry().get(mrl)));
+				}
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void onModelRegistry(ModelRegistryEvent event)
@@ -133,7 +159,11 @@ public class SCClientEventHandler {
 		if(Minecraft.getInstance().world != null)
 		{
 			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
-				event.setCanceled(true);
+			{
+				//fix not being able to interact with the pause menu and camera monitor while mounted to a camera
+				if((Minecraft.getInstance().player.openContainer != null && !(Minecraft.getInstance().player.openContainer instanceof ContainerGeneric)) && !Minecraft.getInstance().isGamePaused())
+					event.setCanceled(true);
+			}
 		}
 	}
 

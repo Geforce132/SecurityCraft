@@ -11,8 +11,10 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -20,6 +22,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -104,7 +107,10 @@ public class GuiCameraMonitor extends Screen {
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.securityCamera) {
+				TileEntity te = Minecraft.getInstance().world.getTileEntity(view.getLocation());
+
+				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.securityCamera || (te instanceof TileEntitySecurityCamera && !((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getInstance().player) && !((TileEntitySecurityCamera)te).hasModule(EnumCustomModules.SMART)))
+				{
 					button.active = false;
 					cameraTEs[button.id - 1] = null;
 					continue;

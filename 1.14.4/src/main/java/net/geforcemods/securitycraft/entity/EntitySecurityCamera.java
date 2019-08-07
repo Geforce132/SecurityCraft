@@ -25,6 +25,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.Effect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -79,20 +80,10 @@ public class EntitySecurityCamera extends Entity{
 		playerViewingName = player.getName().getFormattedText();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
-		rotationPitch = 30F;
+		TileEntity te = world.getTileEntity(getPosition());
 
-		Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
-
-		if(facing == Direction.NORTH)
-			rotationYaw = 180F;
-		else if(facing == Direction.WEST)
-			rotationYaw = 90F;
-		else if(facing == Direction.SOUTH)
-			rotationYaw = 0F;
-		else if(facing == Direction.EAST)
-			rotationYaw = 270F;
-		else if(facing == Direction.DOWN)
-			rotationPitch = 75;
+		if(te instanceof TileEntitySecurityCamera)
+			setInitialPitchYaw((TileEntitySecurityCamera)te);
 	}
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
@@ -109,20 +100,36 @@ public class EntitySecurityCamera extends Entity{
 		playerViewingName = camera.playerViewingName;
 		setPosition(x + 0.5D, y, z + 0.5D);
 
-		rotationPitch = 30.0F;
+		TileEntity te = world.getTileEntity(getPosition());
 
-		Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(te instanceof TileEntitySecurityCamera)
+			setInitialPitchYaw((TileEntitySecurityCamera)te);
+	}
 
-		if(facing == Direction.NORTH)
-			rotationYaw = 180F;
-		else if(facing == Direction.WEST)
-			rotationYaw = 90F;
-		else if(facing == Direction.SOUTH)
-			rotationYaw = 0F;
-		else if(facing == Direction.EAST)
-			rotationYaw = 270F;
-		else if(facing == Direction.DOWN)
-			rotationPitch = 75;
+	private void setInitialPitchYaw(TileEntitySecurityCamera te)
+	{
+		if(te != null && te.hasModule(EnumCustomModules.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
+		{
+			rotationPitch = te.lastPitch;
+			rotationYaw = te.lastYaw;
+		}
+		else
+		{
+			rotationPitch = 30F;
+
+			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+
+			if(facing == Direction.NORTH)
+				rotationYaw = 180F;
+			else if(facing == Direction.WEST)
+				rotationYaw = 90F;
+			else if(facing == Direction.SOUTH)
+				rotationYaw = 0F;
+			else if(facing == Direction.EAST)
+				rotationYaw = 270F;
+			else if(facing == Direction.DOWN)
+				rotationPitch = 75;
+		}
 	}
 
 	@Override
