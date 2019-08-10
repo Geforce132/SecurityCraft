@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -83,7 +84,13 @@ public class PlaySoundAtPos{
 
 	@OnlyIn(Dist.CLIENT)
 	public static void handleMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx) {
-		Minecraft.getInstance().world.playSound(Minecraft.getInstance().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), (float) message.volume, 1.0F);
+		PlayerEntity player = Minecraft.getInstance().player;
+		BlockPos pos = player.getPosition();
+		BlockPos origin = new BlockPos(message.x, message.y, message.z);
+		int dist = Math.max(0, Math.min(pos.manhattanDistance(origin), 20)); //clamp between 0 and 20
+		float volume = (float)(message.volume * (1 - ((float)dist / 20))); //the further away the quieter
+
+		Minecraft.getInstance().world.playSound(player, origin, new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), volume, 1.0F);
 		ctx.get().setPacketHandled(true);
 	}
 }
