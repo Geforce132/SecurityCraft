@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -51,10 +52,10 @@ public class ItemTaser extends Item {
 
 					if(player.isCreative())
 					{
-						if(player.inventory.getCurrentItem().getItem() == SCContent.taser)
-							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						if(player.getHeldItem(hand).getItem() == SCContent.taser)
+							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
 						else
-							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taser, 1));
+							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taser, 1));
 					}
 					else if(player.inventory.hasItemStack(oneRedstone))
 					{
@@ -63,7 +64,7 @@ public class ItemTaser extends Item {
 
 						redstoneStack.setCount(redstoneStack.getCount() - 1);
 						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
-						player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
 					}
 
 					return ActionResult.newResult(EnumActionResult.PASS, stack);
@@ -72,14 +73,14 @@ public class ItemTaser extends Item {
 				WorldUtils.addScheduledTask(world, () -> world.spawnEntity(new EntityTaserBullet(world, player, powered)));
 				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
-				if(!player.capabilities.isCreativeMode)
+				if(!player.isCreative())
 				{
 					if(powered)
 					{
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
 						taser.damageItem(150, player);
-						player.inventory.setInventorySlotContents(player.inventory.currentItem, taser);
+						setSlotBasedOnHand(player, hand, taser);
 					}
 					else
 						stack.damageItem(150, player);
@@ -88,6 +89,14 @@ public class ItemTaser extends Item {
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);
+	}
+
+	private void setSlotBasedOnHand(EntityPlayer player, EnumHand hand, ItemStack taser)
+	{
+		if(hand == EnumHand.MAIN_HAND)
+			player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, taser);
+		else
+			player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, taser);
 	}
 
 	@Override

@@ -35,6 +35,7 @@
 - New: [1.13.2+] Finnish translation (Thanks erland!)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: [1.12.2+] Misc. crashes
+- Fix: [1.12.2+] Taser can be duplicated using offhand slot (Thanks Boreaus!)
 - Fix: [1.13.2] Reinforced Stone is unobtainable
 - Fix: [1.13.2] Reinforcing blocks does not preserve state from vanilla block
 - Fix: [1.13.2] Reinforced Iron Trapdoor does not behave correctly

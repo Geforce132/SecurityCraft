@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -55,10 +56,10 @@ public class ItemTaser extends Item {
 
 					if(player.isCreative())
 					{
-						if(player.inventory.getCurrentItem().getItem() == SCContent.taser)
-							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						if(player.getHeldItem(hand).getItem() == SCContent.taser)
+							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
 						else
-							player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taser, 1));
+							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taser, 1));
 					}
 					else if(player.inventory.hasItemStack(oneRedstone))
 					{
@@ -67,7 +68,7 @@ public class ItemTaser extends Item {
 
 						redstoneStack.setCount(redstoneStack.getCount() - 1);
 						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
-						player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(SCContent.taserPowered, 1));
+						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
 					}
 
 					return ActionResult.newResult(ActionResultType.PASS, stack);
@@ -83,7 +84,7 @@ public class ItemTaser extends Item {
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
 						taser.damageItem(150, player, p -> {});
-						player.inventory.setInventorySlotContents(player.inventory.currentItem, taser);
+						setSlotBasedOnHand(player, hand, taser);
 					}
 					else
 						stack.damageItem(150, player, p -> {});
@@ -92,6 +93,14 @@ public class ItemTaser extends Item {
 		}
 
 		return ActionResult.newResult(ActionResultType.PASS, stack);
+	}
+
+	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)
+	{
+		if(hand == Hand.MAIN_HAND)
+			player.setItemStackToSlot(EquipmentSlotType.MAINHAND, taser);
+		else
+			player.setItemStackToSlot(EquipmentSlotType.OFFHAND, taser);
 	}
 
 	@Override
