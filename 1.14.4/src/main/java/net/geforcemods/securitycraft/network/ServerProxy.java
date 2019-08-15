@@ -38,9 +38,6 @@ public class ServerProxy implements IProxy
 	public void cleanup() {}
 
 	@Override
-	public void registerKeybindings() {}
-
-	@Override
 	public World getClientWorld()
 	{
 		return null;

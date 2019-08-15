@@ -87,11 +87,6 @@ public class ClientProxy implements IProxy {
 		ScreenManager.registerFactory(SCContent.cTypeIMS, GuiIMS::new);
 		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, GuiKeycardSetup::new);
 		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, GuiKeyChanger::new);
-	}
-
-	@Override
-	public void registerKeybindings()
-	{
 		KeyBindings.init();
 	}
 

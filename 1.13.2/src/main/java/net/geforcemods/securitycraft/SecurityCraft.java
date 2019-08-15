@@ -38,6 +38,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -78,7 +79,11 @@ public class SecurityCraft {
 		KeycardConditions.registerAll();
 	}
 
-	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
+	@SubscribeEvent
+	public static void onFMLClientSetup(FMLClientSetupEvent event) //stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
+	{
+		proxy.clientSetup();
+	}
 
 	@SubscribeEvent
 	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
@@ -94,7 +99,6 @@ public class SecurityCraft {
 
 		log("Registering mod content... (PT 2/2)");
 		EnumCustomModules.refresh();
-		proxy.registerKeybindings();
 		proxy.getOrPopulateToTint().forEach(block -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, block));
 		proxy.getOrPopulateToTint().forEach(item -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> 0x999999, item));
 		proxy.cleanup();

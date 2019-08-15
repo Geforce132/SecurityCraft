@@ -11,5 +11,5 @@ public interface IProxy
 	public void registerKeypadChestItem(Register<Item> event);
 	public List<Block> getOrPopulateToTint();
 	public void cleanup();
-	public void registerKeybindings();
+	public void clientSetup();
 }

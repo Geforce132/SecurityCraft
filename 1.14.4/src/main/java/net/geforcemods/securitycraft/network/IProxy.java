@@ -19,7 +19,6 @@ public interface IProxy
 	public void registerKeypadChestItem(Register<Item> event);
 	public List<Block> getOrPopulateToTint();
 	public void cleanup();
-	public void registerKeybindings();
 	public World getClientWorld();
 	public PlayerEntity getClientPlayer();
 	public void displayMRATGui(ItemStack stack);
