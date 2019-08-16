@@ -79,7 +79,9 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return world.getBlockState(pos).getValue(LIT).booleanValue() ? 15 : 0;
+		if(state.getBlock() instanceof BlockMotionActivatedLight && state.getValue(LIT).booleanValue())
+			return 15;
+		else return 0;
 	}
 
 	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {

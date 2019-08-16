@@ -68,6 +68,8 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	public void onLoad()
 	{
 		super.onLoad();
-		down = world.getBlockState(pos).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
+
+		if(world != null && world.getBlockState(pos).getBlock() instanceof BlockSecurityCamera)
+			down = world.getBlockState(pos).getValue(BlockSecurityCamera.FACING) == EnumFacing.DOWN;
 	}
 }

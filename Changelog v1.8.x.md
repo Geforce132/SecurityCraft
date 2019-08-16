@@ -51,7 +51,8 @@
 
 --------------------------Changelog for v1.8.12.1 of SecurityCraft--------------------------
 
-- Fix: [1.8-1.8.9] Crash involving the Security Camera
+- Fix: [1.8-1.8.9,1.11.2,1.12.2] Crash involving the Security Camera
+- Fix: [1.11.2] Crash involving the Motion Activated Light
 - Fix: [1.14.4] Mod is not compatible with Forge 28.0.45+
 
 --------------------------Changelog for v1.8.12 of SecurityCraft--------------------------
