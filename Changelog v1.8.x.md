@@ -34,6 +34,7 @@
 	- Dark Prismarine Stairs
 - New: [1.13.2+] Finnish translation (Thanks erland!)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
+- Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed
 - Fix: [1.12.2+] Misc. crashes
 - Fix: [1.12.2+] Taser can be duplicated using offhand slot (Thanks Boreaus!)
 - Fix: [1.13.2] Reinforced Stone is unobtainable

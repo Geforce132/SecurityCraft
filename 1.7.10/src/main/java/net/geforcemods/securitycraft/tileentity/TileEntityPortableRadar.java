@@ -72,6 +72,13 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
+	public void attackFailed()
+	{
+		if(hasModule(EnumCustomModules.REDSTONE))
+			BlockPortableRadar.togglePowerOutput(worldObj, xCoord, yCoord, zCoord, false);
+	}
+
+	@Override
 	public void writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
