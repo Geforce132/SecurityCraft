@@ -94,7 +94,9 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		{
 			ItemStack module = ((TileEntityKeypad)te).getModule(EnumCustomModules.DISGUISE);
 
-			return ((ItemModule)module.getItem()).getBlockAddons(module.getTag()).get(0).getDefaultState().getBlockFaceShape(world, pos, face);
+			if(((ItemModule)module.getItem()).getBlockAddons(module.getTag()).isEmpty())
+				return BlockFaceShape.SOLID;
+			else return ((ItemModule)module.getItem()).getBlockAddons(module.getTag()).get(0).getDefaultState().getBlockFaceShape(world, pos, face);
 		}
 
 		return BlockFaceShape.SOLID;
