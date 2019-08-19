@@ -164,7 +164,8 @@ public class SCContent
 	@Ownable @Reinforced public static Block reinforcedJungleSlab;
 	@Ownable @Reinforced public static Block reinforcedAcaciaSlab;
 	@Ownable @Reinforced public static Block reinforcedDarkOakSlab;
-	@Ownable @Reinforced public static Block reinforcedStoneSlab;
+	@Ownable @Reinforced public static Block reinforcedNormalStoneSlab;
+	@Ownable @Reinforced public static Block reinforcedSmoothStoneSlab;
 	@Ownable @Reinforced public static Block reinforcedSandstoneSlab;
 	@Ownable @Reinforced public static Block reinforcedCobblestoneSlab;
 	@Ownable @Reinforced public static Block reinforcedBrickSlab;
@@ -275,6 +276,33 @@ public class SCContent
 	@Ownable @Reinforced public static Block reinforcedGreenConcrete;
 	@Ownable @Reinforced public static Block reinforcedRedConcrete;
 	@Ownable @Reinforced public static Block reinforcedBlackConcrete;
+	@Ownable @Reinforced public static Block reinforcedPolishedGraniteStairs;
+	@Ownable @Reinforced public static Block reinforcedSmoothRedSandstoneStairs;
+	@Ownable @Reinforced public static Block reinforcedMossyStoneBrickStairs;
+	@Ownable @Reinforced public static Block reinforcedPolishedDioriteStairs;
+	@Ownable @Reinforced public static Block reinforcedMossyCobblestoneStairs;
+	@Ownable @Reinforced public static Block reinforcedEndStoneBrickStairs;
+	@Ownable @Reinforced public static Block reinforcedStoneStairs;
+	@Ownable @Reinforced public static Block reinforcedSmoothSandstoneStairs;
+	@Ownable @Reinforced public static Block reinforcedSmoothQuartzStairs;
+	@Ownable @Reinforced public static Block reinforcedGraniteStairs;
+	@Ownable @Reinforced public static Block reinforcedAndesiteStairs;
+	@Ownable @Reinforced public static Block reinforcedRedNetherBrickStairs;
+	@Ownable @Reinforced public static Block reinforcedPolishedAndesiteStairs;
+	@Ownable @Reinforced public static Block reinforcedDioriteStairs;
+	@Ownable @Reinforced public static Block reinforcedPolishedGraniteSlab;
+	@Ownable @Reinforced public static Block reinforcedSmoothRedSandstoneSlab;
+	@Ownable @Reinforced public static Block reinforcedMossyStoneBrickSlab;
+	@Ownable @Reinforced public static Block reinforcedPolishedDioriteSlab;
+	@Ownable @Reinforced public static Block reinforcedMossyCobblestoneSlab;
+	@Ownable @Reinforced public static Block reinforcedEndStoneBrickSlab;
+	@Ownable @Reinforced public static Block reinforcedSmoothSandstoneSlab;
+	@Ownable @Reinforced public static Block reinforcedSmoothQuartzSlab;
+	@Ownable @Reinforced public static Block reinforcedGraniteSlab;
+	@Ownable @Reinforced public static Block reinforcedAndesiteSlab;
+	@Ownable @Reinforced public static Block reinforcedRedNetherBrickSlab;
+	@Ownable @Reinforced public static Block reinforcedPolishedAndesiteSlab;
+	@Ownable @Reinforced public static Block reinforcedDioriteSlab;
 	//ordered by vanilla decoration blocks creative tab order
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedIronBars;
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedGlassPane;
@@ -311,7 +339,6 @@ public class SCContent
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedRedStainedGlassPane;
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedBlackStainedGlassPane;
 	//anything else, alphabetical
-	@Ownable @Reinforced public static Block reinforcedStoneStairs;
 
 	//Fluids
 	public static FlowingFluid flowingFakeWater;

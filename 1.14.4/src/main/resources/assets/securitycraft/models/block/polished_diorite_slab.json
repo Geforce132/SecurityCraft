@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_half_slab",
+    "textures": {
+        "bottom": "securitycraft:block/reinforced_polished_diorite",
+        "top": "securitycraft:block/reinforced_polished_diorite",
+        "side": "securitycraft:block/reinforced_polished_diorite"
+    }
+}

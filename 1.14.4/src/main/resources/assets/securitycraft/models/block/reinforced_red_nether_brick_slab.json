@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_half_slab",
+    "textures": {
+        "bottom": "block/red_nether_bricks",
+        "top": "block/red_nether_bricks",
+        "side": "block/red_nether_bricks"
+    }
+}

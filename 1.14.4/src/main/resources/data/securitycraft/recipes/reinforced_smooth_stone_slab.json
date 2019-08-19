@@ -1,12 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "group": "securitycraft_slabs",
   "pattern": [
-    "BBB"
+    "###"
   ],
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_stone"
+    "#": {
+      "item": "securitycraft:reinforced_smooth_stone"
     }
   },
   "result": {

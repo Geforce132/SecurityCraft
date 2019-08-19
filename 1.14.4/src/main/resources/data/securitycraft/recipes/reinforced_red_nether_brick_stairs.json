@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "securitycraft:reinforced_red_nether_bricks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_red_nether_brick_stairs",
+    "count": 4
+  }
+}

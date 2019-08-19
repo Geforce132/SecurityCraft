@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "securitycraft:block/reinforced_red_nether_brick_slab" },
+        "type=top": { "model": "securitycraft:block/reinforced_red_nether_brick_slab_top" },
+        "type=double": { "model": "securitycraft:block/reinforced_red_nether_brick" }
+    }
+}

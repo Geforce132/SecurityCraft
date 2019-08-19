@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_top_slab",
+    "textures": {
+        "bottom": "securitycraft:block/reinforced_sandstone_top",
+        "top": "securitycraft:block/reinforced_sandstone_top",
+        "side": "securitycraft:block/reinforced_sandstone_top"
+    }
+}

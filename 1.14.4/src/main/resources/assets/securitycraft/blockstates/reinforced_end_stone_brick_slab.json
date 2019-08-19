@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "securitycraft:block/reinforced_end_stone_brick_slab" },
+        "type=top": { "model": "securitycraft:block/reinforced_end_stone_brick_slab_top" },
+        "type=double": { "model": "securitycraft:block/reinforced_end_stone_bricks" }
+    }
+}

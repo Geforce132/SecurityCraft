@@ -32,6 +32,33 @@
 	- Prismarine Stairs
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
+- New: [1.14.4] Reinforced blocks
+	- Polished Granite Stairs
+	- Smooth Red Sandstone Stairs
+	- Mossy Stone Brick Stairs
+	- Polished Diorite Stairs
+	- Mossy Cobblestone Stairs
+	- End Stone Brick Stairs
+	- Smooth Sandstone Stairs
+	- Smooth Quartz Stairs
+	- Granite Stairs
+	- Andesite Stairs
+	- Red Nether Brick Stairs
+	- Polished Andesite Stairs
+	- Diorite Stairs
+	- Polished Granite Slab
+	- Smooth Red Sandstone Slab
+	- Mossy Stone Brick Slab
+	- Polished Diorite Slab
+	- Mossy Cobblestone Slab
+	- End Stone Brick Slab
+	- Smooth Sandstone Slab
+	- Smooth Quartz Slab
+	- Granite Slab
+	- Andesite Slab
+	- Red Nether Brick Slab
+	- Polished Andesite Slab
+	- Diorite Slab
 - New: [1.13.2+] Finnish translation (Thanks erland!)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed

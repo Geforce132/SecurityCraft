@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_stairs_inner",
+    "textures": {
+        "bottom": "securitycraft:block/reinforced_polished_granite",
+        "top": "securitycraft:block/reinforced_polished_granite",
+        "side": "securitycraft:block/reinforced_polished_granite"
+    }
+}

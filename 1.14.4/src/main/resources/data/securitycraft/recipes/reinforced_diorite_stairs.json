@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "securitycraft:reinforced_diorite"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_diorite_stairs",
+    "count": 4
+  }
+}

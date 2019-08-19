@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "securitycraft:reinforced_end_stone_bricks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_end_stone_brick_stairs",
+    "count": 4
+  }
+}

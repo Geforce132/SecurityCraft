@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_stairs",
+    "textures": {
+        "bottom": "securitycraft:block/reinforced_mossy_cobblestone",
+        "top": "securitycraft:block/reinforced_mossy_cobblestone",
+        "side": "securitycraft:block/reinforced_mossy_cobblestone"
+    }
+}

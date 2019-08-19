@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "type=bottom": { "model": "securitycraft:block/reinforced_smooth_red_sandstone_slab" },
+        "type=top": { "model": "securitycraft:block/reinforced_smooth_red_sandstone_slab_top" },
+        "type=double": { "model": "securitycraft:block/reinforced_smooth_red_sandstone" }
+    }
+}
