@@ -320,7 +320,12 @@
     "item.securitycraft.briefcase": "Aktenkoffer",
     "item.securitycraft.universal_key_changer": "Universeller Passwort Wechsler",
     "item.securitycraft.scanner_door_item": "Scannertür",
-    "item.securitycraft.secret_sign_item": "Geheimes Schild",
+	"item.securitycraft.secret_sign_item": "Secret Eichenholzschild",
+    "item.securitycraft.secret_spruce_sign_item": "Geheimes Fichtenholzschild",
+    "item.securitycraft.secret_birch_sign_item": "Geheimes Birkenholzschild",
+    "item.securitycraft.secret_jungle_sign_item": "Geheimes Tropenholzschild",
+    "item.securitycraft.secret_acacia_sign_item": "Geheimes Akazienholzschild",
+    "item.securitycraft.secret_dark_oak_sign_item": "Geheimes Schwarzeichenholzschild",
     "item.securitycraft.sentry": "Geschütz",
 
     "entity.securitycraft.sentry": "Geschütz",

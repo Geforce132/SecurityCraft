@@ -140,8 +140,18 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.ims);
 		registerBlock(event, SCContent.protecto);
 		event.getRegistry().register(SCContent.scannerDoor);
-		event.getRegistry().register(SCContent.secretSignWall);
-		event.getRegistry().register(SCContent.secretSignStanding);
+		event.getRegistry().register(SCContent.secretOakWallSign);
+		event.getRegistry().register(SCContent.secretOakSign);
+		event.getRegistry().register(SCContent.secretSpruceWallSign);
+		event.getRegistry().register(SCContent.secretSpruceSign);
+		event.getRegistry().register(SCContent.secretBirchWallSign);
+		event.getRegistry().register(SCContent.secretBirchSign);
+		event.getRegistry().register(SCContent.secretJungleWallSign);
+		event.getRegistry().register(SCContent.secretJungleSign);
+		event.getRegistry().register(SCContent.secretAcaciaWallSign);
+		event.getRegistry().register(SCContent.secretAcaciaSign);
+		event.getRegistry().register(SCContent.secretDarkOakWallSign);
+		event.getRegistry().register(SCContent.secretDarkOakSign);
 		registerBlock(event, SCContent.motionActivatedLight);
 		registerBlock(event, SCContent.gravelMine, false);
 		registerBlock(event, SCContent.fakeLavaBlock, false);
@@ -235,7 +245,12 @@ public class RegistrationHandler
 		registerItem(event, SCContent.briefcase);
 		registerItem(event, SCContent.universalKeyChanger);
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
-		registerItem(event, SCContent.secretSignItem);
+		registerItem(event, SCContent.secretOakSignItem);
+		event.getRegistry().register(SCContent.secretSpruceSignItem);
+		event.getRegistry().register(SCContent.secretBirchSignItem);
+		event.getRegistry().register(SCContent.secretJungleSignItem);
+		event.getRegistry().register(SCContent.secretAcaciaSignItem);
+		event.getRegistry().register(SCContent.secretDarkOakSignItem);
 		registerItem(event, SCContent.sentry, "Henzoid");
 
 		//clear unused memory
@@ -280,7 +295,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityIMS::new, SCContent.ims).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityProtecto::new, SCContent.protecto).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "protecto")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityScannerDoor::new, SCContent.scannerDoor).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door")));
-		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySecretSign::new, SCContent.secretSignWall, SCContent.secretSignStanding).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySecretSign::new, SCContent.secretOakSign, SCContent.secretOakWallSign, SCContent.secretSpruceSign, SCContent.secretSpruceWallSign, SCContent.secretBirchSign, SCContent.secretBirchWallSign, SCContent.secretJungleSign, SCContent.secretJungleWallSign, SCContent.secretAcaciaSign, SCContent.secretAcaciaWallSign, SCContent.secretDarkOakSign, SCContent.secretDarkOakWallSign).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMotionLight::new, SCContent.motionActivatedLight).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_light")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrackMine::new, SCContent.trackMine).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine")));
 	}

@@ -108,8 +108,18 @@ public class SetupHandler
 		SCContent.ironFence = new BlockIronFence(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "electrified_iron_fence"));
 		SCContent.protecto = new BlockProtecto(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "protecto"));
 		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door"));
-		SCContent.secretSignStanding = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_standing"));
-		SCContent.secretSignWall = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_wall"));
+		SCContent.secretOakSign = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_standing"));
+		SCContent.secretOakWallSign = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_wall"));
+		SCContent.secretSpruceSign = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_standing"));
+		SCContent.secretSpruceWallSign = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_wall"));
+		SCContent.secretBirchSign = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_standing"));
+		SCContent.secretBirchWallSign = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_wall"));
+		SCContent.secretJungleSign = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_standing"));
+		SCContent.secretJungleWallSign = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_wall"));
+		SCContent.secretAcaciaSign = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_standing"));
+		SCContent.secretAcaciaWallSign = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_wall"));
+		SCContent.secretDarkOakSign = new BlockSecretSignStanding().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_standing"));
+		SCContent.secretDarkOakWallSign = new BlockSecretSignWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_wall"));
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_activated_light"));
 		SCContent.fakeWaterBlock = (FlowingFluidBlock)new BlockFakeWater().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water_block"));
 		SCContent.fakeLavaBlock = (FlowingFluidBlock)new BlockFakeLava().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava_block"));
@@ -417,7 +427,12 @@ public class SetupHandler
 		SCContent.briefcase = new ItemBriefcase().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase"));
 		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "universal_key_changer"));
 		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door_item"));
-		SCContent.secretSignItem = new ItemSecretSign().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_item"));
+		SCContent.secretOakSignItem = new ItemSecretSign(SCContent.secretOakSign, SCContent.secretOakWallSign, "item.securitycraft.secret_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_item"));
+		SCContent.secretSpruceSignItem = new ItemSecretSign(SCContent.secretSpruceSign, SCContent.secretSpruceWallSign, "item.securitycraft.secret_spruce_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_item"));
+		SCContent.secretBirchSignItem = new ItemSecretSign(SCContent.secretBirchSign, SCContent.secretBirchWallSign, "item.securitycraft.secret_birch_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_item"));
+		SCContent.secretJungleSignItem = new ItemSecretSign(SCContent.secretJungleSign, SCContent.secretJungleWallSign, "item.securitycraft.secret_jungle_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_item"));
+		SCContent.secretAcaciaSignItem = new ItemSecretSign(SCContent.secretAcaciaSign, SCContent.secretAcaciaWallSign, "item.securitycraft.secret_acacia_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_item"));
+		SCContent.secretDarkOakSignItem = new ItemSecretSign(SCContent.secretDarkOakSign, SCContent.secretDarkOakWallSign, "item.securitycraft.secret_dark_oak_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_item"));
 		SCContent.sentry = new ItemSentry().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry"));
 	}
 }

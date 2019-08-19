@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.items;
 
 import javax.annotation.Nullable;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -15,15 +15,19 @@ import net.minecraft.world.World;
 
 public class ItemSecretSign extends WallOrFloorItem
 {
-	public ItemSecretSign()
+	private final String translationKey;
+
+	public ItemSecretSign(Block floor, Block wall, String translationKey)
 	{
-		super(SCContent.secretSignStanding, SCContent.secretSignWall, new Item.Properties().maxStackSize(16).group(SecurityCraft.groupSCDecoration));
+		super(floor, wall, new Item.Properties().maxStackSize(16).group(SecurityCraft.groupSCDecoration));
+
+		this.translationKey = translationKey;
 	}
 
 	@Override
 	public String getTranslationKey()
 	{
-		return "item.securitycraft.secret_sign_item";
+		return translationKey;
 	}
 
 	@Override

@@ -1,75 +1,60 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.StandingSignBlock;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
-public class BlockSecretSignStanding extends BlockSecretSign
+public class BlockSecretSignStanding extends StandingSignBlock
 {
-	public static final IntegerProperty ROTATION = StandingSignBlock.ROTATION;
-
 	public BlockSecretSignStanding()
 	{
-		super();
-		setDefaultState(stateContainer.getBaseState().with(ROTATION, 0).with(WATERLOGGED, false));
+		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos)
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
 	{
-		return world.getBlockState(pos.down()).getMaterial().isSolid();
+		return VoxelShapes.empty();
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx)
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
-		return getDefaultState().with(ROTATION, MathHelper.floor((180.0F + ctx.getPlacementYaw()) * 16.0F / 360.0F + 0.5D) & 15).with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getPos()).getFluid() == Fluids.WATER);
+		if(placer instanceof PlayerEntity)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos)
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		return facing == Direction.DOWN && !isValidPosition(state, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, worldIn, currentPos, facingPos);
+		if(!world.isRemote && player.getHeldItem(hand).getItem() == SCContent.adminTool)
+			SCContent.adminTool.onItemUse(new ItemUseContext(player, hand, hit));
+
+		return super.onBlockActivated(state, world, pos, player, hand, hit);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
+	public TileEntity createNewTileEntity(IBlockReader world)
 	{
-		if(!world.getBlockState(pos.down()).getMaterial().isSolid())
-			world.destroyBlock(pos, true);
-
-		super.neighborChanged(state, world, pos, block, fromPos, flag);
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, Rotation rot)
-	{
-		return state.with(ROTATION, rot.rotate(state.get(ROTATION), 16));
-	}
-
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror)
-	{
-		return state.with(ROTATION, mirror.mirrorRotation(state.get(ROTATION), 16));
-	}
-
-	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
-	{
-		builder.add(ROTATION, WATERLOGGED);
+		return new TileEntitySecretSign();
 	}
 }

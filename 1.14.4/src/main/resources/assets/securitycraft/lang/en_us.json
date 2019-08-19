@@ -320,7 +320,12 @@
     "item.securitycraft.briefcase": "Briefcase",
     "item.securitycraft.universal_key_changer": "Universal Key Changer",
     "item.securitycraft.scanner_door_item": "Scanner Door",
-    "item.securitycraft.secret_sign_item": "Secret Sign",
+    "item.securitycraft.secret_sign_item": "Secret Oak Sign",
+    "item.securitycraft.secret_spruce_sign_item": "Secret Spruce Sign",
+    "item.securitycraft.secret_birch_sign_item": "Secret Birch Sign",
+    "item.securitycraft.secret_jungle_sign_item": "Secret Jungle Sign",
+    "item.securitycraft.secret_acacia_sign_item": "Secret Acacia Sign",
+    "item.securitycraft.secret_dark_oak_sign_item": "Secret Dark Oak Sign",
     "item.securitycraft.sentry": "Sentry",
 
     "entity.securitycraft.sentry": "Sentry",

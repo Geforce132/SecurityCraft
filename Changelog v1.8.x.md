@@ -32,6 +32,7 @@
 	- Prismarine Stairs
 	- Prismarine Brick Stairs
 	- Dark Prismarine Stairs
+- New: [1.13.2+] Finnish translation (Thanks erland!)
 - New: [1.14.4] Reinforced blocks
 	- Polished Granite Stairs
 	- Smooth Red Sandstone Stairs
@@ -59,7 +60,8 @@
 	- Red Nether Brick Slab
 	- Polished Andesite Slab
 	- Diorite Slab
-- New: [1.13.2+] Finnish translation (Thanks erland!)
+- New: [1.14.4] New Secret Sign types (spruce, birch, jungle, acacia, dark oak)
+- New: [1.14.4] Secret Signs can now be dyed
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed
 - Fix: [1.12.2+] Misc. crashes
