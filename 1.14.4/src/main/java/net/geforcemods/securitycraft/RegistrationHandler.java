@@ -176,7 +176,7 @@ public class RegistrationHandler
 					event.getRegistry().register(new ItemReinforcedBlock((Block)field.get(null)));
 				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{
-					int tab = field.getAnnotation(RegisterItemBlock.class).value();
+					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
 					Block block = (Block)field.get(null);
 
 					event.getRegistry().register(new BlockItem(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));

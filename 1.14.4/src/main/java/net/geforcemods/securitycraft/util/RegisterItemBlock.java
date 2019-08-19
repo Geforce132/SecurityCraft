@@ -18,11 +18,13 @@ public @interface RegisterItemBlock
 {
 	/**
 	 * The SecurityCraft creative tab to put the item block in
-	 * 0: Technical
-	 * 1: Mines
-	 * 2: Decoration
 	 *
-	 * @return The id corresponding to the creative tab as described above
+	 * @return The creative tab
 	 */
-	int value() default 0;
+	SCItemGroup value() default SCItemGroup.TECHNICAL;
+
+	public static enum SCItemGroup
+	{
+		TECHNICAL, MINES, DECORATION;
+	}
 }
