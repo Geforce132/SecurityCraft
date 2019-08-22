@@ -62,6 +62,7 @@
 	- Diorite Slab
 - New: [1.14.4] New Secret Sign types (spruce, birch, jungle, acacia, dark oak)
 - New: [1.14.4] Secret Signs can now be dyed
+- Change: Motion Activated Light now attacks mobs as well (This change includes tweaks to the attack logic that may impact other blocks, like the Portable Radar or the I.M.S. as well)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed
 - Fix: [1.12.2+] Misc. crashes

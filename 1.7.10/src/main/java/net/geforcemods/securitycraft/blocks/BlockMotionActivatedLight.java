@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWailaDisplay {
-	
+
 	public BlockMotionActivatedLight(Material material) {
 		super(material);
 	}
@@ -65,7 +65,7 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 			setBlockBounds(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
 		}
 	}
-	
+
 	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta){
 		int k1 = meta & 8;
@@ -140,7 +140,7 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 				(dir == WEST  && world.isSideSolid(x + 1, y, z, WEST )) ||
 				(dir == EAST  && world.isSideSolid(x - 1, y, z, EAST ));
 	}
-	
+
 	@Override
 	public Item getItemDropped(int meta, Random random, int fortune) {
 		return Item.getItemFromBlock(SCContent.motionActivatedLightOff);
@@ -158,7 +158,7 @@ public class BlockMotionActivatedLight extends BlockOwnable implements ICustomWa
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityMotionLight().attacks(EntityPlayer.class, SecurityCraft.config.motionActivatedLightSearchRadius, 1);
+		return new TileEntityMotionLight().attacks(EntityLivingBase.class, SecurityCraft.config.motionActivatedLightSearchRadius, 1);
 	}
-	
+
 }

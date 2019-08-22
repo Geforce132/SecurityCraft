@@ -15,7 +15,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -167,7 +166,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityMotionLight().attacks(EntityPlayer.class, ConfigHandler.motionActivatedLightSearchRadius, 1);
+		return new TileEntityMotionLight().attacks(EntityLivingBase.class, ConfigHandler.motionActivatedLightSearchRadius, 1);
 	}
 
 }

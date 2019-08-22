@@ -4,12 +4,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -197,10 +195,7 @@ public class TileEntitySCTE extends TileEntity implements ITickableTileEntity, I
 	}
 
 	public boolean shouldAttackEntityType(Entity entity) {
-		if(entity.getClass() == PlayerEntity.class || entity.getClass() == ServerPlayerEntity.class)
-			return (entity.getClass() == PlayerEntity.class || entity.getClass() == ServerPlayerEntity.class || entity.getClass() == ClientPlayerEntity.class);
-		else
-			return (entity.getClass() == typeToAttack);
+		return entity instanceof PlayerEntity || typeToAttack.isAssignableFrom(entity.getClass());
 	}
 
 	/**

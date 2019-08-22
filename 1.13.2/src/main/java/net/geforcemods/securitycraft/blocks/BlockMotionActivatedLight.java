@@ -11,6 +11,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
@@ -144,7 +145,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new TileEntityMotionLight().attacks(EntityPlayer.class, CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 1);
+		return new TileEntityMotionLight().attacks(EntityLivingBase.class, CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 1);
 	}
 
 }

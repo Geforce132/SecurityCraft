@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class TileEntityMotionLight extends CustomizableSCTE {
@@ -17,15 +18,11 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if(entity instanceof EntityPlayer)
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera((EntityPlayer)entity))
-				BlockMotionActivatedLight.toggleLight(worldObj, xCoord, yCoord, zCoord, searchRadiusOption.asDouble(), getOwner(), false);
-			else if(worldObj.getBlock(xCoord, yCoord, zCoord) == SCContent.motionActivatedLightOff)
-				BlockMotionActivatedLight.toggleLight(worldObj, xCoord, yCoord, zCoord, searchRadiusOption.asDouble(), getOwner(), true);
+		if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera((EntityPlayer)entity))
+			BlockMotionActivatedLight.toggleLight(worldObj, xCoord, yCoord, zCoord, searchRadiusOption.asDouble(), getOwner(), false);
 
-			return false;
-		}
+		if(entity instanceof EntityLivingBase && worldObj.getBlock(xCoord, yCoord, zCoord) == SCContent.motionActivatedLightOff)
+			BlockMotionActivatedLight.toggleLight(worldObj, xCoord, yCoord, zCoord, searchRadiusOption.asDouble(), getOwner(), true);
 
 		return false;
 	}
