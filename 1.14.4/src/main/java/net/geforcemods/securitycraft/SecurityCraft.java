@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCExplosives;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCTechnical;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.misc.KeycardConditions;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
@@ -73,7 +72,6 @@ public class SecurityCraft {
 	{
 		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerPackets();
-		KeycardConditions.registerAll();
 	}
 
 	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
