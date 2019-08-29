@@ -79,7 +79,7 @@ public class TileEntitySecretSignRenderer extends TileEntityRenderer<TileEntityS
 		GlStateManager.normal3f(0.0F, 0.0F, -0.010416667F);
 		GlStateManager.depthMask(false);
 
-		int i = te.getTextColor().func_218388_g();
+		int i = te.getTextColor().getTextColor();
 
 		if(te.getOwner().isOwner(Minecraft.getInstance().player) && destroyStage < 0)
 		{
