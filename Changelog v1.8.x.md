@@ -76,6 +76,7 @@
 - Fix: [1.13.2+] Disguising a keypad does not work with Forge 25.0.193+
 - Fix: [1.13.2+] Password-protected Chest is not resistant to explosions and can be broken instantly
 - Fix: [1.13.2+] The Admin Tool's description in JEI is not working
+- Fix [1.13.2+] Model of activated alarm is incorrect
 - Fix: [1.14.4] Briefcase does not save items correctly
 - Fix: [1.14.4] Some sounds play server-wide instead of just for the players who should hear them
 - Fix: [1.14.4] Secret Sign does not drop
