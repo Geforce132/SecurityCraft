@@ -135,7 +135,7 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		// Slightly cheating here, checking if the block is an instance of BlockBreakable
 		// and a vanilla block instead of checking for specific blocks, since all vanilla
 		// BlockBreakable blocks are transparent.
-		if(neighborBlock instanceof BlockBreakable && neighborBlock.toString().replace("Block{", "").startsWith("minecraft:"))
+		if(neighborBlock instanceof BlockBreakable && neighborBlock.getRegistryName().getNamespace().equals("minecraft"))
 			return false;
 
 		return true;

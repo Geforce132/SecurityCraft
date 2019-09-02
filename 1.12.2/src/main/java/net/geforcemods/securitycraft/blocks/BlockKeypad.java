@@ -27,7 +27,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -98,21 +97,23 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 
 				// If the keypad has a disguise module added with a transparent block inserted.
 				if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
-					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)).getBlock(), side);
+					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)), pos.offset(side), side);
 			}
 		}
 
 		return true;
 	}
 
-	public boolean checkForSideTransparency(IBlockAccess world, BlockPos keypadPos, Block neighborBlock, EnumFacing side) {
-		if(neighborBlock == Blocks.AIR)
+	public boolean checkForSideTransparency(IBlockAccess world, BlockPos keypadPos, IBlockState neighborState, BlockPos neighborPos, EnumFacing side) {
+		Block neighborBlock = neighborState.getBlock();
+
+		if(neighborBlock.isAir(neighborState, world, neighborPos))
 			return true;
 
 		// Slightly cheating here, checking if the block is an instance of BlockBreakable
 		// and a vanilla block instead of checking for specific blocks, since all vanilla
 		// BlockBreakable blocks are transparent.
-		if(neighborBlock instanceof BlockBreakable && neighborBlock.toString().replace("Block{", "").startsWith("minecraft:"))
+		if(neighborBlock instanceof BlockBreakable && neighborBlock.getRegistryName().getNamespace().equals("minecraft"))
 			return false;
 
 		return true;
