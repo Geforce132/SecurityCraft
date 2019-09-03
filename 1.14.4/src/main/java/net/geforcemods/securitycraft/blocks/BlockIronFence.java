@@ -240,13 +240,6 @@ public class BlockIronFence extends Block implements IIntersectable {
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
-	}
-
-	@Override
 	public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam)
 	{
 		super.eventReceived(state, world, pos, eventID, eventParam);

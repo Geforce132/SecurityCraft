@@ -267,8 +267,8 @@ public class BlockIronFence extends Block implements IIntersectable {
 	@Override
 	public void onReplaced(IBlockState state, World world, BlockPos pos, IBlockState newState, boolean isMoving)
 	{
-		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
+		if(state.hasTileEntity() && state.getBlock() != newState.getBlock())
+			world.removeTileEntity(pos);
 	}
 
 	@Override
