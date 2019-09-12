@@ -18,7 +18,7 @@ archivesBaseName = 'securitycraft'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20190902-1.14.3'
+    mappings channel: 'snapshot', version: '20190912-1.14.3'
 	
     runs {
         client = {
@@ -55,9 +55,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.0.83'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.0'
 
-    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.4-B65_1.14.2") {
+    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.2") {
         transitive = false
     })
     compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.32-alpha-9") {
@@ -71,9 +71,9 @@ jar {
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3",
-                    "Specification-Version": "v1.8.12.2",
+                    "Specification-Version": "v1.8.12.3",
                     "Implementation-Title": "SecurityCraft",
-                    "Implementation-Version": "v1.8.12.2",
+                    "Implementation-Version": "v1.8.12.3",
                     "Implementation-Vendor" :"Geforce, bl4ckscor3",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }

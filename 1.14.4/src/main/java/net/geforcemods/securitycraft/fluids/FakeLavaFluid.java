@@ -18,6 +18,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +29,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeLavaFluid extends FlowingFluid
 {
@@ -54,6 +56,16 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	public Item getFilledBucket()
 	{
 		return SCContent.fLavaBucket;
+	}
+
+	@Override
+	protected FluidAttributes createAttributes()
+	{
+		return FluidAttributes.builder(
+				new ResourceLocation("block/lava_still"),
+				new ResourceLocation("block/lava_flow"))
+				.translationKey("block.minecraft.lava")
+				.luminosity(15).density(3000).viscosity(6000).temperature(1300).build(this);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -183,9 +195,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public boolean func_215665_a(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
+	public boolean canDisplace(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
 	{
-		return fluidState.func_215679_a(world, pos) >= 0.44444445F && fluid.isIn(FluidTags.WATER);
+		return fluidState.getActualHeight(world, pos) >= 0.44444445F && fluid.isIn(FluidTags.WATER);
 	}
 
 	@Override
@@ -199,7 +211,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	{
 		int i = getTickRate(world);
 
-		if(!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.get(FALLING) && !fluidState2.get(FALLING) && fluidState2.func_215679_a(world, pos) > fluidState1.func_215679_a(world, pos) && world.getRandom().nextInt(4) != 0)
+		if(!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.get(FALLING) && !fluidState2.get(FALLING) && fluidState2.getActualHeight(world, pos) > fluidState1.getActualHeight(world, pos) && world.getRandom().nextInt(4) != 0)
 			i *= 4;
 
 		return i;

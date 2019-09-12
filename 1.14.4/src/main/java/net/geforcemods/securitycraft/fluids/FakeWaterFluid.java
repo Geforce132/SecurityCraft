@@ -19,6 +19,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -28,6 +29,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidAttributes;
 
 public abstract class FakeWaterFluid extends FlowingFluid
 {
@@ -54,6 +56,17 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	public Item getFilledBucket()
 	{
 		return SCContent.fWaterBucket;
+	}
+
+	@Override
+	protected FluidAttributes createAttributes()
+	{
+		return FluidAttributes.Water.builder(
+				new ResourceLocation("block/water_still"),
+				new ResourceLocation("block/water_flow"))
+				.overlay(new ResourceLocation("block/water_overlay"))
+				.translationKey("block.minecraft.water")
+				.color(0xFF3F76E4).build(this);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -122,7 +135,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	}
 
 	@Override
-	public boolean func_215665_a(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
+	public boolean canDisplace(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
 	{
 		return dir == Direction.DOWN && !fluid.isIn(FluidTags.WATER);
 	}
