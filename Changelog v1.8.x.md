@@ -83,6 +83,10 @@
 - Fix: [1.14.4] Secret Sign does not drop
 - Misc.: [1.13.2] The minimum required Forge build is now 25.0.193
 
+--------------------------Changelog for v1.8.12.3 of SecurityCraft--------------------------
+
+- Fix: [1.14.4] Mod is not compatible with newer Forge versions (The minimum required Forge version is now 28.1.0)
+
 --------------------------Changelog for v1.8.12.2 of SecurityCraft--------------------------
 
 - Fix: [1.14.4] Mod is not compatible with Forge 28.0.62+

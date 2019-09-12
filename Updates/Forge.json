@@ -25,8 +25,8 @@
     "1.13.2-recommended": "v1.8.12",
     "1.14.3-latest": "v1.8.12-beta2",
     "1.14.3-recommended": "v1.8.12-beta2",
-    "1.14.4-latest": "v1.8.12.2",
-    "1.14.4-recommended": "v1.8.12.2"
+    "1.14.4-latest": "v1.8.12.3",
+    "1.14.4-recommended": "v1.8.12.3"
   },
   "1.7.10": {
     "v1.8.12": "Fixes"
@@ -65,6 +65,6 @@
     "v1.8.12-beta2": "The One Probe integration!"
   },
   "1.14.4": {
-    "v1.8.12.2": "Fix compatibility with Forge 28.0.62+"
+    "v1.8.12.3": "Fix compatibility with newer Forge versions"
   } 
 }
