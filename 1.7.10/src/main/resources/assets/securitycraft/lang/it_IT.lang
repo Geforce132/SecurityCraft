@@ -287,6 +287,7 @@ help.securitycraft:reinforcedStairsBrick.info=Gli scalini di mattoni rinforzati 
 help.securitycraft:reinforcedStairsNetherBrick.info=Gli scalini di mattoni del Nether rinforzati sono come quelli normali, ma solo la persona che li ha piazzati può distruggerli con un rimuovi-blocchi universale.
 help.securitycraft:reinforcedStairsQuartz.info=Gli scalini di quarzo rinforzati sono come quelli normali, ma solo la persona che li ha piazzati può distruggerli con un rimuovi-blocchi universale.
 help.securitycraft:motionActivatedLightOff.info=La lampadina con sensore di movimento emetterà una luce quando il giocatore è entro un certo range dal blocco (configurabile).
+help.securitycraft:blockPocketManager.info=Il gestore per blocchi tascabili viene utilizzato per gestire i blocchi tascabili. Una volta aperta l'interfaccia, potranno essere selezionate delle misure. Scegline una, poi costruisci il blocco tascabile attorno al gestore. Assicurati che il gestore sia piazzato all'esterno del layer di fondo. Il blocco tascabile è un cubo della misura che hai scelto. Gli angoli sono in quarzo cesellato rinforzato, mentre i blocchi tra gli angoli sono in pilastro di quarzo rinforzato (orientato correttamente), le pareti sono invece in muri di blocco tascabile. Immagine di come dovrebbe apparire: https://i.imgur.com/KLQzMeY.png - Cliccando "Attiva" dopo la costruzione della struttura attiverà gli eventuali moduli aggiunti. Vedi l'interfaccia di personalizzazione per più informazioni (click destro con il modificatore di blocchi universale).
 
 help.securitycraft:codebreaker.info=Il decrittatore è capace di craccare il codice di qualsiasi tastiera o blocco protetto da password (fornace e baule) cliccando il blocco col tasto destro. (5 utilizzi con una possibilità di 2/3 di funzionare)
 help.securitycraft:doorIndestructibleIronItem.info=La porta di ferro rinforzata è come una normale porta di ferro, ma è indistruttibile. Può essere aperta solo da tastiere, scanner dell'inventario, ecc. Il proprietario della porta può utilizzare il rimuovi-blocchi universale per distruggerla.
@@ -388,6 +389,9 @@ gui.securitycraft:editModule.remove=Rimuovi
 gui.securitycraft:editModule.copy=Copia lista
 gui.securitycraft:editModule.paste=Incolla lista
 gui.securitycraft:editModule.clear=Cancella lista
+gui.securitycraft:blockPocketManager.activate=Attiva
+gui.securitycraft:blockPocketManager.deactivate=Disattiva
+gui.securitycraft:blockPocketManager.size=Misura: %sx%sx%s
 
 messages.securitycraft:bugReport=Puoi riportare un crash o un bug usando questo form di GoogleDocs
 messages.securitycraft:securityCamera.mounted=Ora sei collegato a una telecamera. Usa WASD per muovere la vista ed i pulsanti +/- per zoomare.
@@ -453,6 +457,10 @@ messages.securitycraft:sentry.needsBlocksAround=Assicurati che la Sentinella sia
 messages.securitycraft:sentry.mode1=Modalità attuale: Aggressiva (Sempre attiva, attacca mob ostili e giocatori)
 messages.securitycraft:sentry.mode2=Modalità attuale: Nascosta (Attiva quando un giocatore è nei paraggi, attacca giocatori)
 messages.securitycraft:sentry.mode3=Modalità attuale: Inattiva (Mai attiva, non attacca)
+messages.securitycraft:blockpocket.multipleManagers=Sono presenti più gestori di blocchi tascabili nella struttura.
+messages.securitycraft:blockpocket.invalidBlock=Blocco non valido "%2$s" alla posizione %1$s!
+messages.securitycraft:blockpocket.invalidBlock.pillar=Blocco non valido "%2$s" alla posizione %1$s! (Assicurati che il pilastro sia correttamente rivolto)
+messages.securitycraft:blockpocket.unowned=Non possiedi il blocco "%2$s" alla posizione %1$s!
 
 waila.securitycraft:displayOwner=Possessore dello schermo?
 waila.securitycraft:showModules=Mostra moduli?
@@ -498,6 +506,8 @@ module.securitycraft:portableRadar.whitelistModule.description=Aggiungere un mod
 module.securitycraft:retinalScanner.whitelistModule.description=Aggiungere un modulo lista bianca a uno scanner della retina permette ai giocatori di usare lo scanner anche non possedendolo.
 module.securitycraft:securityCamera.redstoneModule.description=Aggiungere il modulo redstone a una telecamera le permette di emettere un segnale di redstone di 15 blocchi quando attivata.
 module.securitycraft:protecto.whitelistModule.description=Aggiungere il modulo lista bianca a un protecto permette ai giocatori nella lista bianca di camminare entro il range del protecto senza essere bersagliati.
+module.securitycraft:blockPocketManager.disguiseModule.description=Aggiungere un modulo di mascheramento a un gestore di blocchi tascabili renderà opachi i lati del blocco tascabile.
+module.securitycraft:blockPocketManager.whitelistModule.description=Aggiungere un modulo lista bianca a un gestore di blocchi tascabili permetterà ai giocatori nella lista di passare attraverso i lati del blocco tascabile.
 
 config.securitycraft:isCodebreakerAllowed=Il decrittatore ha il permesso?
 config.securitycraft:isCodebreakerAllowed.tooltip=Il decrittatore può essere usato?
