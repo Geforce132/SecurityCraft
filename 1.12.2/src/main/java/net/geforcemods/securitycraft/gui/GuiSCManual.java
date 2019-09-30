@@ -105,7 +105,7 @@ public class GuiSCManual extends GuiScreen {
 
 			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
-			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).designedBy();
+			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
 				fontRenderer.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);

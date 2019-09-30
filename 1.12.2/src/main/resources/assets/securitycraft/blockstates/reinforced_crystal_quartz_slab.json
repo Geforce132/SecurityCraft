@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "securitycraft:reinforced_half_slab_quartz" },
+        "half=top": { "model": "securitycraft:reinforced_top_slab_quartz" }
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "securitycraft:block_pocket_manager_2" },
+        "facing=south": { "model": "securitycraft:block_pocket_manager_1", "y": 180 },
+        "facing=west":  { "model": "securitycraft:block_pocket_manager_2", "y": 270 },
+        "facing=east":  { "model": "securitycraft:block_pocket_manager_1", "y": 90 }
+    }
+}

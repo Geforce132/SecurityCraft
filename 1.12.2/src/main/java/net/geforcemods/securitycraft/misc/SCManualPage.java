@@ -55,12 +55,12 @@ public class SCManualPage {
 		return !configValue;
 	}
 
-	public void designedBy(String designedBy)
+	public void setDesignedBy(String designedBy)
 	{
 		this.designedBy = designedBy;
 	}
 
-	public String designedBy()
+	public String getDesignedBy()
 	{
 		return designedBy;
 	}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CIC",
+    "IRI",
+    "CIC"
+  ],
+  "key": {
+    "C": {
+      "item": "securitycraft:reinforced_crystal_quartz",
+      "data": 0
+    },
+    "I": {
+      "item": "securitycraft:reinforced_metals",
+      "data": 1
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "securitycraft:block_pocket_manager",
+    "count": 1
+  }
+}

@@ -13,14 +13,19 @@ public class SCContent
 	//Blocks
 	public static Block alarm;
 	public static Block alarmLit;
+	@Tinted(0x0E7063) public static Block blockPocketManager;
+	@Tinted(0x0E7063) public static Block blockPocketWall;
 	public static Block bogusLavaFlowing;
 	public static Block bogusWaterFlowing;
 	public static Block bouncingBetty;
 	public static Block cageTrap;
 	public static Block claymore;
 	public static Block cobblestoneMine;
+	@Tinted(0x15b3a2) public static Block crystalQuartz;
+	@Tinted(0x15b3a2) public static Block crystalQuartzSlab;
 	public static Block diamondOreMine;
 	public static Block dirtMine;
+	@Tinted(0x15b3a2) public static Block doubleCrystalQuartzSlab;
 	public static Block frame;
 	public static Block furnaceMine;
 	public static Block gravelMine;
@@ -45,8 +50,11 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedCobblestone;
 	@Reinforced @Tinted public static Block reinforcedCompressedBlocks;
 	@Reinforced @Tinted public static Block reinforcedConcrete;
+	@Reinforced @Tinted(0x0E7063) public static Block reinforcedCrystalQuartz;
 	@Reinforced @Tinted public static Block reinforcedDirt;
 	public static Block reinforcedDoor;
+	@Tinted(0x0E7063) public static Block reinforcedCrystalQuartzSlab;
+	@Tinted(0x0E7063) public static Block reinforcedDoubleCrystalQuartzSlab;
 	@Tinted public static Block reinforcedDoubleStoneSlabs;
 	@Tinted public static Block reinforcedDoubleStoneSlabs2;
 	@Tinted public static Block reinforcedDoubleWoodSlabs;
@@ -81,6 +89,7 @@ public class SCContent
 	@Tinted public static Block reinforcedStairsBirch;
 	@Tinted public static Block reinforcedStairsBrick;
 	@Tinted public static Block reinforcedStairsCobblestone;
+	@Tinted(0x0E7063) public static Block reinforcedStairsCrystalQuartz;
 	@Tinted public static Block reinforcedStairsDarkoak;
 	@Tinted public static Block reinforcedStairsJungle;
 	@Tinted public static Block reinforcedStairsNetherBrick;
@@ -105,6 +114,7 @@ public class SCContent
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
 	public static Block securityCamera;
+	@Tinted(0x15b3a2) public static Block stairsCrystalQuartz;
 	public static Block stoneMine;
 	public static Block trackMine;
 	public static Block usernameLogger;
@@ -144,6 +154,7 @@ public class SCContent
 	public static Item universalKeyChanger;
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
+	public static Item crystalQuartzItem;
 
 	//Modules
 	public static ItemModule blacklistModule;

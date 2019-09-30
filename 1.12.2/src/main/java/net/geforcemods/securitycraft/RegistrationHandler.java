@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
@@ -10,13 +13,15 @@ import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedMetals;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPrismarine;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPurpur;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs2;
@@ -30,6 +35,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
+import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
@@ -51,6 +57,8 @@ import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
@@ -106,8 +114,9 @@ public class RegistrationHandler
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.STRONG_HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.HEALING),
 			PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), PotionTypes.STRONG_HEALING)};
-	private static ArrayList<Item> itemBlocks = new ArrayList<Item>();
-	private static ArrayList<Block> blockPages = new ArrayList<Block>();
+	private static List<Item> itemBlocks = new ArrayList<>();
+	private static List<Block> blockPages = new ArrayList<>();
+	private static Map<Block,String> blocksDesignedBy = new HashMap<>();
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -186,7 +195,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedMetals, new ItemBlockReinforcedMetals(SCContent.reinforcedMetals), false);
 		registerBlock(event, SCContent.reinforcedCompressedBlocks, new ItemBlockReinforcedCompressedBlocks(SCContent.reinforcedCompressedBlocks), false);
 		registerBlock(event, SCContent.reinforcedWool, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedWool), false);
-		registerBlock(event, SCContent.reinforcedQuartz, new ItemBlockReinforcedQuartz(SCContent.reinforcedQuartz), false);
+		registerBlock(event, SCContent.reinforcedQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedQuartz), false);
 		registerBlock(event, SCContent.reinforcedStairsQuartz);
 		registerBlock(event, SCContent.reinforcedPrismarine, new ItemBlockReinforcedPrismarine(SCContent.reinforcedPrismarine), false);
 		registerBlock(event, SCContent.reinforcedRedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedRedSandstone), false);
@@ -214,6 +223,16 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedSand, false);
 		registerBlock(event, SCContent.reinforcedGravel, false);
 		registerBlock(event, SCContent.trophySystem);
+		registerBlock(event, SCContent.crystalQuartz, new ItemBlockCustomQuartz(SCContent.crystalQuartz), true);
+		registerBlock(event, SCContent.reinforcedCrystalQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedCrystalQuartz), true);
+		registerBlock(event, SCContent.crystalQuartzSlab, new ItemBlockCrystalQuartzSlab(SCContent.crystalQuartzSlab), false);
+		event.getRegistry().register(SCContent.doubleCrystalQuartzSlab);
+		registerBlock(event, SCContent.reinforcedCrystalQuartzSlab, new ItemBlockReinforcedCrystalQuartzSlab(SCContent.reinforcedCrystalQuartzSlab), false);
+		event.getRegistry().register(SCContent.reinforcedDoubleCrystalQuartzSlab);
+		registerBlock(event, SCContent.stairsCrystalQuartz, false);
+		registerBlock(event, SCContent.reinforcedStairsCrystalQuartz, false);
+		registerBlock(event, SCContent.blockPocketWall);
+		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
 	}
 
 	@SubscribeEvent
@@ -231,7 +250,14 @@ public class RegistrationHandler
 			if(block == SCContent.reinforcedStone)
 				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
 			else
-				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info"));
+			{
+				SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info");
+
+				if(blocksDesignedBy.containsKey(block))
+					page.setDesignedBy(blocksDesignedBy.get(block));
+
+				SecurityCraft.instance.manualPages.add(page);
+			}
 		}
 
 		registerItem(event, SCContent.codebreaker);
@@ -270,6 +296,7 @@ public class RegistrationHandler
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(event, SCContent.secretSignItem);
 		registerItem(event, SCContent.sentry, "Henzoid");
+		registerItem(event, SCContent.crystalQuartzItem);
 
 		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
@@ -303,6 +330,8 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityMotionLight.class, new ResourceLocation("securitycraft:motion_light"));
 		GameRegistry.registerTileEntity(TileEntityTrackMine.class, new ResourceLocation("securitycraft:track_mine"));
 		GameRegistry.registerTileEntity(TileEntityTrophySystem.class, new ResourceLocation("securitycraft:trophy_system"));
+		GameRegistry.registerTileEntity(TileEntityBlockPocketManager.class, new ResourceLocation("securitycraft:block_pocket_manager"));
+		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, new ResourceLocation("securitycraft:block_pocket"));
 	}
 
 	@SubscribeEvent
@@ -371,6 +400,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSUpdateSliderValue.Handler.class, PacketSUpdateSliderValue.class, 22, Side.SERVER);
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 23, Side.SERVER);
 		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 24, Side.CLIENT);
+		network.registerMessage(PacketCToggleBlockPocketManager.Handler.class, PacketCToggleBlockPocketManager.class, 25, Side.SERVER);
 	}
 
 	@SubscribeEvent
@@ -602,6 +632,18 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSand), 0, new ModelResourceLocation("securitycraft:reinforced_sand", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedGravel), 0, new ModelResourceLocation("securitycraft:reinforced_gravel", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.trophySystem), 0, new ModelResourceLocation("securitycraft:trophy_system", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.crystalQuartz), 0, new ModelResourceLocation("securitycraft:crystal_quartz_default", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.crystalQuartz), 1, new ModelResourceLocation("securitycraft:crystal_quartz_chiseled", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.crystalQuartz), 2, new ModelResourceLocation("securitycraft:crystal_quartz_pillar", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartz), 0, new ModelResourceLocation("securitycraft:reinforced_crystal_quartz_default", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartz), 1, new ModelResourceLocation("securitycraft:reinforced_crystal_quartz_chiseled", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartz), 2, new ModelResourceLocation("securitycraft:reinforced_crystal_quartz_pillar", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.crystalQuartzSlab), 0, new ModelResourceLocation("securitycraft:crystal_quartz_slab", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartzSlab), 0, new ModelResourceLocation("securitycraft:reinforced_crystal_quartz_slab", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.stairsCrystalQuartz), 0, new ModelResourceLocation("securitycraft:stairs_crystal_quartz", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStairsCrystalQuartz), 0, new ModelResourceLocation("securitycraft:reinforced_stairs_crystal_quartz", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.blockPocketWall), 0, new ModelResourceLocation("securitycraft:block_pocket_wall", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.blockPocketManager), 0, new ModelResourceLocation("securitycraft:block_pocket_manager", "inventory"));
 
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
@@ -640,6 +682,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.scannerDoorItem, 0, new ModelResourceLocation("securitycraft:scanner_door_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secret_sign_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.sentry, 0, new ModelResourceLocation("securitycraft:sentry", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.crystalQuartzItem, 0, new ModelResourceLocation("securitycraft:crystal_quartz_item", "inventory"));
 
 		//Mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));
@@ -654,6 +697,15 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.claymore), 0, new ModelResourceLocation("securitycraft:claymore", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.ims), 0, new ModelResourceLocation("securitycraft:ims", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.gravelMine), 0, new ModelResourceLocation("securitycraft:gravel_mine", "inventory"));
+	}
+
+	/**
+	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
+	 * @param block The block to register
+	 */
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, String designedBy)
+	{
+		registerBlock(event, block, new ItemBlock(block), true, designedBy);
 	}
 
 	/**
@@ -693,6 +745,27 @@ public class RegistrationHandler
 	}
 
 	/**
+	 * Registers a block with a custom ItemBlock
+	 * @param block The Block to register
+	 * @param itemBlock The ItemBlock to register
+	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
+	 * @param The name of the person who designed this block
+	 */
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage, String designedBy)
+	{
+		event.getRegistry().register(block);
+
+		if(itemBlock != null)
+			itemBlocks.add(itemBlock.setRegistryName(block.getRegistryName().toString()));
+
+		if(initPage)
+			blockPages.add(block);
+
+		if(designedBy != null)
+			blocksDesignedBy.put(block, designedBy);
+	}
+
+	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item)
@@ -717,7 +790,7 @@ public class RegistrationHandler
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
 
 		event.getRegistry().register(item);
-		page.designedBy(designedBy);
+		page.setDesignedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
 
@@ -730,7 +803,7 @@ public class RegistrationHandler
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
 
 		event.getRegistry().register(item);
-		page.designedBy(designedBy);
+		page.setDesignedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
 

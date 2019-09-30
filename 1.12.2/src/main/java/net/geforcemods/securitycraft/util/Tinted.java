@@ -18,5 +18,5 @@ public @interface Tinted
 	/**
 	 * @return The tint to apply, default is 0x999999
 	 */
-	int tint() default 0x999999;
+	int value() default 0x999999;
 }

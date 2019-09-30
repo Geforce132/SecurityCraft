@@ -282,13 +282,19 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	@SideOnly(Side.CLIENT)
+	public void registerEntityRenderingHandlers()
+	{
+		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, manager -> new RenderBouncingBetty(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, manager -> new RenderIMSBomb(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, manager -> new RenderSentry(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, manager -> new RenderBullet(manager));
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerRenderThings(){
 		KeyBindings.init();
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, new RenderSentry(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, new RenderBullet(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
@@ -300,7 +306,7 @@ public class ClientProxy implements IProxy {
 		{
 			if(field.isAnnotationPresent(Tinted.class))
 			{
-				int tint = field.getAnnotation(Tinted.class).tint();
+				int tint = field.getAnnotation(Tinted.class).value();
 
 				try
 				{

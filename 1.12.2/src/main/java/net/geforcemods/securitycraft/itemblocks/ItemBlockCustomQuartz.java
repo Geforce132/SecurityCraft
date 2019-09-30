@@ -4,9 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockReinforcedQuartz extends ItemBlock
+public class ItemBlockCustomQuartz extends ItemBlock
 {
-	public ItemBlockReinforcedQuartz(Block block)
+	public ItemBlockCustomQuartz(Block block)
 	{
 		super(block);
 

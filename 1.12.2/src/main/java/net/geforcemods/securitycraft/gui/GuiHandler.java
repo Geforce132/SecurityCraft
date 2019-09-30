@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
 import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -44,6 +45,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
 	public static final int MODULES = 104;
+	public static final int BLOCK_POCKET_MANAGER = 105;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -96,6 +98,8 @@ public class GuiHandler implements IGuiHandler {
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
 			case MODULES:
+				return new ContainerGeneric(player.inventory, tile_entity);
+			case BLOCK_POCKET_MANAGER:
 				return new ContainerGeneric(player.inventory, tile_entity);
 			default:
 				return null;
@@ -157,6 +161,10 @@ public class GuiHandler implements IGuiHandler {
 			case MODULES:
 				if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule || player.getHeldItemMainhand().getItem() == SCContent.blacklistModule)
 					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), tile_entity);
+				return null;
+			case BLOCK_POCKET_MANAGER:
+				if(tile_entity instanceof TileEntityBlockPocketManager)
+					return new GuiBlockPocketManager((TileEntityBlockPocketManager)tile_entity);
 				return null;
 			default:
 				return null;

@@ -1,4 +1,4 @@
-tile.securitycraft:laserBlock.name=Laser Block
+﻿tile.securitycraft:laserBlock.name=Laser Block
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Aktivierter Laser
 tile.securitycraft:keypad.name=Nummernschloss
@@ -236,6 +236,20 @@ tile.securitycraft:gravelMine.name=Kiesmine
 tile.securitycraft:reinforcedSand.name=Verstärkter Sand
 tile.securitycraft:reinforcedGravel.name=Verstärkter Kies
 tile.securitycraft:trophy_system.name=Trophy-System
+tile.securitycraft:crystalQuartz.name=Kristallquartz-Blöcke
+tile.securitycraft:crystalQuartz_default.name=Kristallquarzblock
+tile.securitycraft:crystalQuartz_chiseled.name=Gemeißelter Kristallquarzblock
+tile.securitycraft:crystalQuartz_pillar.name=Kristallquarzsäule
+tile.securitycraft:reinforcedCrystalQuartz.name=Verstärkte Kristallquartz-Blöcke
+tile.securitycraft:reinforcedCrystalQuartz_default.name=Verstärkter Kristallquarzblock
+tile.securitycraft:reinforcedCrystalQuartz_chiseled.name=Verstärkter gemeißelter Kristallquarzblock
+tile.securitycraft:reinforcedCrystalQuartz_pillar.name=Verstärkte Kristallquarzsäule
+tile.securitycraft:crystalQuartzSlab.name=Kristallquarzstufe
+tile.securitycraft:reinforcedCrystalQuartzSlab.name=Verstärkte Kristallquarzstufe
+tile.securitycraft:stairsCrystalQuartz.name=Kristallquarztreppe
+tile.securitycraft:reinforcedStairsCrystalQuartz.name=Verstärkte Kristallquarztreppe
+tile.securitycraft:blockPocketWall.name=Blocktaschenwand
+tile.securitycraft:blockPocketManager.name=Blocktaschenverwalter
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -273,6 +287,7 @@ item.securitycraft:universalKeyChanger.name=Universeller Passwort Wechsler
 item.securitycraft:scannerDoorItem.name=Scannertür
 item.securitycraft:secretSignItem.name=Geheimes Schild
 item.securitycraft:sentry.name=Geschütz
+item.securitycraft:crystalQuartzItem.name=Kristallquartz
 
 entity.securitycraft:sentry.name=Geschütz
 entity.securitycraft:bullet.name=Kugel
@@ -331,6 +346,10 @@ help.securitycraft:reinforcedStairsPurpur.info=Verstärkte Purpurtreppen sind wi
 help.securitycraft:motionActivatedLight.info=Das Automatische Licht geht an, sobald sich ein Spieler in seiner Nähe befindet. Es wird ausgeschaltet, wenn sich in dem Radius kein Spieler mehr befindet (Radius konfigurierbar).
 help.securitycraft:reinforcedStainedHardenedClay.info=Verstärkter gefärbtes Ton ist wie normaler gefärbter Ton, jedoch kann er nur von dem Besitzer mit einem Universellen Block Entferner entfernt werden.
 help.securitycraft:trophy_system.info=Das Trophy-System, inspiriert von dem gleichnamigen Gegenstand in "Call of Duty: Modern Warfare 3" publiziert von Activision, visiert gegnerische Pfeile und Feuerbälle an und zerstört sie von Weitem nach einer halbsekündigen Aufladezeit.
+help.securitycraft:crystalQuartz.info=Kristallquartz-Blöcke sind simple Baublöcke, die auf bekannte Art und Weise verstärkt werden können.
+help.securitycraft:reinforcedCrystalQuartz.info=Verstärkte Kristallquartz-Blöcke werden benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.
+help.securitycraft:blockPocketWall.info=Die Blocktaschenwand wird benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.
+help.securitycraft:blockPocketManager.info=Der Blocktaschenverwalter wird benutzt um die Blocktasche zu verwalten. In seinem GUI kannst du dir eine Größe aussuchen, und dann die Struktur um den Blocktaschenverwalter herum bauen. Stelle sicher, dass er auf der untersten Ebene der Struktur ganz außen platziert ist. Die Blocktasche ist eine würfelförmige Struktur die die ausgewählte Größe hat. Die Ecken sind aus verstärktem gemeißeltem Kristallquarz, die Blöcke zwischen den Ecken sind verstärkte Kristallquarzsäulen, und der Boden/die Wände/die Decke werden mit der Blocktaschenwand gebaut. Schaue dir dieses Bild an, um ein Beispiel zu sehen (der Blocktaschenverwalter ist mit einem roten Pfeil markiert) https://i.imgur.com/KLQzMeY.png - Wenn du "Aktivieren" klickst, werden alle Module im Blocktaschenverwalter aktiv. Siehe das "Customize" GUI für mehr Informationen (Rechtsklick mit Universellem Block Modifizierer)
 
 help.securitycraft:codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.securitycraft:doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt und durch Nummernschlösser, Inventar Scanner, etc. geöffnet werden.
@@ -369,6 +388,7 @@ help.securitycraft:universalKeyChanger.info=Der Universelle Passwort Wechsler er
 help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla Schild, mit dem Unterschied, dass nur der Besitzer den Text lesen kann. Stelle sicher, dass keiner den Block an dem das Schild ist zerstören kann!
 help.securitycraft:sentry.info=Das Geschütz wird, wenn es per Rechtsklick platziert wird, jeden Spieler in seiner Nähe anschiessen. Der Spieler, der das Geschütz platziert hat ist ausgenommen, und kann es mit einem Rechtsklick wieder aufheben.
 help.securitycraft:sentry.info=Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen) und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es. 
+help.securitycraft:crystalQuartzItem.info=Kristallquartz wird benutzt um Kristallquartz-Blöcke herzustellen.
 
 gui.securitycraft:scManual.disabled=Deaktiviert
 gui.securitycraft:scManual.intro.1=Anfangen mit SecurityCraft
@@ -440,6 +460,9 @@ gui.securitycraft:editModule.remove=Entfernen
 gui.securitycraft:editModule.copy=Liste kopieren
 gui.securitycraft:editModule.paste=Liste einfügen
 gui.securitycraft:editModule.clear=Liste leeren
+gui.securitycraft:blockPocketManager.activate=Aktivieren
+gui.securitycraft:blockPocketManager.deactivate=Deaktivieren
+gui.securitycraft:blockPocketManager.size=Größe: %sx%sx%s
 
 messages.securitycraft:bugReport=Du kannst einen Crash oder Bug mit dieser GoogleDocs Formular melden
 messages.securitycraft:securityCamera.mounted=Du bist nun in einer Kamera. Nutze WASD um dich umzusehen und die +/- Knöpfe um heran- und herauszuzoomen.
@@ -504,6 +527,10 @@ messages.securitycraft:sentry.needsBlocksAround=Stelle sicher, dass dein Geschü
 messages.securitycraft:sentry.mode1=Aktueller Modus: Aggressiv (Immer aktiv, attackiert Monster und Spieler)
 messages.securitycraft:sentry.mode2=Aktueller Modus: Tarnen (Aktiv wenn ein Spieler nahe ist, attackiert Spieler)
 messages.securitycraft:sentry.mode3=Aktueller Modus: Untätig (Nie aktiv, attackiert nichts)
+messages.securitycraft:blockpocket.multipleManagers=Es existiert mehr als ein Blocktaschenverwalter in der Struktur.
+messages.securitycraft:blockpocket.invalidBlock=Ungültiger Block "%2$s" an Position %1$s!
+messages.securitycraft:blockpocket.invalidBlock.pillar=Ungültiger Block "%2$s" an Position %1$s! (Achte auf die korrekte Rotation der Säule!)
+messages.securitycraft:blockpocket.unowned=Du besitzt nicht den Block "%2$s" an Position %1$s!
 
 jei.securitycraft:reinforcedBlock.info=Rechtsklicke einen Universellen Block Entferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Block Entferner zerbrechen.
 
@@ -552,6 +579,8 @@ module.securitycraft:retinalScanner.whitelistModule.description=Ein Whitelist Mo
 module.securitycraft:securityCamera.redstoneModule.description=Ein Redstone Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.
 module.securitycraft:securityCamera.smartModule.description=Ein schlaues Modul lässt jeden die Kamera anschauen. Jedoch kann nur der Besitzer der Kamera entscheiden wohin die Kamera schaut. Jeder andere Spieler schaut in die Richtung, wo der Besitzer zuletzt hingeschaut hat.
 module.securitycraft:protecto.whitelistModule.description=Ein Whitelist Modul in einem Protecto erlaubt gewhitelisteten Spielern sich in dem Angriffsradius aufzuhalten ohne attakiert zu werden.
+module.securitycraft:blockPocketManager.disguiseModule.description=Ein Tarnmodul in einem Blocktaschenverwalter macht die Seiten der Blocktasche undurchsichtig.
+module.securitycraft:blockPocketManager.whitelistModule.description=Ein Whitelist Modul in einem Blocktaschenverwalter erlaubt gewhitelisteten Spielern die durch die Seiten der Blocktasche zu gehen.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?

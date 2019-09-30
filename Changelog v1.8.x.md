@@ -2,6 +2,7 @@
 
 - New: Italian translation (Thanks Chexet48!)
 - New: Trophy System (Inspired from https://callofduty.fandom.com/wiki/Trophy_System)
+- New: Block Pocket (Designed by Henzoid)
 - New: [1.12.2+] The Smart Module now works for Security Cameras, enabling others to view cameras at a fixed angle
 - New: [1.13.2+] Reinforced blocks
 	- Stripped Oak Log
@@ -61,7 +62,7 @@
 	- Polished Andesite Slab
 	- Diorite Slab
 - New: [1.14.4] New Secret Sign types (spruce, birch, jungle, acacia, dark oak)
-- New: [1.14.4] Secret Signs can now be dyed
+- New: [1.14.4] Secret Sign text can now be dyed
 - Change: The Motion Activated Light is now triggered by mobs as well (This change includes tweaks to the attack logic that may impact other blocks, like the Portable Radar or the I.M.S., as well)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed

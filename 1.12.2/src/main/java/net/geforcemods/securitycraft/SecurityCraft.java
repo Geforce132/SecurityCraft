@@ -38,7 +38,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
-@Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", version = SecurityCraft.VERSION, /*guiFactory = "net.geforcemods.securitycraft.gui.SecurityCraftGuiFactory",*/ dependencies = SecurityCraft.DEPENDENCIES, updateJSON = SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.12.2]")
+@Mod(modid = SecurityCraft.MODID, name = "SecurityCraft", version = SecurityCraft.VERSION, dependencies = SecurityCraft.DEPENDENCIES, updateJSON = SecurityCraft.UPDATEJSONURL, acceptedMinecraftVersions = "[1.12.2]")
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
@@ -48,7 +48,7 @@ public class SecurityCraft {
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static IProxy proxy;
-	@Instance("securitycraft")
+	@Instance(MODID)
 	public static SecurityCraft instance = new SecurityCraft();
 	public static SimpleNetworkWrapper network;
 	public static SCEventHandler eventHandler = new SCEventHandler();
@@ -93,6 +93,8 @@ public class SecurityCraft {
 		modMeta.description = "Adds a load of things to keep your house safe with.\nIf you like this mod, hit the green arrow\nin the corner of the forum thread!\nPlease visit the URL above for help. \n \nMessage of the update: \n" + MOTU;
 		modMeta.url = "http://geforcemods.net";
 		modMeta.logoFile = "/scLogo.png";
+
+		proxy.registerEntityRenderingHandlers();
 	}
 
 	@EventHandler

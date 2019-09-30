@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "half=bottom": { "model": "securitycraft:reinforced_quartz_default" },
+        "half=top": { "model": "securitycraft:reinforced_quartz_default" }
+    }
+}
