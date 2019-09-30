@@ -66,6 +66,7 @@
 - Change: The Motion Activated Light is now triggered by mobs as well (This change includes tweaks to the attack logic that may impact other blocks, like the Portable Radar or the I.M.S., as well)
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed
+- Fix: [1.7.10,1.12.2] SecurityCraft Manual does not correctly display items with metadata
 - Fix: [1.12.2+] Misc. crashes
 - Fix: [1.12.2+] Taser can be duplicated using offhand slot (Thanks Boreaus!)
 - Fix: [1.13.2] Reinforced Stone is unobtainable

@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -151,16 +152,17 @@ public class GuiSCManual extends GuiScreen {
 			if(recipe != null)
 			{
 				for(int i = 0; i < 3; i++)
-					for(int j = 0; j < 3; j++){
+					for(int j = 0; j < 3; j++)
+					{
 						if(((i * 3) + j) >= recipe.size())
 							break;
-						if(recipe.get((i * 3) + j).getMatchingStacks().length == 0 || recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
+
+						ItemStack[] matchingStacks = recipe.get((i * 3) + j).getMatchingStacks();
+
+						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
-						if(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock)
-							GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem()), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
-						else
-							GuiUtils.drawItemStackToGui(mc, recipe.get((i * 3) + j).getMatchingStacks()[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe.get((i * 3) + j).getMatchingStacks()[0].getItem() instanceof ItemBlock));
+						GuiUtils.drawItemStackToGui(mc, matchingStacks[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof ItemBlock));
 					}
 			}
 

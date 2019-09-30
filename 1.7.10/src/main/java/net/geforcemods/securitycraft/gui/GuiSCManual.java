@@ -147,16 +147,17 @@ public class GuiSCManual extends GuiScreen {
 			{
 				for(int i = 0; i < 3; i++)
 				{
-					for(int j = 0; j < 3; j++){
+					for(int j = 0; j < 3; j++)
+					{
 						if(((i * 3) + j) >= recipe.length)
 							break;
+
 						if(recipe[(i * 3) + j] == null)
 							continue;
 
-						if(recipe[(i * 3) + j].getItem() instanceof ItemBlock)
-							GuiUtils.drawItemStackToGui(mc, Block.getBlockFromItem(recipe[(i * 3) + j].getItem()), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe[(i * 3) + j].getItem() instanceof ItemBlock));
-						else
-							GuiUtils.drawItemStackToGui(mc, recipe[(i * 3) + j].getItem(), recipe[(i * 3) + j].getMetadata(), (startX + 100) + (j * 20), 144 + (i * 20), !(recipe[(i * 3) + j].getItem() instanceof ItemBlock));
+						ItemStack stack = recipe[(i * 3) + j];
+
+						GuiUtils.drawItemStackToGui(mc, stack.getItem(), stack.getMetadata(), (startX + 100) + (j * 20), 144 + (i * 20), !(stack.getItem() instanceof ItemBlock));
 					}
 				}
 			}
