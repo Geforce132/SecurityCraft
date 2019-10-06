@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.StatCollector;
 
 public class ClientUtils{
 
@@ -99,4 +100,16 @@ public class ClientUtils{
 		catch (Throwable throwable) {}
 	}
 
+	public static String localize(String toTranslate, Object... params)
+	{
+		for(int i = 0; i < params.length; i++)
+		{
+			if(params[i] instanceof TranslatableString)
+				params[i] = localize(((TranslatableString)params[i]).getString(), ((TranslatableString)params[i]).getArgs());
+			else if(params[i] instanceof BlockPos)
+				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
+		}
+
+		return StatCollector.translateToLocalFormatted(toTranslate, params);
+	}
 }

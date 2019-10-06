@@ -1,7 +1,12 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
+import net.geforcemods.securitycraft.blocks.BlockCrystalQuartz;
+import net.geforcemods.securitycraft.blocks.BlockCrystalQuartzSlab;
+import net.geforcemods.securitycraft.blocks.BlockCrystalQuartzStairs;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
 import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
 import net.geforcemods.securitycraft.blocks.BlockFakeWater;
@@ -37,6 +42,9 @@ import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCarpet;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCompressedBlocks;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartzSlab;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartzStairs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
@@ -213,6 +221,23 @@ public class SetupHandler
 
 		SCContent.reinforcedSand = new BlockReinforcedFalling(Material.sand, Blocks.sand).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:reinforcedSand");
 		SCContent.reinforcedGravel = new BlockReinforcedFalling(Material.ground, Blocks.gravel).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:reinforcedGravel");
+
+		SCContent.crystalQuartz = new BlockCrystalQuartz().setHardness(0.8F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:crystalQuartz").setTextureName("quartz_block");
+		SCContent.reinforcedCrystalQuartz = new BlockReinforcedCrystalQuartz().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCrystalQuartz");
+
+		SCContent.crystalQuartzSlab = new BlockCrystalQuartzSlab(false, Material.rock).setHardness(2.0F).setResistance(10.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:crystalQuartzSlab");
+		SCContent.doubleCrystalQuartzSlab = new BlockCrystalQuartzSlab(true, Material.rock).setHardness(2.0F).setResistance(10.0F).setUnlocalizedName("securitycraft:doubleCrystalQuartzSlab");
+
+		SCContent.reinforcedCrystalQuartzSlab = new BlockReinforcedCrystalQuartzSlab(false, Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedCrystalQuartzSlab");
+		SCContent.reinforcedDoubleCrystalQuartzSlab = new BlockReinforcedCrystalQuartzSlab(true, Material.rock).setBlockUnbreakable().setResistance(6000000.0F).setUnlocalizedName("securitycraft:reinforcedDoubleCrystalQuartzSlab");
+
+		SCContent.stairsCrystalQuartz = new BlockCrystalQuartzStairs(SCContent.crystalQuartz, 0).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:stairsCrystalQuartz");
+
+		SCContent.reinforcedStairsCrystalQuartz = new BlockReinforcedCrystalQuartzStairs(SCContent.reinforcedCrystalQuartz, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforcedStairsCrystalQuartz");
+
+		SCContent.blockPocketWall = new BlockBlockPocketWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:blockPocketWall");
+
+		SCContent.blockPocketManager = new BlockBlockPocketManager().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:blockPocketManager");
 	}
 
 	public static void setupMines()
@@ -291,5 +316,7 @@ public class SetupHandler
 		SCContent.secretSignItem = new ItemSecretSign().setUnlocalizedName("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration).setTextureName("securitycraft:secret_sign");
 
 		SCContent.sentry = new ItemSentry().setUnlocalizedName("securitycraft:sentry").setCreativeTab(SecurityCraft.tabSCTechnical).setTextureName("securitycraft:sentry");
+
+		SCContent.crystalQuartzItem = new Item().setUnlocalizedName("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.tabSCDecoration).setTextureName("securitycraft:crystal_quartz");
 	}
 }

@@ -42,12 +42,12 @@ public class SCManualPage {
 		return (customRecipe != null);
 	}
 
-	public void designedBy(String designedBy)
+	public void setDesignedBy(String designedBy)
 	{
 		this.designedBy = designedBy;
 	}
 
-	public String designedBy()
+	public String getDesignedBy()
 	{
 		return designedBy;
 	}

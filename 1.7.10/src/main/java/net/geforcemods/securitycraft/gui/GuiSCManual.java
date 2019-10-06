@@ -100,7 +100,7 @@ public class GuiSCManual extends GuiScreen {
 
 			fontRendererObj.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
-			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).designedBy();
+			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
 				fontRendererObj.drawSplitString(StatCollector.translateToLocalFormatted("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
@@ -125,6 +125,8 @@ public class GuiSCManual extends GuiScreen {
 			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).blockInstance : null);
 
 			if(itemBlock != null){
+				GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F); //fix state leak leading to colored icons
+
 				if(itemBlock instanceof IExplosive)
 					drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
 

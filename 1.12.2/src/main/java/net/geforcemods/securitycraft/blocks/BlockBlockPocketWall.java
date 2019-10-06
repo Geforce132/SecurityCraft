@@ -77,6 +77,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 		return EMPTY_AABB;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer()
 	{

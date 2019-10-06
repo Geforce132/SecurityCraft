@@ -11,6 +11,8 @@ public class SCContent
 	//Blocks
 	public static Block alarm;
 	public static Block alarmLit;
+	public static Block blockPocketManager;
+	public static Block blockPocketWall;
 	public static Block bogusLava;
 	public static Block bogusLavaFlowing;
 	public static Block bogusWater;
@@ -20,9 +22,12 @@ public class SCContent
 	public static Block claymoreActive;
 	public static Block claymoreDefused;
 	public static Block cobblestoneMine;
+	public static Block crystalQuartz;
+	public static Block crystalQuartzSlab;
 	public static Block deactivatedCageTrap;
 	public static Block diamondOreMine;
 	public static Block dirtMine;
+	public static Block doubleCrystalQuartzSlab;
 	public static Block frame;
 	public static Block furnaceMine;
 	public static Block gravelMine;
@@ -46,7 +51,10 @@ public class SCContent
 	@Reinforced public static Block reinforcedCarpet;
 	@Reinforced public static Block reinforcedCobblestone;
 	@Reinforced public static Block reinforcedCompressedBlocks;
+	@Reinforced public static Block reinforcedCrystalQuartz;
 	@Reinforced public static Block reinforcedDirt;
+	public static Block reinforcedCrystalQuartzSlab;
+	public static Block reinforcedDoubleCrystalQuartzSlab;
 	public static Block reinforcedDirtSlab;
 	public static Block reinforcedDoor;
 	public static Block reinforcedDoubleDirtSlab;
@@ -77,6 +85,7 @@ public class SCContent
 	public static Block reinforcedStairsBirch;
 	public static Block reinforcedStairsBrick;
 	public static Block reinforcedStairsCobblestone;
+	public static Block reinforcedStairsCrystalQuartz;
 	public static Block reinforcedStairsDarkoak;
 	public static Block reinforcedStairsJungle;
 	public static Block reinforcedStairsNetherBrick;
@@ -98,6 +107,7 @@ public class SCContent
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
 	public static Block securityCamera;
+	public static Block stairsCrystalQuartz;
 	public static Block stoneMine;
 	public static Block trackMine;
 	public static Block usernameLogger;
@@ -129,6 +139,7 @@ public class SCContent
 	public static Item universalKeyChanger;
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
+	public static Item crystalQuartzItem;
 
 	//Modules
 	public static ItemModule blacklistModule;

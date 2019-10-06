@@ -75,6 +75,11 @@ public class BlockUtils{
 		return world.getBlock(x, y, z);
 	}
 
+	public static Block getBlock(World world, BlockPos pos)
+	{
+		return getBlock(world, pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	/**
 	 * Breaks the block at the given coordinates. <p>
 	 *

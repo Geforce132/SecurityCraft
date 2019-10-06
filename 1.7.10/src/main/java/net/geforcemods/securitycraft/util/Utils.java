@@ -22,6 +22,11 @@ public class Utils {
 		return s.substring(0, s.length() - 1);
 	}
 
+	public static String getFormattedCoordinates(BlockPos pos)
+	{
+		return getFormattedCoordinates(pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	/**
 	 * Returns the given X, Y, and Z coordinates in a nice String, useful for chat messages. <p>
 	 *

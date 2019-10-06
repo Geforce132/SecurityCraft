@@ -7,6 +7,9 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerGeneric extends Container {
 
+	public ContainerGeneric()
+	{}
+
 	public ContainerGeneric(InventoryPlayer inventory, TileEntity te){
 
 	}

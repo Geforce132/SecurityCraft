@@ -54,7 +54,7 @@ public class SecurityCraft
 	protected static final String DEPENDENCIES = "required-after:Forge@[10.13.4.1558,);after:LookingGlass@[0.2.0.01,);";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
 	public static IProxy proxy;
-	@Instance("securitycraft")
+	@Instance(MODID)
 	public static SecurityCraft instance = new SecurityCraft();
 	public static ConfigHandler config = new ConfigHandler();
 	public static SimpleNetworkWrapper network;

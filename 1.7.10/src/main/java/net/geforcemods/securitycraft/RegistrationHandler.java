@@ -12,12 +12,14 @@ import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedColoredBlock;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedMetals;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPlanks;
-import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
@@ -30,6 +32,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCSetCameraLocation;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketCSpawnLightning;
+import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
@@ -52,6 +55,8 @@ import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
@@ -168,7 +173,7 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedMetals, ItemBlockReinforcedMetals.class);
 		registerReinforcedBlock(SCContent.reinforcedCompressedBlocks, ItemBlockReinforcedCompressedBlocks.class);
 		registerReinforcedBlock(SCContent.reinforcedWool, ItemBlockReinforcedColoredBlock.class);
-		registerReinforcedBlock(SCContent.reinforcedQuartz, ItemBlockReinforcedQuartz.class);
+		registerReinforcedBlock(SCContent.reinforcedQuartz, ItemBlockCustomQuartz.class);
 		GameRegistry.registerBlock(SCContent.secretSignWall, "secretSignWall");
 		GameRegistry.registerBlock(SCContent.secretSignStanding, "secretSignStanding");
 		registerBlock(SCContent.motionActivatedLightOff);
@@ -181,6 +186,18 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.gravelMine, SCContent.gravelMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerReinforcedBlock(SCContent.reinforcedSand);
 		registerReinforcedBlock(SCContent.reinforcedGravel);
+
+		registerBlock(SCContent.crystalQuartz, ItemBlockCustomQuartz.class);
+		registerReinforcedBlock(SCContent.reinforcedCrystalQuartz, ItemBlockCustomQuartz.class);
+		registerBlock(SCContent.crystalQuartzSlab, ItemBlockCrystalQuartzSlab.class, false);
+		GameRegistry.registerBlock(SCContent.doubleCrystalQuartzSlab, SCContent.doubleCrystalQuartzSlab.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		registerBlock(SCContent.reinforcedCrystalQuartzSlab, ItemBlockReinforcedCrystalQuartzSlab.class, false);
+		GameRegistry.registerBlock(SCContent.reinforcedDoubleCrystalQuartzSlab, SCContent.reinforcedDoubleCrystalQuartzSlab.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.stairsCrystalQuartz, SCContent.stairsCrystalQuartz.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		GameRegistry.registerBlock(SCContent.reinforcedStairsCrystalQuartz, SCContent.reinforcedStairsCrystalQuartz.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+		registerBlock(SCContent.blockPocketWall);
+		registerBlock(SCContent.blockPocketManager, "Henzoid");
+		registerItem(SCContent.crystalQuartzItem);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem);
@@ -240,6 +257,8 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntitySecretSign.class, "secretSign");
 		GameRegistry.registerTileEntity(TileEntityMotionLight.class, "motionLight");
 		GameRegistry.registerTileEntity(TileEntityTrackMine.class, "trackMineSC");
+		GameRegistry.registerTileEntity(TileEntityBlockPocketManager.class, "block_pocket_manager");
+		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, "block_pocket");
 	}
 
 	public static void registerRecipes()
@@ -357,6 +376,16 @@ public class RegistrationHandler
 
 		GameRegistry.addRecipe(new ItemStack(SCContent.sentry, 1), "RDR", "IPI", "BBB", 'R', Items.redstone, 'D', Blocks.dispenser, 'I', Items.iron_ingot, 'P', SCContent.portableRadar, 'B', Blocks.iron_block);
 
+		GameRegistry.addRecipe(new ItemStack(SCContent.blockPocketManager), "CIC", "IRI", "CIC", 'C', new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0), 'I', new ItemStack(SCContent.reinforcedMetals, 1, 1), 'R', Blocks.redstone_block);
+		GameRegistry.addRecipe(new ItemStack(SCContent.crystalQuartz, 1, 1), "B", "B", 'B', SCContent.crystalQuartzSlab);
+		GameRegistry.addRecipe(new ItemStack(SCContent.crystalQuartzItem, 9), "CQC", "QCQ", "CQC", 'Q', Items.quartz, 'C', Items.emerald);
+		GameRegistry.addRecipe(new ItemStack(SCContent.crystalQuartz, 1, 0), "CC", "CC", 'C', SCContent.crystalQuartzItem);
+		GameRegistry.addRecipe(new ItemStack(SCContent.crystalQuartz, 2, 2), "B", "B", 'B', new ItemStack(SCContent.crystalQuartz, 0, 1));
+		GameRegistry.addRecipe(new ItemStack(SCContent.crystalQuartzSlab, 6), "BBB", 'B', new ItemStack(SCContent.crystalQuartz, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedCrystalQuartzSlab, 6), "BBB", 'B', new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.stairsCrystalQuartz, 4), "S  ", "SS ", "SSS", 'S', new ItemStack(SCContent.crystalQuartz, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsCrystalQuartz, 4), "S  ", "SS ", "SSS", 'S', new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0));
+
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.dirt, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.stone, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.cobblestoneMine, 1), new Object[] {Blocks.cobblestone, SCContent.mine});
@@ -369,6 +398,9 @@ public class RegistrationHandler
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.secretSignItem, 3), new Object[]{Items.sign, Items.sign, Items.sign, SCContent.retinalScanner});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.universalKeyChanger), new Object[]{SCContent.briefcase, SCContent.universalKeyChanger});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.scManual, 1), new Object[]{Items.book, Blocks.iron_bars});
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.blockPocketWall), new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0));
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0), SCContent.blockPocketWall);
+		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.blockPocketWall), new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0));
 	}
 
 	public static void registerEntities()
@@ -412,6 +444,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSRemoveCameraTag.Handler.class, PacketSRemoveCameraTag.class, 27, Side.SERVER);
 		network.registerMessage(PacketCChangeStackSize.Handler.class, PacketCChangeStackSize.class, 28, Side.CLIENT);
 		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 29, Side.CLIENT);
+		network.registerMessage(PacketCToggleBlockPocketManager.Handler.class, PacketCToggleBlockPocketManager.class, 30, Side.SERVER);
 	}
 
 	/**
@@ -422,6 +455,16 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 
 		SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
+	}
+
+	private static void registerBlock(Block block, String designedBy)
+	{
+		GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
+
+		SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info");
+
+		page.setDesignedBy(designedBy);
+		SecurityCraft.instance.manualPages.add(page);
 	}
 
 	static boolean hasReinforcedPage = false;
@@ -459,7 +502,8 @@ public class RegistrationHandler
 	{
 		GameRegistry.registerBlock(block, itemClass, block.getUnlocalizedName().substring(5).replace("securitycraft:", ""), constructorParams);
 
-		SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
+		if(!(block == SCContent.crystalQuartzSlab || block == SCContent.reinforcedCrystalQuartzSlab))
+			SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help." + block.getUnlocalizedName().substring(5) + ".info"));
 	}
 
 	/**
@@ -475,7 +519,7 @@ public class RegistrationHandler
 		SCManualPage page = new SCManualPage(item, "help." + item.getUnlocalizedName().substring(5) + ".info");
 
 		GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
-		page.designedBy(designedBy);
+		page.setDesignedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
 }
