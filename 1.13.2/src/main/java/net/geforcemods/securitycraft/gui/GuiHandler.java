@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -43,6 +44,7 @@ public class GuiHandler {
 	public static final ResourceLocation MODULES = new ResourceLocation(SecurityCraft.MODID, "modules");
 	public static final ResourceLocation MANUAL = new ResourceLocation(SecurityCraft.MODID, "manual");
 	public static final ResourceLocation EDIT_SECRET_SIGN = new ResourceLocation(SecurityCraft.MODID, "edit_secret_sign");
+	public static final ResourceLocation BLOCK_POCKET_MANAGER = new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager");
 
 	@OnlyIn(Dist.CLIENT)
 	public static GuiScreen getClientGuiElement(OpenContainer message)
@@ -137,7 +139,13 @@ public class GuiHandler {
 			if(te instanceof TileEntitySecretSign)
 				return new GuiEditSecretSign((TileEntitySecretSign)te);
 		}
+		else if(message.getId().equals(BLOCK_POCKET_MANAGER))
+		{
+			TileEntity te = getTe(message);
 
+			if(te instanceof TileEntityBlockPocketManager)
+				return new GuiBlockPocketManager((TileEntityBlockPocketManager)te);
+		}
 		return null;
 	}
 

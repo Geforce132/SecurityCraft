@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
+import static net.geforcemods.securitycraft.gui.GuiHandler.BLOCK_POCKET_MANAGER;
 import static net.geforcemods.securitycraft.gui.GuiHandler.CUSTOMIZE_BLOCK;
 import static net.geforcemods.securitycraft.gui.GuiHandler.EDIT_SECRET_SIGN;
 import static net.geforcemods.securitycraft.gui.GuiHandler.INVENTORY_SCANNER;
@@ -49,6 +50,8 @@ public class TEInteractionObject extends BaseInteractionObject
 		else if(id.equals(CUSTOMIZE_BLOCK) && te instanceof CustomizableSCTE)
 			return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE)te);
 		else if(id.equals(EDIT_SECRET_SIGN))
+			return new ContainerGeneric();
+		else if(id.equals(BLOCK_POCKET_MANAGER))
 			return new ContainerGeneric();
 
 		return super.createContainer(playerInventory, player);

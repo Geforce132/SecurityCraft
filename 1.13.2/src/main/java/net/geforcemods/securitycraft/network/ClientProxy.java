@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.network;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -36,7 +36,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class ClientProxy implements IProxy {
-	private final List<Block> toTint = new ArrayList<>();
+	private Map<Block,Integer> toTint = new HashMap<>();
 
 	@Override
 	public void clientSetup()
@@ -59,7 +59,7 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public List<Block> getOrPopulateToTint()
+	public Map<Block,Integer> getOrPopulateToTint()
 	{
 		if(toTint.isEmpty())
 		{
@@ -69,7 +69,7 @@ public class ClientProxy implements IProxy {
 				{
 					try
 					{
-						toTint.add((Block)field.get(null));
+						toTint.put((Block)field.get(null), field.getAnnotation(Reinforced.class).tint());
 					}
 					catch(IllegalArgumentException | IllegalAccessException e)
 					{
@@ -77,6 +77,14 @@ public class ClientProxy implements IProxy {
 					}
 				}
 			}
+
+			toTint.put(SCContent.blockPocketManager, 0x0E7063);
+			toTint.put(SCContent.blockPocketWall, 0x0E7063);
+			toTint.put(SCContent.chiseledCrystalQuartz, 0x15b3a2);
+			toTint.put(SCContent.crystalQuartz, 0x15b3a2);
+			toTint.put(SCContent.crystalQuartzPillar, 0x15b3a2);
+			toTint.put(SCContent.crystalQuartzSlab, 0x15b3a2);
+			toTint.put(SCContent.stairsCrystalQuartz, 0x15b3a2);
 		}
 
 		return toTint;

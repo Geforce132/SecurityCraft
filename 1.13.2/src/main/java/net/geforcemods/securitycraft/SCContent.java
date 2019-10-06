@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
@@ -83,6 +85,13 @@ public class SCContent
 	public static BlockFlowingFluid fakeWaterBlock;
 	public static BlockFlowingFluid fakeLavaBlock;
 	@RegisterItemBlock public static Block trophySystem;
+	@RegisterItemBlock public static Block blockPocketManager;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block blockPocketWall;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block chiseledCrystalQuartz;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartz;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartzPillar;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartzSlab;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block stairsCrystalQuartz;
 
 	//Reinforced Blocks (ordered by vanilla building blocks creative tab order)
 	@Reinforced(hasPage=true) public static Block reinforcedStone;
@@ -302,6 +311,11 @@ public class SCContent
 	@Reinforced(hasTint=false) public static Block reinforcedRedStainedGlassPane;
 	@Reinforced(hasTint=false) public static Block reinforcedBlackStainedGlassPane;
 	//anything else, alphabetical
+	@Reinforced(tint=0x0E7063) public static Block reinforcedChiseledCrystalQuartz;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartz;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzPillar;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzSlab;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzStairs;
 	@Reinforced public static Block reinforcedStoneStairs;
 
 	//Fluids
@@ -340,6 +354,7 @@ public class SCContent
 	public static Item universalKeyChanger;
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
+	public static Item crystalQuartzItem;
 
 	//Modules
 	public static ItemModule blacklistModule;
@@ -373,6 +388,8 @@ public class SCContent
 	public static TileEntityType<TileEntityMotionLight> teTypeMotionLight;
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
 	public static TileEntityType<TileEntityTrophySystem> teTypeTrophySystem;
+	public static TileEntityType<TileEntityBlockPocketManager> teTypeBlockPocketManager;
+	public static TileEntityType<TileEntityBlockPocket> teTypeBlockPocket;
 
 	//Entity types
 	public static EntityType<EntityBouncingBetty> eTypeBouncingBetty;

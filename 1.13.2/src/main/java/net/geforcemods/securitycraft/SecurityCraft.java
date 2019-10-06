@@ -99,8 +99,8 @@ public class SecurityCraft {
 
 		log("Registering mod content... (PT 2/2)");
 		EnumCustomModules.refresh();
-		proxy.getOrPopulateToTint().forEach(block -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> 0x999999, block));
-		proxy.getOrPopulateToTint().forEach(item -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> 0x999999, item));
+		proxy.getOrPopulateToTint().forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
+		proxy.getOrPopulateToTint().forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		proxy.cleanup();
 	}
 
