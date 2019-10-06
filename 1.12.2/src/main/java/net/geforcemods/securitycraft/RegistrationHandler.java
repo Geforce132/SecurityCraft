@@ -300,8 +300,9 @@ public class RegistrationHandler
 
 		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
-		itemBlocks.clear();
-		blockPages.clear();
+		itemBlocks = null;
+		blockPages = null;
+		blocksDesignedBy = null;
 	}
 
 	@SubscribeEvent

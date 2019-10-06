@@ -234,7 +234,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.sentry, "Henzoid");
 
 		//clear unused memory
-		blockPages.clear();
+		blockPages = null;
 	}
 
 	@SubscribeEvent

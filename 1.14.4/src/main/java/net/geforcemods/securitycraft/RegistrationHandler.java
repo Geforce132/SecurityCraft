@@ -187,7 +187,7 @@ public class RegistrationHandler
 	{
 		SetupHandler.setupItems();
 
-		//register item blocks from annoated fields
+		//register item blocks from annotated fields
 		for(Field field : SCContent.class.getFields())
 		{
 			try
@@ -264,7 +264,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.sentry, "Henzoid");
 
 		//clear unused memory
-		blockPages.clear();
+		blockPages = null;
 	}
 
 	@SubscribeEvent

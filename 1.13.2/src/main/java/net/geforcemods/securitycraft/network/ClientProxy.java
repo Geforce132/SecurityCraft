@@ -85,6 +85,6 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void cleanup()
 	{
-		toTint.clear();
+		toTint = null;
 	}
 }
