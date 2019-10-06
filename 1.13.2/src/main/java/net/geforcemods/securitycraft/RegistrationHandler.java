@@ -186,7 +186,7 @@ public class RegistrationHandler
 				{
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
 					Block block = (Block)field.get(null);
-					System.out.println(block);
+
 					event.getRegistry().register(new ItemBlock(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));
 				}
 

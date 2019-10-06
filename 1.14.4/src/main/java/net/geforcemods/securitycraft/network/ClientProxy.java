@@ -63,7 +63,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class ClientProxy implements IProxy {
-	private final List<Block> toTint = new ArrayList<>();
+	private List<Block> toTint = new ArrayList<>();
 
 	@Override
 	public void clientSetup()
