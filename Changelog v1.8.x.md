@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.13 of SecurityCraft--------------------------
 
 - New: Italian translation (Thanks Chexet48!)
+- New: Finnish translation (Thanks erland!)
 - New: Trophy System (Inspired from https://callofduty.fandom.com/wiki/Trophy_System)
 - New: Block Pocket (Designed by Henzoid)
 - New: [1.12.2+] The Smart Module now works for Security Cameras, enabling others to view cameras at a fixed angle
