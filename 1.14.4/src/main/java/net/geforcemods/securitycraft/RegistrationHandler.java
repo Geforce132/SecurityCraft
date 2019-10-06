@@ -75,6 +75,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.Ownable;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -164,6 +165,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.gravelMine, false);
 		registerBlock(event, SCContent.fakeLavaBlock, false);
 		registerBlock(event, SCContent.fakeWaterBlock, false);
+		registerBlock(event, SCContent.trophySystem);
 
 		//register reinforced blocks
 		for(Field field : SCContent.class.getFields())
@@ -306,6 +308,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntitySecretSign::new, SCContent.secretOakSign, SCContent.secretOakWallSign, SCContent.secretSpruceSign, SCContent.secretSpruceWallSign, SCContent.secretBirchSign, SCContent.secretBirchWallSign, SCContent.secretJungleSign, SCContent.secretJungleWallSign, SCContent.secretAcaciaSign, SCContent.secretAcaciaWallSign, SCContent.secretDarkOakSign, SCContent.secretDarkOakWallSign).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMotionLight::new, SCContent.motionActivatedLight).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_light")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrackMine::new, SCContent.trackMine).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrophySystem::new, SCContent.trophySystem).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
 	}
 
 	@SubscribeEvent

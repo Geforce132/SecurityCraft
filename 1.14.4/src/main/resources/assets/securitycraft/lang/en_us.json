@@ -284,7 +284,8 @@
     "block.securitycraft.reinforced_polished_andesite_slab": "Reinforced Polished Andesite Slab",
     "block.securitycraft.reinforced_diorite_slab": "Reinforced Diorite Slab",
     "block.securitycraft.reinforced_normal_stone_slab": "Reinforced Stone Slab",
-		
+	"block.securitycraft.trophy_system": "Trophy System",	
+	
     "item.securitycraft.codebreaker": "Codebreaker",
     "item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
     "item.securitycraft.universal_block_remover": "Universal Block Remover",

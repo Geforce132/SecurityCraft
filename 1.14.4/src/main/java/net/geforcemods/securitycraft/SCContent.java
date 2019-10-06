@@ -99,6 +99,7 @@ public class SCContent
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block stoneMine;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block trackMine;
 	@RegisterItemBlock public static Block usernameLogger;
+	@Ownable @RegisterItemBlock(SCItemGroup.TECHNICAL) public static Block trophySystem;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static BlockMine mine;
 	public static FlowingFluidBlock fakeWaterBlock;
 	public static FlowingFluidBlock fakeLavaBlock;
@@ -444,6 +445,8 @@ public class SCContent
 	public static TileEntityType<TileEntityMotionLight> teTypeMotionLight;
 	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
+	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
+	public static TileEntityType<TileEntityTrackMine> teTypeTrophySystem;
 
 	//Entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

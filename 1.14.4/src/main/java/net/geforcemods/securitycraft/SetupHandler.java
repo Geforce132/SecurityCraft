@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.blocks.mines.BlockFullMineBase;
@@ -123,6 +124,7 @@ public class SetupHandler
 		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_activated_light"));
 		SCContent.fakeWaterBlock = (FlowingFluidBlock)new BlockFakeWater().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water_block"));
 		SCContent.fakeLavaBlock = (FlowingFluidBlock)new BlockFakeLava().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava_block"));
+		SCContent.trophySystem = new BlockTrophySystem(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system"));
 	}
 
 	public static void setupReinforcedBlocks()
