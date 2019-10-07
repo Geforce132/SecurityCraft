@@ -461,7 +461,6 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 			for(int i = 0; i < modules.size(); i++)
 				if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
 					return true;
-
 		return false;
 	}
 

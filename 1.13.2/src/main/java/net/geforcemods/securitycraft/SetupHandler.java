@@ -359,7 +359,6 @@ public class SetupHandler
 		SCContent.reinforcedCrystalQuartzSlab = new BlockReinforcedSlab(SoundType.STONE, Material.ROCK, SCContent.crystalQuartzSlab, "reinforced_crystal_quartz_slab");
 		SCContent.reinforcedCrystalQuartzStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, SCContent.stairsCrystalQuartz, "reinforced_crystal_quartz_stairs");
 		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE, "reinforced_stone_stairs");
-
 	}
 
 	public static void setupMines()

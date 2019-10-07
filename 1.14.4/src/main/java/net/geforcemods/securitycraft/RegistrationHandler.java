@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
@@ -52,10 +54,13 @@ import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
+import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
@@ -101,6 +106,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class RegistrationHandler
 {
 	private static ArrayList<Block> blockPages = new ArrayList<Block>();
+	private static Map<Block,String> blocksDesignedBy = new HashMap<>();
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -166,6 +172,13 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.fakeLavaBlock, false);
 		registerBlock(event, SCContent.fakeWaterBlock, false);
 		registerBlock(event, SCContent.trophySystem);
+		registerBlock(event, SCContent.crystalQuartz, true);
+		registerBlock(event, SCContent.chiseledCrystalQuartz, false);
+		registerBlock(event, SCContent.crystalQuartzPillar, false);
+		registerBlock(event, SCContent.crystalQuartzSlab, false);
+		registerBlock(event, SCContent.stairsCrystalQuartz, false);
+		registerBlock(event, SCContent.blockPocketWall);
+		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
 
 		//register reinforced blocks
 		for(Field field : SCContent.class.getFields())
@@ -217,7 +230,14 @@ public class RegistrationHandler
 			if(block == SCContent.reinforcedStone)
 				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help.securitycraft:reinforced.info"));
 			else
-				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help" + block.getTranslationKey().substring(5) + ".info"));
+			{
+				SCManualPage page = new SCManualPage(block.asItem(), "help" + block.getTranslationKey().substring(5) + ".info");
+
+				if(blocksDesignedBy.containsKey(block))
+					page.setDesignedBy(blocksDesignedBy.get(block));
+
+				SecurityCraft.instance.manualPages.add(page);
+			}
 		}
 
 		//items
@@ -262,9 +282,11 @@ public class RegistrationHandler
 		event.getRegistry().register(SCContent.secretAcaciaSignItem);
 		event.getRegistry().register(SCContent.secretDarkOakSignItem);
 		registerItem(event, SCContent.sentry, "Henzoid");
+		registerItem(event, SCContent.crystalQuartzItem);
 
 		//clear unused memory
 		blockPages = null;
+		blocksDesignedBy = null;
 	}
 
 	@SubscribeEvent
@@ -309,6 +331,8 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityMotionLight::new, SCContent.motionActivatedLight).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_light")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrackMine::new, SCContent.trackMine).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrophySystem::new, SCContent.trophySystem).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityBlockPocketManager::new, SCContent.blockPocketManager).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityBlockPocket::new, SCContent.blockPocketWall, SCContent.reinforcedCrystalQuartz, SCContent.reinforcedChiseledCrystalQuartz, SCContent.reinforcedCrystalQuartzPillar).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket")));
 	}
 
 	@SubscribeEvent
@@ -381,6 +405,7 @@ public class RegistrationHandler
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ContainerTEGeneric(SCContent.cTypeIMS, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ContainerTEGeneric(SCContent.cTypeKeycardSetup, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ContainerTEGeneric(SCContent.cTypeKeyChanger, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new ContainerTEGeneric(SCContent.cTypeBlockPocketManager, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 	}
 
 	public static void registerPackets()
@@ -410,6 +435,7 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, CloseFurnace.class, CloseFurnace::encode, CloseFurnace::decode, CloseFurnace::onMessage);
 		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnServer.class, UpdateNBTTagOnServer::encode, UpdateNBTTagOnServer::decode, UpdateNBTTagOnServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncTENBTTag.class, SyncTENBTTag::encode, SyncTENBTTag::decode, SyncTENBTTag::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::decode, ToggleBlockPocketManager::onMessage);
 	}
 
 	@SubscribeEvent
@@ -433,12 +459,21 @@ public class RegistrationHandler
 	}
 
 	/**
+	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
+	 * @param block The block to register
+	 */
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, String designedBy)
+	{
+		registerBlock(event, block, true, designedBy);
+	}
+
+	/**
 	 * Registers a block and its BlockItem and adds the help info for the block to the SecurityCraft manual item
 	 * @param block The block to register
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
 	{
-		registerBlock(event, block, true);
+		registerBlock(event, block, true, null);
 	}
 
 	/**
@@ -448,10 +483,24 @@ public class RegistrationHandler
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage)
 	{
+		registerBlock(event, block, initPage, null);
+	}
+
+	/**
+	 * Registers a block and its ItemBlock
+	 * @param block The Block to register
+	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
+	 * @param designedBy The name of the person who designed this block
+	 */
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage, String designedBy)
+	{
 		event.getRegistry().register(block);
 
 		if(initPage)
 			blockPages.add(block);
+
+		if(designedBy != null)
+			blocksDesignedBy.put(block, designedBy);
 	}
 
 	/**
@@ -480,7 +529,7 @@ public class RegistrationHandler
 
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
 
-		page.designedBy(designedBy);
+		page.setDesignedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
 
@@ -494,7 +543,7 @@ public class RegistrationHandler
 
 		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
 
-		page.designedBy(designedBy);
+		page.setDesignedBy(designedBy);
 		SecurityCraft.instance.manualPages.add(page);
 	}
 }

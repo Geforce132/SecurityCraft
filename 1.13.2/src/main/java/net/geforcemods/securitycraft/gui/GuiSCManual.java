@@ -363,7 +363,7 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		//set up subpages
-		String helpInfo = ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().replace("..", "."));
+		String helpInfo = ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo());
 
 		subpages.clear();
 

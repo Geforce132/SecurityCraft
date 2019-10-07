@@ -1,7 +1,11 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocket;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
+import net.geforcemods.securitycraft.blocks.BlockCustomStairs;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
 import net.geforcemods.securitycraft.blocks.BlockFakeWater;
 import net.geforcemods.securitycraft.blocks.BlockFrame;
@@ -20,6 +24,7 @@ import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.blocks.BlockPanicButton;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
+import net.geforcemods.securitycraft.blocks.BlockReinforcedRotatedPillarBlockPocket;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
@@ -66,8 +71,11 @@ import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BucketItem;
@@ -125,6 +133,13 @@ public class SetupHandler
 		SCContent.fakeWaterBlock = (FlowingFluidBlock)new BlockFakeWater().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water_block"));
 		SCContent.fakeLavaBlock = (FlowingFluidBlock)new BlockFakeLava().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava_block"));
 		SCContent.trophySystem = new BlockTrophySystem(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system"));
+		SCContent.crystalQuartz = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(0.8F)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "crystal_quartz"));
+		SCContent.crystalQuartzPillar = new RotatedPillarBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(0.8F)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "crystal_quartz_pillar"));
+		SCContent.chiseledCrystalQuartz = new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(0.8F)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "chiseled_crystal_quartz"));
+		SCContent.crystalQuartzSlab = new SlabBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 6.0F)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "crystal_quartz_slab"));
+		SCContent.stairsCrystalQuartz = new BlockCustomStairs(SCContent.crystalQuartz.getDefaultState(), Block.Properties.from(SCContent.crystalQuartz)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "crystal_quartz_stairs"));
+		SCContent.blockPocketWall = new BlockBlockPocketWall().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_wall"));
+		SCContent.blockPocketManager = new BlockBlockPocketManager().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager"));
 	}
 
 	public static void setupReinforcedBlocks()
@@ -375,6 +390,11 @@ public class SetupHandler
 		SCContent.reinforcedRedStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
 		SCContent.reinforcedBlackStainedGlassPane = new BlockReinforcedStainedGlassPane(DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
 		//anything else, alphabetical
+		SCContent.reinforcedChiseledCrystalQuartz = new BlockBlockPocket(Material.ROCK, SCContent.chiseledCrystalQuartz, "reinforced_chiseled_crystal_quartz_block");
+		SCContent.reinforcedCrystalQuartz = new BlockBlockPocket(Material.ROCK, SCContent.crystalQuartz, "reinforced_crystal_quartz_block");
+		SCContent.reinforcedCrystalQuartzPillar = new BlockReinforcedRotatedPillarBlockPocket(Material.ROCK, SCContent.crystalQuartzPillar, "reinforced_crystal_quartz_pillar");
+		SCContent.reinforcedCrystalQuartzSlab = new BlockReinforcedSlab(SoundType.STONE, Material.ROCK, SCContent.crystalQuartzSlab, "reinforced_crystal_quartz_slab");
+		SCContent.reinforcedCrystalQuartzStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, SCContent.stairsCrystalQuartz, "reinforced_crystal_quartz_stairs");
 	}
 
 	public static void setupMines()
@@ -436,5 +456,6 @@ public class SetupHandler
 		SCContent.secretAcaciaSignItem = new ItemSecretSign(SCContent.secretAcaciaSign, SCContent.secretAcaciaWallSign, "item.securitycraft.secret_acacia_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_item"));
 		SCContent.secretDarkOakSignItem = new ItemSecretSign(SCContent.secretDarkOakSign, SCContent.secretDarkOakWallSign, "item.securitycraft.secret_dark_oak_sign_item").setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_item"));
 		SCContent.sentry = new ItemSentry().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry"));
+		SCContent.crystalQuartzItem = new Item(new Item.Properties().group(SecurityCraft.groupSCDecoration)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "crystal_quartz_item"));
 	}
 }

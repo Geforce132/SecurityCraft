@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -104,6 +105,14 @@ public class ClientUtils{
 	 */
 	public static String localize(String key, Object... params)
 	{
+		for(int i = 0; i < params.length; i++)
+		{
+			if(params[i] instanceof TranslationTextComponent)
+				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getFormatArgs());
+			else if(params[i] instanceof BlockPos)
+				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
+		}
+
 		return new TranslationTextComponent(key, params).getFormattedText();
 	}
 }

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -29,9 +29,9 @@ public class ServerProxy implements IProxy
 	}
 
 	@Override
-	public List<Block> getOrPopulateToTint()
+	public Map<Block,Integer> getOrPopulateToTint()
 	{
-		return new ArrayList<>();
+		return new HashMap<>();
 	}
 
 	@Override

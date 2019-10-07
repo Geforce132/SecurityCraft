@@ -206,7 +206,7 @@ public class RegistrationHandler
 				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help.securitycraft:reinforced.info"));
 			else
 			{
-				SCManualPage page = new SCManualPage(block.asItem(), "help." + block.getTranslationKey().substring(5) + ".info");
+				SCManualPage page = new SCManualPage(block.asItem(), "help" + block.getTranslationKey().substring(5) + ".info");
 
 				if(blocksDesignedBy.containsKey(block))
 					page.setDesignedBy(blocksDesignedBy.get(block));

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.network;
 
-import java.util.List;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -17,7 +17,7 @@ public interface IProxy
 {
 	public void clientSetup();
 	public void registerKeypadChestItem(Register<Item> event);
-	public List<Block> getOrPopulateToTint();
+	public Map<Block,Integer> getOrPopulateToTint();
 	public void cleanup();
 	public World getClientWorld();
 	public PlayerEntity getClientPlayer();

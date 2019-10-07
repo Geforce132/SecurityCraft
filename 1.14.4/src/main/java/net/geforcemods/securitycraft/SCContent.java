@@ -18,6 +18,8 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
@@ -37,6 +39,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.Ownable;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
@@ -54,8 +57,14 @@ public class SCContent
 {
 	//Blocks
 	@RegisterItemBlock public static Block alarm;
+	@RegisterItemBlock public static Block blockPocketManager;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block blockPocketWall;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block bouncingBetty;
 	@RegisterItemBlock public static Block cageTrap;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block chiseledCrystalQuartz;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartz;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartzPillar;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartzSlab;
 	@RegisterItemBlock(SCItemGroup.MINES) public static Block claymore;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block cobblestoneMine;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block diamondOreMine;
@@ -96,10 +105,11 @@ public class SCContent
 	public static Block secretDarkOakSign;
 	public static Block secretDarkOakWallSign;
 	@RegisterItemBlock public static Block securityCamera;
+	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block stairsCrystalQuartz;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block stoneMine;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static Block trackMine;
-	@RegisterItemBlock public static Block usernameLogger;
 	@Ownable @RegisterItemBlock(SCItemGroup.TECHNICAL) public static Block trophySystem;
+	@RegisterItemBlock public static Block usernameLogger;
 	@Ownable @RegisterItemBlock(SCItemGroup.MINES) public static BlockMine mine;
 	public static FlowingFluidBlock fakeWaterBlock;
 	public static FlowingFluidBlock fakeLavaBlock;
@@ -350,6 +360,11 @@ public class SCContent
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedRedStainedGlassPane;
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedBlackStainedGlassPane;
 	//anything else, alphabetical
+	@Reinforced(tint=0x0E7063) public static Block reinforcedChiseledCrystalQuartz;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartz;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzPillar;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzSlab;
+	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzStairs;
 
 	//Fluids
 	public static FlowingFluid flowingFakeWater;
@@ -362,6 +377,7 @@ public class SCContent
 	public static Item briefcase;
 	public static Item cameraMonitor;
 	public static Item codebreaker;
+	public static Item crystalQuartzItem;
 	public static Item fLavaBucket;
 	public static Item fWaterBucket;
 	public static Item keycardLvl1;
@@ -446,7 +462,11 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
 	public static TileEntityType<TileEntityTrackMine> teTypeTrackMine;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static TileEntityType<TileEntityTrackMine> teTypeTrophySystem;
+	public static TileEntityType<TileEntityTrophySystem> teTypeTrophySystem;
+	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
+	public static TileEntityType<TileEntityBlockPocketManager> teTypeBlockPocketManager;
+	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
+	public static TileEntityType<TileEntityBlockPocket> teTypeBlockPocket;
 
 	//Entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
@@ -491,4 +511,6 @@ public class SCContent
 	public static ContainerType<ContainerTEGeneric> cTypeKeycardSetup;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
 	public static ContainerType<ContainerTEGeneric> cTypeKeyChanger;
+	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
+	public static ContainerType<ContainerTEGeneric> cTypeBlockPocketManager;
 }
