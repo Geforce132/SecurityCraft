@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class ItemTaser extends Item {
@@ -26,6 +28,14 @@ public class ItemTaser extends Item {
 
 		powered = isPowered;
 		setMaxDamage(151);
+		setCreativeTab(SecurityCraft.tabSCTechnical);
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+	{
+		if(tab == SecurityCraft.tabSCTechnical && !powered)
+			items.add(new ItemStack(this));
 	}
 
 	@Override

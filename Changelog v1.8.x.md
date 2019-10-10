@@ -17,6 +17,7 @@
 - Fix: [1.7.10,1.12.2] SecurityCraft Manual does not correctly display items with metadata
 - Fix: [1.12.2+] Misc. crashes
 - Fix: [1.12.2+] Taser can be duplicated using offhand slot (Thanks Boreaus!)
+- Fix: [1.12.2+] Incorrect version of the taser shows up in the creative tab and JEI
 - Fix: [1.13.2] Reinforced Stone is unobtainable
 - Fix: [1.13.2] Reinforcing blocks does not preserve state from vanilla block
 - Fix: [1.13.2] Reinforced Iron Trapdoor does not behave correctly
@@ -300,30 +301,30 @@
 - Internal: Removed legacy code
 
 [1] This fixes:
-    1. The camera not rotating when reloading the world
-    2. The Redstone Module not working when trying to change the camera's redstone output right after reloading the world
-    3. The Keypad not being disguised after reloading the world
-    4. Probably some other things
-    
+  1. The camera not rotating when reloading the world
+  2. The Redstone Module not working when trying to change the camera's redstone output right after reloading the world
+  3. The Keypad not being disguised after reloading the world
+  4. Probably some other things
+  
 --------------------------Changelog for v1.8.3 of SecurityCraft (this should have been v1.8.5)--------------------------
 
 - New: Reinforced Blocks
-    - Logs
-    - Lapis Lazuli Block
-    - Block of Coal
-    - Block of Gold
-    - Block of Iron
-    - Block of Diamond
-    - Block of Emerald
-    - Wool
-    - Quartz incl. slabs and stairs
-    - [1.8+] Prismarine/Prismarine Bricks/Dark Prismarine
-    - [1.8+] Red Sandstone incl. slabs and stairs
-    - [1.8+] (Smooth) Granite/Andesite/Diorite
-    - [1.10.2+] End Stone Bricks
-    - [1.10.2+] Red Nether Brick
-    - [1.10.2+] Purpur incl. slabs and stairs
-    - [1.12.2] Concrete
+  - Logs
+  - Lapis Lazuli Block
+  - Block of Coal
+  - Block of Gold
+  - Block of Iron
+  - Block of Diamond
+  - Block of Emerald
+  - Wool
+  - Quartz incl. slabs and stairs
+  - [1.8+] Prismarine/Prismarine Bricks/Dark Prismarine
+  - [1.8+] Red Sandstone incl. slabs and stairs
+  - [1.8+] (Smooth) Granite/Andesite/Diorite
+  - [1.10.2+] End Stone Bricks
+  - [1.10.2+] Red Nether Brick
+  - [1.10.2+] Purpur incl. slabs and stairs
+  - [1.12.2] Concrete
 - New: Keypad Gurnace
 - New: Information about how to exit the Security Camera
 - New: Cameras can now be unbound from within the Camera Monitors' GUI, even if they're no longer present in the world (press the X at the top right of the respective button)
@@ -372,12 +373,12 @@
 --------------------------Changelog for v1.8.2.3 of SecurityCraft (v1.8.2.3-hotfix below) (this should have been v1.8.4, also could have made v1.9.0 with the reinforced blocks from v1.8.3 above and call it "Reinforced Update" -.-)--------------------------
 
 - New: Reinforced Blocks
-    - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
-    - Mossy Cobblestone
-    - Bricks incl. stairs and slabs
-    - Nether Bricks incl. stairs and slabs
-    - Hardened Clay
-    - Stained Hardened Clay (1.12: Terracotta)
+  - Stone Bricks (normal, mossy, cracked, chiseled) incl. stairs and slabs
+  - Mossy Cobblestone
+  - Bricks incl. stairs and slabs
+  - Nether Bricks incl. stairs and slabs
+  - Hardened Clay
+  - Stained Hardened Clay (1.12: Terracotta)
 - New: Official SecurityCraft server tip
 - Change: Heavily nerfed Codebreaker. It now has 5 uses and a 1 in 3 chance of failing
 - Fix: Recipe for Reinforced Glass does not show up in the SecurityCraft Manual
