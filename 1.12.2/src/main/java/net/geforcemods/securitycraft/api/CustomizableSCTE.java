@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -373,6 +374,11 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableSCTE.unlink(block.asTileEntity(world), this);
+
+		for(ItemStack module : modules)
+		{
+			Block.spawnAsEntity(world, pos, module);
+		}
 	}
 
 	////////////////////////

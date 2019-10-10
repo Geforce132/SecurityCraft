@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -320,6 +321,12 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableSCTE.unlink(block.asTileEntity(worldObj), this);
+
+		for(ItemStack module : itemStacks)
+		{
+			if(!worldObj.isRemote && module != null && worldObj.getGameRules().getGameRuleBooleanValue("doTileDrops")&& !worldObj.restoringBlockSnapshots)
+				worldObj.spawnEntityInWorld(new EntityItem(worldObj, xCoord + (worldObj.rand.nextFloat() * 0.5F + 0.25D), yCoord + (worldObj.rand.nextFloat() * 0.5F + 0.25D), zCoord + (worldObj.rand.nextFloat() * 0.5F + 0.25D), module));
+		}
 	}
 
 	////////////////////////
