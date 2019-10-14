@@ -31,6 +31,7 @@ import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSign;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.blocks.mines.BlockFullMineBase;
@@ -238,6 +239,8 @@ public class SetupHandler
 		SCContent.blockPocketWall = new BlockBlockPocketWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:blockPocketWall");
 
 		SCContent.blockPocketManager = new BlockBlockPocketManager().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:blockPocketManager");
+	
+		SCContent.trophySystem = new BlockTrophySystem().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:trophySystem");
 	}
 
 	public static void setupMines()

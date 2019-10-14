@@ -113,6 +113,7 @@ public class SCContent
 	public static Block usernameLogger;
 	public static BlockMine mine;
 	public static BlockMine mineCut;
+	public static Block trophySystem;
 
 	//Items
 	public static Item adminTool;

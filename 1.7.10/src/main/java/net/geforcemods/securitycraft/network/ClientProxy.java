@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.models.ModelKeypadFurnaceDeactivated;
 import net.geforcemods.securitycraft.models.ModelMotionSensoredLight;
 import net.geforcemods.securitycraft.models.ModelProtecto;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
+import net.geforcemods.securitycraft.models.ModelTrophySystem;
 import net.geforcemods.securitycraft.renderers.CustomModeledBlockRenderer;
 import net.geforcemods.securitycraft.renderers.ItemBriefcaseRenderer;
 import net.geforcemods.securitycraft.renderers.ItemCameraMonitorRenderer;
@@ -37,6 +38,7 @@ import net.geforcemods.securitycraft.renderers.TileEntityMotionLightRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityProtectoRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
@@ -47,6 +49,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -72,6 +75,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProtecto.class, new TileEntityProtectoRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMotionLight.class, new TileEntityMotionLightRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTrophySystem.class, new TileEntityTrophySystemRenderer());
 
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.keypadChest), new CustomModeledBlockRenderer(new TileEntityKeypadChest()));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.frame), new CustomModeledBlockRenderer(new TileEntityFrame(), new ModelFrame(), 0.0D, -0.1D, 0.0D, 0.0F));
@@ -82,6 +86,7 @@ public class ClientProxy implements IProxy {
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.ims), new CustomModeledBlockRenderer(new TileEntityIMS(), new ModelIMS(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.protecto), new CustomModeledBlockRenderer(new TileEntityProtecto(), new ModelProtecto(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.motionActivatedLightOff), new CustomModeledBlockRenderer(new TileEntityMotionLight(), new ModelMotionSensoredLight(), 0.0D, -0.1D, 0.0D, 0.0F));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(SCContent.trophySystem), new CustomModeledBlockRenderer(new TileEntityTrophySystem(), new ModelTrophySystem(), 0.0D, -0.1D, 0.0D, 0.0F));
 		MinecraftForgeClient.registerItemRenderer(SCContent.cameraMonitor, new ItemCameraMonitorRenderer());
 		MinecraftForgeClient.registerItemRenderer(SCContent.taser, new ItemTaserRenderer(false));
 		MinecraftForgeClient.registerItemRenderer(SCContent.taserPowered, new ItemTaserRenderer(true));

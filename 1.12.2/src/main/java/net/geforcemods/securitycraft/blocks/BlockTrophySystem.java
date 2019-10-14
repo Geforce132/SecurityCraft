@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -59,6 +60,11 @@ public class BlockTrophySystem extends BlockOwnable {
 			dropBlockAsItemWithChance(world, pos, state, 1.0F, 0);
 			world.setBlockToAir(pos);
 		}
+	}
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return new AxisAlignedBB(0.065D, 0, 0.065D, 0.935D, 0.96D, 0.935D);
 	}
 	
 	@Override

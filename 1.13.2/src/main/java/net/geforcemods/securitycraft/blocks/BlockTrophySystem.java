@@ -11,11 +11,14 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 
 public class BlockTrophySystem extends BlockOwnable {
+	
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 15.5D, 15);
 
 	public BlockTrophySystem(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -56,6 +59,12 @@ public class BlockTrophySystem extends BlockOwnable {
 			dropBlockAsItemWithChance(state, world, pos, 1.0F, 0);
 			world.removeBlock(pos);
 		}
+	}
+	
+	@Override
+	public VoxelShape getShape(IBlockState state, IBlockReader source, BlockPos pos)
+	{
+		return SHAPE;
 	}
 	
 	@Override

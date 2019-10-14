@@ -11,11 +11,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockTrophySystem extends BlockOwnable {
+	
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(1, 0, 1, 15, 15.5D, 15);
 
 	public BlockTrophySystem(Material material) {
 		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -45,6 +49,12 @@ public class BlockTrophySystem extends BlockOwnable {
 		if(!isValidPosition(state, world, pos)) {
 			world.destroyBlock(pos, true);
 		}
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext context)
+	{
+		return SHAPE;
 	}
 	
 	@Override

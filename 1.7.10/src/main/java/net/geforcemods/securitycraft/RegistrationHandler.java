@@ -77,6 +77,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.init.Blocks;
@@ -186,6 +187,7 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.gravelMine, SCContent.gravelMine.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerReinforcedBlock(SCContent.reinforcedSand);
 		registerReinforcedBlock(SCContent.reinforcedGravel);
+		registerBlock(SCContent.trophySystem);
 
 		registerBlock(SCContent.crystalQuartz, ItemBlockCustomQuartz.class);
 		registerReinforcedBlock(SCContent.reinforcedCrystalQuartz, ItemBlockCustomQuartz.class);
@@ -259,6 +261,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityTrackMine.class, "trackMineSC");
 		GameRegistry.registerTileEntity(TileEntityBlockPocketManager.class, "block_pocket_manager");
 		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, "block_pocket");
+		GameRegistry.registerTileEntity(TileEntityTrophySystem.class, "trophy_system");
 	}
 
 	public static void registerRecipes()

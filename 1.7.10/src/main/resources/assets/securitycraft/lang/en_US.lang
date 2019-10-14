@@ -213,7 +213,7 @@ tile.securitycraft:reinforcedStairsCrystalQuartz.name=Reinforced Crystal Quartz 
 tile.securitycraft:blockPocketWall.name=Block Pocket Wall
 tile.securitycraft:blockPocketManager.name=Block Pocket Manager
 item.securitycraft:crystalQuartzItem.name=Crystal Quartz
-tile.securitycraft:trophy_system.name=Trophy System
+tile.securitycraft:trophySystem.name=Trophy System
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
