@@ -198,7 +198,7 @@ tile.securitycraft:reinforcedGlowstone.name=Luminite rinforzata
 tile.securitycraft:gravelMine.name=Mina (Ghiaia)
 tile.securitycraft:reinforcedSand.name=Sabbia rinforzata
 tile.securitycraft:reinforcedGravel.name=Ghiaia rinforzata
-tile.securitycraft:trophy_system.name=Sistema Trophy
+tile.securitycraft:trophySystem.name=Sistema Trophy
 tile.securitycraft:crystalQuartz.name=Blocchi di quarzo di cristallo
 tile.securitycraft:crystalQuartz_default.name=Blocco di quarzo cristallino
 tile.securitycraft:crystalQuartz_chiseled.name=Blocco di quarzo cristallino cesellato
@@ -307,7 +307,7 @@ help.securitycraft:blockPocketManager.info=Il gestore per blocchi tascabili vien
 help.securitycraft:crystalQuartz.info=I blocchi di quarzo cristallino sono dei normali blocchi da costruzione che possono essere rinforzati nella solita maniera.
 help.securitycraft:reinforcedCrystalQuartz.info=I blocchi di quarzo cristallino rinforzati vengono utilizzati per costruire il blocco tascabile. Per ulteriori informazioni, visita la pagina del manager del blocco tascabile.
 help.securitycraft:blockPocketWall.info=I muri di blocco tascabile vengono utilizzati per costruire il blocco tascabile. Per ulteriori informazioni, visita la pagina del manager del blocco tascabile.
-help.securitycraft:trophy_system.info=Il sistema Trophy, ispirato dal gadget apparso per la prima volta in \"Call of Duty: Modern Warfare 3\" pubblicato da Activision, bersaglia il nemico con frecce e palle di fuoco e li distruggerà a distanza dopo un mezzo secondo di ricarica.
+help.securitycraft:trophySystem.info=Il sistema Trophy, ispirato dal gadget apparso per la prima volta in \"Call of Duty: Modern Warfare 3\" pubblicato da Activision, bersaglia il nemico con frecce e palle di fuoco e li distruggerà a distanza dopo un mezzo secondo di ricarica.
 help.securitycraft:blockPocketManager.info=Il gestore per blocchi tascabili viene utilizzato per gestire i blocchi tascabili. Una volta aperta l'interfaccia, potranno essere selezionate delle misure. Scegline una, poi costruisci il blocco tascabile attorno al gestore. Assicurati che il gestore sia piazzato all'esterno del layer di fondo. Il blocco tascabile è un cubo della misura che hai scelto. Gli angoli sono in quarzo cesellato rinforzato, mentre i blocchi tra gli angoli sono in pilastro di quarzo rinforzato (orientato correttamente), le pareti sono invece in muri di blocco tascabile. Immagine di come dovrebbe apparire: https://i.imgur.com/KLQzMeY.png - Cliccando "Attiva" dopo la costruzione della struttura attiverà gli eventuali moduli aggiunti. Vedi l'interfaccia di personalizzazione per più informazioni (click destro con il modificatore di blocchi universale).
 
 help.securitycraft:codebreaker.info=Il decrittatore è capace di craccare il codice di qualsiasi tastiera o blocco protetto da password (fornace e baule) cliccando il blocco col tasto destro. (5 utilizzi con una possibilità di 2/3 di funzionare)
