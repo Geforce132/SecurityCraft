@@ -363,6 +363,8 @@ public class RegistrationHandler
 			GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedWoodSlabs, 6, i), "MMM", 'M', new ItemStack(SCContent.reinforcedWoodPlanks, 1, i));
 		}
 
+		GameRegistry.addRecipe(new ItemStack(SCContent.trophySystem, 1), " T ", " B ", "S S", 'T', SCContent.sentry, 'B', new ItemStack(SCContent.reinforcedMetals, 1, 1), 'S', Items.stick);
+
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 0), "MMM", 'M', SCContent.reinforcedStone);
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 1), "MMM", 'M', SCContent.reinforcedCobblestone);
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStoneSlabs, 6, 2), "MMM", 'M', SCContent.reinforcedSandstone);
