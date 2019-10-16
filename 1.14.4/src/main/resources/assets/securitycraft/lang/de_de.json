@@ -581,10 +581,11 @@
 
     "jei.securitycraft:reinforcedBlock.info": "Rechtsklicke einen Universellen Block Entferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Block Entferner zerbrechen.",
 
-    "waila.securitycraft:displayOwner": "Besitzer anzeigen?",
-    "waila.securitycraft:showModules": "Module anzeigen?",
-    "waila.securitycraft:showPasswords": "Passwörter anzeigen?",
-    "waila.securitycraft:showCustomName": "Benannte Blöcke anzeigen?",
+    "config.waila.plugin_securitycraft": "SecurityCraft",
+    "config.waila.plugin_securitycraft:showowner": "Besitzer anzeigen?",
+    "config.waila.plugin_securitycraft:showmodules": "Module anzeigen?",
+    "config.waila.plugin_securitycraft:showpasswords": "Passwörter anzeigen?",
+    "config.waila.plugin_securitycraft:showcustomname": "Benannte Blöcke anzeigen?",
     "waila.securitycraft:owner": "Besitzer:",
     "waila.securitycraft:equipped": "Installierte Module:",
     "waila.securitycraft:password": "Passwort:",

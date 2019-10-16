@@ -493,10 +493,11 @@
 
     "jei.securitycraft:reinforcedBlock.info": "Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.",
 
-    "waila.securitycraft:displayOwner": "Display Owner?",
-    "waila.securitycraft:showModules": "Show Modules?",
-    "waila.securitycraft:showPasswords": "Show Passwords?",
-    "waila.securitycraft:showCustomName": "Show named blocks?",
+    "config.waila.plugin_securitycraft": "SecurityCraft",
+    "config.waila.plugin_securitycraft.showowner": "Display Owner?",
+    "config.waila.plugin_securitycraft.showmodules": "Show Modules?",
+    "config.waila.plugin_securitycraft.showpasswords": "Show Passwords?",
+    "config.waila.plugin_securitycraft.showcustomname": "Show named blocks?",
     "waila.securitycraft:owner": "omistaja:",
     "waila.securitycraft:equipped": "Equipped with:",
     "waila.securitycraft:password": "salasana:",

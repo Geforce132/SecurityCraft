@@ -582,10 +582,11 @@
 
     "jei.securitycraft:reinforcedBlock.info": "Clicca col tasto destro con un rinforza-blocchi universale e piazza il seguente blocco nello slot. Altrimenti puoi piazzare il seguente blocco e distruggerlo con il rinforza-blocchi universale.",
 
-    "waila.securitycraft:displayOwner": "Possessore dello schermo?",
-    "waila.securitycraft:showModules": "Mostra moduli?",
-    "waila.securitycraft:showPasswords": "Mostra password?",
-    "waila.securitycraft:showCustomName": "Mostra blocchi rinominati?",
+    "config.waila.plugin_securitycraft": "SecurityCraft",
+    "config.waila.plugin_securitycraft:showowner": "Possessore dello schermo?",
+    "config.waila.plugin_securitycraft:showmodules": "Mostra moduli?",
+    "config.waila.plugin_securitycraft:showpasswords": "Mostra password?",
+    "config.waila.plugin_securitycraft:showcustomname": "Mostra blocchi rinominati?",
     "waila.securitycraft:owner": "Possessore:",
     "waila.securitycraft:equipped": "Equipaggiato con:",
     "waila.securitycraft:password": "Password:",
