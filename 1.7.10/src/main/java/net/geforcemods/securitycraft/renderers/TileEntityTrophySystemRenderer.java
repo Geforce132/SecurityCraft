@@ -28,7 +28,7 @@ public class TileEntityTrophySystemRenderer extends TileEntitySpecialRenderer {
 			tessellator.setColorOpaque_F(brightness, brightness, brightness);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
 		}
-		
+
 		TileEntityTrophySystem tileEntityIn = ((TileEntityTrophySystem) te);
 
 		GL11.glPushMatrix();
@@ -44,25 +44,23 @@ public class TileEntityTrophySystemRenderer extends TileEntitySpecialRenderer {
 
 		GL11.glPopMatrix();
 		GL11.glPopMatrix();
-		
+
 		if(tileEntityIn.entityBeingTargeted == null) return;
-		
+
 		GL11.glPushMatrix();
-		GL11.glBegin(GL11.GL_LINE_STRIP);
-		GL11.glTranslated(x, y, z);
-		GL11.glLineWidth(2F);
-		GL11.glColor4f(1, 0, 0, 0);
+		GL11.glTranslated(x + 0.5D, y + 0.75D, z + 0.5D);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_LIGHTING);
-		
+
 		Tessellator tess = Tessellator.instance;
-		tess.startDrawingQuads();
-		tess.setColorRGBA(255, 0, 0, 0);
-		tess.addVertex(tileEntityIn.xCoord + 0.5D, tileEntityIn.yCoord + 0.5D, tileEntityIn.zCoord + 0.5D);
-		tess.addVertex(tileEntityIn.entityBeingTargeted.posX - tileEntityIn.xCoord, tileEntityIn.entityBeingTargeted.posY - tileEntityIn.yCoord, tileEntityIn.entityBeingTargeted.posZ - tileEntityIn.zCoord);
+		tess.startDrawing(GL11.GL_LINES);
+		tess.setColorOpaque_I(0xFF0000);
+		tess.addVertex(0, 0, 0);
+		tess.addVertex(tileEntityIn.entityBeingTargeted.posX - tileEntityIn.xCoord - 0.5D, tileEntityIn.entityBeingTargeted.posY - tileEntityIn.yCoord - 0.75D, tileEntityIn.entityBeingTargeted.posZ - tileEntityIn.zCoord - 0.5D);
 		tess.draw();
 
-		GL11.glEnd();
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glPopMatrix();
 	}
 
