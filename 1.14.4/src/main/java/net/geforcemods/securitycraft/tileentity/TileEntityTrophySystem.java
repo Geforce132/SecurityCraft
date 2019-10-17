@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.Entity;
@@ -31,9 +32,10 @@ public class TileEntityTrophySystem extends TileEntityOwnable {
 		// If the trophy does not have a target, try looking for one
 		if(entityBeingTargeted == null) {
 			Entity target = getTarget();
+			UUID shooterUUID = getShooterUUID(target);
 
 			// second condition is disabled right now for testing
-			if(target != null /*&& !target.shootingEntity.toString().equals(getOwner().getUUID())*/) {
+			if(target != null && shooterUUID != null &&!shooterUUID.toString().equals(getOwner().getUUID())) {
 				entityBeingTargeted = target;
 			}
 		}
@@ -92,6 +94,20 @@ public class TileEntityTrophySystem extends TileEntityOwnable {
 		int target = random.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);
+	}
+	
+	/**
+	 * Returns the UUID of the player who shot the given Entity
+	 */
+	public UUID getShooterUUID(Entity entity) {
+		if(entity instanceof ArrowEntity)
+			return ((ArrowEntity) entity).shootingEntity;
+
+		else if(entity instanceof FireballEntity)
+			return ((FireballEntity) entity).shootingEntity.getUniqueID();
+
+		else 
+			return null;
 	}
 
 }
