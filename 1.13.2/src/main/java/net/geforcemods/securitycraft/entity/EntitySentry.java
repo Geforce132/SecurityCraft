@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
@@ -41,6 +42,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntitySentry.class, Owner.SERIALIZER);
 	private static final DataParameter<NBTTagCompound> MODULE = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
+	private static final DataParameter<NBTTagCompound> WHITELIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntitySentry.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
@@ -60,6 +62,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), EntityPlayer.getUUID(owner.getGameProfile()).toString()));
 		dataManager.set(MODULE, new NBTTagCompound());
+		dataManager.set(WHITELIST, new NBTTagCompound());
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
@@ -70,6 +73,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(MODULE, new NBTTagCompound());
+		dataManager.register(WHITELIST, new NBTTagCompound());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
@@ -122,12 +126,24 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				remove();
 			else if(player.getHeldItemMainhand().getItem() == SCContent.disguiseModule)
 			{
-				ItemStack module = getModule();
+				ItemStack module = getDisguiseModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
 					Block.spawnAsEntity(world, getPosition(), module);
 
-				setModule(player.getHeldItemMainhand());
+				setDisguiseModule(player.getHeldItemMainhand());
+
+				if(!player.isCreative())
+					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+			}
+			else if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule)
+			{
+				ItemStack module = getWhitelistModule();
+
+				if(!module.isEmpty()) //drop the old module as to not override it with the new one
+					Block.spawnAsEntity(world, getPosition(), module);
+
+				setWhitelistModule(player.getHeldItemMainhand());
 
 				if(!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -135,8 +151,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			else if(player.getHeldItemMainhand().getItem() == SCContent.universalBlockModifier)
 			{
 				world.removeBlock(getPosition());
-				Block.spawnAsEntity(world, getPosition(), getModule());
+				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
+				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
 				dataManager.set(MODULE, new NBTTagCompound());
+				dataManager.set(WHITELIST, new NBTTagCompound());
 			}
 			else
 				toggleMode(player);
@@ -156,7 +174,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		super.remove();
 		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.sentry));
-		Block.spawnAsEntity(world, getPosition(), getModule()); //if there is none, nothing will drop
+		Block.spawnAsEntity(world, getPosition(), getDisguiseModule()); //if there is none, nothing will drop
+		Block.spawnAsEntity(world, getPosition(), getWhitelistModule()); //if there is none, nothing will drop
 		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
 	}
 
@@ -244,7 +263,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	public void writeAdditional(NBTTagCompound tag)
 	{
 		tag.put("TileEntityData", getOwnerTag());
-		tag.put("InstalledModule", getModule().write(new NBTTagCompound()));
+		tag.put("InstalledModule", getDisguiseModule().write(new NBTTagCompound()));
+		tag.put("InstalledWhitelist", getWhitelistModule().write(new NBTTagCompound()));
 		tag.putInt("SentryMode", dataManager.get(MODE));
 		tag.putFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeAdditional(tag);
@@ -269,6 +289,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 		dataManager.set(OWNER, new Owner(name, uuid));
 		dataManager.set(MODULE, (NBTTagCompound)tag.get("InstalledModule"));
+		dataManager.set(WHITELIST, (NBTTagCompound)tag.get("InstalledWhitelist"));
 		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readAdditional(tag);
@@ -286,7 +307,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 * Sets the sentry's disguise module and places a block if possible
 	 * @param module The module to set
 	 */
-	public void setModule(ItemStack module)
+	public void setDisguiseModule(ItemStack module)
 	{
 		List<ItemStack> blocks = ((ItemModule)module.getItem()).getAddons(module.getTag());
 
@@ -302,11 +323,33 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	/**
-	 * @return The module that is added to this sentry. ItemStack.EMPTY if none available
+	 * Sets the sentry's whitelist module
+	 * @param module The module to set
 	 */
-	public ItemStack getModule()
+	public void setWhitelistModule(ItemStack module)
+	{
+		dataManager.set(WHITELIST, module.write(new NBTTagCompound()));
+	}
+
+	/**
+	 * @return The disguise module that is added to this sentry. ItemStack.EMPTY if none available
+	 */
+	public ItemStack getDisguiseModule()
 	{
 		NBTTagCompound tag = dataManager.get(MODULE);
+
+		if(tag == null || tag.isEmpty())
+			return ItemStack.EMPTY;
+		else
+			return ItemStack.read(tag);
+	}
+
+	/**
+	 * @return The whitelist module that is added to this sentry. ItemStack.EMPTY if none available
+	 */
+	public ItemStack getWhitelistModule()
+	{
+		NBTTagCompound tag = dataManager.get(WHITELIST);
 
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
@@ -330,6 +373,19 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	public float getHeadYTranslation()
 	{
 		return headYTranslation;
+	}
+
+	public boolean isTargetingWhitelistedPlayer(EntityLivingBase potentialTarget)
+	{
+		List<String> players = ModuleUtils.getPlayersFromModule(getWhitelistModule());
+
+		for(String s : players)
+		{
+			if(potentialTarget == PlayerUtils.getPlayerFromName(s))
+				return true;
+		}
+
+		return false;
 	}
 
 	//start: disallow sentry to take damage

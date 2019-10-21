@@ -52,6 +52,8 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 
 				if(potentialTarget instanceof PlayerEntity && !((PlayerEntity)potentialTarget).isSpectator() && !((PlayerEntity)potentialTarget).isCreative() && !((EntitySentry)goalOwner).getOwner().isOwner(((PlayerEntity)potentialTarget)))
 					break;
+				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
+					break;
 				else if(potentialTarget instanceof MonsterEntity && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
 					break;
 			}
@@ -73,7 +75,7 @@ public class EntityAITargetNearestPlayerOrMob extends NearestAttackableTargetGoa
 	@Override
 	public boolean shouldContinueExecuting()
 	{
-		return (nearestTarget instanceof MonsterEntity || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && super.shouldContinueExecuting();
+		return (nearestTarget instanceof MonsterEntity || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(target) && super.shouldContinueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)

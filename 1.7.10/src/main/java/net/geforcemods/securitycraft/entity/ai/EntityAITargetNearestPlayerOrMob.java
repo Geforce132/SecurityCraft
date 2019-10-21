@@ -48,6 +48,8 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 
 				if(potentialTarget instanceof EntityPlayer && !((EntityPlayer)potentialTarget).capabilities.isCreativeMode && !sentry.getOwner().isOwner(((EntityPlayer)potentialTarget)))
 					break;
+				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
+					break;
 				else if(potentialTarget instanceof EntityMob && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
 					break;
 			}
@@ -69,7 +71,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 	@Override
 	public boolean continueExecuting()
 	{
-		return (targetEntity instanceof EntityMob || targetEntity instanceof EntityPlayer) && isCloseEnough(targetEntity) && shouldExecute() && super.continueExecuting();
+		return (targetEntity instanceof EntityMob || targetEntity instanceof EntityPlayer) && isCloseEnough(targetEntity) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(targetEntity) && super.continueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)

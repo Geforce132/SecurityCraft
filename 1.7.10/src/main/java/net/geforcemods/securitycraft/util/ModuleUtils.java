@@ -6,6 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -136,16 +137,24 @@ public class ModuleUtils{
 	 * Args: world, x, y, z, moduleType.
 	 */
 	public static List<String> getPlayersFromModule(World world, int x, int y, int z, EnumCustomModules module) {
-		List<String> list = new ArrayList<String>();
-
 		CustomizableSCTE te = (CustomizableSCTE) world.getTileEntity(x, y, z);
 
-		if(te.hasModule(module)){
-			ItemStack item = te.getModule(module);
+		if(te.hasModule(module))
+			return getPlayersFromModule(te.getModule(module));
+		else return new ArrayList<>();
+	}
 
+	public static List<String> getPlayersFromModule(ItemStack stack)
+	{
+		List<String> list = new ArrayList<>();
+
+		if(stack.getItem() instanceof ItemModule)
+		{
 			for(int i = 1; i <= 10; i++)
-				if(item.stackTagCompound != null && item.stackTagCompound.getString("Player" + i) != null && !item.stackTagCompound.getString("Player" + i).isEmpty())
-					list.add(item.stackTagCompound.getString("Player" + i).toLowerCase());
+			{
+				if(stack.getTagCompound() != null && stack.getTagCompound().getString("Player" + i) != null && !stack.getTagCompound().getString("Player" + i).isEmpty())
+					list.add(stack.getTagCompound().getString("Player" + i).toLowerCase());
+			}
 		}
 
 		return list;

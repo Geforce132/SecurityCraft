@@ -35,6 +35,11 @@ public class EntityAIAttackRangedIfEnabled extends Goal
 
 		if(potentialTarget == null)
 			return false;
+		else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
+		{
+			sentry.setAttackTarget(null);
+			return false;
+		}
 		else
 		{
 			attackTarget = potentialTarget;
