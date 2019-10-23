@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiDisguiseModule extends ContainerScreen<ContainerDisguiseModule> {
+	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 
 	public GuiDisguiseModule(ContainerDisguiseModule container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
@@ -37,7 +38,7 @@ public class GuiDisguiseModule extends ContainerScreen<ContainerDisguiseModule> 
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize1.png"));
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);

@@ -31,12 +31,16 @@ import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
-
+	private static final ResourceLocation[] TEXTURES = {
+			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
+	};
+	private static final List<Rectangle2d> EXTRA_AREAS = new ArrayList<>();
 	private CustomizableSCTE tileEntity;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private Button[] optionButtons = new Button[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-
 	private final String blockName;
 
 	public GuiCustomizeBlock(ContainerCustomizeBlock container, PlayerInventory inv, ITextComponent name)
@@ -57,6 +61,7 @@ public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 		}
 
 		if(tileEntity.customOptions() != null)
+		{
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
 				Option<?> option = tileEntity.customOptions()[i];
 
@@ -74,6 +79,15 @@ public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 				addButton(optionButtons[i]);
 				hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
 			}
+		}
+
+		for(Button button : optionButtons)
+		{
+			if(button == null)
+				continue;
+
+			EXTRA_AREAS.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+		}
 	}
 
 	@Override
@@ -107,7 +121,7 @@ public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 	{
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
+		minecraft.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions() - 1]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
@@ -139,16 +153,6 @@ public class GuiCustomizeBlock extends ContainerScreen<ContainerCustomizeBlock>{
 
 	public List<Rectangle2d> getGuiExtraAreas()
 	{
-		List<Rectangle2d> rects = new ArrayList<>();
-
-		for(Button button : optionButtons)
-		{
-			if(button == null)
-				continue;
-
-			rects.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
-		}
-
-		return rects;
+		return EXTRA_AREAS;
 	}
 }

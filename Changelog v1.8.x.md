@@ -13,6 +13,7 @@
 - New: [1.14.4] New Secret Sign types (spruce, birch, jungle, acacia, dark oak)
 - New: [1.14.4] Secret Sign text can now be dyed
 - Change: The Motion Activated Light is now triggered by mobs as well (This change includes tweaks to the attack logic that may impact other blocks, like the Portable Radar or the I.M.S., as well)
+- Change: New Secret Sign textures
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
 - Fix: Portable Radar does not update redstone signal correctly when Redstone Module is installed
 - Fix: Installed modules do not drop when destroying block with Universal Block Remover
@@ -34,6 +35,7 @@
 - Fix: [1.14.4] Briefcase does not save items correctly
 - Fix: [1.14.4] Some sounds play server-wide instead of just for the players who should hear them
 - Fix: [1.14.4] Secret Sign does not drop
+- Misc.: Backend improvements
 - Misc.: [1.13.2] The minimum required Forge build is now 25.0.193
 
 --------------------------Changelog for v1.8.12.3 of SecurityCraft--------------------------

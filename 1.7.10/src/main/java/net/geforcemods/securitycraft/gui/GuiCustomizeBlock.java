@@ -25,7 +25,11 @@ import net.minecraft.util.StatCollector;
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeBlock extends GuiContainer{
-
+	private static final ResourceLocation[] TEXTURES = {
+			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
+	};
 	private CustomizableSCTE tileEntity;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
@@ -52,7 +56,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 		if(tileEntity.customOptions() != null)
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
-				Option option = tileEntity.customOptions()[i];
+				Option<?> option = tileEntity.customOptions()[i];
 
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
@@ -97,7 +101,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
+		mc.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions() - 1]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);

@@ -28,7 +28,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeBlock extends GuiContainer{
-
+	private static final ResourceLocation[] TEXTURES = {
+			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
+	};
+	private static final List<Rectangle> EXTRA_AREAS = new ArrayList<>();
 	private CustomizableSCTE tileEntity;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
@@ -54,8 +59,9 @@ public class GuiCustomizeBlock extends GuiContainer{
 		}
 
 		if(tileEntity.customOptions() != null)
+		{
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
-				Option option = tileEntity.customOptions()[i];
+				Option<?> option = tileEntity.customOptions()[i];
 
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
@@ -71,6 +77,15 @@ public class GuiCustomizeBlock extends GuiContainer{
 				buttonList.add(optionButtons[i]);
 				hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
 			}
+		}
+
+		for(GuiButton button : optionButtons)
+		{
+			if(button == null)
+				continue;
+
+			EXTRA_AREAS.add(new Rectangle(button.x, button.y, button.width, button.height));
+		}
 	}
 
 	@Override
@@ -104,7 +119,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	{
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(new ResourceLocation("securitycraft:textures/gui/container/customize" + tileEntity.getNumberOfCustomizableOptions() + ".png"));
+		mc.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions() - 1]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
@@ -139,16 +154,6 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 	public List<Rectangle> getGuiExtraAreas()
 	{
-		List<Rectangle> rects = new ArrayList<Rectangle>();
-
-		for(GuiButton button : optionButtons)
-		{
-			if(button == null)
-				continue;
-
-			rects.add(new Rectangle(button.x, button.y, button.width, button.height));
-		}
-
-		return rects;
+		return EXTRA_AREAS;
 	}
 }
