@@ -1,0 +1,50 @@
+{
+	"comment" : "This file enables Public Gui Announcement to communicate open screens and containers from security craft between players with a small visual", 
+	"screens" : [{
+			"class" : "net.geforcemods.securitycraft.gui.GuiBlockPocketManager", 
+			"texture" : "securitycraft:textures/gui/container/blank.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerGeneric", 
+			"texture" : "securitycraft:textures/gui/container/blank.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.gui.GuiCameraMonitor", 
+			"texture" : "securitycraft:textures/gui/container/blank.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerTEGeneric", 
+			"texture" : "securitycraft:textures/gui/container/blank.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.gui.GuiEditModule", 
+			"texture" : "securitycraft:textures/gui/container/blank.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerBlockReinforcer", 
+			"texture" : "securitycraft:textures/gui/container/customize1.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerDisguiseModule", 
+			"texture" : "securitycraft:textures/gui/container/customize1.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.gui.GuiEditSecretSign", 
+			"texture" : "publicguiannouncement:textures/gui/sign_edit.png", 
+			"fullSize" : 255
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerKeypadFurnace", 
+			"texture" : "minecraft:textures/gui/container/furnace.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerBriefcase", 
+			"texture" : "securitycraft:textures/gui/container/briefcase_inventory.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.gui.GuiMRAT", 
+			"texture" : "securitycraft:textures/gui/container/mrat.png", 
+			"size" : [255, 184]
+		}, {
+			"class" : "net.geforcemods.securitycraft.gui.GuiSCManual", 
+			"texture" : "securitycraft:textures/gui/info_book_title_page.png", 
+			"size" : [255, 180]
+		}, {
+			"class" : "net.geforcemods.securitycraft.containers.ContainerCustomizeBlock", 
+			"texture" : "securitycraft:textures/gui/container/customize3.png"
+		}, {
+			"class" : "net.geforcemods.securitycraft.gui.GuiInventoryScanner", 
+			"texture" : "securitycraft/textures/gui/container/inventory_scanner_gui.png", 
+			"size" : [175, 196]
+		}]
+}
