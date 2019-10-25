@@ -4,6 +4,7 @@
 - New: Trophy System (Inspired from https://callofduty.fandom.com/wiki/Trophy_System)
 - New: Block Pocket (Designed by Henzoid)
 - New: The Whitelist Module can now be used with the Sentry
+- New: Button to clear the Username Logger logged players list
 - New: [1.12.2+] The Smart Module now works for Security Cameras, enabling others to view cameras at a fixed angle
 - New: [1.13.2+] Reinforced blocks
 	- Stripped Oak Log, Stripped Spruce Log, Stripped Birch Log, Stripped Jungle Log, Stripped Acacia Log, Stripped Dark Oak Log, Stripped Oak Wood, Stripped Spruce Wood, Stripped Birch Wood, Stripped Jungle Wood, Stripped Acacia Wood, Stripped Dark Oak Wood, Oak Wood, Spruce Wood, Birch Wood, Jungle Wood, Acacia Wood, Dark Oak Wood, Prismarine Slab, Prismarine Brick Slab, Dark Prismarine Slab, Smooth Quartz, Smooth Red Sandstone, Smooth Sandstone, Smooth Stone, Prismarine Stairs, Prismarine Brick Stairs, Dark Prismarine Stairs

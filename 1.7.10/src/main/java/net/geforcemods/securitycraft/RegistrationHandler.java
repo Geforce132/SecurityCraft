@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.packets.PacketCChangeStackSize;
+import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketCCreateLGView;
 import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
@@ -37,6 +38,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
+import net.geforcemods.securitycraft.network.packets.PacketSClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
 import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
@@ -450,6 +452,8 @@ public class RegistrationHandler
 		network.registerMessage(PacketCChangeStackSize.Handler.class, PacketCChangeStackSize.class, 28, Side.CLIENT);
 		network.registerMessage(PacketCInitSentryAnimation.Handler.class, PacketCInitSentryAnimation.class, 29, Side.CLIENT);
 		network.registerMessage(PacketCToggleBlockPocketManager.Handler.class, PacketCToggleBlockPocketManager.class, 30, Side.SERVER);
+		network.registerMessage(PacketCClearLogger.Handler.class, PacketCClearLogger.class, 31, Side.CLIENT);
+		network.registerMessage(PacketSClearLogger.Handler.class, PacketSClearLogger.class, 32, Side.SERVER);
 	}
 
 	/**

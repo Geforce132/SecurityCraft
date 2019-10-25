@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
+import net.geforcemods.securitycraft.gui.components.GuiButtonClick;
+import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -20,18 +23,33 @@ public class GuiLogger extends ContainerScreen<ContainerTEGeneric>{
 		tileEntity = (TileEntityLogger)container.te;
 	}
 
+	@Override
+	protected void init()
+	{
+		super.init();
+
+		addButton(new GuiButtonClick(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
+			tileEntity.players = new String[100];
+			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
+		})).active = tileEntity.getOwner().isOwner(minecraft.player);
+	}
+
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		font.drawString(ClientUtils.localize("gui.securitycraft:logger.logged"), xSize / 2 - font.getStringWidth("Logged players:") / 2, 6, 4210752);
+		String localized = ClientUtils.localize("gui.securitycraft:logger.logged");
+
+		font.drawString(localized, xSize / 2 - font.getStringWidth(localized) / 2, 6, 4210752);
 
 		for(int i = 0; i < tileEntity.players.length; i++)
 			if(tileEntity.players[i] != "")
 				font.drawString(tileEntity.players[i], xSize / 2 - font.getStringWidth(tileEntity.players[i]) / 2, 25 + (10 * i), 4210752);
 
+		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
+			renderTooltip(ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override

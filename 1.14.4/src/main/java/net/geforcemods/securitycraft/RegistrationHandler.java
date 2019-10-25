@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard3Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard4Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard5Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleLimitedUseKeycardCondition;
+import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
@@ -41,6 +42,7 @@ import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
+import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.network.server.CloseFurnace;
 import net.geforcemods.securitycraft.network.server.GivePotionEffect;
 import net.geforcemods.securitycraft.network.server.MountCamera;
@@ -436,6 +438,8 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, UpdateNBTTagOnServer.class, UpdateNBTTagOnServer::encode, UpdateNBTTagOnServer::decode, UpdateNBTTagOnServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SyncTENBTTag.class, SyncTENBTTag::encode, SyncTENBTTag::decode, SyncTENBTTag::onMessage);
 		SecurityCraft.channel.registerMessage(index++, ToggleBlockPocketManager.class, ToggleBlockPocketManager::encode, ToggleBlockPocketManager::decode, ToggleBlockPocketManager::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::decode, ClearLoggerServer::onMessage);
+		SecurityCraft.channel.registerMessage(index++, ClearLoggerClient.class, ClearLoggerClient::encode, ClearLoggerClient::decode, ClearLoggerClient::onMessage);
 	}
 
 	@SubscribeEvent

@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
@@ -20,7 +21,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public boolean attackEntity(Entity entity) {
 		if (!world.isRemote) {
 			addPlayerName(((EntityPlayer) entity).getName());
-			sendChangeToClient();
+			sendChangeToClient(false);
 		}
 
 		return true;
@@ -41,7 +42,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 		while(iterator.hasNext())
 			addPlayerName(((EntityPlayer)iterator.next()).getName());
 
-		sendChangeToClient();
+		sendChangeToClient(false);
 	}
 
 	private void addPlayerName(String username) {
@@ -85,10 +86,15 @@ public class TileEntityLogger extends TileEntityOwnable {
 				players[i] = tag.getString("player" + i);
 	}
 
-	public void sendChangeToClient(){
-		for(int i = 0; i < players.length; i++)
-			if(players[i] != null)
-				SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+	public void sendChangeToClient(boolean clear){
+		if(!clear)
+		{
+			for(int i = 0; i < players.length; i++)
+				if(players[i] != null)
+					SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+		}
+		else
+			SecurityCraft.network.sendToAll(new PacketCClearLogger(pos));
 	}
 
 }

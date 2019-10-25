@@ -20,9 +20,7 @@ import net.minecraft.world.World;
 public class BlockBlockPocketWall extends BlockOwnable
 {
 	private static final AxisAlignedBB FULL_BLOCK_AABB = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
-	@SideOnly(Side.CLIENT)
 	private IIcon[] seeThrough = new IIcon[6];
-	@SideOnly(Side.CLIENT)
 	private IIcon[] nonSeeThrough = new IIcon[6];
 
 	public BlockBlockPocketWall()

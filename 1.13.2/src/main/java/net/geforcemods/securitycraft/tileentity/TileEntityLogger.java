@@ -6,6 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
@@ -27,7 +28,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public boolean attackEntity(Entity entity) {
 		if (!world.isRemote) {
 			addPlayerName(((EntityPlayer) entity).getName().getFormattedText());
-			sendChangeToClient();
+			sendChangeToClient(false);
 		}
 
 		return true;
@@ -48,7 +49,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 		while(iterator.hasNext())
 			addPlayerName(((EntityPlayer)iterator.next()).getName().getFormattedText());
 
-		sendChangeToClient();
+		sendChangeToClient(false);
 	}
 
 	private void addPlayerName(String username) {
@@ -92,10 +93,15 @@ public class TileEntityLogger extends TileEntityOwnable {
 				players[i] = tag.getString("player" + i);
 	}
 
-	public void sendChangeToClient(){
-		for(int i = 0; i < players.length; i++)
-			if(players[i] != null)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+	public void sendChangeToClient(boolean clear){
+		if(!clear)
+		{
+			for(int i = 0; i < players.length; i++)
+				if(players[i] != null)
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+		}
+		else
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(pos));
 	}
 
 }

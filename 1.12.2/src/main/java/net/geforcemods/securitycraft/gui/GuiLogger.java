@@ -1,8 +1,11 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.network.packets.PacketSClearLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,8 +22,21 @@ public class GuiLogger extends GuiContainer{
 	}
 
 	@Override
-	public void initGui(){
+	public void initGui()
+	{
 		super.initGui();
+
+		addButton(new GuiButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x")).enabled = tileEntity.getOwner().isOwner(mc.player);
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button)
+	{
+		if(button.id == 0)
+		{
+			tileEntity.players = new String[100];
+			SecurityCraft.network.sendToServer(new PacketSClearLogger(tileEntity.getPos()));
+		}
 	}
 
 	/**
@@ -29,12 +45,16 @@ public class GuiLogger extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:logger.logged"), xSize / 2 - fontRenderer.getStringWidth("Logged players:") / 2, 6, 4210752);
+		String localized = ClientUtils.localize("gui.securitycraft:logger.logged");
+
+		fontRenderer.drawString(localized, xSize / 2 - fontRenderer.getStringWidth(localized) / 2, 6, 4210752);
 
 		for(int i = 0; i < tileEntity.players.length; i++)
 			if(tileEntity.players[i] != "")
 				fontRenderer.drawString(tileEntity.players[i], xSize / 2 - fontRenderer.getStringWidth(tileEntity.players[i]) / 2, 25 + (10 * i), 4210752);
 
+		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
+			drawHoveringText(ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override

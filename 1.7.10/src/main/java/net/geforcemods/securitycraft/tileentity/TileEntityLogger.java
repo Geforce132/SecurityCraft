@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +15,7 @@ public class TileEntityLogger extends TileEntityOwnable {
 	public boolean attackEntity(Entity entity) {
 		if (!worldObj.isRemote) {
 			addPlayerName(((EntityPlayer) entity).getCommandSenderName());
-			sendChangeToClient();
+			sendChangeToClient(false);
 		}
 
 		return true;
@@ -70,10 +71,15 @@ public class TileEntityLogger extends TileEntityOwnable {
 				players[i] = tag.getString("player" + i);
 	}
 
-	public void sendChangeToClient(){
-		for(int i = 0; i < players.length; i++)
-			if(players[i] != null)
-				SecurityCraft.network.sendToAll(new PacketUpdateLogger(xCoord, yCoord, zCoord, i, players[i]));
+	public void sendChangeToClient(boolean clear){
+		if(!clear)
+		{
+			for(int i = 0; i < players.length; i++)
+				if(players[i] != null)
+					SecurityCraft.network.sendToAll(new PacketUpdateLogger(xCoord, yCoord, zCoord, i, players[i]));
+		}
+		else
+			SecurityCraft.network.sendToAll(new PacketCClearLogger(xCoord, yCoord, zCoord));
 	}
 
 }
