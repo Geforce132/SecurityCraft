@@ -7,7 +7,6 @@ import java.util.HashMap;
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
@@ -122,7 +121,6 @@ public class SecurityCraft {
 
 	public void serverStarting(FMLServerStartingEvent event){
 		CommandSC.register(event.getCommandDispatcher());
-		CommandModule.register(event.getCommandDispatcher());
 	}
 
 	public Object[] getUsePosition(String playerName) {

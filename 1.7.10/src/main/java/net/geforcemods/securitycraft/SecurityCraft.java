@@ -22,7 +22,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.commands.CommandModule;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.lookingglass.IWorldViewHelper;
 import net.geforcemods.securitycraft.compat.lookingglass.LookingGlassPanelRenderer;
@@ -71,7 +70,6 @@ public class SecurityCraft
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
 		event.registerServerCommand(new CommandSC());
-		event.registerServerCommand(new CommandModule());
 	}
 
 	@EventHandler

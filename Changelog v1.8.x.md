@@ -37,6 +37,7 @@
 - Fix: [1.14.4] Briefcase does not save items correctly
 - Fix: [1.14.4] Some sounds play server-wide instead of just for the players who should hear them
 - Fix: [1.14.4] Secret Sign does not drop
+- Removed: "/module" command. In order to interact with blacklist/whitelist modules, rightclick them
 - Misc.: Backend improvements
 - Misc.: [1.13.2] The minimum required Forge build is now 25.0.193
 
