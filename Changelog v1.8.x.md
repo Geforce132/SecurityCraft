@@ -13,6 +13,7 @@
 	- Polished Granite Stairs, Smooth Red Sandstone Stairs, Mossy Stone Brick Stairs, Polished Diorite Stairs, Mossy Cobblestone Stairs, End Stone Brick Stairs, Smooth Sandstone Stairs, Smooth Quartz Stairs, Granite Stairs, Andesite Stairs, Red Nether Brick Stairs, Polished Andesite Stairs, Diorite Stairs, Polished Granite Slab, Smooth Red Sandstone Slab, Mossy Stone Brick Slab, Polished Diorite Slab, Mossy Cobblestone Slab, End Stone Brick Slab, Smooth Sandstone Slab, Smooth Quartz Slab, Granite Slab, Andesite Slab, Red Nether Brick Slab, Polished Andesite Slab, Diorite Slab
 - New: [1.14.4] New Secret Sign types (spruce, birch, jungle, acacia, dark oak)
 - New: [1.14.4] Secret Sign text can now be dyed
+- New: [1.14.4] Support for Public Gui Announcement
 - Change: The Motion Activated Light is now triggered by mobs as well (This change includes tweaks to the attack logic that may impact other blocks, like the Portable Radar or the I.M.S., as well)
 - Change: New Secret Sign textures
 - Fix: Inventory Scanner ignores contents of Shulker Boxes
