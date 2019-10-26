@@ -1,6 +1,5 @@
-package net.geforcemods.securitycraft.blocks;
+package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRotatedPillar;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.block.Block;
