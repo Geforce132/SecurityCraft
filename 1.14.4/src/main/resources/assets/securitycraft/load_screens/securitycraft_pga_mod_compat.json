@@ -44,7 +44,7 @@
 			"texture" : "securitycraft:textures/gui/container/customize3.png"
 		}, {
 			"class" : "net.geforcemods.securitycraft.gui.GuiInventoryScanner", 
-			"texture" : "securitycraft/textures/gui/container/inventory_scanner_gui.png", 
+			"texture" : "securitycraft:textures/gui/container/inventory_scanner_gui.png", 
 			"size" : [175, 196]
 		}]
 }
