@@ -213,6 +213,7 @@ tile.securitycraft:stairsCrystalQuartz.name=Kristallquarztreppe
 tile.securitycraft:reinforcedStairsCrystalQuartz.name=Verstärkte Kristallquarztreppe
 tile.securitycraft:blockPocketWall.name=Blocktaschenwand
 tile.securitycraft:blockPocketManager.name=Blocktaschenverwalter
+tile.securitycraft:reinforced_stone_pressure_plate.name=Verstärkte Steindruckplatte
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -308,6 +309,7 @@ help.securitycraft:crystalQuartz.info=Kristallquartz-Blöcke sind simple Baublö
 help.securitycraft:reinforcedCrystalQuartz.info=Verstärkte Kristallquartz-Blöcke werden benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.
 help.securitycraft:blockPocketWall.info=Die Blocktaschenwand wird benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.
 help.securitycraft:blockPocketManager.info=Der Blocktaschenverwalter wird benutzt um die Blocktasche zu verwalten. In seinem GUI kannst du dir eine Größe aussuchen, und dann die Struktur um den Blocktaschenverwalter herum bauen. Stelle sicher, dass er auf der untersten Ebene der Struktur ganz außen platziert ist. Die Blocktasche ist eine würfelförmige Struktur die die ausgewählte Größe hat. Die Ecken sind aus verstärktem gemeißeltem Kristallquarz, die Blöcke zwischen den Ecken sind verstärkte Kristallquarzsäulen, und der Boden/die Wände/die Decke werden mit der Blocktaschenwand gebaut. Schaue dir dieses Bild an, um ein Beispiel zu sehen (der Blocktaschenverwalter ist mit einem roten Pfeil markiert) https://i.imgur.com/KLQzMeY.png - Wenn du "Aktivieren" klickst, werden alle Module im Blocktaschenverwalter aktiv. Siehe das "Customize" GUI für mehr Informationen (Rechtsklick mit Universellem Block Modifizierer)
+help.securitycraft:reinforced_stone_pressure_plate.info=Die verstärkte Steindruckplatte kann nur von ihrem Besitzer oder gewhitelisteten Spielern aktiviert werden.
 
 help.securitycraft:codebreaker.info=Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.securitycraft:doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt und durch Nummernschlösser, Inventar Scanner, etc. geöffnet werden.
@@ -530,6 +532,7 @@ module.securitycraft:securityCamera.redstoneModule.description=Ein Redstone Modu
 module.securitycraft:protecto.whitelistModule.description=Ein Whitelist Modul in einem Protecto erlaubt gewhitelisteten Spielern sich in dem Angriffsradius aufzuhalten ohne attakiert zu werden.
 module.securitycraft:blockPocketManager.disguiseModule.description=Ein Tarnmodul in einem Blocktaschenverwalter macht die Seiten der Blocktasche undurchsichtig.
 module.securitycraft:blockPocketManager.whitelistModule.description=Ein Whitelist Modul in einem Blocktaschenverwalter erlaubt gewhitelisteten Spielern die durch die Seiten der Blocktasche zu gehen.
+module.securitycraft:reinforced_stone_pressure_plate.whitelistModule.description=Ein Whitelist Module in einer Verstärkten Steindruckplatte erlaubt es gewhitelisteten Spielern diese zu aktivieren.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?

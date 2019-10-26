@@ -249,6 +249,7 @@ tile.securitycraft:stairsCrystalQuartz.name=Crystal Quartz Stairs
 tile.securitycraft:reinforcedStairsCrystalQuartz.name=Reinforced Crystal Quartz Stairs
 tile.securitycraft:blockPocketWall.name=Block Pocket Wall
 tile.securitycraft:blockPocketManager.name=Block Pocket Manager
+tile.securitycraft:reinforced_stone_pressure_plate.name=Reinforced Stone Pressure Plate
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -349,7 +350,8 @@ help.securitycraft:crystalQuartz.info=Crystal Quartz blocks are simple building 
 help.securitycraft:reinforcedCrystalQuartz.info=Reinforced Crystal Quartz Blocks are used to build the Block Pocket. More info on the Block Pocket Manager's page.
 help.securitycraft:blockPocketWall.info=Block Pocket Walls are used to build the Block Pocket. More info on the Block Pocket Manager's page.
 help.securitycraft:blockPocketManager.info=The Block Pocket Manager is used to manage the Block Pocket. When opening its GUI, you see a selection of sizes. Choose one, then build the Block Pocket around the manager. Make sure that the manager is placed on the outside of the bottom layer. The Block Pocket is a cube of the size you chose. The corners are built with Reinforced Chiseled Quartz, the blocks between the corners are built with correctly oriented Reinforced Quartz Pillars, and the floor/wall/ceiling is built with Block Pocket Walls. See this image for an example of how it looks (the Block Pocket Manager is marked with a red arrow) https://i.imgur.com/KLQzMeY.png - Clicking "Activate" after the structure is built will activate any added modules. See the customization GUI for more information (rightclick with Universal Block Modifier).
-
+help.securitycraft:reinforced_stone_pressure_plate.info=The Reinforced Stone Pressure Plate can only be activated by its owner or whitelisted players.
+	
 help.securitycraft:codebreaker.info=The codebreaker will crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.
 help.securitycraft:scannerDoorItem.info=The Scanner Door acts like a Retinal Scanner, but opens itself upon looking at the top part. It has to be closed manually again.
@@ -579,6 +581,7 @@ module.securitycraft:securityCamera.smartModule.description=Adding the smart mod
 module.securitycraft:protecto.whitelistModule.description=Adding a whitelist module to a protecto will allow the whitelisted players to walk into the range of the protecto without being targeted.
 module.securitycraft:blockPocketManager.disguiseModule.description=Adding a disguise module to a Block Pocket Manager will make the Block Pocket's sides opaque.
 module.securitycraft:blockPocketManager.whitelistModule.description=Adding a whitelist module to a Block Pocket Manager will allow whitelisted players to pass through the Block Pocket's sides.
+module.securitycraft:reinforced_stone_pressure_plate.whitelistModule.description=Adding a whitelist module to a Reinforced Stone Pressure Plate will allow whitelisted players to activate it.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?

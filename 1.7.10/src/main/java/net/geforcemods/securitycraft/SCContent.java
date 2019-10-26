@@ -97,6 +97,7 @@ public class SCContent
 	public static Block reinforcedStairsStoneBrick;
 	@Reinforced public static Block reinforcedStone;
 	@Reinforced public static Block reinforcedStoneBrick;
+	@Reinforced public static Block reinforcedStonePressurePlate;
 	public static Block reinforcedStoneSlabs;
 	@Reinforced public static Block reinforcedWoodPlanks;
 	public static Block reinforcedWoodSlabs;

@@ -74,6 +74,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -190,7 +191,6 @@ public class RegistrationHandler
 		registerReinforcedBlock(SCContent.reinforcedSand);
 		registerReinforcedBlock(SCContent.reinforcedGravel);
 		registerBlock(SCContent.trophySystem);
-
 		registerBlock(SCContent.crystalQuartz, ItemBlockCustomQuartz.class);
 		registerReinforcedBlock(SCContent.reinforcedCrystalQuartz, ItemBlockCustomQuartz.class);
 		registerBlock(SCContent.crystalQuartzSlab, ItemBlockCrystalQuartzSlab.class, false);
@@ -201,7 +201,7 @@ public class RegistrationHandler
 		GameRegistry.registerBlock(SCContent.reinforcedStairsCrystalQuartz, SCContent.reinforcedStairsCrystalQuartz.getUnlocalizedName().substring(5).replace("securitycraft:", ""));
 		registerBlock(SCContent.blockPocketWall);
 		registerBlock(SCContent.blockPocketManager, "Henzoid");
-		registerItem(SCContent.crystalQuartzItem);
+		registerBlock(SCContent.reinforcedStonePressurePlate);
 
 		registerItem(SCContent.codebreaker);
 		registerItem(SCContent.reinforcedDoorItem);
@@ -234,6 +234,7 @@ public class RegistrationHandler
 		GameRegistry.registerItem(SCContent.taserPowered, "taserPowered");
 		registerItem(SCContent.secretSignItem);
 		registerItem(SCContent.sentry, "Henzoid");
+		registerItem(SCContent.crystalQuartzItem);
 	}
 
 	public static void registerTileEntities()
@@ -264,6 +265,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityBlockPocketManager.class, "block_pocket_manager");
 		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, "block_pocket");
 		GameRegistry.registerTileEntity(TileEntityTrophySystem.class, "trophy_system");
+		GameRegistry.registerTileEntity(TileEntityReinforcedPressurePlate.class, "reinforced_pressure_plate");
 	}
 
 	public static void registerRecipes()
@@ -392,6 +394,7 @@ public class RegistrationHandler
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedCrystalQuartzSlab, 6), "BBB", 'B', new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0));
 		GameRegistry.addRecipe(new ItemStack(SCContent.stairsCrystalQuartz, 4), "S  ", "SS ", "SSS", 'S', new ItemStack(SCContent.crystalQuartz, 1, 0));
 		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStairsCrystalQuartz, 4), "S  ", "SS ", "SSS", 'S', new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 0));
+		GameRegistry.addRecipe(new ItemStack(SCContent.reinforcedStonePressurePlate), "SS", 'S', new ItemStack(SCContent.reinforcedStone));
 
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.dirtMine, 1), new Object[] {Blocks.dirt, SCContent.mine});
 		GameRegistry.addShapelessRecipe(new ItemStack(SCContent.stoneMine, 1), new Object[] {Blocks.stone, SCContent.mine});

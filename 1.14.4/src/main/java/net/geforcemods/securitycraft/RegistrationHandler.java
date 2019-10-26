@@ -77,6 +77,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -335,6 +336,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityTrophySystem::new, SCContent.trophySystem).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityBlockPocketManager::new, SCContent.blockPocketManager).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 		event.getRegistry().register(TileEntityType.Builder.create(TileEntityBlockPocket::new, SCContent.blockPocketWall, SCContent.reinforcedCrystalQuartz, SCContent.reinforcedChiseledCrystalQuartz, SCContent.reinforcedCrystalQuartzPillar).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket")));
+		event.getRegistry().register(TileEntityType.Builder.create(TileEntityReinforcedPressurePlate::new, SCContent.reinforcedStonePressurePlate).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_pressure_plate")));
 	}
 
 	@SubscribeEvent

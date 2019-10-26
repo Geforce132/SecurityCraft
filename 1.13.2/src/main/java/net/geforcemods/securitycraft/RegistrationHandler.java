@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -288,6 +289,7 @@ public class RegistrationHandler
 		SCContent.teTypeTrophySystem = TileEntityType.register(SecurityCraft.MODID + ":trophy_system", TileEntityType.Builder.create(TileEntityTrophySystem::new));
 		SCContent.teTypeBlockPocketManager = TileEntityType.register(SecurityCraft.MODID + ":block_pocket_manager", TileEntityType.Builder.create(TileEntityBlockPocketManager::new));
 		SCContent.teTypeBlockPocket = TileEntityType.register(SecurityCraft.MODID + ":block_pocket", TileEntityType.Builder.create(TileEntityBlockPocket::new));
+		SCContent.teTypeReinforcedPressurePlate = TileEntityType.register(SecurityCraft.MODID + ":reinforced_pressure_plate", TileEntityType.Builder.create(TileEntityReinforcedPressurePlate::new));
 	}
 
 	@SubscribeEvent

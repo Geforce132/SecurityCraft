@@ -55,6 +55,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedOldLog;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedQuartz;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
@@ -239,8 +240,10 @@ public class SetupHandler
 		SCContent.blockPocketWall = new BlockBlockPocketWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:blockPocketWall");
 
 		SCContent.blockPocketManager = new BlockBlockPocketManager().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:blockPocketManager");
-	
+
 		SCContent.trophySystem = new BlockTrophySystem().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setUnlocalizedName("securitycraft:trophySystem");
+
+		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setUnlocalizedName("securitycraft:reinforced_stone_pressure_plate");
 	}
 
 	public static void setupMines()

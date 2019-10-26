@@ -24,7 +24,6 @@ import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.blocks.BlockPanicButton;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
-import net.geforcemods.securitycraft.blocks.BlockReinforcedRotatedPillarBlockPocket;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
@@ -46,7 +45,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPane;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRotatedPillar;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRotatedPillarBlockPocket;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlab;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlassPane;
@@ -358,6 +359,7 @@ public class SetupHandler
 		SCContent.reinforcedCrystalQuartzPillar = new BlockReinforcedRotatedPillarBlockPocket(Material.ROCK, SCContent.crystalQuartzPillar, "reinforced_crystal_quartz_pillar");
 		SCContent.reinforcedCrystalQuartzSlab = new BlockReinforcedSlab(SoundType.STONE, Material.ROCK, SCContent.crystalQuartzSlab, "reinforced_crystal_quartz_slab");
 		SCContent.reinforcedCrystalQuartzStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, SCContent.stairsCrystalQuartz, "reinforced_crystal_quartz_stairs");
+		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_stone_pressure_plate"));
 		SCContent.reinforcedStoneStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, Blocks.STONE, "reinforced_stone_stairs");
 	}
 

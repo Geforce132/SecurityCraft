@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
@@ -260,7 +261,7 @@ public class BlockUtils{
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)
 	{
-		return hasActiveLaserNextTo(world, pos) || hasActiveScannerNextTo(world, pos) || hasActiveKeypadNextTo(world, pos) || hasActiveReaderNextTo(world, pos) || hasActiveInventoryScannerNextTo(world, pos);
+		return hasActiveLaserNextTo(world, pos) || hasActiveScannerNextTo(world, pos) || hasActiveKeypadNextTo(world, pos) || hasActiveReaderNextTo(world, pos) || hasActiveInventoryScannerNextTo(world, pos) || hasActiveReinforcedPressurePlateNextTo(world, pos);
 	}
 
 	private static boolean hasActiveLaserNextTo(World world, BlockPos pos) {
@@ -343,6 +344,23 @@ public class BlockUtils{
 		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).getScanType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).shouldProvidePower())
 			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
 		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).getScanType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).shouldProvidePower())
+			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
+		else
+			return false;
+	}
+
+	private static boolean hasActiveReinforcedPressurePlateNextTo(World world, BlockPos pos){
+		if(BlockUtils.getBlock(world, pos.east()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.east()).get(BlockReinforcedPressurePlate.POWERED))
+			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
+		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.west()).get(BlockReinforcedPressurePlate.POWERED))
+			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
+		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.south()).get(BlockReinforcedPressurePlate.POWERED))
+			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
+		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.north()).get(BlockReinforcedPressurePlate.POWERED))
+			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
+		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.up()).get(BlockReinforcedPressurePlate.POWERED))
+			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
+		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.down()).get(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
 		else
 			return false;

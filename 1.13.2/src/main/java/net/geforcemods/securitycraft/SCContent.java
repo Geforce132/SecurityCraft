@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -316,6 +317,7 @@ public class SCContent
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzPillar;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzSlab;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzStairs;
+	@Reinforced(hasPage=true) public static Block reinforcedStonePressurePlate;
 	@Reinforced public static Block reinforcedStoneStairs;
 
 	//Fluids
@@ -390,6 +392,7 @@ public class SCContent
 	public static TileEntityType<TileEntityTrophySystem> teTypeTrophySystem;
 	public static TileEntityType<TileEntityBlockPocketManager> teTypeBlockPocketManager;
 	public static TileEntityType<TileEntityBlockPocket> teTypeBlockPocket;
+	public static TileEntityType<TileEntityReinforcedPressurePlate> teTypeReinforcedPressurePlate;
 
 	//Entity types
 	public static EntityType<EntityBouncingBetty> eTypeBouncingBetty;

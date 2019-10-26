@@ -1,4 +1,4 @@
-﻿{
+{
     "block.securitycraft.laser_block": "Laser Block",
     "block.securitycraft.laser": "Laser",
     "block.securitycraft.laser_active": "Aktivierter Laser",
@@ -297,7 +297,8 @@
     "block.securitycraft.reinforced_crystal_quartz_stairs": "Verstärkte Kristallquarztreppe",
     "block.securitycraft.block_pocket_wall": "Blocktaschenwand",
     "block.securitycraft.block_pocket_manager": "Blocktaschenverwalter",
-    
+    "block.securitycraft.reinforced_stone_pressure_plate": "Verstärkte Steindruckplatte",
+	
     "item.securitycraft.codebreaker": "Codebrecher",
     "item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
     "item.securitycraft.universal_block_remover": "Universeller Block Entferner",
@@ -391,8 +392,9 @@
     "help.securitycraft.reinforced_crystal_quartz.info": "Verstärkte Kristallquartz-Blöcke werden benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.",
     "help.securitycraft.block_pocket_wall.info": "Die Blocktaschenwand wird benutzt, um die Blocktasche zu bauen. Mehr Infos auf der Seite des Blocktaschenverwalters.",
     "help.securitycraft.block_pocket_manager.info": "Der Blocktaschenverwalter wird benutzt um die Blocktasche zu verwalten. In seinem GUI kannst du dir eine Größe aussuchen, und dann die Struktur um den Blocktaschenverwalter herum bauen. Stelle sicher, dass er auf der untersten Ebene der Struktur ganz außen platziert ist. Die Blocktasche ist eine würfelförmige Struktur die die ausgewählte Größe hat. Die Ecken sind aus verstärktem gemeißeltem Kristallquarz, die Blöcke zwischen den Ecken sind verstärkte Kristallquarzsäulen, und der Boden/die Wände/die Decke werden mit der Blocktaschenwand gebaut. Schaue dir dieses Bild an, um ein Beispiel zu sehen (der Blocktaschenverwalter ist mit einem roten Pfeil markiert) https://i.imgur.com/opc7dqO.png - Wenn du \"Aktivieren\" klickst, werden alle Module im Blocktaschenverwalter aktiv. Siehe das \"Customize\" GUI für mehr Informationen (Rechtsklick mit Universellem Block Modifizierer)",
-
-    "help.securitycraft.codebreaker.info": "Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
+	"help.securitycraft.reinforced_stone_pressure_plate.info": "Die verstärkte Steindruckplatte kann nur von ihrem Besitzer oder gewhitelisteten Spielern aktiviert werden.",
+	
+	"help.securitycraft.codebreaker.info": "Der Codebrecher knackt jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
     "help.securitycraft.door_indestructible_iron_item.info": "Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Block Entferner entfernt und durch Nummernschlösser, Inventar Scanner, etc. geöffnet werden.",
     "help.securitycraft.scanner_door_item.info": "Die Scannertür verhält sich wie der Augenscanner, aber sie öffnet sich von selbst wenn man auf den oberen Teil guckt. Sie muss manuell wieder geschlossen werden.",
     "help.securitycraft.universal_block_remover.info": "Der Universelle Block Entferner wird benutzt um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat kann ihn auch entfernen.",
@@ -629,7 +631,8 @@
     "module.securitycraft.protecto.whitelist_module.description": "Ein Whitelist Modul in einem Protecto erlaubt gewhitelisteten Spielern sich in dem Angriffsradius aufzuhalten ohne attakiert zu werden.",
     "module.securitycraft.block_pocket_manager.disguise_module.description": "Ein Tarnmodul in einem Blocktaschenverwalter macht die Seiten der Blocktasche undurchsichtig.",
     "module.securitycraft.block_pocket_manager.whitelist_module.description": "Ein Whitelist Modul in einem Blocktaschenverwalter erlaubt gewhitelisteten Spielern die durch die Seiten der Blocktasche zu gehen.",
-
+	"module.securitycraft.reinforced_stone_pressure_plate.whitelist_module.description": "Ein Whitelist Module in einer Verstärkten Steindruckplatte erlaubt es gewhitelisteten Spielern diese zu aktivieren.",
+    
     "config.securitycraft:isCodebreakerAllowed": "Ist der Codebrecher erlaubt?",
     "config.securitycraft:isCodebreakerAllowed.tooltip": "Kann der Codebrecher benutzt werden?",
     "config.securitycraft:allowAdminTool": "Ist das Admin Tool erlaubt?",

@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
@@ -365,6 +366,7 @@ public class SCContent
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzPillar;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzSlab;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzStairs;
+	@Reinforced(hasPage=true) public static Block reinforcedStonePressurePlate;
 
 	//Fluids
 	public static FlowingFluid flowingFakeWater;
@@ -467,6 +469,8 @@ public class SCContent
 	public static TileEntityType<TileEntityBlockPocketManager> teTypeBlockPocketManager;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
 	public static TileEntityType<TileEntityBlockPocket> teTypeBlockPocket;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
+	public static TileEntityType<TileEntityReinforcedPressurePlate> teTypeReinforcedPressurePlate;
 
 	//Entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
