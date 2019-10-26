@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.DoorBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -94,9 +94,9 @@ public class ItemReinforcedDoor extends Item
 
 		BlockPos blockAbove = pos.up();
 		boolean isAnyPowered = world.isBlockPowered(pos) || world.isBlockPowered(blockAbove);
-		BlockState state = door.getDefaultState().with(DoorBlock.FACING, facing).with(DoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(DoorBlock.POWERED, Boolean.valueOf(isAnyPowered)).with(DoorBlock.OPEN, Boolean.valueOf(isAnyPowered));
-		world.setBlockState(pos, state.with(DoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
-		world.setBlockState(blockAbove, state.with(DoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
+		BlockState state = door.getDefaultState().with(BlockReinforcedDoor.FACING, facing).with(BlockReinforcedDoor.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(BlockReinforcedDoor.OPEN, Boolean.valueOf(isAnyPowered));
+		world.setBlockState(pos, state.with(BlockReinforcedDoor.HALF, DoubleBlockHalf.LOWER), 2);
+		world.setBlockState(blockAbove, state.with(BlockReinforcedDoor.HALF, DoubleBlockHalf.UPPER), 2);
 		world.notifyNeighborsOfStateChange(pos, door);
 		world.notifyNeighborsOfStateChange(blockAbove, door);
 	}
