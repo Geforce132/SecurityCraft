@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.network.packets.PacketCRefreshKeypadModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -40,14 +41,14 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
-		if(module == EnumCustomModules.DISGUISE)
-			world.markBlockRangeForRenderUpdate(pos, pos);
+		if(!world.isRemote && module == EnumCustomModules.DISGUISE)
+			SecurityCraft.network.sendToAll(new PacketCRefreshKeypadModel(pos, true, stack));
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {
-		if(module == EnumCustomModules.DISGUISE)
-			world.markBlockRangeForRenderUpdate(pos, pos);
+		if(!world.isRemote && module == EnumCustomModules.DISGUISE)
+			SecurityCraft.network.sendToAll(new PacketCRefreshKeypadModel(pos, false, stack));
 	}
 
 	/**

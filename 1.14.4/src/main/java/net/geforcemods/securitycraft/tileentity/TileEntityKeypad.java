@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -9,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.models.ModelDynamicBakedKeypad;
+import net.geforcemods.securitycraft.network.client.RefreshKeypadModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -30,6 +32,7 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
 
@@ -58,14 +61,14 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
-		if(world.isRemote && module == EnumCustomModules.DISGUISE)
-			refreshModel();
+		if(!world.isRemote && module == EnumCustomModules.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshKeypadModel(pos, true, stack));
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {
-		if(world.isRemote && module == EnumCustomModules.DISGUISE)
-			refreshModel();
+		if(!world.isRemote && module == EnumCustomModules.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshKeypadModel(pos, false, stack));
 	}
 
 	/**
@@ -198,7 +201,7 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			refreshModel();
 	}
 
-	private void refreshModel()
+	public void refreshModel()
 	{
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			ModelDataManager.requestModelDataRefresh(this);

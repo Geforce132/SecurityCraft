@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.network.packets.PacketCRefreshKeypadModel;
 import net.geforcemods.securitycraft.network.packets.PacketCRequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
@@ -409,6 +410,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketCToggleBlockPocketManager.Handler.class, PacketCToggleBlockPocketManager.class, 25, Side.SERVER);
 		network.registerMessage(PacketCClearLogger.Handler.class, PacketCClearLogger.class, 26, Side.CLIENT);
 		network.registerMessage(PacketSClearLogger.Handler.class, PacketSClearLogger.class, 27, Side.SERVER);
+		network.registerMessage(PacketCRefreshKeypadModel.Handler.class, PacketCRefreshKeypadModel.class, 28, Side.CLIENT);
 	}
 
 	@SubscribeEvent
