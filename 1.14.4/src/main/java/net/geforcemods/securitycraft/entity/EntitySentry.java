@@ -205,20 +205,9 @@ public class EntitySentry extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote)
-		{
-			if(mode == 0)
-			{
-				animateUpwards = true;
-				animate = true;
-			}
-			else if(mode == 1)
-			{
-				animateUpwards = false;
-				animate = true;
-			}
-
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
-		}
+		else
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
 	}
 
 	@Override
