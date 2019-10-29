@@ -1,3 +1,10 @@
+--------------------------Changelog for v1.8.12.3.1 of SecurityCraft--------------------------
+
+- Fix: Disguising a Keypad does not synchronize to other players
+- Fix: Sentry animation is not synchronized between players
+- Fix: [1.14.4] Disguised Keypad doesn't show reinforced blocks correctly
+- Fix: [1.14.4] Sentry whitelist does not work correctly
+
 --------------------------Changelog for v1.8.13 of SecurityCraft--------------------------
 
 - New: Italian translation (Thanks Chexet48!)

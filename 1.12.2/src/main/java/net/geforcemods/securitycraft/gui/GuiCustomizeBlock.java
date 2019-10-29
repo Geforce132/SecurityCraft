@@ -61,7 +61,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 		if(tileEntity.customOptions() != null)
 		{
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
-				Option<?> option = tileEntity.customOptions()[i];
+				Option option = tileEntity.customOptions()[i];
 
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
