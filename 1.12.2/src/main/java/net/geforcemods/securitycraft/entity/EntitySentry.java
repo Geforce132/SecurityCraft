@@ -370,12 +370,15 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 	public boolean isTargetingWhitelistedPlayer(EntityLivingBase potentialTarget)
 	{
-		List<String> players = ModuleUtils.getPlayersFromModule(getWhitelistModule());
-
-		for(String s : players)
+		if(potentialTarget != null)
 		{
-			if(potentialTarget == PlayerUtils.getPlayerFromName(s))
-				return true;
+			List<String> players = ModuleUtils.getPlayersFromModule(getWhitelistModule());
+
+			for(String s : players)
+			{
+				if(potentialTarget.getName().toLowerCase().equals(s))
+					return true;
+			}
 		}
 
 		return false;
