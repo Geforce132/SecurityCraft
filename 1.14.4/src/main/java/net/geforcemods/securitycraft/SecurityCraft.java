@@ -19,7 +19,6 @@ import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataSerializers;
@@ -94,9 +93,7 @@ public class SecurityCraft {
 
 		log("Registering mod content... (PT 2/2)");
 		EnumCustomModules.refresh();
-		proxy.getOrPopulateToTint().forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
-		proxy.getOrPopulateToTint().forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
-		proxy.cleanup();
+		proxy.tint();
 	}
 
 	@SubscribeEvent

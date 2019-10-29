@@ -1,13 +1,9 @@
 package net.geforcemods.securitycraft.network;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
@@ -29,13 +25,7 @@ public class ServerProxy implements IProxy
 	}
 
 	@Override
-	public Map<Block,Integer> getOrPopulateToTint()
-	{
-		return new HashMap<>();
-	}
-
-	@Override
-	public void cleanup() {}
+	public void tint() {}
 
 	@Override
 	public World getClientWorld()

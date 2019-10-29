@@ -1,10 +1,7 @@
 package net.geforcemods.securitycraft.network;
 
-import java.util.Map;
-
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -17,8 +14,7 @@ public interface IProxy
 {
 	public void clientSetup();
 	public void registerKeypadChestItem(Register<Item> event);
-	public Map<Block,Integer> getOrPopulateToTint();
-	public void cleanup();
+	public void tint();
 	public World getClientWorld();
 	public PlayerEntity getClientPlayer();
 	public void displayMRATGui(ItemStack stack);

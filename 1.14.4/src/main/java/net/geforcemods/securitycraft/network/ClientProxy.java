@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -47,6 +48,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -64,8 +66,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class ClientProxy implements IProxy {
-	private Map<Block,Integer> toTint = new HashMap<>();
-
 	@Override
 	public void clientSetup()
 	{
@@ -102,41 +102,41 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public Map<Block,Integer> getOrPopulateToTint()
+	public void tint()
 	{
-		if(toTint.isEmpty())
+		Map<Block,Integer> toTint = new HashMap<>();
+
+		for(Field field : SCContent.class.getFields())
 		{
-			for(Field field : SCContent.class.getFields())
+			if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).hasTint())
 			{
-				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).hasTint())
+				try
 				{
-					try
-					{
-						toTint.put((Block)field.get(null), field.getAnnotation(Reinforced.class).tint());
-					}
-					catch(IllegalArgumentException | IllegalAccessException e)
-					{
-						e.printStackTrace();
-					}
+					toTint.put((Block)field.get(null), field.getAnnotation(Reinforced.class).tint());
+				}
+				catch(IllegalArgumentException | IllegalAccessException e)
+				{
+					e.printStackTrace();
 				}
 			}
-
-			toTint.put(SCContent.blockPocketManager, 0x0E7063);
-			toTint.put(SCContent.blockPocketWall, 0x0E7063);
-			toTint.put(SCContent.chiseledCrystalQuartz, 0x15b3a2);
-			toTint.put(SCContent.crystalQuartz, 0x15b3a2);
-			toTint.put(SCContent.crystalQuartzPillar, 0x15b3a2);
-			toTint.put(SCContent.crystalQuartzSlab, 0x15b3a2);
-			toTint.put(SCContent.stairsCrystalQuartz, 0x15b3a2);
 		}
 
-		return toTint;
-	}
+		toTint.put(SCContent.blockPocketManager, 0x0E7063);
+		toTint.put(SCContent.blockPocketWall, 0x0E7063);
+		toTint.put(SCContent.chiseledCrystalQuartz, 0x15b3a2);
+		toTint.put(SCContent.crystalQuartz, 0x15b3a2);
+		toTint.put(SCContent.crystalQuartzPillar, 0x15b3a2);
+		toTint.put(SCContent.crystalQuartzSlab, 0x15b3a2);
+		toTint.put(SCContent.stairsCrystalQuartz, 0x15b3a2);
+		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
+		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
+		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
+			Block block = Block.getBlockFromItem(BlockKeypad.getDisguisedStack(world, pos).getItem());
 
-	@Override
-	public void cleanup()
-	{
-		toTint = null;
+			if(block != Blocks.AIR && !(block instanceof BlockKeypad))
+				return Minecraft.getInstance().getBlockColors().getColor(block.getDefaultState(), world, pos, tintIndex);
+			else return 0xFFFFFF;
+		}, SCContent.keypad);
 	}
 
 	@Override

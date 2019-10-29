@@ -224,7 +224,7 @@ public class BlockKeypad extends ContainerBlock implements IOverlayDisplay, IPas
 	}
 
 	public static ItemStack getDisguisedStack(IBlockReader world, BlockPos pos) {
-		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
+		if(world != null && world.getTileEntity(pos) instanceof TileEntityKeypad) {
 			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
 			ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
 
