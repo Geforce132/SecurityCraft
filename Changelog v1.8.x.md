@@ -42,7 +42,7 @@
 - Fix: [1.13.2+] The Admin Tool's description in JEI is not working
 - Fix: [1.13.2+] Model of activated alarm is incorrect
 - Fix: [1.13.2+] Electrified Iron Fence loses its owner when placing specific blocks next to it
-- Fix; [1.13.2+] Reinforced Door does not behave correctly
+- Fix: [1.13.2+] Reinforced Door does not behave correctly
 - Fix: [1.14.4] Briefcase does not save items correctly
 - Fix: [1.14.4] Some sounds play server-wide instead of just for the players who should hear them
 - Fix: [1.14.4] Secret Sign does not drop
