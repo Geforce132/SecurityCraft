@@ -32,7 +32,7 @@ public class TileEntityLogger extends TileEntityOwnable implements INamedContain
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if (!world.isRemote) {
+		if (!world.isRemote && entity instanceof PlayerEntity) {
 			addPlayerName(((PlayerEntity) entity).getName().getFormattedText());
 			sendChangeToClient(false);
 		}

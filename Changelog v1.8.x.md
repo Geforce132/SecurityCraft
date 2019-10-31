@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.12.3.2 of SecurityCraft--------------------------
+
+- Fix: Username Logger crash involving armor stands
+
 --------------------------Changelog for v1.8.12.3.1 of SecurityCraft--------------------------
 
 - Fix: Disguising a Keypad does not synchronize to other players
