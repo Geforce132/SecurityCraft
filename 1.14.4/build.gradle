@@ -17,6 +17,21 @@ archivesBaseName = 'securitycraft'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
+processResources { 
+	exclude ".cache"
+}
+
+sourceSets {
+	main {
+		java {
+			exclude "net/geforcemods/securitycraft/datagen/**" //exclude files from the built jar that are only used to generate the assets
+		}
+		resources {
+			srcDirs += "src/generated/resources" //include generated files
+		}
+	}
+}
+
 minecraft {
     mappings channel: 'snapshot', version: '20191025-1.14.3'
 	
