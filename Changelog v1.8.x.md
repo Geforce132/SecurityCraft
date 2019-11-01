@@ -9,6 +9,7 @@
 - Change: Frame recipe is slightly different, ingredients stay the same
 - Change: The Sentry now uses Reinforced Iron Blocks in its recipe
 - Fix: Username Logger crash involving armor stands
+- Fix: [1.14.4] Incorrect Taser is showing up in the creative tab
 - Fix: [1.14.4] Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
 - Fix: [1.14.4] Fake Liquid Buckets can't be crafted using level two potions
 
