@@ -139,7 +139,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
 		registerBlock(event, SCContent.keycardReader);
-		registerBlock(event, SCContent.ironTrapdoor);
+		registerBlock(event, SCContent.reinforcedIronTrapdoor);
 		registerBlock(event, SCContent.bouncingBetty);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);

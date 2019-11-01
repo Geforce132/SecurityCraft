@@ -1,10 +1,11 @@
-package net.geforcemods.securitycraft.blocks;
+package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.TrapDoorBlock;
@@ -20,9 +21,9 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockIronTrapDoor extends TrapDoorBlock implements ITileEntityProvider {
+public class BlockReinforcedIronTrapDoor extends TrapDoorBlock implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockIronTrapDoor(Material material) {
+	public BlockReinforcedIronTrapDoor(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
@@ -55,7 +56,7 @@ public class BlockIronTrapDoor extends TrapDoorBlock implements ITileEntityProvi
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
 
-		if(!(newState.getBlock() instanceof BlockIronTrapDoor))
+		if(!(newState.getBlock() instanceof BlockReinforcedIronTrapDoor))
 			world.removeTileEntity(pos);
 	}
 
@@ -70,5 +71,17 @@ public class BlockIronTrapDoor extends TrapDoorBlock implements ITileEntityProvi
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader reader) {
 		return new TileEntityOwnable();
+	}
+
+	@Override
+	public Block getVanillaBlock()
+	{
+		return Blocks.IRON_TRAPDOOR;
+	}
+
+	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState().with(HORIZONTAL_FACING, vanillaState.get(HORIZONTAL_FACING)).with(OPEN, false).with(HALF, vanillaState.get(HALF)).with(POWERED, false).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
 	}
 }

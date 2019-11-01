@@ -33,7 +33,6 @@ public class SCContent
 	public static Block inventoryScanner;
 	public static Block inventoryScannerField;
 	public static Block ironFence;
-	public static Block ironTrapdoor;
 	public static Block keycardReader;
 	public static Block keypad;
 	public static Block keypadChest;
@@ -67,6 +66,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedGravel;
 	@Reinforced @Tinted public static Block reinforcedHardenedClay;
 	@Reinforced public static Block reinforcedIronBars;
+	@Reinforced public static Block reinforcedIronTrapdoor;
 	@Reinforced @Tinted public static Block reinforcedMetals;
 	@Reinforced @Tinted public static Block reinforcedMossyCobblestone;
 	@Reinforced @Tinted public static Block reinforcedNetherBrick;

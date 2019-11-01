@@ -1,8 +1,9 @@
---------------------------Changelog for v1.8.12.3.2 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
 
+- Change: Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
 - Fix: Username Logger crash involving armor stands
 
---------------------------Changelog for v1.8.12.3.1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 
 - Fix: Disguising a Keypad does not synchronize to other players
 - Fix: Sentry animation is not synchronized between players

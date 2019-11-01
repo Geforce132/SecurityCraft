@@ -77,7 +77,6 @@ public class SCContent
 	@RegisterItemBlock public static Block inventoryScanner;
 	public static Block inventoryScannerField;
 	@Ownable @RegisterItemBlock(SCItemGroup.DECORATION) public static Block ironFence;
-	@Ownable @RegisterItemBlock(SCItemGroup.DECORATION) public static Block ironTrapdoor;
 	@RegisterItemBlock public static Block keycardReader;
 	@RegisterItemBlock public static Block keypad;
 	public static Block keypadChest;
@@ -366,6 +365,7 @@ public class SCContent
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzPillar;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzSlab;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzStairs;
+	@Ownable @Reinforced(hasTint=false) public static Block reinforcedIronTrapdoor;
 	@Reinforced(hasPage=true) public static Block reinforcedStonePressurePlate;
 
 	//Fluids

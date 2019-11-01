@@ -1,4 +1,7 @@
-package net.geforcemods.securitycraft.blocks;
+package net.geforcemods.securitycraft.blocks.reinforced;
+
+import java.util.Arrays;
+import java.util.List;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -9,15 +12,16 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider {
+public class BlockReinforcedIronTrapDoor extends BlockTrapDoor implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockIronTrapDoor(Material material) {
+	public BlockReinforcedIronTrapDoor(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
 	}
@@ -58,5 +62,17 @@ public class BlockIronTrapDoor extends BlockTrapDoor implements ITileEntityProvi
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
+	}
+
+	@Override
+	public List<Block> getVanillaBlocks()
+	{
+		return Arrays.asList(Blocks.IRON_TRAPDOOR);
+	}
+
+	@Override
+	public int getAmount()
+	{
+		return 1;
 	}
 }
