@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:stairs",
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:crystal_quartz"
+    }
+  },
+  "result": {
+    "item": "securitycraft:crystal_quartz_stairs",
+    "count": 4
+  }
+}

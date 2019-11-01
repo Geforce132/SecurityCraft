@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:universal_block_reinforcer",
+  "pattern": [
+    " DG",
+    "RLD",
+    "SR "
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_black_stained_glass"
+    },
+    "D": {
+      "tag": "forge:storage_blocks/diamond"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "L": {
+      "item": "securitycraft:laser_block"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "securitycraft:universal_block_reinforcer_lvl2"
+  }
+}

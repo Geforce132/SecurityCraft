@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RDR",
+    "IPI",
+    "BBB"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "P": {
+      "item": "securitycraft:portable_radar"
+    },
+    "B": {
+      "item": "securitycraft:reinforced_iron_block"
+    }
+  },
+  "result": {
+    "item": "securitycraft:sentry"
+  }
+}

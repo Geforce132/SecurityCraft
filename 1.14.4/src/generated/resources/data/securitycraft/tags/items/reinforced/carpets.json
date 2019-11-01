@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_white_carpet",
+    "securitycraft:reinforced_orange_carpet",
+    "securitycraft:reinforced_magenta_carpet",
+    "securitycraft:reinforced_light_blue_carpet",
+    "securitycraft:reinforced_yellow_carpet",
+    "securitycraft:reinforced_lime_carpet",
+    "securitycraft:reinforced_pink_carpet",
+    "securitycraft:reinforced_gray_carpet",
+    "securitycraft:reinforced_light_gray_carpet",
+    "securitycraft:reinforced_cyan_carpet",
+    "securitycraft:reinforced_purple_carpet",
+    "securitycraft:reinforced_blue_carpet",
+    "securitycraft:reinforced_brown_carpet",
+    "securitycraft:reinforced_green_carpet",
+    "securitycraft:reinforced_red_carpet",
+    "securitycraft:reinforced_black_carpet"
+  ]
+}

@@ -608,9 +608,9 @@
     "tooltip.securitycraft:module.itemAddons.added": "Hinzugefügt",
     "tooltip.securitycraft:keycard.uses": "Verbleibende Benutzungen:",
 
-    "itemGroup.tabSecurityCraft.decoration": "SecurityCraft: Dekoration",
-    "itemGroup.tabSecurityCraft.explosives": "SecurityCraft: Sprengstoffe",
-    "itemGroup.tabSecurityCraft.technical": "SecurityCraft: Technisch",
+    "itemGroup.securitycraft.decoration": "SecurityCraft: Dekoration",
+    "itemGroup.securitycraft.explosives": "SecurityCraft: Sprengstoffe",
+    "itemGroup.securitycraft.technical": "SecurityCraft: Technisch",
 
     "module.securitycraft.ims.whitelist_module.description": "Ein Whitelist Modul in einem I.M.S. erlaubt gewhitelistete Spieler sich innerhalb des Angriffsradius der Mine zu bewegen ohne angegriffen zu werden.",
     "module.securitycraft.inventory_scanner.whitelist_module.description": "Ein Whitelist Modul in einem Inventar Scanner erlaubt gewhitelistete Spieler durch das Feld zu gehen ohne deren Inventar überprüft zu bekommen.",

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:scanner_door_item"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_door": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:door_indestructible_iron_item"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:scanner_door_item"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_door",
+      "has_the_recipe"
+    ]
+  ]
+}

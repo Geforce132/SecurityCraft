@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_birch_log",
+    "securitycraft:reinforced_birch_wood",
+    "securitycraft:reinforced_stripped_birch_log",
+    "securitycraft:reinforced_stripped_birch_wood"
+  ]
+}

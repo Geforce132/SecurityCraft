@@ -1,0 +1,32 @@
+{
+  "replace": false,
+  "values": [
+    "#securitycraft:reinforced/wooden_stairs",
+    "securitycraft:reinforced_purpur_stairs",
+    "securitycraft:reinforced_cobblestone_stairs",
+    "securitycraft:reinforced_brick_stairs",
+    "securitycraft:reinforced_stone_brick_stairs",
+    "securitycraft:reinforced_nether_brick_stairs",
+    "securitycraft:reinforced_sandstone_stairs",
+    "securitycraft:reinforced_quartz_stairs",
+    "securitycraft:reinforced_prismarine_stairs",
+    "securitycraft:reinforced_prismarine_brick_stairs",
+    "securitycraft:reinforced_dark_prismarine_stairs",
+    "securitycraft:reinforced_red_sandstone_stairs",
+    "securitycraft:reinforced_polished_granite_stairs",
+    "securitycraft:reinforced_smooth_red_sandstone_stairs",
+    "securitycraft:reinforced_mossy_stone_brick_stairs",
+    "securitycraft:reinforced_polished_diorite_stairs",
+    "securitycraft:reinforced_mossy_cobblestone_stairs",
+    "securitycraft:reinforced_end_stone_brick_stairs",
+    "securitycraft:reinforced_stone_stairs",
+    "securitycraft:reinforced_smooth_sandstone_stairs",
+    "securitycraft:reinforced_smooth_quartz_stairs",
+    "securitycraft:reinforced_granite_stairs",
+    "securitycraft:reinforced_andesite_stairs",
+    "securitycraft:reinforced_red_nether_brick_stairs",
+    "securitycraft:reinforced_polished_andesite_stairs",
+    "securitycraft:reinforced_diorite_stairs",
+    "securitycraft:reinforced_crystal_quartz_stairs"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:universal_block_reinforcer",
+  "pattern": [
+    " EG",
+    "RNE",
+    "SR "
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_pink_stained_glass"
+    },
+    "E": {
+      "tag": "forge:storage_blocks/emerald"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "N": {
+      "tag": "forge:nether_stars"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "securitycraft:universal_block_reinforcer_lvl3"
+  }
+}

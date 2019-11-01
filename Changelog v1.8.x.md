@@ -1,7 +1,16 @@
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
 
+- New: Reinforced Glass Panes can now be crafted using six Reinforced Glass
+- New: Reinforced Stained Glass Panes can now be crafted by surrounding a dye with eight Reinforced Glass Panes
+- New: All Reinforced Terracotta blocks can now be crafted analogous to their vanilla counterparts
+- New: [1.14.4] Block/Item Tags
+- New: [1.14.4] Recipes now use block/item tags wherever possible
 - Change: Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
+- Change: Frame recipe is slightly different, ingredients stay the same
+- Change: The Sentry now uses Reinforced Iron Blocks in its recipe
 - Fix: Username Logger crash involving armor stands
+- Fix: [1.14.4] Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
+- Fix: [1.14.4] Fake Liquid Buckets can't be crafted using level two potions
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 

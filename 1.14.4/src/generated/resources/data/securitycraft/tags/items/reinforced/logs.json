@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#securitycraft:reinforced/acacia_logs",
+    "#securitycraft:reinforced/birch_logs",
+    "#securitycraft:reinforced/dark_oak_logs",
+    "#securitycraft:reinforced/jungle_logs",
+    "#securitycraft:reinforced/oak_logs",
+    "#securitycraft:reinforced/spruce_logs"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_diorite"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_polished_diorite",
+    "count": 4
+  }
+}

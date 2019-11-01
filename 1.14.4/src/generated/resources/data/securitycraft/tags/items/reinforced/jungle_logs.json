@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_jungle_log",
+    "securitycraft:reinforced_jungle_wood",
+    "securitycraft:reinforced_stripped_jungle_log",
+    "securitycraft:reinforced_stripped_jungle_wood"
+  ]
+}

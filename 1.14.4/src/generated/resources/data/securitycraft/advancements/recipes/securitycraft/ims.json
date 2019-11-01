@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:ims"
+    ]
+  },
+  "criteria": {
+    "has_portable_radar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:portable_radar"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:ims"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_portable_radar",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_oak_stairs",
+    "securitycraft:reinforced_spruce_stairs",
+    "securitycraft:reinforced_birch_stairs",
+    "securitycraft:reinforced_jungle_stairs",
+    "securitycraft:reinforced_acacia_stairs",
+    "securitycraft:reinforced_dark_oak_stairs"
+  ]
+}

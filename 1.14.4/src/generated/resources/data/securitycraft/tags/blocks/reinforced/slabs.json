@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "#securitycraft:reinforced/wooden_slabs",
+    "securitycraft:reinforced_normal_stone_slab",
+    "securitycraft:reinforced_stone_slab",
+    "securitycraft:reinforced_sandstone_slab",
+    "securitycraft:reinforced_cobblestone_slab",
+    "securitycraft:reinforced_brick_slab",
+    "securitycraft:reinforced_stone_brick_slab",
+    "securitycraft:reinforced_nether_brick_slab",
+    "securitycraft:reinforced_quartz_slab",
+    "securitycraft:reinforced_red_sandstone_slab",
+    "securitycraft:reinforced_purpur_slab",
+    "securitycraft:reinforced_prismarine_slab",
+    "securitycraft:reinforced_prismarine_brick_slab",
+    "securitycraft:reinforced_dark_prismarine_slab",
+    "securitycraft:reinforced_polished_granite_slab",
+    "securitycraft:reinforced_smooth_red_sandstone_slab",
+    "securitycraft:reinforced_mossy_stone_brick_slab",
+    "securitycraft:reinforced_polished_diorite_slab",
+    "securitycraft:reinforced_mossy_cobblestone_slab",
+    "securitycraft:reinforced_end_stone_brick_slab",
+    "securitycraft:reinforced_smooth_sandstone_slab",
+    "securitycraft:reinforced_smooth_quartz_slab",
+    "securitycraft:reinforced_granite_slab",
+    "securitycraft:reinforced_andesite_slab",
+    "securitycraft:reinforced_red_nether_brick_slab",
+    "securitycraft:reinforced_polished_andesite_slab",
+    "securitycraft:reinforced_diorite_slab",
+    "securitycraft:reinforced_crystal_quartz_slab"
+  ]
+}

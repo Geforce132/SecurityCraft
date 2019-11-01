@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "G": {
+      "tag": "forge:fence_gates/wooden"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_fence_gate"
+  }
+}

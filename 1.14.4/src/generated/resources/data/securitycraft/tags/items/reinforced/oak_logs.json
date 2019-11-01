@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_oak_log",
+    "securitycraft:reinforced_oak_wood",
+    "securitycraft:reinforced_stripped_oak_log",
+    "securitycraft:reinforced_stripped_oak_wood"
+  ]
+}

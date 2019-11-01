@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_stone_bricks",
+    "securitycraft:reinforced_mossy_stone_bricks",
+    "securitycraft:reinforced_cracked_stone_bricks",
+    "securitycraft:reinforced_chiseled_stone_bricks"
+  ]
+}

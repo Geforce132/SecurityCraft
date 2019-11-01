@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:slabs",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_granite"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_granite_slab",
+    "count": 6
+  }
+}

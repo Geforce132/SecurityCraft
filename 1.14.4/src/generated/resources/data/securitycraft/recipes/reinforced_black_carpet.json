@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:reinforced_carpets",
+  "pattern": [
+    "WW"
+  ],
+  "key": {
+    "W": {
+      "item": "securitycraft:reinforced_black_wool"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_black_carpet",
+    "count": 3
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:reinforced_glass",
+  "pattern": [
+    "GGG",
+    "GDG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_glass"
+    },
+    "D": {
+      "tag": "forge:dyes/brown"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_brown_stained_glass",
+    "count": 8
+  }
+}

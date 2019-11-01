@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HSH",
+    "SBS",
+    "RGR"
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "S": {
+      "tag": "forge:string"
+    },
+    "B": {
+      "item": "securitycraft:bouncing_betty"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "G": {
+      "tag": "forge:gunpowder"
+    }
+  },
+  "result": {
+    "item": "securitycraft:claymore"
+  }
+}

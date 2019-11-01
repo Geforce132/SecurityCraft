@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:reinforced_glass_panes",
+  "pattern": [
+    "GGG",
+    "GGG"
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_purple_stained_glass"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_purple_stained_glass_pane",
+    "count": 16
+  }
+}

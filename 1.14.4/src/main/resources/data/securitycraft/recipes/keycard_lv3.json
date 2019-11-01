@@ -12,10 +12,10 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "B": {
-      "item": "minecraft:nether_brick"
+      "tag": "forge:ingots/nether_brick"
     }
   },
   "result": {

@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_white_wool",
+    "securitycraft:reinforced_orange_wool",
+    "securitycraft:reinforced_magenta_wool",
+    "securitycraft:reinforced_light_blue_wool",
+    "securitycraft:reinforced_yellow_wool",
+    "securitycraft:reinforced_lime_wool",
+    "securitycraft:reinforced_pink_wool",
+    "securitycraft:reinforced_gray_wool",
+    "securitycraft:reinforced_light_gray_wool",
+    "securitycraft:reinforced_cyan_wool",
+    "securitycraft:reinforced_purple_wool",
+    "securitycraft:reinforced_blue_wool",
+    "securitycraft:reinforced_brown_wool",
+    "securitycraft:reinforced_green_wool",
+    "securitycraft:reinforced_red_wool",
+    "securitycraft:reinforced_black_wool"
+  ]
+}

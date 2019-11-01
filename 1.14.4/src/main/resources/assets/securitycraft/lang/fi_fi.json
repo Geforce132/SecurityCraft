@@ -518,9 +518,9 @@
     "tooltip.securitycraft:module.itemAddons.added": "Added",
     "tooltip.securitycraft:keycard.uses": "Uses remaining:",
 
-    "itemGroup.tabSecurityCraft.decoration": "SecurityCraft: Decoration",
-    "itemGroup.tabSecurityCraft.explosives": "SecurityCraft: Explosives",
-    "itemGroup.tabSecurityCraft.technical": "SecurityCraft: Technical",
+    "itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
+    "itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",
+    "itemGroup.securitycraft.technical": "SecurityCraft: Technical",
 
     "module.securitycraft.ims.whitelist_module.description": "Adding a whitelist module to an I.M.S. will allow the whitelisted players to walk into the range of the I.M.S without being targeted.",
     "module.securitycraft.inventory_scanner.whitelist_module.description": "Adding a whitelist module to an inventory scanner will allow whitelisted players to walk through the scanning field without checking their inventory.",

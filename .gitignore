@@ -11,3 +11,4 @@
 */run/
 *.cfg
 *.log
+.cache

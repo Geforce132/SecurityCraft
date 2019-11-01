@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:keypad_item"
+    ]
+  },
+  "criteria": {
+    "has_stone_button": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:stone_button"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:keypad_item"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stone_button",
+      "has_the_recipe"
+    ]
+  ]
+}

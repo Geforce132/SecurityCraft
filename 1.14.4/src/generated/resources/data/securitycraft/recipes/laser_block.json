@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SRS",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:stone"
+    },
+    "R": {
+      "tag": "forge:storage_blocks/redstone"
+    },
+    "G": {
+      "tag": "forge:glass_panes/colorless"
+    }
+  },
+  "result": {
+    "item": "securitycraft:laser_block"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:slabs",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_dark_prismarine"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_dark_prismarine_slab",
+    "count": 6
+  }
+}

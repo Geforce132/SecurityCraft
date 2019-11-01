@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IFI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "F": {
+      "tag": "minecraft:wooden_fences"
+    }
+  },
+  "result": {
+    "item": "securitycraft:electrified_iron_fence"
+  }
+}

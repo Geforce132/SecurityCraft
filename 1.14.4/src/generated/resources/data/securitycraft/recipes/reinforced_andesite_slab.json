@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:slabs",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_andesite"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_andesite_slab",
+    "count": 6
+  }
+}

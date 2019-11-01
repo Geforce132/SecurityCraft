@@ -609,9 +609,9 @@
     "tooltip.securitycraft:module.itemAddons.added": "Aggiunti",
     "tooltip.securitycraft:keycard.uses": "Utilizzi rimanenti:",
 
-    "itemGroup.tabSecurityCraft.decoration": "SecurityCraft: Blocchi decorativi",
-    "itemGroup.tabSecurityCraft.explosives": "SecurityCraft: Esplosivi",
-    "itemGroup.tabSecurityCraft.technical": "SecurityCraft: Tecnico",
+    "itemGroup.securitycraft.decoration": "SecurityCraft: Blocchi decorativi",
+    "itemGroup.securitycraft.explosives": "SecurityCraft: Esplosivi",
+    "itemGroup.securitycraft.technical": "SecurityCraft: Tecnico",
 
     "module.securitycraft.ims.whitelist_module.description": "Aggiungere un modulo lista bianca ad uno S.M.I. permette ai giocatori in lista bianca di camminare nel range dello S.M.I. senza essere bersagliati.",
     "module.securitycraft.inventory_scanner.whitelist_module.description": "Aggiungere un modulo lista bianca ad uno scanner dell'inventario permette i giocatori in lista bianca di passare attraverso lo scanner senza controllare il suo inventario.",

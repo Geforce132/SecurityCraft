@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B",
+    "B"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:crystal_quartz_slab"
+    }
+  },
+  "result": {
+    "item": "securitycraft:chiseled_crystal_quartz"
+  }
+}

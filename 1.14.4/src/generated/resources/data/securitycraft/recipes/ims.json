@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BPB",
+    " I ",
+    "B B"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:bouncing_betty"
+    },
+    "P": {
+      "item": "securitycraft:portable_radar"
+    },
+    "I": {
+      "tag": "forge:storage_blocks/iron"
+    }
+  },
+  "result": {
+    "item": "securitycraft:ims"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_oak_slab",
+    "securitycraft:reinforced_spruce_slab",
+    "securitycraft:reinforced_birch_slab",
+    "securitycraft:reinforced_jungle_slab",
+    "securitycraft:reinforced_acacia_slab",
+    "securitycraft:reinforced_dark_oak_slab"
+  ]
+}

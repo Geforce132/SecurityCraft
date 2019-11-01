@@ -12,10 +12,10 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "B": {
-      "item": "minecraft:magenta_dye"
+      "tag": "forge:dyes/magenta"
     }
   },
   "result": {

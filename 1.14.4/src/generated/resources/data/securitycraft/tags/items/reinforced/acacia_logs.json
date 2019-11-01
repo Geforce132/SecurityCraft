@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_acacia_log",
+    "securitycraft:reinforced_acacia_wood",
+    "securitycraft:reinforced_stripped_acacia_log",
+    "securitycraft:reinforced_stripped_acacia_wood"
+  ]
+}

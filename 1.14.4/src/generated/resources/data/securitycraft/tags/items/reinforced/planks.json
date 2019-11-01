@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_acacia_planks",
+    "securitycraft:reinforced_birch_planks",
+    "securitycraft:reinforced_dark_oak_planks",
+    "securitycraft:reinforced_jungle_planks",
+    "securitycraft:reinforced_oak_planks",
+    "securitycraft:reinforced_spruce_planks"
+  ]
+}

@@ -197,7 +197,7 @@ public class SCContent
 	@Ownable @Reinforced public static Block reinforcedPurpurSlab;
 	@Ownable @Reinforced public static Block reinforcedPrismarineSlab;
 	@Ownable @Reinforced public static Block reinforcedPrismarineBrickSlab;
-	@Ownable @Reinforced public static Block reinforcedDarkPrismarineSlab;;
+	@Ownable @Reinforced public static Block reinforcedDarkPrismarineSlab;
 	@Ownable @Reinforced public static Block reinforcedSmoothQuartz;
 	@Ownable @Reinforced public static Block reinforcedSmoothRedSandstone;
 	@Ownable @Reinforced public static Block reinforcedSmoothSandstone;
