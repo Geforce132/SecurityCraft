@@ -1,7 +1,0 @@
-{
-    "parent": "block/door_top",
-    "textures": {
-        "bottom": "securitycraft:blocks/reinforcedDoorLower",
-        "top": "securitycraft:blocks/reinforcedDoorUpper"
-    }
-}

@@ -1,8 +1,0 @@
-{
-	"parent": "securitycraft:block/reinforcedHalfSlab",
-    "textures": {
-        "bottom": "blocks/cobblestone",
-        "top": "blocks/cobblestone",
-        "side": "blocks/cobblestone"
-    }
-}

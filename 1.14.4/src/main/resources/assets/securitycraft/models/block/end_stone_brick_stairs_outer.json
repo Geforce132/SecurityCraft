@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_stairs_outer",
-    "textures": {
-        "bottom": "securitycraft:block/reinforced_end_stone_bricks",
-        "top": "securitycraft:block/reinforced_end_stone_bricks",
-        "side": "securitycraft:block/reinforced_end_stone_bricks"
-    }
-}

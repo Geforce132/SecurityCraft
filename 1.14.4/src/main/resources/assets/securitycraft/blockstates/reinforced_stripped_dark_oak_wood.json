@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "axis=y": { "model": "securitycraft:block/reinforced_stripped_dark_oak_wood" },
-        "axis=z": { "model": "securitycraft:block/reinforced_stripped_dark_oak_wood", "x": 90 },
-        "axis=x": { "model": "securitycraft:block/reinforced_stripped_dark_oak_wood", "x": 90, "y": 90 }
-    }
-}

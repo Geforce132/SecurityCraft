@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "securitycraft:keypadFrame" },
-        "facing=south": { "model": "securitycraft:keypadFrame", "y": 180 },
-        "facing=west":  { "model": "securitycraft:keypadFrame", "y": 270 },
-        "facing=east":  { "model": "securitycraft:keypadFrame", "y": 90 }
-    }
-}
