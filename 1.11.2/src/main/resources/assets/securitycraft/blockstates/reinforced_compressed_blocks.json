@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "variant=lapis":  { "model": "securitycraft:reinforced_compressed_blocks_lapis" },
-        "variant=coal": { "model": "securitycraft:reinforced_compressed_blocks_coal" }
-    }
-}

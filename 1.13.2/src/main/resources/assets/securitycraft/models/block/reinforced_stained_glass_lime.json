@@ -1,6 +1,0 @@
-{
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "securitycraft:block/glass_reinforced_lime"
-    }
-}

@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "deactivated=false": { "model": "securitycraft:bouncingBettyActive" },
-        "deactivated=true": { "model": "securitycraft:bouncingBettyDefused" }
-    }
-}

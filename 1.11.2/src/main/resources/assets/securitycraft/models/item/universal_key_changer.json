@@ -1,6 +1,0 @@
-{
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "securitycraft:items/universal_key_changer"
-    }
-}
