@@ -103,6 +103,7 @@ public class RecipeGenerator extends RecipeProvider
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.fLavaBucket)
+		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
 		.key('P', new NBTIngredient(healingStack))
@@ -110,6 +111,7 @@ public class RecipeGenerator extends RecipeProvider
 		.addCriterion("has_lava_bucket", hasItem(Items.LAVA_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_normal"));
 		ShapedRecipeBuilder.shapedRecipe(SCContent.fLavaBucket)
+		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
 		.key('P', new NBTIngredient(strongHealingStack))
@@ -117,6 +119,7 @@ public class RecipeGenerator extends RecipeProvider
 		.addCriterion("has_lava_bucket", hasItem(Items.LAVA_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_strong"));
 		ShapedRecipeBuilder.shapedRecipe(SCContent.fWaterBucket)
+		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
 		.key('P', new NBTIngredient(harmingStack))
@@ -124,6 +127,7 @@ public class RecipeGenerator extends RecipeProvider
 		.addCriterion("has_water_bucket", hasItem(Items.WATER_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_normal"));
 		ShapedRecipeBuilder.shapedRecipe(SCContent.fWaterBucket)
+		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
 		.key('P', new NBTIngredient(strongHarmingStack))
