@@ -1,7 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_column",
-    "textures": {
-        "end": "block/quartz_pillar_top",
-        "side": "block/quartz_pillar"
-    }
-}

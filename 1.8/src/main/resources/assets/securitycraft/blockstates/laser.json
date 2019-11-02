@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "boundtype=1": { "model": "securitycraft:laserUp"},
-        "boundtype=2": { "model": "securitycraft:laserSideways", "y": 90},
-        "boundtype=3": { "model": "securitycraft:laserSideways"}
-    }
-}

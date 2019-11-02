@@ -1,8 +1,0 @@
-{
-    "alarm": {"category": "block","sounds":["misc/alarm"]},
-    "cameraZoomIn": {"category": "block","sounds":["misc/cameraZoomIn"]},
-    "cameraSnap": {"category": "block","sounds":["misc/cameraSnap"]},
-    "taserFire": {"category": "block","sounds":["misc/taserFire"]},
-    "electrified": {"category": "player","sounds":["misc/electrified"]},
-    "lock": {"category": "block","sounds":["misc/lock"]}
-}

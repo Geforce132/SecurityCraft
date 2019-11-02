@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "axis=y":  { "model": "securitycraft:block/reinforced_logs_jungle" },
-        "axis=z":   { "model": "securitycraft:block/reinforced_logs_jungle_side" },
-        "axis=x":   { "model": "securitycraft:block/reinforced_logs_jungle_side", "y": 90 }
-    }
-}
