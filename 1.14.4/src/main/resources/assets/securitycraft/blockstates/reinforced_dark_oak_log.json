@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "axis=y":  { "model": "securitycraft:block/reinforced_logs2_big_oak" },
-        "axis=z":   { "model": "securitycraft:block/reinforced_logs2_big_oak_side" },
-        "axis=x":   { "model": "securitycraft:block/reinforced_logs2_big_oak_side", "y": 90 }
-    }
-}

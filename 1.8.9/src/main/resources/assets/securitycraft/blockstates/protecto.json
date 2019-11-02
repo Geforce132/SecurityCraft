@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "activated=false": { "model": "securitycraft:protectoDeactivated"},
-        "activated=true": { "model": "securitycraft:protectoActive"}
-    }
-}

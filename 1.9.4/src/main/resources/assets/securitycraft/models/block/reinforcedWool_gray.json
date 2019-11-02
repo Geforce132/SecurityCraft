@@ -1,6 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforcedBlock_all",
-    "textures": {
-        "all": "blocks/wool_colored_gray"
-    }
-}

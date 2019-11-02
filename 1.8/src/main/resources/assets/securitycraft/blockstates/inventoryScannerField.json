@@ -1,9 +1,0 @@
-{
-    "variants": {
-    	"inventory": { "model": "securitycraft:inventoryScannerField" },
-        "facing=north": { "model": "securitycraft:inventoryScannerField", "y": 90 },
-        "facing=south": { "model": "securitycraft:inventoryScannerField", "y": 90 },
-        "facing=west":  { "model": "securitycraft:inventoryScannerField" },
-        "facing=east":  { "model": "securitycraft:inventoryScannerField" }
-    }
-}

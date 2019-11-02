@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "type=top": { "model": "securitycraft:block/reinforced_top_slab_brick" },
-        "type=bottom": { "model": "securitycraft:block/reinforced_half_slab_brick" },
-        "type=double": { "model": "securitycraft:block/reinforced_brick" }
-    }
-}

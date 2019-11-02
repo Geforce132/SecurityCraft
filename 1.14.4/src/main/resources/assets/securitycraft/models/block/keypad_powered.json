@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/orientable_tinted",
-    "textures": {
-        "top": "block/iron_block",
-        "front": "securitycraft:block/keypad_active",
-        "side": "block/iron_block"
-    }
-}
