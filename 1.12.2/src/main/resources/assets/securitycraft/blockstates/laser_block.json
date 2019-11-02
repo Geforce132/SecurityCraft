@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "powered=false": { "model": "securitycraft:laser_block" },
-        "powered=true": { "model": "securitycraft:laser_block"}
-    }
-}

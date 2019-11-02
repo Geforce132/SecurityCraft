@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforcedStairs_outer",
-    "textures": {
-        "bottom": "blocks/planks_acacia",
-        "top": "blocks/planks_acacia",
-        "side": "blocks/planks_acacia"
-    }
-}

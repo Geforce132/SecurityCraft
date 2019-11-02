@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "inventory": { "model": "cube" },
-        "deactivated=false": { "model": "securitycraft:mine" },
-        "deactivated=true": { "model": "securitycraft:mineCut" }
-    }
-}

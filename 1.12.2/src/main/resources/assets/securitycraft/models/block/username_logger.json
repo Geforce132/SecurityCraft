@@ -1,8 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "top": "securitycraft:blocks/username_logger_top",
-        "front": "securitycraft:blocks/username_logger_front",
-        "side": "securitycraft:blocks/username_logger_side"
-    }
-}
