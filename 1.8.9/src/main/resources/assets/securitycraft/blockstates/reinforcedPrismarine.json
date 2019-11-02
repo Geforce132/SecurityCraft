@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "variant=prismarine":  { "model": "securitycraft:reinforcedPrismarine_default" },
-        "variant=prismarine_bricks": { "model": "securitycraft:reinforcedPrismarine_bricks" },
-        "variant=dark_prismarine":  { "model": "securitycraft:reinforcedPrismarine_dark" }
-    }
-}
