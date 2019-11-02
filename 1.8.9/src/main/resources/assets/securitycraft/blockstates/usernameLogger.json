@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "securitycraft:usernameLogger" },
-        "facing=south": { "model": "securitycraft:usernameLogger", "y": 180 },
-        "facing=west":  { "model": "securitycraft:usernameLogger", "y": 270 },
-        "facing=east":  { "model": "securitycraft:usernameLogger", "y": 90 }
-    }
-}

@@ -1,6 +1,0 @@
-{
-    "variants": {
-        "enabled=false": { "model": "securitycraft:block/protecto_deactivated"},
-        "enabled=true": { "model": "securitycraft:block/protecto_active"}
-    }
-}
