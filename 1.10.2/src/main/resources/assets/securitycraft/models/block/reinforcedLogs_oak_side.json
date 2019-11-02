@@ -1,7 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforcedColumn_side",
-    "textures": {
-        "end": "blocks/log_oak_top",
-        "side": "blocks/log_oak"
-    }
-}
