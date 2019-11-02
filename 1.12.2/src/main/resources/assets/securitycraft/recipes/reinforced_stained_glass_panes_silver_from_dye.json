@@ -3,17 +3,21 @@
   "group": "reinforced_glass_panes",
   "pattern": [
     "GGG",
+    "GDG",
     "GGG"
   ],
   "key": {
     "G": {
-      "item": "securitycraft:reinforced_stained_glass",
-      "data": 9
+      "item": "securitycraft:reinforced_glass_pane"
+    },
+    "D": {
+      "item": "minecraft:dye",
+	  "data": 7
     }
   },
   "result": {
     "item": "securitycraft:reinforced_stained_panes",
-    "data": 9,
-    "count": 16
+    "data": 8,
+    "count": 8
   }
 }

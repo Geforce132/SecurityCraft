@@ -19,7 +19,8 @@
       "item": "securitycraft:portable_radar"
     },
     "B": {
-      "item": "minecraft:iron_block"
+      "item": "securitycraft:reinforced_metals",
+      "data": 1
     }
   },
   "result": {

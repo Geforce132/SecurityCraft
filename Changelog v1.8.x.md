@@ -5,12 +5,13 @@
 - New: All Reinforced Terracotta blocks can now be crafted analogous to their vanilla counterparts
 - New: [1.14.4] Block/Item Tags
 - New: [1.14.4] Recipes now use block/item tags wherever possible
-- Change: Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
-- Change: Frame recipe is slightly different, ingredients stay the same
-- Change: The Sentry now uses Reinforced Iron Blocks in its recipe
+- Change: The Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
+- Change: The Frame recipe is slightly different, ingredients stay the same
+- Change: The Sentry now uses Reinforced Blocks of Iron in its recipe
 - Fix: Username Logger crash involving armor stands
+- Fix: Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
+- Fix: [1.12.2] Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes now yields 16 glass panes instead of 8
 - Fix: [1.14.4] Incorrect Taser is showing up in the creative tab
-- Fix: [1.14.4] Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
 - Fix: [1.14.4] Fake Liquid Buckets can't be crafted using level two potions
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
