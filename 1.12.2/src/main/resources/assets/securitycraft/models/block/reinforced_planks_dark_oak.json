@@ -1,6 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_block_all",
-    "textures": {
-        "all": "blocks/planks_big_oak"
-    }
-}

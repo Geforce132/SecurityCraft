@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_stairs_outer",
-    "textures": {
-        "bottom": "block/nether_bricks",
-        "top": "block/nether_bricks",
-        "side": "block/nether_bricks"
-    }
-}

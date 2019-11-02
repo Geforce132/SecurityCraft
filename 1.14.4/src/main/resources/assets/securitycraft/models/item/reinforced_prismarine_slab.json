@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_half_slab",
-    "textures": {
-        "bottom": "block/prismarine",
-        "top": "block/prismarine",
-        "side": "block/prismarine"
-    }
-}
