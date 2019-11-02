@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_lu_keycard"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "group": "securitycraft:keycards",
+        "pattern": [
+          "III",
+          "SSS"
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/iron"
+          },
+          "S": {
+            "tag": "forge:gems/lapis"
+          }
+        },
+        "result": {
+          "item": "securitycraft:limited_use_keycard"
+        }
+      }
+    }
+  ]
+}

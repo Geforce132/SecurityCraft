@@ -1,10 +1,21 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Consumer;
+
+import com.google.common.collect.Maps;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard1Condition;
+import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard2Condition;
+import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard3Condition;
+import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard4Condition;
+import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard5Condition;
+import net.geforcemods.securitycraft.misc.conditions.ToggleLimitedUseKeycardCondition;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
@@ -23,10 +34,10 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.IngredientNBT;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 
-//TODO: keycard 1-5 recipes once conditions can be added via the builder
-//TODO: limited use keycard recipe once conditions can be added via the builder
 public class RecipeGenerator extends RecipeProvider
 {
 	public RecipeGenerator(DataGenerator generator)
@@ -543,6 +554,12 @@ public class RecipeGenerator extends RecipeProvider
 		addCarpetRecipe(consumer, SCContent.reinforcedRedWool, SCContent.reinforcedRedCarpet);
 		addCarpetRecipe(consumer, SCContent.reinforcedWhiteWool, SCContent.reinforcedWhiteCarpet);
 		addCarpetRecipe(consumer, SCContent.reinforcedYellowWool, SCContent.reinforcedYellowCarpet);
+		addKeycardRecipe(consumer, Tags.Items.INGOTS_GOLD, SCContent.keycardLvl1, ToggleKeycard1Condition.INSTANCE);
+		addKeycardRecipe(consumer, Tags.Items.INGOTS_BRICK, SCContent.keycardLvl2, ToggleKeycard2Condition.INSTANCE);
+		addKeycardRecipe(consumer, Tags.Items.INGOTS_NETHER_BRICK, SCContent.keycardLvl3, ToggleKeycard3Condition.INSTANCE);
+		addKeycardRecipe(consumer, Tags.Items.DYES_MAGENTA, SCContent.keycardLvl4, ToggleKeycard4Condition.INSTANCE);
+		addKeycardRecipe(consumer, Tags.Items.DYES_PURPLE, SCContent.keycardLvl5, ToggleKeycard5Condition.INSTANCE);
+		addKeycardRecipe(consumer, Tags.Items.GEMS_LAPIS, SCContent.limitedUseKeycard, ToggleLimitedUseKeycardCondition.INSTANCE);
 		addModuleRecipe(consumer, Items.INK_SAC, SCContent.blacklistModule);
 		addModuleRecipe(consumer, Items.PAINTING, SCContent.disguiseModule);
 		addModuleRecipe(consumer, Tags.Items.ARROWS, SCContent.harmingModule);
@@ -729,6 +746,23 @@ public class RecipeGenerator extends RecipeProvider
 		.key('W', wool)
 		.addCriterion("has_wool", hasItem(SCTags.Items.REINFORCED_WOOL))
 		.build(consumer);
+	}
+
+	protected void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
+	{
+		ShapedRecipeBuilder.Result recipe;
+		Map<Character, Ingredient> key = Maps.newLinkedHashMap();
+		Item resultItem = result.asItem();
+		ResourceLocation id = resultItem.getRegistryName();
+
+		key.put('I', Ingredient.fromTag(Tags.Items.INGOTS_IRON));
+		key.put('S', Ingredient.fromTag(specialIngredient));
+		recipe = new ShapedRecipeBuilder(Items.AIR, 0).new Result(id,
+				resultItem, 1, "securitycraft:keycards",
+				Arrays.asList(new String[] {"III", "SSS"}), key,
+				Advancement.Builder.builder().withCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON)),
+				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getGroup().getPath() + "/" + id.getPath()));
+		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 	}
 
 	protected void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result)

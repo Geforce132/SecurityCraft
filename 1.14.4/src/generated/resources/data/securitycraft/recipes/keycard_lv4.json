@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_keycard_4"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "group": "securitycraft:keycards",
+        "pattern": [
+          "III",
+          "SSS"
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/iron"
+          },
+          "S": {
+            "tag": "forge:dyes/magenta"
+          }
+        },
+        "result": {
+          "item": "securitycraft:keycard_lv4"
+        }
+      }
+    }
+  ]
+}
