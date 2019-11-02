@@ -1,6 +1,0 @@
-{
-    "parent": "block/trapdoor_top",
-    "textures": {
-        "texture": "securitycraft:blocks/reinforced_iron_trapdoor"
-    }
-}

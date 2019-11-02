@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_Stairs",
-    "textures": {
-        "bottom": "blocks/stone",
-        "top": "blocks/stone",
-        "side": "blocks/stone"
-    }
-}

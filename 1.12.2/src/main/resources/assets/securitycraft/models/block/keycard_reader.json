@@ -1,8 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "top": "blocks/furnace_top",
-        "front": "securitycraft:blocks/keycard_reader_front",
-        "side": "blocks/furnace_side"
-    }
-}

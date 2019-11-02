@@ -1,7 +1,0 @@
-{
-    "parent": "block/pane_ns",
-    "textures": {
-        "edge": "securitycraft:blocks/glass_reinforced_pane_top_green",
-        "pane": "securitycraft:blocks/glass_reinforced_green"
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforcedTopSlab",
-    "textures": {
-        "bottom": "blocks/dirt",
-        "top": "blocks/dirt",
-        "side": "blocks/dirt"
-    }
-}
