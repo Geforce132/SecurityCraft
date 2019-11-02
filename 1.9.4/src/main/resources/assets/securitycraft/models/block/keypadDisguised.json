@@ -1,8 +1,0 @@
-{
-    "parent": "block/orientable",
-    "textures": {
-        "top": "blocks/bookshelf",
-        "front": "blocks/bookshelf",
-        "side": "blocks/bookshelf"
-    }
-}
