@@ -86,8 +86,13 @@ public class BlockScannerDoor extends DoorBlock implements ITileEntityProvider
 			}
 
 			if(drop)
+			{
 				if(!world.isRemote)
-					world.destroyBlock(pos, true);
+				{
+					world.destroyBlock(pos, false);
+					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.scannerDoorItem));
+				}
+			}
 		}
 	}
 

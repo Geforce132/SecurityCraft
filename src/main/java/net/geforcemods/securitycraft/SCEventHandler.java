@@ -13,8 +13,10 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
@@ -35,7 +37,6 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.DoorBlock;
 import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -48,6 +49,7 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -383,19 +385,14 @@ public class SCEventHandler {
 							BlockUtils.destroyBlock(world, pos, false);
 
 						BlockUtils.destroyBlock(world, originalPos, false);
-					}else if(block instanceof DoorBlock){
+					}else{
 						BlockPos pos = event.getPos();
 
-						if(state.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+						if((block instanceof BlockReinforcedDoor || block instanceof BlockScannerDoor) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 							pos = pos.down();
 
 						world.destroyBlock(pos, true);
 						world.removeTileEntity(pos);
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
-
-					}else{
-						world.destroyBlock(event.getPos(), true);
-						world.removeTileEntity(event.getPos());
 						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
 					}
 

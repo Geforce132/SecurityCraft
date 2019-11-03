@@ -89,6 +89,11 @@ public class BlockReinforcedDoor extends Block implements ITileEntityProvider{
 	}
 
 	@Override
+	public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+		super.harvestBlock(worldIn, player, pos, Blocks.AIR.getDefaultState(), te, stack);
+	}
+
+	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
 		DoubleBlockHalf doubleblockhalf = state.get(HALF);
 		BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
@@ -246,8 +251,11 @@ public class BlockReinforcedDoor extends Block implements ITileEntityProvider{
 
 			if(drop)
 			{
-				if (!world.isRemote)
-					world.destroyBlock(pos, true);
+				if(!world.isRemote)
+				{
+					world.destroyBlock(pos, false);
+					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.reinforcedDoorItem));
+				}
 			}
 			else
 			{
