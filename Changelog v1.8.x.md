@@ -9,6 +9,7 @@
 - Fix: Username Logger crash involving armor stands
 - Fix: Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
 - Fix: Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes now yields 16 glass panes instead of 8
+- Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 
