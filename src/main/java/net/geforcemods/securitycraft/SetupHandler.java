@@ -75,6 +75,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
+import net.minecraft.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
@@ -397,7 +398,13 @@ public class SetupHandler
 		SCContent.reinforcedCrystalQuartzPillar = new BlockReinforcedRotatedPillarBlockPocket(Material.ROCK, SCContent.crystalQuartzPillar, "reinforced_crystal_quartz_pillar");
 		SCContent.reinforcedCrystalQuartzSlab = new BlockReinforcedSlab(SoundType.STONE, Material.ROCK, SCContent.crystalQuartzSlab, "reinforced_crystal_quartz_slab");
 		SCContent.reinforcedCrystalQuartzStairs = new BlockReinforcedStairs(SoundType.STONE, Material.ROCK, SCContent.stairsCrystalQuartz, "reinforced_crystal_quartz_stairs");
-		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_stone_pressure_plate"));
+		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate(Sensitivity.MOBS, BlockReinforcedPressurePlate.STONE_PROPERTIES, Blocks.STONE_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_stone_pressure_plate"));
+		SCContent.reinforcedOakPressurePlate = new BlockReinforcedPressurePlate(Sensitivity.EVERYTHING, BlockReinforcedPressurePlate.WOOD_PROPERTIES, Blocks.OAK_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_oak_pressure_plate"));
+		SCContent.reinforcedSprucePressurePlate = new BlockReinforcedPressurePlate(Sensitivity.EVERYTHING, BlockReinforcedPressurePlate.WOOD_PROPERTIES, Blocks.SPRUCE_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_spruce_pressure_plate"));
+		SCContent.reinforcedBirchPressurePlate = new BlockReinforcedPressurePlate(Sensitivity.EVERYTHING, BlockReinforcedPressurePlate.WOOD_PROPERTIES, Blocks.BIRCH_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_birch_pressure_plate"));
+		SCContent.reinforcedJunglePressurePlate = new BlockReinforcedPressurePlate(Sensitivity.EVERYTHING, BlockReinforcedPressurePlate.WOOD_PROPERTIES, Blocks.JUNGLE_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_jungle_pressure_plate"));
+		SCContent.reinforcedAcaciaPressurePlate = new BlockReinforcedPressurePlate(Sensitivity.EVERYTHING, BlockReinforcedPressurePlate.WOOD_PROPERTIES, Blocks.ACACIA_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_acacia_pressure_plate"));
+		SCContent.reinforcedDarkOakPressurePlate = new BlockReinforcedPressurePlate(Sensitivity.EVERYTHING, BlockReinforcedPressurePlate.WOOD_PROPERTIES, Blocks.DARK_OAK_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_dark_oak_pressure_plate"));
 	}
 
 	public static void setupMines()

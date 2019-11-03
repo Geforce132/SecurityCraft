@@ -298,6 +298,12 @@
 	"block.securitycraft.block_pocket_wall": "Block Pocket Wall",
 	"block.securitycraft.block_pocket_manager": "Block Pocket Manager",
 	"block.securitycraft.reinforced_stone_pressure_plate": "Reinforced Stone Pressure Plate",
+	"block.securitycraft.reinforced_oak_pressure_plate": "Reinforced Oak Pressure Plate",
+	"block.securitycraft.reinforced_spruce_pressure_plate": "Reinforced Spruce Pressure Plate",
+	"block.securitycraft.reinforced_birch_pressure_plate": "Reinforced Birch Pressure Plate",
+	"block.securitycraft.reinforced_jungle_pressure_plate": "Reinforced Jungle Pressure Plate",
+	"block.securitycraft.reinforced_acacia_pressure_plate": "Reinforced Acacia Pressure Plate",
+	"block.securitycraft.reinforced_dark_oak_pressure_plate": "Reinforced Dark Oak Pressure Plate",
 	"block.securitycraft.reinforced_red_sand": "Reinforced Red Sand",
 
 	"item.securitycraft.codebreaker": "Codebreaker",

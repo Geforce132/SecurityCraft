@@ -6,10 +6,10 @@
   ],
   "key": {
     "S": {
-      "item": "securitycraft:reinforced_stone"
+      "item": "securitycraft:reinforced_dark_oak_planks"
     }
   },
   "result": {
-    "item": "securitycraft:reinforced_stone_pressure_plate"
+    "item": "securitycraft:reinforced_dark_oak_pressure_plate"
   }
 }

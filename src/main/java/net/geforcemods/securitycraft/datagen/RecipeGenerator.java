@@ -326,11 +326,13 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', Tags.Items.FENCE_GATES_WOODEN)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
-		ShapedRecipeBuilder.shapedRecipe(SCContent.reinforcedStonePressurePlate)
-		.patternLine("SS")
-		.key('S', SCContent.reinforcedStone)
-		.addCriterion("has_reinforced_stone", hasItem(SCContent.reinforcedStone))
-		.build(consumer);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedStone, SCContent.reinforcedStonePressurePlate);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedOakPlanks, SCContent.reinforcedOakPressurePlate);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedSprucePlanks, SCContent.reinforcedSprucePressurePlate);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedBirchPlanks, SCContent.reinforcedBirchPressurePlate);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedJunglePlanks, SCContent.reinforcedJunglePressurePlate);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedAcaciaPlanks, SCContent.reinforcedAcaciaPressurePlate);
+		addPressurePlateRecipe(consumer, SCContent.reinforcedDarkOakPlanks, SCContent.reinforcedDarkOakPressurePlate);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.remoteAccessMine)
 		.patternLine(" T ")
 		.patternLine(" DG")
@@ -803,6 +805,16 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("BB")
 		.patternLine("BB")
 		.key('B', block)
+		.addCriterion("has_block", hasItem(block))
+		.build(consumer);
+	}
+
+	protected void addPressurePlateRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	{
+		ShapedRecipeBuilder.shapedRecipe(result)
+		.setGroup("securitycraft:reinforced_pressure_plates")
+		.patternLine("SS")
+		.key('S', block)
 		.addCriterion("has_block", hasItem(block))
 		.build(consumer);
 	}

@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "securitycraft:block/reinforced_spruce_pressure_plate" },
+        "powered=true": { "model": "securitycraft:block/reinforced_spruce_pressure_plate_down" }
+    }
+}

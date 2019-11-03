@@ -8,8 +8,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlat
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -26,9 +26,15 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class BlockReinforcedPressurePlate extends PressurePlateBlock implements IReinforcedBlock
 {
-	public BlockReinforcedPressurePlate()
+	public static final Block.Properties STONE_PROPERTIES = Block.Properties.create(Material.ROCK).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F);
+	public static final Block.Properties WOOD_PROPERTIES = Block.Properties.create(Material.WOOD).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.WOOD);
+	private final Block vanillaBlock;
+
+	public BlockReinforcedPressurePlate(Sensitivity sensitivity, Block.Properties properties, Block vanillaBlock)
 	{
-		super(Sensitivity.MOBS, Block.Properties.create(Material.ROCK).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F));
+		super(sensitivity, properties);
+
+		this.vanillaBlock = vanillaBlock;
 	}
 
 	@Override
@@ -88,7 +94,7 @@ public class BlockReinforcedPressurePlate extends PressurePlateBlock implements 
 	@Override
 	public Block getVanillaBlock()
 	{
-		return Blocks.STONE_PRESSURE_PLATE;
+		return vanillaBlock;
 	}
 
 	@Override

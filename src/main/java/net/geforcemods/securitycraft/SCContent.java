@@ -360,7 +360,7 @@ public class SCContent
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedGreenStainedGlassPane;
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedRedStainedGlassPane;
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedBlackStainedGlassPane;
-	//anything else, alphabetical
+	//misc
 	@Reinforced(tint=0x0E7063) public static Block reinforcedChiseledCrystalQuartz;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartz;
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzPillar;
@@ -368,6 +368,12 @@ public class SCContent
 	@Reinforced(tint=0x0E7063) public static Block reinforcedCrystalQuartzStairs;
 	@Ownable @Reinforced(hasTint=false) public static Block reinforcedIronTrapdoor;
 	@Reinforced(hasPage=true) public static Block reinforcedStonePressurePlate;
+	@Reinforced public static Block reinforcedOakPressurePlate;
+	@Reinforced public static Block reinforcedSprucePressurePlate;
+	@Reinforced public static Block reinforcedBirchPressurePlate;
+	@Reinforced public static Block reinforcedJunglePressurePlate;
+	@Reinforced public static Block reinforcedAcaciaPressurePlate;
+	@Reinforced public static Block reinforcedDarkOakPressurePlate;
 
 	//Fluids
 	public static FlowingFluid flowingFakeWater;

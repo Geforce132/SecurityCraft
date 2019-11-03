@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_stone_pressure_plate"
+      "securitycraft:reinforced_jungle_pressure_plate"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:reinforced_stone"
+            "item": "securitycraft:reinforced_jungle_planks"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:reinforced_stone_pressure_plate"
+        "recipe": "securitycraft:reinforced_jungle_pressure_plate"
       }
     }
   },

@@ -298,6 +298,12 @@
     "block.securitycraft.block_pocket_wall": "Blocktaschenwand",
     "block.securitycraft.block_pocket_manager": "Blocktaschenverwalter",
     "block.securitycraft.reinforced_stone_pressure_plate": "Verstärkte Steindruckplatte",
+	"block.securitycraft.reinforced_oak_pressure_plate": "Verstärkte Eichenholzdruckplatte",
+	"block.securitycraft.reinforced_spruce_pressure_plate": "Verstärkte Fichtenholzdruckplatte",
+	"block.securitycraft.reinforced_birch_pressure_plate": "Verstärkte Birkenholzdruckplatte",
+	"block.securitycraft.reinforced_jungle_pressure_plate": "Verstärkte Tropenholzdruckplatte",
+	"block.securitycraft.reinforced_acacia_pressure_plate": "Verstärkte Akazienholzdruckplatte",
+	"block.securitycraft.reinforced_dark_oak_pressure_plate": "Verstärkte Schwarzeichenholzdruckplatte",
 	"block.securitycraft.reinforced_red_sand": "Verstärkter roter Sand",
 	
     "item.securitycraft.codebreaker": "Codebrecher",
