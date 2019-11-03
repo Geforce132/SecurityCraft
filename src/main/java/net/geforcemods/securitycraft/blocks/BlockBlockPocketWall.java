@@ -76,19 +76,13 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	@Override
 	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		return !state.get(SEE_THROUGH);
+		return false;
 	}
 
 	@Override
 	public boolean isSolid(BlockState state)
 	{
-		return !state.get(SEE_THROUGH);
-	}
-
-	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		return VoxelShapes.fullCube();
+		return false;
 	}
 
 	@Override
