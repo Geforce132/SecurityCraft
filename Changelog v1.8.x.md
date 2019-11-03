@@ -16,6 +16,8 @@
 - Fix: Fake Liquid Buckets can't be crafted using level two potions
 - Fix: Chests and Furnaces cannot be converted to their password-protected variant when not sneak-rightclicking
 - Fix: Reinforced Doors and Scanner Doors do not drop when breaking the top half or the block below them
+- Fix: Disguised Keypad collision does not completely respect the collision of the block it's disguised of
+- Fix: Disguised Keypad throws a shadow no matter what it's disguised as (ambient occlusion)
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 

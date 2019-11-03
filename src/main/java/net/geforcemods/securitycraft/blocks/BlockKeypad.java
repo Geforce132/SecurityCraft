@@ -60,7 +60,7 @@ public class BlockKeypad extends ContainerBlock implements IOverlayDisplay, IPas
 		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
-			return extendedState.getShape(world, pos);
+			return extendedState.getShape(world, pos, ctx);
 		else return super.getShape(state, world, pos, ctx);
 	}
 
@@ -70,8 +70,48 @@ public class BlockKeypad extends ContainerBlock implements IOverlayDisplay, IPas
 		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
-			return extendedState.getCollisionShape(world, pos);
+			return extendedState.getCollisionShape(world, pos, ctx);
 		else return super.getCollisionShape(state, world, pos, ctx);
+	}
+
+	@Override
+	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		BlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.getRenderShape(world, pos);
+		else return super.getRenderShape(state, world, pos);
+	}
+
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		BlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.isNormalCube(world, pos);
+		else return super.isNormalCube(state, world, pos);
+	}
+
+	@Override
+	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		BlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.causesSuffocation(world, pos);
+		else return super.causesSuffocation(state, world, pos);
+	}
+
+	@Override //getAmbientOcclusionLightValue, mapped starting with 20191104
+	public float func_220080_a(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		BlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.func_215703_d(world, pos);
+		else return super.func_220080_a(state, world, pos);
 	}
 
 	@Override
