@@ -18,6 +18,7 @@
 - Fix: Reinforced Doors and Scanner Doors do not drop when breaking the top half or the block below them
 - Fix: Disguised Keypad collision does not completely respect the collision of the block it's disguised of
 - Fix: Disguised Keypad throws a shadow no matter what it's disguised as (ambient occlusion)
+- Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 
