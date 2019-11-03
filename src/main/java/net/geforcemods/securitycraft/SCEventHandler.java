@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blocks.BlockCageTrap;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
@@ -149,6 +150,20 @@ public class SCEventHandler {
 				TileEntity tileEntity = world.getTileEntity(event.getPos());
 				BlockState state  = world.getBlockState(event.getPos());
 				Block block = state.getBlock();
+
+				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel))
+				{
+					for(Block pc : IPasswordConvertible.BLOCKS)
+					{
+						if(((IPasswordConvertible)pc).getOriginalBlock() == block)
+						{
+							event.setUseBlock(Result.DENY);
+							event.setUseItem(Result.ALLOW);
+						}
+					}
+
+					return;
+				}
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker) && handleCodebreaking(event)) {
 					event.setCanceled(true);
