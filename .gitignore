@@ -6,3 +6,5 @@
 /.classpath
 /.gradle
 *.launch
+/run
+/src/generated/resources/.cache/*

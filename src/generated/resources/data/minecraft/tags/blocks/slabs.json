@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#securitycraft:reinforced/slabs"
+    "#securitycraft:reinforced/slabs",
+    "securitycraft:crystal_quartz_slab"
   ]
 }

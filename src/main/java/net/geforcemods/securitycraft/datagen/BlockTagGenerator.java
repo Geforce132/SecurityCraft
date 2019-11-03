@@ -187,10 +187,13 @@ public class BlockTagGenerator extends BlockTagsProvider
 
 		//minecraft tags
 		getBuilder(BlockTags.CARPETS).add(SCTags.Blocks.REINFORCED_CARPETS);
-		getBuilder(BlockTags.SLABS).add(SCTags.Blocks.REINFORCED_SLABS);
-		getBuilder(BlockTags.STAIRS).add(SCTags.Blocks.REINFORCED_STAIRS);
+		getBuilder(BlockTags.FENCES).add(SCContent.ironFence);
+		getBuilder(BlockTags.RAILS).add(SCContent.trackMine);
+		getBuilder(BlockTags.SLABS).add(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.crystalQuartzSlab);
+		getBuilder(BlockTags.STAIRS).add(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.stairsCrystalQuartz);
 		getBuilder(BlockTags.SIGNS).add(SCTags.Blocks.SECRET_SIGNS);
 		getBuilder(BlockTags.STANDING_SIGNS).add(SCTags.Blocks.SECRET_STANDING_SIGNS);
+		getBuilder(BlockTags.TRAPDOORS).add(SCContent.reinforcedIronTrapdoor);
 		getBuilder(BlockTags.WALL_SIGNS).add(SCTags.Blocks.SECRET_WALL_SIGNS);
 	}
 

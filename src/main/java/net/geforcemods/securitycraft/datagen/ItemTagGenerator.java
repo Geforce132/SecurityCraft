@@ -42,9 +42,12 @@ public class ItemTagGenerator extends ItemTagsProvider
 
 		//minecraft tags
 		getBuilder(ItemTags.CARPETS).add(SCTags.Items.REINFORCED_CARPETS);
-		getBuilder(ItemTags.SLABS).add(SCTags.Items.REINFORCED_SLABS);
-		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS);
+		getBuilder(ItemTags.FENCES).add(SCContent.ironFence.asItem());
+		getBuilder(ItemTags.RAILS).add(SCContent.trackMine.asItem());
+		getBuilder(ItemTags.SLABS).add(SCTags.Items.REINFORCED_SLABS).add(SCContent.crystalQuartzSlab.asItem());
+		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS).add(SCContent.stairsCrystalQuartz.asItem());
 		getBuilder(ItemTags.SIGNS).add(SCTags.Items.SECRET_SIGNS);
+		getBuilder(ItemTags.TRAPDOORS).add(SCContent.reinforcedIronTrapdoor.asItem());
 	}
 
 	@Override

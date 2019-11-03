@@ -50,7 +50,6 @@ public class ConfigHandler {
 
 		public CommonConfig(ForgeConfigSpec.Builder builder)
 		{
-
 			allowCodebreakerItem = builder
 					.translation("config.securitycraft:isCodebreakerAllowed")
 					.comment("Can the codebreaker be used?")
