@@ -10,16 +10,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.BlockParticleData;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockReinforcedFalling extends BlockReinforcedBase
 {
@@ -98,30 +94,5 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 		Material material = state.getMaterial();
 
 		return state.isAir() || block == Blocks.FIRE || material.isLiquid() || material.isReplaceable();
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void animateTick(BlockState stateIn, World world, BlockPos pos, Random rand)
-	{
-		if(rand.nextInt(16) == 0)
-		{
-			BlockPos blockpos = pos.down();
-
-			if(canFallThrough(world.getBlockState(blockpos)))
-			{
-				double x = pos.getX() + rand.nextFloat();
-				double y = pos.getY() - 0.05D;
-				double z = pos.getZ() + rand.nextFloat();
-
-				world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateIn), false, x, y, z, 0.0D, 0.0D, 0.0D);
-			}
-		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public int getDustColor(BlockState state)
-	{
-		return -16777216;
 	}
 }

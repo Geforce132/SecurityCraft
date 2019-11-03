@@ -298,6 +298,7 @@
     "block.securitycraft.block_pocket_wall": "Blocktaschenwand",
     "block.securitycraft.block_pocket_manager": "Blocktaschenverwalter",
     "block.securitycraft.reinforced_stone_pressure_plate": "Verstärkte Steindruckplatte",
+	"block.securitycraft.reinforced_red_sand": "Verstärkter roter Sand",
 	
     "item.securitycraft.codebreaker": "Codebrecher",
     "item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",

@@ -131,6 +131,7 @@ public class SCContent
 	@Ownable @Reinforced public static Block reinforcedAcaciaPlanks;
 	@Ownable @Reinforced public static Block reinforcedDarkOakPlanks;
 	@Ownable @Reinforced public static Block reinforcedSand;
+	@Ownable @Reinforced public static Block reinforcedRedSand;
 	@Ownable @Reinforced public static Block reinforcedGravel;
 	@Ownable @Reinforced public static Block reinforcedOakLog;
 	@Ownable @Reinforced public static Block reinforcedSpruceLog;
