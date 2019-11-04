@@ -106,6 +106,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedStonePressurePlate;
 	@Tinted public static Block reinforcedStoneSlabs;
 	@Tinted public static Block reinforcedStoneSlabs2;
+	@Reinforced @Tinted public static Block reinforcedWoodenPressurePlate;
 	@Reinforced @Tinted public static Block reinforcedWoodPlanks;
 	@Tinted public static Block reinforcedWoodSlabs;
 	@Reinforced @Tinted public static Block reinforcedWool;

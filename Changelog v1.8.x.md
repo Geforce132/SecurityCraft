@@ -4,6 +4,7 @@
 - New: Reinforced Stained Glass Panes can now be crafted by surrounding a dye with eight Reinforced Glass Panes
 - New: All Reinforced Terracotta blocks can now be crafted analogous to their vanilla counterparts
 - New: Reinforced Red Sand
+- New: Reinforced Wooden Pressure Plate
 - Change: The Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
 - Change: The Frame recipe is slightly different, ingredients stay the same
 - Change: The Sentry now uses Reinforced Blocks of Iron in its recipe

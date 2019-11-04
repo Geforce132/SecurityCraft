@@ -95,7 +95,9 @@ import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.minecraft.block.BlockPressurePlate.Sensitivity;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -268,7 +270,8 @@ public class SetupHandler
 
 		SCContent.blockPocketManager = new BlockBlockPocketManager().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("block_pocket_manager").setTranslationKey("securitycraft:blockPocketManager");
 
-		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_pressure_plate").setTranslationKey("securitycraft:reinforced_stone_pressure_plate");
+		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate(Material.ROCK, Sensitivity.MOBS, SoundType.STONE, Blocks.STONE_PRESSURE_PLATE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_pressure_plate").setTranslationKey("securitycraft:reinforced_stone_pressure_plate");
+		SCContent.reinforcedWoodenPressurePlate = new BlockReinforcedPressurePlate(Material.WOOD, Sensitivity.EVERYTHING, SoundType.WOOD, Blocks.WOODEN_PRESSURE_PLATE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wooden_pressure_plate").setTranslationKey("securitycraft:reinforced_wooden_pressure_plate");
 	}
 
 	public static void setupMines()

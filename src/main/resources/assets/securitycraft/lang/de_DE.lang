@@ -252,6 +252,7 @@ tile.securitycraft:reinforcedStairsCrystalQuartz.name=Verstärkte Kristallquarzt
 tile.securitycraft:blockPocketWall.name=Blocktaschenwand
 tile.securitycraft:blockPocketManager.name=Blocktaschenverwalter
 tile.securitycraft:reinforced_stone_pressure_plate.name=Verstärkte Steindruckplatte
+tile.securitycraft:reinforced_wooden_pressure_plate.name=Verstärkte Holzdruckplatte
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
