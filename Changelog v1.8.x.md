@@ -14,6 +14,7 @@
 - Fix: Chests and Furnaces cannot be converted to their password-protected variant when not sneak-rightclicking
 - Fix: Disguised Keypad collision and selection boxes do not respect the boxes of the block it's disguised as
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
+- Fix: Entities do not get healed when standing in fake lava
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 

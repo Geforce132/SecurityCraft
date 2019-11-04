@@ -10,7 +10,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -55,11 +55,8 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if(!world.isRemote)
-			if(entity instanceof EntityPlayer){
-				((EntityPlayer) entity).heal(4);
-				((EntityPlayer) entity).extinguish();
-			}
+		if(!world.isRemote && entity instanceof EntityLivingBase)
+			((EntityLivingBase)entity).heal(4);
 	}
 
 	@Override
