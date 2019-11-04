@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -32,6 +35,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockUtils{
+	private static final List<Block> PRESSURE_PLATES = Arrays.asList(new Block[] {
+			SCContent.reinforcedStonePressurePlate,
+			SCContent.reinforcedWoodenPressurePlate
+	});
 
 	public static void setBlockInBox(World world, int x, int y, int z, Block block){
 		BlockUtils.setBlock(world, x + 1, y + 1, z, block);
@@ -347,17 +354,17 @@ public class BlockUtils{
 	}
 
 	private static boolean hasActiveReinforcedPressurePlateNextTo(World world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos.east()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.east()).getValue(BlockReinforcedPressurePlate.POWERED))
+		if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.east())) && world.getBlockState(pos.east()).getValue(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.west()).getValue(BlockReinforcedPressurePlate.POWERED))
+		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.west())) && world.getBlockState(pos.west()).getValue(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.south()).getValue(BlockReinforcedPressurePlate.POWERED))
+		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.south())) && world.getBlockState(pos.south()).getValue(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.north()).getValue(BlockReinforcedPressurePlate.POWERED))
+		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.north())) && world.getBlockState(pos.north()).getValue(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.up()).getValue(BlockReinforcedPressurePlate.POWERED))
+		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.up())) && world.getBlockState(pos.up()).getValue(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.reinforcedStonePressurePlate && world.getBlockState(pos.down()).getValue(BlockReinforcedPressurePlate.POWERED))
+		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.down())) && world.getBlockState(pos.down()).getValue(BlockReinforcedPressurePlate.POWERED))
 			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
 		else
 			return false;
