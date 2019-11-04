@@ -6,7 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -22,10 +22,7 @@ public class BlockFakeLava extends FlowingFluidBlock
 	{
 		super.onEntityCollision(state, world, pos, entity);
 
-		if(!world.isRemote)
-			if(entity instanceof PlayerEntity){
-				((PlayerEntity) entity).heal(4);
-				((PlayerEntity) entity).extinguish();
-			}
+		if(!world.isRemote && entity instanceof LivingEntity)
+			((LivingEntity)entity).heal(4);
 	}
 }

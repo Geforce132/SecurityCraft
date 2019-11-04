@@ -22,9 +22,9 @@ public class BlockFakeWater extends FlowingFluidBlock
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
 		if(!world.isRemote)
-			if(entity instanceof PlayerEntity && !((PlayerEntity) entity).isCreative())
-				((PlayerEntity) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
-			else
+		{
+			if(!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative())
 				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+		}
 	}
 }
