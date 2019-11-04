@@ -233,6 +233,7 @@ tile.securitycraft:reinforcedCarpet_black.name=Reinforced Black Carpet
 tile.securitycraft:reinforcedGlowstone.name=Reinforced Glowstone
 tile.securitycraft:gravelMine.name=Gravel Mine
 tile.securitycraft:reinforcedSand.name=Reinforced Sand
+tile.securitycraft:reinforcedRedSand.name=Reinforced Red Sand
 tile.securitycraft:reinforcedGravel.name=Reinforced Gravel
 tile.securitycraft:trophy_system.name=Trophy System
 tile.securitycraft:crystalQuartz.name=Crystal Quartz Blocks

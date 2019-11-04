@@ -118,12 +118,12 @@ public class SCContent
 	@Tinted(0x15b3a2) public static Block stairsCrystalQuartz;
 	public static Block stoneMine;
 	public static Block trackMine;
+	public static Block trophySystem;
 	public static Block usernameLogger;
 	public static BlockMine mine;
 	public static BlockMine mineCut;
 	public static BlockStaticLiquid bogusLava;
 	public static BlockStaticLiquid bogusWater;
-	public static Block trophySystem;
 
 	//Items
 	public static Item adminTool;

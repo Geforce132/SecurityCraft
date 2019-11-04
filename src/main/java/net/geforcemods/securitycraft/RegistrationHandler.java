@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedMetals;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPlanks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPrismarine;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPurpur;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSand;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSandstone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs2;
@@ -224,7 +225,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedCarpet, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedCarpet), false);
 		registerBlock(event, SCContent.reinforcedGlowstone, false);
 		registerBlock(event, SCContent.gravelMine, false);
-		registerBlock(event, SCContent.reinforcedSand, false);
+		registerBlock(event, SCContent.reinforcedSand, new ItemBlockReinforcedSand(SCContent.reinforcedSand), false);
 		registerBlock(event, SCContent.reinforcedGravel, false);
 		registerBlock(event, SCContent.trophySystem);
 		registerBlock(event, SCContent.crystalQuartz, new ItemBlockCustomQuartz(SCContent.crystalQuartz), true);
@@ -640,6 +641,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCarpet), 15, new ModelResourceLocation("securitycraft:reinforced_carpet_black", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedGlowstone), 0, new ModelResourceLocation("securitycraft:reinforced_glowstone", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSand), 0, new ModelResourceLocation("securitycraft:reinforced_sand", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSand), 1, new ModelResourceLocation("securitycraft:reinforced_red_sand", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedGravel), 0, new ModelResourceLocation("securitycraft:reinforced_gravel", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.trophySystem), 0, new ModelResourceLocation("securitycraft:trophy_system", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.crystalQuartz), 0, new ModelResourceLocation("securitycraft:crystal_quartz_default", "inventory"));

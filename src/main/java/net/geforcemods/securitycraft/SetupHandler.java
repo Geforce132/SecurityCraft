@@ -40,7 +40,6 @@ import net.geforcemods.securitycraft.blocks.mines.BlockFurnaceMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCarpet;
@@ -54,6 +53,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedOldLog;
@@ -62,6 +62,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPrismarine
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPurpur;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedQuartz;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRedSandstone;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSand;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs2;
@@ -245,7 +246,7 @@ public class SetupHandler
 
 		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.GLASS, 1, Blocks.GLOWSTONE).setBlockUnbreakable().setResistance(6000000.0F).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_glowstone").setTranslationKey("securitycraft:reinforcedGlowstone");
 
-		SCContent.reinforcedSand = new BlockReinforcedFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_sand").setTranslationKey("securitycraft:reinforcedSand");
+		SCContent.reinforcedSand = new BlockReinforcedSand().setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_sand").setTranslationKey("securitycraft:reinforcedSand");
 		SCContent.reinforcedGravel = new BlockReinforcedFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_gravel").setTranslationKey("securitycraft:reinforcedGravel");
 
 		SCContent.trophySystem = new BlockTrophySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("trophy_system").setTranslationKey("securitycraft:trophy_system");

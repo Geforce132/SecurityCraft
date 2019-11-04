@@ -3,12 +3,13 @@
 - New: Reinforced Glass Panes can now be crafted using six Reinforced Glass
 - New: Reinforced Stained Glass Panes can now be crafted by surrounding a dye with eight Reinforced Glass Panes
 - New: All Reinforced Terracotta blocks can now be crafted analogous to their vanilla counterparts
+- New: Reinforced Red Sand
 - Change: The Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
 - Change: The Frame recipe is slightly different, ingredients stay the same
 - Change: The Sentry now uses Reinforced Blocks of Iron in its recipe
 - Fix: Username Logger crash involving armor stands
-- Fix: Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
-- Fix: Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes now yields 16 glass panes instead of 8
+- Fix: Reinforced Diorite and Reinforced Andesite use vanilla Cobblestone instead of Reinforced Cobblestone
+- Fix: Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes yields 8 glass panes instead of 16
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------

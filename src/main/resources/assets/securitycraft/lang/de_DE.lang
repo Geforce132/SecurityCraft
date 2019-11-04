@@ -234,6 +234,7 @@ tile.securitycraft:reinforcedCarpet_black.name=Verstärkter schwarzer Teppich
 tile.securitycraft:reinforcedGlowstone.name=Verstärkter Glowstone
 tile.securitycraft:gravelMine.name=Kiesmine
 tile.securitycraft:reinforcedSand.name=Verstärkter Sand
+tile.securitycraft:reinforcedRedSand.name=Verstärkter roter Sand
 tile.securitycraft:reinforcedGravel.name=Verstärkter Kies
 tile.securitycraft:trophy_system.name=Trophy-System
 tile.securitycraft:crystalQuartz.name=Kristallquartz-Blöcke

@@ -27,24 +27,19 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 			setSoundType(SoundType.SAND);
 	}
 
-	/**
-	 * Called after the block is set in the Chunk data, but before the Tile Entity is set
-	 */
+	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
-	/**
-	 * Called when a neighboring block was changed and marks that this state should perform any checks during a neighbor
-	 * change. Cases may include when redstone power is updated, cactus blocks popping off due to a neighboring solid
-	 * block, etc.
-	 */
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
+	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
 		if(!world.isRemote)
@@ -71,9 +66,7 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 		}
 	}
 
-	/**
-	 * How many world ticks before ticking
-	 */
+	@Override
 	public int tickRate(World world)
 	{
 		return 2;
@@ -87,11 +80,7 @@ public class BlockReinforcedFalling extends BlockReinforcedBase
 		return block == Blocks.FIRE || material == Material.AIR || material == Material.WATER || material == Material.LAVA;
 	}
 
-	/**
-	 * Called periodically clientside on blocks near the player to show effects (like furnace fire particles). Note that
-	 * this method is unrelated to {@link randomTick} and {@link #needsRandomTick}, and will always be called regardless
-	 * of whether the block can receive random update ticks
-	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand)
 	{
