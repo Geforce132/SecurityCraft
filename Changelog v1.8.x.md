@@ -11,8 +11,9 @@
 - Fix: Username Logger crash involving armor stands
 - Fix: Reinforced Diorite and Reinforced Andesite use vanilla Cobblestone instead of Reinforced Cobblestone
 - Fix: Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes yields 8 glass panes instead of 16
-- Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 - Fix: Chests and Furnaces cannot be converted to their password-protected variant when not sneak-rightclicking
+- Fix: Disguised Keypad collision and selection boxes do not respect the boxes of the block it's disguised as
+- Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 

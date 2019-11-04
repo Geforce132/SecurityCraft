@@ -25,6 +25,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -34,6 +35,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -54,6 +56,50 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if(actualState != null && actualState != SCContent.keypad)
+			return actualState.getBoundingBox(world, pos);
+		else
+			return super.getBoundingBox(state, world, pos);
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if(actualState != null && actualState != SCContent.keypad)
+			return actualState.getCollisionBoundingBox(world, pos);
+		else
+			return super.getCollisionBoundingBox(state, world, pos);
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
+	{
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if(actualState != null && actualState != SCContent.keypad)
+			return actualState.getSelectedBoundingBox(world, pos);
+		else
+			return super.getSelectedBoundingBox(state, world, pos);
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
+	{
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if(actualState != null && actualState != SCContent.keypad)
+			actualState.addCollisionBoxToList(world, pos, entityBox, collidingBoxes, entity, true);
+		else
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 	}
 
 	@Override
