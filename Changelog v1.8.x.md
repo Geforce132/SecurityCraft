@@ -12,6 +12,7 @@
 - Fix: Reinforced Diorite and Reinforced Andesite use vanilla Cobblestone instead of Reinforced Cobblestone
 - Fix: Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes yields 8 glass panes instead of 16
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
+- Fix: Chests and Furnaces cannot be converted to their password-protected variant when not sneak-rightclicking
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 
