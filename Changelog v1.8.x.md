@@ -11,14 +11,16 @@
 - Change: The Frame recipe is slightly different, ingredients stay the same
 - Change: The Sentry now uses Reinforced Blocks of Iron in its recipe
 - Fix: Username Logger crash involving armor stands
-- Fix: Reinforced Diorite and Reinforced Andesite used vanilla Cobblestone instead of Reinforced Cobblestone
-- Fix: Incorrect Taser is showing up in the creative tab
+- Fix: Reinforced Diorite and Reinforced Andesite use vanilla Cobblestone instead of Reinforced Cobblestone
+- Fix: Using six Reinforced Stained Glass to craft Reinforced Stained Glass Panes yields 8 glass panes instead of 16
+- Fix: Incorrect Taser is showing up in the creative tab (again)
 - Fix: Fake Liquid Buckets can't be crafted using level two potions
 - Fix: Chests and Furnaces cannot be converted to their password-protected variant when not sneak-rightclicking
 - Fix: Reinforced Doors and Scanner Doors do not drop when breaking the top half or the block below them
-- Fix: Disguised Keypad collision does not completely respect the collision of the block it's disguised of
+- Fix: Disguised Keypad collision does not completely respect the collision of the block it's disguised os
 - Fix: Disguised Keypad throws a shadow no matter what it's disguised as (ambient occlusion)
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
+- Fix: Cannot walk through non-see-through Block Pocket Walls
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 
