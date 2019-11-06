@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -64,12 +64,12 @@ public class SetScanType{
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 
-			((TileEntityInventoryScanner) world.getTileEntity(pos)).setScanType(message.type);
+			((InventoryScannerTileEntity) world.getTileEntity(pos)).setScanType(message.type);
 
 			SecurityCraft.log("Setting type to " + message.type);
 			world.getPendingBlockTicks().scheduleTick(pos, BlockUtils.getBlock(world, pos), 1);
 
-			Utils.setISinTEAppropriately(world, pos, ((TileEntityInventoryScanner) world.getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) world.getTileEntity(pos)).getScanType());
+			Utils.setISinTEAppropriately(world, pos, ((InventoryScannerTileEntity) world.getTileEntity(pos)).getContents(), ((InventoryScannerTileEntity) world.getTileEntity(pos)).getScanType());
 		});
 
 		ctx.get().setPacketHandled(true);

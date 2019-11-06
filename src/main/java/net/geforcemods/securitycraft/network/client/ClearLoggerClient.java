@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -54,7 +54,7 @@ public class ClearLoggerClient
 	public static void handleMessage(ClearLoggerClient message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntityLogger te = (TileEntityLogger)Minecraft.getInstance().world.getTileEntity(message.pos);
+			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);
 
 			if(te != null)
 				te.players = new String[100];

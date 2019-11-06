@@ -5,31 +5,31 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockCageTrap;
-import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.CageTrapBlock;
+import net.geforcemods.securitycraft.blocks.LaserBlock;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
+import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
+import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -114,7 +114,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getPlayer().getRidingEntity() instanceof EntitySecurityCamera)
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getPlayer().getRidingEntity() instanceof SecurityCameraEntity)
 			event.getPlayer().getRidingEntity().remove();
 	}
 
@@ -172,7 +172,7 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.universalBlockModifier)){
+				if(tileEntity != null && tileEntity instanceof CustomizableTileEntity && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.universalBlockModifier)){
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
@@ -186,7 +186,7 @@ public class SCEventHandler {
 							@Override
 							public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 							{
-								return new ContainerCustomizeBlock(windowId, world, event.getPos(), inv);
+								return new CustomizeBlockContainer(windowId, world, event.getPos(), inv);
 							}
 
 							@Override
@@ -231,9 +231,9 @@ public class SCEventHandler {
 
 					if(block == SCContent.laserBlock){
 						world.destroyBlock(event.getPos(), true);
-						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
+						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
 						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
-					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(BlockCageTrap.DEACTIVATED)) {
+					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
 						BlockPos pos = originalPos.east().up();
 
@@ -388,7 +388,7 @@ public class SCEventHandler {
 					}else{
 						BlockPos pos = event.getPos();
 
-						if((block instanceof BlockReinforcedDoor || block instanceof BlockScannerDoor) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
+						if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 							pos = pos.down();
 
 						world.destroyBlock(pos, true);
@@ -402,7 +402,7 @@ public class SCEventHandler {
 
 			//outside !world.isRemote for properly checking the interaction
 			//all the sentry functionality for when the sentry is diguised
-			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+			List<SentryEntity> sentries = world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
 
 			if(!sentries.isEmpty())
 				event.setCanceled(sentries.get(0).processInteract(event.getPlayer(), event.getHand())); //cancel if an action was taken
@@ -415,7 +415,7 @@ public class SCEventHandler {
 		if(!(event.getWorld() instanceof World))
 			return;
 
-		List<EntitySentry> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+		List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
 		if(!sentries.isEmpty())
@@ -424,7 +424,7 @@ public class SCEventHandler {
 			return;
 		}
 
-		sentries = ((World)event.getWorld()).getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos().up()));
+		sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos().up()));
 
 		//remove sentry if block below is broken
 		if(!sentries.isEmpty())
@@ -562,8 +562,8 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onBlockBroken(BreakEvent event){
 		if(event.getWorld() instanceof World && !event.getWorld().isRemote())
-			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
-				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
+			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableTileEntity){
+				CustomizableTileEntity te = (CustomizableTileEntity) event.getWorld().getTileEntity(event.getPos());
 
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
 					if(!te.modules.get(i).isEmpty()){
@@ -571,11 +571,11 @@ public class SCEventHandler {
 						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addEntity(item));
 
-						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
-						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
+						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
+						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, te);
 
-						if(te instanceof TileEntitySecurityCamera)
-							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
+						if(te instanceof SecurityCameraTileEntity)
+							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
 					}
 			}
 	}
@@ -585,7 +585,7 @@ public class SCEventHandler {
 	{
 		if(event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
 			((MobEntity)event.getEntity()).setAttackTarget(null);
-		else if(event.getTarget() instanceof EntitySentry)
+		else if(event.getTarget() instanceof SentryEntity)
 			((MobEntity)event.getEntity()).setAttackTarget(null);
 	}
 
@@ -621,15 +621,15 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onEntityMount(EntityMountEvent event)
 	{
-		if(event.isDismounting() && event.getEntityBeingMounted() instanceof EntitySecurityCamera && event.getEntityMounting() instanceof PlayerEntity)
+		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity && event.getEntityMounting() instanceof PlayerEntity)
 		{
 			PlayerEntity player = (PlayerEntity)event.getEntityMounting();
 			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
 
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).hasModule(EnumCustomModules.SMART))
+			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(CustomModules.SMART))
 			{
-				((TileEntitySecurityCamera)te).lastPitch = player.rotationPitch;
-				((TileEntitySecurityCamera)te).lastYaw = player.rotationYaw;
+				((SecurityCameraTileEntity)te).lastPitch = player.rotationPitch;
+				((SecurityCameraTileEntity)te).lastYaw = player.rotationYaw;
 			}
 		}
 	}
@@ -683,7 +683,7 @@ public class SCEventHandler {
 	}
 
 	private static boolean isOwnableBlock(Block block, TileEntity tileEntity){
-		return (tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable);
+		return (tileEntity instanceof OwnableTileEntity || tileEntity instanceof IOwnable || block instanceof OwnableBlock);
 	}
 
 }

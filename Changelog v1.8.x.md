@@ -24,6 +24,7 @@
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 - Fix: Cannot walk through non-see-through Block Pocket Walls
 - Fix: Entities do not get healed when standing in fake lava
+- Potential Fix: Block Pocket loses its owner when the player reloads the world
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 

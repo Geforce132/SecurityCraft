@@ -7,12 +7,12 @@ import java.util.HashMap;
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.commands.CommandSC;
+import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.itemgroups.ItemGroupSCDecoration;
-import net.geforcemods.securitycraft.itemgroups.ItemGroupSCExplosives;
-import net.geforcemods.securitycraft.itemgroups.ItemGroupSCTechnical;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
+import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
+import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
@@ -54,9 +54,9 @@ public class SecurityCraft {
 	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
 	private CompoundNBT savedModule;
-	public static ItemGroup groupSCTechnical = new ItemGroupSCTechnical();
-	public static ItemGroup groupSCMine = new ItemGroupSCExplosives();
-	public static ItemGroup groupSCDecoration = new ItemGroupSCDecoration();
+	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
+	public static ItemGroup groupSCMine = new SCExplosivesGroup();
+	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
 
 	public SecurityCraft()
 	{
@@ -92,7 +92,7 @@ public class SecurityCraft {
 		//		}
 
 		log("Registering mod content... (PT 2/2)");
-		EnumCustomModules.refresh();
+		CustomModules.refresh();
 		proxy.tint();
 	}
 
@@ -117,7 +117,7 @@ public class SecurityCraft {
 	}
 
 	public void serverStarting(FMLServerStartingEvent event){
-		CommandSC.register(event.getCommandDispatcher());
+		SCCommand.register(event.getCommandDispatcher());
 	}
 
 	public Object[] getUsePosition(String playerName) {

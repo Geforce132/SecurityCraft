@@ -6,45 +6,45 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
-import net.geforcemods.securitycraft.entity.EntityBullet;
-import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.gui.GuiBlockPocketManager;
-import net.geforcemods.securitycraft.gui.GuiBlockReinforcer;
-import net.geforcemods.securitycraft.gui.GuiBriefcase;
-import net.geforcemods.securitycraft.gui.GuiBriefcaseInventory;
-import net.geforcemods.securitycraft.gui.GuiBriefcaseSetup;
-import net.geforcemods.securitycraft.gui.GuiCameraMonitor;
-import net.geforcemods.securitycraft.gui.GuiCheckPassword;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
-import net.geforcemods.securitycraft.gui.GuiDisguiseModule;
-import net.geforcemods.securitycraft.gui.GuiEditModule;
-import net.geforcemods.securitycraft.gui.GuiEditSecretSign;
-import net.geforcemods.securitycraft.gui.GuiIMS;
-import net.geforcemods.securitycraft.gui.GuiInventoryScanner;
-import net.geforcemods.securitycraft.gui.GuiKeyChanger;
-import net.geforcemods.securitycraft.gui.GuiKeycardSetup;
-import net.geforcemods.securitycraft.gui.GuiKeypadFurnaceInventory;
-import net.geforcemods.securitycraft.gui.GuiLogger;
-import net.geforcemods.securitycraft.gui.GuiMRAT;
-import net.geforcemods.securitycraft.gui.GuiSCManual;
-import net.geforcemods.securitycraft.gui.GuiSetPassword;
-import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.geforcemods.securitycraft.blocks.KeypadBlock;
+import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
+import net.geforcemods.securitycraft.entity.BulletEntity;
+import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
-import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
-import net.geforcemods.securitycraft.renderers.RenderBullet;
-import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
-import net.geforcemods.securitycraft.renderers.RenderSentry;
-import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
-import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
-import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
-import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
+import net.geforcemods.securitycraft.renderers.BulletRenderer;
+import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
+import net.geforcemods.securitycraft.renderers.SentryRenderer;
+import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.TrophySystemTileEntityRenderer;
+import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
+import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
+import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
+import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
+import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
+import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
+import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
+import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
+import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
+import net.geforcemods.securitycraft.screen.EditModuleScreen;
+import net.geforcemods.securitycraft.screen.EditSecretSignScreen;
+import net.geforcemods.securitycraft.screen.IMSScreen;
+import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
+import net.geforcemods.securitycraft.screen.KeyChangerScreen;
+import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
+import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
+import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
+import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
+import net.geforcemods.securitycraft.screen.SCManualScreen;
+import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
+import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -69,29 +69,29 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void clientSetup()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, manager -> new RenderBouncingBetty(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, manager -> new RenderIMSBomb(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, manager -> new RenderSentry(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, manager -> new RenderBullet(manager));
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTrophySystem.class, new TileEntityTrophySystemRenderer());
-		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, GuiBlockReinforcer::new);
-		ScreenManager.registerFactory(SCContent.cTypeBriefcase, GuiBriefcase::new);
-		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, GuiBriefcaseInventory::new);
-		ScreenManager.registerFactory(SCContent.cTypeBriefcaseSetup, GuiBriefcaseSetup::new);
-		ScreenManager.registerFactory(SCContent.cTypeCustomizeBlock, GuiCustomizeBlock::new);
-		ScreenManager.registerFactory(SCContent.cTypeDisguiseModule, GuiDisguiseModule::new);
-		ScreenManager.registerFactory(SCContent.cTypeInventoryScanner, GuiInventoryScanner::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeypadFurnace, GuiKeypadFurnaceInventory::new);
-		ScreenManager.registerFactory(SCContent.cTypeCheckPassword, GuiCheckPassword::new);
-		ScreenManager.registerFactory(SCContent.cTypeSetPassword, GuiSetPassword::new);
-		ScreenManager.registerFactory(SCContent.cTypeUsernameLogger, GuiLogger::new);
-		ScreenManager.registerFactory(SCContent.cTypeIMS, GuiIMS::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, GuiKeycardSetup::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, GuiKeyChanger::new);
-		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, GuiBlockPocketManager::new);
+		RenderingRegistry.registerEntityRenderingHandler(BouncingBettyEntity.class, manager -> new BouncingBettyRenderer(manager));
+		RenderingRegistry.registerEntityRenderingHandler(IMSBombEntity.class, manager -> new IMSBombRenderer(manager));
+		RenderingRegistry.registerEntityRenderingHandler(SentryEntity.class, manager -> new SentryRenderer(manager));
+		RenderingRegistry.registerEntityRenderingHandler(BulletEntity.class, manager -> new BulletRenderer(manager));
+		ClientRegistry.bindTileEntitySpecialRenderer(KeypadChestTileEntity.class, new KeypadChestTileEntityRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(SecurityCameraTileEntity.class, new SecurityCameraTileEntityRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(SecretSignTileEntity.class, new SecretSignTileEntityRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTrophySystem.class, new TrophySystemTileEntityRenderer());
+		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeSetPassword, SetPasswordScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeIMS, IMSScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, KeycardReaderSetupScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
 		KeyBindings.init();
 	}
 
@@ -131,9 +131,9 @@ public class ClientProxy implements IProxy {
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			Block block = Block.getBlockFromItem(BlockKeypad.getDisguisedStack(world, pos).getItem());
+			Block block = Block.getBlockFromItem(KeypadBlock.getDisguisedStack(world, pos).getItem());
 
-			if(block != Blocks.AIR && !(block instanceof BlockKeypad))
+			if(block != Blocks.AIR && !(block instanceof KeypadBlock))
 				return Minecraft.getInstance().getBlockColors().getColor(block.getDefaultState(), world, pos, tintIndex);
 			else return 0xFFFFFF;
 		}, SCContent.keypad);
@@ -154,30 +154,30 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void displayMRATGui(ItemStack stack)
 	{
-		Minecraft.getInstance().displayGuiScreen(new GuiMRAT(stack));
+		Minecraft.getInstance().displayGuiScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
 	@Override
 	public void displayEditModuleGui(ItemStack stack)
 	{
-		Minecraft.getInstance().displayGuiScreen(new GuiEditModule(stack));
+		Minecraft.getInstance().displayGuiScreen(new EditModuleScreen(stack));
 	}
 
 	@Override
-	public void displayCameraMonitorGui(PlayerInventory inv, ItemCameraMonitor item, CompoundNBT stackTag)
+	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag)
 	{
-		Minecraft.getInstance().displayGuiScreen(new GuiCameraMonitor(inv, item, stackTag));
+		Minecraft.getInstance().displayGuiScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
 	@Override
 	public void displaySCManualGui()
 	{
-		Minecraft.getInstance().displayGuiScreen(new GuiSCManual());
+		Minecraft.getInstance().displayGuiScreen(new SCManualScreen());
 	}
 
 	@Override
-	public void displayEditSecretSignGui(TileEntitySecretSign te)
+	public void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
-		Minecraft.getInstance().displayGuiScreen(new GuiEditSecretSign(te));
+		Minecraft.getInstance().displayGuiScreen(new EditSecretSignScreen(te));
 	}
 }

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.util;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.command.ICommandSource;
@@ -99,6 +99,6 @@ public class PlayerUtils{
 	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
-		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
+		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof SecurityCameraEntity;
 	}
 }

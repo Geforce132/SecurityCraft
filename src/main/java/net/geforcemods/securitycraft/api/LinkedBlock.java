@@ -19,7 +19,7 @@ public class LinkedBlock {
 		blockPos = BlockUtils.toPos(x, y, z);
 	}
 
-	public LinkedBlock(CustomizableSCTE tileEntity) {
+	public LinkedBlock(CustomizableTileEntity tileEntity) {
 		blockName = BlockUtils.getBlock(tileEntity.getWorld(), tileEntity.getPos()).getTranslationKey();
 		blockPos = tileEntity.getPos();
 	}
@@ -30,10 +30,10 @@ public class LinkedBlock {
 		return true;
 	}
 
-	public CustomizableSCTE asTileEntity(World world) {
+	public CustomizableTileEntity asTileEntity(World world) {
 		if(!validate(world)) return null;
 
-		return (CustomizableSCTE) world.getTileEntity(blockPos);
+		return (CustomizableTileEntity) world.getTileEntity(blockPos);
 	}
 
 	public String getBlockName() {

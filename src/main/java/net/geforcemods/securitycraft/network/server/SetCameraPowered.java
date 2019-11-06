@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -60,13 +60,13 @@ public class SetCameraPowered
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 			TileEntity te = world.getTileEntity(pos);
-			NonNullList<ItemStack> modules = ((CustomizableSCTE) te).modules;
-			Owner owner = ((TileEntityOwnable) te).getOwner();
+			NonNullList<ItemStack> modules = ((CustomizableTileEntity) te).modules;
+			Owner owner = ((OwnableTileEntity) te).getOwner();
 
-			world.setBlockState(pos, world.getBlockState(pos).with(BlockSecurityCamera.POWERED, message.powered));
-			((CustomizableSCTE) te).modules = modules;
-			((TileEntityOwnable) te).getOwner().set(owner.getUUID(), owner.getName());
-			world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock());
+			world.setBlockState(pos, world.getBlockState(pos).with(SecurityCameraBlock.POWERED, message.powered));
+			((CustomizableTileEntity) te).modules = modules;
+			((OwnableTileEntity) te).getOwner().set(owner.getUUID(), owner.getName());
+			world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
 		});
 		ctx.get().setPacketHandled(true);
 	}

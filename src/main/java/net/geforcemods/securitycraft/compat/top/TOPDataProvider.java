@@ -11,14 +11,14 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -41,9 +41,9 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			@Override
 			public boolean overrideStandardInfo(ProbeMode mode, IProbeInfo probeInfo, PlayerEntity player, World world, BlockState blockState, IProbeHitData data)
 			{
-				if(blockState.getBlock() instanceof BlockKeypad)
+				if(blockState.getBlock() instanceof KeypadBlock)
 				{
-					ItemStack disguisedAs = BlockKeypad.getDisguisedStack(world, data.getPos());
+					ItemStack disguisedAs = KeypadBlock.getDisguisedStack(world, data.getPos());
 
 					probeInfo.horizontal()
 					.item(disguisedAs)
@@ -76,18 +76,18 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				if(te instanceof IOwnable)
 					probeInfo.vertical().text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) te).getOwner().getName());
 
-				if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).getOwner().isOwner(player))
+				if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).getOwner().isOwner(player))
 				{
-					if(!((CustomizableSCTE)te).getModules().isEmpty())
+					if(!((CustomizableTileEntity)te).getModules().isEmpty())
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						for(EnumCustomModules module : ((CustomizableSCTE) te).getModules())
+						for(CustomModules module : ((CustomizableTileEntity) te).getModules())
 							probeInfo.text(TextFormatting.GRAY + "- " + module.getName());
 					}
 				}
 
-				if(te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable)te).getOwner().isOwner(player))
+				if(te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable)te).getOwner().isOwner(player))
 				{
 					String password = ((IPasswordProtected) te).getPassword();
 

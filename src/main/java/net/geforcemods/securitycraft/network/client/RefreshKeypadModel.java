@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
+import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -64,14 +64,14 @@ public class RefreshKeypadModel
 	public static void handleMessage(RefreshKeypadModel message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntityKeypad te = (TileEntityKeypad)Minecraft.getInstance().world.getTileEntity(message.pos);
+			KeypadTileEntity te = (KeypadTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);
 
 			if(te != null)
 			{
 				if(message.insert)
 					te.insertModule(message.stack);
 				else
-					te.removeModule(EnumCustomModules.DISGUISE);
+					te.removeModule(CustomModules.DISGUISE);
 
 				te.refreshModel();
 			}

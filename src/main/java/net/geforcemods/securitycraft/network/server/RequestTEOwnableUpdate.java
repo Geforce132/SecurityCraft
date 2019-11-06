@@ -4,10 +4,10 @@ import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.client.UpdateTEOwnable;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +26,7 @@ public class RequestTEOwnableUpdate
 	 * Initializes this packet with a tile entity
 	 * @param te The tile entity to initialize with
 	 */
-	public RequestTEOwnableUpdate(TileEntityOwnable te)
+	public RequestTEOwnableUpdate(OwnableTileEntity te)
 	{
 		this(te.getPos(), te.getWorld().dimension.getType().getId());
 	}
@@ -70,8 +70,8 @@ public class RequestTEOwnableUpdate
 	public static void onMessage(RequestTEOwnableUpdate message, Supplier<NetworkEvent.Context> ctx)
 	{
 		TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
-		boolean customizable = te instanceof CustomizableSCTE;
-		CompoundNBT tag = customizable ? ((CustomizableSCTE)te).write(new CompoundNBT()) : null;
+		boolean customizable = te instanceof CustomizableTileEntity;
+		CompoundNBT tag = customizable ? ((CustomizableTileEntity)te).write(new CompoundNBT()) : null;
 
 		if(te != null && te instanceof IOwnable)
 			SecurityCraft.channel.reply(new UpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag), ctx.get());

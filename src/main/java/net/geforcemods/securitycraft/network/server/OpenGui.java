@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
-import net.geforcemods.securitycraft.containers.ContainerBriefcase;
-import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -71,7 +71,7 @@ public class OpenGui {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 					{
-						return new ContainerBriefcase(windowId, inv, new BriefcaseInventory(player.inventory.getCurrentItem()));
+						return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(player.inventory.getCurrentItem()));
 					}
 
 					@Override
@@ -87,7 +87,7 @@ public class OpenGui {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 					{
-						return new ContainerGeneric(SCContent.cTypeBriefcaseSetup, windowId);
+						return new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId);
 					}
 
 					@Override
@@ -103,7 +103,7 @@ public class OpenGui {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 					{
-						return new ContainerGeneric(SCContent.cTypeBriefcase, windowId);
+						return new GenericContainer(SCContent.cTypeBriefcase, windowId);
 					}
 
 					@Override

@@ -25,6 +25,6 @@ public @interface RegisterItemBlock
 
 	public static enum SCItemGroup
 	{
-		TECHNICAL, MINES, DECORATION;
+		TECHNICAL, EXPLOSIVES, DECORATION;
 	}
 }

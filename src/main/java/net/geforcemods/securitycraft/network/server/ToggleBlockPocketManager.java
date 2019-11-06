@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
+import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +19,7 @@ public class ToggleBlockPocketManager
 
 	public ToggleBlockPocketManager() {}
 
-	public ToggleBlockPocketManager(TileEntityBlockPocketManager te, boolean enabling, int size)
+	public ToggleBlockPocketManager(BlockPocketManagerTileEntity te, boolean enabling, int size)
 	{
 		pos = te.getPos();
 		dimension = te.getWorld().getDimension().getType().getId();
@@ -61,14 +61,14 @@ public class ToggleBlockPocketManager
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = ServerLifecycleHooks.getCurrentServer().getWorld(DimensionType.getById(message.dimension)).getTileEntity(message.pos);
 
-			if(te instanceof TileEntityBlockPocketManager)
+			if(te instanceof BlockPocketManagerTileEntity)
 			{
-				((TileEntityBlockPocketManager)te).size = message.size;
+				((BlockPocketManagerTileEntity)te).size = message.size;
 
 				if(message.enabling)
-					((TileEntityBlockPocketManager)te).enableMultiblock();
+					((BlockPocketManagerTileEntity)te).enableMultiblock();
 				else
-					((TileEntityBlockPocketManager)te).disableMultiblock();
+					((BlockPocketManagerTileEntity)te).disableMultiblock();
 			}
 		});
 

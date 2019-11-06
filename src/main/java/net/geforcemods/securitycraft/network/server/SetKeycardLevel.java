@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -66,8 +66,8 @@ public class SetKeycardLevel {
 			PlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 
-			((TileEntityKeycardReader) world.getTileEntity(pos)).setPassword(String.valueOf(level));
-			((TileEntityKeycardReader) world.getTileEntity(pos)).setRequiresExactKeycard(exactCard);
+			((KeycardReaderTileEntity) world.getTileEntity(pos)).setPassword(String.valueOf(level));
+			((KeycardReaderTileEntity) world.getTileEntity(pos)).setRequiresExactKeycard(exactCard);
 		});
 
 		ctx.get().setPacketHandled(true);

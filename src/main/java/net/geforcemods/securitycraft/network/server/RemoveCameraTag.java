@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.items.ItemCameraMonitor;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -51,7 +51,7 @@ public class RemoveCameraTag
 			ItemStack monitor = ctx.get().getSender().inventory.getCurrentItem();
 			int id = message.camID;
 
-			monitor.getTag().remove(ItemCameraMonitor.getTagNameFromPosition(monitor.getTag(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTag()).get(id - 1)));
+			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), ((CameraMonitorItem)monitor.getItem()).getCameraPositions(monitor.getTag()).get(id - 1)));
 		});
 
 		ctx.get().setPacketHandled(true);

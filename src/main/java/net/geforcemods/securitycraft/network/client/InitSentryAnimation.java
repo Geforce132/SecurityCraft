@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.network.PacketBuffer;
@@ -55,12 +55,12 @@ public class InitSentryAnimation
 
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
 	{
-		List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+		List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
 
 		if(!sentries.isEmpty())
 		{
-			((EntitySentry)sentries.get(0)).animateUpwards = message.animateUpwards;
-			((EntitySentry)sentries.get(0)).animate = message.animate;
+			((SentryEntity)sentries.get(0)).animateUpwards = message.animateUpwards;
+			((SentryEntity)sentries.get(0)).animate = message.animate;
 		}
 
 		ctx.get().setPacketHandled(true);

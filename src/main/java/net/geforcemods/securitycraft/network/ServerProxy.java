@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.network;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.items.ItemCameraMonitor;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
@@ -46,11 +46,11 @@ public class ServerProxy implements IProxy
 	public void displayEditModuleGui(ItemStack stack) {}
 
 	@Override
-	public void displayCameraMonitorGui(PlayerInventory inv, ItemCameraMonitor item, CompoundNBT stackTag) {}
+	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag) {}
 
 	@Override
 	public void displaySCManualGui() {}
 
 	@Override
-	public void displayEditSecretSignGui(TileEntitySecretSign te) {}
+	public void displayEditSecretSignGui(SecretSignTileEntity te) {}
 }

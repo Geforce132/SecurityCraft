@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -65,8 +65,8 @@ public class MountCamera {
 			ServerPlayerEntity player = ctx.get().getSender();
 			World world = player.world;
 
-			if((BlockUtils.getBlock(world, BlockUtils.toPos(x, y, z)) instanceof BlockSecurityCamera))
-				((BlockSecurityCamera) BlockUtils.getBlock(world, x, y, z)).mountCamera(world, x, y, z, id, player);
+			if((BlockUtils.getBlock(world, BlockUtils.toPos(x, y, z)) instanceof SecurityCameraBlock))
+				((SecurityCameraBlock) BlockUtils.getBlock(world, x, y, z)).mountCamera(world, x, y, z, id, player);
 		});
 
 		ctx.get().setPacketHandled(true);

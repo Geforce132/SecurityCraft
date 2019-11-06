@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -71,14 +71,14 @@ public class SetPassword {
 	}
 
 	private static void checkForAdjacentChest(BlockPos pos, String codeToSet, PlayerEntity player) {
-		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest)
-			if(getWorld(player).getTileEntity(pos.east()) != null && getWorld(player).getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
+		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof KeypadChestTileEntity)
+			if(getWorld(player).getTileEntity(pos.east()) != null && getWorld(player).getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.east())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.west()) != null && getWorld(player).getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
+			else if(getWorld(player).getTileEntity(pos.west()) != null && getWorld(player).getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.west())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.south()) != null && getWorld(player).getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
+			else if(getWorld(player).getTileEntity(pos.south()) != null && getWorld(player).getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.south())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.north()) != null && getWorld(player).getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
+			else if(getWorld(player).getTileEntity(pos.north()) != null && getWorld(player).getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.north())).setPassword(codeToSet);
 	}
 

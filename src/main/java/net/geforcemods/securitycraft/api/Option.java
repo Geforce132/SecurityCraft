@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
-import net.geforcemods.securitycraft.gui.components.NamedSlider;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
+import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.fml.client.config.GuiSlider;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.client.config.GuiSlider.ISlider;
 
 /**
  * A class that allows blocks that have
- * {@link CustomizableSCTE}s to have custom, "per-block"
+ * {@link CustomizableTileEntity}s to have custom, "per-block"
  * options that are separate from the main SecurityCraft
  * configuration options.
  *
@@ -45,7 +45,7 @@ public class Option<T> {
 	}
 
 	/**
-	 * Called when this option's button in {@link GuiCustomizeBlock} is pressed.
+	 * Called when this option's button in {@link CustomizeBlockScreen} is pressed.
 	 * Update the option's value here. <p>
 	 *
 	 * NOTE: This gets called on the server side, not on the client!
@@ -140,7 +140,7 @@ public class Option<T> {
 	/**
 	 * @return If this option is some kind of number (integer, float, etc.),
 	 *         return the amount the number should increase/decrease every time
-	 *         the option is toggled in {@link GuiCustomizeBlock}.
+	 *         the option is toggled in {@link CustomizeBlockScreen}.
 	 */
 	public T getIncrement() {
 		return increment;
@@ -229,7 +229,7 @@ public class Option<T> {
 	 */
 	public static class OptionDouble extends Option<Double> implements ISlider{
 		private boolean slider;
-		private CustomizableSCTE tileEntity;
+		private CustomizableTileEntity tileEntity;
 
 		public OptionDouble(String optionName, Double value) {
 			super(optionName, value);
@@ -241,7 +241,7 @@ public class Option<T> {
 			slider = false;
 		}
 
-		public OptionDouble(CustomizableSCTE te, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
+		public OptionDouble(CustomizableTileEntity te, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
 			super(optionName, value, min, max, increment);
 			slider = s;
 			tileEntity = te;

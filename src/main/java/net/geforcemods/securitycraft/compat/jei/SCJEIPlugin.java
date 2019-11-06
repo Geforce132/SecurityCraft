@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
+import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -33,7 +33,7 @@ public class SCJEIPlugin implements IModPlugin
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration)
 	{
-		registration.addGuiContainerHandler(GuiCustomizeBlock.class, new SlotMover());
+		registration.addGuiContainerHandler(CustomizeBlockScreen.class, new SlotMover());
 	}
 
 	@Override

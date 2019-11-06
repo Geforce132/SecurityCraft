@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +46,7 @@ public class ClearLoggerServer
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			TileEntityLogger te = (TileEntityLogger)player.world.getTileEntity(message.pos);
+			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity)player.world.getTileEntity(message.pos);
 
 			if(te != null)
 			{

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
+import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -49,7 +49,7 @@ public class SetCameraRotation {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 
-			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
+			if(player.getRidingEntity() != null && player.getRidingEntity() instanceof SecurityCameraEntity){
 				player.getRidingEntity().rotationYaw = message.rotationYaw;
 				player.getRidingEntity().rotationPitch = message.rotationPitch;
 			}

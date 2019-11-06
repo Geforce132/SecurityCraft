@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -57,10 +57,10 @@ public class UpdateSliderValue {
 			double value = message.value;
 			PlayerEntity player = ctx.get().getSender();
 
-			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof CustomizableSCTE) {
-				((OptionDouble)((CustomizableSCTE) player.world.getTileEntity(pos)).customOptions()[id]).setValue(value);
-				((CustomizableSCTE) player.world.getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) player.world.getTileEntity(pos)).customOptions()[id]);
-				((CustomizableSCTE) player.world.getTileEntity(pos)).sync();
+			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
+				((OptionDouble)((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]).setValue(value);
+				((CustomizableTileEntity) player.world.getTileEntity(pos)).onOptionChanged(((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]);
+				((CustomizableTileEntity) player.world.getTileEntity(pos)).sync();
 			}
 		});
 

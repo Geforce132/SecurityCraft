@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -25,11 +25,11 @@ public class ModuleInventory implements IInventory {
 	public ModuleInventory(ItemStack moduleItem) {
 		module = moduleItem;
 
-		if(moduleItem.getItem() == null || !(moduleItem.getItem() instanceof ItemModule)) return;
+		if(moduleItem.getItem() == null || !(moduleItem.getItem() instanceof ModuleItem)) return;
 
-		SIZE = ((ItemModule) moduleItem.getItem()).getNumberOfAddons();
-		maxNumberOfItems = ((ItemModule) moduleItem.getItem()).getNumberOfItemAddons();
-		maxNumberOfBlocks = ((ItemModule) moduleItem.getItem()).getNumberOfBlockAddons();
+		SIZE = ((ModuleItem) moduleItem.getItem()).getNumberOfAddons();
+		maxNumberOfItems = ((ModuleItem) moduleItem.getItem()).getNumberOfItemAddons();
+		maxNumberOfBlocks = ((ModuleItem) moduleItem.getItem()).getNumberOfBlockAddons();
 		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
 
 		if (!module.hasTag())
