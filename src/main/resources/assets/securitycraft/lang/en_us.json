@@ -587,6 +587,8 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "Invalid block \"%2$s\" at position %1$s!",
 	"messages.securitycraft:blockpocket.invalidBlock.pillar": "Invalid block \"%2$s\" at position %1$s! (Make sure the pillar is rotated correctly!)",
 	"messages.securitycraft:blockpocket.unowned": "You do not own the block \"%2$s\" at position %1$s!",
+	"messages.securitycraft:blockpocket.activated": "Block Pocket activated!",
+	"messages.securitycraft:blockpocket.deactivated": "Block Pocket deactivated!",
 
 	"jei.securitycraft:reinforcedBlock.info": "Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.",
 

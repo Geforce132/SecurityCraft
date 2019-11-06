@@ -12,7 +12,9 @@ import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.containers.ContainerTEGeneric;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -26,6 +28,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileEntityBlockPocketManager extends CustomizableSCTE implements INamedContainerProvider
@@ -185,6 +188,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IN
 			}
 
 			setWalls(!hasModule(EnumCustomModules.DISGUISE));
+			return new TranslationTextComponent("messages.securitycraft:blockpocket.activated");
 		}
 
 		return null;
@@ -195,7 +199,10 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE implements IN
 		if(enabled)
 		{
 			if(world.isRemote)
+			{
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, false, size));
+				PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey()), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
+			}
 
 			enabled = false;
 

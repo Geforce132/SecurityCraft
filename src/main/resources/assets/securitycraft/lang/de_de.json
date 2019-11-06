@@ -586,7 +586,9 @@
     "messages.securitycraft:blockpocket.multipleManagers": "Es existiert mehr als ein Blocktaschenverwalter in der Struktur.",
     "messages.securitycraft:blockpocket.invalidBlock": "Ungültiger Block \"%2$s\" an Position %1$s!",
     "messages.securitycraft:blockpocket.invalidBlock.pillar": "Ungültiger Block \"%2$s\" an Position %1$s! (Achte auf die korrekte Rotation der Säule!)",
-    "messages.securitycraft:blockpocket.unowned": "YDu besitzt nicht den Block \"%2$s\" an Position %1$s!",
+    "messages.securitycraft:blockpocket.unowned": "Du besitzt nicht den Block \"%2$s\" an Position %1$s!",
+	"messages.securitycraft:blockpocket.activated": "Blocktasche aktiviert!",
+	"messages.securitycraft:blockpocket.deactivated": "Blocktasche deaktiviert!",
 
     "jei.securitycraft:reinforcedBlock.info": "Rechtsklicke einen Universellen Block Entferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Block Entferner zerbrechen.",
 

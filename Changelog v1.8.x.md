@@ -7,6 +7,7 @@
 - New: Recipes now use block/item tags wherever possible
 - New: Reinforced Red Sand
 - New: Reinforced versions of all types of wooden pressure plates
+- New: The Block Pocket now tells the player when it was successfully de-/activated
 - Change: The Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
 - Change: The Frame recipe is slightly different, ingredients stay the same
 - Change: The Sentry now uses Reinforced Blocks of Iron in its recipe
