@@ -5,6 +5,7 @@
 - New: All Reinforced Terracotta blocks can now be crafted analogous to their vanilla counterparts
 - New: Reinforced Red Sand
 - New: Reinforced Wooden Pressure Plate
+- New: The Block Pocket now tells the player when it was successfully de-/activated
 - Change: The Reinforced Iron Trapdoor is now created by putting a regular Iron Trapdoor into a Universal Block Reinforcer
 - Change: The Frame recipe is slightly different, ingredients stay the same
 - Change: The Sentry now uses Reinforced Blocks of Iron in its recipe
@@ -15,6 +16,7 @@
 - Fix: Disguised Keypad collision and selection boxes do not respect the boxes of the block it's disguised as
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 - Fix: Entities do not get healed when standing in fake lava
+- Potential Fix: Block Pocket loses its owner when the player reloads the world
 
 --------------------------Changelog for v1.8.13.1 of SecurityCraft--------------------------
 

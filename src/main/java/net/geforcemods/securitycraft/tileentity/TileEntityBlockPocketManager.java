@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
@@ -11,6 +12,8 @@ import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockQuartz.EnumType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -19,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityBlockPocketManager extends CustomizableSCTE
 {
@@ -172,6 +176,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			}
 
 			setWalls(!hasModule(EnumCustomModules.DISGUISE));
+			return new TextComponentTranslation("messages.securitycraft:blockpocket.activated");
 		}
 
 		return null;
@@ -182,7 +187,10 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		if(enabled)
 		{
 			if(world.isRemote)
+			{
 				SecurityCraft.network.sendToServer(new PacketCToggleBlockPocketManager(this, false, size));
+				PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
+			}
 
 			enabled = false;
 
