@@ -15,6 +15,7 @@ public class DataGenRegistrar
 	{
 		DataGenerator generator = event.getGenerator();
 
+		generator.addProvider(new BlockLootTableGenerator(generator));
 		generator.addProvider(new BlockTagGenerator(generator));
 		generator.addProvider(new FluidTagGenerator(generator));
 		generator.addProvider(new ItemTagGenerator(generator));

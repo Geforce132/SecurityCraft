@@ -46,7 +46,7 @@ public class RecipeGenerator extends RecipeProvider
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<IFinishedRecipe> consumer)
+	protected final void registerRecipes(Consumer<IFinishedRecipe> consumer)
 	{
 		ItemStack healingStack = new ItemStack(Items.POTION);
 		ItemStack strongHealingStack = new ItemStack(Items.POTION);
@@ -713,7 +713,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) //woof
+	protected final void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) //woof
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 3)
 		.setGroup("securitycraft:bark")
@@ -724,7 +724,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
+	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.setGroup("securitycraft:block_mines")
@@ -734,7 +734,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> input, IItemProvider result)
+	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> input, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.setGroup("securitycraft:block_mines")
@@ -744,7 +744,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addCarpetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider wool, IItemProvider carpet)
+	protected final void addCarpetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider wool, IItemProvider carpet)
 	{
 		ShapedRecipeBuilder.shapedRecipe(carpet, 3)
 		.setGroup("securitycraft:reinforced_carpets")
@@ -754,7 +754,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
+	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
 	{
 		ShapedRecipeBuilder.Result recipe;
 		Map<Character, Ingredient> key = Maps.newLinkedHashMap();
@@ -771,7 +771,7 @@ public class RecipeGenerator extends RecipeProvider
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 	}
 
-	protected void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result)
+	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:modules")
@@ -785,7 +785,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addModuleRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result)
+	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:modules")
@@ -799,7 +799,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addPolishingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	protected final void addPolishingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 4)
 		.patternLine("BB")
@@ -809,7 +809,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addPressurePlateRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	protected final void addPressurePlateRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:reinforced_pressure_plates")
@@ -819,7 +819,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addSecretSignRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider vanillaSign, IItemProvider result)
+	protected final void addSecretSignRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider vanillaSign, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result, 3)
 		.setGroup("securitycraft:secret_signs")
@@ -829,7 +829,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addSlabRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	protected final void addSlabRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 6)
 		.setGroup("securitycraft:slabs")
@@ -839,7 +839,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addStainedGlassRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
+	protected final void addStainedGlassRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_glass")
@@ -852,7 +852,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addStainedGlassPaneRecipes(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider stainedGlass, IItemProvider result)
+	protected final void addStainedGlassPaneRecipes(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider stainedGlass, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_glass_panes")
@@ -872,7 +872,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, result.asItem().getRegistryName().getPath() + "_from_glass"));
 	}
 
-	protected void addStainedTerracottaRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
+	protected final void addStainedTerracottaRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_terracotta")
@@ -885,7 +885,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected void addStairsRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	protected final void addStairsRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 4)
 		.setGroup("securitycraft:stairs")

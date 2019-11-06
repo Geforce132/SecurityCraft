@@ -18,4 +18,10 @@ public class FluidTagGenerator extends FluidTagsProvider
 		getBuilder(FluidTags.LAVA).add(SCContent.fakeLava, SCContent.flowingFakeLava);
 		getBuilder(FluidTags.WATER).add(SCContent.fakeWater, SCContent.flowingFakeWater);
 	}
+
+	@Override
+	public String getName()
+	{
+		return "SecurityCraft Fluid Tags";
+	}
 }
