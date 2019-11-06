@@ -33,15 +33,6 @@ public class TileEntityBlockPocket extends CustomizableSCTE
 	}
 
 	@Override
-	public void remove()
-	{
-		super.remove();
-
-		if(manager != null)
-			manager.disableMultiblock();
-	}
-
-	@Override
 	public void onTileEntityDestroyed()
 	{
 		super.onTileEntityDestroyed();
