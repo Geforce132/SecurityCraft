@@ -19,7 +19,7 @@
 - Fix: Fake Liquid Buckets can't be crafted using level two potions
 - Fix: Chests and Furnaces cannot be converted to their password-protected variant when not sneak-rightclicking
 - Fix: Reinforced Doors and Scanner Doors do not drop when breaking the top half or the block below them
-- Fix: Disguised Keypad collision does not completely respect the collision of the block it's disguised os
+- Fix: Disguised Keypad collision does not completely respect the collision of the block it's disguised as
 - Fix: Disguised Keypad throws a shadow no matter what it's disguised as (ambient occlusion)
 - Fix: Block Pocket Description incorrectly mentions Reinforced Quartz instead of Reinforced Crystal Quartz
 - Fix: Cannot walk through non-see-through Block Pocket Walls
