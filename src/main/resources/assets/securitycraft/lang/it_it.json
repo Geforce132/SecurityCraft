@@ -298,6 +298,13 @@
     "block.securitycraft.block_pocket_wall": "Muro di blocco tascabile",
     "block.securitycraft.block_pocket_manager": "Manager del blocco tascabile",
     "block.securitycraft.reinforced_stone_pressure_plate": "Pedana a pressione di pietra rinforzata",
+    "block.securitycraft.reinforced_oak_pressure_plate": "Pedana a pressione di quercia rinforzata",
+    "block.securitycraft.reinforced_spruce_pressure_plate": "Pedana a pressione d'abete rinforzata",
+    "block.securitycraft.reinforced_birch_pressure_plate": "Pedana a pressione di betulla rinforzata",
+    "block.securitycraft.reinforced_jungle_pressure_plate": "Pedana a pressione della giungla rinforzata",
+    "block.securitycraft.reinforced_acacia_pressure_plate": "Pedana a pressione d'acacia rinforzata",
+    "block.securitycraft.reinforced_dark_oak_pressure_plate": "Pedana a pressione di quercia scura rinforzata",
+    "block.securitycraft.reinforced_red_sand": "Sabbia rossa rinforzata",
     
     "item.securitycraft.codebreaker": "Decrittatore",
     "item.securitycraft.door_indestructible_iron_item": "Porta di ferro rinforzata",
