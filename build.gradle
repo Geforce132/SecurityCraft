@@ -33,7 +33,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20191025-1.14.3'
+    mappings channel: 'snapshot', version: '20191109-1.14.3'
 	
     runs {
         client {
@@ -91,7 +91,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.14.4-28.1.68'
+    minecraft 'net.minecraftforge:forge:1.14.4-28.1.87'
 
     compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4") {
         transitive = false
@@ -99,8 +99,8 @@ dependencies {
     compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.14:1.14-1.4.37-12") {
         transitive = false
     })
-	compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.18:api")
-	runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.18")
+	compileOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.24:api")
+	runtimeOnly fg.deobf("mezz.jei:jei-1.14.4:6.0.0.24")
 }
 
 jar {

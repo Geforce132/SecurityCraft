@@ -104,14 +104,14 @@ public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPas
 		else return super.causesSuffocation(state, world, pos);
 	}
 
-	@Override //getAmbientOcclusionLightValue, mapped starting with 20191104
-	public float func_220080_a(BlockState state, IBlockReader world, BlockPos pos)
+	@Override
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
-			return extendedState.func_215703_d(world, pos);
-		else return super.func_220080_a(state, world, pos);
+			return extendedState.getAmbientOcclusionLightValue(world, pos);
+		else return super.getAmbientOcclusionLightValue(state, world, pos);
 	}
 
 	@Override

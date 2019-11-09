@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.misc.CustomModules;
-
 /**
  * A simple enum which contains all the possible actions for
  * CustomizableSCTE.onLinkedBlockAction(). Each action has different
