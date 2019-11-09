@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+
+- Fix: Universal Block Reinforcer adds an unnecessary NBT to the reinforced block
+
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
 
 - New: Reinforced Glass Panes can now be crafted using six Reinforced Glass

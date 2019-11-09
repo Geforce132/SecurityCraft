@@ -59,7 +59,6 @@ public class BlockReinforcerContainer extends Container
 
 			if(!newStack.isEmpty())
 			{
-				newStack.setDamage(stack.getDamage());
 				newStack.setCount(stack.getCount());
 				blockReinforcer.damageItem(stack.getCount(), player, p -> {});
 				player.dropItem(newStack, false);
