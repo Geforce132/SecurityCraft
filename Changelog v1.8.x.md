@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.? of SecurityCraft--------------------------
 
 - Fix: Universal Block Reinforcer adds an unnecessary NBT to the reinforced block
+- Fix: Reinforced Slabs aren't being placed properly when placing against the side of a block
 
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
 

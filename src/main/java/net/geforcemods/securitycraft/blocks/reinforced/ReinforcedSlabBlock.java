@@ -84,7 +84,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 			BlockState newState = getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
 
 			Direction direction = ctx.getFace();
-			return direction != Direction.DOWN && (direction == Direction.UP || !(ctx.getHitVec().y > 0.5D)) ? newState : newState.with(TYPE, SlabType.TOP);
+			return direction != Direction.DOWN && (direction == Direction.UP || !(ctx.getHitVec().y - ctx.getPos().getY() > 0.5D)) ? newState : newState.with(TYPE, SlabType.TOP);
 		}
 	}
 
