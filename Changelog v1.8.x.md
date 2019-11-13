@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
+
+- Fix: Crash when opening customizing GUI of blocks that can't take modules
+
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
 
 - New: Reinforced Glass Panes can now be crafted using six Reinforced Glass

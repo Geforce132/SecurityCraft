@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiCustomizeBlock extends GuiContainer{
 	private static final ResourceLocation[] TEXTURES = {
+			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
@@ -119,7 +120,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	{
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions() - 1]);
+		mc.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions()]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
