@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
 - Fix: Crash when opening customizing GUI of blocks that can't take modules
+- Fix: In the customizing GUI, JEI moves items out of the way without needing to
 - Misc.: Added another safeguard against alarm crash
 
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------

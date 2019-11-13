@@ -34,7 +34,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
 	};
-	private static final List<Rectangle> EXTRA_AREAS = new ArrayList<>();
+	private final List<Rectangle> extraAreas = new ArrayList<>();
 	private CustomizableSCTE tileEntity;
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
@@ -85,7 +85,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 			if(button == null)
 				continue;
 
-			EXTRA_AREAS.add(new Rectangle(button.x, button.y, button.width, button.height));
+			extraAreas.add(new Rectangle(button.x, button.y, button.width, button.height));
 		}
 	}
 
@@ -155,6 +155,6 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 	public List<Rectangle> getGuiExtraAreas()
 	{
-		return EXTRA_AREAS;
+		return extraAreas;
 	}
 }
