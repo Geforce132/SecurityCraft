@@ -32,6 +32,7 @@ import net.minecraftforge.fml.client.config.HoverChecker;
 @OnlyIn(Dist.CLIENT)
 public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContainer>{
 	private static final ResourceLocation[] TEXTURES = {
+			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
@@ -121,7 +122,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	{
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions() - 1]);
+		minecraft.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions()]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
