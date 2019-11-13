@@ -105,6 +105,9 @@ public class BlockKeycardReader extends BlockOwnable  {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(player.inventory.getCurrentItem().getItem() == SCContent.universalBlockModifier)
+			return false;
+
 		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) world.getTileEntity(pos)).openPasswordGUI(player);
 		else if(player.inventory.getCurrentItem().getItem() == SCContent.adminTool)

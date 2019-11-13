@@ -2,6 +2,7 @@
 
 - Fix: Crash when opening customizing GUI of blocks that can't take modules
 - Fix: In the customizing GUI, JEI moves items out of the way without needing to
+- Fix: Keycard Reader GUI displays for a short amount of time when opening the customizing GUI
 - Misc.: Added another safeguard against alarm crash
 
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
