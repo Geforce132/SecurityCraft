@@ -12,8 +12,8 @@ import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
-import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -37,7 +37,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
 	};
-	private static final List<Rectangle2d> EXTRA_AREAS = new ArrayList<>();
+	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private CustomizableTileEntity tileEntity;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private Button[] optionButtons = new Button[5];
@@ -87,7 +87,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			if(button == null)
 				continue;
 
-			EXTRA_AREAS.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
 	}
 
@@ -154,6 +154,6 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 	public List<Rectangle2d> getGuiExtraAreas()
 	{
-		return EXTRA_AREAS;
+		return extraAreas;
 	}
 }
