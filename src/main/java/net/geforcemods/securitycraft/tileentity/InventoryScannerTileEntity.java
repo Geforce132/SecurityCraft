@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.geforcemods.securitycraft.blocks.InventoryScannerFieldblock;
+import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -191,7 +191,7 @@ public class InventoryScannerTileEntity extends CustomizableTileEntity implement
 			setInventorySlotContents(slot, stackToInsert);
 			return ItemStack.EMPTY;
 		}
-		else if(InventoryScannerFieldblock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit)
+		else if(InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit)
 		{
 			if(limit - slotStack.getCount() >= stackToInsert.getCount())
 			{

@@ -134,12 +134,12 @@ public class InventoryScannerBlock extends ContainerBlock {
 						{
 							if(facing == Direction.WEST || facing == Direction.EAST)
 							{
-								if(field.get(InventoryScannerFieldblock.FACING) == Direction.WEST || field.get(InventoryScannerFieldblock.FACING) == Direction.EAST)
+								if(field.get(InventoryScannerFieldBlock.FACING) == Direction.WEST || field.get(InventoryScannerFieldBlock.FACING) == Direction.EAST)
 									world.destroyBlock(offsetJPos, false);
 							}
 							else if(facing == Direction.NORTH || facing == Direction.SOUTH)
 							{
-								if(field.get(InventoryScannerFieldblock.FACING) == Direction.NORTH || field.get(InventoryScannerFieldblock.FACING) == Direction.SOUTH)
+								if(field.get(InventoryScannerFieldBlock.FACING) == Direction.NORTH || field.get(InventoryScannerFieldBlock.FACING) == Direction.SOUTH)
 									world.destroyBlock(offsetJPos, false);
 							}
 						}

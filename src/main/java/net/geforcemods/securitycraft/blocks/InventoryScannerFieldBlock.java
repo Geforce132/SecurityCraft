@@ -38,13 +38,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.LogicalSide;
 
-public class InventoryScannerFieldblock extends ContainerBlock implements IIntersectable {
+public class InventoryScannerFieldBlock extends ContainerBlock implements IIntersectable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final VoxelShape SHAPE_EW = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
 	private static final VoxelShape SHAPE_NS = Block.makeCuboidShape(6, 0, 0, 10, 16, 16);
 
-	public InventoryScannerFieldblock(Material material) {
+	public InventoryScannerFieldBlock(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
