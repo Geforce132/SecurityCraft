@@ -1,11 +1,15 @@
+--------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+
+- Fix: Laser and Inventory Scanner Field's name is not localized
+- Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
+
+
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
 - Fix: Universal Block Reinforcer adds an unnecessary NBT to the reinforced block
 - Fix: Reinforced Slabs aren't being placed properly when placing against the side of a block
 - Fix: Crash when opening customizing GUI of blocks that can't take modules
 - Fix: In the customizing GUI, JEI moves items out of the way without needing to
-- Fix: Laser and Inventory Scanner Field's name is not localized
-- Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Misc.: Added another safeguard against alarm crash
 
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
