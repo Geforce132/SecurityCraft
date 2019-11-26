@@ -8,6 +8,10 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
+
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 
@@ -19,6 +23,13 @@ sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = co
 
 processResources { 
 	exclude ".cache"
+	
+    //minify json resources
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+        }
+    }
 }
 
 sourceSets {
