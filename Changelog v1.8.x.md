@@ -1,8 +1,13 @@
+--------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+
+- Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
+
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
 - Fix: Crash when opening customizing GUI of blocks that can't take modules
 - Fix: In the customizing GUI, JEI moves items out of the way without needing to
 - Fix: Keycard Reader GUI displays for a short amount of time when opening the customizing GUI
+- Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Misc.: Added another safeguard against alarm crash
 
 --------------------------Changelog for v1.8.14 of SecurityCraft--------------------------
