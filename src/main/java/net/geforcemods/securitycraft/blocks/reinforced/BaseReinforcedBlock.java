@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.block.Block;
@@ -12,8 +11,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock
@@ -53,12 +50,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState();
-	}
-
-	@Override
-	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon)
-	{
-		return this == SCContent.reinforcedIronBlock || this == SCContent.reinforcedGoldBlock || this == SCContent.reinforcedDiamondBlock || this == SCContent.reinforcedEmeraldBlock;
 	}
 
 	@Override
