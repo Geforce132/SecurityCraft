@@ -1,6 +1,7 @@
---------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
+- Fix: Crash when the Trophy System tries to destroy a sentry's bullet
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
