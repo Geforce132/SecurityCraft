@@ -1,8 +1,9 @@
---------------------------Changelog for v1.8.? of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
 - New: Reinforced Prismarine, Reinforced Prismarine Bricks, Reinforced Dark Prismarine and Reinforced Sea Lanterns can now be used for building a conduit
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
+- Fix: Crash when the Trophy System tries to destroy a sentry's bullet
 - Misc: The minimum required Forge version is now 28.1.91
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------

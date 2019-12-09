@@ -95,18 +95,18 @@ public class TileEntityTrophySystem extends OwnableTileEntity {
 
 		return potentialTargets.get(target);
 	}
-	
+
 	/**
 	 * Returns the UUID of the player who shot the given Entity
 	 */
 	public UUID getShooterUUID(Entity entity) {
-		if(entity instanceof ArrowEntity)
+		if(entity instanceof ArrowEntity && ((ArrowEntity)entity).shootingEntity != null)
 			return ((ArrowEntity) entity).shootingEntity;
 
-		else if(entity instanceof FireballEntity)
+		else if(entity instanceof FireballEntity && ((FireballEntity)entity).shootingEntity != null)
 			return ((FireballEntity) entity).shootingEntity.getUniqueID();
 
-		else 
+		else
 			return null;
 	}
 
