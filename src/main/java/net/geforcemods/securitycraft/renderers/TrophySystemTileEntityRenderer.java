@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -14,10 +14,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TileEntityTrophySystem> {
+public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySystemTileEntity> {
 
 	@Override
-	public void render(TileEntityTrophySystem tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TrophySystemTileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 

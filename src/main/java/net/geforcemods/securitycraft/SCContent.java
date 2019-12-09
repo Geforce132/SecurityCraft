@@ -40,7 +40,7 @@ import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
-import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.Ownable;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
@@ -471,7 +471,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":track_mine")
 	public static TileEntityType<TrackMineTileEntity> teTypeTrackMine;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
-	public static TileEntityType<TileEntityTrophySystem> teTypeTrophySystem;
+	public static TileEntityType<TrophySystemTileEntity> teTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static TileEntityType<BlockPocketManagerTileEntity> teTypeBlockPocketManager;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")

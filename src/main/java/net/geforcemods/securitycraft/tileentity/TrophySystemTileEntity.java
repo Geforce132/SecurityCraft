@@ -12,7 +12,7 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 
-public class TileEntityTrophySystem extends OwnableTileEntity {
+public class TrophySystemTileEntity extends OwnableTileEntity {
 
 	// The range (in blocks) that the trophy will search for projectiles in
 	public static final int range = 10;
@@ -22,7 +22,7 @@ public class TileEntityTrophySystem extends OwnableTileEntity {
 	public Entity entityBeingTargeted = null;
 	public int cooldown = cooldownTime;
 
-	public TileEntityTrophySystem()
+	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
 	}

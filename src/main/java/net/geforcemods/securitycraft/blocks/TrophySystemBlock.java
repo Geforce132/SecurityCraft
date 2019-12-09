@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -74,7 +74,7 @@ public class TrophySystemBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new TileEntityTrophySystem();
+		return new TrophySystemTileEntity();
 	}
 
 }
