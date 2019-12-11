@@ -4,6 +4,7 @@
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
+- Fix: Occasional crash when right-clicking the Camera Monitor
 - Misc: The minimum required Forge version is now 28.1.91
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
