@@ -99,8 +99,6 @@ public class ModuleItem extends Item{
 			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").getFormattedText()));
 
 		if(nbtCanBeModified) {
-			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.usage").getFormattedText()));
-
 			list.add(new StringTextComponent(" "));
 			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
 
