@@ -80,8 +80,6 @@ public class ItemModule extends Item{
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable"));
 
 		if(nbtCanBeModified) {
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.usage"));
-
 			list.add(" ");
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
 
