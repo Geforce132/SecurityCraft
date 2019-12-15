@@ -417,7 +417,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketCRefreshKeypadModel.Handler.class, PacketCRefreshKeypadModel.class, 28, Side.CLIENT);
 		network.registerMessage(PacketSetSentryMode.Handler.class, PacketSetSentryMode.class, 29, Side.SERVER);
 	}
-	
+
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
 	{
