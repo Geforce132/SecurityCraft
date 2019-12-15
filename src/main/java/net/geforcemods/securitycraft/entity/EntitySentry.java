@@ -31,6 +31,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -160,8 +161,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
 				dataManager.set(MODULE, new NBTTagCompound());
 				dataManager.set(WHITELIST, new NBTTagCompound());
-			}
-			else
+			}			
+			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
+				player.getHeldItemMainhand().getItem().onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
+			else 
 				toggleMode(player);
 
 			player.swingArm(EnumHand.MAIN_HAND);
@@ -198,6 +201,24 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		int mode = dataManager.get(MODE) + 1;
 
 		if(mode == 3)
+			mode = 0;
+
+		dataManager.set(MODE, mode);
+
+		if(player.world.isRemote)
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+		else
+			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, mode == 0));
+	}
+	
+	/**
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch
+	 * @param player The player to send the message to
+	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
+	 */
+	public void toggleMode(EntityPlayer player, int mode)
+	{
+		if(mode < 0 || mode > 2)
 			mode = 0;
 
 		dataManager.set(MODE, mode);
