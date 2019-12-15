@@ -119,7 +119,7 @@ public class GuiSRAT extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name")), -25 + 13, 0xFF0000);
+		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name")) + 15, -25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 6; i++) {
 			int[] coords = getSentryCoordinates(i);
