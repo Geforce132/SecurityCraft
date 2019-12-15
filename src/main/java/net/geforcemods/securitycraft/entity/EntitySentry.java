@@ -214,7 +214,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	/**
 	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch
 	 * @param player The player to send the message to
-	 * @param mode The mode (int) to switch to (instead of sequencially toggling)
+	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
 	 */
 	public void toggleMode(EntityPlayer player, int mode)
 	{
