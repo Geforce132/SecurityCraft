@@ -252,6 +252,7 @@ tile.securitycraft:blockPocketWall.name=Block Pocket Wall
 tile.securitycraft:blockPocketManager.name=Block Pocket Manager
 tile.securitycraft:reinforced_stone_pressure_plate.name=Reinforced Stone Pressure Plate
 tile.securitycraft:reinforced_wooden_pressure_plate.name=Reinforced Wooden Pressure Plate
+tile.securitycraft:reinforcedBookshelf.name=Reinforced Bookshelf
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door

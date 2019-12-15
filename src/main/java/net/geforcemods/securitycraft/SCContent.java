@@ -44,6 +44,7 @@ public class SCContent
 	public static Block portableRadar;
 	public static Block protecto;
 	@Reinforced @Tinted public static Block reinforcedBoneBlock;
+	@Reinforced @Tinted public static Block reinforcedBookshelf;
 	@Reinforced @Tinted public static Block reinforcedBrick;
 	@Reinforced @Tinted public static Block reinforcedCarpet;
 	@Reinforced @Tinted public static Block reinforcedCobblestone;
