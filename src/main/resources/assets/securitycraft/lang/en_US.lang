@@ -445,6 +445,7 @@ gui.securitycraft:mrat.name=Remote access tool for mines
 gui.securitycraft:srat.notBound=Not bound!
 gui.securitycraft:srat.sentryLocations=Sentry at #location
 gui.securitycraft:srat.name=Remote access tool for sentries
+gui.securitycraft:srat.modifyAll=Modify all bound sentries
 gui.securitycraft:password.invalidCode=Invalid code!
 gui.securitycraft:password.setup=setup
 gui.securitycraft:camera.activateNightVision=Activate night vision

@@ -17,13 +17,15 @@ public class PacketSetSentryMode implements IMessage
 {
 	public BlockPos pos;
 	public int mode;
+	public boolean sendMessage;
 
 	public PacketSetSentryMode() {}
 
-	public PacketSetSentryMode(BlockPos sentryPos, int mode)
+	public PacketSetSentryMode(BlockPos sentryPos, int mode, boolean sendMessage)
 	{
 		pos = sentryPos;
 		this.mode = mode;
+		this.sendMessage = sendMessage;
 	}
 
 	@Override
@@ -31,6 +33,7 @@ public class PacketSetSentryMode implements IMessage
 	{
 		pos = BlockPos.fromLong(buf.readLong());
 		mode = buf.readInt();
+		sendMessage = buf.readBoolean();
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class PacketSetSentryMode implements IMessage
 	{
 		buf.writeLong(pos.toLong());
 		buf.writeInt(mode);
+		buf.writeBoolean(sendMessage);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetSentryMode, IMessage>
@@ -51,7 +55,7 @@ public class PacketSetSentryMode implements IMessage
 				List<EntityCreature> sentries = getWorld(player).<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 				if(!sentries.isEmpty())
-					((EntitySentry)sentries.get(0)).toggleMode(player, message.mode);
+					((EntitySentry)sentries.get(0)).toggleMode(player, message.mode, message.sendMessage);
 			});
 
 			return null;

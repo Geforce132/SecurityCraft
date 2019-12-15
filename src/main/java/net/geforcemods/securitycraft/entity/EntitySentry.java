@@ -161,10 +161,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
 				dataManager.set(MODULE, new NBTTagCompound());
 				dataManager.set(WHITELIST, new NBTTagCompound());
-			}			
+			}
 			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
 				player.getHeldItemMainhand().getItem().onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
-			else 
+			else
 				toggleMode(player);
 
 			player.swingArm(EnumHand.MAIN_HAND);
@@ -210,20 +210,21 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		else
 			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, mode == 0));
 	}
-	
+
 	/**
-	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch if wanted
 	 * @param player The player to send the message to
 	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
+	 * @param sendMessage Whether or not to send a message to the player
 	 */
-	public void toggleMode(EntityPlayer player, int mode)
+	public void toggleMode(EntityPlayer player, int mode, boolean sendMessage)
 	{
 		if(mode < 0 || mode > 2)
 			mode = 0;
 
 		dataManager.set(MODE, mode);
 
-		if(player.world.isRemote)
+		if(player.world.isRemote && sendMessage)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
 		else
 			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, mode == 0));
