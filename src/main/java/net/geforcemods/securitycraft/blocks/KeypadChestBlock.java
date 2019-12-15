@@ -17,6 +17,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -120,14 +121,33 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	@Override
 	public boolean convert(PlayerEntity player, World world, BlockPos pos)
 	{
-		Direction facing = world.getBlockState(pos).get(FACING);
+		BlockState state = world.getBlockState(pos);
+		Direction facing = state.get(FACING);
+		ChestType type = state.get(TYPE);
+
+		convertChest(player, world, pos, facing, type);
+
+		if(type != ChestType.SINGLE)
+		{
+			BlockPos newPos = pos.offset(getDirectionToAttached(state));
+			BlockState newState = world.getBlockState(newPos);
+			Direction newFacing = newState.get(FACING);
+			ChestType newType = newState.get(TYPE);
+
+			convertChest(player, world, newPos, newFacing, newType);
+		}
+
+		return true;
+	}
+
+	private void convertChest(PlayerEntity player, World world, BlockPos pos, Direction facing, ChestType type)
+	{
 		ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos);
 		CompoundNBT tag = chest.write(new CompoundNBT());
 
 		chest.clear();
-		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().with(FACING, facing));
+		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().with(FACING, facing).with(TYPE, type));
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
 		((ChestTileEntity)world.getTileEntity(pos)).read(tag);
-		return true;
 	}
 }
