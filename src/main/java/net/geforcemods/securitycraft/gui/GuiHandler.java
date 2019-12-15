@@ -49,30 +49,30 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity tile_entity = world.getTileEntity(BlockUtils.toPos(x, y, z));
+		TileEntity te = world.getTileEntity(BlockUtils.toPos(x, y, z));
 
 		switch(id)
 		{
 			case SETUP_KEYCARD_READER_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case MRAT_MENU_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case INVENTORY_SCANNER_GUI_ID:
-				return new ContainerInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity);
+				return new ContainerInventoryScanner(player.inventory, (TileEntityInventoryScanner) te);
 			case USERNAME_LOGGER_GUI_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case KEYPAD_FURNACE_GUI_ID:
-				return new ContainerKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+				return new ContainerKeypadFurnace(player.inventory, (TileEntityKeypadFurnace) te);
 			case SETUP_PASSWORD_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case INSERT_PASSWORD_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case IMS_GUI_ID:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case CAMERA_MONITOR_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
 					return null;
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
@@ -86,11 +86,11 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.inventory.getCurrentItem()));
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
+				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
-				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
+				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) te);
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
@@ -98,9 +98,9 @@ public class GuiHandler implements IGuiHandler {
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
 			case MODULES:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			case BLOCK_POCKET_MANAGER:
-				return new ContainerGeneric(player.inventory, tile_entity);
+				return new ContainerGeneric(player.inventory, te);
 			default:
 				return null;
 		}
@@ -108,28 +108,28 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity tile_entity = world.getTileEntity(BlockUtils.toPos(x, y, z));
+		TileEntity te = world.getTileEntity(BlockUtils.toPos(x, y, z));
 
 		switch(id)
 		{
 			case SETUP_KEYCARD_READER_ID:
-				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) tile_entity);
+				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) te);
 			case MRAT_MENU_ID:
 				if(!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessMine)
 					return new GuiMRAT(player.inventory, player.getHeldItemMainhand());
 				else return null;
 			case INVENTORY_SCANNER_GUI_ID:
-				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
+				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) te, player);
 			case USERNAME_LOGGER_GUI_ID:
-				return new GuiLogger(player.inventory, (TileEntityLogger) tile_entity);
+				return new GuiLogger(player.inventory, (TileEntityLogger) te);
 			case KEYPAD_FURNACE_GUI_ID:
-				return new GuiKeypadFurnaceInventory(player.inventory, (TileEntityKeypadFurnace) tile_entity);
+				return new GuiKeypadFurnaceInventory(player.inventory, (TileEntityKeypadFurnace) te);
 			case SETUP_PASSWORD_ID:
-				return new GuiSetPassword(player.inventory, tile_entity, BlockUtils.getBlock(world, x, y, z));
+				return new GuiSetPassword(player.inventory, te, BlockUtils.getBlock(world, x, y, z));
 			case INSERT_PASSWORD_ID:
-				return new GuiCheckPassword(player.inventory, tile_entity, BlockUtils.getBlock(world, x, y, z));
+				return new GuiCheckPassword(player.inventory, te, BlockUtils.getBlock(world, x, y, z));
 			case IMS_GUI_ID:
-				return new GuiIMS(player.inventory, (TileEntityIMS) tile_entity);
+				return new GuiIMS(player.inventory, (TileEntityIMS) te);
 			case CAMERA_MONITOR_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
 					return null;
@@ -145,13 +145,13 @@ public class GuiHandler implements IGuiHandler {
 			case BRIEFCASE_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
-				return new GuiBriefcaseInventory(player, player.inventory);
+				return new GuiBriefcaseInventory(player, player.inventory, player.inventory.getCurrentItem());
 			case KEY_CHANGER_GUI_ID:
-				if(tile_entity == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
+				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
-				return new GuiKeyChanger(player.inventory, tile_entity);
+				return new GuiKeyChanger(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
-				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) tile_entity);
+				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) te);
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
@@ -160,11 +160,11 @@ public class GuiHandler implements IGuiHandler {
 				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
 			case MODULES:
 				if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule || player.getHeldItemMainhand().getItem() == SCContent.blacklistModule)
-					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), tile_entity);
+					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), te);
 				return null;
 			case BLOCK_POCKET_MANAGER:
-				if(tile_entity instanceof TileEntityBlockPocketManager)
-					return new GuiBlockPocketManager((TileEntityBlockPocketManager)tile_entity);
+				if(te instanceof TileEntityBlockPocketManager)
+					return new GuiBlockPocketManager((TileEntityBlockPocketManager)te);
 				return null;
 			default:
 				return null;
