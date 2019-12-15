@@ -59,6 +59,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
+import net.geforcemods.securitycraft.network.packets.PacketSetSentryMode;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
@@ -278,6 +279,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.keycardLvl5, ConfigHandler.ableToCraftKeycard5);
 		registerItem(event, SCContent.limitedUseKeycard, ConfigHandler.ableToCraftLUKeycard);
 		registerItem(event, SCContent.remoteAccessMine);
+		registerItem(event, SCContent.remoteAccessSentry);
 		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
 		registerItem(event, SCContent.universalBlockModifier);
@@ -413,7 +415,10 @@ public class RegistrationHandler
 		network.registerMessage(PacketCClearLogger.Handler.class, PacketCClearLogger.class, 26, Side.CLIENT);
 		network.registerMessage(PacketSClearLogger.Handler.class, PacketSClearLogger.class, 27, Side.SERVER);
 		network.registerMessage(PacketCRefreshKeypadModel.Handler.class, PacketCRefreshKeypadModel.class, 28, Side.CLIENT);
+		network.registerMessage(PacketSetSentryMode.Handler.class, PacketSetSentryMode.class, 29, Side.SERVER);
+
 	}
+	
 
 	@SubscribeEvent
 	public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
@@ -663,6 +668,7 @@ public class RegistrationHandler
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.remoteAccessMine, 0, new ModelResourceLocation("securitycraft:remote_access_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.remoteAccessSentry, 0, new ModelResourceLocation("securitycraft:remote_access_sentry", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.reinforcedDoorItem, 0, new ModelResourceLocation("securitycraft:door_indestructible_iron_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.fWaterBucket, 0, new ModelResourceLocation("securitycraft:bucket_f_water", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.fLavaBucket, 0, new ModelResourceLocation("securitycraft:bucket_f_lava", "inventory"));

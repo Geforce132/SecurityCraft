@@ -90,6 +90,7 @@ import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
 import net.geforcemods.securitycraft.items.ItemSecretSign;
 import net.geforcemods.securitycraft.items.ItemSentry;
+import net.geforcemods.securitycraft.items.ItemSentryRemoteAccessTool;
 import net.geforcemods.securitycraft.items.ItemTaser;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
@@ -312,6 +313,7 @@ public class SetupHandler
 		SCContent.universalBlockRemover = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");
 
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");
+		SCContent.remoteAccessSentry = new ItemSentryRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_sentry").setTranslationKey("securitycraft:remoteAccessSentry");
 
 		SCContent.fWaterBucket = new ItemModifiedBucket(SCContent.bogusWaterFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_water").setTranslationKey("securitycraft:bucketFWater");
 

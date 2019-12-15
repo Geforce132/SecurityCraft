@@ -30,6 +30,7 @@ public class GuiHandler implements IGuiHandler {
 
 	public static final int SETUP_KEYCARD_READER_ID = 1;
 	public static final int MRAT_MENU_ID = 2;
+	public static final int SRAT_MENU_ID = 3;
 	public static final int INVENTORY_SCANNER_GUI_ID = 6;
 	public static final int USERNAME_LOGGER_GUI_ID = 7;
 	public static final int KEYPAD_FURNACE_GUI_ID = 8;
@@ -56,6 +57,8 @@ public class GuiHandler implements IGuiHandler {
 			case SETUP_KEYCARD_READER_ID:
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case MRAT_MENU_ID:
+				return new ContainerGeneric(player.inventory, tile_entity);
+			case SRAT_MENU_ID:
 				return new ContainerGeneric(player.inventory, tile_entity);
 			case INVENTORY_SCANNER_GUI_ID:
 				return new ContainerInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity);
@@ -117,6 +120,10 @@ public class GuiHandler implements IGuiHandler {
 			case MRAT_MENU_ID:
 				if(!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessMine)
 					return new GuiMRAT(player.inventory, player.getHeldItemMainhand());
+				else return null;
+			case SRAT_MENU_ID:
+				if(!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry)
+					return new GuiSRAT(player.inventory, player.getHeldItemMainhand());
 				else return null;
 			case INVENTORY_SCANNER_GUI_ID:
 				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) tile_entity, player);
