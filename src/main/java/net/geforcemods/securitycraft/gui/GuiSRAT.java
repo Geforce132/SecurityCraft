@@ -27,13 +27,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiSRAT extends GuiContainer {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(
-			"securitycraft:textures/gui/container/srat.png");
-	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID,
-			"textures/items/sentry_256.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/srat.png");
+	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/items/sentry_256.png");
 	private ItemStack srat;
 	private GuiButton[][] buttons = new GuiButton[6][4]; // 6 buttons, 4 modes (aggressive, camouflage, idle, unbind)
-	private GuiButton[][] buttons_global = new GuiButton[1][3];
+	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 
 	public GuiSRAT(InventoryPlayer inventory, ItemStack item) {
@@ -58,14 +56,12 @@ public class GuiSRAT extends GuiContainer {
 			coords = getSentryCoordinates(i);
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
-			List<EntitySentry> sentries = Minecraft.getMinecraft().player.world
-					.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
+			List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
+			
 			if (!sentries.isEmpty()) {
-
-				boolean aggressive_mode = sentries.get(0).getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
-				boolean camouflage_mode = sentries.get(0).getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
-				boolean idle_mode = sentries.get(0).getMode() == EnumSentryMode.IDLE ? true : false;
-
+				boolean aggressiveMode = sentries.get(0).getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
+				boolean camouflageMode = sentries.get(0).getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
+				boolean idleMode = sentries.get(0).getMode() == EnumSentryMode.IDLE ? true : false;
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 				for (int j = 0; j < 4; j++) {
@@ -73,29 +69,27 @@ public class GuiSRAT extends GuiContainer {
 					int btnY = guiTop + y - 48;
 
 					switch (j) {
-					case AGGRESSIVE:
-						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
-						buttons[i][j].enabled = !aggressive_mode && bound;
-						break;
-					case CAMOUFLAGE:
-						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
-						buttons[i][j].enabled = !camouflage_mode && bound;
-						break;
-					case IDLE:
-						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
-						buttons[i][j].enabled = !idle_mode && bound;
-						break;
-					case UNBIND:
-						buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
-						buttons[i][j].enabled = bound;
-						break;
+						case AGGRESSIVE:
+							buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
+							buttons[i][j].enabled = !aggressiveMode && bound;
+							break;
+						case CAMOUFLAGE:
+							buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
+							buttons[i][j].enabled = !camouflageMode && bound;
+							break;
+						case IDLE:
+							buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+							buttons[i][j].enabled = !idleMode && bound;
+							break;
+						case UNBIND:
+							buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
+							buttons[i][j].enabled = bound;
+							break;
 					}
-
 					buttonList.add(buttons[i][j]);
-
 				}
-
-			} else {
+			}
+			else {
 				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
 				int btnY = guiTop + y - 48;
 				buttons[i][0] = new GuiPictureButton(id++, guiLeft + 0 * padding + 154, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18);
@@ -110,12 +104,12 @@ public class GuiSRAT extends GuiContainer {
 			}
 		}
 		//Add buttons for global operation (all sentries), large id
-		buttons_global[0][0] = new GuiPictureButton(1000, guiLeft + 154, guiTop + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
-		buttons_global[0][1] = new GuiPictureButton(1001, guiLeft + 25 + 154, guiTop + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
-		buttons_global[0][2] = new GuiPictureButton(1002, guiLeft + 50 + 154, guiTop + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+		buttonsGlobal[0][0] = new GuiPictureButton(1000, guiLeft + 154, guiTop + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
+		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 25 + 154, guiTop + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
+		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 50 + 154, guiTop + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
 		for (int j = 0; j < 3; j++) {
-			buttons_global[0][j].enabled = true;
-			buttonList.add(buttons_global[0][j]);
+			buttonsGlobal[0][j].enabled = true;
+			buttonList.add(buttonsGlobal[0][j]);
 		}
 	}
 
@@ -125,10 +119,7 @@ public class GuiSRAT extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"),
-				xSize / 2 - fontRenderer
-						.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name")),
-				-25 + 13, 0xFF0000);
+		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name")), -25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 6; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -137,13 +128,10 @@ public class GuiSRAT extends GuiContainer {
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:srat.notBound");
 			else
-				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location",
-						Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
 			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
-			fontRenderer.drawString("Modify all bound sentries",
-					xSize / 2 - fontRenderer.getStringWidth("Modify all bound sentries") + 25, 206, 4210752);
-
+			fontRenderer.drawString("Modify all bound sentries", xSize / 2 - fontRenderer.getStringWidth("Modify all bound sentries") + 25, 206, 4210752);
 		}
 	}
 
@@ -161,44 +149,40 @@ public class GuiSRAT extends GuiContainer {
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 
-
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
 	protected void performSingleAction(int sentry, int mode){
 		int[] coords = getSentryCoordinates(sentry);
-		List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class,
-				new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
+		List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 		if (!sentries.isEmpty()) {
-
 			switch (mode) {
-			case AGGRESSIVE:
-				sentries.get(0).toggleMode(Minecraft.getMinecraft().player, AGGRESSIVE);
-				SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
-				buttons[sentry][AGGRESSIVE].enabled = false;
-				buttons[sentry][CAMOUFLAGE].enabled = true;
-				buttons[sentry][IDLE].enabled = true;
-				break;
-			case CAMOUFLAGE:
-				sentries.get(0).toggleMode(Minecraft.getMinecraft().player, CAMOUFLAGE);
-				SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
-				buttons[sentry][AGGRESSIVE].enabled = true;
-				buttons[sentry][CAMOUFLAGE].enabled = false;
-				buttons[sentry][IDLE].enabled = true;
-				break;
-			case IDLE:
-				sentries.get(0).toggleMode(Minecraft.getMinecraft().player, IDLE);
-				SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
-				buttons[sentry][AGGRESSIVE].enabled = true;
-				buttons[sentry][CAMOUFLAGE].enabled = true;
-				buttons[sentry][IDLE].enabled = false;
-				break;
-			case UNBIND:
-				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
-
-				for (int i = 0; i < 4; i++) {
-					buttons[sentry][i].enabled = false;
-				}
+				case AGGRESSIVE:
+					sentries.get(0).toggleMode(Minecraft.getMinecraft().player, AGGRESSIVE);
+					SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
+					buttons[sentry][AGGRESSIVE].enabled = false;
+					buttons[sentry][CAMOUFLAGE].enabled = true;
+					buttons[sentry][IDLE].enabled = true;
+					break;
+				case CAMOUFLAGE:
+					sentries.get(0).toggleMode(Minecraft.getMinecraft().player, CAMOUFLAGE);
+					SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
+					buttons[sentry][AGGRESSIVE].enabled = true;
+					buttons[sentry][CAMOUFLAGE].enabled = false;
+					buttons[sentry][IDLE].enabled = true;
+					break;
+				case IDLE:
+					sentries.get(0).toggleMode(Minecraft.getMinecraft().player, IDLE);
+					SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
+					buttons[sentry][AGGRESSIVE].enabled = true;
+					buttons[sentry][CAMOUFLAGE].enabled = true;
+					buttons[sentry][IDLE].enabled = false;
+					break;
+				case UNBIND:
+					removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
+					for (int i = 0; i < 4; i++) {
+						buttons[sentry][i].enabled = false;
+					}
 			}
 		}
 	}
@@ -236,15 +220,12 @@ public class GuiSRAT extends GuiContainer {
 	private int[] getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry6
 
-		if (srat.getItem() != null && srat.getItem() == SCContent.remoteAccessSentry && srat.getTagCompound() != null
-				&& srat.getTagCompound().getIntArray("sentry" + sentry) != null
-				&& srat.getTagCompound().getIntArray("sentry" + sentry).length > 0)
+		if (srat.getItem() != null && srat.getItem() == SCContent.remoteAccessSentry && srat.getTagCompound() != null && srat.getTagCompound().getIntArray("sentry" + sentry) != null && srat.getTagCompound().getIntArray("sentry" + sentry).length > 0)
 			return srat.getTagCompound().getIntArray("sentry" + sentry);
 		else
 			return new int[] { 0, 0, 0 };
 	}
 
-	@SideOnly(Side.CLIENT)
 	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player) {
 		if (stack.getTagCompound() == null)
 			return;

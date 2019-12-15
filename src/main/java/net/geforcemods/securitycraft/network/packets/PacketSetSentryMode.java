@@ -3,11 +3,8 @@ package net.geforcemods.securitycraft.network.packets;
 import java.util.List;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -51,16 +48,13 @@ public class PacketSetSentryMode implements IMessage
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				EntityPlayer player = context.getServerHandler().player;
 
-			List<EntityCreature> sentries = getWorld(player).<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+				List<EntityCreature> sentries = getWorld(player).<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
-			if(!sentries.isEmpty())
-			{
-				((EntitySentry)sentries.get(0)).toggleMode(player, message.mode);
-			}
+				if(!sentries.isEmpty())
+					((EntitySentry)sentries.get(0)).toggleMode(player, message.mode);
 			});
 
 			return null;
 		}
 	}
-	
 }

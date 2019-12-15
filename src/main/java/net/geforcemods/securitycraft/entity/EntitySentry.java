@@ -162,7 +162,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				dataManager.set(MODULE, new NBTTagCompound());
 				dataManager.set(WHITELIST, new NBTTagCompound());
 			}			
-			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bound/unbound sentry to remote control
+			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
 				player.getHeldItemMainhand().getItem().onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
 			else 
 				toggleMode(player);
@@ -212,9 +212,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 	
 	/**
-	 * Sets this sentry's mode to the next one and sends the player a message about the switch
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch
 	 * @param player The player to send the message to
-	 * @param mode The mode (int) to switch to (instead of secuencially toggling)
+	 * @param mode The mode (int) to switch to (instead of sequencially toggling)
 	 */
 	public void toggleMode(EntityPlayer player, int mode)
 	{
