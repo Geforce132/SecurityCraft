@@ -240,6 +240,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
 		registerBlock(event, SCContent.reinforcedStonePressurePlate, true);
 		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, false);
+		registerBlock(event, SCContent.reinforcedBookshelf, false);
 	}
 
 	@SubscribeEvent
@@ -659,6 +660,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.blockPocketManager), 0, new ModelResourceLocation("securitycraft:block_pocket_manager", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStonePressurePlate), 0, new ModelResourceLocation("securitycraft:reinforced_stone_pressure_plate", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWoodenPressurePlate), 0, new ModelResourceLocation("securitycraft:reinforced_wooden_pressure_plate", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedBookshelf), 0, new ModelResourceLocation("securitycraft:reinforced_bookshelf", "inventory"));
 
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
