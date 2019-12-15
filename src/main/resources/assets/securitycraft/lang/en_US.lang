@@ -560,6 +560,7 @@ waila.securitycraft:customName=Custom name:
 waila.securitycraft:customName.notSet=Not set
 
 tooltip.securitycraft:mine=Mine
+tooltip.securitycraft:sentry=Sentry
 tooltip.securitycraft:camera=Camera
 tooltip.securitycraft:cameraMonitor=# of cameras bound:
 tooltip.securitycraft:module.modifiable=Module is modifiable!
