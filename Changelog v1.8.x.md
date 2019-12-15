@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
+- Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
 - Fix: Alarm does not turn off when it no longer receives a redstone signal
