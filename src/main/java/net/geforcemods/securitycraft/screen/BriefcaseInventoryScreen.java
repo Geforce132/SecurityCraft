@@ -2,9 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -16,9 +14,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
+	private final String formattedTitle;
 
 	public BriefcaseInventoryScreen(BriefcaseContainer container, PlayerInventory inventory, ITextComponent name) {
 		super(container, inventory, name);
+
+		formattedTitle = name.getFormattedText();
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize(SCContent.briefcase.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.briefcase.getTranslationKey())) / 2, 6, 4210752);
+		font.drawString(formattedTitle, xSize / 2 - font.getStringWidth(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override

@@ -15,7 +15,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -24,25 +23,29 @@ public class OpenGui {
 	private ResourceLocation id;
 	private int dimId;
 	private BlockPos pos;
+	private ITextComponent name;
 
 	public OpenGui(){}
 
-	public OpenGui(ResourceLocation id, int dimId, BlockPos pos){
+	public OpenGui(ResourceLocation id, int dimId, BlockPos pos, ITextComponent name){
 		this.id = id;
 		this.dimId = dimId;
 		this.pos = pos;
+		this.name = name;
 	}
 
 	public void toBytes(PacketBuffer buf) {
 		buf.writeResourceLocation(id);
 		buf.writeInt(dimId);
 		buf.writeBlockPos(pos);
+		buf.writeTextComponent(name);
 	}
 
 	public void fromBytes(PacketBuffer buf) {
 		id = buf.readResourceLocation();
 		dimId = buf.readInt();
 		pos = buf.readBlockPos();
+		name = buf.readTextComponent();
 	}
 
 	public static void encode(OpenGui message, PacketBuffer packet)
@@ -77,7 +80,7 @@ public class OpenGui {
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
+						return message.name;
 					}
 				}, pos);
 			}
@@ -93,7 +96,7 @@ public class OpenGui {
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
+						return message.name;
 					}
 				}, pos);
 			}
@@ -109,7 +112,7 @@ public class OpenGui {
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.briefcase.getTranslationKey());
+						return message.name;
 					}
 				}, pos);
 			}
