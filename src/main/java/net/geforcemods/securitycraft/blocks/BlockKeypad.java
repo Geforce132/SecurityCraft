@@ -175,10 +175,10 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 		if(world.isRemote)
 			return true;
 		else {
-			if(state.getValue(POWERED).booleanValue())
+			if(state.getValue(POWERED).booleanValue() || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST))
 				return false;
 
-			if(ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST)){
+			if(ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.WHITELIST)){
 				activate(world, pos);
 				return true;
 			}
