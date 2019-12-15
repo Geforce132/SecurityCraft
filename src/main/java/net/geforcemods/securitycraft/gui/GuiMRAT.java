@@ -187,7 +187,6 @@ public class GuiMRAT extends GuiContainer{
 			return new int[] {0,0,0};
 	}
 
-	@SideOnly(Side.CLIENT)
 	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player)
 	{
 		if(stack.getTagCompound() == null)
