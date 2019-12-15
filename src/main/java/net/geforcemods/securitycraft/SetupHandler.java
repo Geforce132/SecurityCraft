@@ -38,6 +38,7 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
@@ -236,6 +237,7 @@ public class SetupHandler
 		SCContent.reinforcedSmoothSandstone = new BaseReinforcedBlock(Material.ROCK, Blocks.SMOOTH_SANDSTONE, "reinforced_smooth_sandstone");
 		SCContent.reinforcedSmoothStone = new BaseReinforcedBlock(Material.ROCK, Blocks.SMOOTH_STONE, "reinforced_smooth_stone");
 		SCContent.reinforcedBricks = new BaseReinforcedBlock(Material.ROCK, Blocks.BRICKS, "reinforced_bricks");
+		SCContent.reinforcedBookshelf = new ReinforcedBookshelfBlock(SoundType.WOOD, Material.WOOD, Blocks.BOOKSHELF, "reinforced_bookshelf");
 		SCContent.reinforcedMossyCobblestone = new BaseReinforcedBlock(Material.ROCK, Blocks.MOSSY_COBBLESTONE, "reinforced_mossy_cobblestone");
 		SCContent.reinforcedObsidian = new BaseReinforcedBlock(Material.ROCK, Blocks.OBSIDIAN, "reinforced_obsidian");
 		SCContent.reinforcedPurpurBlock = new BaseReinforcedBlock(Material.ROCK, Blocks.PURPUR_BLOCK, "reinforced_purpur_block");
