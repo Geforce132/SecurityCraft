@@ -85,13 +85,13 @@ public class ItemMineRemoteAccessTool extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, World world, List<String> list, ITooltipFlag flag) {
-		if(par1ItemStack.getTagCompound() == null)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
+		if(stack.getTagCompound() == null)
 			return;
 
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.getTagCompound().getIntArray("mine" + i).length > 0){
-				int[] coords = par1ItemStack.getTagCompound().getIntArray("mine" + i);
+			if(stack.getTagCompound().getIntArray("mine" + i).length > 0){
+				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
 				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
 					list.add("---");
@@ -121,7 +121,6 @@ public class ItemMineRemoteAccessTool extends Item {
 			else
 				continue;
 
-
 		return;
 	}
 
@@ -139,7 +138,6 @@ public class ItemMineRemoteAccessTool extends Item {
 			else
 				continue;
 
-
 		return false;
 	}
 
@@ -154,5 +152,4 @@ public class ItemMineRemoteAccessTool extends Item {
 
 		return 0;
 	}
-
 }
