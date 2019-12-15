@@ -41,6 +41,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -205,6 +206,12 @@ public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPas
 	@Override
 	public boolean canProvidePower(BlockState state){
 		return true;
+	}
+
+	@Override
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side)
+	{
+		return false;
 	}
 
 	/**

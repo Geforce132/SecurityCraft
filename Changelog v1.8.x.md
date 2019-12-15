@@ -6,6 +6,7 @@
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
 - Fix: Occasional crash when right-clicking the Camera Monitor
 - Fix: Keypad blacklist does not work
+- Fix: Disguised Keypad does not give off power when activated (Thanks Redstone_Dubstep!)
 - Misc: The minimum required Forge version is now 28.1.91
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
