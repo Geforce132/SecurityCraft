@@ -55,17 +55,9 @@ public class ItemSentryRemoteAccessTool extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(!world.isRemote){
-			//PlayerUtils.sendMessageToPlayer(player, "clicked", "true", TextFormatting.RED);
-
 			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
+			
 			if(!sentries.isEmpty()) {
-				//PlayerUtils.sendMessageToPlayer(player, "is Sentry!!!", "true", TextFormatting.RED);
-			}
-
-
-			//if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
-			if(!sentries.isEmpty()) {
-				//PlayerUtils.sendMessageToPlayer(player, "is Sentry?", "true", TextFormatting.RED);
 				BlockPos pos2 = sentries.get(0).getPosition();
 
 				if(!isSentryAdded(stack, world, pos2)){
