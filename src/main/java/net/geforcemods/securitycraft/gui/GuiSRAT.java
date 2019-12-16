@@ -28,7 +28,7 @@ public class GuiSRAT extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/items/sentry_256.png");
 	private ItemStack srat;
-	private GuiButton[][] buttons = new GuiButton[6][4]; // 6 buttons, 4 modes (aggressive, camouflage, idle, unbind)
+	private GuiButton[][] buttons = new GuiButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 
@@ -36,7 +36,7 @@ public class GuiSRAT extends GuiContainer {
 		super(new ContainerGeneric(inventory, null));
 
 		srat = item;
-		xSize = 256;
+		xSize = 512;
 		ySize = 235;
 	}
 
@@ -45,12 +45,12 @@ public class GuiSRAT extends GuiContainer {
 		super.initGui();
 
 		int padding = 25;
-		int y = padding;
 		int[] coords = null;
 		int id = 0;
 
-		for (int i = 0; i < 6; i++) {
-			y += 30;
+		for (int i = 0; i < 12; i++) {
+			int x = (i / 6) * xSize / 2;			//first six sentries in the left column, second six sentries in the right column
+			int y = ((i % 6) + 1) * 30 + padding;
 			coords = getSentryCoordinates(i);
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
@@ -63,7 +63,7 @@ public class GuiSRAT extends GuiContainer {
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 				for (int j = 0; j < 4; j++) {
-					int btnX = guiLeft + j * padding + 154;
+					int btnX = guiLeft + j * padding + 154 + x;
 					int btnY = guiTop + y - 48;
 
 					switch (j) {
@@ -90,10 +90,10 @@ public class GuiSRAT extends GuiContainer {
 			else {
 				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
 				int btnY = guiTop + y - 48;
-				buttons[i][0] = new GuiPictureButton(id++, guiLeft + 0 * padding + 154, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18);
-				buttons[i][1] = new GuiPictureButton(id++, guiLeft + 1 * padding + 154, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18);
-				buttons[i][2] = new GuiPictureButton(id++, guiLeft + 2 * padding + 154, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
-				buttons[i][3] = new GuiButton(id++, guiLeft + 3 * padding + 154, btnY, 20, 20, "X");
+				buttons[i][0] = new GuiPictureButton(id++, guiLeft + 0 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18);
+				buttons[i][1] = new GuiPictureButton(id++, guiLeft + 1 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18);
+				buttons[i][2] = new GuiPictureButton(id++, guiLeft + 2 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+				buttons[i][3] = new GuiButton(id++, guiLeft + 3 * padding + 154 + x, btnY, 20, 20, "X");
 
 				for (int j = 0; j < 4; j++) {
 					buttons[i][j].enabled = false;
@@ -102,9 +102,9 @@ public class GuiSRAT extends GuiContainer {
 			}
 		}
 		//Add buttons for global operation (all sentries), large id
-		buttonsGlobal[0][0] = new GuiPictureButton(1000, guiLeft + 154, guiTop + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
-		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 25 + 154, guiTop + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
-		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 50 + 154, guiTop + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+		buttonsGlobal[0][0] = new GuiPictureButton(1000, guiLeft + 282, guiTop + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
+		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 25 + 282, guiTop + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
+		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 50 + 282, guiTop + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
 		for (int j = 0; j < 3; j++) {
 			buttonsGlobal[0][j].enabled = true;
 			buttonList.add(buttonsGlobal[0][j]);
@@ -118,10 +118,9 @@ public class GuiSRAT extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
+		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), 5, -25 + 13, 0xFF0000);
 
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name")) + 15, -25 + 13, 0xFF0000);
-
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
 			String line;
 
@@ -130,8 +129,8 @@ public class GuiSRAT extends GuiContainer {
 			else
 				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 			fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 206, 4210752);
+			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 25 + (i / 6) * xSize / 2, (i % 6) * 30 + 13, 4210752);
 		}
 	}
 
@@ -146,7 +145,7 @@ public class GuiSRAT extends GuiContainer {
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+		GuiSRAT.drawModalRectWithCustomSizedTexture(startX, startY, 0, 0, xSize, ySize, 512, 256);
 	}
 
 	/**
@@ -223,7 +222,7 @@ public class GuiSRAT extends GuiContainer {
 	 *            0 based
 	 */
 	private int[] getSentryCoordinates(int sentry) {
-		sentry++; // sentries are stored starting by sentry1 up to sentry6
+		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
 		if (srat.getItem() != null && srat.getItem() == SCContent.remoteAccessSentry && srat.getTagCompound() != null && srat.getTagCompound().getIntArray("sentry" + sentry) != null && srat.getTagCompound().getIntArray("sentry" + sentry).length > 0)
 			return srat.getTagCompound().getIntArray("sentry" + sentry);
@@ -235,7 +234,7 @@ public class GuiSRAT extends GuiContainer {
 		if (stack.getTagCompound() == null)
 			return;
 
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= 12; i++) {
 			if (stack.getTagCompound().getIntArray("sentry" + i).length > 0) {
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 

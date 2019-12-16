@@ -98,7 +98,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		if(stack.getTagCompound() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
+		for(int i = 1; i <= 12; i++)
 			if(stack.getTagCompound().getIntArray("sentry" + i).length > 0){
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 
@@ -117,7 +117,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		if(stack.getTagCompound() == null)
 			return;
 
-		for(int i = 1; i <= 6; i++)
+		for(int i = 1; i <= 12; i++)
 			if(stack.getTagCompound().getIntArray("sentry" + i).length > 0){
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 
@@ -137,7 +137,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		if(stack.getTagCompound() == null)
 			return false;
 
-		for(int i = 1; i <= 6; i++)
+		for(int i = 1; i <= 12; i++)
 			if(stack.getTagCompound().getIntArray("sentry" + i).length > 0){
 				int[] coords = stack.getTagCompound().getIntArray("sentry" + i);
 
@@ -151,7 +151,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 	}
 
 	private int getNextAvaliableSlot(ItemStack stack){
-		for(int i = 1; i <= 6; i++)
+		for(int i = 1; i <= 12; i++)
 			if(stack.getTagCompound() == null)
 				return 1;
 			else if(stack.getTagCompound().getIntArray("sentry" + i).length == 0 || (stack.getTagCompound().getIntArray("sentry" + i)[0] == 0 && stack.getTagCompound().getIntArray("sentry" + i)[1] == 0 && stack.getTagCompound().getIntArray("sentry" + i)[2] == 0))
