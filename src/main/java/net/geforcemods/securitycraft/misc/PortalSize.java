@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.misc;
 
+import javax.annotation.Nullable;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.NetherPortalBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -19,7 +21,8 @@ public class PortalSize
 	private final Direction.Axis axis;
 	private final Direction rightDir;
 	private final Direction leftDir;
-	private int NetherPortalBlockCount;
+	private int portalBlockCount;
+	@Nullable
 	private BlockPos bottomLeft;
 	private int height;
 	private int width;
@@ -29,159 +32,160 @@ public class PortalSize
 		this.world = world;
 		this.axis = axis;
 
-		if (axis == Direction.Axis.X)
+		if(axis == Direction.Axis.X)
 		{
-			this.leftDir = Direction.EAST;
-			this.rightDir = Direction.WEST;
+			leftDir = Direction.EAST;
+			rightDir = Direction.WEST;
 		}
 		else
 		{
-			this.leftDir = Direction.NORTH;
-			this.rightDir = Direction.SOUTH;
+			leftDir = Direction.NORTH;
+			rightDir = Direction.SOUTH;
 		}
 
-		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && this.isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down())
-		{
+		for(BlockPos iPos = pos; pos.getY() > iPos.getY() - 21 && pos.getY() > 0 && isPartOfUnfinishedPortal(world.getBlockState(pos.down())); pos = pos.down()) {
 			;
 		}
 
-		int distanceToEdge = this.getDistanceUntilEdge(pos, this.leftDir) - 1;
+		int i = getDistanceUntilEdge(pos, leftDir) - 1;
 
-		if (distanceToEdge >= 0)
+		if(i >= 0)
 		{
-			this.bottomLeft = pos.offset(this.leftDir, distanceToEdge);
-			this.width = this.getDistanceUntilEdge(this.bottomLeft, this.rightDir);
+			bottomLeft = pos.offset(leftDir, i);
+			width = getDistanceUntilEdge(bottomLeft, rightDir);
 
-			if (this.width < 2 || this.width > 21)
+			if(width < 2 || width > 21)
 			{
-				this.bottomLeft = null;
-				this.width = 0;
+				bottomLeft = null;
+				width = 0;
 			}
 		}
 
-		if (this.bottomLeft != null)
-		{
-			this.height = this.calculatePortalHeight();
-		}
+		if(bottomLeft != null)
+			height = calculatePortalHeight();
 	}
 
-	protected int getDistanceUntilEdge(BlockPos pos, Direction facing)
+	protected int getDistanceUntilEdge(BlockPos pos, Direction direction)
 	{
-		int distance;
+		int i;
 
-		for (distance = 0; distance < 22; ++distance)
+		for(i = 0; i < 22; ++i)
 		{
-			BlockPos blockPos = pos.offset(facing, distance);
+			BlockPos offsetPos = pos.offset(direction, i);
 
-			if (!this.isEmptyBlock(this.world.getBlockState(blockPos).getBlock()) || this.world.getBlockState(blockPos.down()).getBlock() != SCContent.reinforcedObsidian)
-			{
+			if(!isPartOfUnfinishedPortal(world.getBlockState(offsetPos)) || world.getBlockState(offsetPos.down()).getBlock() != SCContent.reinforcedObsidian)
 				break;
-			}
 		}
 
-		Block block = this.world.getBlockState(pos.offset(facing, distance)).getBlock();
-		return block == SCContent.reinforcedObsidian ? distance : 0;
+		Block block = world.getBlockState(pos.offset(direction, i)).getBlock();
+
+		return block == SCContent.reinforcedObsidian ? i : 0;
 	}
 
 	public int getHeight()
 	{
-		return this.height;
+		return height;
 	}
 
 	public int getWidth()
 	{
-		return this.width;
+		return width;
 	}
 
 	protected int calculatePortalHeight()
 	{
-		label56:
-
-			for (this.height = 0; this.height < 21; ++this.height)
-			{
-				for (int i = 0; i < this.width; ++i)
+		{
+			loop:
+				for(height = 0; height < 21; ++height)
 				{
-					BlockPos pos = this.bottomLeft.offset(this.rightDir, i).up(this.height);
-					Block block = this.world.getBlockState(pos).getBlock();
-
-					if (!this.isEmptyBlock(block))
+					for(int i = 0; i < width; ++i)
 					{
-						break label56;
-					}
+						BlockPos pos = bottomLeft.offset(rightDir, i).up(height);
+						BlockState state = world.getBlockState(pos);
 
-					if (block == Blocks.NETHER_PORTAL)
-					{
-						++this.NetherPortalBlockCount;
-					}
+						if (!isPartOfUnfinishedPortal(state))
+							break loop;
 
-					if (i == 0)
-					{
-						block = this.world.getBlockState(pos.offset(this.leftDir)).getBlock();
+						Block block = state.getBlock();
 
-						if (block != SCContent.reinforcedObsidian)
+						if (block == Blocks.NETHER_PORTAL)
+							++portalBlockCount;
+
+						if (i == 0)
 						{
-							break label56;
+							block = world.getBlockState(pos.offset(leftDir)).getBlock();
+
+							if (block != SCContent.reinforcedObsidian)
+								break loop;
 						}
-					}
-					else if (i == this.width - 1)
-					{
-						block = this.world.getBlockState(pos.offset(this.rightDir)).getBlock();
-
-						if (block != SCContent.reinforcedObsidian)
+						else if(i == this.width - 1)
 						{
-							break label56;
+							block = world.getBlockState(pos.offset(rightDir)).getBlock();
+
+							if(block != SCContent.reinforcedObsidian)
+								break loop;
 						}
 					}
 				}
-			}
+		}
 
-	for (int j = 0; j < this.width; ++j)
-	{
-		if (this.world.getBlockState(this.bottomLeft.offset(this.rightDir, j).up(this.height)).getBlock() != SCContent.reinforcedObsidian)
+		for(int j = 0; j < width; ++j)
 		{
-			this.height = 0;
-			break;
+			if(world.getBlockState(bottomLeft.offset(rightDir, j).up(height)).getBlock() != SCContent.reinforcedObsidian)
+			{
+				height = 0;
+				break;
+			}
+		}
+
+		if(height <= 21 && height >= 3)
+			return height;
+		else
+		{
+			bottomLeft = null;
+			width = 0;
+			height = 0;
+			return 0;
 		}
 	}
 
-	if (this.height <= 21 && this.height >= 3)
+	protected boolean isPartOfUnfinishedPortal(BlockState pos)
 	{
-		return this.height;
-	}
-	else
-	{
-		this.bottomLeft = null;
-		this.width = 0;
-		this.height = 0;
-		return 0;
-	}
-	} //end method
+		Block block = pos.getBlock();
 
-	protected boolean isEmptyBlock(Block block)
-	{
-		return block.getMaterial(block.getDefaultState()) == Material.AIR || block == Blocks.FIRE || block == Blocks.NETHER_PORTAL;
+		return pos.isAir() || block == Blocks.FIRE || block == Blocks.NETHER_PORTAL;
 	}
 
 	public boolean isValid()
 	{
-		return this.bottomLeft != null && this.width >= 2 && this.width <= 21 && this.height >= 3 && this.height <= 21;
+		return bottomLeft != null && width >= 2 && width <= 21 && height >= 3 && height <= 21;
 	}
 
-	public void placeNetherPortalBlocks()
+	public void placePortalBlocks()
 	{
-		for (int i = 0; i < this.width; ++i)
+		for(int i = 0; i < width; ++i)
 		{
-			BlockPos pos = this.bottomLeft.offset(this.rightDir, i);
+			BlockPos pos = bottomLeft.offset(rightDir, i);
 
-			for (int j = 0; j < this.height; ++j)
+			for(int j = 0; j < this.height; ++j)
 			{
-				this.world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(NetherPortalBlock.AXIS, this.axis), 2 | 16);
+				world.setBlockState(pos.up(j), Blocks.NETHER_PORTAL.getDefaultState().with(NetherPortalBlock.AXIS, axis), 18);
 			}
 		}
 	}
 
-	public int getNetherPortalBlockCount()
+	private boolean doesCountExceedSize()
 	{
-		return NetherPortalBlockCount;
+		return portalBlockCount >= width * height;
+	}
+
+	public boolean isFinishedPortal()
+	{
+		return isValid() && doesCountExceedSize();
+	}
+
+	public int getPortalBlockCount()
+	{
+		return portalBlockCount;
 	}
 }

@@ -3,6 +3,7 @@
 - New: Reinforced Prismarine, Reinforced Prismarine Bricks, Reinforced Dark Prismarine and Reinforced Sea Lanterns can now be used for building a conduit
 - New: Reinforced Bookshelf (Can also be used for an enchanting table)
 - New: If a Briefcase has been renamed, it will now show that name in the inventory GUI
+- New: Reinforced Obsidian can now be used to create a nether portal
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
