@@ -41,10 +41,8 @@ public class ConfigHandler {
 		public IntValue imsRange;
 		public IntValue inventoryScannerRange;
 		public DoubleValue motionActivatedLightSearchRadius;
-		public BooleanValue debug;
 		public BooleanValue allowBlockClaim;
 		public BooleanValue sayThanksMessage;
-		public BooleanValue checkForUpdates;
 		public DoubleValue alarmSoundVolume;
 		public DoubleValue cameraSpeed;
 
@@ -169,11 +167,6 @@ public class ConfigHandler {
 					.comment("How many blocks away can the Motion Activated Light detect entities from?")
 					.defineInRange("motionActivatedLightSearchRadius", 5.0D, 0.0D, Double.MAX_VALUE);
 
-			debug = builder
-					.translation("config.securitycraft:debuggingMode")
-					.comment("Should SecurityCraft run in debug mode? (logs extra things to the console, may add unfinished items/blocks that could be buggy.)")
-					.define("debuggingMode", false);
-
 			allowBlockClaim = builder
 					.translation("config.securitycraft:allowBlockClaim")
 					.comment("Allow claiming unowned blocks?")
@@ -183,11 +176,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:sayThanksMessage")
 					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
-
-			checkForUpdates = builder
-					.translation("config.securitycraft:checkForUpdates")
-					.comment("Should SecurityCraft check for new updates of the mod through SecurityCraft's GitHub repository?")
-					.define("checkForUpdates", true);
 
 			alarmSoundVolume = builder
 					.translation("config.securitycraft:alarmSoundVolume")
