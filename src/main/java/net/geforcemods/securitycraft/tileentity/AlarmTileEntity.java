@@ -2,13 +2,11 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.LogicalSide;
 
 public class AlarmTileEntity extends OwnableTileEntity {
 
@@ -27,9 +25,6 @@ public class AlarmTileEntity extends OwnableTileEntity {
 		else{
 			if(cooldown > 0){
 				cooldown--;
-
-				if(cooldown == 0)
-					SecurityCraft.log("Cooldown is 0");
 			}
 
 			if(isPowered && cooldown == 0){
@@ -76,7 +71,6 @@ public class AlarmTileEntity extends OwnableTileEntity {
 	}
 
 	public void setCooldown(int cooldown){
-		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + (world.isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER));
 		this.cooldown = cooldown;
 	}
 

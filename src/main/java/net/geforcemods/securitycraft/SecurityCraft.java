@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
+import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
@@ -68,7 +69,6 @@ public class SecurityCraft {
 	@SubscribeEvent
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
 	{
-		log("Regisering mod content... (PT 1/2)");
 		RegistrationHandler.registerPackets();
 	}
 
@@ -81,17 +81,14 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
-		log("Setting up inter-mod stuff...");
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
-		//		if(ClientConfig.CONFIG.checkForUpdates.get()) {
-		//			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
-		//			if(vcUpdateTag != null)
-		//				InterModComms.sendTo("VersionChecker", "addUpdate", () -> vcUpdateTag);
-		//		}
+		CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
 
-		log("Registering mod content... (PT 2/2)");
+		if(vcUpdateTag != null)
+			InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
+
 		CustomModules.refresh();
 		proxy.tint();
 	}
@@ -112,8 +109,6 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
-
-		log("Mod finished loading correctly! :D");
 	}
 
 	public void serverStarting(FMLServerStartingEvent event){
@@ -142,19 +137,6 @@ public class SecurityCraft {
 
 	public void setSavedModule(CompoundNBT savedModule) {
 		this.savedModule = savedModule;
-	}
-
-	/**
-	 * Prints a String to the console. Only will print if SecurityCraft is in debug mode.
-	 */
-	public static void log(String line) {
-		log(line, false);
-	}
-
-	public static void log(String line, boolean isSevereError) {
-		//TODO: find out how to not call this too early (java.lang.NullPointerException: Cannot get config value without assigned Config object present)
-		//		if(ServerConfig.CONFIG.debug.get())
-		//			System.out.println(isSevereError ? "{SecurityCraft} {" + EffectiveSide.get() + "} {Severe}: " + line : "[SecurityCraft] [" + EffectiveSide.get() + "] " + line);
 	}
 
 	public static String getVersion() {

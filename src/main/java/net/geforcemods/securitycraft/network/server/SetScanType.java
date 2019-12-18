@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -65,10 +64,7 @@ public class SetScanType{
 			World world = player.world;
 
 			((InventoryScannerTileEntity) world.getTileEntity(pos)).setScanType(message.type);
-
-			SecurityCraft.log("Setting type to " + message.type);
 			world.getPendingBlockTicks().scheduleTick(pos, BlockUtils.getBlock(world, pos), 1);
-
 			Utils.setISinTEAppropriately(world, pos, ((InventoryScannerTileEntity) world.getTileEntity(pos)).getContents(), ((InventoryScannerTileEntity) world.getTileEntity(pos)).getScanType());
 		});
 

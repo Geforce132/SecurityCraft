@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
@@ -33,7 +32,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.thread.EffectiveSide;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class InventoryScannerBlock extends ContainerBlock {
@@ -205,7 +203,6 @@ public class InventoryScannerBlock extends ContainerBlock {
 	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 	{
 		if(!(blockAccess.getTileEntity(pos) instanceof InventoryScannerTileEntity) || ((InventoryScannerTileEntity) blockAccess.getTileEntity(pos)).getScanType() == null){
-			SecurityCraft.log("type is null on the " + EffectiveSide.get() + " side");
 			return 0;
 		}
 

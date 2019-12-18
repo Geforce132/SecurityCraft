@@ -2,14 +2,12 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -37,7 +35,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.minecraftforge.fml.LogicalSide;
 
 public class InventoryScannerFieldBlock extends ContainerBlock implements IIntersectable {
 
@@ -210,11 +207,9 @@ public class InventoryScannerFieldBlock extends ContainerBlock implements IInter
 		if(!te.shouldProvidePower())
 			te.setShouldProvidePower(true);
 
-		SecurityCraft.log("Running te update");
 		te.setCooldown(60);
 		checkAndUpdateTEAppropriately(te);
 		BlockUtils.updateAndNotify(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()).getBlock(), 1, true);
-		SecurityCraft.log("Emitting redstone on the " + (te.getWorld().isRemote ? LogicalSide.CLIENT : LogicalSide.SERVER) + " side. (te coords: " + Utils.getFormattedCoordinates(te.getPos()));
 	}
 
 	/**

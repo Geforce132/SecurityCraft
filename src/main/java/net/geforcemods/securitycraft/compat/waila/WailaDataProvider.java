@@ -34,7 +34,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 	@Override
 	public void register(IRegistrar registrar)
 	{
-		SecurityCraft.log("Adding Waila support!");
 		registrar.addConfig(SHOW_OWNER, true);
 		registrar.addConfig(SHOW_MODULES, true);
 		registrar.addConfig(SHOW_PASSWORDS, true);
