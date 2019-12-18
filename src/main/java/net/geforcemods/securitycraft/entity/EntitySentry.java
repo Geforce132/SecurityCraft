@@ -96,26 +96,35 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		super.onEntityUpdate();
 
-		if(world.isRemote && animate)
+		if(world.isRemote)
 		{
-			if(animateUpwards && headYTranslation > 0.0F)
+			if (dataManager.get(MODE) == 0 && headYTranslation > 0.0F && !animate)
 			{
-				headYTranslation -= animationStepSize;
-
-				if(headYTranslation <= 0.0F)
-				{
-					animateUpwards = false;
-					animate = false;
-				}
+				animateUpwards = true;
+				animate = true;
 			}
-			else if(!animateUpwards && headYTranslation < 0.9F)
+			
+			if (animate)
 			{
-				headYTranslation += animationStepSize;
-
-				if(headYTranslation >= 0.9F)
+				if(animateUpwards && headYTranslation > 0.0F)
 				{
-					animateUpwards = true;
-					animate = false;
+					headYTranslation -= animationStepSize;
+	
+					if(headYTranslation <= 0.0F)
+					{
+						animateUpwards = false;
+						animate = false;
+					}
+				}
+				else if(!animateUpwards && headYTranslation < 0.9F)
+				{
+					headYTranslation += animationStepSize;
+	
+					if(headYTranslation >= 0.9F)
+					{
+						animateUpwards = true;
+						animate = false;
+					}
 				}
 			}
 		}
