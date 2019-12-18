@@ -70,7 +70,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
-		if(!player.isCreative() && !world.isRemote)
+		if(!world.isRemote)
 			if(player != null && player.isCreative() && !CommonConfig.CONFIG.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else{
