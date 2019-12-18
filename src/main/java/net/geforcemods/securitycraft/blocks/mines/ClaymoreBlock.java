@@ -104,7 +104,7 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true, Mode.BREAK);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -119,7 +119,7 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 				return;
 
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true, Mode.BREAK);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 

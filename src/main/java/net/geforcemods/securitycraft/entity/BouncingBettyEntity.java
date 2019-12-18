@@ -87,9 +87,9 @@ public class BouncingBettyEntity extends Entity {
 		float f = 6.0F;
 
 		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion(this, posX, posY, posZ, (f / 2), true, Mode.BREAK);
+			world.createExplosion(this, posX, posY, posZ, (f / 2), CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion(this, posX, posY, posZ, f, true, Mode.BREAK);
+			world.createExplosion(this, posX, posY, posZ, f, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 	}
 
 	/**

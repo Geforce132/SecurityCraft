@@ -49,7 +49,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, true, Mode.BREAK);
+			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 			cart.remove();
 		}
 	}
@@ -68,7 +68,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
 			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, true, Mode.BREAK);
+			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 

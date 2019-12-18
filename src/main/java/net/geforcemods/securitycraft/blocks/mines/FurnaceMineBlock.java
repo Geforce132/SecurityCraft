@@ -94,9 +94,9 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay 
 		world.destroyBlock(pos, false);
 
 		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true, Mode.BREAK);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true, Mode.BREAK);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 
 	}
 

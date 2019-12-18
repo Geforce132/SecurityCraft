@@ -120,9 +120,9 @@ public class MineBlock extends ExplosiveBlock {
 		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
 			world.destroyBlock(pos, false);
 			if(CommonConfig.CONFIG.smallerMineExplosion.get())
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true, Mode.BREAK);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 			else
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true, Mode.BREAK);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 
