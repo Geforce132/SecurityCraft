@@ -6,7 +6,6 @@ import net.minecraft.block.IBeaconBeamColorProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.DyeColor;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 
@@ -24,12 +23,6 @@ public class ReinforcedStainedGlassPaneBlock extends ReinforcedPaneBlock impleme
 	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos)
 	{
 		return color.getColorComponentValues();
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override

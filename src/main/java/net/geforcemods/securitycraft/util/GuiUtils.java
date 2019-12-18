@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -37,7 +37,7 @@ public class GuiUtils{
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.localize("gui.securitycraft:camera.toggleRedstoneNote"), resolution.getScaledWidth() - 82 - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:camera.toggleRedstoneNote")) / 2, resolution.getScaledHeight() - 30, ((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE) ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(cameraDashboard);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		gui.blit(5, 0, 0, 0, 90, 20);
 		gui.blit(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
@@ -58,14 +58,14 @@ public class GuiUtils{
 
 	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
 		if(fixLighting)
-			GlStateManager.enableLighting();
+			RenderSystem.enableLighting();
 
 		RenderHelper.enableGUIStandardItemLighting();
-		GlStateManager.enableRescaleNormal();
+		RenderSystem.enableRescaleNormal();
 		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item), x, y);
 
-		GlStateManager.disableLighting();
-		GlStateManager.disableRescaleNormal();
+		RenderSystem.disableLighting();
+		RenderSystem.disableRescaleNormal();
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){

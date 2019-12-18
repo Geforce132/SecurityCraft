@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -25,11 +25,11 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 
 		Vec3d blockpos = new Vec3d(x + 0.5D, y + 0.75D, z + 0.5D);
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(blockpos.x, blockpos.y, blockpos.z);
-		GlStateManager.lineWidth(2F);
-		GlStateManager.disableTexture();
-		GlStateManager.disableLighting();
+		RenderSystem.pushMatrix();
+		RenderSystem.translated(blockpos.x, blockpos.y, blockpos.z);
+		RenderSystem.lineWidth(2F);
+		RenderSystem.disableTexture();
+		RenderSystem.disableLighting();
 
 		BufferBuilder bb = Tessellator.getInstance().getBuffer();
 		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
@@ -37,9 +37,9 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		bb.pos(tileEntityIn.entityBeingTargeted.posX - tileEntityIn.getPos().getX() - 0.5D, tileEntityIn.entityBeingTargeted.posY - tileEntityIn.getPos().getY() - 0.75D, tileEntityIn.entityBeingTargeted.posZ - tileEntityIn.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
 		Tessellator.getInstance().draw();
 
-		GlStateManager.enableLighting();
-		GlStateManager.enableTexture();
-		GlStateManager.popMatrix();
+		RenderSystem.enableLighting();
+		RenderSystem.enableTexture();
+		RenderSystem.popMatrix();
 	}
 
 }

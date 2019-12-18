@@ -26,7 +26,6 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.StairsShape;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
@@ -159,12 +158,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IBucke
 	public float getExplosionResistance()
 	{
 		return modelBlock.getExplosionResistance();
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return modelBlock.getRenderLayer();
 	}
 
 	@Override

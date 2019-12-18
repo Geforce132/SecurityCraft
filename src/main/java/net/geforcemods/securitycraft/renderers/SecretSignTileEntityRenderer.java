@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.List;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -16,8 +16,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.model.SignModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -41,43 +41,43 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		BlockState state = te.getBlockState();
 		FontRenderer font = getFontRenderer();
 
-		GlStateManager.pushMatrix();
+		RenderSystem.pushMatrix();
 
 		if(state.getBlock() instanceof StandingSignBlock)
 		{
-			GlStateManager.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			GlStateManager.rotatef(-(state.get(StandingSignBlock.ROTATION) * 360 / 16.0F), 0.0F, 1.0F, 0.0F);
+			RenderSystem.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
+			RenderSystem.rotatef(-(state.get(StandingSignBlock.ROTATION) * 360 / 16.0F), 0.0F, 1.0F, 0.0F);
 			model.getSignStick().showModel = true;
 		}
 		else
 		{
-			GlStateManager.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
-			GlStateManager.rotatef(-state.get(WallSignBlock.FACING).getHorizontalAngle(), 0.0F, 1.0F, 0.0F);
-			GlStateManager.translatef(0.0F, -0.3125F, -0.4375F);
+			RenderSystem.translatef((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F);
+			RenderSystem.rotatef(-state.get(WallSignBlock.FACING).getHorizontalAngle(), 0.0F, 1.0F, 0.0F);
+			RenderSystem.translatef(0.0F, -0.3125F, -0.4375F);
 			model.getSignStick().showModel = false;
 		}
 
 		if(destroyStage >= 0)
 		{
 			bindTexture(DESTROY_STAGES[destroyStage]);
-			GlStateManager.matrixMode(5890);
-			GlStateManager.pushMatrix();
-			GlStateManager.scalef(4.0F, 2.0F, 1.0F);
-			GlStateManager.translatef(0.0625F, 0.0625F, 0.0625F);
-			GlStateManager.matrixMode(5888);
+			RenderSystem.matrixMode(5890);
+			RenderSystem.pushMatrix();
+			RenderSystem.scalef(4.0F, 2.0F, 1.0F);
+			RenderSystem.translatef(0.0625F, 0.0625F, 0.0625F);
+			RenderSystem.matrixMode(5888);
 		}
 		else
 			bindTexture(getTextureForSign(state.getBlock()));
 
-		GlStateManager.enableRescaleNormal();
-		GlStateManager.pushMatrix();
-		GlStateManager.scalef(0.6666667F, -0.6666667F, -0.6666667F);
+		RenderSystem.enableRescaleNormal();
+		RenderSystem.pushMatrix();
+		RenderSystem.scalef(0.6666667F, -0.6666667F, -0.6666667F);
 		model.renderSign();
-		GlStateManager.popMatrix();
-		GlStateManager.translatef(0.0F, 0.33333334F, 0.046666667F);
-		GlStateManager.scalef(0.010416667F, -0.010416667F, 0.010416667F);
-		GlStateManager.normal3f(0.0F, 0.0F, -0.010416667F);
-		GlStateManager.depthMask(false);
+		RenderSystem.popMatrix();
+		RenderSystem.translatef(0.0F, 0.33333334F, 0.046666667F);
+		RenderSystem.scalef(0.010416667F, -0.010416667F, 0.010416667F);
+		RenderSystem.normal3f(0.0F, 0.0F, -0.010416667F);
+		RenderSystem.depthMask(false);
 
 		int i = te.getTextColor().getTextColor();
 
@@ -123,15 +123,15 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 			}
 		}
 
-		GlStateManager.depthMask(true);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GlStateManager.popMatrix();
+		RenderSystem.depthMask(true);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.popMatrix();
 
 		if(destroyStage >= 0)
 		{
-			GlStateManager.matrixMode(5890);
-			GlStateManager.popMatrix();
-			GlStateManager.matrixMode(5888);
+			RenderSystem.matrixMode(5890);
+			RenderSystem.popMatrix();
+			RenderSystem.matrixMode(5888);
 		}
 	}
 
@@ -163,17 +163,17 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-		GlStateManager.color4f(0.0F, 0.0F, 255.0F, 255.0F);
-		GlStateManager.disableTexture();
-		GlStateManager.enableColorLogicOp();
-		GlStateManager.logicOp(GlStateManager.LogicOp.OR_REVERSE);
+		RenderSystem.color4f(0.0F, 0.0F, 255.0F, 255.0F);
+		RenderSystem.disableTexture();
+		RenderSystem.enableColorLogicOp();
+		RenderSystem.logicOp(RenderSystem.LogicOp.OR_REVERSE);
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
 		bufferbuilder.pos(p_217657_1_, p_217657_4_, 0.0D).endVertex();
 		bufferbuilder.pos(p_217657_3_, p_217657_4_, 0.0D).endVertex();
 		bufferbuilder.pos(p_217657_3_, p_217657_2_, 0.0D).endVertex();
 		bufferbuilder.pos(p_217657_1_, p_217657_2_, 0.0D).endVertex();
 		tessellator.draw();
-		GlStateManager.disableColorLogicOp();
-		GlStateManager.enableTexture();
+		RenderSystem.disableColorLogicOp();
+		RenderSystem.enableTexture();
 	}
 }

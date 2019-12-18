@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
@@ -106,19 +107,19 @@ public class EditSecretSignScreen extends Screen
 
 		renderBackground();
 		drawCenteredString(font, title.getFormattedText(), width / 2, 40, 16777215);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef(width / 2, 0.0F, 50.0F);
-		GlStateManager.scalef(-93.75F, -93.75F, -93.75F);
-		GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef(width / 2, 0.0F, 50.0F);
+		RenderSystem.scalef(-93.75F, -93.75F, -93.75F);
+		RenderSystem.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
 
 		if(state.getBlock() instanceof SecretStandingSignBlock)
 			angle = state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F;
 		else
 			angle = state.get(SecretWallSignBlock.FACING).getHorizontalAngle();
 
-		GlStateManager.rotatef(angle, 0.0F, 1.0F, 0.0F);
-		GlStateManager.translatef(0.0F, -1.0625F, 0.0F);
+		RenderSystem.rotatef(angle, 0.0F, 1.0F, 0.0F);
+		RenderSystem.translatef(0.0F, -1.0625F, 0.0F);
 		te.func_214062_a(editLine, textInputUtil.func_216896_c(), textInputUtil.func_216898_d(), updateCounter / 6 % 2 == 0);
 		TileEntityRendererDispatcher.instance.render(te, -0.5D, -0.75D, -0.5D, 0.0F);
 		te.func_214063_g();

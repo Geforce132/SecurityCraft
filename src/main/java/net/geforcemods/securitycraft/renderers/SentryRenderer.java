@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.SentryEntity;
@@ -25,12 +25,12 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 	@Override
 	public void doRender(SentryEntity entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(x, y + 1.5F, z);
-		GlStateManager.scalef(-1, -1, 1); //rotate model rightside up
+		RenderSystem.pushMatrix();
+		RenderSystem.translated(x, y + 1.5F, z);
+		RenderSystem.scalef(-1, -1, 1); //rotate model rightside up
 		bindEntityTexture(entity);
 		MODEL.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 	}
 
 	@Override

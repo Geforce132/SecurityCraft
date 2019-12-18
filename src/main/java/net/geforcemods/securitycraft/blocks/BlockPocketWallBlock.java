@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -31,7 +30,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 
 	public BlockPocketWallBlock()
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).func_226896_b_()); //notSolid
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, false));
 	}
@@ -74,21 +73,9 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 	}
 
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	public boolean func_229869_c_(BlockState state, IBlockReader world, BlockPos pos) //causesSuffocation
 	{
 		return false;
-	}
-
-	@Override
-	public boolean isSolid(BlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override

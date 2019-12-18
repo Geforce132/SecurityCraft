@@ -31,7 +31,6 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -113,11 +112,6 @@ public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPas
 		if(extendedState.getBlock() != this)
 			return extendedState.getAmbientOcclusionLightValue(world, pos);
 		else return super.getAmbientOcclusionLightValue(state, world, pos);
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override

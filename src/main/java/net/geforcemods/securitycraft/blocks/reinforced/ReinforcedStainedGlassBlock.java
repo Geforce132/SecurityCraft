@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBeaconBeamColorProvider;
 import net.minecraft.item.DyeColor;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
@@ -29,12 +28,6 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
 	{
 		return true;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override

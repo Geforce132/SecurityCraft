@@ -2,10 +2,9 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -77,28 +76,28 @@ public class PictureButton extends ClickButton{
 		{
 			FontRenderer font = mc.fontRenderer;
 			mc.getTextureManager().bindTexture(WIDGETS_LOCATION);
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 			int hoverState = !active ? 0 : !isHovered ? 1 : 2;
-			GlStateManager.enableBlend();
-			GLX.glBlendFuncSeparate(770, 771, 1, 0);
-			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+			RenderSystem.enableBlend();
+			RenderSystem.blendFuncSeparate(770, 771, 1, 0);
+			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 			this.blit(x, y, 0, 46 + hoverState * 20, width / 2, height);
 			this.blit(x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
 
 			if(blockToRender != null){
-				GlStateManager.enableRescaleNormal(); //(this.width / 2) - 8
+				RenderSystem.enableRescaleNormal(); //(this.width / 2) - 8
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(blockToRender), x + 2, y + 3, "");
 			}else if(itemToRender != null){
-				GlStateManager.enableRescaleNormal();
+				RenderSystem.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(itemToRender), x + 2, y + 2);
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(itemToRender), x + 2, y + 2, "");
-				GlStateManager.disableLighting();
+				RenderSystem.disableLighting();
 			}
 			else if(textureLocation != null)
 			{
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(textureLocation);
 				blit(x, y + 1, u, v, texWidth, texHeight);
 			}

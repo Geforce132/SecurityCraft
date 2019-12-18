@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.block.BlockState;
@@ -41,44 +41,44 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 
 	@Override
 	public void render(KeypadChestTileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
-		GlStateManager.enableDepthTest();
-		GlStateManager.depthFunc(515);
-		GlStateManager.depthMask(true);
+		RenderSystem.enableDepthTest();
+		RenderSystem.depthFunc(515);
+		RenderSystem.depthMask(true);
 		BlockState BlockState = tileEntityIn.hasWorld() ? tileEntityIn.getBlockState() : Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH);
 		ChestType chesttype = BlockState.has(ChestBlock.TYPE) ? BlockState.get(ChestBlock.TYPE) : ChestType.SINGLE;
 		if (chesttype != ChestType.LEFT) {
 			boolean flag = chesttype != ChestType.SINGLE;
 			ChestModel modelchest = this.getChestModel(tileEntityIn, destroyStage, flag);
 			if (destroyStage >= 0) {
-				GlStateManager.matrixMode(5890);
-				GlStateManager.pushMatrix();
-				GlStateManager.scalef(flag ? 8.0F : 4.0F, 4.0F, 1.0F);
-				GlStateManager.translatef(0.0625F, 0.0625F, 0.0625F);
-				GlStateManager.matrixMode(5888);
+				RenderSystem.matrixMode(5890);
+				RenderSystem.pushMatrix();
+				RenderSystem.scalef(flag ? 8.0F : 4.0F, 4.0F, 1.0F);
+				RenderSystem.translatef(0.0625F, 0.0625F, 0.0625F);
+				RenderSystem.matrixMode(5888);
 			} else {
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			}
 
-			GlStateManager.pushMatrix();
-			GlStateManager.enableRescaleNormal();
-			GlStateManager.translatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
-			GlStateManager.scalef(1.0F, -1.0F, -1.0F);
+			RenderSystem.pushMatrix();
+			RenderSystem.enableRescaleNormal();
+			RenderSystem.translatef((float)x, (float)y + 1.0F, (float)z + 1.0F);
+			RenderSystem.scalef(1.0F, -1.0F, -1.0F);
 			float f = BlockState.get(ChestBlock.FACING).getHorizontalAngle();
 			if (Math.abs(f) > 1.0E-5D) {
-				GlStateManager.translatef(0.5F, 0.5F, 0.5F);
-				GlStateManager.rotatef(f, 0.0F, 1.0F, 0.0F);
-				GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
+				RenderSystem.translatef(0.5F, 0.5F, 0.5F);
+				RenderSystem.rotatef(f, 0.0F, 1.0F, 0.0F);
+				RenderSystem.translatef(-0.5F, -0.5F, -0.5F);
 			}
 
 			this.rotateLid(tileEntityIn, partialTicks, modelchest);
 			modelchest.renderAll();
-			GlStateManager.disableRescaleNormal();
-			GlStateManager.popMatrix();
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.disableRescaleNormal();
+			RenderSystem.popMatrix();
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			if (destroyStage >= 0) {
-				GlStateManager.matrixMode(5890);
-				GlStateManager.popMatrix();
-				GlStateManager.matrixMode(5888);
+				RenderSystem.matrixMode(5890);
+				RenderSystem.popMatrix();
+				RenderSystem.matrixMode(5888);
 			}
 		}
 	}

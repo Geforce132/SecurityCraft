@@ -11,7 +11,6 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -47,12 +46,6 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	public BlockState getStateForPlacement(BlockItemUseContext context)
 	{
 		return getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 	@Override

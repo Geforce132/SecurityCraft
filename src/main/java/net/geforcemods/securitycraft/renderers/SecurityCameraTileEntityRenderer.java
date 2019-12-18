@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -41,12 +41,12 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 			GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightmapX, lightmapY);
 		}
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
 		Minecraft.getInstance().textureManager.bindTexture(cameraTexture);
 
-		GlStateManager.pushMatrix();
+		RenderSystem.pushMatrix();
 
 		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
 			Direction side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), SecurityCameraBlock.FACING);
@@ -63,14 +63,14 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 		else
 			rotation = -10000F;
 
-		GlStateManager.rotatef(180F, rotation, 0.0F, 1.0F);
+		RenderSystem.rotatef(180F, rotation, 0.0F, 1.0F);
 
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
 
 		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		GlStateManager.popMatrix();
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
+		RenderSystem.popMatrix();
 	}
 
 

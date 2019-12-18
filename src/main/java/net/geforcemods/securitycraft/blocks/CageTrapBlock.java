@@ -18,7 +18,6 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -43,12 +42,6 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 	@Override
 	public BlockRenderType getRenderType(BlockState state){
 		return BlockRenderType.MODEL;
-	}
-
-	@Override
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override

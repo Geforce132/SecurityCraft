@@ -27,7 +27,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 		if (entity instanceof LivingEntity) {
 			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))) ||
 					entity instanceof ZombiePigmanEntity ||
-					(entity instanceof CreeperEntity && ((CreeperEntity) entity).getPowered()))
+					(entity instanceof CreeperEntity && ((CreeperEntity) entity).func_225509_J__()))
 				return false;
 
 			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.posX, entity.posY, entity.posZ, false);

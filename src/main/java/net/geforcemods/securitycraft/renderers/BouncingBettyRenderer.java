@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -24,11 +26,14 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	}
 
 	@Override
-	public void doRender(BouncingBettyEntity entity, double x, double y, double z, float entityYaw, float partialTicks)
+	public void func_225623_a_(BouncingBettyEntity entity, float p_225623_2_, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
+		float x = entity.getPosition().getX();
+		float y = entity.getPosition().getY();
+		float z = entity.getPosition().getZ();
 		BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef((float)x, (float)y + 0.5F, (float)z);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef(x, y + 0.5F, z);
 		float alpha;
 
 		if (entity.fuse - partialTicks + 1.0F < 10.0F)
@@ -38,39 +43,39 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 			alpha *= alpha;
 			alpha *= alpha;
 			float scale = 1.0F + alpha * 0.3F;
-			GlStateManager.scalef(scale, scale, scale);
+			RenderSystem.scalef(scale, scale, scale);
 		}
 
 		alpha = (1.0F - (entity.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 		bindEntityTexture(entity);
-		GlStateManager.translatef(-0.5F, -0.5F, 0.5F);
+		RenderSystem.translatef(-0.5F, -0.5F, 0.5F);
 		blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), entity.getBrightness());
-		GlStateManager.translatef(0.0F, 0.0F, 1.0F);
+		RenderSystem.translatef(0.0F, 0.0F, 1.0F);
 
 		if (entity.fuse / 5 % 2 == 0)
 		{
-			GlStateManager.disableTexture();
-			GlStateManager.disableLighting();
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(770, 772);
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, alpha);
-			GlStateManager.enablePolygonOffset();
-			GlStateManager.polygonOffset(-3.0F, -3.0F);
+			RenderSystem.disableTexture();
+			RenderSystem.disableLighting();
+			RenderSystem.enableBlend();
+			RenderSystem.blendFunc(770, 772);
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
+			RenderSystem.enablePolygonOffset();
+			RenderSystem.polygonOffset(-3.0F, -3.0F);
 			blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), 1.0F);
-			GlStateManager.polygonOffset(0.0F, 0.0F);
-			GlStateManager.disablePolygonOffset();
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableBlend();
-			GlStateManager.enableLighting();
-			GlStateManager.enableTexture();
+			RenderSystem.polygonOffset(0.0F, 0.0F);
+			RenderSystem.disablePolygonOffset();
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.disableBlend();
+			RenderSystem.enableLighting();
+			RenderSystem.enableTexture();
 		}
 
-		GlStateManager.popMatrix();
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+		RenderSystem.popMatrix();
+		super.func_225623_a_(entity, p_225623_2_, partialTicks, stack, buffer, p_225623_6_);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(BouncingBettyEntity entity)
+	public ResourceLocation getEntityTexture(BouncingBettyEntity entity)
 	{
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}

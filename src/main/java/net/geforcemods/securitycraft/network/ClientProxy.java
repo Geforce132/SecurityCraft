@@ -7,25 +7,21 @@ import java.util.Map;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
-import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
-import net.geforcemods.securitycraft.entity.BulletEntity;
-import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
-import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
-import net.geforcemods.securitycraft.renderers.SentryRenderer;
+import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemTileEntityRenderer;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
-import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
+import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
@@ -38,14 +34,11 @@ import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
-import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -69,14 +62,14 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void clientSetup()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(BouncingBettyEntity.class, manager -> new BouncingBettyRenderer(manager));
-		RenderingRegistry.registerEntityRenderingHandler(IMSBombEntity.class, manager -> new IMSBombRenderer(manager));
-		RenderingRegistry.registerEntityRenderingHandler(SentryEntity.class, manager -> new SentryRenderer(manager));
-		RenderingRegistry.registerEntityRenderingHandler(BulletEntity.class, manager -> new BulletRenderer(manager));
-		ClientRegistry.bindTileEntitySpecialRenderer(KeypadChestTileEntity.class, new KeypadChestTileEntityRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(SecurityCameraTileEntity.class, new SecurityCameraTileEntityRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(SecretSignTileEntity.class, new SecretSignTileEntityRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TrophySystemTileEntity.class, new TrophySystemTileEntityRenderer());
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb, IMSBombRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry, SentryRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBullet, BulletRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeKeypadChest, new KeypadChestTileEntityRenderer());
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, new SecurityCameraTileEntityRenderer());
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, new SecretSignTileEntityRenderer());
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, new TrophySystemTileEntityRenderer());
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -134,7 +127,7 @@ public class ClientProxy implements IProxy {
 			Block block = Block.getBlockFromItem(KeypadBlock.getDisguisedStack(world, pos).getItem());
 
 			if(block != Blocks.AIR && !(block instanceof KeypadBlock))
-				return Minecraft.getInstance().getBlockColors().getColor(block.getDefaultState(), world, pos, tintIndex);
+				return Minecraft.getInstance().getBlockColors().func_228054_a_(block.getDefaultState(), world, pos, tintIndex); //getColor
 			else return 0xFFFFFF;
 		}, SCContent.keypad);
 	}

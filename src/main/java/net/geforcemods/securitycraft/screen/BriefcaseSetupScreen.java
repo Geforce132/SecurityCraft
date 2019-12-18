@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -60,7 +60,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
 		super.render(mouseX, mouseY, partialTicks);
-		GlStateManager.disableLighting();
+		RenderSystem.disableLighting();
 		keycodeTextbox.render(mouseX, mouseY, partialTicks);
 		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
@@ -73,7 +73,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
