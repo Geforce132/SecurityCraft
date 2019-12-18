@@ -44,7 +44,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	private static final DataParameter<NBTTagCompound> WHITELIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntitySentry.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
-	public static final DataParameter<Float> HEAD_TRANSLATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
 	private float headYTranslation = 0.9F;
 	private final float animationStepSize = 0.025F;
@@ -72,7 +71,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.set(WHITELIST, new NBTTagCompound());
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
-		dataManager.set(HEAD_TRANSLATION, 0.9F);
 	}
 
 	@Override
@@ -84,7 +82,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.register(WHITELIST, new NBTTagCompound());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
-		dataManager.register(HEAD_TRANSLATION, 0.9F);
 	}
 
 	@Override
@@ -99,17 +96,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		super.onEntityUpdate();
 
-//		if (dataManager.get(MODE) == 0 && headYTranslation > 0.0F && !animate) {
-//			animate = true;
-//			animateUpwards = true;
-//		}
-		
 		if(world.isRemote && animate)
 		{
-			if(animateUpwards && dataManager.get(HEAD_TRANSLATION) > 0.0F)
+			if(animateUpwards && headYTranslation > 0.0F)
 			{
 				headYTranslation -= animationStepSize;
-				dataManager.set(HEAD_TRANSLATION, headYTranslation);
 
 				if(headYTranslation <= 0.0F)
 				{
@@ -117,10 +108,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 					animate = false;
 				}
 			}
-			else if(!animateUpwards && dataManager.get(HEAD_TRANSLATION) < 0.9F)
+			else if(!animateUpwards && headYTranslation < 0.9F)
 			{
 				headYTranslation += animationStepSize;
-				dataManager.set(HEAD_TRANSLATION, headYTranslation);
 
 				if(headYTranslation >= 0.9F)
 				{
@@ -292,7 +282,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		tag.setTag("InstalledWhitelist", getWhitelistModule().writeToNBT(new NBTTagCompound()));
 		tag.setInteger("SentryMode", dataManager.get(MODE));
 		tag.setFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
-		tag.setFloat("HeadTranslation", dataManager.get(HEAD_TRANSLATION));
 		super.writeEntityToNBT(tag);
 	}
 
@@ -318,7 +307,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.set(WHITELIST, (NBTTagCompound)tag.getTag("InstalledWhitelist"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
-		dataManager.set(HEAD_TRANSLATION, tag.getFloat("HeadTranslation"));
 		super.readEntityFromNBT(tag);
 	}
 
@@ -399,8 +387,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	 */
 	public float getHeadYTranslation()
 	{
-		return dataManager.get(HEAD_TRANSLATION);
-		//return headYTranslation;
+		return headYTranslation;
 	}
 
 	public boolean isTargetingWhitelistedPlayer(EntityLivingBase potentialTarget)
