@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.List;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -166,7 +167,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		RenderSystem.color4f(0.0F, 0.0F, 255.0F, 255.0F);
 		RenderSystem.disableTexture();
 		RenderSystem.enableColorLogicOp();
-		RenderSystem.logicOp(RenderSystem.LogicOp.OR_REVERSE);
+		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION);
 		bufferbuilder.pos(p_217657_1_, p_217657_4_, 0.0D).endVertex();
 		bufferbuilder.pos(p_217657_3_, p_217657_4_, 0.0D).endVertex();

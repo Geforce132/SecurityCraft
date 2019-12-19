@@ -26,6 +26,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.StairsShape;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
@@ -37,10 +38,10 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -147,13 +148,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IBucke
 		modelBlock.onPlayerDestroy(worldIn, pos, state);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader source, BlockPos pos)
-	{
-		return modelState.getPackedLightmapCoords(source, pos);
-	}
-
 	@Override
 	public float getExplosionResistance()
 	{
@@ -190,15 +184,15 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IBucke
 	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random)
+	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
 	{
-		modelBlock.tick(state, world, pos, random);
+		modelState.func_227033_a_(world, pos, random); //tick
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
 	{
-		return modelState.onBlockActivated(world, player, hand, hit);
+		return modelState.func_227031_a_(world, player, hand, hit); //onBlockActivated
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -83,7 +83,7 @@ public class SCManualScreen extends Screen {
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
 		renderBackground();
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(update)
 		{
@@ -396,7 +396,7 @@ public class SCManualScreen extends Screen {
 		public void render(int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
 				int textureX = 0;
 				int textureY = 192;

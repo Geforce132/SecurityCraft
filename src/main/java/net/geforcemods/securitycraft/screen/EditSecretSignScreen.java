@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
@@ -123,7 +122,7 @@ public class EditSecretSignScreen extends Screen
 		te.func_214062_a(editLine, textInputUtil.func_216896_c(), textInputUtil.func_216898_d(), updateCounter / 6 % 2 == 0);
 		TileEntityRendererDispatcher.instance.render(te, -0.5D, -0.75D, -0.5D, 0.0F);
 		te.func_214063_g();
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 		super.render(mouseX, mouseY, partialTicks);
 	}
 }

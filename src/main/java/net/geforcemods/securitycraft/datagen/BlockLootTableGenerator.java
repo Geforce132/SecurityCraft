@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -99,8 +100,11 @@ public class BlockLootTableGenerator implements IDataProvider
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
 						.addEntry(ItemLootEntry.builder(doorItem)
-								.acceptCondition(BlockStateProperty.builder(door).with(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
-						.acceptCondition(SurvivesExplosion.builder())));
+								.acceptCondition(BlockStateProperty.builder(door)
+										//"properties" or something like that
+										.func_227567_a_(StatePropertiesPredicate.Builder.func_227191_a_() //create
+												.func_227193_a_(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER))) //with
+								.acceptCondition(SurvivesExplosion.builder()))));
 	}
 
 	protected final void putStandardBlockLootTable(Block block)

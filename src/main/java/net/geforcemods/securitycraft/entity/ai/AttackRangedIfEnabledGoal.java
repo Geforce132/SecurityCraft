@@ -57,7 +57,7 @@ public class AttackRangedIfEnabledGoal extends Goal
 	@Override
 	public void tick() //copied from vanilla to remove pathfinding code
 	{
-		double targetDistance = sentry.getDistanceSq(attackTarget.posX, attackTarget.getBoundingBox().minY, attackTarget.posZ);
+		double targetDistance = sentry.getDistanceSq(attackTarget.func_226277_ct_(), attackTarget.getBoundingBox().minY, attackTarget.func_226281_cx_());
 
 		sentry.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 

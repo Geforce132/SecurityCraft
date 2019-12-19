@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock
 {
@@ -40,7 +41,7 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random)
+	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
 	{
 		if(!world.isRemote)
 			checkFallable(world, pos);

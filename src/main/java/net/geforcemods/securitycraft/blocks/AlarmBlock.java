@@ -26,6 +26,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class AlarmBlock extends OwnableBlock {
 
@@ -99,7 +100,8 @@ public class AlarmBlock extends OwnableBlock {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random){
+	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	{
 		if(!world.isRemote){
 			playSoundAndUpdate(world, pos);
 

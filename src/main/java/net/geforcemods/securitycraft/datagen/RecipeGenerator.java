@@ -35,7 +35,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
-import net.minecraftforge.common.crafting.IngredientNBT;
+import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 
 public class RecipeGenerator extends RecipeProvider
@@ -106,7 +106,7 @@ public class RecipeGenerator extends RecipeProvider
 		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
-		.key('P', new NBTIngredient(healingStack))
+		.key('P', new CustomNBTIngredient(healingStack))
 		.key('B', Items.LAVA_BUCKET)
 		.addCriterion("has_lava_bucket", hasItem(Items.LAVA_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_normal"));
@@ -114,7 +114,7 @@ public class RecipeGenerator extends RecipeProvider
 		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
-		.key('P', new NBTIngredient(strongHealingStack))
+		.key('P', new CustomNBTIngredient(strongHealingStack))
 		.key('B', Items.LAVA_BUCKET)
 		.addCriterion("has_lava_bucket", hasItem(Items.LAVA_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava_strong"));
@@ -122,7 +122,7 @@ public class RecipeGenerator extends RecipeProvider
 		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
-		.key('P', new NBTIngredient(harmingStack))
+		.key('P', new CustomNBTIngredient(harmingStack))
 		.key('B', Items.WATER_BUCKET)
 		.addCriterion("has_water_bucket", hasItem(Items.WATER_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_normal"));
@@ -130,7 +130,7 @@ public class RecipeGenerator extends RecipeProvider
 		.setGroup("securitycraft:fake_liquids")
 		.patternLine("P")
 		.patternLine("B")
-		.key('P', new NBTIngredient(strongHarmingStack))
+		.key('P', new CustomNBTIngredient(strongHarmingStack))
 		.key('B', Items.WATER_BUCKET)
 		.addCriterion("has_water_bucket", hasItem(Items.WATER_BUCKET))
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "bucket_f_water_strong"));
@@ -904,9 +904,9 @@ public class RecipeGenerator extends RecipeProvider
 	}
 
 	//helper because IngredientNBT's constructor is protected
-	private static class NBTIngredient extends IngredientNBT
+	private static class CustomNBTIngredient extends NBTIngredient
 	{
-		public NBTIngredient(ItemStack stack)
+		public CustomNBTIngredient(ItemStack stack)
 		{
 			super(stack);
 		}

@@ -11,6 +11,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -53,9 +54,9 @@ public class FrameBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
 	{
-		return player.getHeldItem(hand).getItem() == SCContent.keyPanel;
+		return player.getHeldItem(hand).getItem() == SCContent.keyPanel ? ActionResultType.SUCCESS : ActionResultType.PASS;
 	}
 
 	@Override

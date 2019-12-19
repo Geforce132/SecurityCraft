@@ -34,7 +34,7 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(SentryEntity entity)
+	public ResourceLocation getEntityTexture(SentryEntity entity)
 	{
 		return TEXTURE;
 	}

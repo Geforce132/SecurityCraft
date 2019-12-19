@@ -60,7 +60,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity {
 		entityBeingTargeted.remove();
 
 		if(!world.isRemote)
-			world.createExplosion(null, entityBeingTargeted.posX, entityBeingTargeted.posY, entityBeingTargeted.posZ, 1.0F, Explosion.Mode.NONE);
+			world.createExplosion(null, entityBeingTargeted.func_226277_ct_(), entityBeingTargeted.func_226278_cu_(), entityBeingTargeted.func_226281_cx_(), 1.0F, Explosion.Mode.NONE);
 
 		resetTarget();
 	}

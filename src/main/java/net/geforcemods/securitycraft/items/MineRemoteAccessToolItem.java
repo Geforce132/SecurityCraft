@@ -44,7 +44,7 @@ public class MineRemoteAccessToolItem extends Item {
 		if(world.isRemote)
 			SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
 
-		return ActionResult.newResult(ActionResultType.PASS, player.getHeldItem(hand));
+		return ActionResult.func_226250_c_(player.getHeldItem(hand)); //pass
 	}
 
 	@Override

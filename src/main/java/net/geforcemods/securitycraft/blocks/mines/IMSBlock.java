@@ -22,6 +22,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
@@ -76,7 +77,7 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
 	{
 		if(!world.isRemote)
 		{
@@ -101,11 +102,11 @@ public class IMSBlock extends OwnableBlock {
 						NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
 				}
 
-				return true;
+				return ActionResultType.SUCCESS;
 			}
 		}
 
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	/**

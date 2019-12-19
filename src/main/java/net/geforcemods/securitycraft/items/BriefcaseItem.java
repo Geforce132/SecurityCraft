@@ -61,7 +61,7 @@ public class BriefcaseItem extends Item {
 				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.getPosition(), stack.getDisplayName()));
 		}
 
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResult.func_226250_c_(stack); //pass
 	}
 
 	@Override

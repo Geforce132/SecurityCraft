@@ -11,6 +11,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -30,34 +31,35 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	{
 		if(!world.isRemote){
 			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos)) {
 				explode(world, pos);
-				return false;
+				return ActionResultType.SUCCESS;
 			}
 
 			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
-				return false;
+				return ActionResultType.SUCCESS;
 
 			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
 				defuseMine(world, pos);
 				player.inventory.getCurrentItem().damageItem(1, player, p -> {});
-				return false;
+				return ActionResultType.SUCCESS;
 			}
 
 			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
 				activateMine(world, pos);
-				return false;
+				return ActionResultType.SUCCESS;
 			}
 
 			if(explodesWhenInteractedWith() && isActive(world, pos))
 				explode(world, pos);
 
-			return false;
+			return ActionResultType.SUCCESS;
 		}
 
-		return false;
+		return ActionResultType.PASS;
 	}
 
 	/**

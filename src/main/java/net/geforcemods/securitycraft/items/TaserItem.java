@@ -14,7 +14,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -50,7 +49,7 @@ public class TaserItem extends Item {
 		if(!world.isRemote)
 		{
 			if(!stack.isDamaged()){
-				if(player.isSneaking() && (player.isCreative() || !powered))
+				if(player.func_225608_bj_() && (player.isCreative() || !powered)) //isCrouching
 				{
 					ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
 
@@ -71,11 +70,11 @@ public class TaserItem extends Item {
 						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
 					}
 
-					return ActionResult.newResult(ActionResultType.PASS, stack);
+					return ActionResult.func_226250_c_(stack); //pass
 				}
 
 				WorldUtils.addScheduledTask(world, () -> world.addEntity(new TaserBulletEntity(world, player, powered)));
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "players"));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.func_226277_ct_(), player.func_226278_cu_(), player.func_226281_cx_(), SCSounds.TASERFIRED.path, 1.0F, "players"));
 
 				if(!player.isCreative())
 				{
@@ -92,7 +91,7 @@ public class TaserItem extends Item {
 			}
 		}
 
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResult.func_226250_c_(stack); //pass
 	}
 
 	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)

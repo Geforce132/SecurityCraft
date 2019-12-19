@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
@@ -57,7 +58,8 @@ public class PanicButtonBlock extends AbstractButtonBlock implements ITileEntity
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	{
 		BlockUtils.setBlockProperty(world, pos, POWERED, !state.get(POWERED), true);
 
 		if(state.get(FACE) == AttachFace.WALL)
@@ -67,7 +69,7 @@ public class PanicButtonBlock extends AbstractButtonBlock implements ITileEntity
 		else if(state.get(FACE) == AttachFace.FLOOR)
 			notifyNeighbors(world, pos, Direction.UP);
 
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	private void notifyNeighbors(World world, BlockPos pos, Direction facing)

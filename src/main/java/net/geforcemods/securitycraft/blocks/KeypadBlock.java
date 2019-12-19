@@ -31,6 +31,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -42,6 +43,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPasswordConvertible {
@@ -166,22 +168,23 @@ public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	{
 		if(world.isRemote)
-			return true;
+			return ActionResultType.PASS;
 		else {
 			if(state.get(POWERED).booleanValue() || ModuleUtils.checkForModule(world, pos, player, CustomModules.BLACKLIST))
-				return false;
+				return ActionResultType.FAIL;
 
 			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST)){
 				activate(world, pos);
-				return true;
+				return ActionResultType.SUCCESS;
 			}
 
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 
-			return true;
+			return ActionResultType.SUCCESS;
 		}
 	}
 
@@ -192,7 +195,8 @@ public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random){
+	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	{
 		BlockUtils.setBlockProperty(world, pos, POWERED, false);
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
 	}

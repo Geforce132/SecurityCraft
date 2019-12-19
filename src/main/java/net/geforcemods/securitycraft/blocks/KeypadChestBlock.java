@@ -21,6 +21,7 @@ import net.minecraft.state.properties.ChestType;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -40,15 +41,16 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	{
 		if(!world.isRemote) {
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof KeypadChestTileEntity)
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 
-			return true;
+			return ActionResultType.SUCCESS;
 		}
 
-		return true;
+		return ActionResultType.PASS;
 	}
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){

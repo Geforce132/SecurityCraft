@@ -26,6 +26,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +34,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -90,7 +92,8 @@ public class KeycardReaderBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	{
 		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof BaseKeycardItem) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((KeycardReaderTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		else if(player.inventory.getCurrentItem().getItem() == SCContent.adminTool)
@@ -98,7 +101,7 @@ public class KeycardReaderBlock extends OwnableBlock  {
 		else
 			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.inventory.getCurrentItem(), player);
 
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	public static void activate(World world, BlockPos pos){
@@ -108,7 +111,8 @@ public class KeycardReaderBlock extends OwnableBlock  {
 	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random){
+	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	{
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);

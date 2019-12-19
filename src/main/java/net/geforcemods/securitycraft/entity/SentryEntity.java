@@ -128,7 +128,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		{
 			player.closeScreen();
 
-			if(player.isSneaking())
+			if(player.func_225608_bj_()) //isCrouching
 				remove();
 			else if(player.getHeldItemMainhand().getItem() == SCContent.disguiseModule)
 			{
@@ -242,13 +242,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			return;
 
 		BulletEntity throwableEntity = new BulletEntity(world, this);
-		double y = target.posY + target.getEyeHeight() - 1.100000023841858D;
-		double x = target.posX - posX;
-		double d2 = y - throwableEntity.posY;
-		double z = target.posZ - posZ;
+		double y = target.func_226277_ct_() + target.getEyeHeight() - 1.100000023841858D;
+		double x = target.func_226277_ct_() - func_226277_ct_();
+		double d2 = y - throwableEntity.func_226278_cu_();
+		double z = target.func_226281_cx_() - func_226281_cx_();
 		float f = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
-		throwableEntity.posY -= 0.1F;
+		throwableEntity.setPosition(throwableEntity.func_226277_ct_(), throwableEntity.func_226278_cu_() - 0.1F, throwableEntity.func_226281_cx_());
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, d2 + f, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
@@ -429,7 +429,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	@Override
-	protected void checkDespawn() {} //sentries don't despawn
+	public void checkDespawn() {} //sentries don't despawn
 
 	@Override
 	public boolean canDespawn(double distanceClosestToPlayer)

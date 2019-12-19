@@ -24,6 +24,7 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -106,14 +107,15 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	}
 
 	@Override
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
+	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	{
 		if(!world.isRemote)
 		{
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
 				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){

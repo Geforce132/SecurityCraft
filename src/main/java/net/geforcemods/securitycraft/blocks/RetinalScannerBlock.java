@@ -24,6 +24,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 public class RetinalScannerBlock extends ContainerBlock {
@@ -54,7 +55,8 @@ public class RetinalScannerBlock extends ContainerBlock {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random){
+	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	{
 		if (!world.isRemote && state.get(POWERED).booleanValue())
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 	}

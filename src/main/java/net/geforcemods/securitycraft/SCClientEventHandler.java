@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.containers.GenericContainer;
@@ -29,7 +29,7 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -72,20 +72,17 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onDrawBlockHighlight(DrawBlockHighlightEvent event)
+	public static void onDrawBlockHighlight(DrawHighlightEvent.HighlightBlock event)
 	{
-		if(event.getTarget().getType() == Type.BLOCK)
-		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(((BlockRayTraceResult)event.getTarget()).getPos()))
-				event.setCanceled(true);
-		}
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(event.getTarget().getPos()))
+			event.setCanceled(true);
 	}
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent event) {
 		if(Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof SecurityCameraBlock)))
-				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().mainWindow, Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ)));
+			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_()))) instanceof SecurityCameraBlock)))
+				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().func_228018_at_(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_())));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
 		{
@@ -103,8 +100,8 @@ public class SCClientEventHandler {
 			{
 				String textureToUse = "camera_not_bound";
 				double eyeHeight = player.getEyeHeight();
-				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+				Vec3d lookVec = new Vec3d((player.func_226277_ct_() + (player.getLookVec().x * 5)), ((eyeHeight + player.func_226278_cu_()) + (player.getLookVec().y * 5)), (player.func_226281_cx_() + (player.getLookVec().z * 5)));
+				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.func_226277_ct_(), player.func_226278_cu_() + player.getEyeHeight(), player.func_226281_cx_()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
 				if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
 				{
@@ -125,10 +122,10 @@ public class SCClientEventHandler {
 							}
 						}
 
-					GlStateManager.enableAlphaTest();
+					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
-					GlStateManager.disableAlphaTest();
+					drawNonStandardTexturedRect(Minecraft.getInstance().func_228018_at_().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().func_228018_at_().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					RenderSystem.disableAlphaTest();
 				}
 			}
 		}

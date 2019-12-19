@@ -34,7 +34,7 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		BufferBuilder bb = Tessellator.getInstance().getBuffer();
 		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		bb.pos(0, 0, 0).color(1, 0, 0, 1F).endVertex();
-		bb.pos(tileEntityIn.entityBeingTargeted.posX - tileEntityIn.getPos().getX() - 0.5D, tileEntityIn.entityBeingTargeted.posY - tileEntityIn.getPos().getY() - 0.75D, tileEntityIn.entityBeingTargeted.posZ - tileEntityIn.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
+		bb.pos(tileEntityIn.entityBeingTargeted.func_226277_ct_() - tileEntityIn.getPos().getX() - 0.5D, tileEntityIn.entityBeingTargeted.func_226278_cu_() - tileEntityIn.getPos().getY() - 0.75D, tileEntityIn.entityBeingTargeted.func_226281_cx_() - tileEntityIn.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
 		Tessellator.getInstance().draw();
 
 		RenderSystem.enableLighting();
