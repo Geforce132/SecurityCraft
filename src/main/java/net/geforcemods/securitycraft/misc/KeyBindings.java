@@ -18,10 +18,10 @@ public class KeyBindings {
 	public static KeyBinding cameraActivateNightVision;
 
 	public static void init(){
-		cameraZoomIn = new KeyBinding("key.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
-		cameraZoomOut = new KeyBinding("key.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
-		cameraEmitRedstone = new KeyBinding("key.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
-		cameraActivateNightVision = new KeyBinding("key.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
+		cameraZoomIn = new KeyBinding("key.securitycraft.cameraZoomIn", GLFW.GLFW_KEY_EQUAL, "key.categories.securitycraft");
+		cameraZoomOut = new KeyBinding("key.securitycraft.cameraZoomOut", GLFW.GLFW_KEY_MINUS, "key.categories.securitycraft");
+		cameraEmitRedstone = new KeyBinding("key.securitycraft.cameraEmitRedstone", GLFW.GLFW_KEY_R, "key.categories.securitycraft");
+		cameraActivateNightVision = new KeyBinding("key.securitycraft.cameraActivateNightVision", GLFW.GLFW_KEY_N, "key.categories.securitycraft");
 
 		ClientRegistry.registerKeyBinding(cameraZoomIn);
 		ClientRegistry.registerKeyBinding(cameraZoomOut);
