@@ -11,7 +11,6 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -53,14 +52,14 @@ public class GuiUtils{
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, SecurityCameraBlock.FACING)) == 0) && (((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
-			drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);
+			drawItemToGui(mc, Items.REDSTONE, 10, 0, false);
 	}
 
-	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
+	public static void drawItemToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
 		if(fixLighting)
 			RenderSystem.enableLighting();
 
-		RenderHelper.enableGUIStandardItemLighting();
+		RenderSystem.setupGuiFlatDiffuseLighting();
 		RenderSystem.enableRescaleNormal();
 		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item), x, y);
 
@@ -69,6 +68,6 @@ public class GuiUtils{
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		drawItemStackToGui(mc, block.asItem(), x, y, fixLighting);
+		drawItemToGui(mc, block.asItem(), x, y, fixLighting);
 	}
 }

@@ -97,13 +97,13 @@ public class KeypadBlock extends ContainerBlock implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	public boolean func_229869_c_(BlockState state, IBlockReader world, BlockPos pos) //causesSuffocation
 	{
 		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
 			return extendedState.causesSuffocation(world, pos);
-		else return super.causesSuffocation(state, world, pos);
+		else return super.func_229869_c_(state, world, pos);
 	}
 
 	@Override

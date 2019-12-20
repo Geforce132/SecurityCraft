@@ -34,7 +34,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible {
 
 	public KeypadChestBlock(){
-		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(-1.0F, 6000000.0F), () -> SCContent.teTypeKeypadChest);
 	}
 
 	/**

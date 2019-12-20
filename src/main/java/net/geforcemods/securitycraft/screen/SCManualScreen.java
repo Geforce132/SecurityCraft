@@ -125,7 +125,7 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemStackToGui(minecraft, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
+			GuiUtils.drawItemToGui(minecraft, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
 
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
@@ -164,7 +164,7 @@ public class SCManualScreen extends Screen {
 						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
-						GuiUtils.drawItemStackToGui(minecraft, matchingStacks[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof BlockItem));
+						GuiUtils.drawItemToGui(minecraft, matchingStacks[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof BlockItem));
 					}
 			}
 

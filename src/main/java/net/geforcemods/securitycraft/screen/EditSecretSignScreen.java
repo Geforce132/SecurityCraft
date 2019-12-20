@@ -1,17 +1,33 @@
 package net.geforcemods.securitycraft.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import java.util.List;
 
-import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
-import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.StandingSignBlock;
+import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.gui.fonts.TextInputUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.CUpdateSignPacket;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,6 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class EditSecretSignScreen extends Screen
 {
+	private final SignModel signModel = new SignModel();
 	private final SecretSignTileEntity te;
 	private int updateCounter;
 	private int editLine;
@@ -101,28 +118,119 @@ public class EditSecretSignScreen extends Screen
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		BlockState state = te.getBlockState();
-		float angle;
+		MatrixStack stack = new MatrixStack();
+		BlockState state = this.te.getBlockState();
+		boolean isStanding = state.getBlock() instanceof StandingSignBlock;
+		boolean update = updateCounter / 6 % 2 == 0;
+		Material material = SignTileEntityRenderer.func_228877_a_(state.getBlock());
+		int textColor = te.getTextColor().getTextColor();
+		String[] text = new String[4];
+		int k = textInputUtil.func_216896_c();
+		int l = textInputUtil.func_216898_d();
+		int i1 = minecraft.fontRenderer.getBidiFlag() ? -1 : 1;
+		int j1 = editLine * 10 - te.signText.length * 5;
+		IRenderTypeBuffer.Impl buffer;
+		IVertexBuilder builder;
+		Matrix4f matrix4f;
 
+		RenderHelper.func_227783_c_();
 		renderBackground();
 		drawCenteredString(font, title.getFormattedText(), width / 2, 40, 16777215);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.pushMatrix();
-		RenderSystem.translatef(width / 2, 0.0F, 50.0F);
-		RenderSystem.scalef(-93.75F, -93.75F, -93.75F);
-		RenderSystem.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
+		stack.func_227860_a_();
+		stack.func_227861_a_(width / 2, 0.0D, 50.0D);
+		stack.func_227862_a_(93.75F, -93.75F, 93.75F);
+		stack.func_227861_a_(0.0D, -1.3125D, 0.0D);
 
-		if(state.getBlock() instanceof SecretStandingSignBlock)
-			angle = state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F;
-		else
-			angle = state.get(SecretWallSignBlock.FACING).getHorizontalAngle();
+		if(!isStanding)
+			stack.func_227861_a_(0.0D, -0.3125D, 0.0D);
 
-		RenderSystem.rotatef(angle, 0.0F, 1.0F, 0.0F);
-		RenderSystem.translatef(0.0F, -1.0625F, 0.0F);
-		te.func_214062_a(editLine, textInputUtil.func_216896_c(), textInputUtil.func_216898_d(), updateCounter / 6 % 2 == 0);
-		TileEntityRendererDispatcher.instance.render(te, -0.5D, -0.75D, -0.5D, 0.0F);
-		te.func_214063_g();
-		RenderSystem.popMatrix();
+		stack.func_227860_a_();
+		stack.func_227862_a_(0.6666667F, -0.6666667F, -0.6666667F);
+		buffer = minecraft.func_228019_au_().func_228487_b_();
+		builder = material.func_229311_a_(buffer, signModel::func_228282_a_);
+		signModel.field_78166_a.func_228308_a_(stack, builder, 15728880, OverlayTexture.field_229196_a_);
+
+		if(isStanding)
+			signModel.field_78165_b.func_228308_a_(stack, builder, 15728880, OverlayTexture.field_229196_a_);
+
+		stack.func_227865_b_();
+		stack.func_227861_a_(0.0D, 0.33333334F, 0.046666667F);
+		stack.func_227862_a_(0.010416667F, -0.010416667F, 0.010416667F);
+
+		for(int j = 0; j < text.length; ++j)
+		{
+			text[j] = te.getRenderText(j, (p_228192_1_) -> {
+				List<ITextComponent> list = RenderComponentsUtil.splitText(p_228192_1_, 90, minecraft.fontRenderer, false, true);
+
+				return list.isEmpty() ? "" : list.get(0).getFormattedText();
+			});
+		}
+
+		matrix4f = stack.func_227866_c_().func_227870_a_();
+
+		for(int k1 = 0; k1 < text.length; ++k1)
+		{
+			String s = text[k1];
+
+			if(s != null)
+			{
+				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
+
+				minecraft.fontRenderer.func_228079_a_(s, f3, k1 * 10 - te.signText.length * 5, textColor, false, matrix4f, buffer, false, 0, 15728880);
+
+				if(k1 == this.editLine && k >= 0 && update)
+				{
+					int l1 = minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
+					int i2 = (l1 - minecraft.fontRenderer.getStringWidth(s) / 2) * i1;
+
+					if(k >= s.length())
+						minecraft.fontRenderer.func_228079_a_("_", i2, j1, textColor, false, matrix4f, buffer, false, 0, 15728880);
+				}
+			}
+		}
+
+		buffer.func_228461_a_();
+
+		for(int k3 = 0; k3 < text.length; ++k3)
+		{
+			String s1 = text[k3];
+
+			if(s1 != null && k3 == editLine && k >= 0)
+			{
+				int l3 = minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(k, s1.length()), 0)));
+				int i4 = (l3 - minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
+
+				if(update && k < s1.length())
+					fill(matrix4f, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
+
+				if(l != k)
+				{
+					int j4 = Math.min(k, l);
+					int j2 = Math.max(k, l);
+					int k2 = (this.minecraft.fontRenderer.getStringWidth(s1.substring(0, j4)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
+					int l2 = (this.minecraft.fontRenderer.getStringWidth(s1.substring(0, j2)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
+					int i3 = Math.min(k2, l2);
+					int j3 = Math.max(k2, l2);
+					BufferBuilder buf = Tessellator.getInstance().getBuffer();
+
+					RenderSystem.disableTexture();
+					RenderSystem.enableColorLogicOp();
+					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
+					buf.begin(7, DefaultVertexFormats.POSITION_COLOR);
+					buf.func_227888_a_(matrix4f, i3, j1 + 9, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
+					buf.func_227888_a_(matrix4f, j3, j1 + 9, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
+					buf.func_227888_a_(matrix4f, j3, j1, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
+					buf.func_227888_a_(matrix4f, i3, j1, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
+					buf.finishDrawing();
+					WorldVertexBufferUploader.draw(buf);
+					RenderSystem.disableColorLogicOp();
+					RenderSystem.enableTexture();
+				}
+			}
+		}
+
+		stack.func_227865_b_();
+		RenderHelper.func_227784_d_();
 		super.render(mouseX, mouseY, partialTicks);
 	}
 }

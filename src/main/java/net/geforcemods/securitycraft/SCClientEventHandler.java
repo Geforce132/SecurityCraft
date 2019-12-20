@@ -12,10 +12,10 @@ import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -40,6 +40,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class SCClientEventHandler {
@@ -63,6 +64,56 @@ public class SCClientEventHandler {
 				}
 			}
 		}
+
+		@SubscribeEvent
+		public static void onFMLClientSetup(FMLClientSetupEvent event)
+		{
+			RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.func_228641_d_()); //cutoutMipped
+			RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.func_228641_d_()); //cutoutMipped
+			RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.func_228643_e_()); //cutout
+			RenderTypeLookup.setRenderLayer(SCContent.laserField, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedDoor, RenderType.func_228643_e_()); //cutout
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlass, RenderType.func_228643_e_()); //cutout
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlassPane, RenderType.func_228641_d_()); //cutoutMipped
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlass, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.func_228641_d_()); //cutoutMipped
+			RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.fakeWater, RenderType.func_228645_f_()); //translucent
+
+		}
 	}
 
 	@SubscribeEvent
@@ -80,8 +131,8 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent event) {
-		if(Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(event.getType() == RenderGameOverlayEvent.ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_()))) instanceof SecurityCameraBlock)))
+		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
+			if(((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_()))) instanceof SecurityCameraBlock)))
 				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().func_228018_at_(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_())));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
@@ -124,7 +175,7 @@ public class SCClientEventHandler {
 
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(Minecraft.getInstance().func_228018_at_().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().func_228018_at_().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					AbstractGui.blit(Minecraft.getInstance().func_228018_at_().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().func_228018_at_().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					RenderSystem.disableAlphaTest();
 				}
 			}
@@ -154,20 +205,5 @@ public class SCClientEventHandler {
 					event.setCanceled(true);
 			}
 		}
-	}
-
-	private static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight)
-	{
-		double z = 200;
-		double widthFactor = 1F / (double) textureWidth;
-		double heightFactor = 1F / (double) textureHeight;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buffer = tessellator.getBuffer();
-		buffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-		buffer.pos(x, y + height, z).tex(u * widthFactor, (v + height) * heightFactor).endVertex();
-		buffer.pos(x + width, y + height, z).tex((u + width) * widthFactor, (v + height) * heightFactor).endVertex();
-		buffer.pos(x + width, y, z).tex((u + width) * widthFactor, v * heightFactor).endVertex();
-		buffer.pos(x, y, z).tex(u * widthFactor, v * heightFactor).endVertex();
-		tessellator.draw();
 	}
 }

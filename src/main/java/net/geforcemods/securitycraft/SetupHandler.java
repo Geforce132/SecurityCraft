@@ -73,6 +73,7 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
@@ -80,10 +81,12 @@ import net.minecraft.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.WoodType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 
 public class SetupHandler
@@ -98,6 +101,8 @@ public class SetupHandler
 
 	public static void setupBlocks()
 	{
+		//needed to the chest can be set up correctly
+		SCContent.teTypeKeypadChest = (TileEntityType<KeypadChestTileEntity>)TileEntityType.Builder.create(KeypadChestTileEntity::new, SCContent.keypadChest).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest"));
 		SCContent.laserBlock = new LaserBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block"));
 		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser"));
 		SCContent.keypad = new KeypadBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad"));
@@ -120,18 +125,18 @@ public class SetupHandler
 		SCContent.ironFence = new IronFenceBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "electrified_iron_fence"));
 		SCContent.protecto = new ProtectoBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "protecto"));
 		SCContent.scannerDoor = new ScannerDoorBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door"));
-		SCContent.secretOakSign = new SecretStandingSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_standing"));
-		SCContent.secretOakWallSign = new SecretWallSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_wall"));
-		SCContent.secretSpruceSign = new SecretStandingSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_standing"));
-		SCContent.secretSpruceWallSign = new SecretWallSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_wall"));
-		SCContent.secretBirchSign = new SecretStandingSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_standing"));
-		SCContent.secretBirchWallSign = new SecretWallSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_wall"));
-		SCContent.secretJungleSign = new SecretStandingSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_standing"));
-		SCContent.secretJungleWallSign = new SecretWallSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_wall"));
-		SCContent.secretAcaciaSign = new SecretStandingSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_standing"));
-		SCContent.secretAcaciaWallSign = new SecretWallSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_wall"));
-		SCContent.secretDarkOakSign = new SecretStandingSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_standing"));
-		SCContent.secretDarkOakWallSign = new SecretWallSignBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_wall"));
+		SCContent.secretOakSign = new SecretStandingSignBlock(WoodType.field_227038_a_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_standing"));
+		SCContent.secretOakWallSign = new SecretWallSignBlock(WoodType.field_227038_a_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign_wall"));
+		SCContent.secretSpruceSign = new SecretStandingSignBlock(WoodType.field_227039_b_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_standing"));
+		SCContent.secretSpruceWallSign = new SecretWallSignBlock(WoodType.field_227039_b_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_spruce_sign_wall"));
+		SCContent.secretBirchSign = new SecretStandingSignBlock(WoodType.field_227040_c_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_standing"));
+		SCContent.secretBirchWallSign = new SecretWallSignBlock(WoodType.field_227040_c_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_birch_sign_wall"));
+		SCContent.secretJungleSign = new SecretStandingSignBlock(WoodType.field_227042_e_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_standing"));
+		SCContent.secretJungleWallSign = new SecretWallSignBlock(WoodType.field_227042_e_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_jungle_sign_wall"));
+		SCContent.secretAcaciaSign = new SecretStandingSignBlock(WoodType.field_227041_d_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_standing"));
+		SCContent.secretAcaciaWallSign = new SecretWallSignBlock(WoodType.field_227041_d_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_acacia_sign_wall"));
+		SCContent.secretDarkOakSign = new SecretStandingSignBlock(WoodType.field_227043_f_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_standing"));
+		SCContent.secretDarkOakWallSign = new SecretWallSignBlock(WoodType.field_227043_f_).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_dark_oak_sign_wall"));
 		SCContent.motionActivatedLight = new MotionActivatedLightBlock(Material.GLASS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_activated_light"));
 		SCContent.fakeWaterBlock = (FlowingFluidBlock)new FakeWaterBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water_block"));
 		SCContent.fakeLavaBlock = (FlowingFluidBlock)new FakeLavaBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava_block"));
