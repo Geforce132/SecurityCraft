@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.MouseHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +31,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -174,8 +172,7 @@ public class SecurityCameraEntity extends Entity{
 
 			checkKeysPressed();
 
-			//workaround until https://github.com/MinecraftForge/MinecraftForge/pull/5610 is merged
-			boolean isMiddleDown = ObfuscationReflectionHelper.getPrivateValue(MouseHelper.class, Minecraft.getInstance().mouseHelper, 2);
+			boolean isMiddleDown = Minecraft.getInstance().mouseHelper.isMiddleDown();
 
 			if(isMiddleDown && screenshotCooldown == 0){
 				screenshotCooldown = 30;

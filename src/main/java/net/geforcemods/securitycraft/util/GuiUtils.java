@@ -53,10 +53,10 @@ public class GuiUtils{
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, SecurityCameraBlock.FACING)) == 0) && (((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
-			drawItemStackToGui(mc, Items.REDSTONE, 10, 0, false);
+			drawItemToGui(mc, Items.REDSTONE, 10, 0, false);
 	}
 
-	public static void drawItemStackToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
+	public static void drawItemToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
 		if(fixLighting)
 			GlStateManager.enableLighting();
 
@@ -69,6 +69,6 @@ public class GuiUtils{
 	}
 
 	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		drawItemStackToGui(mc, block.asItem(), x, y, fixLighting);
+		drawItemToGui(mc, block.asItem(), x, y, fixLighting);
 	}
 }
