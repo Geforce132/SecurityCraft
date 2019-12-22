@@ -100,10 +100,10 @@ public class TrophySystemTileEntity extends OwnableTileEntity {
 	 * Returns the UUID of the player who shot the given Entity
 	 */
 	public UUID getShooterUUID(Entity entity) {
-		if(entity instanceof ArrowEntity && ((ArrowEntity)entity).shootingEntity != null)
+		if(entity instanceof ArrowEntity && ((ArrowEntity) entity).shootingEntity != null)
 			return ((ArrowEntity) entity).shootingEntity;
 
-		else if(entity instanceof FireballEntity && ((FireballEntity)entity).shootingEntity != null)
+		else if(entity instanceof FireballEntity && ((FireballEntity) entity).shootingEntity != null  && ((FireballEntity) entity).shootingEntity.getUniqueID() != null)
 			return ((FireballEntity) entity).shootingEntity.getUniqueID();
 
 		else
