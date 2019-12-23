@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.platform.GLX;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -10,8 +9,13 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Quaternion;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,36 +24,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraTileEntity> {
 
+	public SecurityCameraTileEntityRenderer()
+	{
+		super(TileEntityRendererDispatcher.instance);
+	}
+
 	private static final SecurityCameraModel modelSecurityCamera = new SecurityCameraModel();
 	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/block/security_camera1.png");
 
 	@Override
-	public void render(SecurityCameraTileEntity par1TileEntity, double x, double y, double z, float par5, int par6) {
-		if(par1TileEntity.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(par1TileEntity.getPos()))
+	public void func_225616_a_(SecurityCameraTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
+	{
+		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(te.getPos()))
 			return;
 
 		float rotation = 0F;
 
-		if(par1TileEntity.hasWorld()){
-			Tessellator tessellator = Tessellator.getInstance();
-			float brightness = par1TileEntity.getWorld().getBrightness(par1TileEntity.getPos());
-			int skyBrightness = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
-			int lightmapX = skyBrightness % 65536;
-			int lightmapY = skyBrightness / 65536;
-			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
+		matrix.func_227861_a_(0.5D, 1.5D, 0.5D); //translate
 
-			GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, lightmapX, lightmapY);
-		}
-
-		RenderSystem.pushMatrix();
-		RenderSystem.translatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-
-		Minecraft.getInstance().textureManager.bindTexture(cameraTexture);
-
-		RenderSystem.pushMatrix();
-
-		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
-			Direction side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), SecurityCameraBlock.FACING);
+		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera){
+			Direction side = BlockUtils.getBlockPropertyAsEnum(te.getWorld(), te.getPos(), SecurityCameraBlock.FACING);
 
 			if(side == Direction.EAST)
 				rotation = -1F;
@@ -63,15 +57,9 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 		else
 			rotation = -10000F;
 
-		RenderSystem.rotatef(180F, rotation, 0.0F, 1.0F);
-
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
-
-		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-
-		RenderSystem.popMatrix();
-		RenderSystem.popMatrix();
+		//		RenderSystem.rotatef(180F, rotation, 0.0F, 1.0F);
+		matrix.func_227863_a_(new Quaternion(Vector3f.field_229183_f_, rotation, true));
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = te.cameraRotation;
+		modelSecurityCamera.func_225598_a_(matrix, buffer.getBuffer(RenderType.func_228634_a_(cameraTexture)), p_225616_5_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
-
-
 }

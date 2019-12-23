@@ -1,8 +1,11 @@
 package net.geforcemods.securitycraft.renderers;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
@@ -14,14 +17,11 @@ public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer {
 	private static final KeypadChestTileEntity DUMMY = new KeypadChestTileEntity();
 
 	@Override
-	public void renderByItem(ItemStack item) {
-		Block block = Block.getBlockFromItem(item.getItem());
-
-		if (block == SCContent.keypadChest)
-			TileEntityRendererDispatcher.instance.renderAsItem(DUMMY);
+	public void func_228364_a_(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int p_228364_4_, int p_228364_5_)
+	{
+		if(Block.getBlockFromItem(stack.getItem()) == SCContent.keypadChest)
+			TileEntityRendererDispatcher.instance.func_228852_a_(DUMMY, matrix, buffer, p_228364_4_, p_228364_5_);
 		else
-			super.renderByItem(item);
-
+			super.func_228364_a_(stack, matrix, buffer, p_228364_4_, p_228364_5_);
 	}
-
 }
