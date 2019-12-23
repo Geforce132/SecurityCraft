@@ -451,7 +451,7 @@ public class SCContent
 	public static TileEntityType<UsernameLoggerTileEntity> teTypeUsernameLogger;
 	@ObjectHolder(SecurityCraft.MODID + ":retinal_scanner")
 	public static TileEntityType<RetinalScannerTileEntity> teTypeRetinalScanner;
-	//is set manually in SetupHandler
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_chest")
 	public static TileEntityType<KeypadChestTileEntity> teTypeKeypadChest;
 	@ObjectHolder(SecurityCraft.MODID + ":alarm")
 	public static TileEntityType<AlarmTileEntity> teTypeAlarm;

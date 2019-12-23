@@ -69,6 +69,7 @@ import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
@@ -323,7 +324,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(SecurityCameraTileEntity::new, SCContent.securityCamera).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "security_camera")));
 		event.getRegistry().register(TileEntityType.Builder.create(UsernameLoggerTileEntity::new, SCContent.usernameLogger).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
 		event.getRegistry().register(TileEntityType.Builder.create(RetinalScannerTileEntity::new, SCContent.retinalScanner).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")));
-		event.getRegistry().register(SCContent.teTypeKeypadChest); //is set manually in SetupHandler
+		event.getRegistry().register(TileEntityType.Builder.create(KeypadChestTileEntity::new, SCContent.keypadChest).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest")));
 		event.getRegistry().register(TileEntityType.Builder.create(AlarmTileEntity::new, SCContent.alarm).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "alarm")));
 		event.getRegistry().register(TileEntityType.Builder.create(ClaymoreTileEntity::new, SCContent.claymore).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore")));
 		event.getRegistry().register(TileEntityType.Builder.create(KeypadFurnaceTileEntity::new, SCContent.keypadFurnace).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));

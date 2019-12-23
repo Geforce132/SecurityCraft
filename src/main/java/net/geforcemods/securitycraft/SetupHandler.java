@@ -73,7 +73,6 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
@@ -86,7 +85,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 
 public class SetupHandler
@@ -101,8 +99,6 @@ public class SetupHandler
 
 	public static void setupBlocks()
 	{
-		//needed to the chest can be set up correctly
-		SCContent.teTypeKeypadChest = (TileEntityType<KeypadChestTileEntity>)TileEntityType.Builder.create(KeypadChestTileEntity::new, SCContent.keypadChest).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest"));
 		SCContent.laserBlock = new LaserBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block"));
 		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser"));
 		SCContent.keypad = new KeypadBlock(Material.IRON).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad"));
