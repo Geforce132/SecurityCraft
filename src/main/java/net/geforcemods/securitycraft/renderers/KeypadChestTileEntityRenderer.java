@@ -171,6 +171,6 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 
 	private static Material createMaterial(String name)
 	{
-		return new Material(Atlases.field_228747_f_, new ResourceLocation("securitycraft", "textures/entity/chest/" + name));
+		return new Material(Atlases.field_228747_f_, new ResourceLocation("securitycraft", "entity/chest/" + name));
 	}
 }

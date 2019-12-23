@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
@@ -37,6 +38,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -62,6 +64,23 @@ public class SCClientEventHandler {
 
 					event.getModelRegistry().put(mrl, new KeypadDynamicBakedModel(event.getModelRegistry().get(mrl)));
 				}
+			}
+		}
+
+		@SubscribeEvent
+		public static void onTextureStitchPre(TextureStitchEvent.Pre event)
+		{
+			if(event.getMap().func_229223_g_().equals(Atlases.field_228747_f_)) //CHESTS
+			{
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_active"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_inactive"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/right_active"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/right_inactive"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas_left"));
+				event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas_right"));
 			}
 		}
 
