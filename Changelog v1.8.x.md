@@ -14,5 +14,6 @@
 - Fix: Config option to disable fire from mine explosions does not work
 - Fix: Config option to disable mines from exploding when being broken in creative does not work
 - Fix: Trophy System crash
+- Fix: Public Gui Announcement compatibility does not work
 - Misc: The minimum required Forge version is now 28.1.91
 - Remove: Unused config options

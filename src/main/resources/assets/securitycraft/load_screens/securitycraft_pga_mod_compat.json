@@ -1,49 +1,49 @@
 {
-	"comment" : "This file enables Public Gui Announcement to communicate open screens and containers from security craft between players with a small visual", 
+	"comment" : "This file enables Public Gui Announcement to communicate open screens and containers from SecurityCraft between players with a small visual", 
 	"screens" : [{
-			"class" : "net.geforcemods.securitycraft.gui.GuiBlockPocketManager", 
+			"class" : "net.geforcemods.securitycraft.screen.BlockPocketManagerScreen", 
 			"texture" : "securitycraft:textures/gui/container/blank.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerGeneric", 
+			"class" : "net.geforcemods.securitycraft.containers.GenericContainer", 
 			"texture" : "securitycraft:textures/gui/container/blank.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.gui.GuiCameraMonitor", 
+			"class" : "net.geforcemods.securitycraft.screen.CameraMonitorScreen", 
 			"texture" : "securitycraft:textures/gui/container/blank.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerTEGeneric", 
+			"class" : "net.geforcemods.securitycraft.containers.GenericTEContainer", 
 			"texture" : "securitycraft:textures/gui/container/blank.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.gui.GuiEditModule", 
+			"class" : "net.geforcemods.securitycraft.screen.EditModuleScreen", 
 			"texture" : "securitycraft:textures/gui/container/blank.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerBlockReinforcer", 
+			"class" : "net.geforcemods.securitycraft.containers.BlockReinforcerContainer", 
 			"texture" : "securitycraft:textures/gui/container/customize1.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerDisguiseModule", 
+			"class" : "net.geforcemods.securitycraft.containers.DisguiseModuleContainer", 
 			"texture" : "securitycraft:textures/gui/container/customize1.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.gui.GuiEditSecretSign", 
+			"class" : "net.geforcemods.securitycraft.screen.EditSecretSignScreen", 
 			"texture" : "publicguiannouncement:textures/gui/sign_edit.png", 
 			"fullSize" : 255
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerKeypadFurnace", 
+			"class" : "net.geforcemods.securitycraft.containers.KeypadFurnaceContainer", 
 			"texture" : "minecraft:textures/gui/container/furnace.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerBriefcase", 
+			"class" : "net.geforcemods.securitycraft.containers.BriefcaseContainer", 
 			"texture" : "securitycraft:textures/gui/container/briefcase_inventory.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.gui.GuiMRAT", 
+			"class" : "net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen", 
 			"texture" : "securitycraft:textures/gui/container/mrat.png", 
 			"size" : [255, 184]
 		}, {
-			"class" : "net.geforcemods.securitycraft.gui.GuiSCManual", 
+			"class" : "net.geforcemods.securitycraft.screen.SCManualScreen", 
 			"texture" : "securitycraft:textures/gui/info_book_title_page.png", 
 			"size" : [255, 180]
 		}, {
-			"class" : "net.geforcemods.securitycraft.containers.ContainerCustomizeBlock", 
+			"class" : "net.geforcemods.securitycraft.containers.CustomizeBlockContainer", 
 			"texture" : "securitycraft:textures/gui/container/customize3.png"
 		}, {
-			"class" : "net.geforcemods.securitycraft.gui.GuiInventoryScanner", 
+			"class" : "net.geforcemods.securitycraft.screen.InventoryScannerScreen", 
 			"texture" : "securitycraft:textures/gui/container/inventory_scanner_gui.png", 
 			"size" : [175, 196]
 		}]
