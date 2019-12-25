@@ -9,6 +9,7 @@
 - Fix: Alarm does not turn off when it no longer receives a redstone signal
 - Fix: Keypad blacklist does not work
 - Fix: Trophy System crash
+- Fix: Sentry head does not show when rejoining world/dimension if it was previously showing (Thanks LorenaGdL!)
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
