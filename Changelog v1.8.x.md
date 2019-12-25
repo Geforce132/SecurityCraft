@@ -13,6 +13,7 @@
 - Fix: Disguised Keypad does not give off power when activated (Thanks Redstone_Dubstep!)
 - Fix: Config option to disable fire from mine explosions does not work
 - Fix: Config option to disable mines from exploding when being broken in creative does not work
+- Fix: Key Binding names are not shown correctly in the controls menu
 - Fix: Trophy System crash
 - Fix: Public Gui Announcement compatibility does not work
 - Misc: The minimum required Forge version is now 28.1.91
