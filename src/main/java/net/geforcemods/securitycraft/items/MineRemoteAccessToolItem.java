@@ -91,23 +91,23 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, World world, List<ITextComponent> list, ITooltipFlag flag) {
-		if(par1ItemStack.getTag() == null)
+	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+		if(stack.getTag() == null)
 			return;
 
 		for(int i = 1; i <= 6; i++)
-			if(par1ItemStack.getTag().getIntArray("mine" + i).length > 0){
-				int[] coords = par1ItemStack.getTag().getIntArray("mine" + i);
+			if(stack.getTag().getIntArray("mine" + i).length > 0){
+				int[] coords = stack.getTag().getIntArray("mine" + i);
 
 				if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0){
-					list.add(new StringTextComponent("---"));
+					list.add(new StringTextComponent(TextFormatting.GRAY + "---"));
 					continue;
 				}
 				else
-					list.add(new StringTextComponent(ClientUtils.localize("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]));
+					list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:mine") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]));
 			}
 			else
-				list.add(new StringTextComponent("---"));
+				list.add(new StringTextComponent(TextFormatting.GRAY + "---"));
 	}
 
 	private void removeTagFromItemAndUpdate(ItemStack stack, BlockPos pos, PlayerEntity player) {
@@ -127,7 +127,6 @@ public class MineRemoteAccessToolItem extends Item {
 			else
 				continue;
 
-
 		return;
 	}
 
@@ -145,7 +144,6 @@ public class MineRemoteAccessToolItem extends Item {
 			else
 				continue;
 
-
 		return false;
 	}
 
@@ -160,5 +158,4 @@ public class MineRemoteAccessToolItem extends Item {
 
 		return 0;
 	}
-
 }

@@ -13,19 +13,19 @@ import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
-import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
-import net.geforcemods.securitycraft.renderers.SentryRenderer;
+import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemTileEntityRenderer;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
-import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseInventoryScreen;
+import net.geforcemods.securitycraft.screen.BriefcasePasswordScreen;
 import net.geforcemods.securitycraft.screen.BriefcaseSetupScreen;
 import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasswordScreen;
@@ -38,10 +38,11 @@ import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
-import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
+import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
@@ -155,6 +156,12 @@ public class ClientProxy implements IProxy {
 	public void displayMRATGui(ItemStack stack)
 	{
 		Minecraft.getInstance().displayGuiScreen(new MineRemoteAccessToolScreen(stack));
+	}
+
+	@Override
+	public void displaySRATGui(ItemStack stack)
+	{
+		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack));
 	}
 
 	@Override

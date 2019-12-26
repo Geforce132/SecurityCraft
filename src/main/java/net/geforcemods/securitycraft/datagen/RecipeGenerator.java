@@ -343,6 +343,16 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', Tags.Items.RODS_WOODEN)
 		.addCriterion("has_mine", hasItem(SCContent.mine))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.remoteAccessSentry)
+		.patternLine("ITI")
+		.patternLine("IDI")
+		.patternLine("ISI")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('T', Items.REDSTONE_TORCH)
+		.key('D', Tags.Items.GEMS_DIAMOND)
+		.key('S', Tags.Items.RODS_WOODEN)
+		.addCriterion("has_sentry", hasItem(SCContent.sentry))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.retinalScanner)
 		.patternLine("SSS")
 		.patternLine("SES")
