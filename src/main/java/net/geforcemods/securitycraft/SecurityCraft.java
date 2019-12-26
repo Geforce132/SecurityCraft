@@ -24,6 +24,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -84,10 +85,12 @@ public class SecurityCraft {
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
-		CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
 
-		if(vcUpdateTag != null)
-			InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
+			if(vcUpdateTag != null)
+				InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
+		});
 
 		CustomModules.refresh();
 		proxy.tint();
