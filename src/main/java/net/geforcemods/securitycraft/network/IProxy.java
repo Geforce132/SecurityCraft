@@ -18,6 +18,7 @@ public interface IProxy
 	public World getClientWorld();
 	public PlayerEntity getClientPlayer();
 	public void displayMRATGui(ItemStack stack);
+	public void displaySRATGui(ItemStack stack);
 	public void displayEditModuleGui(ItemStack stack);
 	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag);
 	public void displaySCManualGui();

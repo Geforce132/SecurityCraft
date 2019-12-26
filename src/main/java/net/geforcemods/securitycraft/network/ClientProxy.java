@@ -37,8 +37,10 @@ import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
+import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -151,6 +153,12 @@ public class ClientProxy implements IProxy {
 	public void displayMRATGui(ItemStack stack)
 	{
 		Minecraft.getInstance().displayGuiScreen(new MineRemoteAccessToolScreen(stack));
+	}
+
+	@Override
+	public void displaySRATGui(ItemStack stack)
+	{
+		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack));
 	}
 
 	@Override

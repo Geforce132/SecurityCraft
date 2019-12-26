@@ -56,6 +56,7 @@ import net.geforcemods.securitycraft.network.server.SetExplosiveState;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetScanType;
+import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
@@ -256,6 +257,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.keycardLvl5, () -> CommonConfig.CONFIG.ableToCraftKeycard5.get());
 		registerItem(event, SCContent.limitedUseKeycard, () -> CommonConfig.CONFIG.ableToCraftLUKeycard.get());
 		registerItem(event, SCContent.remoteAccessMine);
+		registerItem(event, SCContent.remoteAccessSentry);
 		registerItem(event, SCContent.fWaterBucket);
 		registerItem(event, SCContent.fLavaBucket);
 		registerItem(event, SCContent.universalBlockModifier);
@@ -444,6 +446,7 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, ClearLoggerServer.class, ClearLoggerServer::encode, ClearLoggerServer::decode, ClearLoggerServer::onMessage);
 		SecurityCraft.channel.registerMessage(index++, ClearLoggerClient.class, ClearLoggerClient::encode, ClearLoggerClient::decode, ClearLoggerClient::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RefreshKeypadModel.class, RefreshKeypadModel::encode, RefreshKeypadModel::decode, RefreshKeypadModel::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::decode, SetSentryMode::onMessage);
 	}
 
 	@SubscribeEvent

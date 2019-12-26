@@ -28,14 +28,17 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -96,26 +99,35 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		super.tick();
 
-		if(world.isRemote && animate)
+		if(world.isRemote)
 		{
-			if(animateUpwards && headYTranslation > 0.0F)
+			if(!animate && headYTranslation > 0.0F && dataManager.get(MODE) == 0)
 			{
-				headYTranslation -= animationStepSize;
-
-				if(headYTranslation <= 0.0F)
-				{
-					animateUpwards = false;
-					animate = false;
-				}
+				animateUpwards = true;
+				animate = true;
 			}
-			else if(!animateUpwards && headYTranslation < 0.9F)
-			{
-				headYTranslation += animationStepSize;
 
-				if(headYTranslation >= 0.9F)
+			if(animate) //no else if because animate can be changed in the above if statement
+			{
+				if(animateUpwards && headYTranslation > 0.0F)
 				{
-					animateUpwards = true;
-					animate = false;
+					headYTranslation -= animationStepSize;
+
+					if(headYTranslation <= 0.0F)
+					{
+						animateUpwards = false;
+						animate = false;
+					}
+				}
+				else if(!animateUpwards && headYTranslation < 0.9F)
+				{
+					headYTranslation += animationStepSize;
+
+					if(headYTranslation >= 0.9F)
+					{
+						animateUpwards = true;
+						animate = false;
+					}
 				}
 			}
 		}
@@ -162,6 +174,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				dataManager.set(MODULE, new CompoundNBT());
 				dataManager.set(WHITELIST, new CompoundNBT());
 			}
+			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
+				player.getHeldItemMainhand().getItem().onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
 			else
 				toggleMode(player);
 
@@ -207,6 +221,24 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		if(player.world.isRemote)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
 		else
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
+	}
+
+	/**
+	 * Sets this sentry's mode to the given mode (or 0 if the mode is not one of 0, 1, 2) and sends the player a message about the switch if wanted
+	 * @param player The player to send the message to
+	 * @param mode The mode (int) to switch to (instead of sequentially toggling)
+	 */
+	public void toggleMode(PlayerEntity player, int mode, boolean sendMessage)
+	{
+		if(mode < 0 || mode > 2)
+			mode = 0;
+
+		dataManager.set(MODE, mode);
+
+		if(player.world.isRemote && sendMessage)
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
 	}
 

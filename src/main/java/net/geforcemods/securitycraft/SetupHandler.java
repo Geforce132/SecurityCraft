@@ -68,6 +68,7 @@ import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.ScannerDoorItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
 import net.geforcemods.securitycraft.items.SentryItem;
+import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
@@ -438,6 +439,7 @@ public class SetupHandler
 		SCContent.reinforcedDoorItem = new ReinforcedDoorItem().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "door_indestructible_iron_item"));
 		SCContent.universalBlockRemover = new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "universal_block_remover"));
 		SCContent.remoteAccessMine = new MineRemoteAccessToolItem().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "remote_access_mine"));
+		SCContent.remoteAccessSentry = new SentryRemoteAccessToolItem().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "remote_access_sentry"));
 		SCContent.fWaterBucket = new BucketItem(SCContent.fakeWater, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_water"));
 		SCContent.fLavaBucket = new BucketItem(SCContent.fakeLava, new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bucket_f_lava"));
 		SCContent.universalBlockModifier = new Item(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "universal_block_modifier"));
