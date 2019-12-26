@@ -2,7 +2,10 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
+import net.geforcemods.rologia.os.imc.IMCManager;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.compat.rologia.RologiaMessageHandler;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
@@ -52,6 +55,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(new ClickButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
 		addButton(new ClickButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
 		addButton(new ClickButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
+		addButton(new ClickButton(11, width / 2 - 70, height / 2 + 30 + 10, 25, 20, "R", this::actionPerformed));
 
 		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, "");
 
@@ -183,6 +187,9 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 				setTextboxCensoredText(keycodeTextbox, currentString);
 				break;
 
+			case 11:
+				IMCManager.sendMessage(Minecraft.getInstance().player.getName().getFormattedText(), ((IOwnable) tileEntity).getOwner().getName(), RologiaMessageHandler.REMOTE_ACCESS_REQUEST, tileEntity.getPos().getX() + "|" + tileEntity.getPos().getY() + "|" + tileEntity.getPos().getZ());
+				break;
 		}
 	}
 

@@ -90,6 +90,8 @@ public class SecurityCraft {
 		//			if(vcUpdateTag != null)
 		//				InterModComms.sendTo("VersionChecker", "addUpdate", () -> vcUpdateTag);
 		//		}
+		if(ModList.get().isLoaded("rologia"))
+			InterModComms.sendTo("rologia", "register", () -> {return "net.geforcemods.securitycraft.compat.rologia.RologiaMessageHandler";});
 
 		log("Registering mod content... (PT 2/2)");
 		CustomModules.refresh();
