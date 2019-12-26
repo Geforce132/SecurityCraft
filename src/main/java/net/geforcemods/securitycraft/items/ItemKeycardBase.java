@@ -41,7 +41,7 @@ public class ItemKeycardBase extends Item{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World world, List list, ITooltipFlag flag) {
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
 		if(level == 3){
 			if(stack.getTagCompound() == null){
 				stack.setTagCompound(new NBTTagCompound());

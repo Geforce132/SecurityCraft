@@ -25,8 +25,8 @@ import net.minecraft.util.math.BlockPos;
 
 public class GuiSRAT extends GuiContainer {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/srat.png");
-	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/items/sentry_256.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
+	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private ItemStack srat;
 	private GuiButton[][] buttons = new GuiButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
@@ -49,7 +49,7 @@ public class GuiSRAT extends GuiContainer {
 		int id = 0;
 
 		for (int i = 0; i < 12; i++) {
-			int x = (i / 6) * xSize / 2;			//first six sentries in the left column, second six sentries in the right column
+			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
 			int y = ((i % 6) + 1) * 30 + padding;
 			coords = getSentryCoordinates(i);
 
@@ -129,8 +129,8 @@ public class GuiSRAT extends GuiContainer {
 			else
 				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 206, 4210752);
 			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 25 + (i / 6) * xSize / 2, (i % 6) * 30 + 13, 4210752);
+			fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 206, 4210752);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class GuiSRAT extends GuiContainer {
 		mc.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		GuiSRAT.drawModalRectWithCustomSizedTexture(startX, startY, 0, 0, xSize, ySize, 512, 256);
+		drawModalRectWithCustomSizedTexture(startX, startY, 0, 0, xSize, ySize, 512, 256);
 	}
 
 	/**
@@ -218,8 +218,7 @@ public class GuiSRAT extends GuiContainer {
 	}
 
 	/**
-	 * @param sentry
-	 *            0 based
+	 * @param sentry 0 based
 	 */
 	private int[] getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12

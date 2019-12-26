@@ -5,7 +5,6 @@ import java.util.List;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -52,10 +51,10 @@ public class PacketSetSentryMode implements IMessage
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				EntityPlayer player = context.getServerHandler().player;
 
-				List<EntityCreature> sentries = getWorld(player).<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
+				List<EntitySentry> sentries = getWorld(player).<EntitySentry>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
 				if(!sentries.isEmpty())
-					((EntitySentry)sentries.get(0)).toggleMode(player, message.mode, message.sendMessage);
+					sentries.get(0).toggleMode(player, message.mode, message.sendMessage);
 			});
 
 			return null;

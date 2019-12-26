@@ -25,7 +25,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,14 +40,11 @@ public class ItemSentryRemoteAccessTool extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(world.isRemote)
-			return ActionResult.newResult(EnumActionResult.PASS, stack);
-		else{
+		if(!world.isRemote)
 			player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
-			return ActionResult.newResult(EnumActionResult.PASS, stack);
-		}
-	}
 
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
+	}
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
@@ -56,7 +52,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 
 		if(!world.isRemote){
 			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
-			
+
 			if(!sentries.isEmpty()) {
 				BlockPos pos2 = sentries.get(0).getPosition();
 
@@ -91,7 +87,6 @@ public class ItemSentryRemoteAccessTool extends Item {
 		return EnumActionResult.SUCCESS;
 	}
 
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {

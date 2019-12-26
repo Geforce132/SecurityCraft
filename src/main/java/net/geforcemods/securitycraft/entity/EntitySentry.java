@@ -235,7 +235,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 		if(player.world.isRemote && sendMessage)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
-		else
+		else if(!player.world.isRemote)
 			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, mode == 0));
 	}
 
