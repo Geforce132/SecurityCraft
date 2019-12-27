@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -38,6 +39,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 	public BlockCageTrap(Material material) {
 		super(material);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override
