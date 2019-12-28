@@ -36,6 +36,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockLaserField extends BlockContainer implements IIntersectable{
 
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
+	private static final AxisAlignedBB BOUNDTYPE_1_AABB, BOUNDTYPE_2_AABB, BOUNDTYPE_3_AABB;
+
+	static {
+		float px = 1.0F / 16.0F;
+
+		BOUNDTYPE_1_AABB = new AxisAlignedBB(6.75 * px, 0.0F, 6.75 * px, 9.25 * px, 1.0F, 9.25 * px);
+		BOUNDTYPE_2_AABB = new AxisAlignedBB(6.75 * px, 6.75 * px, 0.0F, 9.25 * px, 9.25 * px, 1.0F);
+		BOUNDTYPE_3_AABB = new AxisAlignedBB(0.0F, 6.75 * px, 6.75 * px, 1.0F, 9.25 * px, 9.25 * px);
+	}
 
 	public BlockLaserField(Material material) {
 		super(material);
@@ -149,12 +158,12 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 1)
-			return new AxisAlignedBB(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
+			return BOUNDTYPE_1_AABB;
 		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 2)
-			return new AxisAlignedBB(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
+			return BOUNDTYPE_2_AABB;
 		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 3)
-			return new AxisAlignedBB(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
-		return new AxisAlignedBB(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
+			return BOUNDTYPE_3_AABB;
+		else return FULL_BLOCK_AABB;
 	}
 
 	@Override
