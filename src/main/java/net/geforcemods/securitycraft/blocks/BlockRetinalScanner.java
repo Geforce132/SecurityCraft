@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -22,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockRetinalScanner extends BlockContainer {
+public class BlockRetinalScanner extends BlockDisguisable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -111,10 +110,11 @@ public class BlockRetinalScanner extends BlockContainer {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(POWERED).booleanValue())
+		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
 			return (state.getValue(FACING).getIndex() + 6);
-		else
+		else if(state.getProperties().containsKey(FACING))
 			return state.getValue(FACING).getIndex();
+		else return 0;
 	}
 
 	@Override

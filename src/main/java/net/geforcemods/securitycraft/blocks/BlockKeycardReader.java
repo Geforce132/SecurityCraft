@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockKeycardReader extends BlockOwnable  {
+public class BlockKeycardReader extends BlockDisguisable  {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -195,10 +195,11 @@ public class BlockKeycardReader extends BlockOwnable  {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(POWERED).booleanValue())
+		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
 			return (state.getValue(FACING).getIndex() + 6);
-		else
+		else if(state.getProperties().containsKey(FACING))
 			return state.getValue(FACING).getIndex();
+		else return 0;
 	}
 
 	@Override

@@ -32,7 +32,8 @@ public class GuiCustomizeBlock extends GuiContainer{
 			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize3.png")
+			new ResourceLocation("securitycraft:textures/gui/container/customize3.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize4.png")
 	};
 	private final List<Rectangle> extraAreas = new ArrayList<>();
 	private CustomizableSCTE tileEntity;
@@ -53,8 +54,12 @@ public class GuiCustomizeBlock extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
+		final int numberOfColumns = 2;
+
 		for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
-			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 130, (guiTop + 10) + (i * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
+			int column = i % numberOfColumns;
+
+			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 125 + column * 25, (guiTop + 10) + (Math.floorDiv(i, numberOfColumns) * 25), 20, 20, itemRender, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
 			buttonList.add(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}

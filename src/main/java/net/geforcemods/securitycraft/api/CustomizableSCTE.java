@@ -35,7 +35,6 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	private NBTTagList nbtTagStorage = null;
 
 	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
-	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
 
 	@Override
 	public void update() {

@@ -4,7 +4,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import mcjty.theoneprobe.api.IBlockDisplayOverride;
 import mcjty.theoneprobe.api.IProbeHitData;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
@@ -15,7 +14,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -37,24 +36,20 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 	@Override
 	public Void apply(ITheOneProbe theOneProbe)
 	{
-		theOneProbe.registerBlockDisplayOverride(new IBlockDisplayOverride() {
-			@Override
-			public boolean overrideStandardInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data)
+		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
+			if(blockState.getBlock() instanceof BlockDisguisable)
 			{
-				if(blockState.getBlock() instanceof BlockKeypad)
-				{
-					ItemStack disguisedAs = BlockKeypad.getDisguisedStack(world, data.getPos());
+				ItemStack disguisedAs = ((BlockDisguisable)blockState.getBlock()).getDisguisedStack(world, data.getPos());
 
-					probeInfo.horizontal()
-					.item(disguisedAs)
-					.vertical()
-					.itemLabel(disguisedAs)
-					.text(formatting + Loader.instance().getIndexedModList().get(disguisedAs.getItem().getRegistryName().getNamespace()).getName());
-					return true;
-				}
-
-				return false;
+				probeInfo.horizontal()
+				.item(disguisedAs)
+				.vertical()
+				.itemLabel(disguisedAs)
+				.text(formatting + Loader.instance().getIndexedModList().get(disguisedAs.getItem().getRegistryName().getNamespace()).getName());
+				return true;
 			}
+
+			return false;
 		});
 		theOneProbe.registerProvider(new IProbeInfoProvider() {
 			@Override

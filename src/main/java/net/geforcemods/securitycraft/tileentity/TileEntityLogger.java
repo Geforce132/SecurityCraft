@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityLogger extends TileEntityOwnable {
+public class TileEntityLogger extends TileEntityDisguisable {
 
 	public String[] players = new String[100];
 

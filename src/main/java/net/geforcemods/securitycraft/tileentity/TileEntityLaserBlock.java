@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
-public class TileEntityLaserBlock extends CustomizableSCTE {
+public class TileEntityLaserBlock extends TileEntityDisguisable {
 
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
 		@Override
@@ -62,7 +62,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 
 	@Override
 	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST};
+		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST, EnumCustomModules.DISGUISE};
 	}
 
 	@Override

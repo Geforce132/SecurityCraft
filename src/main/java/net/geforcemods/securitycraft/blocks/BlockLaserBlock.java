@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockLaserBlock extends BlockOwnable {
+public class BlockLaserBlock extends BlockDisguisable {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
@@ -44,15 +43,6 @@ public class BlockLaserBlock extends BlockOwnable {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
-	}
-
-	/**
-	 * Called whenever the block is added into the world. Args: world, pos
-	 */
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-	{
-		super.onBlockAdded(world, pos, state);
 	}
 
 	/**
@@ -197,7 +187,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return (state.getValue(POWERED).booleanValue() ? 1 : 0);
+		return state.getBlock() != this ? 0 : ((state.getValue(POWERED).booleanValue() ? 1 : 0));
 	}
 
 	@Override

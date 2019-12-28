@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
@@ -13,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 
-public class TileEntityInventoryScanner extends CustomizableSCTE implements IInventory{
+public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private String type = "check";
@@ -270,6 +269,8 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
 	{
+		super.onModuleInserted(stack, module);
+
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner != null && !connectedScanner.hasModule(module))
@@ -279,6 +280,8 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner != null && connectedScanner.hasModule(module))
@@ -287,7 +290,7 @@ public class TileEntityInventoryScanner extends CustomizableSCTE implements IInv
 
 	@Override
 	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART, EnumCustomModules.STORAGE};
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART, EnumCustomModules.STORAGE, EnumCustomModules.DISGUISE};
 	}
 
 	@Override

@@ -1,49 +1,33 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPasswordConvertible {
+public class BlockKeypad extends BlockDisguisable implements IPasswordConvertible {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -51,123 +35,6 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	public BlockKeypad(Material material) {
 		super(material);
 		setSoundType(SoundType.STONE);
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		IBlockState actualState = getDisguisedBlockState(world, pos);
-
-		if(actualState != null && actualState != SCContent.keypad)
-			return actualState.getBoundingBox(world, pos);
-		else
-			return super.getBoundingBox(state, world, pos);
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
-	{
-		IBlockState actualState = getDisguisedBlockState(world, pos);
-
-		if(actualState != null && actualState != SCContent.keypad)
-			return actualState.getCollisionBoundingBox(world, pos);
-		else
-			return super.getCollisionBoundingBox(state, world, pos);
-	}
-
-	@Override
-	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World world, BlockPos pos)
-	{
-		IBlockState actualState = getDisguisedBlockState(world, pos);
-
-		if(actualState != null && actualState != SCContent.keypad)
-			return actualState.getSelectedBoundingBox(world, pos);
-		else
-			return super.getSelectedBoundingBox(state, world, pos);
-	}
-
-	@Override
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
-	{
-		IBlockState actualState = getDisguisedBlockState(world, pos);
-
-		if(actualState != null && actualState != SCContent.keypad)
-			actualState.addCollisionBoxToList(world, pos, entityBox, collidingBoxes, entity, true);
-		else
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
-	{
-		TileEntity te = world.getTileEntity(pos);
-
-		if(te instanceof TileEntityKeypad && ((TileEntityKeypad)te).hasModule(EnumCustomModules.DISGUISE))
-		{
-			ItemStack module = ((TileEntityKeypad)te).getModule(EnumCustomModules.DISGUISE);
-
-			if(((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty())
-				return BlockFaceShape.SOLID;
-			else return ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).get(0).getDefaultState().getBlockFaceShape(world, pos, face);
-		}
-
-		return BlockFaceShape.SOLID;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side) {
-		if(world.getTileEntity(pos) == null)
-			return true;
-
-		CustomizableSCTE tileEntity = (CustomizableSCTE) world.getTileEntity(pos);
-
-		if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
-		{
-			ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
-			List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
-
-			if(blocks.size() != 0)
-			{
-				Block blockToDisguiseAs = blocks.get(0);
-
-				// If the keypad has a disguise module added with a transparent block inserted.
-				if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
-					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)), pos.offset(side), side);
-			}
-		}
-
-		return true;
-	}
-
-	public boolean checkForSideTransparency(IBlockAccess world, BlockPos keypadPos, IBlockState neighborState, BlockPos neighborPos, EnumFacing side) {
-		Block neighborBlock = neighborState.getBlock();
-
-		if(neighborBlock.isAir(neighborState, world, neighborPos))
-			return true;
-
-		// Slightly cheating here, checking if the block is an instance of BlockBreakable
-		// and a vanilla block instead of checking for specific blocks, since all vanilla
-		// BlockBreakable blocks are transparent.
-		if(neighborBlock instanceof BlockBreakable && neighborBlock.getRegistryName().getNamespace().equals("minecraft"))
-			return false;
-
-		return true;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
@@ -290,55 +157,6 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState disguisedState = getDisguisedBlockState(world, pos);
-
-		return disguisedState != null ? disguisedState : state;
-	}
-
-	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
-		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
-			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
-			ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
-
-			if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddons(module.getTagCompound()).get(0);
-				Block block = Block.getBlockFromItem(disguisedStack.getItem());
-				boolean hasMeta = disguisedStack.getHasSubtypes();
-
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
-
-				if (block != this)
-					return disguisedModel.getActualState(world, pos);
-			}
-		}
-
-		return null;
-	}
-
-	public static ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
-		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
-			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
-			ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
-
-			if(!stack.isEmpty() && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddons(stack.getTagCompound()).get(0);
-
-				if(Block.getBlockFromItem(disguisedStack.getItem()) != SCContent.keypad)
-					return disguisedStack;
-			}
-		}
-
-		return new ItemStack(SCContent.keypad);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
@@ -350,22 +168,6 @@ public class BlockKeypad extends BlockContainer implements IOverlayDisplay, IPas
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntityKeypad();
-	}
-
-	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
-		return getDisguisedStack(world, pos);
-	}
-
-	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return getDisguisedStack(world, pos).getItem() == Item.getItemFromBlock(this);
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
-		return getDisguisedStack(world, pos);
 	}
 
 	@Override

@@ -2,24 +2,21 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.network.packets.PacketCRefreshKeypadModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProtected {
+public class TileEntityKeypad extends TileEntityDisguisable implements IPasswordProtected {
 
 	private String passcode;
 
@@ -38,18 +35,6 @@ public class TileEntityKeypad extends CustomizableSCTE implements IPasswordProte
 			}
 		}
 	};
-
-	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {
-		if(!world.isRemote && module == EnumCustomModules.DISGUISE)
-			SecurityCraft.network.sendToAll(new PacketCRefreshKeypadModel(pos, true, stack));
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {
-		if(!world.isRemote && module == EnumCustomModules.DISGUISE)
-			SecurityCraft.network.sendToAll(new PacketCRefreshKeypadModel(pos, false, stack));
-	}
 
 	/**
 	 * Writes a tile entity to NBT.

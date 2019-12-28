@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
@@ -16,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
 
-public class TileEntityRetinalScanner extends CustomizableSCTE {
+public class TileEntityRetinalScanner extends TileEntityDisguisable {
 
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 
@@ -54,7 +53,7 @@ public class TileEntityRetinalScanner extends CustomizableSCTE {
 
 	@Override
 	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.DISGUISE};
 	}
 
 	@Override

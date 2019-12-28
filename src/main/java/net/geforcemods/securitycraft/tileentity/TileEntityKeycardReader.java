@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
@@ -12,7 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
+public class TileEntityKeycardReader extends TileEntityDisguisable implements IPasswordProtected {
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
@@ -81,7 +80,7 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 
 	@Override
 	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
+		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST, EnumCustomModules.DISGUISE};
 	}
 
 	@Override

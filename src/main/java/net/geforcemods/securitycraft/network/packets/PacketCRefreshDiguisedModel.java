@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -13,16 +13,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketCRefreshKeypadModel implements IMessage
+public class PacketCRefreshDiguisedModel implements IMessage
 {
 	private BlockPos pos;
 	private boolean insert;
 	private ItemStack stack;
 
 
-	public PacketCRefreshKeypadModel() {}
+	public PacketCRefreshDiguisedModel() {}
 
-	public PacketCRefreshKeypadModel(BlockPos pos, boolean insert, ItemStack stack)
+	public PacketCRefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack)
 	{
 		this.pos = pos;
 		this.insert = insert;
@@ -45,14 +45,14 @@ public class PacketCRefreshKeypadModel implements IMessage
 		stack = ByteBufUtils.readItemStack(buf);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCRefreshKeypadModel,IMessage>
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketCRefreshDiguisedModel,IMessage>
 	{
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCRefreshKeypadModel message, MessageContext context)
+		public IMessage onMessage(PacketCRefreshDiguisedModel message, MessageContext context)
 		{
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				TileEntityKeypad te = (TileEntityKeypad)Minecraft.getMinecraft().world.getTileEntity(message.pos);
+				TileEntityDisguisable te = (TileEntityDisguisable)Minecraft.getMinecraft().world.getTileEntity(message.pos);
 
 				if(te != null)
 				{
