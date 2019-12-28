@@ -64,7 +64,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 			while (iterator.hasNext())
 			{
 				entity = (Entity)iterator.next();
-				entitytersecting(entity);
+				entityIntersecting(entity);
 			}
 		}
 
@@ -141,7 +141,7 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 		}
 	}
 
-	public void entitytersecting(Entity entity) {
+	public void entityIntersecting(Entity entity) {
 		if(!(world.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
 
 		((IIntersectable) world.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
@@ -243,15 +243,21 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new SPacketUpdateTileEntity(pos, 1, tag);
+	public NBTTagCompound getUpdateTag()
+	{
+		return writeToNBT(new NBTTagCompound());
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-		readFromNBT(packet.getNbtCompound());
+	public SPacketUpdateTileEntity getUpdatePacket()
+	{
+		return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+	{
+		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override

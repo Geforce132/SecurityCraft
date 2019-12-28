@@ -11,6 +11,7 @@
 - Fix: Trophy System crash
 - Fix: Sentry head does not show when rejoining world/dimension if it was previously showing (Thanks LorenaGdL!)
 - Fix: Cage Trap uses stone instead of metal sounds
+- Fix: Disguised Keypad doesn't show up as disguised when switching worlds/dimensions
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
