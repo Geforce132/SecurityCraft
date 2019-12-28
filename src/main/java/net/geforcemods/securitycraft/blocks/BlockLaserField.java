@@ -109,8 +109,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
 							return;
 
-						BlockUtils.setBlockProperty(world, offsetPos, BlockLaserBlock.POWERED, true, true);
-						world.notifyNeighborsOfStateChange(offsetPos, SCContent.laserBlock, false);
+						world.setBlockState(offsetPos, world.getBlockState(offsetPos).withProperty(BlockLaserBlock.POWERED, true));
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.HARMING))

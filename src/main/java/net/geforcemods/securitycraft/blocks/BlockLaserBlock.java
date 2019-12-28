@@ -166,7 +166,7 @@ public class BlockLaserBlock extends BlockOwnable {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
 		if (!world.isRemote && state.getValue(POWERED).booleanValue())
-			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
+			world.setBlockState(pos, state.withProperty(BlockLaserBlock.POWERED, false));
 	}
 
 	@SideOnly(Side.CLIENT)
