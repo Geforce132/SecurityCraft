@@ -38,9 +38,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
-	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 4, 4, 16, 12, 12);
-	private static final VoxelShape SHAPE_Y = Block.makeCuboidShape(4, 0, 4, 12, 16, 12);
-	private static final VoxelShape SHAPE_Z = Block.makeCuboidShape(4, 4, 0, 12, 12, 16);
+	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 6.75, 6.75, 16, 9.25, 9.25);
+	private static final VoxelShape SHAPE_Y = Block.makeCuboidShape(6.75, 0, 6.75, 9.25, 16, 9.25);
+	private static final VoxelShape SHAPE_Z = Block.makeCuboidShape(6.75, 6.75, 0, 9.25, 9.25, 16);
 
 	public LaserFieldBlock(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));

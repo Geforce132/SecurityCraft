@@ -3,13 +3,13 @@
     "__createdwith": "opl's Model Creator",
     "ambientocclusion": false,
     "textures": {
-        "particle": "securitycraft:block/ani_laser",
-        "laser": "securitycraft:block/ani_laser"
+        "particle": "securitycraft:block/laser",
+        "laser": "securitycraft:block/laser"
     },
     "elements": [
         {
-            "from": [0,4,4],
-            "to": [16,12,12],
+            "from": [0,6.75,6.75],
+            "to": [16,9.25,9.25],
             "faces": {
                 "up": {
                     "texture": "#laser"
