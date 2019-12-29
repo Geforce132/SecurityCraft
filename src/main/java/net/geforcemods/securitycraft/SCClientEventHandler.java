@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.models.KeypadDynamicBakedModel;
+import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -55,16 +55,49 @@ public class SCClientEventHandler {
 		{
 			String[] facings = {"east", "north", "south", "west"};
 			String[] bools = {"true", "false"};
+			ResourceLocation[] facingPoweredBlocks = {
+					SCContent.keycardReader.getRegistryName(),
+					SCContent.keypad.getRegistryName(),
+					SCContent.retinalScanner.getRegistryName()
+			};
+			ResourceLocation[] facingBlocks = {
+					SCContent.inventoryScanner.getRegistryName(),
+					SCContent.usernameLogger.getRegistryName()
+			};
+			ResourceLocation[] poweredBlocks = {
+					SCContent.laserBlock.getRegistryName()
+			};
 
 			for(String facing : facings)
 			{
 				for(String bool : bools)
 				{
-					ModelResourceLocation mrl = new ModelResourceLocation("securitycraft:keypad", "facing=" + facing + ",powered=" + bool);
+					for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
+					{
+						register(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+					}
+				}
 
-					event.getModelRegistry().put(mrl, new KeypadDynamicBakedModel(event.getModelRegistry().get(mrl)));
+				for(ResourceLocation facingBlock : facingBlocks)
+				{
+					register(event, facingBlock, "facing=" + facing);
 				}
 			}
+
+			for(String bool : bools)
+			{
+				for(ResourceLocation poweredBlock : poweredBlocks)
+				{
+					register(event, poweredBlock, "powered=" + bool);
+				}
+			}
+		}
+
+		private static void register(ModelBakeEvent event, ResourceLocation rl, String stateString)
+		{
+			ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
+
+			event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
 		}
 
 		@SubscribeEvent
@@ -90,9 +123,14 @@ public class SCClientEventHandler {
 			RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.func_228641_d_()); //cutoutMipped
 			RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.func_228645_f_()); //translucent
 			RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.func_228641_d_()); //cutoutMipped
+			RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.func_228643_e_()); ////cutout
 			RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.keycardReader, RenderType.func_228643_e_()); //cutout
 			RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.func_228643_e_()); //cutout
+			RenderTypeLookup.setRenderLayer(SCContent.laserBlock, RenderType.func_228643_e_()); //cutout
 			RenderTypeLookup.setRenderLayer(SCContent.laserField, RenderType.func_228645_f_()); //translucent
+			RenderTypeLookup.setRenderLayer(SCContent.retinalScanner, RenderType.func_228643_e_()); //cutout
+			RenderTypeLookup.setRenderLayer(SCContent.usernameLogger, RenderType.func_228643_e_()); //cutout
 			RenderTypeLookup.setRenderLayer(SCContent.reinforcedDoor, RenderType.func_228643_e_()); //cutout
 			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlass, RenderType.func_228643_e_()); //cutout
 			RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlassPane, RenderType.func_228641_d_()); //cutoutMipped

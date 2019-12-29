@@ -28,12 +28,12 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class LaserBlock extends OwnableBlock {
+public class LaserBlock extends DisguisableBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public LaserBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly());
+		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().sound(SoundType.METAL));
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
 	}
 

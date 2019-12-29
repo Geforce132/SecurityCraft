@@ -34,7 +34,6 @@ public abstract class CustomizableTileEntity extends OwnableTileEntity implement
 	private ListNBT nbtTagStorage = null;
 
 	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
-	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
 
 	public CustomizableTileEntity(TileEntityType<?> type)
 	{

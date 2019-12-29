@@ -32,6 +32,11 @@ public class CustomizeBlockContainer extends Container{
 			addSlot(new ModuleSlot(tileEntity, 0, 61, 20));
 			addSlot(new ModuleSlot(tileEntity, 1, 79, 20));
 			addSlot(new ModuleSlot(tileEntity, 2, 97, 20));
+		}else if(tileEntity.getNumberOfCustomizableOptions() == 4){
+			addSlot(new ModuleSlot(tileEntity, 0, 52, 20));
+			addSlot(new ModuleSlot(tileEntity, 1, 70, 20));
+			addSlot(new ModuleSlot(tileEntity, 2, 88, 20));
+			addSlot(new ModuleSlot(tileEntity, 3, 106, 20));
 		}
 
 		for(int i = 0; i < 3; i++)

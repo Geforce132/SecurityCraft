@@ -5,9 +5,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blocks.KeypadBlock;
-import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -25,17 +24,85 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class KeypadDynamicBakedModel implements IDynamicBakedModel
+public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 {
 	public static final ModelProperty<ResourceLocation> DISGUISED_BLOCK_RL = new ModelProperty<>();
-	public static final ResourceLocation DEFAULT_STATE_RL = SCContent.keypad.getRegistryName();
-	private IBakedModel oldModel;
-	private TextureAtlasSprite particleTexture;
+	private final ResourceLocation defaultStateRl;
+	private final IBakedModel oldModel;
 
-	public KeypadDynamicBakedModel(IBakedModel oldModel)
+	public DisguisableDynamicBakedModel(ResourceLocation defaultStateRl, IBakedModel oldModel)
 	{
+		this.defaultStateRl = defaultStateRl;
 		this.oldModel = oldModel;
-		particleTexture = oldModel.getParticleTexture();
+	}
+
+	@Override
+	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData)
+	{
+		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
+
+		if(rl != defaultStateRl)
+		{
+			Block block = ForgeRegistries.BLOCKS.getValue(rl);
+
+			if(block != null)
+			{
+				final IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
+
+				if(model != null)
+					return model.getQuads(state, side, rand, modelData);
+			}
+		}
+
+		return oldModel.getQuads(state, side, rand, modelData);
+	}
+
+	@Override
+	public TextureAtlasSprite getParticleTexture(IModelData modelData)
+	{
+		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
+
+		if(rl != defaultStateRl)
+		{
+			Block block = ForgeRegistries.BLOCKS.getValue(rl);
+
+			if(block != null)
+				return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState()).getParticleTexture(modelData);
+		}
+
+		return oldModel.getParticleTexture(modelData);
+	}
+
+	@Override
+	@Nonnull
+	public IModelData getModelData(ILightReader world, BlockPos pos, BlockState state, IModelData tileData)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof DisguisableTileEntity)
+		{
+			Block block = ((DisguisableTileEntity)te).getBlockState().getBlock();
+
+			if(block instanceof DisguisableBlock)
+			{
+				BlockState disguisedState = ((DisguisableBlock)block).getDisguisedBlockState(world, pos);
+
+				if(disguisedState != null)
+				{
+					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
+					return tileData;
+				}
+			}
+		}
+
+		tileData.setData(DISGUISED_BLOCK_RL, defaultStateRl);
+		return tileData;
+	}
+
+	@Override
+	public TextureAtlasSprite getParticleTexture()
+	{
+		return oldModel.getParticleTexture();
 	}
 
 	@Override
@@ -57,65 +124,8 @@ public class KeypadDynamicBakedModel implements IDynamicBakedModel
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand, IModelData modelData)
-	{
-		ResourceLocation rl = modelData.getData(DISGUISED_BLOCK_RL);
-
-		if(rl != DEFAULT_STATE_RL)
-		{
-			Block block = ForgeRegistries.BLOCKS.getValue(rl);
-
-			if(block != null)
-			{
-				final IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
-
-				if(model != null)
-				{
-					particleTexture = model.getParticleTexture();
-					return model.getQuads(state, side, rand, modelData);
-				}
-			}
-		}
-
-		particleTexture = oldModel.getParticleTexture();
-		return oldModel.getQuads(state, side, rand, modelData);
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture()
-	{
-		return particleTexture;
-	}
-
-	@Override
 	public ItemOverrideList getOverrides()
 	{
 		return null;
-	}
-
-	@Override
-	@Nonnull
-	public IModelData getModelData(ILightReader world, BlockPos pos, BlockState state, IModelData tileData)
-	{
-		TileEntity te = world.getTileEntity(pos);
-
-		if(te instanceof KeypadTileEntity)
-		{
-			Block block = ((KeypadTileEntity)te).getBlockState().getBlock();
-
-			if(block instanceof KeypadBlock)
-			{
-				BlockState disguisedState = ((KeypadBlock)block).getDisguisedBlockState(world, pos);
-
-				if(disguisedState != null)
-				{
-					tileData.setData(DISGUISED_BLOCK_RL, disguisedState.getBlock().getRegistryName());
-					return tileData;
-				}
-			}
-		}
-
-		tileData.setData(DISGUISED_BLOCK_RL, DEFAULT_STATE_RL);
-		return tileData;
 	}
 }

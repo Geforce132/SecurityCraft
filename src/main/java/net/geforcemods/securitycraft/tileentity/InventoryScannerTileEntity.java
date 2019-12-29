@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
-import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
@@ -20,7 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class InventoryScannerTileEntity extends CustomizableTileEntity implements IInventory, INamedContainerProvider{
+public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private String scanType = "check";
@@ -282,6 +280,8 @@ public class InventoryScannerTileEntity extends CustomizableTileEntity implement
 	@Override
 	public void onModuleInserted(ItemStack stack, CustomModules module)
 	{
+		super.onModuleInserted(stack, module);
+
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner != null && !connectedScanner.hasModule(module))
@@ -291,6 +291,8 @@ public class InventoryScannerTileEntity extends CustomizableTileEntity implement
 	@Override
 	public void onModuleRemoved(ItemStack stack, CustomModules module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 		if(connectedScanner != null && connectedScanner.hasModule(module))
@@ -299,12 +301,7 @@ public class InventoryScannerTileEntity extends CustomizableTileEntity implement
 
 	@Override
 	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.SMART, CustomModules.STORAGE};
-	}
-
-	@Override
-	public Option<?>[] customOptions() {
-		return null;
+		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.SMART, CustomModules.STORAGE, CustomModules.DISGUISE};
 	}
 
 	@Override
