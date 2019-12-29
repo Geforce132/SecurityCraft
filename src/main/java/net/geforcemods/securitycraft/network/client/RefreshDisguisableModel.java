@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.CustomModules;
-import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -13,15 +13,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class RefreshKeypadModel
+public class RefreshDisguisableModel
 {
 	private BlockPos pos;
 	private boolean insert;
 	private ItemStack stack;
 
-	public RefreshKeypadModel() {}
+	public RefreshDisguisableModel() {}
 
-	public RefreshKeypadModel(BlockPos pos, boolean insert, ItemStack stack)
+	public RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack)
 	{
 		this.pos = pos;
 		this.insert = insert;
@@ -42,29 +42,29 @@ public class RefreshKeypadModel
 		stack = buf.readItemStack();
 	}
 
-	public static void encode(RefreshKeypadModel message, PacketBuffer packet)
+	public static void encode(RefreshDisguisableModel message, PacketBuffer packet)
 	{
 		message.toBytes(packet);
 	}
 
-	public static RefreshKeypadModel decode(PacketBuffer packet)
+	public static RefreshDisguisableModel decode(PacketBuffer packet)
 	{
-		RefreshKeypadModel message = new RefreshKeypadModel();
+		RefreshDisguisableModel message = new RefreshDisguisableModel();
 
 		message.fromBytes(packet);
 		return message;
 	}
 
-	public static void onMessage(RefreshKeypadModel message, Supplier<NetworkEvent.Context> ctx)
+	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
 	{
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> handleMessage(message, ctx));
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static void handleMessage(RefreshKeypadModel message, Supplier<NetworkEvent.Context> ctx)
+	public static void handleMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			KeypadTileEntity te = (KeypadTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);
+			DisguisableTileEntity te = (DisguisableTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);
 
 			if(te != null)
 			{

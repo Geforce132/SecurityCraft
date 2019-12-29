@@ -5,7 +5,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.models.KeypadDynamicBakedModel;
+import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -52,16 +52,49 @@ public class SCClientEventHandler {
 		{
 			String[] facings = {"east", "north", "south", "west"};
 			String[] bools = {"true", "false"};
+			ResourceLocation[] facingPoweredBlocks = {
+					SCContent.keycardReader.getRegistryName(),
+					SCContent.keypad.getRegistryName(),
+					SCContent.retinalScanner.getRegistryName()
+			};
+			ResourceLocation[] facingBlocks = {
+					SCContent.inventoryScanner.getRegistryName(),
+					SCContent.usernameLogger.getRegistryName()
+			};
+			ResourceLocation[] poweredBlocks = {
+					SCContent.laserBlock.getRegistryName()
+			};
 
 			for(String facing : facings)
 			{
 				for(String bool : bools)
 				{
-					ModelResourceLocation mrl = new ModelResourceLocation("securitycraft:keypad", "facing=" + facing + ",powered=" + bool);
+					for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
+					{
+						register(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+					}
+				}
 
-					event.getModelRegistry().put(mrl, new KeypadDynamicBakedModel(event.getModelRegistry().get(mrl)));
+				for(ResourceLocation facingBlock : facingBlocks)
+				{
+					register(event, facingBlock, "facing=" + facing);
 				}
 			}
+
+			for(String bool : bools)
+			{
+				for(ResourceLocation poweredBlock : poweredBlocks)
+				{
+					register(event, poweredBlock, "powered=" + bool);
+				}
+			}
+		}
+
+		private static void register(ModelBakeEvent event, ResourceLocation rl, String stateString)
+		{
+			ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
+
+			event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
 		}
 	}
 

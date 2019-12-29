@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
-public class LaserBlockTileEntity extends CustomizableTileEntity {
+public class LaserBlockTileEntity extends DisguisableTileEntity {
 
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
 		@Override
@@ -67,7 +67,7 @@ public class LaserBlockTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.HARMING, CustomModules.WHITELIST};
+		return new CustomModules[]{CustomModules.HARMING, CustomModules.WHITELIST, CustomModules.DISGUISE};
 	}
 
 	@Override

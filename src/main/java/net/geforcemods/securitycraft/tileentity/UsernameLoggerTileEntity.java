@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -21,7 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class UsernameLoggerTileEntity extends OwnableTileEntity implements INamedContainerProvider {
+public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
 	public String[] players = new String[100];
 

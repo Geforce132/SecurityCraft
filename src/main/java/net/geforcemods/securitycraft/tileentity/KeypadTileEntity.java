@@ -1,40 +1,28 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.CustomModules;
-import net.geforcemods.securitycraft.models.KeypadDynamicBakedModel;
-import net.geforcemods.securitycraft.network.client.RefreshKeypadModel;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.model.ModelDataManager;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
 
-public class KeypadTileEntity extends CustomizableTileEntity implements IPasswordProtected {
+public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected {
 
 	private String passcode;
 
@@ -57,18 +45,6 @@ public class KeypadTileEntity extends CustomizableTileEntity implements IPasswor
 	public KeypadTileEntity()
 	{
 		super(SCContent.teTypeKeypad);
-	}
-
-	@Override
-	public void onModuleInserted(ItemStack stack, CustomModules module) {
-		if(!world.isRemote && module == CustomModules.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshKeypadModel(pos, true, stack));
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, CustomModules module) {
-		if(!world.isRemote && module == CustomModules.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshKeypadModel(pos, false, stack));
 	}
 
 	/**
@@ -185,28 +161,4 @@ public class KeypadTileEntity extends CustomizableTileEntity implements IPasswor
 	public Option<?>[] customOptions() {
 		return new Option[]{ isAlwaysActive };
 	}
-
-	@Override
-	public IModelData getModelData()
-	{
-		return new ModelDataMap.Builder().withInitial(KeypadDynamicBakedModel.DISGUISED_BLOCK_RL, KeypadDynamicBakedModel.DEFAULT_STATE_RL).build();
-	}
-
-	@Override
-	public void onLoad()
-	{
-		super.onLoad();
-
-		if(world != null && world.isRemote)
-			refreshModel();
-	}
-
-	public void refreshModel()
-	{
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			ModelDataManager.requestModelDataRefresh(this);
-			Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
-		});
-	}
-
 }

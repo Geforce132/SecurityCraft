@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
@@ -19,7 +18,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class KeycardReaderTileEntity extends CustomizableTileEntity implements IPasswordProtected, INamedContainerProvider {
+public class KeycardReaderTileEntity extends DisguisableTileEntity implements IPasswordProtected, INamedContainerProvider {
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
@@ -93,7 +92,7 @@ public class KeycardReaderTileEntity extends CustomizableTileEntity implements I
 
 	@Override
 	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.BLACKLIST};
+		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.BLACKLIST, CustomModules.DISGUISE};
 	}
 
 	@Override

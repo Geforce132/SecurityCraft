@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.KeypadBlock;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
@@ -132,12 +132,12 @@ public class ClientProxy implements IProxy {
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			Block block = Block.getBlockFromItem(KeypadBlock.getDisguisedStack(world, pos).getItem());
+			Block block = Block.getBlockFromItem(((DisguisableBlock)world.getBlockState(pos).getBlock()).getDisguisedStack(world, pos).getItem());
 
-			if(block != Blocks.AIR && !(block instanceof KeypadBlock))
+			if(block != Blocks.AIR && !(block instanceof DisguisableBlock))
 				return Minecraft.getInstance().getBlockColors().getColor(block.getDefaultState(), world, pos, tintIndex);
 			else return 0xFFFFFF;
-		}, SCContent.keypad);
+		}, SCContent.inventoryScanner, SCContent.keycardReader, SCContent.keypad, SCContent.laserBlock, SCContent.retinalScanner, SCContent.usernameLogger);
 	}
 
 	@Override
