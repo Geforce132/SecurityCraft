@@ -29,6 +29,7 @@ public class GuiSRAT extends GuiContainer {
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private ItemStack srat;
 	private GuiButton[][] buttons = new GuiButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
+	private String[] names = new String[12];
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 
@@ -57,10 +58,14 @@ public class GuiSRAT extends GuiContainer {
 			List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
 
 			if (!sentries.isEmpty()) {
-				boolean aggressiveMode = sentries.get(0).getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
-				boolean camouflageMode = sentries.get(0).getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
-				boolean idleMode = sentries.get(0).getMode() == EnumSentryMode.IDLE ? true : false;
+				EntitySentry sentry = sentries.get(0);
+				boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
+				boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
+				boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE ? true : false;
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
+
+				if(sentry.hasCustomName())
+					names[i] = sentry.getCustomNameTag();
 
 				for (int j = 0; j < 4; j++) {
 					int btnX = guiLeft + j * padding + 154 + x;
@@ -101,10 +106,12 @@ public class GuiSRAT extends GuiContainer {
 				}
 			}
 		}
+
 		//Add buttons for global operation (all sentries), large id
 		buttonsGlobal[0][0] = new GuiPictureButton(1000, guiLeft + 282, guiTop + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
 		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 25 + 282, guiTop + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
 		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 50 + 282, guiTop + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+
 		for (int j = 0; j < 3; j++) {
 			buttonsGlobal[0][j].enabled = true;
 			buttonList.add(buttonsGlobal[0][j]);
@@ -126,6 +133,8 @@ public class GuiSRAT extends GuiContainer {
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:srat.notBound");
+			else if(names[i] != null)
+				line = names[i];
 			else
 				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 

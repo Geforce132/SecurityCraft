@@ -23,6 +23,7 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -173,6 +174,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			}
 			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
 				player.getHeldItemMainhand().getItem().onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
+			else if(player.getHeldItemMainhand().getItem() == Items.NAME_TAG)
+			{
+				setCustomNameTag(player.getHeldItemMainhand().getDisplayName());
+				player.getHeldItemMainhand().shrink(1);
+			}
 			else
 				toggleMode(player);
 
