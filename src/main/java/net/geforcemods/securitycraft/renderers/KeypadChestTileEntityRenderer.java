@@ -51,9 +51,9 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 	private final ModelRenderer field_228870_j_;
 	private boolean isChristmas;
 
-	public KeypadChestTileEntityRenderer()
+	public KeypadChestTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
-		super(TileEntityRendererDispatcher.instance);
+		super(terd);
 
 		Calendar calendar = Calendar.getInstance();
 

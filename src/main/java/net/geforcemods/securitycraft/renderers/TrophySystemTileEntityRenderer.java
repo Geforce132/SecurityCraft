@@ -19,9 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySystemTileEntity> {
 
-	public TrophySystemTileEntityRenderer()
+	public TrophySystemTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
-		super(TileEntityRendererDispatcher.instance);
+		super(terd);
 	}
 
 	@Override

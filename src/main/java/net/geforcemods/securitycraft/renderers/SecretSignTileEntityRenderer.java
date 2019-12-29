@@ -29,9 +29,9 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 {
 	private final SignModel model = new SignModel();
 
-	public SecretSignTileEntityRenderer()
+	public SecretSignTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
-		super(TileEntityRendererDispatcher.instance);
+		super(terd);
 	}
 
 	@Override

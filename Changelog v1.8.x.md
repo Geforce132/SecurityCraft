@@ -21,4 +21,5 @@
 - Fix: Public Gui Announcement compatibility does not work
 - Fix: Sentry head does not show when rejoining world/dimension if it was previously showing (Thanks LorenaGdL!)
 - Fix: Cage Trap uses stone instead of metal sounds
+- Misc: The minimum required Forge version is 30.0.17
 - Remove: Unused config options

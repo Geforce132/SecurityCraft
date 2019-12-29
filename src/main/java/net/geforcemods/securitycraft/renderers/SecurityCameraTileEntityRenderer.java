@@ -24,9 +24,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraTileEntity> {
 
-	public SecurityCameraTileEntityRenderer()
+	public SecurityCameraTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
-		super(TileEntityRendererDispatcher.instance);
+		super(terd);
 	}
 
 	private static final SecurityCameraModel modelSecurityCamera = new SecurityCameraModel();

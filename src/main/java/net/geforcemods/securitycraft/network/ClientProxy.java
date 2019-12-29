@@ -70,10 +70,10 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry, SentryRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBullet, BulletRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeKeypadChest, new KeypadChestTileEntityRenderer());
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, new SecurityCameraTileEntityRenderer());
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, new SecretSignTileEntityRenderer());
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, new TrophySystemTileEntityRenderer());
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
