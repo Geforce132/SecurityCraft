@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class SentryRemoteAccessToolScreen extends Screen {
@@ -30,6 +31,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private ItemStack srat;
 	private ClickButton[][] guiButtons = new ClickButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
+	private ITextComponent[] names = new ITextComponent[12];
 	private ClickButton[][] guiButtonsGlobal = new ClickButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 	private int xSize = 512, ySize = 235;
@@ -59,10 +61,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
 			if (!sentries.isEmpty()) {
-				boolean aggressiveMode = sentries.get(0).getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
-				boolean camouflageMode = sentries.get(0).getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
-				boolean idleMode = sentries.get(0).getMode() == EnumSentryMode.IDLE ? true : false;
+				SentryEntity sentry = sentries.get(0);
+				boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
+				boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
+				boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE ? true : false;
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
+
+				if(sentry.hasCustomName())
+					names[i] = sentry.getCustomName();
 
 				for (int j = 0; j < 4; j++) {
 					int btnX = startX + j * padding + 154 + x;
@@ -91,8 +97,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				}
 			}
 			else {
-				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
 				int btnY = startY + y - 48;
+
+				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
 				guiButtons[i][0] = new PictureButton(id++, startX + 0 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18, this::actionPerformed);
 				guiButtons[i][1] = new PictureButton(id++, startX + 1 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18, this::actionPerformed);
 				guiButtons[i][2] = new PictureButton(id++, startX + 2 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
@@ -136,6 +143,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:srat.notBound");
+			else if(names[i] != null)
+				line = names[i].getFormattedText();
 			else
 				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 

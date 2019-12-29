@@ -29,6 +29,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
@@ -176,6 +177,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			}
 			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
 				player.getHeldItemMainhand().getItem().onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
+			else if(player.getHeldItemMainhand().getItem() == Items.NAME_TAG)
+			{
+				setCustomName(player.getHeldItemMainhand().getDisplayName());
+				player.getHeldItemMainhand().shrink(1);
+			}
 			else
 				toggleMode(player);
 

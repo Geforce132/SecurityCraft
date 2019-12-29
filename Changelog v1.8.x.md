@@ -6,6 +6,7 @@
 - New: Reinforced Obsidian can now be used to create a nether portal
 - New: Sentry Remote Access Tool to remotely control sentries, analogously to the Mine Remote Access Tool (Thanks LorenaGdL!)
 - New: The following blocks can now be disguised with the Disguise Module, similar to the Keypad: Inventory Scanner, Keycard Reader, Laser Block, Retinal Scanner, Username Logger
+- New: Sentries can now be named. Names show up in the Sentry Remote Access Tool
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
 - Fix: Laser and Inventory Scanner Field's name is not localized
