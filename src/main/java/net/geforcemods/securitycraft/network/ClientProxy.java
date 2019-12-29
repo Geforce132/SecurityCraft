@@ -132,11 +132,17 @@ public class ClientProxy implements IProxy {
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			Block block = Block.getBlockFromItem(((DisguisableBlock)world.getBlockState(pos).getBlock()).getDisguisedStack(world, pos).getItem());
+			Block block = world.getBlockState(pos).getBlock();
 
-			if(block != Blocks.AIR && !(block instanceof DisguisableBlock))
-				return Minecraft.getInstance().getBlockColors().getColor(block.getDefaultState(), world, pos, tintIndex);
-			else return 0xFFFFFF;
+			if(block instanceof DisguisableBlock)
+			{
+				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
+
+				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
+					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
+			}
+
+			return 0xFFFFFF;
 		}, SCContent.inventoryScanner, SCContent.keycardReader, SCContent.keypad, SCContent.laserBlock, SCContent.retinalScanner, SCContent.usernameLogger);
 	}
 
