@@ -17,6 +17,7 @@
 - Fix: Disguised Keypad doesn't show up as disguised when switching worlds/dimensions
 - Fix: Laser Block can duplicate modules
 - Fix: I.M.S. does not emit a sound when launching one of its mines
+- Fix: Username Logger logs its owner
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 

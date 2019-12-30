@@ -20,7 +20,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if (!world.isRemote && entity instanceof EntityPlayer) {
-			addPlayerName(((EntityPlayer) entity).getName());
+			addPlayer((EntityPlayer)entity);
 			sendChangeToClient(false);
 		}
 
@@ -40,16 +40,16 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayerName(((EntityPlayer)iterator.next()).getName());
+			addPlayer((EntityPlayer)iterator.next());
 
 		sendChangeToClient(false);
 	}
 
-	private void addPlayerName(String username) {
-		if(!hasPlayerName(username))
+	private void addPlayer(EntityPlayer player) {
+		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName()))
 			for(int i = 0; i < players.length; i++)
 				if(players[i] == "" || players[i] == null){
-					players[i] = username;
+					players[i] = player.getName();
 					break;
 				}
 				else
