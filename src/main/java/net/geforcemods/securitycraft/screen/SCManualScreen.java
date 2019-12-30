@@ -268,16 +268,14 @@ public class SCManualScreen extends Screen {
 
 	private void updateRecipeAndIcons(){
 		currentSubpage = 0;
+		hoverCheckers.clear();
 
 		if(currentPage < 0){
 			recipe = null;
-			hoverCheckers.clear();
 			buttons.get(2).visible = false;
 			buttons.get(3).visible = false;
 			return;
 		}
-
-		hoverCheckers.clear();
 
 		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
 			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
@@ -379,6 +377,8 @@ public class SCManualScreen extends Screen {
 		}
 
 		subpages.add(helpInfo);
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	static class ChangePageButton extends ClickButton {
