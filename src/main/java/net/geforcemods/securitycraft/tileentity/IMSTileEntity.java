@@ -93,7 +93,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(!world.isRemote)
-                    world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				launchedMine = true;
@@ -119,7 +119,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(!world.isRemote)
-                    world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;

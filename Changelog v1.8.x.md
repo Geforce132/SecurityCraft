@@ -22,5 +22,8 @@
 - Fix: Public Gui Announcement compatibility does not work
 - Fix: Sentry head does not show when rejoining world/dimension if it was previously showing (Thanks LorenaGdL!)
 - Fix: Cage Trap uses stone instead of metal sounds
+- Fix: I.M.S. does not emit a sound when launching one of its mines
+- Fix: I.M.S. targets all mobs instead of just hostile mobs
+- Fix: SecurityCraft Manual's subpage navigation buttons appear even when there are no subpages
 - Misc: The minimum required Forge version is 30.0.17
 - Remove: Unused config options
