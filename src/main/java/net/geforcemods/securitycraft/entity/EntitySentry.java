@@ -26,6 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -136,11 +137,13 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		if(getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND)
 		{
+			Item item = player.getHeldItemMainhand().getItem();
+
 			player.closeScreen();
 
 			if(player.isSneaking())
 				remove();
-			else if(player.getHeldItemMainhand().getItem() == SCContent.disguiseModule)
+			else if(item == SCContent.disguiseModule)
 			{
 				ItemStack module = getDisguiseModule();
 
@@ -152,7 +155,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule)
+			else if(item == SCContent.whitelistModule)
 			{
 				ItemStack module = getWhitelistModule();
 
@@ -164,7 +167,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(player.getHeldItemMainhand().getItem() == SCContent.universalBlockModifier)
+			else if(item == SCContent.universalBlockModifier)
 			{
 				world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
 				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
@@ -172,12 +175,18 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				dataManager.set(MODULE, new NBTTagCompound());
 				dataManager.set(WHITELIST, new NBTTagCompound());
 			}
-			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
-				player.getHeldItemMainhand().getItem().onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
-			else if(player.getHeldItemMainhand().getItem() == Items.NAME_TAG)
+			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
+				item.onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
+			else if(item == Items.NAME_TAG)
 			{
 				setCustomNameTag(player.getHeldItemMainhand().getDisplayName());
 				player.getHeldItemMainhand().shrink(1);
+			}
+			else if(item == SCContent.universalOwnerChanger)
+			{
+				String newOwner = player.getHeldItemMainhand().getDisplayName();
+
+				dataManager.set(OWNER, new Owner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner));
 			}
 			else
 				toggleMode(player);
