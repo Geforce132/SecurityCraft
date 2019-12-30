@@ -33,7 +33,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if (!world.isRemote && entity instanceof PlayerEntity) {
-			addPlayerName(((PlayerEntity) entity).getName().getFormattedText());
+			addPlayer((PlayerEntity)entity);
 			sendChangeToClient(false);
 		}
 
@@ -53,16 +53,16 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayerName(((PlayerEntity)iterator.next()).getName().getFormattedText());
+			addPlayer((PlayerEntity)iterator.next());
 
 		sendChangeToClient(false);
 	}
 
-	private void addPlayerName(String username) {
-		if(!hasPlayerName(username))
+	private void addPlayer(PlayerEntity player) {
+		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName().getFormattedText()))
 			for(int i = 0; i < players.length; i++)
 				if(players[i] == "" || players[i] == null){
-					players[i] = username;
+					players[i] = player.getName().getFormattedText();
 					break;
 				}
 				else
