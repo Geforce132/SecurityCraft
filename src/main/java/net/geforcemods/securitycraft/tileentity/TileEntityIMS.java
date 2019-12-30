@@ -79,7 +79,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(!world.isRemote)
-                    world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				launchedMine = true;
@@ -105,7 +105,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(!world.isRemote)
-                    world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
