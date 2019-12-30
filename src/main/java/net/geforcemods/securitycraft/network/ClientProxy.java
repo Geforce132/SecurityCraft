@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.EmptyRenderer;
@@ -46,21 +47,152 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.Atlases;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
-public class ClientProxy implements IProxy {
+public class ClientProxy implements IProxy
+{
+	@SubscribeEvent
+	public static void onModelBake(ModelBakeEvent event)
+	{
+		String[] facings = {"east", "north", "south", "west"};
+		String[] bools = {"true", "false"};
+		ResourceLocation[] facingPoweredBlocks = {
+				SCContent.keycardReader.getRegistryName(),
+				SCContent.keypad.getRegistryName(),
+				SCContent.retinalScanner.getRegistryName()
+		};
+		ResourceLocation[] facingBlocks = {
+				SCContent.inventoryScanner.getRegistryName(),
+				SCContent.usernameLogger.getRegistryName()
+		};
+		ResourceLocation[] poweredBlocks = {
+				SCContent.laserBlock.getRegistryName()
+		};
+
+		for(String facing : facings)
+		{
+			for(String bool : bools)
+			{
+				for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
+				{
+					register(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+				}
+			}
+
+			for(ResourceLocation facingBlock : facingBlocks)
+			{
+				register(event, facingBlock, "facing=" + facing);
+			}
+		}
+
+		for(String bool : bools)
+		{
+			for(ResourceLocation poweredBlock : poweredBlocks)
+			{
+				register(event, poweredBlock, "powered=" + bool);
+			}
+		}
+	}
+
+	private static void register(ModelBakeEvent event, ResourceLocation rl, String stateString)
+	{
+		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
+
+		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
+	}
+
+	@SubscribeEvent
+	public static void onTextureStitchPre(TextureStitchEvent.Pre event)
+	{
+		if(event.getMap().func_229223_g_().equals(Atlases.field_228747_f_)) //CHESTS
+		{
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_active"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/left_inactive"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/right_active"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/right_inactive"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas_left"));
+			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/christmas_right"));
+		}
+	}
+
+	@SubscribeEvent
+	public static void onFMLClientSetup(FMLClientSetupEvent event)
+	{
+		RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.func_228641_d_()); //cutoutMipped
+		RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.func_228641_d_()); //cutoutMipped
+		RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.func_228643_e_()); ////cutout
+		RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.keycardReader, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.laserBlock, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.laserField, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.retinalScanner, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.usernameLogger, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedDoor, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlass, RenderType.func_228643_e_()); //cutout
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlassPane, RenderType.func_228641_d_()); //cutoutMipped
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlass, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.func_228641_d_()); //cutoutMipped
+		RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.fakeWater, RenderType.func_228645_f_()); //translucent
+	}
+
 	@Override
 	public void clientSetup()
 	{
