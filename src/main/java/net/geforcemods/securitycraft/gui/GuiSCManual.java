@@ -208,8 +208,8 @@ public class GuiSCManual extends GuiScreen {
 			previousSubpage();
 
 		//hide subpage buttons on main page
-		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 0;
-		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 0;
+		buttonList.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttonList.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	@Override
