@@ -17,7 +17,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -72,7 +72,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area);
-			List<?> mobs = world.getEntitiesWithinAABB(MobEntity.class, area);
+			List<?> mobs = world.getEntitiesWithinAABB(MonsterEntity.class, area);
 			Iterator<?> playerIterator = players.iterator();
 			Iterator<?> mobIterator = mobs.iterator();
 
