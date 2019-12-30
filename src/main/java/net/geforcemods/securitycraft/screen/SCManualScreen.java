@@ -209,8 +209,8 @@ public class SCManualScreen extends Screen {
 			previousSubpage();
 
 		//hide subpage buttons on main page
-		buttons.get(2).visible = currentPage != -1 && subpages.size() > 0;
-		buttons.get(3).visible = currentPage != -1 && subpages.size() > 0;
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	@Override
