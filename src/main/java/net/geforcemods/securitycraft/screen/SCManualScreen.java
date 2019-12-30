@@ -19,7 +19,6 @@ import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
@@ -125,31 +124,26 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemToGui(minecraft, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
 
+			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
 			TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-			Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
-			if(BlockItem != null){
-				if(BlockItem instanceof IExplosive)
-					this.blit(startX + 107, 117, 54, 1, 18, 18);
+			if(((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null) instanceof IExplosive)
+				this.blit(startX + 107, 117, 54, 1, 18, 18);
 
-				if(te != null){
-					if(te instanceof IOwnable)
-						this.blit(startX + 29, 118, 1, 1, 16, 16);
+			if(te instanceof IOwnable)
+				this.blit(startX + 29, 118, 1, 1, 16, 16);
 
-					if(te instanceof IPasswordProtected)
-						this.blit(startX + 55, 118, 18, 1, 17, 16);
+			if(te instanceof IPasswordProtected)
+				this.blit(startX + 55, 118, 18, 1, 17, 16);
 
-					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-						this.blit(startX + 81, 118, 36, 1, 17, 16);
+			if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+				this.blit(startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof CustomizableTileEntity)
-						this.blit(startX + 213, 118, 72, 1, 16, 16);
-				}
-			}
+			if(te instanceof CustomizableTileEntity)
+				this.blit(startX + 213, 118, 72, 1, 16, 16);
 
 			if(recipe != null)
 			{
@@ -164,7 +158,7 @@ public class SCManualScreen extends Screen {
 						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
-						GuiUtils.drawItemToGui(minecraft, matchingStacks[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof BlockItem));
+						minecraft.getItemRenderer().renderItemAndEffectIntoGUI(matchingStacks[0], (startX + 100) + (j * 20), 144 + (i * 20));
 					}
 			}
 

@@ -6,13 +6,11 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
-import net.minecraft.block.Block;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -52,22 +50,6 @@ public class GuiUtils{
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, SecurityCameraBlock.FACING)) == 0) && (((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
-			drawItemToGui(mc, Items.REDSTONE, 10, 0, false);
-	}
-
-	public static void drawItemToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
-		if(fixLighting)
-			RenderSystem.enableLighting();
-
-		RenderSystem.setupGuiFlatDiffuseLighting();
-		RenderSystem.enableRescaleNormal();
-		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item), x, y);
-
-		RenderSystem.disableLighting();
-		RenderSystem.disableRescaleNormal();
-	}
-
-	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		drawItemToGui(mc, block.asItem(), x, y, fixLighting);
+			itemRender.renderItemAndEffectIntoGUI(new ItemStack(Items.REDSTONE), 10, 0);
 	}
 }
