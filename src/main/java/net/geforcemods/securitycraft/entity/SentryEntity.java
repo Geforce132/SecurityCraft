@@ -27,6 +27,7 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
@@ -139,11 +140,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		if(getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
 		{
+			Item item = player.getHeldItemMainhand().getItem();
+
 			player.closeScreen();
 
 			if(player.func_225608_bj_()) //isCrouching
 				remove();
-			else if(player.getHeldItemMainhand().getItem() == SCContent.disguiseModule)
+			else if(item == SCContent.disguiseModule)
 			{
 				ItemStack module = getDisguiseModule();
 
@@ -155,7 +158,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule)
+			else if(item == SCContent.whitelistModule)
 			{
 				ItemStack module = getWhitelistModule();
 
@@ -167,7 +170,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(player.getHeldItemMainhand().getItem() == SCContent.universalBlockModifier)
+			else if(item == SCContent.universalBlockModifier)
 			{
 				world.destroyBlock(getPosition(), false);
 				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
@@ -175,12 +178,18 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				dataManager.set(MODULE, new CompoundNBT());
 				dataManager.set(WHITELIST, new CompoundNBT());
 			}
-			else if(player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
-				player.getHeldItemMainhand().getItem().onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
-			else if(player.getHeldItemMainhand().getItem() == Items.NAME_TAG)
+			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
+				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
+			else if(item == Items.NAME_TAG)
 			{
 				setCustomName(player.getHeldItemMainhand().getDisplayName());
 				player.getHeldItemMainhand().shrink(1);
+			}
+			else if(item == SCContent.universalOwnerChanger)
+			{
+				String newOwner = player.getHeldItemMainhand().getDisplayName().getFormattedText();
+
+				dataManager.set(OWNER, new Owner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner));
 			}
 			else
 				toggleMode(player);
