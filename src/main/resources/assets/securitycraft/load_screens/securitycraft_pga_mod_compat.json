@@ -38,7 +38,7 @@
 		}, {
 			"class" : "net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen", 
 			"texture" : "securitycraft:textures/gui/container/srat.png", 
-			"size" : [512, 235]
+			"size" : [440, 215]
 		}, {
 			"class" : "net.geforcemods.securitycraft.screen.SCManualScreen", 
 			"texture" : "securitycraft:textures/gui/info_book_title_page.png", 

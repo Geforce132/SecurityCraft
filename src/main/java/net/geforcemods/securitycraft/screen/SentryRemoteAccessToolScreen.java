@@ -34,7 +34,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private ITextComponent[] names = new ITextComponent[12];
 	private ClickButton[][] guiButtonsGlobal = new ClickButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
-	private int xSize = 512, ySize = 235;
+	private int xSize = 440, ySize = 215;
 
 	public SentryRemoteAccessToolScreen(ItemStack item) {
 		super(new TranslationTextComponent(item.getTranslationKey()));
@@ -48,13 +48,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		int padding = 25;
+		int paddingX = 22;
+		int paddingY = 25;
 		int[] coords = null;
 		int id = 0;
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
-			int y = ((i % 6) + 1) * 30 + padding;
+			int y = ((i % 6) + 1) * 30 + paddingY;
 			coords = getSentryCoordinates(i);
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
@@ -71,7 +72,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					names[i] = sentry.getCustomName();
 
 				for (int j = 0; j < 4; j++) {
-					int btnX = startX + j * padding + 154 + x;
+					int btnX = startX + j * paddingX + 127 + x;
 					int btnY = startY + y - 48;
 
 					switch (j) {
@@ -100,10 +101,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				int btnY = startY + y - 48;
 
 				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
-				guiButtons[i][0] = new PictureButton(id++, startX + 0 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18, this::actionPerformed);
-				guiButtons[i][1] = new PictureButton(id++, startX + 1 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18, this::actionPerformed);
-				guiButtons[i][2] = new PictureButton(id++, startX + 2 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
-				guiButtons[i][3] = new ClickButton(id++, startX + 3 * padding + 154 + x, btnY, 20, 20, "X", this::actionPerformed);
+				guiButtons[i][0] = new PictureButton(id++, startX + 0 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18, this::actionPerformed);
+				guiButtons[i][1] = new PictureButton(id++, startX + 1 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18, this::actionPerformed);
+				guiButtons[i][2] = new PictureButton(id++, startX + 2 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+				guiButtons[i][3] = new ClickButton(id++, startX + 3 * paddingX + 127 + x, btnY, 20, 20, "X", this::actionPerformed);
 
 				for (int j = 0; j < 4; j++) {
 					guiButtons[i][j].active = false;
@@ -113,9 +114,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 
 		//Add buttons for global operation (all sentries), large id
-		guiButtonsGlobal[0][0] = new PictureButton(1000, startX + 282, startY + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
-		guiButtonsGlobal[0][1] = new PictureButton(1001, startX + 25 + 282, startY + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
-		guiButtonsGlobal[0][2] = new PictureButton(1002, startX + 50 + 282, startY + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+		guiButtonsGlobal[0][0] = new PictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
+		guiButtonsGlobal[0][1] = new PictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
+		guiButtonsGlobal[0][2] = new PictureButton(1002, startX + 44 + 260, startY + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
 
 		for (int j = 0; j < 3; j++) {
 			guiButtonsGlobal[0][j].active = true;
@@ -146,10 +147,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else if(names[i] != null)
 				line = names[i].getFormattedText();
 			else
-				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.drawString(line, startX + xSize / 4 - font.getStringWidth(line) + 25 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
-			font.drawString(modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 206, 4210752);
+			font.drawString(line, startX + xSize / 4 - font.getStringWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.drawString(modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
 		}
 	}
 
