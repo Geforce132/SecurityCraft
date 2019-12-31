@@ -30,7 +30,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 
 	public BlockPocketWallBlock()
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).func_226896_b_()); //notSolid
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, false));
 	}

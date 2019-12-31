@@ -32,6 +32,17 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		this(soundType, mat, vB, registryPath, 0);
 	}
 
+	/**
+	 * Only use for non-solid blocks
+	 */
+	public BaseReinforcedBlock(Block.Properties properties, SoundType soundType, Block vB, String registryPath)
+	{
+		super(soundType, properties.func_226896_b_()); //notSolid
+
+		vanillaBlock = vB;
+		setRegistryName(new ResourceLocation(SecurityCraft.MODID, registryPath));
+	}
+
 	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, String registryPath, int lightValue)
 	{
 		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(lightValue));
