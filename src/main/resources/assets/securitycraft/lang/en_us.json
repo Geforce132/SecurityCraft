@@ -459,6 +459,7 @@
 	"gui.securitycraft:scManual.recipe.keypad_chest": "Place down a Chest and rightclick it with a Key Panel.",
 	"gui.securitycraft:scManual.recipe.keypad_furnace": "Place down a Furnace and rightclick it with a Key Panel.",
 	"gui.securitycraft:scManual.recipe.reinforced": "Any reinforced block can be crafted as follows, if not otherwise specified in this book. Place down the vanilla equivalent (e.g. Reinforced Stone -> Stone) and break it with a Universal Block Reinforcer, or rightclick the Universal Block Reinforcer, put it into the slot and close the GUI.",
+	"gui.securitycraft:scManual.recipe.reinforced_iron_trapdoor": "Any reinforced block can be crafted as follows, if not otherwise specified in this book. Place down the vanilla equivalent (e.g. Reinforced Stone -> Stone) and break it with a Universal Block Reinforcer, or rightclick the Universal Block Reinforcer, put it into the slot and close the GUI.",
 	"gui.securitycraft:scManual.recipe.adminTool": "The Admin Tool is only available via the creative inventory, if it is enabled via the config file.",
 	"gui.securitycraft:scManual.recipe.admin_tool": "The Admin Tool is only available via the creative inventory, if it is enabled via the config file.",
 	"gui.securitycraft:scManual.recipe.reinforced_crystal_quartz": "Made from regular Crystal Quartz Blocks in a Universal Block Reinforcer.",
