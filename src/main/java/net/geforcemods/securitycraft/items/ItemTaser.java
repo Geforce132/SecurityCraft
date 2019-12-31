@@ -34,7 +34,7 @@ public class ItemTaser extends Item {
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
 	{
-		if(tab == SecurityCraft.tabSCTechnical && !powered)
+		if((tab == SecurityCraft.tabSCTechnical || tab == CreativeTabs.SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
