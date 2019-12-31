@@ -146,7 +146,7 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.func_228641_d_()); //cutoutMipped
 		RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.func_228645_f_()); //translucent
 		RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.func_228643_e_()); ////cutout
+		RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.func_228643_e_()); //cutout
 		RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.func_228645_f_()); //translucent
 		RenderTypeLookup.setRenderLayer(SCContent.keycardReader, RenderType.func_228643_e_()); //cutout
 		RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.func_228643_e_()); //cutout
@@ -190,6 +190,7 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.func_228645_f_()); //translucent
 		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.func_228645_f_()); //translucent
 		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.trackMine, RenderType.func_228643_e_()); //cutout
 		RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.func_228641_d_()); //cutoutMipped
 		RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.func_228645_f_()); //translucent
 		RenderTypeLookup.setRenderLayer(SCContent.fakeWater, RenderType.func_228645_f_()); //translucent
