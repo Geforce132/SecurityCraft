@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -28,13 +29,10 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	@Override
 	public void func_225623_a_(BouncingBettyEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
-		double x = entity.getPosition().getX();
-		double y = entity.getPosition().getY();
-		double z = entity.getPosition().getZ();
 		int overlayTextureToUse;
 
 		matrix.func_227860_a_(); //push
-		matrix.func_227861_a_(x, y + 0.5D, z); //translate
+		matrix.func_227861_a_(0.0D, 0.5D, 0.0D); //translate
 
 		if (entity.fuse - partialTicks + 1.0F < 10.0F)
 		{
@@ -51,7 +49,9 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 		else
 			overlayTextureToUse = OverlayTexture.field_229196_a_;
 
+		matrix.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-90.0F)); //rotate
 		matrix.func_227861_a_(-0.5D, -0.5D, 0.5D); //translate
+		matrix.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(90.0F)); //rotate
 		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.bouncingBetty.getDefaultState(), matrix, buffer, p_225623_6_, overlayTextureToUse, EmptyModelData.INSTANCE);
 		matrix.func_227865_b_(); //pop
 		super.func_225623_a_(entity, p_225623_2_, partialTicks, matrix, buffer, p_225623_6_);

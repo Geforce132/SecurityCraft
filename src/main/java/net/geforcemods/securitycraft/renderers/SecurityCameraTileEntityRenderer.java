@@ -24,6 +24,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraTileEntity> {
 
+	private static final Quaternion POSITIVE_Y_180 = new Quaternion(Vector3f.field_229181_d_, 180.0F, true);
+	private static final Quaternion POSITIVE_Y_90 = new Quaternion(Vector3f.field_229181_d_, 90.0F, true);
+	private static final Quaternion POSITIVE_Y_NEGATIVE_90 = new Quaternion(Vector3f.field_229181_d_, -90.0F, true);
+	private static final Quaternion POSITIVE_X_180 = new Quaternion(Vector3f.field_229179_b_, 180.0F, true);
+
 	public SecurityCameraTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
 		super(terd);
@@ -38,27 +43,21 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 		if(te.down || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(te.getPos()))
 			return;
 
-		float rotation = 0F;
-
 		matrix.func_227861_a_(0.5D, 1.5D, 0.5D); //translate
 
-		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera){
-			Direction side = BlockUtils.getBlockPropertyAsEnum(te.getWorld(), te.getPos(), SecurityCameraBlock.FACING);
+		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera)
+		{
+			Direction side = te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING);
 
-			if(side == Direction.EAST)
-				rotation = -1F;
-			else if(side == Direction.SOUTH)
-				rotation = -10000F;
+			if(side == Direction.NORTH)
+				matrix.func_227863_a_(POSITIVE_Y_180); //rotate
+			else if(side == Direction.EAST)
+				matrix.func_227863_a_(POSITIVE_Y_90); //rotate
 			else if(side == Direction.WEST)
-				rotation = 1F;
-			else if(side == Direction.NORTH)
-				rotation = 0F;
+				matrix.func_227863_a_(POSITIVE_Y_NEGATIVE_90); //rotate
 		}
-		else
-			rotation = -10000F;
 
-		//		RenderSystem.rotatef(180F, rotation, 0.0F, 1.0F);
-		matrix.func_227863_a_(new Quaternion(Vector3f.field_229183_f_, rotation, true));
+		matrix.func_227863_a_(POSITIVE_X_180); //rotate
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = te.cameraRotation;
 		modelSecurityCamera.func_225598_a_(matrix, buffer.getBuffer(RenderType.func_228634_a_(cameraTexture)), p_225616_5_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F);
 	}

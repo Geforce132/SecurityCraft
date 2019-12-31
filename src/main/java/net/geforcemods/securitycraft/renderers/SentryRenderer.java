@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -42,7 +41,6 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 		stack.func_227863_a_(new Quaternion(Vector3f.field_229181_d_, entity.getDataManager().get(SentryEntity.HEAD_ROTATION), true)); //rotate, Y_AXIS
 		stack.func_227861_a_(0.0F, entity.getHeadYTranslation(), 0.0F);
 		MODEL.func_225598_a_(stack, builder, p_225623_6_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.popMatrix();
 	}
 
 	@Override

@@ -34,8 +34,8 @@ public class TrophySystemTileEntity extends OwnableTileEntity {
 			Entity target = getTarget();
 			UUID shooterUUID = getShooterUUID(target);
 
-			// second condition is disabled right now for testing
-			if(target != null && shooterUUID != null &&!shooterUUID.toString().equals(getOwner().getUUID())) {
+			// disable second condition for testing
+			if(target != null && shooterUUID != null /*&& !shooterUUID.toString().equals(getOwner().getUUID())*/) {
 				entityBeingTargeted = target;
 			}
 		}

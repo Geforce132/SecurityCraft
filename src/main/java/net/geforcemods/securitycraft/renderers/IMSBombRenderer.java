@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.models.IMSBombModel;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -25,19 +25,14 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 	public IMSBombRenderer(EntityRendererManager renderManager){
 		super(renderManager);
 	}
-
+	//TODO: does not work yet
 	@Override
 	public void func_225623_a_(IMSBombEntity imsBomb, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
-		float x = imsBomb.getPosition().getX();
-		float y = imsBomb.getPosition().getY();
-		float z = imsBomb.getPosition().getZ();
-
-		matrix.func_227861_a_(x - 0.1D, y, z - 0.1D); //translate
+		matrix.func_227861_a_(-0.1D, 0, 0.1D); //translate
 		matrix.func_227862_a_(1.4F, 1.4F, 1.4F); //scale
+		Minecraft.getInstance().textureManager.bindTexture(getEntityTexture(imsBomb));
 		modelBomb.func_225598_a_(matrix, buffer.getBuffer(RenderType.func_228634_a_(getEntityTexture(imsBomb))), p_225623_6_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F);
-
-		RenderSystem.popMatrix();
 	}
 
 	@Override

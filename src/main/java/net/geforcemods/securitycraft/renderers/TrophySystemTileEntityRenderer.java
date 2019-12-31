@@ -24,6 +24,7 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		super(terd);
 	}
 
+	//TODO: does not work yet, line is being drawn at incorrect position
 	@Override
 	public void func_225616_a_(TrophySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_) {
 		// The code below draws a line between the trophy system and the projectile that
@@ -31,24 +32,19 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 
 		if(te.entityBeingTargeted == null) return;
 
-		BlockPos pos = te.getPos();//new Vec3d(x + 0.5D, y + 0.75D, z + 0.5D);
-
-		RenderSystem.pushMatrix();
-		RenderSystem.translated(pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D);
-		RenderSystem.lineWidth(2F);
-		RenderSystem.disableTexture();
-		RenderSystem.disableLighting();
-
+		BlockPos pos = te.getPos();
 		BufferBuilder bb = Tessellator.getInstance().getBuffer();
-		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-		//pos, color (?)
-		bb.func_225582_a_(0, 0, 0).func_225586_a_(255, 0, 0, 1).endVertex();
-		bb.func_225582_a_(te.entityBeingTargeted.func_226277_ct_() - te.getPos().getX() - 0.5D, te.entityBeingTargeted.func_226278_cu_() - te.getPos().getY() - 0.75D, te.entityBeingTargeted.func_226281_cx_() - te.getPos().getZ() - 0.5D).func_225586_a_(255, 0, 0, 1).endVertex();
-		Tessellator.getInstance().draw();
 
-		RenderSystem.enableLighting();
+		RenderSystem.disableTexture();
+		RenderSystem.disableBlend();
+		RenderSystem.lineWidth(2.0F);
+		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+		//pos, color
+		bb.func_225582_a_(pos.getX() + 0.5D, pos.getY() + 0.75D, pos.getZ() + 0.5D).func_225586_a_(255, 0, 0, 255).endVertex();
+		bb.func_225582_a_(te.entityBeingTargeted.func_226277_ct_() - te.getPos().getX() - 0.5D, te.entityBeingTargeted.func_226278_cu_() - te.getPos().getY() - 0.75D, te.entityBeingTargeted.func_226281_cx_() - te.getPos().getZ() - 0.5D).func_225586_a_(255, 0, 0, 255).endVertex();
+		Tessellator.getInstance().draw();
+		RenderSystem.enableBlend();
 		RenderSystem.enableTexture();
-		RenderSystem.popMatrix();
 	}
 
 }
