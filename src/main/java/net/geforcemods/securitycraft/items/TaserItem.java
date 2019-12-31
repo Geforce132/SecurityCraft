@@ -32,7 +32,7 @@ public class TaserItem extends Item {
 	@Override
 	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
 	{
-		if(group == SecurityCraft.groupSCTechnical && !powered)
+		if((group == SecurityCraft.groupSCTechnical || group == ItemGroup.SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
