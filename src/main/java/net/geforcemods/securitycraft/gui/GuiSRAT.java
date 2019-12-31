@@ -37,21 +37,22 @@ public class GuiSRAT extends GuiContainer {
 		super(new ContainerGeneric(inventory, null));
 
 		srat = item;
-		xSize = 512;
-		ySize = 235;
+		xSize = 440;
+		ySize = 215;
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 
-		int padding = 25;
+		int paddingX = 22;
+		int paddingY = 25;
 		int[] coords = null;
 		int id = 0;
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
-			int y = ((i % 6) + 1) * 30 + padding;
+			int y = ((i % 6) + 1) * 30 + paddingY;
 			coords = getSentryCoordinates(i);
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
@@ -68,7 +69,7 @@ public class GuiSRAT extends GuiContainer {
 					names[i] = sentry.getCustomNameTag();
 
 				for (int j = 0; j < 4; j++) {
-					int btnX = guiLeft + j * padding + 154 + x;
+					int btnX = guiLeft + j * paddingX + 127 + x;
 					int btnY = guiTop + y - 48;
 
 					switch (j) {
@@ -95,10 +96,10 @@ public class GuiSRAT extends GuiContainer {
 			else {
 				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
 				int btnY = guiTop + y - 48;
-				buttons[i][0] = new GuiPictureButton(id++, guiLeft + 0 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18);
-				buttons[i][1] = new GuiPictureButton(id++, guiLeft + 1 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18);
-				buttons[i][2] = new GuiPictureButton(id++, guiLeft + 2 * padding + 154 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
-				buttons[i][3] = new GuiButton(id++, guiLeft + 3 * padding + 154 + x, btnY, 20, 20, "X");
+				buttons[i][0] = new GuiPictureButton(id++, guiLeft + 0 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
+				buttons[i][1] = new GuiPictureButton(id++, guiLeft + 1 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
+				buttons[i][2] = new GuiPictureButton(id++, guiLeft + 2 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+				buttons[i][3] = new GuiButton(id++, guiLeft + 3 * paddingX + 127 + x, btnY, 20, 20, "X");
 
 				for (int j = 0; j < 4; j++) {
 					buttons[i][j].enabled = false;
@@ -108,10 +109,9 @@ public class GuiSRAT extends GuiContainer {
 		}
 
 		//Add buttons for global operation (all sentries), large id
-		buttonsGlobal[0][0] = new GuiPictureButton(1000, guiLeft + 282, guiTop + 200, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
-		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 25 + 282, guiTop + 200, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
-		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 50 + 282, guiTop + 200, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
-
+		buttonsGlobal[0][0] = new GuiPictureButton(1000, guiLeft + 260, guiTop + 188, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
+		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 22 + 260, guiTop + 188, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
+		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 44 + 260, guiTop + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
 		for (int j = 0; j < 3; j++) {
 			buttonsGlobal[0][j].enabled = true;
 			buttonList.add(buttonsGlobal[0][j]);
@@ -136,10 +136,10 @@ public class GuiSRAT extends GuiContainer {
 			else if(names[i] != null)
 				line = names[i];
 			else
-				line = ClientUtils.localize("gui.securitycraft:srat.sentryLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 25 + (i / 6) * xSize / 2, (i % 6) * 30 + 13, 4210752);
-			fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 206, 4210752);
+			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 15 + (i / 6) * xSize / 2, (i % 6) * 30 + 13, 4210752);
+			fontRenderer.drawString(modifyAll, xSize / 2 - fontRenderer.getStringWidth(modifyAll) + 25, 194, 4210752);
 		}
 	}
 
