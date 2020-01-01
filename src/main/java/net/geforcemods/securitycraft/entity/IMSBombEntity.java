@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
+import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -88,7 +89,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	protected void onImpact(RayTraceResult result){
 		if(!world.isRemote)
 			if(result.getType() == Type.BLOCK && BlockUtils.getBlock(world, ((BlockRayTraceResult)result).getPos()) != SCContent.ims){
-				world.createExplosion(this,  ((BlockRayTraceResult)result).getPos().getX(),  ((BlockRayTraceResult)result).getPos().getY() + 1D,  ((BlockRayTraceResult)result).getPos().getZ(), 7F, true, Mode.BREAK);
+				world.createExplosion(this, ((BlockRayTraceResult)result).getPos().getX(), ((BlockRayTraceResult)result).getPos().getY() + 1D, ((BlockRayTraceResult)result).getPos().getZ(), 7F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 				remove();
 			}
 	}
