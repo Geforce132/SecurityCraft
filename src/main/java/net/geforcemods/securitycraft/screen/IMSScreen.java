@@ -62,7 +62,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 			case 0:
 				targetingOptionIndex++;
 
-				if(targetingOptionIndex > 1)
+				if(targetingOptionIndex > (EnumIMSTargetingMode.values().length - 1))
 					targetingOptionIndex = 0;
 
 				tileEntity.setTargetingOption(EnumIMSTargetingMode.values()[targetingOptionIndex]);
@@ -78,6 +78,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
 		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
 			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
+		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.MOBS)
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile"));
 	}
 
 }

@@ -34,7 +34,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 
-	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players.**/
+	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
 	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
 
 	private boolean updateBombCount = false;
@@ -76,6 +76,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			Iterator<?> playerIterator = players.iterator();
 			Iterator<?> mobIterator = mobs.iterator();
 
+			// Targets players and mobs
 			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
 				LivingEntity entity = (LivingEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
@@ -101,7 +102,31 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				break;
 			}
 
-			while(!launchedMine && playerIterator.hasNext()){
+			// Targets only hostile mobs
+			while(!launchedMine && targetingOption == EnumIMSTargetingMode.MOBS && mobIterator.hasNext()){
+				LivingEntity entity = (MonsterEntity) mobIterator.next();
+				int launchHeight = getLaunchHeight();
+
+				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+					continue;
+
+				double targetX = entity.func_226277_ct_() - (pos.getX() + 0.5D);
+				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.func_226281_cx_() - (pos.getZ() + 0.5D);
+
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
+
+				if(!world.isRemote)
+					world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+				bombsRemaining--;
+				launchedMine = true;
+				updateBombCount = true;
+				break;
+			}
+
+			// Targets only other players
+			while(!launchedMine && targetingOption == EnumIMSTargetingMode.PLAYERS && playerIterator.hasNext()){
 				PlayerEntity entity = (PlayerEntity) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 
@@ -239,7 +264,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	public static enum EnumIMSTargetingMode {
 
 		PLAYERS(0),
-		PLAYERS_AND_MOBS(1);
+		PLAYERS_AND_MOBS(1),
+		MOBS(2);
 
 		public final int modeIndex;
 
