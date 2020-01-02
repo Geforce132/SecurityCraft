@@ -56,7 +56,7 @@ public class GuiIMS extends GuiContainer{
 			case 0:
 				targetingOptionIndex++;
 
-				if(targetingOptionIndex > 1)
+				if(targetingOptionIndex > (EnumIMSTargetingMode.values().length - 1))
 					targetingOptionIndex = 0;
 
 				tileEntity.setTargetingOption(EnumIMSTargetingMode.values()[targetingOptionIndex]);
@@ -72,6 +72,8 @@ public class GuiIMS extends GuiContainer{
 			targetButton.displayString = ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players");
 		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
 			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers");
+		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.MOBS)
+			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostile");
 	}
 
 }
