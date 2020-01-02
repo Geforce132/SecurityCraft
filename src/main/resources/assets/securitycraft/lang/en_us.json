@@ -467,6 +467,7 @@
 	"gui.securitycraft:scManual.reinforced": "Reinforced Blocks",
 	"gui.securitycraft:scManual.designedBy": "Designed by: %s",
 	"gui.securitycraft:ims.hostileAndPlayers": "Hostile mobs & players",
+	"gui.securitycraft:ims.hostile": "Hostile mobs",
 	"gui.securitycraft:ims.target": "Target:",
 	"gui.securitycraft:invScan.emitRedstone": "Emit redstone",
 	"gui.securitycraft:invScan.checkInv": "Check inventory",
