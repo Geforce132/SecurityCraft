@@ -38,11 +38,15 @@ minecraft {
 }
 
 repositories {
+  maven { //HWYLA
+    name = "TehNut Maven"
+    url = "http://tehnut.info/maven"
+  }
   maven { //main jei maven
     name = "Progwml6 maven"
     url = "http://dvs1.progwml6.com/files/maven"
   }
-  maven { //fallback
+  maven { //jei fallback
     name = "ModMaven"
     url = "modmaven.k-4u.nl"
   }
@@ -53,8 +57,8 @@ repositories {
 }
 
 dependencies {
-    compile files('libs/Hwyla-1.8.20-B35_1.12.deobf.jar')
-	compile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
+    deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
+	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
     runtime 'mezz.jei:jei_1.12.2:4.11.0.204'
     deobfProvided 'mezz.jei:jei_1.12.2:4.11.0.204:api'
 }
