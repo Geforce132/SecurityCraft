@@ -7,6 +7,10 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
+
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0"
@@ -16,6 +20,15 @@ archivesBaseName = "securitycraft"
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
+}
+
+processResources { 
+    //minify json resources
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+        }
+    }
 }
 
 minecraft {
