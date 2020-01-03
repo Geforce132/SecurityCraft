@@ -7,7 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
@@ -63,9 +63,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			if (!sentries.isEmpty()) {
 				SentryEntity sentry = sentries.get(0);
-				boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
-				boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
-				boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE ? true : false;
+				boolean aggressiveMode = sentry.getMode() == SentryMode.AGGRESSIVE ? true : false;
+				boolean camouflageMode = sentry.getMode() == SentryMode.CAMOUFLAGE ? true : false;
+				boolean idleMode = sentry.getMode() == SentryMode.IDLE ? true : false;
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 				if(sentry.hasCustomName())
