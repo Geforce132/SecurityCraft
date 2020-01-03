@@ -2,6 +2,7 @@
 /build
 /libs
 /lib
+/run
 /.project
 /.classpath
 /.gradle
