@@ -28,8 +28,9 @@
 - Fix: SecurityCraft Manual's subpage navigation buttons appear even when there are no subpages
 - Fix: Username Logger logs its owner
 - Fix: Reinforced Stairs can be destroyed using TNT
-- Fix: Gap between Reinforced Iron Bars when activating Cage Trap
+- Fix: Gap between Reinforced Iron Bars when activating Cage Trap (Thanks LorenaGdL!)
 - Fix: Rotation slider in Security Camera's customization GUI displays its value twice
+- Fix: Laser Blocks can connect to other Laser Blocks that don't have the same owner as themselves
 - Misc: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 
