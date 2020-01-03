@@ -71,14 +71,20 @@ public class BlockLaserBlock extends BlockDisguisable {
 					break inner;
 				else if(id == SCContent.laserBlock)
 				{
-					CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), (CustomizableSCTE)world.getTileEntity(offsetPos));
+					CustomizableSCTE thisTe = (CustomizableSCTE)world.getTileEntity(pos);
+					CustomizableSCTE thatTe = (CustomizableSCTE)world.getTileEntity(offsetPos);
 
-					for(int j = 1; j < i; j++)
+					if(thisTe.getOwner().equals(thatTe.getOwner()))
 					{
-						offsetPos = pos.offset(facing, j);
+						CustomizableSCTE.link(thisTe, thatTe);
 
-						if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
-							world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
+						for(int j = 1; j < i; j++)
+						{
+							offsetPos = pos.offset(facing, j);
+
+							if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
+								world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
+						}
 					}
 				}
 			}
