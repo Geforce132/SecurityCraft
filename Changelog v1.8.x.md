@@ -27,6 +27,7 @@
 - Fix: I.M.S. targets all mobs instead of just hostile mobs
 - Fix: SecurityCraft Manual's subpage navigation buttons appear even when there are no subpages
 - Fix: Username Logger logs its owner
+- Fix: Reinforced Stairs can be destroyed using TNT
 - Misc: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 

@@ -156,12 +156,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IBucke
 	}
 
 	@Override
-	public float getExplosionResistance()
-	{
-		return modelBlock.getExplosionResistance();
-	}
-
-	@Override
 	public BlockRenderLayer getRenderLayer()
 	{
 		return modelBlock.getRenderLayer();
