@@ -34,9 +34,6 @@ processResources {
 
 sourceSets {
 	main {
-		java {
-			exclude "net/geforcemods/securitycraft/datagen/**" //exclude files from the built jar that are only used to generate the assets
-		}
 		resources {
 			srcDirs += "src/generated/resources" //include generated files
 		}
@@ -115,6 +112,8 @@ dependencies {
 }
 
 jar {
+	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets
+
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3",
