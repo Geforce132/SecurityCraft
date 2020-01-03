@@ -8,6 +8,7 @@
 - New: The following blocks can now be disguised with the Disguise Module, similar to the Keypad: Inventory Scanner, Keycard Reader, Laser Block, Retinal Scanner, Username Logger
 - New: Sentries can now be named. Names show up in the Sentry Remote Access Tool
 - New: The Universal Owner Changer now works for sentries
+- New: I.M.S. can now target only hostile mobs
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
 - Fix: Laser and Inventory Scanner Field's name is not localized

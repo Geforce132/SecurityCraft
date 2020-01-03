@@ -104,7 +104,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 			// Targets only hostile mobs
 			while(!launchedMine && targetingOption == EnumIMSTargetingMode.MOBS && mobIterator.hasNext()){
-				LivingEntity entity = (MonsterEntity) mobIterator.next();
+				MonsterEntity entity = (MonsterEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
