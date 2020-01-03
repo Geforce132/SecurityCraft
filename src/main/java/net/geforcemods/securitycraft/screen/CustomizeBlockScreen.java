@@ -73,7 +73,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
 				{
-					optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).getValue(), true, true, (OptionDouble)option);
+					optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).getValue(), true, false, (OptionDouble)option);
 					optionButtons[i].setFGColor(14737632);
 				}
 				else
