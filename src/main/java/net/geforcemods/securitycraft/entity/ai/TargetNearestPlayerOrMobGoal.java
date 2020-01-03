@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.SentryEntity.EnumSentryMode;
+import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -54,7 +54,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					break;
 				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
 					break;
-				else if(potentialTarget instanceof MonsterEntity && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
+				else if(potentialTarget instanceof MonsterEntity && sentry.getMode() == SentryMode.AGGRESSIVE)
 					break;
 			}
 

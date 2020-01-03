@@ -35,7 +35,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	private int bombsRemaining = 4;
 
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
-	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
+	private IMSTargetingMode targetingOption = IMSTargetingMode.PLAYERS_AND_MOBS;
 
 	private boolean updateBombCount = false;
 
@@ -77,7 +77,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			Iterator<?> mobIterator = mobs.iterator();
 
 			// Targets players and mobs
-			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
+			while(targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
 				LivingEntity entity = (LivingEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
@@ -103,7 +103,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			}
 
 			// Targets only hostile mobs
-			while(!launchedMine && targetingOption == EnumIMSTargetingMode.MOBS && mobIterator.hasNext()){
+			while(!launchedMine && targetingOption == IMSTargetingMode.MOBS && mobIterator.hasNext()){
 				MonsterEntity entity = (MonsterEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
@@ -126,7 +126,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			}
 
 			// Targets only other players
-			while(!launchedMine && targetingOption == EnumIMSTargetingMode.PLAYERS && playerIterator.hasNext()){
+			while(!launchedMine && targetingOption == IMSTargetingMode.PLAYERS && playerIterator.hasNext()){
 				PlayerEntity entity = (PlayerEntity) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 
@@ -217,7 +217,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			bombsRemaining = tag.getInt("bombsRemaining");
 
 		if (tag.contains("targetingOption"))
-			targetingOption = EnumIMSTargetingMode.values()[tag.getInt("targetingOption")];
+			targetingOption = IMSTargetingMode.values()[tag.getInt("targetingOption")];
 
 		if (tag.contains("updateBombCount"))
 			updateBombCount = tag.getBoolean("updateBombCount");
@@ -231,11 +231,11 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		this.bombsRemaining = bombsRemaining;
 	}
 
-	public EnumIMSTargetingMode getTargetingOption() {
+	public IMSTargetingMode getTargetingOption() {
 		return targetingOption;
 	}
 
-	public void setTargetingOption(EnumIMSTargetingMode targetingOption) {
+	public void setTargetingOption(IMSTargetingMode targetingOption) {
 		this.targetingOption = targetingOption;
 	}
 
@@ -261,7 +261,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		return new TranslationTextComponent(SCContent.ims.getTranslationKey());
 	}
 
-	public static enum EnumIMSTargetingMode {
+	public static enum IMSTargetingMode {
 
 		PLAYERS(0),
 		PLAYERS_AND_MOBS(1),
@@ -269,7 +269,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 		public final int modeIndex;
 
-		private EnumIMSTargetingMode(int index){
+		private IMSTargetingMode(int index){
 			modeIndex = index;
 		}
 
