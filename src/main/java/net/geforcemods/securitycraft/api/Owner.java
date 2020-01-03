@@ -154,4 +154,9 @@ public class Owner {
 		return "Name: " + playerName + "  UUID: " + playerUUID;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		return obj instanceof Owner && getName().equals(((Owner)obj).getName()) && getUUID().equals(((Owner)obj).getUUID());
+	}
 }
