@@ -154,6 +154,7 @@ public class RegistrationHandler
 		event.getRegistry().register(SCContent.inventoryScannerField);
 		registerBlock(event, SCContent.trackMine);
 		registerBlock(event, SCContent.cageTrap);
+		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
 		registerBlock(event, SCContent.portableRadar);
 		registerBlock(event, SCContent.reinforcedIronBars, false);
 		registerBlock(event, SCContent.keypadChest);

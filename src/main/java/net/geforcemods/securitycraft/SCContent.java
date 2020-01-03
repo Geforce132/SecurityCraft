@@ -19,6 +19,7 @@ public class SCContent
 	public static Block bogusWaterFlowing;
 	public static Block bouncingBetty;
 	public static Block cageTrap;
+	public static Block horizontalReinforcedIronBars;
 	public static Block claymore;
 	public static Block cobblestoneMine;
 	@Tinted(0x15b3a2) public static Block crystalQuartz;
