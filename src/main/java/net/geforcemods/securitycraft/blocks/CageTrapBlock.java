@@ -36,7 +36,7 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
 	public CageTrapBlock(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 
