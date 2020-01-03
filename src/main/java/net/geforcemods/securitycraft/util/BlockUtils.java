@@ -67,9 +67,6 @@ public class BlockUtils{
 		BlockUtils.setBlock(world, x, y + 1, z + 1, block);
 		BlockUtils.setBlock(world, x, y + 2, z + 1, block);
 		BlockUtils.setBlock(world, x, y + 3, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 1, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z, block);
 
 		BlockUtils.setBlock(world, x, y + 1, z - 1, block);
 		BlockUtils.setBlock(world, x, y + 2, z - 1, block);
