@@ -83,6 +83,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 				BlockUtils.setBlock(world, pos.up(4), SCContent.reinforcedIronBars);
+				BlockUtils.setBlock(world, pos.up(3), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, SCContent.reinforcedIronBars);
@@ -133,6 +134,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y, z))).getOwner().set(uuid, name);
 
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 4, z))).getOwner().set(uuid, name);
+		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 3, z))).getOwner().set(uuid, name);
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x + 1, y + 4, z))).getOwner().set(uuid, name);
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x - 1, y + 4, z))).getOwner().set(uuid, name);
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 4, z + 1))).getOwner().set(uuid, name);
