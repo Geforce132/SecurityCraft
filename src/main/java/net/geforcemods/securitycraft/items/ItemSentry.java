@@ -29,22 +29,13 @@ public class ItemSentry extends Item
 				return EnumActionResult.SUCCESS;
 			}
 
-			for(EnumFacing horizontal : EnumFacing.HORIZONTALS)
-			{
-				if(world.isAirBlock(pos.offset(horizontal)))
-				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlocksAround"), TextFormatting.DARK_RED);
-					return EnumActionResult.SUCCESS;
-				}
-			}
-
 			Entity entity = new EntitySentry(world, player);
 
 			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
 
 			if(!player.isCreative())
-				player.getHeldItem(hand).setCount(player.getHeldItem(hand).getCount() - 1);
+				player.getHeldItem(hand).shrink(1);
 		}
 
 		return EnumActionResult.SUCCESS;

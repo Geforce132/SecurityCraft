@@ -9,6 +9,7 @@
 - New: I.M.S. can now target only hostile mobs
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
+- Change: The Sentry no longer needs 4 blocks around it to be placable
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
 - Fix: Alarm does not turn off when it no longer receives a redstone signal
