@@ -13,14 +13,12 @@
               "properties": {
                 "half": "lower"
               }
+            },
+            {
+              "condition": "minecraft:survives_explosion"
             }
           ],
           "name": "securitycraft:door_indestructible_iron_item"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }

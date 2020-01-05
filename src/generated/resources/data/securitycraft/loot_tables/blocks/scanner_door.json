@@ -13,14 +13,12 @@
               "properties": {
                 "half": "lower"
               }
+            },
+            {
+              "condition": "minecraft:survives_explosion"
             }
           ],
           "name": "securitycraft:scanner_door_item"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }
