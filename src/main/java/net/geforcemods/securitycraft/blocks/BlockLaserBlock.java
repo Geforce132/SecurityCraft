@@ -5,6 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -14,6 +15,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -52,11 +54,11 @@ public class BlockLaserBlock extends BlockDisguisable {
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		if(!world.isRemote)
-			setLaser(world, pos);
+		if(!world.isRemote && entity instanceof EntityPlayer)
+			setLaser(new Owner(entity.getName(), entity.getUniqueID().toString()), world, pos);
 	}
 
-	public void setLaser(World world, BlockPos pos)
+	public void setLaser(Owner owner, World world, BlockPos pos)
 	{
 		for(EnumFacing facing : EnumFacing.VALUES)
 		{
@@ -71,12 +73,11 @@ public class BlockLaserBlock extends BlockDisguisable {
 					break inner;
 				else if(id == SCContent.laserBlock)
 				{
-					CustomizableSCTE thisTe = (CustomizableSCTE)world.getTileEntity(pos);
 					CustomizableSCTE thatTe = (CustomizableSCTE)world.getTileEntity(offsetPos);
 
-					if(thisTe.getOwner().equals(thatTe.getOwner()))
+					if(owner.equals(thatTe.getOwner()))
 					{
-						CustomizableSCTE.link(thisTe, thatTe);
+						CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), thatTe);
 
 						for(int j = 1; j < i; j++)
 						{

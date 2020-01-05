@@ -27,7 +27,7 @@ public class TileEntityLaserBlock extends TileEntityDisguisable {
 		if(BlockUtils.getBlock(world, pos) != SCContent.laserBlock) return;
 
 		if(option.getValue())
-			((BlockLaserBlock) BlockUtils.getBlock(world, pos)).setLaser(world, pos);
+			((BlockLaserBlock) BlockUtils.getBlock(world, pos)).setLaser(((TileEntityLaserBlock)world.getTileEntity(pos)).getOwner(), world, pos);
 		else
 			BlockLaserBlock.destroyAdjacentLasers(world, pos);
 	}
