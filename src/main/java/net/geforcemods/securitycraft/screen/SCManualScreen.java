@@ -135,9 +135,9 @@ public class SCManualScreen extends Screen {
 		if(currentPage != -1)
 		{
 			if(subpages.size() > 1)
-				font.drawString("(" + (currentSubpage + 1) + "/" + subpages.size() + ")", startX + 205, 102, 0);
+				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			font.drawString("(" + (currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size() + ")", startX + 195, 192, 0);
+			font.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
@@ -147,10 +147,10 @@ public class SCManualScreen extends Screen {
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
 			TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-			Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
+			Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
-			if(BlockItem != null){
-				if(BlockItem instanceof IExplosive)
+			if(blockItem != null){
+				if(blockItem instanceof IExplosive)
 					this.blit(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te != null){
