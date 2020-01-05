@@ -13,7 +13,7 @@
       "item": "securitycraft:reinforced_glass"
     },
     "R": {
-      "tag": "forge:storage_blocks/redstone"
+      "item": "securitycraft:reinforced_redstone_block"
     },
     "S": {
       "tag": "forge:rods/wooden"
