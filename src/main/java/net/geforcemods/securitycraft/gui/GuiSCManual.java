@@ -73,8 +73,8 @@ public class GuiSCManual extends GuiScreen {
 
 		buttonList.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
 		buttonList.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page
-		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 190, startY + 97, true)); //next subpage
-		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 165, startY + 97, false)); //previous subpage
+		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
+		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
 	}
 
@@ -120,6 +120,14 @@ public class GuiSCManual extends GuiScreen {
 
 		for(int i = 0; i < buttonList.size(); i++)
 			buttonList.get(i).drawButton(mc, mouseX, mouseY, 0);
+
+		if(currentPage != -1)
+		{
+			if(subpages.size() > 1)
+				fontRenderer.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+
+			fontRenderer.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+		}
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
