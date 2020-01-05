@@ -185,6 +185,14 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.secretJungleWallSign,
 				SCContent.secretOakWallSign,
 				SCContent.secretSpruceWallSign);
+		getBuilder(SCTags.Blocks.REINFORCED_STONE).add(
+				SCContent.reinforcedAndesite,
+				SCContent.reinforcedDiorite,
+				SCContent.reinforcedGranite,
+				SCContent.reinforcedStone,
+				SCContent.reinforcedPolishedAndesite,
+				SCContent.reinforcedPolishedDiorite,
+				SCContent.reinforcedPolishedGranite);
 
 		//minecraft tags
 		getBuilder(BlockTags.CARPETS).add(SCTags.Blocks.REINFORCED_CARPETS);
