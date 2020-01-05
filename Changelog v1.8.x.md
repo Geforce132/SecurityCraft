@@ -38,6 +38,7 @@
 - Fix: Laser Blocks can connect to other Laser Blocks that don't have the same owner
 - Fix: Recipes using tags don't correctly show in the manual
 - Fix: Sentry kick/crash
+- Fix: Module duplication
 - Misc: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 
