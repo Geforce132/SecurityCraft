@@ -110,9 +110,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 					if(!world.isBlockPresent(blockpos))
 						return;
 
-					BlockState BlockState = world.getBlockState(blockpos);
+					BlockState blockState = world.getBlockState(blockpos);
 
-					if(BlockState.isAir())
+					if(blockState.isAir())
 					{
 						if(isSurroundingBlockFlammable(world, blockpos))
 						{
@@ -120,7 +120,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 							return;
 						}
 					}
-					else if(BlockState.getMaterial().blocksMovement())
+					else if(blockState.getMaterial().blocksMovement())
 						return;
 				}
 			}

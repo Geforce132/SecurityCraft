@@ -24,7 +24,7 @@ public class FakeWaterBlock extends FlowingFluidBlock
 		if(!world.isRemote)
 		{
 			if(!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative())
-				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
 		}
 	}
 }

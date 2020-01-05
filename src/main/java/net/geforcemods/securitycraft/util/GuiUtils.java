@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
-import net.minecraft.block.Block;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -66,9 +65,5 @@ public class GuiUtils{
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
-	}
-
-	public static void drawItemStackToGui(Minecraft mc, Block block, int x, int y, boolean fixLighting){
-		drawItemToGui(mc, block.asItem(), x, y, fixLighting);
 	}
 }

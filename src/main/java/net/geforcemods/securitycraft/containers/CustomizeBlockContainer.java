@@ -99,6 +99,7 @@ public class CustomizeBlockContainer extends Container{
 
 	public static class ModuleSlot extends Slot{
 		private CustomizableTileEntity tileEntity;
+
 		public ModuleSlot(CustomizableTileEntity inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
 			tileEntity = inventory;

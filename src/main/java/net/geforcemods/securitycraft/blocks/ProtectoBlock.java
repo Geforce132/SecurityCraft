@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -36,11 +35,6 @@ public class ProtectoBlock extends OwnableBlock {
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
 		return SHAPE;
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.MODEL;
 	}
 
 	@Override

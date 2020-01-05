@@ -5,23 +5,21 @@ import net.minecraft.util.SoundEvent;
 
 public enum SCSounds {
 
-	ALARM("securitycraft:alarm", 20),
-	CAMERAZOOMIN("securitycraft:camerazoomin", 10),
-	CAMERASNAP("securitycraft:camerasnap", 15),
-	TASERFIRED("securitycraft:taserfire", 20),
-	ELECTRIFIED("securitycraft:electrified", 20),
-	LOCK("securitycraft:lock", 20);
+	ALARM("securitycraft:alarm"),
+	CAMERAZOOMIN("securitycraft:camerazoomin"),
+	CAMERASNAP("securitycraft:camerasnap"),
+	TASERFIRED("securitycraft:taserfire"),
+	ELECTRIFIED("securitycraft:electrified"),
+	LOCK("securitycraft:lock");
 
 	public final String path;
 	public final ResourceLocation location;
 	public final SoundEvent event;
-	public final int tickLength;
 
-	private SCSounds(String path, int tickLength){
+	private SCSounds(String path){
 		this.path = path;
 		location = new ResourceLocation(path);
 		event = new SoundEvent(new ResourceLocation(path));
 		event.setRegistryName(path);
-		this.tickLength = tickLength;
 	}
 }

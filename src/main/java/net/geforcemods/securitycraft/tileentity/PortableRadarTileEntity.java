@@ -28,7 +28,6 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	private OptionInt searchDelayOption = new OptionInt("searchDelay", CommonConfig.CONFIG.portableRadarDelay.get(), 4, 10, 1);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
-
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 

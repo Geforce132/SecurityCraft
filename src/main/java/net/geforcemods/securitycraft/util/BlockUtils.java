@@ -52,37 +52,37 @@ public class BlockUtils{
 	}
 
 	public static void setBlockInBox(World world, int x, int y, int z, Block block){
-		BlockUtils.setBlock(world, x + 1, y + 1, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 1, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 1, z, block);
-		BlockUtils.setBlock(world, x - 1, y + 2, z, block);
-		BlockUtils.setBlock(world, x - 1, y + 3, z, block);
-		BlockUtils.setBlock(world, x - 1, y + 1, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 2, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 3, z + 1, block);
-		BlockUtils.setBlock(world, x, y + 1, z + 1, block);
-		BlockUtils.setBlock(world, x, y + 2, z + 1, block);
-		BlockUtils.setBlock(world, x, y + 3, z + 1, block);
+		setBlock(world, x + 1, y + 1, z, block);
+		setBlock(world, x + 1, y + 2, z, block);
+		setBlock(world, x + 1, y + 3, z, block);
+		setBlock(world, x + 1, y + 1, z + 1, block);
+		setBlock(world, x + 1, y + 2, z + 1, block);
+		setBlock(world, x + 1, y + 3, z + 1, block);
+		setBlock(world, x - 1, y + 1, z, block);
+		setBlock(world, x - 1, y + 2, z, block);
+		setBlock(world, x - 1, y + 3, z, block);
+		setBlock(world, x - 1, y + 1, z + 1, block);
+		setBlock(world, x - 1, y + 2, z + 1, block);
+		setBlock(world, x - 1, y + 3, z + 1, block);
+		setBlock(world, x, y + 1, z + 1, block);
+		setBlock(world, x, y + 2, z + 1, block);
+		setBlock(world, x, y + 3, z + 1, block);
 
-		BlockUtils.setBlock(world, x, y + 1, z - 1, block);
-		BlockUtils.setBlock(world, x, y + 2, z - 1, block);
-		BlockUtils.setBlock(world, x, y + 3, z - 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 1, z - 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z - 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z - 1, block);
+		setBlock(world, x, y + 1, z - 1, block);
+		setBlock(world, x, y + 2, z - 1, block);
+		setBlock(world, x, y + 3, z - 1, block);
+		setBlock(world, x + 1, y + 1, z - 1, block);
+		setBlock(world, x + 1, y + 2, z - 1, block);
+		setBlock(world, x + 1, y + 3, z - 1, block);
 
-		BlockUtils.setBlock(world, x - 1, y + 1, z - 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 2, z - 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 3, z - 1, block);
+		setBlock(world, x - 1, y + 1, z - 1, block);
+		setBlock(world, x - 1, y + 2, z - 1, block);
+		setBlock(world, x - 1, y + 3, z - 1, block);
 
-		BlockUtils.setBlock(world, x + 1, y + 4, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 4, z - 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 4, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 4, z - 1, block);
+		setBlock(world, x + 1, y + 4, z + 1, block);
+		setBlock(world, x + 1, y + 4, z - 1, block);
+		setBlock(world, x - 1, y + 4, z + 1, block);
+		setBlock(world, x - 1, y + 4, z - 1, block);
 	}
 
 	/**
@@ -103,16 +103,8 @@ public class BlockUtils{
 		world.neighborChanged(pos.down(), world.getBlockState(pos).getBlock(), pos);
 	}
 
-	public static void destroyBlock(World world, BlockPos pos, boolean drop){
-		world.destroyBlock(pos, drop);
-	}
-
-	public static void setBlock(World world, BlockPos pos, Block block){
-		world.setBlockState(pos, block.getDefaultState());
-	}
-
 	public static void setBlock(World world, int x, int y, int z, Block block){
-		setBlock(world, toPos(x, y, z), block);
+		world.setBlockState(toPos(x, y, z), block.getDefaultState());
 	}
 
 	public static Block getBlock(World world, BlockPos pos){
@@ -204,10 +196,6 @@ public class BlockUtils{
 		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, EnumProperty<Direction> property, Direction value) {
-		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
-	}
-
 	public static boolean hasBlockProperty(World world, BlockPos pos, IProperty<?> property){
 		try{
 			world.getBlockState(pos).get(property);
@@ -221,19 +209,11 @@ public class BlockUtils{
 		return world.getBlockState(pos).get(property).booleanValue();
 	}
 
-	public static boolean getBlockPropertyAsBoolean(IBlockReader access, BlockPos pos, BooleanProperty property){
-		return access.getBlockState(pos).get(property).booleanValue();
-	}
-
 	public static int getBlockPropertyAsInteger(World world, BlockPos pos, IntegerProperty property){
 		return world.getBlockState(pos).get(property).intValue();
 	}
 
 	public static Direction getBlockPropertyAsEnum(World world, BlockPos pos, EnumProperty<?> property){
-		return ((Direction) world.getBlockState(pos).get(property));
-	}
-
-	public static Direction getBlockPropertyAsEnum(IBlockReader world, BlockPos pos, EnumProperty<?> property){
 		return ((Direction) world.getBlockState(pos).get(property));
 	}
 

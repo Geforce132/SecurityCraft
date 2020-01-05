@@ -110,11 +110,6 @@ public class BouncingBettyEntity extends Entity {
 		fuse = tag.getByte("Fuse");
 	}
 
-	public float getShadowSize()
-	{
-		return 0.0F;
-	}
-
 	@Override
 	public IPacket<?> createSpawnPacket()
 	{

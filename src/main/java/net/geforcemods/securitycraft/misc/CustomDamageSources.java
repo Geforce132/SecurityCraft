@@ -7,13 +7,9 @@ import net.minecraft.util.DamageSource;
  *
  * @author Geforce
  */
-public class CustomDamageSources extends DamageSource{
-
-	public static CustomDamageSources laser = (CustomDamageSources) new CustomDamageSources("securitycraft.laser").setDamageBypassesArmor();
-	public static CustomDamageSources fakeWater = (CustomDamageSources) new CustomDamageSources("securitycraft.fakeWater").setDamageBypassesArmor();
-	public static CustomDamageSources electricity = (CustomDamageSources) new CustomDamageSources("securitycraft.electricity").setDamageBypassesArmor();
-
-	public CustomDamageSources(String customType) {
-		super(customType);
-	}
+public class CustomDamageSources
+{
+	public static final DamageSource LASER = new DamageSource("securitycraft.laser").setDamageBypassesArmor();
+	public static final DamageSource FAKE_WATER = new DamageSource("securitycraft.fakeWater").setDamageBypassesArmor();
+	public static final DamageSource ELECTRICITY = new DamageSource("securitycraft.electricity").setDamageBypassesArmor();
 }

@@ -21,8 +21,6 @@ public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
 	public RendererModel cameraLensLeft;
 	public RendererModel cameraLensTop;
 
-	public boolean reverseCameraRotation = false;
-
 	public SecurityCameraModel() {
 		textureWidth = 128;
 		textureHeight = 64;

@@ -38,14 +38,6 @@ public class PlaySoundAtPos{
 		this((int)x, (int)y, (int)z, sound, volume, cat);
 	}
 
-	public PlaySoundAtPos(int x, int y, int z, ResourceLocation resourceLocation, double volume, String cat){
-		this(x, y, z, resourceLocation.getPath(), volume, cat);
-	}
-
-	public PlaySoundAtPos(double x, double y, double z, ResourceLocation resourceLocation, double volume, String cat){
-		this((int)x, (int)y, (int)z, resourceLocation.getPath(), volume, cat);
-	}
-
 	public void fromBytes(PacketBuffer buf) {
 		x = buf.readInt();
 		y = buf.readInt();

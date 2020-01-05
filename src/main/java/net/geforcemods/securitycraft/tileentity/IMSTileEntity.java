@@ -33,10 +33,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
-
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
 	private IMSTargetingMode targetingOption = IMSTargetingMode.PLAYERS_AND_MOBS;
-
 	private boolean updateBombCount = false;
 
 	public IMSTileEntity()
@@ -223,10 +221,6 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
-	public int getBombsRemaining() {
-		return bombsRemaining;
-	}
-
 	public void setBombsRemaining(int bombsRemaining) {
 		this.bombsRemaining = bombsRemaining;
 	}
@@ -272,8 +266,5 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		private IMSTargetingMode(int index){
 			modeIndex = index;
 		}
-
-
 	}
-
 }
