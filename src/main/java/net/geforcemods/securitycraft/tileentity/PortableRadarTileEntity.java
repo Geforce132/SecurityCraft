@@ -6,9 +6,9 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -24,10 +24,10 @@ import net.minecraft.util.text.TextFormatting;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", CommonConfig.CONFIG.portableRadarSearchRadius.get(), 5.0D, 50.0D, 5.0D);
-	private OptionInt searchDelayOption = new OptionInt("searchDelay", CommonConfig.CONFIG.portableRadarDelay.get(), 4, 10, 1);
-	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
-	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
+	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", CommonConfig.CONFIG.portableRadarSearchRadius.get(), 5.0D, 50.0D, 5.0D);
+	private IntOption searchDelayOption = new IntOption("searchDelay", CommonConfig.CONFIG.portableRadarDelay.get(), 4, 10, 1);
+	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
+	private BooleanOption enabledOption = new BooleanOption("enabled", true);
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 

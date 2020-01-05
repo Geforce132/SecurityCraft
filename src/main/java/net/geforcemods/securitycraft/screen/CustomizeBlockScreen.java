@@ -8,7 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
@@ -71,9 +71,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
 				Option<?> option = tileEntity.customOptions()[i];
 
-				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
+				if(option instanceof DoubleOption && ((DoubleOption)option).isSlider())
 				{
-					optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).getValue(), true, false, (OptionDouble)option);
+					optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).getValue(), true, false, (DoubleOption)option);
 					optionButtons[i].setFGColor(14737632);
 				}
 				else

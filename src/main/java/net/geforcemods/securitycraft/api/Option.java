@@ -162,9 +162,9 @@ public class Option<T> {
 	/**
 	 * A subclass of {@link Option}, already setup to handle booleans.
 	 */
-	public static class OptionBoolean extends Option<Boolean>{
+	public static class BooleanOption extends Option<Boolean>{
 
-		public OptionBoolean(String optionName, Boolean value) {
+		public BooleanOption(String optionName, Boolean value) {
 			super(optionName, value);
 		}
 
@@ -187,13 +187,13 @@ public class Option<T> {
 	/**
 	 * A subclass of {@link Option}, already setup to handle integers.
 	 */
-	public static class OptionInt extends Option<Integer>{
+	public static class IntOption extends Option<Integer>{
 
-		public OptionInt(String optionName, Integer value) {
+		public IntOption(String optionName, Integer value) {
 			super(optionName, value);
 		}
 
-		public OptionInt(String optionName, Integer value, Integer min, Integer max, Integer increment) {
+		public IntOption(String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
 		}
 
@@ -226,21 +226,21 @@ public class Option<T> {
 	/**
 	 * A subclass of {@link Option}, already setup to handle doubles.
 	 */
-	public static class OptionDouble extends Option<Double> implements ISlider{
+	public static class DoubleOption extends Option<Double> implements ISlider{
 		private boolean slider;
 		private CustomizableTileEntity tileEntity;
 
-		public OptionDouble(String optionName, Double value) {
+		public DoubleOption(String optionName, Double value) {
 			super(optionName, value);
 			slider = false;
 		}
 
-		public OptionDouble(String optionName, Double value, Double min, Double max, Double increment) {
+		public DoubleOption(String optionName, Double value, Double min, Double max, Double increment) {
 			super(optionName, value, min, max, increment);
 			slider = false;
 		}
 
-		public OptionDouble(CustomizableTileEntity te, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
+		public DoubleOption(CustomizableTileEntity te, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
 			super(optionName, value, min, max, increment);
 			slider = s;
 			tileEntity = te;
@@ -294,13 +294,13 @@ public class Option<T> {
 	/**
 	 * A subclass of {@link Option}, already setup to handle floats.
 	 */
-	public static class OptionFloat extends Option<Float>{
+	public static class FloatOption extends Option<Float>{
 
-		public OptionFloat(String optionName, Float value) {
+		public FloatOption(String optionName, Float value) {
 			super(optionName, value);
 		}
 
-		public OptionFloat(String optionName, Float value, Float min, Float max, Float increment) {
+		public FloatOption(String optionName, Float value, Float min, Float max, Float increment) {
 			super(optionName, value, min, max, increment);
 		}
 
@@ -328,7 +328,5 @@ public class Option<T> {
 		public String toString() {
 			return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
 		}
-
 	}
-
 }
