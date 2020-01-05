@@ -135,9 +135,9 @@ public class SCManualScreen extends Screen {
 		if(currentPage != -1)
 		{
 			if(subpages.size() > 1)
-				font.drawString("(" + (currentSubpage + 1) + "/" + subpages.size() + ")", startX + 205, 102, 0);
+				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			font.drawString("(" + (currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size() + ")", startX + 195, 192, 0);
+			font.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
