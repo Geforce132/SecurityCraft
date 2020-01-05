@@ -61,18 +61,16 @@ public class CustomizeBlockContainer extends Container{
 				return ItemStack.EMPTY;
 
 			slotStackCopy = slotStack.copy();
+			tileEntity.onModuleRemoved(slotStack, CustomModules.getModuleFromStack(slotStack));
+			tileEntity.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ slotStack, CustomModules.getModuleFromStack(slotStack) }, tileEntity);
+
+			if(tileEntity instanceof SecurityCameraTileEntity)
+				tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).get(SecurityCameraBlock.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock());
 
 			if (index < tileEntity.getSizeInventory())
 			{
 				if (!mergeItemStack(slotStack, 0, 35, true))
 					return ItemStack.EMPTY;
-				else{
-					tileEntity.onModuleRemoved(slotStack, CustomModules.getModuleFromStack(slotStack));
-					tileEntity.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ slotStack, CustomModules.getModuleFromStack(slotStack) }, tileEntity);
-
-					if(tileEntity instanceof SecurityCameraTileEntity)
-						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).get(SecurityCameraBlock.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock());
-				}
 			}
 			else if (slotStack.getItem() != null && slotStack.getItem() instanceof ModuleItem && tileEntity.getAcceptedModules().contains(CustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))
 				return ItemStack.EMPTY;
@@ -95,7 +93,6 @@ public class CustomizeBlockContainer extends Container{
 	public boolean canInteractWith(PlayerEntity player) {
 		return true;
 	}
-
 
 	public static class ModuleSlot extends Slot{
 		private CustomizableTileEntity tileEntity;
