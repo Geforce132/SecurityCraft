@@ -11,16 +11,16 @@
             "to": [16,16,10],
             "faces": {
                 "north": {
-                    "texture": "#laserTexture"
+                    "texture": "#laserTexture", "rotation": 180
                 },
                 "south": {
                     "texture": "#laserTexture"
                 },
                 "up": {
-                    "texture": "#laserTexture"
+                    "texture": "#laserTexture", "cullface": "up"
                 },
                 "down": {
-                    "texture": "#laserTexture"
+                    "texture": "#laserTexture", "cullface": "down"
                 }
             }
         }
