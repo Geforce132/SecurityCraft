@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
@@ -96,6 +97,9 @@ import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -105,6 +109,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
@@ -467,6 +472,40 @@ public class RegistrationHandler
 		CraftingHelper.register(ToggleKeycard4Condition.Serializer.INSTANCE);
 		CraftingHelper.register(ToggleKeycard5Condition.Serializer.INSTANCE);
 		CraftingHelper.register(ToggleLimitedUseKeycardCondition.Serializer.INSTANCE);
+	}
+
+	@SubscribeEvent
+	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event)
+	{
+		event.getRegistry().register(new DataSerializerEntry(new IDataSerializer<Owner>() {
+			@Override
+			public void write(PacketBuffer buf, Owner value)
+			{
+				buf.writeString(value.getName());
+				buf.writeString(value.getUUID());
+			}
+
+			@Override
+			public Owner read(PacketBuffer buf)
+			{
+				String name = buf.readString(Integer.MAX_VALUE / 4);
+				String uuid = buf.readString(Integer.MAX_VALUE / 4);
+
+				return new Owner(name, uuid);
+			}
+
+			@Override
+			public DataParameter<Owner> createKey(int id)
+			{
+				return new DataParameter<Owner>(id, this);
+			}
+
+			@Override
+			public Owner copyValue(Owner value)
+			{
+				return new Owner(value.getName(), value.getUUID());
+			}
+		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
 	}
 
 	/**

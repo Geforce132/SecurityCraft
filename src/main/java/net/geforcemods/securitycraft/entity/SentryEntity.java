@@ -52,7 +52,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SentryEntity extends CreatureEntity implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(SentryEntity.class, Owner.SERIALIZER);
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(SentryEntity.class, Owner.getSerializer());
 	private static final DataParameter<CompoundNBT> MODULE = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<CompoundNBT> WHITELIST = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(SentryEntity.class, DataSerializers.VARINT);

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
@@ -22,7 +21,6 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -95,8 +93,6 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event){ //stage 4
-		DataSerializers.registerSerializer(Owner.SERIALIZER);
-
 		for(Field field : SCContent.class.getFields())
 		{
 			try
