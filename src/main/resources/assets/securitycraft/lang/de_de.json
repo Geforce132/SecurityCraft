@@ -469,6 +469,7 @@
     "gui.securitycraft:scManual.reinforced": "Verstärkte Blöcke",
     "gui.securitycraft:scManual.designedBy": "Entworfen von: %s",
     "gui.securitycraft:ims.hostileAndPlayers": "Böse Mobs & Spieler",
+    "gui.securitycraft:ims.hostile": "Böse Mobs",
     "gui.securitycraft:ims.target": "Ziel:",
     "gui.securitycraft:invScan.emitRedstone": "Redstonesignal abgeben",
     "gui.securitycraft:invScan.checkInv": "Inventar prüfen",
