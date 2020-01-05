@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class EntityFallingOwnableBlock extends EntityFallingBlock
 {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntityFallingOwnableBlock.class, Owner.SERIALIZER);
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntityFallingOwnableBlock.class, Owner.getSerializer());
 
 	public EntityFallingOwnableBlock(World world)
 	{

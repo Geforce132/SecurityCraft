@@ -1,11 +1,13 @@
 package net.geforcemods.securitycraft;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -89,6 +91,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -98,12 +103,14 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.DataSerializerEntry;
 
 @EventBusSubscriber
 public class RegistrationHandler
@@ -418,6 +425,40 @@ public class RegistrationHandler
 		{
 			event.getRegistry().register(SCSounds.values()[i].event);
 		}
+	}
+
+	@SubscribeEvent
+	public static void registerDataSerializerEntries(RegistryEvent.Register<DataSerializerEntry> event)
+	{
+		event.getRegistry().register(new DataSerializerEntry(new DataSerializer<Owner>() {
+			@Override
+			public void write(PacketBuffer buf, Owner value)
+			{
+				ByteBufUtils.writeUTF8String(buf, value.getName());
+				ByteBufUtils.writeUTF8String(buf, value.getUUID());
+			}
+
+			@Override
+			public Owner read(PacketBuffer buf) throws IOException
+			{
+				String name = ByteBufUtils.readUTF8String(buf);
+				String uuid = ByteBufUtils.readUTF8String(buf);
+
+				return new Owner(name, uuid);
+			}
+
+			@Override
+			public DataParameter<Owner> createKey(int id)
+			{
+				return new DataParameter<Owner>(id, this);
+			}
+
+			@Override
+			public Owner copyValue(Owner value)
+			{
+				return new Owner(value.getName(), value.getUUID());
+			}
+		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
 	}
 
 	@SideOnly(Side.CLIENT)
