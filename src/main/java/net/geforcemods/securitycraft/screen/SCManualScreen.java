@@ -75,8 +75,8 @@ public class SCManualScreen extends Screen {
 
 		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
-		addButton(new SCManualScreen.ChangePageButton(3, startX + 190, startY + 97, true, this::actionPerformed)); //next subpage
-		addButton(new SCManualScreen.ChangePageButton(4, startX + 165, startY + 97, false, this::actionPerformed)); //previous subpage
+		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
+		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
 
 		for(int i = 0; i < 3; i++)
 		{
@@ -131,6 +131,14 @@ public class SCManualScreen extends Screen {
 
 		for(int i = 0; i < buttons.size(); i++)
 			buttons.get(i).render(mouseX, mouseY, partialTicks);
+
+		if(currentPage != -1)
+		{
+			if(subpages.size() > 1)
+				font.drawString("(" + (currentSubpage + 1) + "/" + subpages.size() + ")", startX + 205, 102, 0);
+
+			font.drawString("(" + (currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size() + ")", startX + 195, 192, 0);
+		}
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();

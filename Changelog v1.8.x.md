@@ -9,6 +9,7 @@
 - New: Sentries can now be named. Names show up in the Sentry Remote Access Tool
 - New: The Universal Owner Changer now works for sentries
 - New: I.M.S. can now target only hostile mobs
+- New: Page indicators for SecurityCraft Manual
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
 - Change: More recipes now use reinforced blocks instead of their vanilla equivalent
