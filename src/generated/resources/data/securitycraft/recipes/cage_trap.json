@@ -16,7 +16,7 @@
       "tag": "forge:dusts/redstone"
     },
     "I": {
-      "tag": "forge:storage_blocks/iron"
+      "item": "securitycraft:reinforced_iron_block"
     }
   },
   "result": {

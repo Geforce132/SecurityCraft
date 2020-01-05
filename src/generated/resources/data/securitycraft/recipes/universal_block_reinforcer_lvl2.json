@@ -11,7 +11,7 @@
       "item": "securitycraft:reinforced_black_stained_glass"
     },
     "D": {
-      "tag": "forge:storage_blocks/diamond"
+      "item": "securitycraft:reinforced_diamond_block"
     },
     "R": {
       "tag": "forge:dusts/redstone"

@@ -10,7 +10,7 @@
       "tag": "forge:ingots/iron"
     },
     "G": {
-      "tag": "forge:glass_panes/colorless"
+      "item": "securitycraft:reinforced_glass_pane"
     }
   },
   "result": {
