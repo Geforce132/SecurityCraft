@@ -40,15 +40,6 @@ public class SentryItem extends Item
 				return ActionResultType.SUCCESS;
 			}
 
-			for(Direction horizontal : Direction.Plane.HORIZONTAL)
-			{
-				if(world.isAirBlock(pos.offset(horizontal)))
-				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlocksAround"), TextFormatting.DARK_RED);
-					return ActionResultType.SUCCESS;
-				}
-			}
-
 			SentryEntity entity = SCContent.eTypeSentry.create(world);
 
 			entity.setupSentry(player);
