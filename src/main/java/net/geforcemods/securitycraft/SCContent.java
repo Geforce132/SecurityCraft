@@ -375,6 +375,7 @@ public class SCContent
 	@Reinforced public static Block reinforcedJunglePressurePlate;
 	@Reinforced public static Block reinforcedAcaciaPressurePlate;
 	@Reinforced public static Block reinforcedDarkOakPressurePlate;
+	@Ownable @Reinforced public static Block reinforcedRedstoneBlock;
 
 	//Fluids
 	public static FlowingFluid flowingFakeWater;

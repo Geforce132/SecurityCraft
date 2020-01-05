@@ -47,6 +47,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
@@ -409,6 +410,7 @@ public class SetupHandler
 		SCContent.reinforcedJunglePressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.JUNGLE_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_jungle_pressure_plate"));
 		SCContent.reinforcedAcaciaPressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.ACACIA_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_acacia_pressure_plate"));
 		SCContent.reinforcedDarkOakPressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_dark_oak_pressure_plate"));
+		SCContent.reinforcedRedstoneBlock = new ReinforcedRedstoneBlock();
 	}
 
 	public static void setupMines()

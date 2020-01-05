@@ -82,7 +82,7 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("CIC")
 		.key('C', SCContent.reinforcedCrystalQuartz)
 		.key('I', SCContent.reinforcedIronBlock)
-		.key('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
+		.key('R', SCContent.reinforcedRedstoneBlock)
 		.addCriterion("has_redstone_block", hasItem(Tags.Items.STORAGE_BLOCKS_REDSTONE))
 		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.bouncingBetty)
@@ -369,7 +369,7 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("IIS")
 		.key('I', Tags.Items.INGOTS_IRON)
 		.key('G', SCContent.reinforcedGlass)
-		.key('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
+		.key('R', SCContent.reinforcedRedstoneBlock)
 		.key('S', Tags.Items.RODS_WOODEN)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
@@ -453,7 +453,7 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("SR ")
 		.key('G', SCContent.reinforcedPinkStainedGlass)
 		.key('E', SCContent.reinforcedEmeraldBlock)
-		.key('R', Tags.Items.STORAGE_BLOCKS_REDSTONE)
+		.key('R', SCContent.reinforcedRedstoneBlock)
 		.key('N', Tags.Items.NETHER_STARS)
 		.key('S', Tags.Items.RODS_WOODEN)
 		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
