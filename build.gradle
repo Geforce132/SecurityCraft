@@ -32,7 +32,7 @@ processResources {
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "1.12.2-14.23.5.2826"
     runDir = "run"
     mappings = "stable_39"
 }

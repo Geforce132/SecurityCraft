@@ -26,7 +26,8 @@
 - Fix: Username Logger logs its owner
 - Fix: Laser Blocks can connect to other Laser Blocks that don't have the same owner
 - Fix: I.M.S. particles don't work
-- Potential Fix: Sentry kick/crash
+- Fix: Sentry kick/crash
+- Misc.: The minimum required Forge version is now 14.23.5.2826
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 
