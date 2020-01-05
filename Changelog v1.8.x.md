@@ -39,6 +39,7 @@
 - Fix: Recipes using tags don't correctly show in the manual
 - Fix: Sentry kick/crash
 - Fix: Module duplication
+- Fix: Trophy System does not drop
 - Misc: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 
