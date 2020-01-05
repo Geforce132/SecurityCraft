@@ -1,10 +1,11 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.registries.DataSerializerEntry;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block.
@@ -13,37 +14,8 @@ import net.minecraft.util.text.ITextComponent;
  * @author Geforce
  */
 public class Owner {
-	public static final IDataSerializer<Owner> SERIALIZER = new IDataSerializer<Owner>()
-	{
-		@Override
-		public void write(PacketBuffer buf, Owner value)
-		{
-			buf.writeString(value.getName());
-			buf.writeString(value.getUUID());
-		}
-
-		@Override
-		public Owner read(PacketBuffer buf)
-		{
-			String name = buf.readString(Integer.MAX_VALUE / 4);
-			String uuid = buf.readString(Integer.MAX_VALUE / 4);
-
-			return new Owner(name, uuid);
-		}
-
-		@Override
-		public DataParameter<Owner> createKey(int id)
-		{
-			return new DataParameter<Owner>(id, this);
-		}
-
-		@Override
-		public Owner copyValue(Owner value)
-		{
-			return new Owner(value.getName(), value.getUUID());
-		}
-	};
-
+	@ObjectHolder(SecurityCraft.MODID + ":owner")
+	public static final DataSerializerEntry SERIALIZER = null;
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";
 
@@ -158,5 +130,10 @@ public class Owner {
 	public boolean equals(Object obj)
 	{
 		return obj instanceof Owner && getName().equals(((Owner)obj).getName()) && getUUID().equals(((Owner)obj).getUUID());
+	}
+
+	public static IDataSerializer<Owner> getSerializer()
+	{
+		return (IDataSerializer<Owner>)SERIALIZER.getSerializer();
 	}
 }
