@@ -12,7 +12,8 @@
       "data": 6
     },
     "E": {
-      "item": "minecraft:emerald_block"
+      "item": "securitycraft:reinforced_metals",
+      "data": 3
     },
     "N": {
       "item": "minecraft:nether_star"
