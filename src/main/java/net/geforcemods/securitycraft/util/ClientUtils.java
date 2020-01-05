@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
@@ -74,27 +71,6 @@ public class ClientUtils{
 	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
-	}
-
-	public static void openURL(String url) {
-		URI uri = null;
-
-		try {
-			uri = new URI(url);
-		}
-		catch(URISyntaxException e) {
-			e.printStackTrace();
-		}
-
-		if(uri == null) return;
-
-		try {
-			Class<?> oclass = Class.forName("java.awt.Desktop");
-			Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-			oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {uri});
-		}
-
-		catch (Throwable throwable) {}
 	}
 
 	/**

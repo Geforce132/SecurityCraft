@@ -15,7 +15,6 @@ import net.minecraft.util.Direction;
 public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
 	private final float CAMERA_SPEED = 0.0180F;
-
 	public float cameraRotation = 0.0F;
 	public boolean addToRotation = true;
 	public boolean down = false, downSet = false;

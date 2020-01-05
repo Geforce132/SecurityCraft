@@ -23,7 +23,6 @@ public class IMSBombEntity extends AbstractFireballEntity {
 
 	private String playerName = null;
 	private LivingEntity targetMob = null;
-
 	public int ticksFlying = 0;
 	private int launchHeight;
 	public boolean launching = true;

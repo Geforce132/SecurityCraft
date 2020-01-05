@@ -33,11 +33,9 @@ import net.minecraftforge.fml.client.config.HoverChecker;
 public class CameraMonitorScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-
 	private PlayerInventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundNBT nbtTag;
-
 	private Button prevPageButton;
 	private Button nextPageButton;
 	private ClickButton[] cameraButtons = new ClickButton[10];
@@ -46,7 +44,6 @@ public class CameraMonitorScreen extends Screen {
 	private SecurityCraftTileEntity[] cameraTEs = new SecurityCraftTileEntity[10];
 	private int[] cameraViewDim = new int[10];
 	private int xSize = 176, ySize = 166;
-
 	private int page = 1;
 
 	public CameraMonitorScreen(PlayerInventory inventory, CameraMonitorItem item, CompoundNBT itemNBTTag) {

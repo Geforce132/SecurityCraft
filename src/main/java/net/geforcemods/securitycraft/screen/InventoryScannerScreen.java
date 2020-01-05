@@ -21,7 +21,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class InventoryScannerScreen extends ContainerScreen<InventoryScannerContainer> {
 	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-
 	private InventoryScannerTileEntity tileEntity;
 	private boolean hasStorageModule = false;
 

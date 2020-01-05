@@ -22,7 +22,6 @@ import net.minecraftforge.fml.client.config.GuiSlider.ISlider;
 public class Option<T> {
 
 	private String name;
-
 	protected T value;
 	private T defaultValue;
 	private T increment;

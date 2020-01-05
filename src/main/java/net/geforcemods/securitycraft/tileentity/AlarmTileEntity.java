@@ -66,10 +66,6 @@ public class AlarmTileEntity extends OwnableTileEntity {
 
 	}
 
-	public int getCooldown(){
-		return cooldown;
-	}
-
 	public void setCooldown(int cooldown){
 		this.cooldown = cooldown;
 	}

@@ -26,18 +26,8 @@ public class SCManualPage {
 		this.configValue = configValue;
 	}
 
-	public SCManualPage(Item item, String helpInfo, NonNullList<Ingredient> customRecipe){
-		this.item = item;
-		this.helpInfo = helpInfo;
-		this.customRecipe = customRecipe;
-	}
-
 	public Item getItem() {
 		return item;
-	}
-
-	public String getItemName() {
-		return item.getTranslationKey().substring(5).split("\\.")[0];
 	}
 
 	public String getHelpInfo() {

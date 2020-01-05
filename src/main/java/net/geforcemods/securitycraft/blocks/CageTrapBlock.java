@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -41,11 +40,6 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
-	}
-
-	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
 		return state.get(DEACTIVATED) ? VoxelShapes.fullCube() : VoxelShapes.empty();
 	}
@@ -65,8 +59,8 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 					return;
 
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
-				BlockUtils.setBlock(world, pos.up(4), SCContent.reinforcedIronBars);
-				BlockUtils.setBlock(world, pos.up(3), SCContent.reinforcedIronBars);
+				world.setBlockState(pos.up(4), SCContent.reinforcedIronBars.getDefaultState());
+				world.setBlockState(pos.up(3), SCContent.reinforcedIronBars.getDefaultState());
 				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, SCContent.reinforcedIronBars);

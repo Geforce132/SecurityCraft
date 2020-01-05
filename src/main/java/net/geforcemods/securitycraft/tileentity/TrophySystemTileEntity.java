@@ -18,7 +18,6 @@ public class TrophySystemTileEntity extends OwnableTileEntity {
 	public static final int range = 10;
 	// Number of ticks that the trophy takes to "charge"
 	public static final int cooldownTime = 8;
-
 	public Entity entityBeingTargeted = null;
 	public int cooldown = cooldownTime;
 

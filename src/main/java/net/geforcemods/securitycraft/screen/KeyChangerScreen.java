@@ -29,7 +29,6 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
 	private ClickButton confirmButton;
-
 	private TileEntity tileEntity;
 
 	public KeyChangerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {

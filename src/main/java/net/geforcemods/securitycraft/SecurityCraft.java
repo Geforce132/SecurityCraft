@@ -115,16 +115,8 @@ public class SecurityCraft {
 		return cameraUsePositions.get(playerName);
 	}
 
-	public void setUsePosition(String playerName, double x, double y, double z, float yaw, float pitch) {
-		cameraUsePositions.put(playerName, new Object[]{x, y, z, yaw, pitch});
-	}
-
 	public boolean hasUsePosition(String playerName) {
 		return cameraUsePositions.containsKey(playerName);
-	}
-
-	public void removeUsePosition(String playerName){
-		cameraUsePositions.remove(playerName);
 	}
 
 	public CompoundNBT getSavedModule() {

@@ -34,11 +34,6 @@ public class PictureButton extends ClickButton{
 		this(id, xPos, yPos, width, height, par7, itemToRender, null);
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight)
-	{
-		this(id, xPos, yPos, width, height, texture, textureX, textureY, textureWidth, textureHeight, null);
-	}
-
 	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender, Consumer<ClickButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
 		itemRenderer = par7;
@@ -114,17 +109,6 @@ public class PictureButton extends ClickButton{
 			drawCenteredString(font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
 
 		}
-	}
-
-	public void setDisplayItem(ItemStack stack){
-		blockToRender = null;
-		itemToRender = null;
-
-		if(stack.getTranslationKey().startsWith("tile."))
-			blockToRender = Block.getBlockFromItem(stack.getItem());
-		else
-			itemToRender = stack.getItem();
-
 	}
 
 	public Item getItemStack() {

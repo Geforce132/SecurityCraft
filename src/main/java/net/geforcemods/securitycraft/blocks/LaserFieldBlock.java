@@ -82,7 +82,7 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).hasModule(CustomModules.HARMING))
-							((LivingEntity) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
+							((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
 
 					}
 				}

@@ -125,11 +125,6 @@ public class KeypadFurnaceTileEntity extends OwnableTileEntity implements ISided
 		return furnaceCustomName != null && furnaceCustomName.length() > 0;
 	}
 
-	public void setCustomInventoryName(String name)
-	{
-		furnaceCustomName = name;
-	}
-
 	@Override
 	public void read(CompoundNBT tag)
 	{
@@ -386,11 +381,6 @@ public class KeypadFurnaceTileEntity extends OwnableTileEntity implements ISided
 		}
 
 		return true;
-	}
-
-	public String getGuiID()
-	{
-		return "minecraft:furnace";
 	}
 
 	@Override

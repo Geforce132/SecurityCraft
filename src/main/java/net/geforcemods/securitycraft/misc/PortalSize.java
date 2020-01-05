@@ -82,16 +82,6 @@ public class PortalSize
 		return block == SCContent.reinforcedObsidian ? i : 0;
 	}
 
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public int getWidth()
-	{
-		return width;
-	}
-
 	protected int calculatePortalHeight()
 	{
 		{

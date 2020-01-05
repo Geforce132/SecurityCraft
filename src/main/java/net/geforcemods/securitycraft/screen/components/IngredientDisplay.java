@@ -19,13 +19,6 @@ public class IngredientDisplay
 		this.y = y;
 	}
 
-	public IngredientDisplay(int x, int y, Ingredient ingredient)
-	{
-		this.x = x;
-		this.y = y;
-		this.stacks = ingredient.getMatchingStacks();
-	}
-
 	public void render(Minecraft mc, float partialTicks)
 	{
 		if(stacks == null || stacks.length == 0)

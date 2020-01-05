@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,12 +48,6 @@ public class AlarmBlock extends OwnableBlock {
 	public int getLightValue(BlockState state)
 	{
 		return state.get(LIT) ? 15 : 0;
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state)
-	{
-		return BlockRenderType.MODEL;
 	}
 
 	/**

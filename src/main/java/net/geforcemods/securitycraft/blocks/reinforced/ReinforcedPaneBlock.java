@@ -4,12 +4,9 @@ import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
-import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.PaneBlock;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -234,11 +231,6 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 	public final boolean canAttachTo(BlockState p_220112_1_, boolean p_220112_2_) {
 		Block block = p_220112_1_.getBlock();
 		return !cannotAttach(block) && p_220112_2_ || block instanceof ReinforcedPaneBlock;
-	}
-
-	public static boolean shouldSkipAttachment(Block p_196418_0_)
-	{
-		return p_196418_0_ instanceof ShulkerBoxBlock || p_196418_0_ instanceof LeavesBlock || p_196418_0_ == Blocks.BEACON || p_196418_0_ == Blocks.CAULDRON || p_196418_0_ == Blocks.GLOWSTONE || p_196418_0_ == Blocks.ICE || p_196418_0_ == Blocks.SEA_LANTERN || p_196418_0_ == Blocks.PISTON || p_196418_0_ == Blocks.STICKY_PISTON || p_196418_0_ == Blocks.PISTON_HEAD || p_196418_0_ == Blocks.MELON || p_196418_0_ == Blocks.PUMPKIN || p_196418_0_ == Blocks.CARVED_PUMPKIN || p_196418_0_ == Blocks.JACK_O_LANTERN || p_196418_0_ == Blocks.BARRIER;
 	}
 
 	@Override

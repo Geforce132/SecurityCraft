@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
@@ -34,15 +33,6 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay 
 		super(SoundType.STONE, material, baseHardness);
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
-
-	/**
-	 * Called upon the block being destroyed by an explosion
-	 */
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
-	}
-
 
 	@Override
 	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {

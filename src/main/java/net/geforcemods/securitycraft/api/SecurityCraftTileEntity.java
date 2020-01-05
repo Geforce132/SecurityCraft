@@ -41,16 +41,12 @@ public class SecurityCraftTileEntity extends TileEntity implements ITickableTile
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private boolean canBeNamed = false;
-
 	private ITextComponent customName = new StringTextComponent("name");
-
 	private double attackRange = 0.0D;
-
 	private int blockPlaceCooldown = 30;
 	private int viewCooldown = getViewCooldown();
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
-
 	private Class<? extends Entity> typeToAttack = Entity.class;
 
 	public SecurityCraftTileEntity()

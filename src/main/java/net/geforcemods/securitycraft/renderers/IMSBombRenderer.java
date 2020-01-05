@@ -18,7 +18,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
-
 	/** instance of ModelIMSBomb for rendering */
 	protected static final IMSBombModel modelBomb = new IMSBombModel();
 

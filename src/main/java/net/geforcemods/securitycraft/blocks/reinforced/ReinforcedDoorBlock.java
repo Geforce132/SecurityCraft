@@ -124,14 +124,6 @@ public class ReinforcedDoorBlock extends Block implements ITileEntityProvider{
 		}
 	}
 
-	private int getCloseSound() {
-		return this.material == Material.IRON ? 1011 : 1012;
-	}
-
-	private int getOpenSound() {
-		return this.material == Material.IRON ? 1005 : 1006;
-	}
-
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
@@ -191,14 +183,6 @@ public class ReinforcedDoorBlock extends Block implements ITileEntityProvider{
 			}
 		} else {
 			return DoorHingeSide.RIGHT;
-		}
-	}
-
-	public void toggleDoor(World worldIn, BlockPos pos, boolean open) {
-		BlockState blockstate = worldIn.getBlockState(pos);
-		if (blockstate.getBlock() == this && blockstate.get(OPEN) != open) {
-			worldIn.setBlockState(pos, blockstate.with(OPEN, Boolean.valueOf(open)), 10);
-			this.playSound(worldIn, pos, open);
 		}
 	}
 
@@ -347,10 +331,6 @@ public class ReinforcedDoorBlock extends Block implements ITileEntityProvider{
 		} else {
 			return blockstate.getBlock() == this;
 		}
-	}
-
-	private void playSound(World world, BlockPos pos, boolean isOpening) {
-		world.playEvent((PlayerEntity)null, isOpening ? this.getOpenSound() : this.getCloseSound(), pos, 0);
 	}
 
 	@Override
