@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
-import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
+import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -52,6 +52,7 @@ public class SCManualScreen extends Screen {
 	private static int lastPage = -1;
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
+	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
 	private boolean update = false;
 	private List<String> subpages = new ArrayList<>();
@@ -76,6 +77,15 @@ public class SCManualScreen extends Screen {
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
 		addButton(new SCManualScreen.ChangePageButton(3, startX + 190, startY + 97, true, this::actionPerformed)); //next subpage
 		addButton(new SCManualScreen.ChangePageButton(4, startX + 165, startY + 97, false, this::actionPerformed)); //previous subpage
+
+		for(int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 3; j++)
+			{
+				displays[(i * 3) + j] = new IngredientDisplay((startX + 100) + (j * 20), 144 + (i * 20));
+			}
+		}
+
 		updateRecipeAndIcons();
 	}
 
@@ -145,31 +155,29 @@ public class SCManualScreen extends Screen {
 			if(te instanceof CustomizableTileEntity)
 				this.blit(startX + 213, 118, 72, 1, 16, 16);
 
-			if(recipe != null)
+			for(IngredientDisplay display : displays)
 			{
-				for(int i = 0; i < 3; i++)
-					for(int j = 0; j < 3; j++)
-					{
-						if(((i * 3) + j) >= recipe.size())
-							break;
-
-						ItemStack[] matchingStacks = recipe.get((i * 3) + j).getMatchingStacks();
-
-						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
-							continue;
-
-						minecraft.getItemRenderer().renderItemAndEffectIntoGUI(matchingStacks[0], (startX + 100) + (j * 20), 144 + (i * 20));
-					}
+				display.render(minecraft, partialTicks);
 			}
 
-			for(HoverChecker chc : hoverCheckers)
+			outer: for(int i = 0; i < 3; i++)
 			{
-				if(chc != null && chc.checkHover(mouseX, mouseY))
+				for(int j = 0; j < 3; j++)
 				{
-					if(chc instanceof StackHoverChecker && !((StackHoverChecker)chc).getStack().isEmpty())
-						renderTooltip(((StackHoverChecker)chc).getStack(), mouseX, mouseY);
-					else if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-						renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+					int index = (i * 3) + j;
+
+					if(index >= hoverCheckers.size())
+						break outer;
+
+					HoverChecker chc = hoverCheckers.get(index);
+
+					if(chc != null && chc.checkHover(mouseX, mouseY))
+					{
+						if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
+							renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+						else if(!displays[index].getCurrentStack().isEmpty())
+							renderTooltip(displays[index].getCurrentStack(), mouseX, mouseY);
+					}
 				}
 			}
 		}
@@ -274,6 +282,7 @@ public class SCManualScreen extends Screen {
 		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
 			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		else
+		{
 			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 			{
 				if(object instanceof ShapedRecipe){
@@ -304,20 +313,17 @@ public class SCManualScreen extends Screen {
 
 				recipe = null;
 			}
+		}
 
 		boolean reinforcedPage = SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info");
 
 		if(recipe != null && !reinforcedPage)
 		{
-			outer: for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 3; i++)
 			{
 				for(int j = 0; j < 3; j++)
 				{
-					if((i * 3) + j == recipe.size())
-						break outer;
-
-					if(recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
-						hoverCheckers.add(new StackHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16, 20, recipe.get((i * 3) + j).getMatchingStacks()[0]));
+					hoverCheckers.add(new HoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16, 20));
 				}
 			}
 		}
@@ -354,6 +360,29 @@ public class SCManualScreen extends Screen {
 
 			if(te instanceof CustomizableTileEntity)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+		}
+
+		if(recipe != null && recipe.size() > 0)
+		{
+			for(int i = 0; i < 3; i++)
+			{
+				for(int j = 0; j < 3; j++)
+				{
+					int index = (i * 3) + j;
+
+					if(index >= recipe.size())
+						displays[index].setIngredient(Ingredient.EMPTY);
+					else
+						displays[index].setIngredient(recipe.get(index));
+				}
+			}
+		}
+		else
+		{
+			for(IngredientDisplay display : displays)
+			{
+				display.setIngredient(Ingredient.EMPTY);
+			}
 		}
 
 		//set up subpages
