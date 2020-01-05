@@ -156,6 +156,7 @@ tile.securitycraft:reinforcedMetals_gold.name=Verstärkter Goldblock
 tile.securitycraft:reinforcedMetals_iron.name=Verstärkter Eisenblock
 tile.securitycraft:reinforcedMetals_diamond.name=Verstärkter Diamantblock
 tile.securitycraft:reinforcedMetals_emerald.name=Verstärkter Smaragdblock
+tile.securitycraft:reinforcedMetals_redstone.name=Verstärkter Redstone-Block
 tile.securitycraft:reinforcedCompressedBlocks_lapis.name=Verstärkter Lapislazuliblock
 tile.securitycraft:reinforcedCompressedBlocks_coal.name=Verstärkter Kohleblock
 tile.securitycraft:reinforcedWool_white.name=Verstärkte weiße Wolle

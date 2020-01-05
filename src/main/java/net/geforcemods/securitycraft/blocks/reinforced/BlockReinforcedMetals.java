@@ -18,6 +18,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -87,7 +88,19 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 	@Override
 	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon)
 	{
-		return true;
+		return world.getBlockState(pos).getValue(VARIANT) != EnumType.REDSTONE;
+	}
+
+	@Override
+	public boolean canProvidePower(IBlockState state)
+	{
+		return state.getValue(VARIANT) == EnumType.REDSTONE;
+	}
+
+	@Override
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return state.getValue(VARIANT) == EnumType.REDSTONE ? 15 : 0;
 	}
 
 	@Override
@@ -109,14 +122,15 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 				Blocks.GOLD_BLOCK,
 				Blocks.IRON_BLOCK,
 				Blocks.DIAMOND_BLOCK,
-				Blocks.EMERALD_BLOCK
+				Blocks.EMERALD_BLOCK,
+				Blocks.REDSTONE_BLOCK
 		});
 	}
 
 	@Override
 	public int getAmount()
 	{
-		return 4;
+		return 5;
 	}
 
 	public static enum EnumType implements IStringSerializable
@@ -124,7 +138,8 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 		GOLD(0, "gold", "gold"),
 		IRON(1, "iron", "iron"),
 		DIAMOND(2, "diamond", "diamond"),
-		EMERALD(3, "emerald", "emerald");
+		EMERALD(3, "emerald", "emerald"),
+		REDSTONE(4, "redstone", "redstone");
 		private static final BlockReinforcedMetals.EnumType[] META_LOOKUP = new BlockReinforcedMetals.EnumType[values().length];
 		private final int meta;
 		private final String name;

@@ -15,7 +15,8 @@
       "data": 1
     },
     "R": {
-      "item": "minecraft:redstone_block"
+      "item": "securitycraft:reinforced_metals",
+      "data": 4
     }
   },
   "result": {

@@ -155,6 +155,7 @@ tile.securitycraft:reinforcedMetals_gold.name=Reinforced Block of Gold
 tile.securitycraft:reinforcedMetals_iron.name=Reinforced Block of Iron
 tile.securitycraft:reinforcedMetals_diamond.name=Reinforced Block of Diamond
 tile.securitycraft:reinforcedMetals_emerald.name=Reinforced Block of Emerald
+tile.securitycraft:reinforcedMetals_redstone.name=Reinforced Block of Redstone
 tile.securitycraft:reinforcedCompressedBlocks_lapis.name=Reinforced Lapis Lazuli Block
 tile.securitycraft:reinforcedCompressedBlocks_coal.name=Reinforced Block of Coal
 tile.securitycraft:reinforcedWool_white.name=Reinforced White Wool
