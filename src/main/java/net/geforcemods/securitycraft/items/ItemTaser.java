@@ -24,8 +24,6 @@ public class ItemTaser extends Item {
 	public boolean powered;
 
 	public ItemTaser(boolean isPowered){
-		super();
-
 		powered = isPowered;
 		setMaxDamage(151);
 		setCreativeTab(SecurityCraft.tabSCTechnical);

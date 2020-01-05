@@ -117,7 +117,8 @@ public class ItemModifiedBucket extends ItemBucket {
 		}
 	}
 
-	public boolean tryPlaceContainedLiquid(World world, BlockPos pos)
+	@Override
+	public boolean tryPlaceContainedLiquid(EntityPlayer player, World world, BlockPos pos)
 	{
 		if (containedBlock == Blocks.AIR)
 			return false;
@@ -130,14 +131,14 @@ public class ItemModifiedBucket extends ItemBucket {
 				return false;
 			else
 			{
-				if (world.provider.doesWaterVaporize() && containedBlock == Blocks.FLOWING_WATER)
+				if (world.provider.doesWaterVaporize() && containedBlock == SCContent.fakeWater)
 				{
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
 
-					for(EntityPlayer player : world.playerEntities)
-						world.playSound(player, new BlockPos(x + 0.5F, y + 0.5F, z + 0.5F), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.fizz")), SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+					for(EntityPlayer p : world.playerEntities)
+						world.playSound(p, new BlockPos(x + 0.5F, y + 0.5F, z + 0.5F), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.fizz")), SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
 					for (int l = 0; l < 8; ++l)
 						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);

@@ -15,7 +15,6 @@ import net.minecraft.util.NonNullList;
 public class BlockReinforcedSand extends BlockReinforcedFalling
 {
 	public static final PropertyEnum<BlockSand.EnumType> VARIANT = PropertyEnum.<BlockSand.EnumType>create("variant", BlockSand.EnumType.class);
-	public static boolean fallInstantly;
 
 	public BlockReinforcedSand()
 	{

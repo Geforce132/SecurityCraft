@@ -43,9 +43,9 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	public static BlockStaticLiquid getStaticBlock(Material material)
 	{
 		if (material == Material.WATER)
-			return SCContent.bogusWater;
+			return SCContent.fakeWater;
 		else if (material == Material.LAVA)
-			return SCContent.bogusLava;
+			return SCContent.fakeLava;
 		else
 			throw new IllegalArgumentException("Invalid material");
 	}
@@ -281,9 +281,9 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	{
 		if(!world.isRemote)
 			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
-				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
 			else
-				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
 	}
 
 	/**

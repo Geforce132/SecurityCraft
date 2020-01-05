@@ -16,10 +16,6 @@ import net.minecraft.world.World;
 
 public class ItemKeyPanel extends Item {
 
-	public ItemKeyPanel(){
-		super();
-	}
-
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		if(!world.isRemote){

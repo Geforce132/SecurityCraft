@@ -46,7 +46,6 @@ public class GuiSCManual extends GuiScreen {
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
 	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-
 	private List<HoverChecker> hoverCheckers = new ArrayList<HoverChecker>();
 	private static int lastPage = -1;
 	private int currentPage = lastPage;

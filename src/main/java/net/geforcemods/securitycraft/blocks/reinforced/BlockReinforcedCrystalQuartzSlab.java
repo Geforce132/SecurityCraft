@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
 
 	private final boolean isDouble;
+
 	public BlockReinforcedCrystalQuartzSlab(boolean isDouble, Material blockMaterial){
 		super(blockMaterial);
 

@@ -15,10 +15,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ItemSCManual extends Item {
 
-	public ItemSCManual(){
-		super();
-	}
-
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if(world.isRemote)

@@ -16,7 +16,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -53,12 +52,6 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public boolean isFullCube(IBlockState state){
 		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
-	{
-		return EnumBlockRenderType.MODEL;
 	}
 
 	/**
@@ -163,7 +156,7 @@ public class BlockAlarm extends BlockOwnable {
 			if(!isPowered){
 				Owner owner = ((TileEntityAlarm) world.getTileEntity(pos)).getOwner();
 				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(world, pos, FACING);
-				BlockUtils.setBlock(world, pos, SCContent.alarmLit);
+				world.setBlockState(pos, SCContent.alarmLit.getDefaultState());
 				BlockUtils.setBlockProperty(world, pos, FACING, dir);
 				((TileEntityAlarm) world.getTileEntity(pos)).getOwner().set(owner);
 				((TileEntityAlarm) world.getTileEntity(pos)).setPowered(true);
@@ -175,7 +168,7 @@ public class BlockAlarm extends BlockOwnable {
 			if(isPowered){
 				Owner owner = ((TileEntityAlarm) world.getTileEntity(pos)).getOwner();
 				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(world, pos, FACING);
-				BlockUtils.setBlock(world, pos, SCContent.alarm);
+				world.setBlockState(pos, SCContent.alarm.getDefaultState());
 				BlockUtils.setBlockProperty(world, pos, FACING, dir);
 				((TileEntityAlarm) world.getTileEntity(pos)).getOwner().set(owner);
 				((TileEntityAlarm) world.getTileEntity(pos)).setPowered(false);

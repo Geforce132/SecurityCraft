@@ -12,10 +12,6 @@ public class PacketHelper {
 		return player.getEntityWorld().getMinecraftServer().getWorld(player.dimension);
 	}
 
-	public World getWorld(EntityPlayer player, Side side){
-		return player.getEntityWorld().getMinecraftServer().getWorld(player.dimension);
-	}
-
 	@SideOnly(Side.CLIENT)
 	public World getClientWorld(EntityPlayer player){
 		return Minecraft.getMinecraft().world;

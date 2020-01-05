@@ -20,9 +20,7 @@ public class GuiBriefcase extends GuiContainer {
 
 	public static final String UP_ARROW  = "\u2191";
 	public static final String DOWN_ARROW  = "\u2193";
-
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-
 	private GuiButton[] keycodeTopButtons = new GuiButton[4];
 	private GuiButton[] keycodeBottomButtons = new GuiButton[4];
 	private GuiTextField[] keycodeTextboxes = new GuiTextField[4];

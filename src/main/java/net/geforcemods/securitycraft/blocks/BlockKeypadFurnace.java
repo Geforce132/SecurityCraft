@@ -23,7 +23,6 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -38,11 +37,6 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	public BlockKeypadFurnace(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
 	}
 
 	/**

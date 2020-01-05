@@ -28,11 +28,9 @@ import net.minecraftforge.fml.client.config.HoverChecker;
 public class GuiCameraMonitor extends GuiContainer {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-
 	private InventoryPlayer playerInventory;
 	private ItemCameraMonitor cameraMonitor;
 	private NBTTagCompound nbtTag;
-
 	private GuiButton prevPageButton;
 	private GuiButton nextPageButton;
 	private GuiButton[] cameraButtons = new GuiButton[10];
@@ -40,7 +38,6 @@ public class GuiCameraMonitor extends GuiContainer {
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private TileEntitySCTE[] cameraTEs = new TileEntitySCTE[10];
 	private int[] cameraViewDim = new int[10];
-
 	private int page = 1;
 
 	public GuiCameraMonitor(InventoryPlayer inventory, ItemCameraMonitor item, NBTTagCompound itemNBTTag) {

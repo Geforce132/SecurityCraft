@@ -11,12 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerFurnace;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.Item;
@@ -132,11 +128,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		return furnaceCustomName != null && furnaceCustomName.length() > 0;
 	}
 
-	public void setCustomInventoryName(String name)
-	{
-		furnaceCustomName = name;
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound tag)
 	{
@@ -224,12 +215,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public boolean isBurning()
 	{
 		return furnaceBurnTime > 0;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public static boolean isBurning(IInventory inventory)
-	{
-		return inventory.getField(0) > 0;
 	}
 
 	@Override
@@ -424,16 +409,6 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		}
 
 		return true;
-	}
-
-	public String getGuiID()
-	{
-		return "minecraft:furnace";
-	}
-
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer player)
-	{
-		return new ContainerFurnace(playerInventory, this);
 	}
 
 	@Override

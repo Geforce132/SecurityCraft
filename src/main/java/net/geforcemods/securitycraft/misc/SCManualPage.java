@@ -34,10 +34,6 @@ public class SCManualPage {
 		return item;
 	}
 
-	public String getItemName() {
-		return item.getTranslationKey().substring(5).split("\\.")[0];
-	}
-
 	public String getHelpInfo() {
 		return helpInfo;
 	}

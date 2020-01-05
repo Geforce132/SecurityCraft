@@ -36,39 +36,30 @@ public class GuiSlider extends GuiButtonExt
 {
 	/** The value of this slider control. */
 	public double sliderValue;
-
 	public String dispString = "";
-
 	/** Is this slider control being dragged. */
 	public boolean dragging = false;
 	public boolean showDecimal = true;
-
 	public double minValue = 0.0D;
 	public double maxValue = 5.0D;
 	public int precision = 1;
-
 	@Nullable
 	public ISlider parent = null;
-
-	public String suffix = "";
-
 	public boolean drawString = true;
-
 	private String blockName;
 
-	public GuiSlider(int id, int xPos, int yPos, int width, int height, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr)
+	public GuiSlider(int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr)
 	{
-		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, width, height, prefix, suf, minVal, maxVal, currentVal, showDec, drawStr, null);
+		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, width, height, prefix, minVal, maxVal, currentVal, showDec, drawStr, null);
 	}
 
-	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
+	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
 	{
 		super(id, xPos, yPos, width, height, prefix);
 		minValue = minVal;
 		maxValue = maxVal;
 		dispString = prefix;
 		parent = par;
-		suffix = suf;
 		showDecimal = showDec;
 		blockName = bN;
 		String val;
@@ -94,7 +85,7 @@ public class GuiSlider extends GuiButtonExt
 
 	public GuiSlider(int id, int xPos, int yPos, String displayStr, double minVal, double maxVal, double currentVal, ISlider par)
 	{
-		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, 150, 20, displayStr, "", minVal, maxVal, currentVal, true, true, par);
+		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, 150, 20, displayStr, minVal, maxVal, currentVal, true, true, par);
 	}
 
 	/**
@@ -209,11 +200,6 @@ public class GuiSlider extends GuiButtonExt
 	public double getValue()
 	{
 		return sliderValue * (maxValue - minValue) + minValue;
-	}
-
-	public void setValue(double d)
-	{
-		sliderValue = (d - minValue) / (maxValue - minValue);
 	}
 
 	public static interface ISlider

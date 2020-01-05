@@ -42,6 +42,7 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	 * Returns the blockstate with the given rotation from the passed blockstate. If inapplicable, returns the passed
 	 * blockstate.
 	 */
+	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot)
 	{
 		switch (rot)
@@ -67,6 +68,7 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	/**
 	 * Convert the given metadata into a BlockState for this Block
 	 */
+	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		EnumFacing.Axis axis = EnumFacing.Axis.Y;
@@ -87,6 +89,7 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	/**
 	 * Convert the BlockState into the correct metadata value
 	 */
+	@Override
 	public int getMetaFromState(IBlockState state)
 	{
 		int meta = 0;
@@ -104,11 +107,13 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 		return meta;
 	}
 
+	@Override
 	protected BlockStateContainer createBlockState()
 	{
 		return new BlockStateContainer(this, new IProperty[] {AXIS});
 	}
 
+	@Override
 	protected ItemStack getSilkTouchDrop(IBlockState state)
 	{
 		return new ItemStack(Item.getItemFromBlock(this));
@@ -118,6 +123,7 @@ public class BlockReinforcedBoneBlock extends BlockReinforcedBase
 	 * Called by ItemBlocks just before a block is actually set in the world, to allow for adjustments to the
 	 * IBlockstate
 	 */
+	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
 		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(AXIS, facing.getAxis());

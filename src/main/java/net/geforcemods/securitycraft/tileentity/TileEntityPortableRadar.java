@@ -27,7 +27,6 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	private OptionInt searchDelayOption = new OptionInt("searchDelay", ConfigHandler.portableRadarDelay, 4, 10, 1);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
-
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
 

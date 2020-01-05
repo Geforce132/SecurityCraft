@@ -39,7 +39,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			}
 
 			if(cooldown == 0){
-				BlockUtils.destroyBlock(getWorld(), getPos(), false);
+				getWorld().destroyBlock(getPos(), false);
 				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
 				return;
 			}

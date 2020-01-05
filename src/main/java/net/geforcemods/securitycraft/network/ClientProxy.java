@@ -228,7 +228,7 @@ public class ClientProxy implements IProxy {
 		Item fakeWater = findItem(SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "water"));
-		ModelLoader.setCustomStateMapper(SCContent.bogusWater, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.fakeWater, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -252,7 +252,7 @@ public class ClientProxy implements IProxy {
 		Item fakeLava = findItem(SecurityCraft.MODID, "bogus_Lava");
 		ModelBakery.registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "lava"));
-		ModelLoader.setCustomStateMapper(SCContent.bogusLava, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.fakeLava, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)

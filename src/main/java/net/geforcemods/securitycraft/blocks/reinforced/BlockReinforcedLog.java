@@ -31,12 +31,16 @@ public class BlockReinforcedLog extends BlockOwnable implements IOverlayDisplay
 	public boolean rotateBlock(net.minecraft.world.World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
+
 		for (IProperty prop : state.getProperties().keySet())
+		{
 			if (prop.getName().equals("axis"))
 			{
 				world.setBlockState(pos, state.cycleProperty(prop));
 				return true;
 			}
+		}
+
 		return false;
 	}
 

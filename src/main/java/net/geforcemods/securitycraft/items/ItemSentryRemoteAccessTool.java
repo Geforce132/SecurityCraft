@@ -30,12 +30,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSentryRemoteAccessTool extends Item {
 
-	public int listIndex = 0;
-
-	public ItemSentryRemoteAccessTool() {
-		super();
-	}
-
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 		ItemStack stack = player.getHeldItem(hand);
@@ -57,7 +51,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 				BlockPos pos2 = sentries.get(0).getPosition();
 
 				if(!isSentryAdded(stack, world, pos2)){
-					int availSlot = getNextAvaliableSlot(stack);
+					int availSlot = getNextAvailableSlot(stack);
 
 					if(availSlot == 0){
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
@@ -145,7 +139,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		return false;
 	}
 
-	private int getNextAvaliableSlot(ItemStack stack){
+	private int getNextAvailableSlot(ItemStack stack){
 		for(int i = 1; i <= 12; i++)
 			if(stack.getTagCompound() == null)
 				return 1;

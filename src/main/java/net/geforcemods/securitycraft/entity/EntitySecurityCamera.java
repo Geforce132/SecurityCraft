@@ -29,7 +29,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -342,13 +341,6 @@ public class EntitySecurityCamera extends Entity{
 	public void enableNightVision() {
 		toggleNightVisionCooldown = 30;
 		shouldProvideNightVision = !shouldProvideNightVision;
-	}
-
-	public String getCameraInfo(){
-		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
-		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) posY + " Z: " + (int) Math.floor(posZ) + "\n";
-		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(getPassengers().get(0).getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[2]) : "";
-		return nowViewing + pos + viewingFrom;
 	}
 
 	public float getZoomAmount(){

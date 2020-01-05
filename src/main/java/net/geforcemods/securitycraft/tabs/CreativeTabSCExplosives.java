@@ -13,7 +13,6 @@ public class CreativeTabSCExplosives extends CreativeTabs{
 		super(getNextID(), "tabSecurityCraft");
 	}
 
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack createIcon(){

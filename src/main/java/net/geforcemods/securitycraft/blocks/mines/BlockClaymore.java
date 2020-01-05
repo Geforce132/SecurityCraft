@@ -96,7 +96,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
 		{
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
 		}
 
@@ -111,7 +111,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
 		}
 	}
@@ -137,7 +137,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true);
 		}
 	}

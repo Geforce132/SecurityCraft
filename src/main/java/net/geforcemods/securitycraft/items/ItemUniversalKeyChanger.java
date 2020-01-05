@@ -17,10 +17,6 @@ import net.minecraft.world.World;
 
 public class ItemUniversalKeyChanger extends Item {
 
-	public ItemUniversalKeyChanger() {
-		super();
-	}
-
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof IPasswordProtected) {

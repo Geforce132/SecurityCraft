@@ -18,8 +18,6 @@ public class ModelSecurityCamera extends ModelBase {
 	public ModelRenderer cameraLensLeft;
 	public ModelRenderer cameraLensTop;
 
-	public boolean reverseCameraRotation = false;
-
 	public ModelSecurityCamera() {
 		textureWidth = 128;
 		textureHeight = 64;

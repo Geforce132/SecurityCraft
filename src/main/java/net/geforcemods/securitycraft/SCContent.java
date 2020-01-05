@@ -124,8 +124,8 @@ public class SCContent
 	public static Block usernameLogger;
 	public static BlockMine mine;
 	public static BlockMine mineCut;
-	public static BlockStaticLiquid bogusLava;
-	public static BlockStaticLiquid bogusWater;
+	public static BlockStaticLiquid fakeLava;
+	public static BlockStaticLiquid fakeWater;
 
 	//Items
 	public static Item adminTool;

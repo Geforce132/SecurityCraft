@@ -26,10 +26,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
-
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
 	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
-
 	private boolean updateBombCount = false;
 
 	@Override
@@ -244,8 +242,5 @@ public class TileEntityIMS extends CustomizableSCTE {
 		private EnumIMSTargetingMode(int index){
 			modeIndex = index;
 		}
-
-
 	}
-
 }

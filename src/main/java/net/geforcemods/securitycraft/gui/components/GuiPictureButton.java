@@ -96,17 +96,6 @@ public class GuiPictureButton extends GuiButton{
 		}
 	}
 
-	public void setDisplayItem(ItemStack stack){
-		blockToRender = null;
-		itemToRender = null;
-
-		if(stack.getTranslationKey().startsWith("tile."))
-			blockToRender = Block.getBlockFromItem(stack.getItem());
-		else
-			itemToRender = stack.getItem();
-
-	}
-
 	public Item getItemStack() {
 		return (blockToRender != null ? Item.getItemFromBlock(blockToRender) : itemToRender);
 	}

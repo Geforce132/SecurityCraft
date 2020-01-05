@@ -23,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiInventoryScanner extends GuiContainer {
 	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-
 	private TileEntityInventoryScanner tileEntity;
 	private EntityPlayer playerObj;
 	private boolean hasStorageModule = false;
@@ -103,7 +102,6 @@ public class GuiInventoryScanner extends GuiContainer {
 	private void saveType(String type){
 		tileEntity.setType(type);
 		SecurityCraft.network.sendToServer(new PacketSetISType(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), type));
-
 	}
 
 	/**

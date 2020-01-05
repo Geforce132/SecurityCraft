@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 public class RenderIMSBomb extends Render<EntityIMSBomb> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
-
 	/** instance of ModelIMSBomb for rendering */
 	protected static final ModelIMSBomb modelBomb = new ModelIMSBomb();
 

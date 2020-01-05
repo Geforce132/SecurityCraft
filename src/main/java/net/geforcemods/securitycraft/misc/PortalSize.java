@@ -95,9 +95,8 @@ public class PortalSize
 
 	protected int calculatePortalHeight()
 	{
-		label56:
-
-			for (this.height = 0; this.height < 21; ++this.height)
+		{
+			label56: for (this.height = 0; this.height < 21; ++this.height)
 			{
 				for (int i = 0; i < this.width; ++i)
 				{
@@ -134,28 +133,29 @@ public class PortalSize
 					}
 				}
 			}
+		}
 
-	for (int j = 0; j < this.width; ++j)
-	{
-		if (this.world.getBlockState(this.bottomLeft.offset(this.rightDir, j).up(this.height)).getBlock() != SCContent.reinforcedObsidian)
+		for (int j = 0; j < this.width; ++j)
 		{
+			if (this.world.getBlockState(this.bottomLeft.offset(this.rightDir, j).up(this.height)).getBlock() != SCContent.reinforcedObsidian)
+			{
+				this.height = 0;
+				break;
+			}
+		}
+
+		if (this.height <= 21 && this.height >= 3)
+		{
+			return this.height;
+		}
+		else
+		{
+			this.bottomLeft = null;
+			this.width = 0;
 			this.height = 0;
-			break;
+			return 0;
 		}
 	}
-
-	if (this.height <= 21 && this.height >= 3)
-	{
-		return this.height;
-	}
-	else
-	{
-		this.bottomLeft = null;
-		this.width = 0;
-		this.height = 0;
-		return 0;
-	}
-	} //end method
 
 	protected boolean isEmptyBlock(Block block)
 	{

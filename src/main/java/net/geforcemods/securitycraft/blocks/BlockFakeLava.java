@@ -45,9 +45,9 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 	public static BlockStaticLiquid getStaticBlock(Material material)
 	{
 		if (material == Material.WATER)
-			return SCContent.bogusWater;
+			return SCContent.fakeWater;
 		else if (material == Material.LAVA)
-			return SCContent.bogusLava;
+			return SCContent.fakeLava;
 		else
 			throw new IllegalArgumentException("Invalid material");
 	}

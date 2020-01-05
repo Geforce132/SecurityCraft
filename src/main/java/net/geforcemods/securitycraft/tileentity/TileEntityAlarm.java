@@ -65,10 +65,6 @@ public class TileEntityAlarm extends TileEntityOwnable {
 
 	}
 
-	public int getCooldown(){
-		return cooldown;
-	}
-
 	public void setCooldown(int cooldown){
 		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + FMLCommonHandler.instance().getEffectiveSide());
 		this.cooldown = cooldown;

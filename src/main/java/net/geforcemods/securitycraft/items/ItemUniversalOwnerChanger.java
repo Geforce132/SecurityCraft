@@ -24,8 +24,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemUniversalOwnerChanger extends Item
 {
-	public ItemUniversalOwnerChanger(){}
-
 	/**
 	 * Returns True is the item is renderer in full 3D when hold.
 	 */

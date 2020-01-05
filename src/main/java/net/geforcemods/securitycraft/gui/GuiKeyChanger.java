@@ -30,7 +30,6 @@ public class GuiKeyChanger extends GuiContainer {
 	private GuiTextField textboxNewPasscode;
 	private GuiTextField textboxConfirmPasscode;
 	private GuiButton confirmButton;
-
 	private TileEntity tileEntity;
 
 	public GuiKeyChanger(InventoryPlayer inventoryPlayer, TileEntity tile_entity) {

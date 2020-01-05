@@ -135,21 +135,19 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 
 	public static enum EnumType implements IStringSerializable
 	{
-		GOLD(0, "gold", "gold"),
-		IRON(1, "iron", "iron"),
-		DIAMOND(2, "diamond", "diamond"),
-		EMERALD(3, "emerald", "emerald"),
-		REDSTONE(4, "redstone", "redstone");
+		GOLD(0, "gold"),
+		IRON(1, "iron"),
+		DIAMOND(2, "diamond"),
+		EMERALD(3, "emerald"),
+		REDSTONE(4, "redstone");
 		private static final BlockReinforcedMetals.EnumType[] META_LOOKUP = new BlockReinforcedMetals.EnumType[values().length];
 		private final int meta;
 		private final String name;
-		private final String unlocalizedName;
 
-		private EnumType(int meta, String name, String unlocalizedName)
+		private EnumType(int meta, String name)
 		{
 			this.meta = meta;
 			this.name = name;
-			this.unlocalizedName = unlocalizedName;
 		}
 
 		public int getMetadata()
@@ -175,11 +173,6 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 		public String getName()
 		{
 			return name;
-		}
-
-		public String getTranslationKey()
-		{
-			return unlocalizedName;
 		}
 
 		static

@@ -117,9 +117,9 @@ public class SetupHandler
 
 		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
 
-		SCContent.bogusLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
+		SCContent.fakeLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
 		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing").setTranslationKey("securitycraft:bogusLavaFlowing");
-		SCContent.bogusWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("securitycraft:bogusWater");
+		SCContent.fakeWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("securitycraft:bogusWater");
 		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing").setTranslationKey("securitycraft:bogusWaterFlowing");
 
 		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");

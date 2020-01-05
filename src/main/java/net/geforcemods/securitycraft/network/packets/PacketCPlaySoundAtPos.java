@@ -37,14 +37,6 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		this((int)x, (int)y, (int)z, sound, volume, cat);
 	}
 
-	public PacketCPlaySoundAtPos(int x, int y, int z, ResourceLocation resourceLocation, double volume, String cat){
-		this(x, y, z, resourceLocation.getPath(), volume, cat);
-	}
-
-	public PacketCPlaySoundAtPos(double x, double y, double z, ResourceLocation resourceLocation, double volume, String cat){
-		this((int)x, (int)y, (int)z, resourceLocation.getPath(), volume, cat);
-	}
-
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		x = buf.readInt();

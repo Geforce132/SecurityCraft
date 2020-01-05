@@ -41,37 +41,37 @@ public class BlockUtils{
 	});
 
 	public static void setBlockInBox(World world, int x, int y, int z, Block block){
-		BlockUtils.setBlock(world, x + 1, y + 1, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z, block);
-		BlockUtils.setBlock(world, x + 1, y + 1, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 1, z, block);
-		BlockUtils.setBlock(world, x - 1, y + 2, z, block);
-		BlockUtils.setBlock(world, x - 1, y + 3, z, block);
-		BlockUtils.setBlock(world, x - 1, y + 1, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 2, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 3, z + 1, block);
-		BlockUtils.setBlock(world, x, y + 1, z + 1, block);
-		BlockUtils.setBlock(world, x, y + 2, z + 1, block);
-		BlockUtils.setBlock(world, x, y + 3, z + 1, block);
+		setBlock(world, x + 1, y + 1, z, block);
+		setBlock(world, x + 1, y + 2, z, block);
+		setBlock(world, x + 1, y + 3, z, block);
+		setBlock(world, x + 1, y + 1, z + 1, block);
+		setBlock(world, x + 1, y + 2, z + 1, block);
+		setBlock(world, x + 1, y + 3, z + 1, block);
+		setBlock(world, x - 1, y + 1, z, block);
+		setBlock(world, x - 1, y + 2, z, block);
+		setBlock(world, x - 1, y + 3, z, block);
+		setBlock(world, x - 1, y + 1, z + 1, block);
+		setBlock(world, x - 1, y + 2, z + 1, block);
+		setBlock(world, x - 1, y + 3, z + 1, block);
+		setBlock(world, x, y + 1, z + 1, block);
+		setBlock(world, x, y + 2, z + 1, block);
+		setBlock(world, x, y + 3, z + 1, block);
 
-		BlockUtils.setBlock(world, x, y + 1, z - 1, block);
-		BlockUtils.setBlock(world, x, y + 2, z - 1, block);
-		BlockUtils.setBlock(world, x, y + 3, z - 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 1, z - 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 2, z - 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 3, z - 1, block);
+		setBlock(world, x, y + 1, z - 1, block);
+		setBlock(world, x, y + 2, z - 1, block);
+		setBlock(world, x, y + 3, z - 1, block);
+		setBlock(world, x + 1, y + 1, z - 1, block);
+		setBlock(world, x + 1, y + 2, z - 1, block);
+		setBlock(world, x + 1, y + 3, z - 1, block);
 
-		BlockUtils.setBlock(world, x - 1, y + 1, z - 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 2, z - 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 3, z - 1, block);
+		setBlock(world, x - 1, y + 1, z - 1, block);
+		setBlock(world, x - 1, y + 2, z - 1, block);
+		setBlock(world, x - 1, y + 3, z - 1, block);
 
-		BlockUtils.setBlock(world, x + 1, y + 4, z + 1, block);
-		BlockUtils.setBlock(world, x + 1, y + 4, z - 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 4, z + 1, block);
-		BlockUtils.setBlock(world, x - 1, y + 4, z - 1, block);
+		setBlock(world, x + 1, y + 4, z + 1, block);
+		setBlock(world, x + 1, y + 4, z - 1, block);
+		setBlock(world, x - 1, y + 4, z + 1, block);
+		setBlock(world, x - 1, y + 4, z - 1, block);
 	}
 
 	/**
@@ -92,28 +92,16 @@ public class BlockUtils{
 		world.neighborChanged(pos.down(), world.getBlockState(pos).getBlock(), pos);
 	}
 
-	public static void destroyBlock(World world, BlockPos pos, boolean drop){
-		world.destroyBlock(pos, drop);
-	}
-
 	public static int getBlockMeta(World world, BlockPos pos){
 		return world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos));
 	}
 
-	public static void setBlock(World world, BlockPos pos, Block block){
-		world.setBlockState(pos, block.getDefaultState());
+	private static void setBlock(World world, int x, int y, int z, Block block){
+		world.setBlockState(toPos(x, y, z), block.getDefaultState());
 	}
 
-	public static void setBlock(World world, int x, int y, int z, Block block){
-		setBlock(world, toPos(x, y, z), block);
-	}
-
-	public static Block getBlock(World world, BlockPos pos){
+	public static Block getBlock(IBlockAccess world, BlockPos pos){
 		return world.getBlockState(pos).getBlock();
-	}
-
-	public static Block getBlock(IBlockAccess access, BlockPos pos){
-		return access.getBlockState(pos).getBlock();
 	}
 
 	public static Block getBlock(World world, int x, int y, int z){

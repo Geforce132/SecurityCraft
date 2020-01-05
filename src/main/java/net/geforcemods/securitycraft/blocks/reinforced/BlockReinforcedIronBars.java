@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
@@ -27,11 +26,6 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	public BlockReinforcedIronBars(Material material, boolean par2) {
 		super(material, par2);
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, SoundType.METAL, 16);
-	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		BlockUtils.setBlock(world, pos, Blocks.IRON_BARS);
 	}
 
 	@Override

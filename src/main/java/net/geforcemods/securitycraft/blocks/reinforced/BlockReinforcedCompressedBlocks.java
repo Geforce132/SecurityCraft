@@ -110,19 +110,17 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 
 	public static enum EnumType implements IStringSerializable
 	{
-		LAPIS(0, "lapis", "lapis"),
-		COAL(1, "coal", "coal");
+		LAPIS(0, "lapis"),
+		COAL(1, "coal");
 
 		private static final BlockReinforcedCompressedBlocks.EnumType[] META_LOOKUP = new BlockReinforcedCompressedBlocks.EnumType[values().length];
 		private final int meta;
 		private final String name;
-		private final String unlocalizedName;
 
-		private EnumType(int meta, String name, String unlocalizedName)
+		private EnumType(int meta, String name)
 		{
 			this.meta = meta;
 			this.name = name;
-			this.unlocalizedName = unlocalizedName;
 		}
 
 		public int getMetadata()
@@ -148,11 +146,6 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 		public String getName()
 		{
 			return name;
-		}
-
-		public String getTranslationKey()
-		{
-			return unlocalizedName;
 		}
 
 		static

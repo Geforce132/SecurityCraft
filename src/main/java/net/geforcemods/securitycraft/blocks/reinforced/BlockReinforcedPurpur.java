@@ -24,6 +24,7 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -84,9 +85,10 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	/**
 	 * Get the MapColor for this Block and the given BlockState
 	 */
-	public MapColor getMapColor(IBlockState state)
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		return MapColor.QUARTZ;
+		return MapColor.MAGENTA;
 	}
 
 	/**
@@ -144,7 +146,9 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
+
 		for (IProperty prop : state.getProperties().keySet())
+		{
 			if (prop.getName().equals("variant") && prop.getValueClass() == EnumType.class)
 			{
 				EnumType current = (EnumType)state.getValue(prop);
@@ -156,6 +160,8 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 				world.setBlockState(pos, state.withProperty(prop, next));
 				return true;
 			}
+		}
+
 		return false;
 	}
 

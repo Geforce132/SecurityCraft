@@ -76,7 +76,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F); //3 hearts per attack
+		entity.attackEntityFrom(CustomDamageSources.ELECTRICITY, 6.0F); //3 hearts per attack
 	}
 
 	@Override

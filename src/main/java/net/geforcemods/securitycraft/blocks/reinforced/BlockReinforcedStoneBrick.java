@@ -11,12 +11,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -24,11 +22,6 @@ public class BlockReinforcedStoneBrick extends BlockStoneBrick implements ITileE
 
 	public BlockReinforcedStoneBrick(){
 		super();
-	}
-
-	public IBlockState onBlockPlaced(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
-	{
-		return getDefaultState().withProperty(VARIANT, BlockStoneBrick.EnumType.byMetadata(meta));
 	}
 
 	@Override

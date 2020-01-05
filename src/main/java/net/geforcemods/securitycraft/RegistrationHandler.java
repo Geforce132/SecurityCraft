@@ -40,14 +40,12 @@ import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAnd
 import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
-import net.geforcemods.securitycraft.network.packets.PacketSAddModules;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
 import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
-import net.geforcemods.securitycraft.network.packets.PacketSSetOwner;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
@@ -138,9 +136,9 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.furnaceMine);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
-		registerBlock(event, SCContent.bogusLava, false);
+		registerBlock(event, SCContent.fakeLava, false);
 		registerBlock(event, SCContent.bogusLavaFlowing, false);
-		registerBlock(event, SCContent.bogusWater, false);
+		registerBlock(event, SCContent.fakeWater, false);
 		registerBlock(event, SCContent.bogusWaterFlowing, false);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
@@ -395,8 +393,6 @@ public class RegistrationHandler
 		network.registerMessage(PacketCPlaySoundAtPos.Handler.class, PacketCPlaySoundAtPos.class, 7, Side.CLIENT);
 		network.registerMessage(PacketSetExplosiveState.Handler.class, PacketSetExplosiveState.class, 8, Side.SERVER);
 		network.registerMessage(PacketGivePotionEffect.Handler.class, PacketGivePotionEffect.class, 9, Side.SERVER);
-		network.registerMessage(PacketSSetOwner.Handler.class, PacketSSetOwner.class, 10, Side.SERVER);
-		network.registerMessage(PacketSAddModules.Handler.class, PacketSAddModules.class, 11, Side.SERVER);
 		network.registerMessage(PacketSSetPassword.Handler.class, PacketSSetPassword.class, 12, Side.SERVER);
 		network.registerMessage(PacketSCheckPassword.Handler.class, PacketSCheckPassword.class, 13, Side.SERVER);
 		network.registerMessage(PacketSSyncTENBTTag.Handler.class, PacketSSyncTENBTTag.class, 14, Side.SERVER);

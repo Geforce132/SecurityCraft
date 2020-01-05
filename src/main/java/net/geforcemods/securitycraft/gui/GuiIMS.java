@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 public class GuiIMS extends GuiContainer{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-
 	private TileEntityIMS tileEntity;
 	private GuiButton targetButton;
 	private int targetingOptionIndex = 0;

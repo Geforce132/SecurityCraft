@@ -109,22 +109,6 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			return ItemStack.EMPTY;
 	}
 
-	/**
-	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-	 * like when you close a workbench GUI.
-	 */
-	public ItemStack getStackInSlotOnClosing(int index)
-	{
-		if (!inventoryContents.get(index).isEmpty())
-		{
-			ItemStack itemstack = inventoryContents.get(index);
-			inventoryContents.set(index, ItemStack.EMPTY);
-			return itemstack;
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
 	@Override
 	public ItemStack getStackInSlot(int index) {
 		return inventoryContents.get(index);
@@ -198,16 +182,6 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		return stackToInsert;
 	}
 
-	public void clearStorage() {
-		for(int i = 10; i < inventoryContents.size(); i++)
-			if(!inventoryContents.get(i).isEmpty()){
-				inventoryContents.set(i, ItemStack.EMPTY);
-				break;
-			}
-
-		markDirty();
-	}
-
 	@Override
 	public boolean hasCustomName() {
 		return true;
@@ -248,10 +222,6 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
 		this.isProvidingPower = isProvidingPower;
-	}
-
-	public int getCooldown() {
-		return cooldown;
 	}
 
 	public void setCooldown(int cooldown) {

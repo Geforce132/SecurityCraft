@@ -19,7 +19,6 @@ public class PacketCRefreshDiguisedModel implements IMessage
 	private boolean insert;
 	private ItemStack stack;
 
-
 	public PacketCRefreshDiguisedModel() {}
 
 	public PacketCRefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack)

@@ -14,7 +14,6 @@ import net.minecraft.util.EnumFacing;
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 
 	private final float CAMERA_SPEED = 0.0180F;
-
 	public float cameraRotation = 0.0F;
 	public boolean addToRotation = true;
 	public boolean down = false;

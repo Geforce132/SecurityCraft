@@ -29,12 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMineRemoteAccessTool extends Item {
 
-	public int listIndex = 0;
-
-	public ItemMineRemoteAccessTool() {
-		super();
-	}
-
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 		ItemStack stack = player.getHeldItem(hand);
@@ -54,7 +48,7 @@ public class ItemMineRemoteAccessTool extends Item {
 		if(!world.isRemote)
 			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
 				if(!isMineAdded(stack, world, pos)){
-					int availSlot = getNextAvaliableSlot(stack);
+					int availSlot = getNextAvailableSlot(stack);
 
 					if(availSlot == 0){
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
@@ -141,7 +135,7 @@ public class ItemMineRemoteAccessTool extends Item {
 		return false;
 	}
 
-	private int getNextAvaliableSlot(ItemStack stack){
+	private int getNextAvailableSlot(ItemStack stack){
 		for(int i = 1; i <= 6; i++)
 			if(stack.getTagCompound() == null)
 				return 1;

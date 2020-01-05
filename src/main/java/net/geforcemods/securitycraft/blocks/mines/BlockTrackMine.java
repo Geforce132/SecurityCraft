@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -27,7 +26,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
 		{
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
 			cart.setDead();
 		}
@@ -45,7 +44,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 		if(te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive())
 		{
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ConfigHandler.smallerMineExplosion ? 4.0F : 8.0F, true);
 		}
 	}

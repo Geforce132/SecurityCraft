@@ -122,7 +122,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.HARMING))
-							((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
+							((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
 
 					}
 				}

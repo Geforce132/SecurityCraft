@@ -114,10 +114,6 @@ public class ItemModule extends Item{
 		return module;
 	}
 
-	public boolean canNBTBeModified() {
-		return nbtCanBeModified;
-	}
-
 	public int getNumberOfAddons(){
 		return numberOfItemAddons + numberOfBlockAddons;
 	}
@@ -128,28 +124,6 @@ public class ItemModule extends Item{
 
 	public int getNumberOfBlockAddons(){
 		return numberOfBlockAddons;
-	}
-
-	public ArrayList<Item> getItemAddons(NBTTagCompound tag){
-		ArrayList<Item> list = new ArrayList<Item>();
-
-		if(tag == null) return list;
-
-		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
-
-		for(int i = 0; i < items.tagCount(); i++) {
-			NBTTagCompound item = items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
-
-			if(slot < numberOfItemAddons) {
-				ItemStack stack;
-
-				if((stack = new ItemStack(item)).getTranslationKey().startsWith("item."))
-					list.add(stack.getItem());
-			}
-		}
-
-		return list;
 	}
 
 	public ArrayList<Block> getBlockAddons(NBTTagCompound tag){

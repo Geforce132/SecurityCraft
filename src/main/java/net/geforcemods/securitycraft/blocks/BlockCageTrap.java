@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -45,11 +44,6 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	@Override
 	public boolean isOpaqueCube(IBlockState state){
 		return false;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
@@ -82,12 +76,12 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 					return;
 
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
-				BlockUtils.setBlock(world, pos.up(4), SCContent.reinforcedIronBars);
-				BlockUtils.setBlock(world, pos.up(3), SCContent.reinforcedIronBars);
-				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
-				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
-				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, SCContent.reinforcedIronBars);
-				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() - 1, SCContent.reinforcedIronBars);
+				world.setBlockState(pos.up(4), SCContent.reinforcedIronBars.getDefaultState());
+				world.setBlockState(pos.up(3), SCContent.reinforcedIronBars.getDefaultState());
+				world.setBlockState(pos.add(1, 4, 0), SCContent.reinforcedIronBars.getDefaultState());
+				world.setBlockState(pos.add(-1, 4, 0), SCContent.reinforcedIronBars.getDefaultState());
+				world.setBlockState(pos.add(0, 4, 1), SCContent.reinforcedIronBars.getDefaultState());
+				world.setBlockState(pos.add(0, 4, -1), SCContent.reinforcedIronBars.getDefaultState());
 
 				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), SCContent.reinforcedIronBars);
 				setTileEntities(world, pos.getX(), pos.getY(), pos.getZ(), ((IOwnable)world.getTileEntity(pos)).getOwner().getUUID(), ((IOwnable)world.getTileEntity(pos)).getOwner().getName());
