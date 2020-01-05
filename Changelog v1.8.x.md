@@ -21,6 +21,7 @@
 - Fix: I.M.S. does not emit a sound when launching one of its mines
 - Fix: Username Logger logs its owner
 - Fix: Laser Blocks can connect to other Laser Blocks that don't have the same owner
+- Potential Fix: Sentry crash
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
 

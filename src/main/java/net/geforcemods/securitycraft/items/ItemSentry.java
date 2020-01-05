@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -40,7 +41,7 @@ public class ItemSentry extends Item
 			Entity entity = new EntitySentry(world, player);
 
 			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
-			world.spawnEntity(entity);
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
 
 			if(!player.isCreative())
 				player.getHeldItem(hand).setCount(player.getHeldItem(hand).getCount() - 1);
