@@ -351,7 +351,7 @@ public class SCManualScreen extends Screen {
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
 		TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-		Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
+		Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
 		if(te != null){
 			if(te instanceof IOwnable)
@@ -363,7 +363,7 @@ public class SCManualScreen extends Screen {
 			if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-			if(BlockItem instanceof IExplosive)
+			if(blockItem instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te instanceof CustomizableTileEntity)
