@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.geforcemods.securitycraft.api.Option.OptionFloat;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.FloatOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.minecraft.item.ItemStack;
@@ -20,9 +20,9 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
-	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
-	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
-	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
+	private FloatOption rotationSpeedOption = new FloatOption("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
+	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
+	private DoubleOption customRotationOption = new DoubleOption(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
 
 	public SecurityCameraTileEntity()
 	{
