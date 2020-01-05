@@ -27,7 +27,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -353,25 +352,6 @@ public class SCManualScreen extends Screen {
 			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getPath();
 
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
-		}
-
-		if(recipe != null)
-		{
-			for(int i = 0; i < 3; i++)
-			{
-				for(int j = 0; j < 3; j++)
-				{
-					if(((i * 3) + j) >= recipe.size())
-						break;
-
-					ItemStack[] matchingStacks = recipe.get((i * 3) + j).getMatchingStacks();
-
-					if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
-						continue;
-
-					GuiUtils.drawItemToGui(minecraft, matchingStacks[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof BlockItem));
-				}
-			}
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
