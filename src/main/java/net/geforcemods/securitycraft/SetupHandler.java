@@ -44,6 +44,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
@@ -411,6 +412,7 @@ public class SetupHandler
 		SCContent.reinforcedAcaciaPressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.ACACIA_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_acacia_pressure_plate"));
 		SCContent.reinforcedDarkOakPressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_dark_oak_pressure_plate"));
 		SCContent.reinforcedRedstoneBlock = new ReinforcedRedstoneBlock();
+		SCContent.horizontalReinforcedIronBars = new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK, "horizontal_reinforced_iron_bars");
 	}
 
 	public static void setupMines()
