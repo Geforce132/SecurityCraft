@@ -13,6 +13,7 @@
 - New: Reinforced Redstone Block
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
+- Change: Inventory Scanner Fields now look more like Inventory Scanner Fields (Thanks LorenaGdL!)
 - Change: More recipes now use reinforced blocks instead of their vanilla equivalent
 - Change: The Sentry no longer needs 4 blocks around it to be placable
 - Fix: Laser and Inventory Scanner Field's name is not localized

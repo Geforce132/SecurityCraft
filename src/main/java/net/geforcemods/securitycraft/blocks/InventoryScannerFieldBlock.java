@@ -33,6 +33,8 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class InventoryScannerFieldBlock extends ContainerBlock implements IIntersectable {
@@ -319,6 +321,17 @@ public class InventoryScannerFieldBlock extends ContainerBlock implements IInter
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new SecurityCraftTileEntity().intersectsEntities();
+	}
+	
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
+	{
+		if (side == Direction.UP || side == Direction.DOWN)
+			if (state.getBlock() == adjacentBlockState.getBlock())
+				return true;
+
+		return super.isSideInvisible(state, adjacentBlockState, side);
 	}
 
 }
