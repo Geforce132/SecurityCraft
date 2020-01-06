@@ -40,5 +40,6 @@
 - Fix: Sentry kick/crash
 - Fix: Module duplication
 - Fix: Trophy System does not drop
+- Fix: I.M.S. bomb does not show up
 - Misc: The minimum required Forge version is 30.0.17
 - Remove: Unused config options
