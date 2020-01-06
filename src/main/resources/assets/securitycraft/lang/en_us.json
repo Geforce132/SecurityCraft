@@ -12,7 +12,7 @@
 	"block.securitycraft.deactivated_cage_trap": "Deactivated Cage Trap",
 	"block.securitycraft.portable_radar": "Portable Radar",
 	"block.securitycraft.reinforced_iron_bars": "Reinforced Iron Bars",
-	"block.securitycraft.horizontal_reinforced_iron_bars": "Horizontal Reinforced Iron Bars",
+	"block.securitycraft.horizontal_reinforced_iron_bars.name": "Horizontal Reinforced Iron Bars",
 	"block.securitycraft.username_logger": "Username Logger",
 	"block.securitycraft.bogus_lava": "Fake Lava",
 	"block.securitycraft.bogus_water": "Fake Water",
