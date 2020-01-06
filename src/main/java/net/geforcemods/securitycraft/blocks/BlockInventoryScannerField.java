@@ -377,4 +377,17 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		return new TileEntitySCTE().intersectsEntities();
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
+        Block block = iblockstate.getBlock();
+
+        if (side == EnumFacing.UP || side == EnumFacing.DOWN)
+	        if (block == this)
+	            return false;
+
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
 }
