@@ -1,6 +1,6 @@
 {
-	"version": "v1.8.14.1",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/2826711",
-	"fileName": "[1.12.2] SecurityCraft v1.8.14.1",
-	"changelog": "Fixes"
+	"version": "v1.8.15",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/2855805",
+	"fileName": "[1.12.2] SecurityCraft v1.8.15",
+	"changelog": "Sentry Remote Access Tool and a ton of QoL fixes and additions"
 }
