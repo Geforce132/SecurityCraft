@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -64,7 +63,7 @@ public class BouncingBettyEntity extends Entity {
 		prevPosX = func_226277_ct_();
 		prevPosY = func_226278_cu_();
 		prevPosZ = func_226281_cx_();
-		EntityUtils.moveY(this, 0.03999999910593033D);
+		setMotion(getMotion().add(0, -0.03999999910593033D, 0));
 		move(MoverType.SELF, getMotion());
 		setMotion(getMotion().mul(0.9800000190734863D, 0.9800000190734863D, 0.9800000190734863D));
 
