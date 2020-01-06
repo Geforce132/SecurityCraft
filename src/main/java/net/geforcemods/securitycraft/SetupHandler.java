@@ -40,6 +40,7 @@ import net.geforcemods.securitycraft.blocks.mines.BlockFurnaceMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockHorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBookshelf;
@@ -53,7 +54,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockHorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
@@ -278,7 +278,7 @@ public class SetupHandler
 
 		SCContent.reinforcedBookshelf = new BlockReinforcedBookshelf(Material.WOOD, 1, Blocks.BOOKSHELF).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bookshelf").setTranslationKey("securitycraft:reinforcedBookshelf");
 
-		SCContent.horizontalReinforcedIronBars = new BlockHorizontalReinforcedIronBars().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("horizontal_reinforced_iron_bars").setTranslationKey("securitycraft:horizontalReinforcedIronBars");
+		SCContent.horizontalReinforcedIronBars = new BlockHorizontalReinforcedIronBars().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("horizontal_reinforced_iron_bars");
 	}
 
 	public static void setupMines()
