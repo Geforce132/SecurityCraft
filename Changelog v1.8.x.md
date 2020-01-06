@@ -40,6 +40,7 @@
 - Fix: Sentry kick/crash
 - Fix: Module duplication
 - Fix: Trophy System does not drop
+- Fix: I.M.S. bomb does not show up
 - Misc: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 
