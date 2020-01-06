@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
@@ -11,6 +12,7 @@ import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
@@ -24,6 +26,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
@@ -34,7 +37,6 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
-
 
 	public HorizontalReinforcedIronBars(SoundType soundType, Material mat, Block vB, String registryPath)
 	{
@@ -142,5 +144,11 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	public List<ItemStack> getDrops(BlockState state, Builder builder)
 	{
 		return NonNullList.from(ItemStack.EMPTY);
+	}
+	
+	@Override
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
+	{
+		return new ItemStack(SCContent.reinforcedIronBars);
 	}
 }
