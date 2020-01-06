@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-//TODO: remove dimension
 public class RequestTEOwnableUpdate
 {
 	private BlockPos pos;

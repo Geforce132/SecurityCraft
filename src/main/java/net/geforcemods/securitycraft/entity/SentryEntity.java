@@ -52,7 +52,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SentryEntity extends CreatureEntity implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(SentryEntity.class, Owner.SERIALIZER);
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(SentryEntity.class, Owner.getSerializer());
 	private static final DataParameter<CompoundNBT> MODULE = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<CompoundNBT> WHITELIST = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(SentryEntity.class, DataSerializers.VARINT);
@@ -74,7 +74,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
 		dataManager.set(MODULE, new CompoundNBT());
 		dataManager.set(WHITELIST, new CompoundNBT());
-		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
+		dataManager.set(MODE, SentryMode.CAMOUFLAGE.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
 
@@ -85,7 +85,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(MODULE, new CompoundNBT());
 		dataManager.register(WHITELIST, new CompoundNBT());
-		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE.ordinal());
+		dataManager.register(MODE, SentryMode.CAMOUFLAGE.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
 
@@ -260,9 +260,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	@Override
 	public void setAttackTarget(LivingEntity target)
 	{
-		if(getMode() != EnumSentryMode.AGGRESSIVE && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId())))
+		if(getMode() != SentryMode.AGGRESSIVE && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId())))
 		{
-			animateUpwards = getMode() == EnumSentryMode.CAMOUFLAGE && target != null;
+			animateUpwards = getMode() == SentryMode.CAMOUFLAGE && target != null;
 			animate = true;
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), animate, animateUpwards));
 		}
@@ -403,11 +403,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	/**
 	 * @return The mode in which the sentry is currently in, CAMOUFLAGE if the saved mode is smaller than 0 or greater than 2 (there are only 3 valid modes: 0, 1, 2)
 	 */
-	public EnumSentryMode getMode()
+	public SentryMode getMode()
 	{
 		int mode = dataManager.get(MODE);
 
-		return mode < 0 || mode > 2 ? EnumSentryMode.CAMOUFLAGE : EnumSentryMode.values()[mode];
+		return mode < 0 || mode > 2 ? SentryMode.CAMOUFLAGE : SentryMode.values()[mode];
 	}
 
 	/**
@@ -548,7 +548,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		}
 	}
 
-	public static enum EnumSentryMode
+	public static enum SentryMode
 	{
 		AGGRESSIVE, CAMOUFLAGE, IDLE;
 	}

@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
-import net.geforcemods.securitycraft.tileentity.IMSTileEntity.EnumIMSTargetingMode;
+import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -34,7 +34,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addButton(targetButton = new ClickButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
+		addButton(targetButton = new ClickButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == IMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
 		updateButtonText();
 	}
 
@@ -62,10 +62,10 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 			case 0:
 				targetingOptionIndex++;
 
-				if(targetingOptionIndex > (EnumIMSTargetingMode.values().length - 1))
+				if(targetingOptionIndex > (IMSTargetingMode.values().length - 1))
 					targetingOptionIndex = 0;
 
-				tileEntity.setTargetingOption(EnumIMSTargetingMode.values()[targetingOptionIndex]);
+				tileEntity.setTargetingOption(IMSTargetingMode.values()[targetingOptionIndex]);
 
 				ClientUtils.syncTileEntity(tileEntity);
 
@@ -74,11 +74,11 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	private void updateButtonText() {
-		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS)
+		if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.PLAYERS)
 			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
-		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
+		else if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.PLAYERS_AND_MOBS)
 			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
-		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.MOBS)
+		else if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.MOBS)
 			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile"));
 	}
 

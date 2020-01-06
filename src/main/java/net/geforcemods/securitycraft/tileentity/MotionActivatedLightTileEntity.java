@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -15,7 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 5.0D, 20.0D, 5.0D);
+	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 5.0D, 20.0D, 5.0D);
 
 	public MotionActivatedLightTileEntity()
 	{

@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
@@ -48,7 +47,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 			cart.remove();
 		}
@@ -67,7 +66,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}

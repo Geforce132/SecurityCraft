@@ -42,48 +42,6 @@ public class CameraView {
 	}
 
 	/**
-	 * Sets a new location for this view.
-	 *
-	 * @param newX new X coordinate
-	 * @param newY new Y coordinate
-	 * @param newZ new Z coordinate
-	 * @param newDim dimension ID for the new location
-	 */
-	public void setLocation(int newX, int newY, int newZ, int newDim) {
-		x = newX;
-		y = newY;
-		z = newZ;
-		dimension = newDim;
-	}
-
-	/**
-	 * Sets a new location for this view.
-	 *
-	 * @param pos the BlockPos of the new coordinate
-	 * @param newDim dimension ID for the new location
-	 */
-	public void setLocation(BlockPos pos, int newDim) {
-		x = pos.getX();
-		y = pos.getY();
-		z = pos.getZ();
-		dimension = newDim;
-	}
-
-	/**
-	 * Checks to see if the given coordinates are the same
-	 * as this view's coordinates.
-	 *
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 * @param z Z coordinate
-	 * @param dim dimension ID
-	 * @return true if the x, y, z and dimension match, false otherwise
-	 */
-	public boolean checkCoordinates(int x, int y, int z, int dim) {
-		return checkCoordinates(new String[] {x + "", y + "", z + "", dim + ""});
-	}
-
-	/**
 	 * Checks to see if the given coordinates are the same
 	 * as this view's coordinates.
 	 *

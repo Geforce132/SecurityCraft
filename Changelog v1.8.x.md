@@ -8,8 +8,13 @@
 - New: The following blocks can now be disguised with the Disguise Module, similar to the Keypad: Inventory Scanner, Keycard Reader, Laser Block, Retinal Scanner, Username Logger
 - New: Sentries can now be named. Names show up in the Sentry Remote Access Tool
 - New: The Universal Owner Changer now works for sentries
+- New: I.M.S. can now target only hostile mobs
+- New: Page indicators for SecurityCraft Manual
+- New: Reinforced Redstone Block
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
+- Change: More recipes now use reinforced blocks instead of their vanilla equivalent
+- Change: The Sentry no longer needs 4 blocks around it to be placable
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
@@ -28,6 +33,14 @@
 - Fix: SecurityCraft Manual's subpage navigation buttons appear even when there are no subpages
 - Fix: Username Logger logs its owner
 - Fix: Reinforced Stairs can be destroyed using TNT
+- Fix: Gap between Reinforced Iron Bars when activating Cage Trap (Thanks LorenaGdL!)
+- Fix: Rotation slider in Security Camera's customization GUI displays its value twice
+- Fix: Laser Blocks can connect to other Laser Blocks that don't have the same owner
+- Fix: Recipes using tags don't correctly show in the manual
+- Fix: Sentry kick/crash
+- Fix: Module duplication
+- Fix: Trophy System does not drop
+- Fix: I.M.S. bomb does not show up
 - Misc: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 

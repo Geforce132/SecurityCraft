@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -56,12 +55,6 @@ public class FrameBlock extends OwnableBlock {
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		return player.getHeldItem(hand).getItem() == SCContent.keyPanel;
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state)
-	{
-		return BlockRenderType.MODEL;
 	}
 
 	@Override

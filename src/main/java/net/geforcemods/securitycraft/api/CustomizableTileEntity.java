@@ -214,7 +214,6 @@ public abstract class CustomizableTileEntity extends OwnableTileEntity implement
 	/**
 	 * Copy of decrStackSize which can't be overrided by subclasses.
 	 */
-
 	public ItemStack safeDecrStackSize(int index, int count)
 	{
 		if (!modules.get(index).isEmpty())

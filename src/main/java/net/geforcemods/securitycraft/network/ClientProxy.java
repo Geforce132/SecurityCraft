@@ -70,10 +70,10 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void clientSetup()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(BouncingBettyEntity.class, manager -> new BouncingBettyRenderer(manager));
-		RenderingRegistry.registerEntityRenderingHandler(IMSBombEntity.class, manager -> new IMSBombRenderer(manager));
-		RenderingRegistry.registerEntityRenderingHandler(SentryEntity.class, manager -> new SentryRenderer(manager));
-		RenderingRegistry.registerEntityRenderingHandler(BulletEntity.class, manager -> new BulletRenderer(manager));
+		RenderingRegistry.registerEntityRenderingHandler(BouncingBettyEntity.class, BouncingBettyRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(IMSBombEntity.class, IMSBombRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(SentryEntity.class, SentryRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(BulletEntity.class, BulletRenderer::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(KeypadChestTileEntity.class, new KeypadChestTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecurityCameraTileEntity.class, new SecurityCameraTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecretSignTileEntity.class, new SecretSignTileEntityRenderer());

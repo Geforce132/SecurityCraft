@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.Iterator;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
@@ -22,20 +21,5 @@ public class EntityUtils{
 		}
 
 		return false;
-	}
-
-	public static void moveX(Entity entity, double amount)
-	{
-		entity.setMotion(entity.getMotion().mul(1, 0, 0).add(amount, 0, 0));
-	}
-
-	public static void moveY(Entity entity, double amount)
-	{
-		entity.setMotion(entity.getMotion().mul(0, 1, 0).add(0, amount, 0));
-	}
-
-	public static void moveZ(Entity entity, double amount)
-	{
-		entity.setMotion(entity.getMotion().mul(0, 0, 1).add(0, 0, amount));
 	}
 }

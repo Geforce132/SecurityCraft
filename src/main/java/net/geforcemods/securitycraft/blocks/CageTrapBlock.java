@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -38,13 +37,8 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
 	public CageTrapBlock(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -73,7 +67,8 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 					return;
 
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
-				BlockUtils.setBlock(world, pos.up(4), SCContent.horizontalReinforcedIronBars);
+
+				world.setBlockState(pos.up(4), SCContent.horizontalReinforcedIronBars.getDefaultState());
 				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), SCContent.reinforcedIronBars);
 				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, SCContent.reinforcedIronBars);
@@ -138,10 +133,6 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 1, z + 1))).getOwner().set(uuid, name);
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 2, z + 1))).getOwner().set(uuid, name);
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 3, z + 1))).getOwner().set(uuid, name);
-
-		((IOwnable)world.getTileEntity(BlockUtils.toPos(x + 1, y + 1, z))).getOwner().set(uuid, name);
-		((IOwnable)world.getTileEntity(BlockUtils.toPos(x + 1, y + 2, z))).getOwner().set(uuid, name);
-		((IOwnable)world.getTileEntity(BlockUtils.toPos(x + 1, y + 3, z))).getOwner().set(uuid, name);
 
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 1, z - 1))).getOwner().set(uuid, name);
 		((IOwnable)world.getTileEntity(BlockUtils.toPos(x, y + 2, z - 1))).getOwner().set(uuid, name);

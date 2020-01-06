@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
-import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
+import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -27,7 +27,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -48,11 +47,11 @@ public class SCManualScreen extends Screen {
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
 	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-
 	private List<HoverChecker> hoverCheckers = new ArrayList<HoverChecker>();
 	private static int lastPage = -1;
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
+	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
 	private boolean update = false;
 	private List<String> subpages = new ArrayList<>();
@@ -75,8 +74,17 @@ public class SCManualScreen extends Screen {
 
 		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
-		addButton(new SCManualScreen.ChangePageButton(3, startX + 190, startY + 97, true, this::actionPerformed)); //next subpage
-		addButton(new SCManualScreen.ChangePageButton(4, startX + 165, startY + 97, false, this::actionPerformed)); //previous subpage
+		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
+		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
+
+		for(int i = 0; i < 3; i++)
+		{
+			for(int j = 0; j < 3; j++)
+			{
+				displays[(i * 3) + j] = new IngredientDisplay((startX + 100) + (j * 20), 144 + (i * 20));
+			}
+		}
+
 		updateRecipeAndIcons();
 	}
 
@@ -123,6 +131,14 @@ public class SCManualScreen extends Screen {
 		for(int i = 0; i < buttons.size(); i++)
 			buttons.get(i).render(mouseX, mouseY, partialTicks);
 
+		if(currentPage != -1)
+		{
+			if(subpages.size() > 1)
+				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+
+			font.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+		}
+
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
 			GuiUtils.drawItemToGui(minecraft, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
@@ -130,10 +146,10 @@ public class SCManualScreen extends Screen {
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
 			TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-			Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
+			Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
-			if(BlockItem != null){
-				if(BlockItem instanceof IExplosive)
+			if(blockItem != null){
+				if(blockItem instanceof IExplosive)
 					this.blit(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te != null){
@@ -151,31 +167,29 @@ public class SCManualScreen extends Screen {
 				}
 			}
 
-			if(recipe != null)
+			for(IngredientDisplay display : displays)
 			{
-				for(int i = 0; i < 3; i++)
-					for(int j = 0; j < 3; j++)
-					{
-						if(((i * 3) + j) >= recipe.size())
-							break;
-
-						ItemStack[] matchingStacks = recipe.get((i * 3) + j).getMatchingStacks();
-
-						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
-							continue;
-
-						GuiUtils.drawItemToGui(minecraft, matchingStacks[0].getItem(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof BlockItem));
-					}
+				display.render(minecraft, partialTicks);
 			}
 
-			for(HoverChecker chc : hoverCheckers)
+			outer: for(int i = 0; i < 3; i++)
 			{
-				if(chc != null && chc.checkHover(mouseX, mouseY))
+				for(int j = 0; j < 3; j++)
 				{
-					if(chc instanceof StackHoverChecker && !((StackHoverChecker)chc).getStack().isEmpty())
-						renderTooltip(((StackHoverChecker)chc).getStack(), mouseX, mouseY);
-					else if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-						renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+					int index = (i * 3) + j;
+
+					if(index >= hoverCheckers.size())
+						break outer;
+
+					HoverChecker chc = hoverCheckers.get(index);
+
+					if(chc != null && chc.checkHover(mouseX, mouseY))
+					{
+						if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
+							renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+						else if(!displays[index].getCurrentStack().isEmpty())
+							renderTooltip(displays[index].getCurrentStack(), mouseX, mouseY);
+					}
 				}
 			}
 		}
@@ -280,6 +294,7 @@ public class SCManualScreen extends Screen {
 		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
 			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
 		else
+		{
 			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 			{
 				if(object instanceof ShapedRecipe){
@@ -310,20 +325,17 @@ public class SCManualScreen extends Screen {
 
 				recipe = null;
 			}
+		}
 
 		boolean reinforcedPage = SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info");
 
 		if(recipe != null && !reinforcedPage)
 		{
-			outer: for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 3; i++)
 			{
 				for(int j = 0; j < 3; j++)
 				{
-					if((i * 3) + j == recipe.size())
-						break outer;
-
-					if(recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
-						hoverCheckers.add(new StackHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16, 20, recipe.get((i * 3) + j).getMatchingStacks()[0]));
+					hoverCheckers.add(new HoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16, 20));
 				}
 			}
 		}
@@ -343,7 +355,7 @@ public class SCManualScreen extends Screen {
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
 		TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-		Block BlockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
+		Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
 		if(te != null){
 			if(te instanceof IOwnable)
@@ -355,11 +367,34 @@ public class SCManualScreen extends Screen {
 			if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-			if(BlockItem instanceof IExplosive)
+			if(blockItem instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te instanceof CustomizableTileEntity)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+		}
+
+		if(recipe != null && recipe.size() > 0)
+		{
+			for(int i = 0; i < 3; i++)
+			{
+				for(int j = 0; j < 3; j++)
+				{
+					int index = (i * 3) + j;
+
+					if(index >= recipe.size())
+						displays[index].setIngredient(Ingredient.EMPTY);
+					else
+						displays[index].setIngredient(recipe.get(index));
+				}
+			}
+		}
+		else
+		{
+			for(IngredientDisplay display : displays)
+			{
+				display.setIngredient(Ingredient.EMPTY);
+			}
 		}
 
 		//set up subpages
