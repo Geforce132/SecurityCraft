@@ -44,6 +44,5 @@
 - Fix: Trophy System does not drop
 - Fix: I.M.S. bomb does not show up
 - Fix: Message about cage trap having trapped someone gets sent to the one being trapped and not the cage trap owner (Thanks LorenaGdL!)
-- Misc: The minimum required Forge version is now 28.1.91
 - Misc: The minimum required Forge version is 30.0.17
 - Remove: Unused config options
