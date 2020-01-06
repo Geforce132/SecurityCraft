@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
@@ -31,7 +31,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
 			world.destroyBlock(pos, false);
-			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 			cart.remove();
 		}
 	}
@@ -67,7 +67,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), CommonConfig.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ConfigHandler.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 

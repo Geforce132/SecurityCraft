@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -116,7 +116,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		InventoryScannerTileEntity connectedScanner = null;
 		for(Direction facing : Direction.Plane.HORIZONTAL)
 		{
-			for(int i = 1; i <= CommonConfig.CONFIG.inventoryScannerRange.get(); i++)
+			for(int i = 1; i <= ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
 			{
 				BlockPos offsetIPos = pos.offset(facing, i);
 
@@ -169,7 +169,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	{
 		Direction facing = world.getBlockState(pos).get(FACING);
 
-		for(int i = 0; i <= CommonConfig.CONFIG.inventoryScannerRange.get(); i++)
+		for(int i = 0; i <= ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
 		{
 			BlockPos offsetPos = pos.offset(facing, i);
 			BlockState state = world.getBlockState(offsetPos);

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.block.Block;
@@ -94,6 +94,6 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader reader) {
-		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, CommonConfig.CONFIG.usernameLoggerSearchRadius.get(), 80);
+		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, ConfigHandler.CONFIG.usernameLoggerSearchRadius.get(), 80);
 	}
 }

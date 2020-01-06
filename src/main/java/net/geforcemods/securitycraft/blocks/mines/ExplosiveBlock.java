@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -27,7 +27,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override

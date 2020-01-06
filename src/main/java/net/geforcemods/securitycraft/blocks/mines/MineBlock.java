@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -65,7 +65,7 @@ public class MineBlock extends ExplosiveBlock {
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
 		if(!world.isRemote)
-			if(player != null && player.isCreative() && !CommonConfig.CONFIG.mineExplodesWhenInCreative.get())
+			if(player != null && player.isCreative() && !ConfigHandler.CONFIG.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else{
 				explode(world, pos);
@@ -113,10 +113,10 @@ public class MineBlock extends ExplosiveBlock {
 
 		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
 			world.destroyBlock(pos, false);
-			if(CommonConfig.CONFIG.smallerMineExplosion.get())
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			if(ConfigHandler.CONFIG.smallerMineExplosion.get())
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 			else
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 

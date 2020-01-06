@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -54,7 +54,7 @@ public class IMSBlock extends OwnableBlock {
 	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override

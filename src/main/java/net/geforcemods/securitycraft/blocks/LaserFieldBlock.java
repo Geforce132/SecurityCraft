@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IIntersectable;
@@ -65,7 +65,7 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 		{
 			for(Direction facing : Direction.values())
 			{
-				for(int i = 0; i < CommonConfig.CONFIG.laserBlockRange.get(); i++)
+				for(int i = 0; i < ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 				{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
@@ -100,7 +100,7 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 		{
 			for(Direction facing : Direction.values())
 			{
-				for(int i = 0; i < CommonConfig.CONFIG.laserBlockRange.get(); i++)
+				for(int i = 0; i < ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 				{
 					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.laserBlock)
 					{

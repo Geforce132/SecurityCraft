@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
@@ -85,10 +85,10 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay 
 	public void explode(World world, BlockPos pos) {
 		world.destroyBlock(pos, false);
 
-		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+		if(ConfigHandler.CONFIG.smallerMineExplosion.get())
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 
 	}
 

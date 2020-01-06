@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -100,7 +99,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!event.getPlayer().getEntityWorld().isRemote || !CommonConfig.CONFIG.sayThanksMessage.get())
+		if(!event.getPlayer().getEntityWorld().isRemote || !ConfigHandler.CONFIG.sayThanksMessage.get())
 			return;
 
 		String tipKey = getRandomTip();
@@ -665,11 +664,11 @@ public class SCEventHandler {
 		World world = event.getPlayer().world;
 		TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
 
-		if(CommonConfig.CONFIG.allowCodebreakerItem.get() && event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
+		if(ConfigHandler.CONFIG.allowCodebreakerItem.get() && event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
 			event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> {});
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !CommonConfig.CONFIG.allowCodebreakerItem.get());
+			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.CONFIG.allowCodebreakerItem.get());
 
 		return false;
 	}

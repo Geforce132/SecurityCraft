@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
@@ -61,7 +60,7 @@ public class SecurityCraft {
 	{
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG_SPEC);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
 	}
 
 	@SubscribeEvent

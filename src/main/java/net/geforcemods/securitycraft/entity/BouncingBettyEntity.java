@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -85,10 +85,10 @@ public class BouncingBettyEntity extends Entity {
 	{
 		float f = 6.0F;
 
-		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion(this, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), (f / 2), CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+		if(ConfigHandler.CONFIG.smallerMineExplosion.get())
+			world.createExplosion(this, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), (f / 2), ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion(this, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), f, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(this, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), f, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 	}
 
 	/**

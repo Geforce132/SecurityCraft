@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -66,7 +66,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double range = CommonConfig.CONFIG.imsRange.get();
+			double range = ConfigHandler.CONFIG.imsRange.get();
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area);
