@@ -16,7 +16,7 @@
 - Change: Inventory Scanner Fields now look more like Inventory Scanner Fields (Thanks LorenaGdL!)
 - Change: More recipes now use reinforced blocks instead of their vanilla equivalent
 - Change: The Sentry no longer needs 4 blocks around it to be placable
-- Change: The Cage Traps now has a ceiling to properly prevent players from escaping (Thanks LorenaGdL!)
+- Change: The Cage Trap now has a ceiling to properly prevent players from escaping (Thanks LorenaGdL!)
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
