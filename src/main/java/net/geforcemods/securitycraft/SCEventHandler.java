@@ -384,7 +384,7 @@ public class SCEventHandler {
 							world.destroyBlock(pos, false);
 
 						pos = originalPos.up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
+						if(BlockUtils.getBlock(world, pos) == SCContent.horizontalReinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
 							world.destroyBlock(pos, false);
 
 						world.destroyBlock(originalPos, false);
