@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -86,7 +86,7 @@ public class PortableRadarBlock extends ContainerBlock {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new PortableRadarTileEntity().attacks(PlayerEntity.class, CommonConfig.CONFIG.portableRadarSearchRadius.get(), CommonConfig.CONFIG.portableRadarDelay.get()).nameable();
+		return new PortableRadarTileEntity().attacks(PlayerEntity.class, ConfigHandler.CONFIG.portableRadarSearchRadius.get(), ConfigHandler.CONFIG.portableRadarDelay.get()).nameable();
 	}
 
 }
