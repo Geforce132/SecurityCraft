@@ -13,7 +13,8 @@
 - Change: Lasers now look more like lasers
 - Change: Inventory Scanner Fields now look more like Inventory Scanner Fields (Thanks LorenaGdL!)
 - Change: More recipes now use reinforced blocks instead of their vanilla equivalent
-- Change: The Sentry no longer needs 4 blocks around it to be placable
+- Change: The Sentry no longer needs 4 blocks around it to be placeable
+- Change: The Cage Trap now has a ceiling to properly prevent players from escaping (Thanks LorenaGdL!)
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
 - Fix: Alarm does not turn off when it no longer receives a redstone signal
@@ -29,6 +30,7 @@
 - Fix: I.M.S. particles don't work
 - Fix: Sentry kick/crash
 - Fix: Module duplication
+- Fix: Message about cage trap having trapped someone gets sent to the one being trapped and not the cage trap owner (Thanks LorenaGdL!)
 - Misc.: The minimum required Forge version is now 14.23.5.2826
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------
