@@ -49,7 +49,9 @@
 
 --------------------------Changelog for v1.8.15-beta2 of SecurityCraft--------------------------
 
+- New: Add back JEI integration
 - Fix: Trophy System destroys its owner's projectiles
+- Fix: Mod does not start on a server
 
 --------------------------Changelog for v1.8.15-beta1 of SecurityCraft--------------------------
 
