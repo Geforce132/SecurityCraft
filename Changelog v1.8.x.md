@@ -15,7 +15,7 @@
 - Change: Lasers now look more like lasers
 - Change: Inventory Scanner Fields now look more like Inventory Scanner Fields (Thanks LorenaGdL!)
 - Change: More recipes now use reinforced blocks instead of their vanilla equivalent
-- Change: The Sentry no longer needs 4 blocks around it to be placable
+- Change: The Sentry no longer needs 4 blocks around it to be placeable
 - Change: The Cage Trap now has a ceiling to properly prevent players from escaping (Thanks LorenaGdL!)
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
@@ -45,4 +45,4 @@
 - Fix: I.M.S. bomb does not show up
 - Fix: Message about cage trap having trapped someone gets sent to the one being trapped and not the cage trap owner (Thanks LorenaGdL!)
 - Misc.: The minimum required Forge version is 30.0.17
-- Remove: Unused config options
+- Removed: Unused config options
