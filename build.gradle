@@ -41,7 +41,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200102-1.14.3'
+    mappings channel: 'snapshot', version: '20200106-1.14.3'
 	
     runs {
         client {
@@ -99,7 +99,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.1-30.0.21'
+    minecraft 'net.minecraftforge:forge:1.15.1-30.0.30'
 
 //    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4") {
 //        transitive = false
@@ -117,9 +117,9 @@ jar {
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3",
-                    "Specification-Version": "v1.8.15-beta1",
+                    "Specification-Version": "v1.8.15-beta2",
                     "Implementation-Title": "SecurityCraft",
-                    "Implementation-Version": "v1.8.15-beta1",
+                    "Implementation-Version": "v1.8.15-beta2",
                     "Implementation-Vendor" :"Geforce, bl4ckscor3",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }

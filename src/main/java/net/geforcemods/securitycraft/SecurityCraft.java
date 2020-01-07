@@ -21,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -43,8 +44,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	//********************************* This is v1.8.15-beta1 for MC 1.14.4!
-	protected static final String VERSION = "v1.8.15-beta1";
+	//********************************* This is v1.8.15-beta2 for MC 1.15.1!
+	protected static final String VERSION = "v1.8.15-beta2";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
@@ -81,10 +82,12 @@ public class SecurityCraft {
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
-		CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
 
-		if(vcUpdateTag != null)
-			InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
+			if(vcUpdateTag != null)
+				InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
+		});
 
 		CustomModules.refresh();
 		proxy.tint();
