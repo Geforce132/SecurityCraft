@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
@@ -44,6 +45,7 @@ import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
@@ -75,6 +77,7 @@ public class ClientProxy implements IProxy {
 		RenderingRegistry.registerEntityRenderingHandler(SentryEntity.class, SentryRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(BulletEntity.class, BulletRenderer::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(KeypadChestTileEntity.class, new KeypadChestTileEntityRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(RetinalScannerTileEntity.class, new RetinalScannerTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecurityCameraTileEntity.class, new SecurityCameraTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecretSignTileEntity.class, new SecretSignTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TrophySystemTileEntity.class, new TrophySystemTileEntityRenderer());
@@ -132,7 +135,7 @@ public class ClientProxy implements IProxy {
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			Block block = world.getBlockState(pos).getBlock();
+			Block block = state.getBlock();
 
 			if(block instanceof DisguisableBlock)
 			{
