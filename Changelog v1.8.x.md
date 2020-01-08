@@ -1,5 +1,9 @@
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
+- Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
+
+--------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
+
 - New: Reinforced Bookshelf (Can also be used for an enchanting table)
 - New: If a Briefcase has been renamed, it will now show that name in the inventory GUI
 - New: Sentry Remote Access Tool to remotely control sentries, analogously to the Mine Remote Access Tool (Thanks LorenaGdL!)

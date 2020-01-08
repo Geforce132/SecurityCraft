@@ -150,6 +150,9 @@ public class EntitySecurityCamera extends Entity{
 		if(world.isRemote && isBeingRidden()){
 			EntityPlayer lowestEntity = (EntityPlayer)getPassengers().get(0);
 
+			if(lowestEntity != Minecraft.getMinecraft().player)
+				return;
+
 			if(screenshotCooldown > 0)
 				screenshotCooldown -= 1;
 
