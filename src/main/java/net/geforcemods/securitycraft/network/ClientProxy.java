@@ -285,10 +285,10 @@ public class ClientProxy implements IProxy {
 	@SideOnly(Side.CLIENT)
 	public void registerEntityRenderingHandlers()
 	{
-		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, manager -> new RenderBouncingBetty(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, manager -> new RenderIMSBomb(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, manager -> new RenderSentry(manager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, manager -> new RenderBullet(manager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, RenderBouncingBetty::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, RenderIMSBomb::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, RenderSentry::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, RenderBullet::new);
 	}
 
 	@Override
