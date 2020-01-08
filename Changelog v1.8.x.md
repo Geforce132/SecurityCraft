@@ -47,6 +47,10 @@
 - Misc.: The minimum required Forge version is 30.0.17
 - Removed: Unused config options
 
+--------------------------Changelog for v1.8.15-beta3 of SecurityCraft--------------------------
+
+- Fix: JEI error on startup
+
 --------------------------Changelog for v1.8.15-beta2 of SecurityCraft--------------------------
 
 - New: Add back JEI integration

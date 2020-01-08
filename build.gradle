@@ -99,7 +99,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.1-30.0.30'
+    minecraft 'net.minecraftforge:forge:1.15.1-30.0.35'
 
 //    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.6-B67_1.14.4") {
 //        transitive = false
