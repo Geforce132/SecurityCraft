@@ -50,6 +50,7 @@
 --------------------------Changelog for v1.8.15-beta3 of SecurityCraft--------------------------
 
 - Fix: JEI error on startup
+- Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
 
 --------------------------Changelog for v1.8.15-beta2 of SecurityCraft--------------------------
 
