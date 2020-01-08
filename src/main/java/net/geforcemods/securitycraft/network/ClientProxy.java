@@ -264,7 +264,7 @@ public class ClientProxy implements IProxy
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			Block block = world.getBlockState(pos).getBlock();
+			Block block = state.getBlock();
 
 			if(block instanceof DisguisableBlock)
 			{
