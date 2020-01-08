@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
@@ -52,21 +53,76 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
+@EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT, bus=Bus.MOD)
 public class ClientProxy implements IProxy {
+	@SubscribeEvent
+	public static void onModelBake(ModelBakeEvent event)
+	{
+		String[] facings = {"east", "north", "south", "west"};
+		String[] bools = {"true", "false"};
+		ResourceLocation[] facingPoweredBlocks = {
+				SCContent.keycardReader.getRegistryName(),
+				SCContent.keypad.getRegistryName(),
+				SCContent.retinalScanner.getRegistryName()
+		};
+		ResourceLocation[] facingBlocks = {
+				SCContent.inventoryScanner.getRegistryName(),
+				SCContent.usernameLogger.getRegistryName()
+		};
+		ResourceLocation[] poweredBlocks = {
+				SCContent.laserBlock.getRegistryName()
+		};
+
+		for(String facing : facings)
+		{
+			for(String bool : bools)
+			{
+				for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
+				{
+					register(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+				}
+			}
+
+			for(ResourceLocation facingBlock : facingBlocks)
+			{
+				register(event, facingBlock, "facing=" + facing);
+			}
+		}
+
+		for(String bool : bools)
+		{
+			for(ResourceLocation poweredBlock : poweredBlocks)
+			{
+				register(event, poweredBlock, "powered=" + bool);
+			}
+		}
+	}
+
+	private static void register(ModelBakeEvent event, ResourceLocation rl, String stateString)
+	{
+		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
+
+		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
+	}
+
 	@Override
 	public void clientSetup()
 	{
