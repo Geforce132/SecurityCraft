@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
 - Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
+- Fix: Players that don't own an Inventory Scanner can still take out its items
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 

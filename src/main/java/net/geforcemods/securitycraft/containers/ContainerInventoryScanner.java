@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -16,14 +15,14 @@ public class ContainerInventoryScanner extends Container {
 	private final int numRows;
 	private final TileEntityInventoryScanner inventoryScannerTE;
 
-	public ContainerInventoryScanner(IInventory inventory, TileEntityInventoryScanner te){
+	public ContainerInventoryScanner(InventoryPlayer inventory, TileEntityInventoryScanner te){
 		numRows = te.getSizeInventory() / 9;
 		inventoryScannerTE = te;
 
 		for(int i = 0; i < 10; i++)
 			addSlotToContainer(new SlotOwnerRestricted(te, te, i, (4 + (i * 17)), 16, true));
 
-		if(((CustomizableSCTE) te).hasModule(EnumCustomModules.STORAGE))
+		if(te.getOwner().isOwner(inventory.player) && te.hasModule(EnumCustomModules.STORAGE))
 			for(int i = 0; i < 9; i++)
 				for(int j = 0; j < 3; j++)
 					addSlotToContainer(new Slot(te, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));

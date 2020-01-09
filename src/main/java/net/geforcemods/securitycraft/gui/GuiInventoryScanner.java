@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.gui;
 import org.lwjgl.input.Keyboard;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
@@ -13,7 +12,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,11 +26,11 @@ public class GuiInventoryScanner extends GuiContainer {
 	private EntityPlayer playerObj;
 	private boolean hasStorageModule = false;
 
-	public GuiInventoryScanner(IInventory inventory, TileEntityInventoryScanner te, EntityPlayer player){
+	public GuiInventoryScanner(InventoryPlayer inventory, TileEntityInventoryScanner te, EntityPlayer player){
 		super(new ContainerInventoryScanner(inventory, te));
 		tileEntity = te;
 		playerObj = player;
-		hasStorageModule = ((CustomizableSCTE) te).hasModule(EnumCustomModules.STORAGE);
+		hasStorageModule = te.getOwner().isOwner(player) && te.hasModule(EnumCustomModules.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;
