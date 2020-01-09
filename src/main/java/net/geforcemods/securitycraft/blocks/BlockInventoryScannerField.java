@@ -335,9 +335,9 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || source.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
-			return new AxisAlignedBB(0.000F, 0.000F, 0.400F, 1.000F, 1.000F, 0.600F); //ew
+			return new AxisAlignedBB(0.000F, 0.000F, 6F/16F, 1.000F, 1.000F, 10F/16F); //ew
 		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-			return new AxisAlignedBB(0.400F, 0.000F, 0.000F, 0.600F, 1.000F, 1.000F); //ns
+			return new AxisAlignedBB(6F/16F, 0.000F, 0.000F, 10F/16F, 1.000F, 1.000F); //ns
 		return state.getBoundingBox(source, pos);
 	}
 
@@ -379,15 +379,15 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
-    {
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	{
 		IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
-        Block block = iblockstate.getBlock();
+		Block block = iblockstate.getBlock();
 
-        if (side == EnumFacing.UP || side == EnumFacing.DOWN)
-	        if (block == this)
-	            return false;
+		if (side == EnumFacing.UP || side == EnumFacing.DOWN)
+			if (block == this)
+				return false;
 
-        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-    }
+		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
 }
