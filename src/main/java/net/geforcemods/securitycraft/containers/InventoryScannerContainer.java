@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.Utils;
@@ -27,7 +26,7 @@ public class InventoryScannerContainer extends Container {
 		for(int i = 0; i < 10; i++)
 			addSlot(new OwnerRestrictedSlot(te, te, i, (4 + (i * 17)), 16, true));
 
-		if(((CustomizableTileEntity) te).hasModule(CustomModules.STORAGE))
+		if(te.getOwner().isOwner(inventory.player) && te.hasModule(CustomModules.STORAGE))
 			for(int i = 0; i < 9; i++)
 				for(int j = 0; j < 3; j++)
 					addSlot(new Slot(te, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));
