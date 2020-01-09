@@ -27,7 +27,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		tileEntity = container.te;
-		hasStorageModule = tileEntity.hasModule(CustomModules.STORAGE);
+		hasStorageModule = tileEntity.getOwner().isOwner(inv.player) && tileEntity.hasModule(CustomModules.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;

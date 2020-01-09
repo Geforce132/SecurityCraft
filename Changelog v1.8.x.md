@@ -1,3 +1,9 @@
+--------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
+
+- Fix: JEI error on startup
+- Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
+- Fix: Players that don't own an Inventory Scanner can still take out its items
+
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
 - New: Reinforced Prismarine, Reinforced Prismarine Bricks, Reinforced Dark Prismarine and Reinforced Sea Lanterns can now be used for building a conduit
