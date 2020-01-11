@@ -143,6 +143,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 			if(player.isSneaking())
 				remove();
+			else if(item == SCContent.universalBlockRemover)
+			{
+				remove();
+				player.getHeldItemMainhand().damageItem(1, player);
+			}
 			else if(item == SCContent.disguiseModule)
 			{
 				ItemStack module = getDisguiseModule();
