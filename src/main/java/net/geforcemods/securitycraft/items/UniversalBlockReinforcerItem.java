@@ -47,7 +47,7 @@ public class UniversalBlockReinforcerItem extends Item
 				}
 			});
 		}
-		return super.onItemRightClick( world, player, hand);
+		return super.onItemRightClick(world, player, hand);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class UniversalBlockReinforcerItem extends Item
 				{
 					world.setBlockState(pos, ((IReinforcedBlock)rb).getConvertedState(vanillaState));
 					((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					stack.damageItem(1, player, p -> {});
+					stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
 					return true;
 				}
 			}

@@ -234,7 +234,7 @@ public class SCEventHandler {
 					if(block == SCContent.laserBlock){
 						world.destroyBlock(event.getPos(), true);
 						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
+						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
 						BlockPos pos = originalPos.east().up();
@@ -395,7 +395,7 @@ public class SCEventHandler {
 
 						world.destroyBlock(pos, true);
 						world.removeTileEntity(pos);
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
+						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 					}
 
 					return;
@@ -665,7 +665,7 @@ public class SCEventHandler {
 		TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
 
 		if(ConfigHandler.CONFIG.allowCodebreakerItem.get() && event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
-			event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> {});
+			event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
 			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.CONFIG.allowCodebreakerItem.get());
