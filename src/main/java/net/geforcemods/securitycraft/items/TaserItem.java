@@ -82,11 +82,11 @@ public class TaserItem extends Item {
 					{
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
-						taser.damageItem(150, player, p -> {});
+						taser.damageItem(150, player, p -> p.sendBreakAnimation(hand));
 						setSlotBasedOnHand(player, hand, taser);
 					}
 					else
-						stack.damageItem(150, player, p -> {});
+						stack.damageItem(150, player, p -> p.sendBreakAnimation(hand));
 				}
 			}
 		}

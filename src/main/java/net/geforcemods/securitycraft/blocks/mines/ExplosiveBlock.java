@@ -42,9 +42,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
 				return ActionResultType.SUCCESS;
 
-			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
+			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.wireCutters) {
 				defuseMine(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> {});
+				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 				return ActionResultType.SUCCESS;
 			}
 
