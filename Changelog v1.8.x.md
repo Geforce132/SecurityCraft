@@ -5,6 +5,7 @@
 - Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
 - Fix: Players that don't own an Inventory Scanner can still take out its items
 - Fix: Break animations
+- Misc.: The minimum required Forge version is now 28.1.115
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 

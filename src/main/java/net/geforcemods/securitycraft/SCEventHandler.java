@@ -24,7 +24,6 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
@@ -36,7 +35,6 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -51,7 +49,6 @@ import net.minecraft.item.Items;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -62,9 +59,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -77,8 +72,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.BlockEvent.EntityPlaceEvent;
-import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -437,129 +430,6 @@ public class SCEventHandler {
 	public static void onOwnership(OwnershipEvent event)
 	{
 		handleOwnableTEs(event);
-	}
-
-	@SubscribeEvent
-	public static void onBlockPlaced(EntityPlaceEvent event)
-	{
-		//reinforced obsidian portal handling
-		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
-		{
-			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
-
-			if(portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-				portalSize.placePortalBlocks();
-			else
-			{
-				portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
-
-				if(portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-					portalSize.placePortalBlocks();
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onEntityJoinWorld(EntityJoinWorldEvent event)
-	{
-		//fix for spawning under the portal
-		if(event.getEntity() instanceof PlayerEntity && !event.getWorld().isRemote && event.getWorld().getDimension().getType() == DimensionType.THE_NETHER) //nether
-		{
-			BlockPos pos = event.getEntity().getPosition();
-
-			//check for obsidian or reinforced obsidian from the player's position up to the world height
-			do
-			{
-				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
-				{
-					//check if the block is part of a valid portal, and if so move the entity down
-					NetherPortalBlock.Size portalSize = new NetherPortalBlock.Size(event.getWorld(), pos, Direction.Axis.X);
-
-					if(portalSize.isValid())
-					{
-						double y = pos.getY() + 0.5D;
-
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else //check other axis
-					{
-						portalSize = new NetherPortalBlock.Size(event.getWorld(), pos, Direction.Axis.Z);
-
-						if(portalSize.isValid())
-						{
-							double y = pos.getY() + 0.5D;
-
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
-				else if(event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
-				{
-					PortalSize portalSize = new PortalSize(event.getWorld(), pos, Direction.Axis.X);
-
-					if(portalSize.isValid())
-					{
-						double y = pos.getY() + 0.5D;
-
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else
-					{
-						portalSize = new PortalSize(event.getWorld(), pos, Direction.Axis.Z);
-
-						if(portalSize.isValid())
-						{
-							double y = pos.getY() + 0.5D;
-
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
-			}
-			while((pos = pos.up()).getY() < event.getWorld().getHeight());
-
-		}
-	}
-
-	@SubscribeEvent
-	public static void onNeighborNotify(NeighborNotifyEvent event)
-	{
-		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
-		if(event.getState().getBlock() == Blocks.NETHER_PORTAL)
-		{
-			Direction.Axis axis = event.getState().get(NetherPortalBlock.AXIS);
-
-			if(axis == Direction.Axis.X)
-			{
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
-
-				if(portalSize.isFinishedPortal())
-					event.setCanceled(true);
-			}
-			else if(axis == Direction.Axis.Z)
-			{
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
-
-				if(portalSize.isFinishedPortal())
-					event.setCanceled(true);
-			}
-		}
 	}
 
 	@SubscribeEvent
