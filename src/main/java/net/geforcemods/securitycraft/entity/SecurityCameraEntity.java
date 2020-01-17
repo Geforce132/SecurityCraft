@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
@@ -29,7 +29,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -37,18 +36,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class SecurityCameraEntity extends Entity{
 
-	private final double CAMERA_SPEED = CommonConfig.CONFIG.cameraSpeed.get();
-
+	private final double CAMERA_SPEED = ConfigHandler.CONFIG.cameraSpeed.get();
 	public int blockPosX;
 	public int blockPosY;
 	public int blockPosZ;
-
 	private double cameraUseX;
 	private double cameraUseY;
 	private double cameraUseZ;
 	private float cameraUseYaw;
 	private float cameraUsePitch;
-
 	private int id;
 	private int screenshotCooldown = 0;
 	private int redstoneCooldown = 0;
@@ -56,7 +52,6 @@ public class SecurityCameraEntity extends Entity{
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 	private float zoomAmount = 1F;
-
 	private String playerViewingName = null;
 
 	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world){
@@ -149,6 +144,9 @@ public class SecurityCameraEntity extends Entity{
 	public void tick(){
 		if(world.isRemote && isBeingRidden()){
 			PlayerEntity lowestEntity = (PlayerEntity)getPassengers().get(0);
+
+			if(lowestEntity != Minecraft.getInstance().player)
+				return;
 
 			if(screenshotCooldown > 0)
 				screenshotCooldown -= 1;
@@ -334,14 +332,6 @@ public class SecurityCameraEntity extends Entity{
 	public void enableNightVision() {
 		toggleNightVisionCooldown = 30;
 		shouldProvideNightVision = !shouldProvideNightVision;
-	}
-
-	public String getCameraInfo(){
-		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
-		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) posY + " Z: " + (int) Math.floor(posZ) + "\n";
-		String riderName = getPassengers().get(0).getName().getFormattedText();
-		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(riderName)) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(riderName)[2]) : "";
-		return nowViewing + pos + viewingFrom;
 	}
 
 	public float getZoomAmount(){

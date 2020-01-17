@@ -33,7 +33,7 @@ public class TaserItem extends Item {
 	@Override
 	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
 	{
-		if(group == SecurityCraft.groupSCTechnical && !powered)
+		if((group == SecurityCraft.groupSCTechnical || group == ItemGroup.SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
@@ -83,11 +83,11 @@ public class TaserItem extends Item {
 					{
 						ItemStack taser = new ItemStack(SCContent.taser, 1);
 
-						taser.damageItem(150, player, p -> {});
+						taser.damageItem(150, player, p -> p.sendBreakAnimation(hand));
 						setSlotBasedOnHand(player, hand, taser);
 					}
 					else
-						stack.damageItem(150, player, p -> {});
+						stack.damageItem(150, player, p -> p.sendBreakAnimation(hand));
 				}
 			}
 		}

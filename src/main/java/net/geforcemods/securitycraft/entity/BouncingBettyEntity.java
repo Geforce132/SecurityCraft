@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.entity;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
@@ -64,7 +63,7 @@ public class BouncingBettyEntity extends Entity {
 		prevPosX = posX;
 		prevPosY = posY;
 		prevPosZ = posZ;
-		EntityUtils.moveY(this, 0.03999999910593033D);
+		setMotion(getMotion().add(0, -0.03999999910593033D, 0));
 		move(MoverType.SELF, getMotion());
 		setMotion(getMotion().mul(0.9800000190734863D, 0.9800000190734863D, 0.9800000190734863D));
 
@@ -86,10 +85,10 @@ public class BouncingBettyEntity extends Entity {
 	{
 		float f = 6.0F;
 
-		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion(this, posX, posY, posZ, (f / 2), CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+		if(ConfigHandler.CONFIG.smallerMineExplosion.get())
+			world.createExplosion(this, posX, posY, posZ, (f / 2), ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion(this, posX, posY, posZ, f, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(this, posX, posY, posZ, f, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 	}
 
 	/**
@@ -108,11 +107,6 @@ public class BouncingBettyEntity extends Entity {
 	protected void readAdditional(CompoundNBT tag)
 	{
 		fuse = tag.getByte("Fuse");
-	}
-
-	public float getShadowSize()
-	{
-		return 0.0F;
 	}
 
 	@Override

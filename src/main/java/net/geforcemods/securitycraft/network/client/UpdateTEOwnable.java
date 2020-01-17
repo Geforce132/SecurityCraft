@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -21,15 +20,6 @@ public class UpdateTEOwnable
 	private CompoundNBT tag;
 
 	public UpdateTEOwnable() {}
-
-	/**
-	 * Initializes this packet with a tile entity
-	 * @param te The tile entity to initialize with
-	 */
-	public UpdateTEOwnable(OwnableTileEntity te)
-	{
-		this(te.getPos(), te.getOwner().getName(), te.getOwner().getUUID(), te instanceof CustomizableTileEntity, te instanceof CustomizableTileEntity ? ((CustomizableTileEntity)te).write(new CompoundNBT()) : null);
-	}
 
 	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean customizable, CompoundNBT tag)
 	{

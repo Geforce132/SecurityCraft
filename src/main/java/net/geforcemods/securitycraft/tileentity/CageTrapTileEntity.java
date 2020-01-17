@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.CustomModules;
 
 public class CageTrapTileEntity extends CustomizableTileEntity {
 
-	private OptionBoolean shouldCaptureMobsOption = new OptionBoolean("captureMobs", false) {
+	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false) {
 		@Override
 		public void toggle() {
 			setValue(!getValue());

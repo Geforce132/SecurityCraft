@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
@@ -58,7 +58,7 @@ public class LaserBlock extends DisguisableBlock {
 		{
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			inner: for(int i = 1; i <= CommonConfig.CONFIG.laserBlockRange.get(); i++)
+			inner: for(int i = 1; i <= ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 				BlockState state = world.getBlockState(offsetPos);
@@ -68,14 +68,20 @@ public class LaserBlock extends DisguisableBlock {
 					break inner;
 				else if(id == SCContent.laserBlock)
 				{
-					CustomizableTileEntity.link((CustomizableTileEntity)world.getTileEntity(pos), (CustomizableTileEntity)world.getTileEntity(offsetPos));
+					CustomizableTileEntity thisTe = (CustomizableTileEntity)world.getTileEntity(pos);
+					CustomizableTileEntity thatTe = (CustomizableTileEntity)world.getTileEntity(offsetPos);
 
-					for(int j = 1; j < i; j++)
+					if(thisTe.getOwner().equals(thatTe.getOwner()))
 					{
-						offsetPos = pos.offset(facing, j);
+						CustomizableTileEntity.link(thisTe, thatTe);
 
-						if(world.getBlockState(offsetPos).isAir(world, offsetPos))
-							world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
+						for(int j = 1; j < i; j++)
+						{
+							offsetPos = pos.offset(facing, j);
+
+							if(world.getBlockState(offsetPos).isAir(world, offsetPos))
+								world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
+						}
 					}
 				}
 			}
@@ -97,7 +103,7 @@ public class LaserBlock extends DisguisableBlock {
 		{
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			for(int i = 1; i <= CommonConfig.CONFIG.laserBlockRange.get(); i++)
+			for(int i = 1; i <= ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 

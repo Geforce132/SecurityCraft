@@ -22,6 +22,7 @@ public class SCTags
 		public static final Tag<Block> REINFORCED_SLABS = tag("reinforced/slabs");
 		public static final Tag<Block> REINFORCED_SPRUCE_LOGS = tag("reinforced/spruce_logs");
 		public static final Tag<Block> REINFORCED_STAIRS = tag("reinforced/stairs");
+		public static final Tag<Block> REINFORCED_STONE = tag("reinforced/stone");
 		public static final Tag<Block> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
 		public static final Tag<Block> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final Tag<Block> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
@@ -49,6 +50,7 @@ public class SCTags
 		public static final Tag<Item> REINFORCED_SLABS = tag("reinforced/slabs");
 		public static final Tag<Item> REINFORCED_SPRUCE_LOGS = tag("reinforced/spruce_logs");
 		public static final Tag<Item> REINFORCED_STAIRS = tag("reinforced/stairs");
+		public static final Tag<Item> REINFORCED_STONE = tag("reinforced/stone");
 		public static final Tag<Item> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
 		public static final Tag<Item> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final Tag<Item> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");

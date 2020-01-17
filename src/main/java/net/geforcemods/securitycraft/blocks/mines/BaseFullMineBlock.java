@@ -1,12 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -40,11 +39,6 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	public SoundType getSoundType(BlockState state)
 	{
 		return soundType;
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -90,10 +84,10 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	public void explode(World world, BlockPos pos) {
 		world.destroyBlock(pos, false);
 
-		if(CommonConfig.CONFIG.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+		if(ConfigHandler.CONFIG.smallerMineExplosion.get())
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 	}
 
 	/**

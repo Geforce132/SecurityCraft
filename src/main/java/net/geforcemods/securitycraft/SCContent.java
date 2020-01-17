@@ -62,6 +62,7 @@ public class SCContent
 	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block blockPocketWall;
 	@Ownable @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static Block bouncingBetty;
 	@RegisterItemBlock public static Block cageTrap;
+	@Ownable public static Block horizontalReinforcedIronBars;
 	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block chiseledCrystalQuartz;
 	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartz;
 	@RegisterItemBlock(SCItemGroup.DECORATION) public static Block crystalQuartzPillar;
@@ -375,6 +376,7 @@ public class SCContent
 	@Reinforced public static Block reinforcedJunglePressurePlate;
 	@Reinforced public static Block reinforcedAcaciaPressurePlate;
 	@Reinforced public static Block reinforcedDarkOakPressurePlate;
+	@Ownable @Reinforced public static Block reinforcedRedstoneBlock;
 
 	//Fluids
 	public static FlowingFluid flowingFakeWater;

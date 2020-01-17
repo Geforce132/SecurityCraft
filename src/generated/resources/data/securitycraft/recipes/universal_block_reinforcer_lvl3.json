@@ -11,10 +11,10 @@
       "item": "securitycraft:reinforced_pink_stained_glass"
     },
     "E": {
-      "tag": "forge:storage_blocks/emerald"
+      "item": "securitycraft:reinforced_emerald_block"
     },
     "R": {
-      "tag": "forge:storage_blocks/redstone"
+      "item": "securitycraft:reinforced_redstone_block"
     },
     "N": {
       "tag": "forge:nether_stars"

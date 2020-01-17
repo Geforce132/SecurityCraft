@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -36,11 +35,6 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	public BouncingBettyBlock(Material material, float baseHardness) {
 		super(SoundType.STONE, material, baseHardness);
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	@Override

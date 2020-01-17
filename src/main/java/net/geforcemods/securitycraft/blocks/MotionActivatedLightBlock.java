@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -41,11 +40,6 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	public MotionActivatedLightBlock(Material material) {
 		super(SoundType.GLASS, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -122,7 +116,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, CommonConfig.CONFIG.motionActivatedLightSearchRadius.get(), 1);
+		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, ConfigHandler.CONFIG.motionActivatedLightSearchRadius.get(), 1);
 	}
 
 }

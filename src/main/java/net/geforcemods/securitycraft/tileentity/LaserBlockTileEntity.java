@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 public class LaserBlockTileEntity extends DisguisableTileEntity {
 
-	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
+	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
 		@Override
 		public void toggle() {
 			setValue(!getValue());
@@ -28,7 +28,7 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 		super(SCContent.teTypeLaserBlock);
 	}
 
-	private void toggleLaser(OptionBoolean option) {
+	private void toggleLaser(BooleanOption option) {
 		if(BlockUtils.getBlock(world, pos) != SCContent.laserBlock) return;
 
 		if(option.getValue())
@@ -42,7 +42,7 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 		if(action == LinkedAction.OPTION_CHANGED) {
 			Option<?> option = (Option<?>) parameters[0];
 			enabledOption.copy(option);
-			toggleLaser((OptionBoolean) option);
+			toggleLaser((BooleanOption) option);
 
 			excludedTEs.add(this);
 			createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, excludedTEs);

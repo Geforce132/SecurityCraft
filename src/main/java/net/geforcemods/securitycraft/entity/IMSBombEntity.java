@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.entity;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityType;
@@ -22,7 +22,6 @@ public class IMSBombEntity extends AbstractFireballEntity {
 
 	private String playerName = null;
 	private LivingEntity targetMob = null;
-
 	public int ticksFlying = 0;
 	private int launchHeight;
 	public boolean launching = true;
@@ -38,7 +37,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	public IMSBombEntity(World world, LivingEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(SCContent.eTypeImsBomb, targetEntity, targetX, targetY, targetZ, world);
+		super(SCContent.eTypeImsBomb, x, y, z, targetX, targetY, targetZ, world);
 		targetMob = targetEntity;
 		launchHeight = height;
 	}
@@ -51,7 +50,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		}
 
 		if(ticksFlying < launchHeight && launching){
-			EntityUtils.moveY(this, 0.35F);
+			setMotion(getMotion().x, 0.35F, getMotion().z);
 			ticksFlying++;
 			move(MoverType.SELF, getMotion());
 		}else if(ticksFlying >= launchHeight && launching)
@@ -80,15 +79,13 @@ public class IMSBombEntity extends AbstractFireballEntity {
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(imsBomb));
 			remove();
 		}
-		else
-			remove();
 	}
 
 	@Override
 	protected void onImpact(RayTraceResult result){
 		if(!world.isRemote)
 			if(result.getType() == Type.BLOCK && BlockUtils.getBlock(world, ((BlockRayTraceResult)result).getPos()) != SCContent.ims){
-				world.createExplosion(this,  ((BlockRayTraceResult)result).getPos().getX(),  ((BlockRayTraceResult)result).getPos().getY() + 1D,  ((BlockRayTraceResult)result).getPos().getZ(), 7F, true, Mode.BREAK);
+				world.createExplosion(this, ((BlockRayTraceResult)result).getPos().getX(), ((BlockRayTraceResult)result).getPos().getY() + 1D, ((BlockRayTraceResult)result).getPos().getZ(), 7F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 				remove();
 			}
 	}

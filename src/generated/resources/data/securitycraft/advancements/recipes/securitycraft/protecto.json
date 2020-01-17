@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_obsidian": {
+    "has_ender_eye": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:obsidian"
+            "item": "minecraft:ender_eye"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_obsidian",
+      "has_ender_eye",
       "has_the_recipe"
     ]
   ]

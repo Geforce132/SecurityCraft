@@ -38,6 +38,7 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
@@ -45,8 +46,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
@@ -240,7 +243,7 @@ public class SetupHandler
 		SCContent.reinforcedBricks = new BaseReinforcedBlock(Material.ROCK, Blocks.BRICKS, "reinforced_bricks");
 		SCContent.reinforcedBookshelf = new ReinforcedBookshelfBlock(SoundType.WOOD, Material.WOOD, Blocks.BOOKSHELF, "reinforced_bookshelf");
 		SCContent.reinforcedMossyCobblestone = new BaseReinforcedBlock(Material.ROCK, Blocks.MOSSY_COBBLESTONE, "reinforced_mossy_cobblestone");
-		SCContent.reinforcedObsidian = new BaseReinforcedBlock(Material.ROCK, Blocks.OBSIDIAN, "reinforced_obsidian");
+		SCContent.reinforcedObsidian = new ReinforcedObsidianBlock();
 		SCContent.reinforcedPurpurBlock = new BaseReinforcedBlock(Material.ROCK, Blocks.PURPUR_BLOCK, "reinforced_purpur_block");
 		SCContent.reinforcedPurpurPillar = new ReinforcedRotatedPillarBlock(Material.ROCK, Blocks.PURPUR_PILLAR, "reinforced_purpur_pillar");
 		SCContent.reinforcedPurpurStairs = new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.PURPUR_STAIRS, "reinforced_purpur_stairs");
@@ -408,6 +411,8 @@ public class SetupHandler
 		SCContent.reinforcedJunglePressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.JUNGLE_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_jungle_pressure_plate"));
 		SCContent.reinforcedAcaciaPressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.ACACIA_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_acacia_pressure_plate"));
 		SCContent.reinforcedDarkOakPressurePlate = new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_PRESSURE_PLATE).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_dark_oak_pressure_plate"));
+		SCContent.reinforcedRedstoneBlock = new ReinforcedRedstoneBlock();
+		SCContent.horizontalReinforcedIronBars = new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK, "horizontal_reinforced_iron_bars");
 	}
 
 	public static void setupMines()

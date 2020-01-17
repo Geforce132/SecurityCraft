@@ -81,6 +81,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.securityCamera);
 		putStandardBlockLootTable(SCContent.stoneMine);
 		putStandardBlockLootTable(SCContent.trackMine);
+		putStandardBlockLootTable(SCContent.trophySystem);
 		putStandardBlockLootTable(SCContent.usernameLogger);
 	}
 

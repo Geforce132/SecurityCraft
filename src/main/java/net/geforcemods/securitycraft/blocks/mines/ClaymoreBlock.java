@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -65,7 +65,7 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
@@ -103,8 +103,8 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
-			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.destroyBlock(pos, false);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -118,8 +118,8 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, CommonConfig.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.destroyBlock(pos, false);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 
@@ -149,7 +149,7 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 	@Override
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true, Mode.BREAK);
 		}
 	}

@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.misc.conditions;
 
 import com.google.gson.JsonObject;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.conditions.ICondition;
@@ -24,7 +24,7 @@ public final class ToggleKeycard1Condition implements ICondition
 	@Override
 	public boolean test()
 	{
-		return CommonConfig.CONFIG.ableToCraftKeycard1.get();
+		return ConfigHandler.CONFIG.ableToCraftKeycard1.get();
 	}
 
 	@Override

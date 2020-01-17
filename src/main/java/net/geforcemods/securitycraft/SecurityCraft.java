@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
@@ -22,7 +20,6 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,8 +44,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	//********************************* This is v1.8.14.1 for MC 1.14.4!
-	protected static final String VERSION = "v1.8.14.1";
+	//********************************* This is v1.8.15 for MC 1.14.4!
+	protected static final String VERSION = "v1.8.15";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
@@ -64,7 +61,7 @@ public class SecurityCraft {
 	{
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.CONFIG_SPEC);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
 	}
 
 	@SubscribeEvent
@@ -98,8 +95,6 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event){ //stage 4
-		DataSerializers.registerSerializer(Owner.SERIALIZER);
-
 		for(Field field : SCContent.class.getFields())
 		{
 			try
@@ -122,16 +117,8 @@ public class SecurityCraft {
 		return cameraUsePositions.get(playerName);
 	}
 
-	public void setUsePosition(String playerName, double x, double y, double z, float yaw, float pitch) {
-		cameraUsePositions.put(playerName, new Object[]{x, y, z, yaw, pitch});
-	}
-
 	public boolean hasUsePosition(String playerName) {
 		return cameraUsePositions.containsKey(playerName);
-	}
-
-	public void removeUsePosition(String playerName){
-		cameraUsePositions.remove(playerName);
 	}
 
 	public CompoundNBT getSavedModule() {

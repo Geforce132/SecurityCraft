@@ -21,14 +21,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class InventoryScannerScreen extends ContainerScreen<InventoryScannerContainer> {
 	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
-
 	private InventoryScannerTileEntity tileEntity;
 	private boolean hasStorageModule = false;
 
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		tileEntity = container.te;
-		hasStorageModule = tileEntity.hasModule(CustomModules.STORAGE);
+		hasStorageModule = tileEntity.getOwner().isOwner(inv.player) && tileEntity.hasModule(CustomModules.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;

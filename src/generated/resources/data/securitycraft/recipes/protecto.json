@@ -7,7 +7,7 @@
   ],
   "key": {
     "O": {
-      "tag": "forge:obsidian"
+      "item": "securitycraft:reinforced_obsidian"
     },
     "D": {
       "item": "minecraft:daylight_detector"

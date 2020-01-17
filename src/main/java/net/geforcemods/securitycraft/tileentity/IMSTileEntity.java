@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -33,10 +33,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
-
-	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players.**/
-	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
-
+	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
+	private IMSTargetingMode targetingOption = IMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 
 	public IMSTileEntity()
@@ -68,7 +66,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double range = CommonConfig.CONFIG.imsRange.get();
+			double range = ConfigHandler.CONFIG.imsRange.get();
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area);
@@ -76,7 +74,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			Iterator<?> playerIterator = players.iterator();
 			Iterator<?> mobIterator = mobs.iterator();
 
-			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
+			// Targets players and mobs
+			while(targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
 				LivingEntity entity = (LivingEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
@@ -93,14 +92,39 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(!world.isRemote)
-                    world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
 				bombsRemaining--;
 				launchedMine = true;
 				updateBombCount = true;
 				break;
 			}
 
-			while(!launchedMine && playerIterator.hasNext()){
+			// Targets only hostile mobs
+			while(!launchedMine && targetingOption == IMSTargetingMode.MOBS && mobIterator.hasNext()){
+				MonsterEntity entity = (MonsterEntity) mobIterator.next();
+				int launchHeight = getLaunchHeight();
+
+				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+					continue;
+
+				double targetX = entity.posX - (pos.getX() + 0.5D);
+				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
+
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
+
+				if(!world.isRemote)
+					world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+				bombsRemaining--;
+				launchedMine = true;
+				updateBombCount = true;
+				break;
+			}
+
+			// Targets only other players
+			while(!launchedMine && targetingOption == IMSTargetingMode.PLAYERS && playerIterator.hasNext()){
 				PlayerEntity entity = (PlayerEntity) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 
@@ -118,7 +142,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
 				if(!world.isRemote)
-                    world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound((PlayerEntity) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
@@ -191,25 +215,21 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			bombsRemaining = tag.getInt("bombsRemaining");
 
 		if (tag.contains("targetingOption"))
-			targetingOption = EnumIMSTargetingMode.values()[tag.getInt("targetingOption")];
+			targetingOption = IMSTargetingMode.values()[tag.getInt("targetingOption")];
 
 		if (tag.contains("updateBombCount"))
 			updateBombCount = tag.getBoolean("updateBombCount");
-	}
-
-	public int getBombsRemaining() {
-		return bombsRemaining;
 	}
 
 	public void setBombsRemaining(int bombsRemaining) {
 		this.bombsRemaining = bombsRemaining;
 	}
 
-	public EnumIMSTargetingMode getTargetingOption() {
+	public IMSTargetingMode getTargetingOption() {
 		return targetingOption;
 	}
 
-	public void setTargetingOption(EnumIMSTargetingMode targetingOption) {
+	public void setTargetingOption(IMSTargetingMode targetingOption) {
 		this.targetingOption = targetingOption;
 	}
 
@@ -235,18 +255,16 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		return new TranslationTextComponent(SCContent.ims.getTranslationKey());
 	}
 
-	public static enum EnumIMSTargetingMode {
+	public static enum IMSTargetingMode {
 
 		PLAYERS(0),
-		PLAYERS_AND_MOBS(1);
+		PLAYERS_AND_MOBS(1),
+		MOBS(2);
 
 		public final int modeIndex;
 
-		private EnumIMSTargetingMode(int index){
+		private IMSTargetingMode(int index){
 			modeIndex = index;
 		}
-
-
 	}
-
 }

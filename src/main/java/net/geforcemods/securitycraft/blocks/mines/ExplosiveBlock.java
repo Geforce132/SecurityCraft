@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.ConfigHandler.CommonConfig;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -26,7 +26,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !CommonConfig.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
@@ -40,9 +40,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
 				return false;
 
-			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
+			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.wireCutters) {
 				defuseMine(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> {});
+				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 				return false;
 			}
 

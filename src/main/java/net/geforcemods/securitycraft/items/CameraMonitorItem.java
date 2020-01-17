@@ -127,18 +127,6 @@ public class CameraMonitorItem extends Item {
 		return "";
 	}
 
-	public int getSlotFromPosition(CompoundNBT tag, CameraView view) {
-		for(int i = 1; i <= 30; i++)
-			if(tag.contains("Camera" + i)){
-				String[] coords = tag.getString("Camera" + i).split(" ");
-
-				if(view.checkCoordinates(coords))
-					return i;
-			}
-
-		return -1;
-	}
-
 	public boolean hasCameraAdded(CompoundNBT tag){
 		if(tag == null) return false;
 

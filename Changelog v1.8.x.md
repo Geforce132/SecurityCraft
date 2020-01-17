@@ -1,3 +1,12 @@
+--------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
+
+- Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
+- Fix: JEI error on startup
+- Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
+- Fix: Players that don't own an Inventory Scanner can still take out its items
+- Fix: Break animations
+- Misc.: The minimum required Forge version is now 28.1.115
+
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
 - New: Reinforced Prismarine, Reinforced Prismarine Bricks, Reinforced Dark Prismarine and Reinforced Sea Lanterns can now be used for building a conduit
@@ -7,8 +16,16 @@
 - New: Sentry Remote Access Tool to remotely control sentries, analogously to the Mine Remote Access Tool (Thanks LorenaGdL!)
 - New: The following blocks can now be disguised with the Disguise Module, similar to the Keypad: Inventory Scanner, Keycard Reader, Laser Block, Retinal Scanner, Username Logger
 - New: Sentries can now be named. Names show up in the Sentry Remote Access Tool
+- New: The Universal Owner Changer now works for sentries
+- New: I.M.S. can now target only hostile mobs
+- New: Page indicators for SecurityCraft Manual
+- New: Reinforced Redstone Block
 - Change: Rightclicking a double chest with a Key Panel will now convert the double chest instead of just a single chest
 - Change: Lasers now look more like lasers
+- Change: Inventory Scanner Fields now look more like Inventory Scanner Fields (Thanks LorenaGdL!)
+- Change: More recipes now use reinforced blocks instead of their vanilla equivalent
+- Change: The Sentry no longer needs 4 blocks around it to be placeable
+- Change: The Cage Trap now has a ceiling to properly prevent players from escaping (Thanks LorenaGdL!)
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots
 - Fix: Crash when the Trophy System tries to destroy a sentry's bullet
@@ -22,7 +39,21 @@
 - Fix: Public Gui Announcement compatibility does not work
 - Fix: Sentry head does not show when rejoining world/dimension if it was previously showing (Thanks LorenaGdL!)
 - Fix: Cage Trap uses stone instead of metal sounds
-- Misc: The minimum required Forge version is now 28.1.91
+- Fix: I.M.S. does not emit a sound when launching one of its mines
+- Fix: I.M.S. targets all mobs instead of just hostile mobs
+- Fix: SecurityCraft Manual's subpage navigation buttons appear even when there are no subpages
+- Fix: Username Logger logs its owner
+- Fix: Reinforced Stairs can be destroyed using TNT
+- Fix: Gap between Reinforced Iron Bars when activating Cage Trap (Thanks LorenaGdL!)
+- Fix: Rotation slider in Security Camera's customization GUI displays its value twice
+- Fix: Laser Blocks can connect to other Laser Blocks that don't have the same owner
+- Fix: Recipes using tags don't correctly show in the manual
+- Fix: Sentry kick/crash
+- Fix: Module duplication
+- Fix: Trophy System does not drop
+- Fix: I.M.S. bomb does not show up
+- Fix: Message about cage trap having trapped someone gets sent to the one being trapped and not the cage trap owner (Thanks LorenaGdL!)
+- Misc.: The minimum required Forge version is now 28.1.91
 - Removed: Unused config options
 
 --------------------------Changelog for v1.8.14.1 of SecurityCraft--------------------------

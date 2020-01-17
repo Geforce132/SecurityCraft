@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
-import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -58,7 +58,7 @@ public class UpdateSliderValue {
 			PlayerEntity player = ctx.get().getSender();
 
 			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
-				((OptionDouble)((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]).setValue(value);
+				((DoubleOption)((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]).setValue(value);
 				((CustomizableTileEntity) player.world.getTileEntity(pos)).onOptionChanged(((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]);
 				((CustomizableTileEntity) player.world.getTileEntity(pos)).sync();
 			}
