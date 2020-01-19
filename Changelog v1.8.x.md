@@ -1,9 +1,10 @@
---------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
 - Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
 - Fix: Players that don't own an Inventory Scanner can still take out its items
 - Fix: Inventory Scanner Field's selection box is slightly off
+- Fix: Reinforced Doors and Scanner Doors can be broken using pistons
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 

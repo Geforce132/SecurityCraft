@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -111,6 +112,12 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	public Item getItemDropped(IBlockState state, Random rand, int fortune)
 	{
 		return state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER ? null : SCContent.scannerDoorItem;
+	}
+
+	@Override
+	public EnumPushReaction getPushReaction(IBlockState state)
+	{
+		return EnumPushReaction.BLOCK;
 	}
 
 	@Override
