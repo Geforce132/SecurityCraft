@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -116,6 +117,12 @@ public class ScannerDoorBlock extends DoorBlock
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
 		return new ItemStack(SCContent.scannerDoorItem);
+	}
+
+	@Override
+	public PushReaction getPushReaction(BlockState state)
+	{
+		return PushReaction.BLOCK;
 	}
 
 	@Override
