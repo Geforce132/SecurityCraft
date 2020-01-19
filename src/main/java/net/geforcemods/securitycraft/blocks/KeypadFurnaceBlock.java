@@ -145,7 +145,7 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new KeypadFurnaceTileEntity();
 	}
 
