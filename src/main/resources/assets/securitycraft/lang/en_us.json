@@ -387,7 +387,7 @@
 	"help.securitycraft.alarm.info": "The alarm will emit a siren sound effect and flash red whenever it is powered by redstone, and in 2-second intervals after that (modifiable in the config file).",
 	"help.securitycraft.reinforced_fence_gate.info": "The reinforced iron fence gate acts the same as a vanilla fence gate, except it is unbreakable, and can only be opened by Keypads, Inventory Scanners, etc.. It will also hurt anyone but the owner when they get in contact with it.",
 	"help.securitycraft.panic_button.info": "The panic button looks like a button, but works the same way as a lever.",
-	"help.securitycraft.keypad_frame.info": "The frame is used to craft keypads. Rightclick it with a key panel to craft a keypad. Views automatically shutoff after 5 minutes to save resources. (Rightclick again to turn it back on.)",
+	"help.securitycraft.keypad_frame.info": "The frame is used to craft keypads. Rightclick it with a key panel to craft a keypad.",
 	"help.securitycraft.claymore.info": "Claymores explode one second after a mob or player walks within 5 blocks in front of the mine. Rightclicking the claymore while holding wire cutters will defuse the mine and allow you to break it. Rightclicking with flint and steel equipped will re-enable it.",
 	"help.securitycraft.keypad_furnace.info": "The password-protected furnace will require you to enter a passcode when you first place it down. After that, entering the correct code into the GUI will allow you to access the furnace's inventory.",
 	"help.securitycraft.security_camera.info": "The security camera allows you to view the nearby area from its position. Simply place down a camera, then rightclick it with a camera monitor to bind it for use.",
@@ -406,7 +406,7 @@
 
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
-	"help.securitycraft.scanner_door_item.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top of it, but has to be closed manually.",
+	"help.securitycraft.scanner_door_item.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it, but has to be closed manually.",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
 	"help.securitycraft.keycard_lv1.info": "The keycards are used with the keycard reader. There are six keycards, level 1, 2, 3, 4, and 5 cards, and a limited use card that is equivalent to a level 5 card that can only be used five times in Survival mode.",
 	"help.securitycraft.keycard_lv2.info": "The keycards are used with the keycard reader. There are six keycards, level 1, 2, 3, 4, and 5 cards, and a limited use card that is equivalent to a level 5 card that can only be used five times in Survival mode.",
