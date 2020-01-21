@@ -3,13 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -31,7 +29,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class InventoryScannerBlock extends DisguisableBlock {
@@ -41,11 +38,6 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	public InventoryScannerBlock(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.STONE));
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -73,8 +65,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	 */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
-		if(entity instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
+		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
 		if(world.isRemote)
 			return;
@@ -240,7 +231,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new InventoryScannerTileEntity();
 	}
 

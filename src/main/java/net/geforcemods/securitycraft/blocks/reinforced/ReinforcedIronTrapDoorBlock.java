@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.material.Material;
@@ -22,7 +21,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements ITileEntityProvider, IReinforcedBlock {
+public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinforcedBlock {
 
 	public ReinforcedIronTrapDoorBlock(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
@@ -71,7 +70,13 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements ITileE
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader) {
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity();
 	}
 

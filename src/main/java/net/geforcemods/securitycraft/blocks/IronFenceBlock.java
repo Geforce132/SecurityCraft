@@ -4,7 +4,6 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,13 +13,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -40,9 +37,8 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
-public class IronFenceBlock extends Block implements IIntersectable {
+public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
 	public static final BooleanProperty EAST = SixWayBlock.EAST;
 	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
@@ -209,13 +205,6 @@ public class IronFenceBlock extends Block implements IIntersectable {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
-	}
-
-	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
 		//so dropped items don't get destroyed
@@ -249,7 +238,7 @@ public class IronFenceBlock extends Block implements IIntersectable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new OwnableTileEntity().intersectsEntities();
 	}

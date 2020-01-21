@@ -1,19 +1,15 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -25,7 +21,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class LoggerBlock extends DisguisableBlock {
@@ -35,18 +30,6 @@ public class LoggerBlock extends DisguisableBlock {
 	public LoggerBlock(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
@@ -93,7 +76,7 @@ public class LoggerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, ConfigHandler.CONFIG.usernameLoggerSearchRadius.get(), 80);
 	}
 }

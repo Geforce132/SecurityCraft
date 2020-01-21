@@ -97,7 +97,7 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new CageTrapTileEntity().intersectsEntities();
 	}
 

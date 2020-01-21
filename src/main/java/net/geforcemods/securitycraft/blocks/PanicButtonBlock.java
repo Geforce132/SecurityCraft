@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
@@ -28,7 +27,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class PanicButtonBlock extends AbstractButtonBlock implements ITileEntityProvider {
+public class PanicButtonBlock extends AbstractButtonBlock {
 	private static final VoxelShape FLOOR_NS_POWERED = Block.makeCuboidShape(3, 0, 5, 13, 1, 11);
 	private static final VoxelShape FLOOR_NS_UNPOWERED = Block.makeCuboidShape(3, 0, 5, 13, 2, 11);
 	private static final VoxelShape FLOOR_EW_POWERED = Block.makeCuboidShape(5, 0, 3, 11, 1, 13);
@@ -166,7 +165,13 @@ public class PanicButtonBlock extends AbstractButtonBlock implements ITileEntity
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader) {
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity();
 	}
 

@@ -12,11 +12,9 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -46,19 +44,6 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	public KeycardReaderBlock(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
-	}
-
-	/**
-	 * Called when the block is placed in the world.
-	 */
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
-		super.onBlockPlacedBy(world, pos, state, entity, stack);
 	}
 
 	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player) {
@@ -185,7 +170,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new KeycardReaderTileEntity();
 	}
 

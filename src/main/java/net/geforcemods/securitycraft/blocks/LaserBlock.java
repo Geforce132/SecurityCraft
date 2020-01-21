@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -35,11 +34,6 @@ public class LaserBlock extends DisguisableBlock {
 	public LaserBlock(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().sound(SoundType.METAL));
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	/**
@@ -193,7 +187,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new LaserBlockTileEntity().linkable();
 	}
 

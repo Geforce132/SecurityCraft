@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.RailBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -22,7 +21,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntityProvider {
+public class TrackMineBlock extends RailBlock implements IExplosive {
 
 	public TrackMineBlock() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(0.7F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
@@ -103,7 +102,13 @@ public class TrackMineBlock extends RailBlock implements IExplosive, ITileEntity
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader) {
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TrackMineTileEntity();
 	}
 

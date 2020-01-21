@@ -3,9 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,9 +14,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class OwnableBlock extends ContainerBlock {
-
-	private BlockRenderType renderType = BlockRenderType.MODEL;
+public class OwnableBlock extends Block {
 
 	public OwnableBlock(Block.Properties properties) {
 		this(SoundType.STONE, properties);
@@ -26,11 +22,6 @@ public class OwnableBlock extends ContainerBlock {
 
 	public OwnableBlock(SoundType soundType, Block.Properties properties) {
 		super(properties.sound(soundType));
-	}
-
-	public OwnableBlock(SoundType soundType, Block.Properties properties, BlockRenderType renderType) {
-		this(soundType, properties);
-		this.renderType = renderType;
 	}
 
 	@Override
@@ -41,12 +32,13 @@ public class OwnableBlock extends ContainerBlock {
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return renderType;
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity();
 	}
 }

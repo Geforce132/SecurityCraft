@@ -178,7 +178,7 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader reader){
+	public TileEntity createTileEntity(BlockState state, IBlockReader reader){
 		return new AlarmTileEntity();
 	}
 }

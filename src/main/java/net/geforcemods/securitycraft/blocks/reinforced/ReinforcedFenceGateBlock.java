@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -32,7 +31,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedFenceGateBlock extends FenceGateBlock implements ITileEntityProvider, IIntersectable {
+public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable {
 
 	public ReinforcedFenceGateBlock(){
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
@@ -119,7 +118,13 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements ITileEnt
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity().intersectsEntities();
 	}
 
