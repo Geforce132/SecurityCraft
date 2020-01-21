@@ -331,7 +331,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public PushReaction getPushReaction(BlockState state) {
-		return PushReaction.DESTROY;
+		return PushReaction.BLOCK;
 	}
 
 	@Override
