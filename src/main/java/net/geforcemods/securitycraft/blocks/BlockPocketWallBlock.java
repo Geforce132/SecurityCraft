@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -23,6 +24,8 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityProvider, IOverlayDisplay
 {
@@ -70,6 +73,13 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 		}
 
 		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
+	{
+		return state.get(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.blockPocketWall;
 	}
 
 	@Override

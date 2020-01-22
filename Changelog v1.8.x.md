@@ -8,6 +8,7 @@
 - Fix: Players that don't own an Inventory Scanner can still take out its items
 - Fix: Break animations
 - Fix: Reinforced Doors and Scanner Doors can be broken using pistons
+- Fix: Block Pocket Wall's sides are visible through other Block Pocket Walls
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
