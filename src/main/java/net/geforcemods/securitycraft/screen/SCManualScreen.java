@@ -37,7 +37,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.config.HoverChecker;
+import net.minecraftforge.fml.client.gui.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {

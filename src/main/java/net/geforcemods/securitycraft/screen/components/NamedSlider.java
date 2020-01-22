@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.screen.components;
 
 import javax.annotation.Nullable;
 
-import net.minecraftforge.fml.client.config.GuiSlider;
+import net.minecraftforge.fml.client.gui.widget.Slider;
 
-public class NamedSlider extends GuiSlider
+public class NamedSlider extends Slider
 {
 	public int id;
 	private String blockName;

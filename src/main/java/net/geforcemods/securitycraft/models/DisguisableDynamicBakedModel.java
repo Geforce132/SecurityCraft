@@ -128,4 +128,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	{
 		return null;
 	}
+
+	@Override
+	public boolean func_230044_c_() //doesNotUseDiffuseLighting or something like that, idk
+	{
+		return false;
+	}
 }

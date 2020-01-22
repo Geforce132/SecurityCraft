@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import net.minecraftforge.fml.client.config.HoverChecker;
+import net.minecraftforge.fml.client.gui.HoverChecker;
 
 public class StringHoverChecker extends HoverChecker
 {

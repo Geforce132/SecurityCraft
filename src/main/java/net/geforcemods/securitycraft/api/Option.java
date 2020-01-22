@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.fml.client.config.GuiSlider;
-import net.minecraftforge.fml.client.config.GuiSlider.ISlider;
+import net.minecraftforge.fml.client.gui.widget.Slider;
+import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 /**
  * A class that allows blocks that have
@@ -280,7 +280,7 @@ public class Option<T> {
 		}
 
 		@Override
-		public void onChangeSliderValue(GuiSlider slider)
+		public void onChangeSliderValue(Slider slider)
 		{
 			if(!isSlider() || !(slider instanceof NamedSlider))
 				return;

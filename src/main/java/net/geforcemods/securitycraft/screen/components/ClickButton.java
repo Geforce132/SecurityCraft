@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
-import net.minecraftforge.fml.client.config.GuiButtonExt;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
-public class ClickButton extends GuiButtonExt
+public class ClickButton extends ExtendedButton
 {
 	private Consumer<ClickButton> onClick;
 	public int id;
