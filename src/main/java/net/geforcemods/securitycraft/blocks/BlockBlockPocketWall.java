@@ -78,6 +78,12 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	}
 
 	@Override
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return !(state.getValue(SEE_THROUGH) && world.getBlockState(pos.offset(side)).getBlock() == SCContent.blockPocketWall);
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public BlockRenderLayer getRenderLayer()
 	{
