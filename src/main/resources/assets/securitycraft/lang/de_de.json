@@ -359,6 +359,7 @@
     "death.attack.securitycraft.laser": "%s wurde von einem Laser zerschnitten.",
     "death.attack.securitycraft.fakeWater": "%s fiel in giftiges Wasser...?",
     "death.attack.securitycraft.electricity": "%s erlitt einen Stromschlag.",
+	"death.attack.securitycraft.taser": "%s wurde zu Tode getasert.",
 
     "key.categories.securitycraft": "SecurityCraft",
     "key.securitycraft.cameraActivateNightVision": "Nachtsicht",
