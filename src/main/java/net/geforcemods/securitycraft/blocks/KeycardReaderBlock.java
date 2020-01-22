@@ -77,7 +77,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof BaseKeycardItem) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
 			((KeycardReaderTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
@@ -96,7 +96,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	@Override
-	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);

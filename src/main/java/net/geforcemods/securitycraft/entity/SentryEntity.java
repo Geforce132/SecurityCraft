@@ -294,13 +294,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			return;
 
 		BulletEntity throwableEntity = new BulletEntity(world, this);
-		double y = target.func_226278_cu_() + target.getEyeHeight() - 1.100000023841858D;
-		double x = target.func_226277_ct_() - func_226277_ct_();
-		double d2 = y - throwableEntity.func_226278_cu_();
-		double z = target.func_226281_cx_() - func_226281_cx_();
+		double y = target.getPosY() + target.getEyeHeight() - 1.100000023841858D;
+		double x = target.getPosX() - getPosX();
+		double d2 = y - throwableEntity.getPosY();
+		double z = target.getPosZ() - getPosZ();
 		float f = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
-		throwableEntity.func_226288_n_(throwableEntity.func_226277_ct_(), throwableEntity.func_226278_cu_() - 0.1F, throwableEntity.func_226281_cx_());
+		throwableEntity.setRawPosition(throwableEntity.getPosX(), throwableEntity.getPosY() - 0.1F, throwableEntity.getPosZ());
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, d2 + f, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));

@@ -73,7 +73,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 	}
 
 	@Override
-	public boolean func_229869_c_(BlockState state, IBlockReader world, BlockPos pos) //causesSuffocation
+	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return false;
 	}

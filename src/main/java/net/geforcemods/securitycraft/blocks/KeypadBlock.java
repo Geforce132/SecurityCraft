@@ -43,7 +43,7 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	}
 
 	@Override
-	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(world.isRemote)
 			return ActionResultType.PASS;
@@ -70,7 +70,7 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	}
 
 	@Override
-	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		BlockUtils.setBlockProperty(world, pos, POWERED, false);
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);

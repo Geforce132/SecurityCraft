@@ -27,12 +27,12 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	}
 
 	@Override
-	public void func_225623_a_(BouncingBettyEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
+	public void render(BouncingBettyEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
 		int overlayTextureToUse;
 
-		matrix.func_227860_a_(); //push
-		matrix.func_227861_a_(0.0D, 0.5D, 0.0D); //translate
+		matrix.push();
+		matrix.translate(0.0D, 0.5D, 0.0D);
 
 		if (entity.fuse - partialTicks + 1.0F < 10.0F)
 		{
@@ -41,20 +41,20 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 			alpha *= alpha;
 			alpha *= alpha;
 			float scale = 1.0F + alpha * 0.3F;
-			matrix.func_227862_a_(scale, scale, scale); //scale
+			matrix.scale(scale, scale, scale);
 		}
 
 		if (entity.fuse / 5 % 2 == 0)
-			overlayTextureToUse = OverlayTexture.func_229201_a_(OverlayTexture.func_229199_a_(1.0F), 10);
+			overlayTextureToUse = OverlayTexture.packLight(OverlayTexture.lightToInt(1.0F), 10);
 		else
-			overlayTextureToUse = OverlayTexture.field_229196_a_;
+			overlayTextureToUse = OverlayTexture.DEFAULT_LIGHT;
 
-		matrix.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-90.0F)); //rotate
-		matrix.func_227861_a_(-0.5D, -0.5D, 0.5D); //translate
-		matrix.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(90.0F)); //rotate
+		matrix.rotate(Vector3f.field_229181_d_.func_229187_a_(-90.0F));
+		matrix.translate(-0.5D, -0.5D, 0.5D);
+		matrix.rotate(Vector3f.field_229181_d_.func_229187_a_(90.0F));
 		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.bouncingBetty.getDefaultState(), matrix, buffer, p_225623_6_, overlayTextureToUse, EmptyModelData.INSTANCE);
-		matrix.func_227865_b_(); //pop
-		super.func_225623_a_(entity, p_225623_2_, partialTicks, matrix, buffer, p_225623_6_);
+		matrix.pop();
+		super.render(entity, p_225623_2_, partialTicks, matrix, buffer, p_225623_6_);
 	}
 
 	@Override

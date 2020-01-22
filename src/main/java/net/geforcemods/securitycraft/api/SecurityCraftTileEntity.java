@@ -101,9 +101,9 @@ public class SecurityCraftTileEntity extends TileEntity implements ITickableTile
 				entity = (LivingEntity)iterator.next();
 				double eyeHeight = entity.getEyeHeight();
 				boolean isPlayer = (entity instanceof PlayerEntity);
-				Vec3d lookVec = new Vec3d((entity.func_226277_ct_() + (entity.getLookVec().x * 5)), ((eyeHeight + entity.func_226278_cu_()) + (entity.getLookVec().y * 5)), (entity.func_226281_cx_() + (entity.getLookVec().z * 5)));
+				Vec3d lookVec = new Vec3d((entity.getPosX() + (entity.getLookVec().x * 5)), ((eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5)), (entity.getPosZ() + (entity.getLookVec().z * 5)));
 
-				RayTraceResult mop = getWorld().rayTraceBlocks(new RayTraceContext(new Vec3d(entity.func_226277_ct_(), entity.func_226278_cu_() + entity.getEyeHeight(), entity.func_226281_cx_()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				RayTraceResult mop = getWorld().rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 				if(mop != null && mop.getType() == Type.BLOCK)
 					if(((BlockRayTraceResult)mop).getPos().getX() == getPos().getX() && ((BlockRayTraceResult)mop).getPos().getY() == getPos().getY() && ((BlockRayTraceResult)mop).getPos().getZ() == getPos().getZ())
 						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {

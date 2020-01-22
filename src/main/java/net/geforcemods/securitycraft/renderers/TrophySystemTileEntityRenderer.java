@@ -22,19 +22,19 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 	}
 
 	@Override
-	public void func_225616_a_(TrophySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_) {
+	public void render(TrophySystemTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_) {
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 
 		if(te.entityBeingTargeted == null) return;
 
-		IVertexBuilder builder = buffer.getBuffer(RenderType.func_228659_m_());
-		Matrix4f m4f = matrix.func_227866_c_().func_227870_a_();
+		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
+		Matrix4f positionMatrix = matrix.getLast().getPositionMatrix();
 		BlockPos pos = te.getPos();
 
 		//pos, color
-		builder.func_227888_a_(m4f, 0.5F, 0.75F, 0.5F).func_225586_a_(255, 0, 0, 255).endVertex();
-		builder.func_227888_a_(m4f, (float)(te.entityBeingTargeted.func_226277_ct_() - pos.getX()), (float)(te.entityBeingTargeted.func_226278_cu_() - pos.getY()), (float)(te.entityBeingTargeted.func_226281_cx_() - pos.getZ())).func_225586_a_(255, 0, 0, 255).endVertex();
+		builder.pos(positionMatrix, 0.5F, 0.75F, 0.5F).color(255, 0, 0, 255).endVertex();
+		builder.pos(positionMatrix, (float)(te.entityBeingTargeted.getPosX() - pos.getX()), (float)(te.entityBeingTargeted.getPosY() - pos.getY()), (float)(te.entityBeingTargeted.getPosZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
 	}
 
 }

@@ -29,8 +29,8 @@ public class ClientUtils{
 	public static void takeScreenshot() {
 		ScreenShotHelper.saveScreenshot(
 				Minecraft.getInstance().gameDir,
-				Minecraft.getInstance().func_228018_at_().getWidth(),
-				Minecraft.getInstance().func_228018_at_().getHeight(),
+				Minecraft.getInstance().getMainWindow().getWidth(),
+				Minecraft.getInstance().getMainWindow().getHeight(),
 				Minecraft.getInstance().getFramebuffer(),
 				msg -> Minecraft.getInstance().execute(() -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg)));
 	}

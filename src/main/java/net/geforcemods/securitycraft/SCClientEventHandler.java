@@ -54,8 +54,8 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent event) {
 		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_()))) instanceof SecurityCameraBlock)))
-				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().func_228018_at_(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226277_ct_()), (int)Minecraft.getInstance().player.getRidingEntity().func_226278_cu_(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().func_226281_cx_())));
+			if(((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ()))) instanceof SecurityCameraBlock)))
+				GuiUtils.drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ())));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
 		{
@@ -73,8 +73,8 @@ public class SCClientEventHandler
 			{
 				String textureToUse = "camera_not_bound";
 				double eyeHeight = player.getEyeHeight();
-				Vec3d lookVec = new Vec3d((player.func_226277_ct_() + (player.getLookVec().x * 5)), ((eyeHeight + player.func_226278_cu_()) + (player.getLookVec().y * 5)), (player.func_226281_cx_() + (player.getLookVec().z * 5)));
-				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.func_226277_ct_(), player.func_226278_cu_() + player.getEyeHeight(), player.func_226281_cx_()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+				Vec3d lookVec = new Vec3d((player.getPosX() + (player.getLookVec().x * 5)), ((eyeHeight + player.getPosY()) + (player.getLookVec().y * 5)), (player.getPosZ() + (player.getLookVec().z * 5)));
+				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
 				if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
 				{
@@ -97,7 +97,7 @@ public class SCClientEventHandler
 
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					AbstractGui.blit(Minecraft.getInstance().func_228018_at_().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().func_228018_at_().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					RenderSystem.disableAlphaTest();
 				}
 			}

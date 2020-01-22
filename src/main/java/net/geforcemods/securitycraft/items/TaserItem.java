@@ -74,7 +74,7 @@ public class TaserItem extends Item {
 				}
 
 				WorldUtils.addScheduledTask(world, () -> world.addEntity(new TaserBulletEntity(world, player, powered)));
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.func_226277_ct_(), player.func_226278_cu_(), player.func_226281_cx_(), SCSounds.TASERFIRED.path, 1.0F, "players"));
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.getPosX(), player.getPosY(), player.getPosZ(), SCSounds.TASERFIRED.path, 1.0F, "players"));
 
 				if(!player.isCreative())
 				{

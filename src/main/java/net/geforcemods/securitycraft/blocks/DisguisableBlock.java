@@ -63,13 +63,13 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	@Override
-	public boolean func_229869_c_(BlockState state, IBlockReader world, BlockPos pos) //causesSuffocation
+	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		BlockState extendedState = getExtendedState(state, world, pos);
 
 		if(extendedState.getBlock() != this)
 			return extendedState.causesSuffocation(world, pos);
-		else return super.func_229869_c_(state, world, pos);
+		else return super.causesSuffocation(state, world, pos);
 	}
 
 	@Override

@@ -102,9 +102,8 @@ public class BlockLootTableGenerator implements IDataProvider
 						.rolls(ConstantRange.of(1))
 						.addEntry(ItemLootEntry.builder(doorItem)
 								.acceptCondition(BlockStateProperty.builder(door)
-										//"properties" or something like that
-										.func_227567_a_(StatePropertiesPredicate.Builder.func_227191_a_() //create
-												.func_227193_a_(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER))) //with
+										.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
+												.withProp(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
 								.acceptCondition(SurvivesExplosion.builder()))));
 	}
 

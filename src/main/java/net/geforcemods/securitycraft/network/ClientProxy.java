@@ -126,7 +126,7 @@ public class ClientProxy implements IProxy
 	@SubscribeEvent
 	public static void onTextureStitchPre(TextureStitchEvent.Pre event)
 	{
-		if(event.getMap().func_229223_g_().equals(Atlases.field_228747_f_)) //CHESTS
+		if(event.getMap().getBasePath().equals(Atlases.CHEST_ATLAS))
 		{
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
@@ -143,58 +143,58 @@ public class ClientProxy implements IProxy
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event)
 	{
-		RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.keycardReader, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.laserBlock, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.laserField, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.retinalScanner, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.usernameLogger, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedDoor, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlass, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlassPane, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedIronBars, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.horizontalReinforcedIronBars, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlass, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.trackMine, RenderType.func_228643_e_()); //cutout
-		RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.func_228641_d_()); //cutoutMipped
-		RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.func_228645_f_()); //translucent
-		RenderTypeLookup.setRenderLayer(SCContent.fakeWater, RenderType.func_228645_f_()); //translucent
+		RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.cutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.cutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.keycardReader, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.laserBlock, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.laserField, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.retinalScanner, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.usernameLogger, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedDoor, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlass, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlassPane, RenderType.cutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedIronBars, RenderType.cutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.horizontalReinforcedIronBars, RenderType.cutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlass, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.trackMine, RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.cutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.fakeWater, RenderType.translucent());
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class ClientProxy implements IProxy
 				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
 
 				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
-					return Minecraft.getInstance().getBlockColors().func_228054_a_(blockFromItem.getDefaultState(), world, pos, tintIndex); //getColor
+					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
 			}
 
 			return 0xFFFFFF;

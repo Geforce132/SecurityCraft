@@ -30,17 +30,17 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 	}
 
 	@Override
-	public void func_225623_a_(SentryEntity entity, float partialTicks, float p_225623_3_, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_)
+	public void render(SentryEntity entity, float partialTicks, float p_225623_3_, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
-		IVertexBuilder builder = buffer.getBuffer(RenderType.func_228634_a_(getEntityTexture(entity)));
+		IVertexBuilder builder = buffer.getBuffer(RenderType.entitySolid(getEntityTexture(entity)));
 
-		stack.func_227861_a_(0.0D, 1.5D, 0.0D); //translate
-		stack.func_227862_a_(-1, -1, 1); //rotate model rightside up (scale)
+		stack.translate(0.0D, 1.5D, 0.0D);
+		stack.scale(-1, -1, 1); //rotate model rightside up
 		Minecraft.getInstance().textureManager.bindTexture(getEntityTexture(entity));
-		MODEL.renderBase(stack, builder, p_225623_6_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.func_227863_a_(new Quaternion(Vector3f.field_229181_d_, entity.getDataManager().get(SentryEntity.HEAD_ROTATION), true)); //rotate, Y_AXIS
-		stack.func_227861_a_(0.0F, entity.getHeadYTranslation(), 0.0F);
-		MODEL.func_225598_a_(stack, builder, p_225623_6_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL.renderBase(stack, builder, p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.rotate(new Quaternion(Vector3f.field_229181_d_, entity.getDataManager().get(SentryEntity.HEAD_ROTATION), true)); //YP
+		stack.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
+		MODEL.render(stack, builder, p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

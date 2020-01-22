@@ -41,7 +41,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		return ActionResultType.FAIL;
 	}

@@ -61,36 +61,36 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 			isChristmas = true;
 
 		field_228863_c_ = new ModelRenderer(64, 64, 0, 19);
-		field_228863_c_.func_228301_a_(1.0F, 0.0F, 1.0F, 14.0F, 10.0F, 14.0F, 0.0F);
+		field_228863_c_.addBox(1.0F, 0.0F, 1.0F, 14.0F, 10.0F, 14.0F, 0.0F);
 		field_228862_a_ = new ModelRenderer(64, 64, 0, 0);
-		field_228862_a_.func_228301_a_(1.0F, 0.0F, 0.0F, 14.0F, 5.0F, 14.0F, 0.0F);
+		field_228862_a_.addBox(1.0F, 0.0F, 0.0F, 14.0F, 5.0F, 14.0F, 0.0F);
 		field_228862_a_.rotationPointY = 9.0F;
 		field_228862_a_.rotationPointZ = 1.0F;
 		field_228864_d_ = new ModelRenderer(64, 64, 0, 0);
-		field_228864_d_.func_228301_a_(7.0F, -1.0F, 15.0F, 2.0F, 4.0F, 1.0F, 0.0F);
+		field_228864_d_.addBox(7.0F, -1.0F, 15.0F, 2.0F, 4.0F, 1.0F, 0.0F);
 		field_228864_d_.rotationPointY = 8.0F;
 		field_228866_f_ = new ModelRenderer(64, 64, 0, 19);
-		field_228866_f_.func_228301_a_(1.0F, 0.0F, 1.0F, 15.0F, 10.0F, 14.0F, 0.0F);
+		field_228866_f_.addBox(1.0F, 0.0F, 1.0F, 15.0F, 10.0F, 14.0F, 0.0F);
 		field_228865_e_ = new ModelRenderer(64, 64, 0, 0);
-		field_228865_e_.func_228301_a_(1.0F, 0.0F, 0.0F, 15.0F, 5.0F, 14.0F, 0.0F);
+		field_228865_e_.addBox(1.0F, 0.0F, 0.0F, 15.0F, 5.0F, 14.0F, 0.0F);
 		field_228865_e_.rotationPointY = 9.0F;
 		field_228865_e_.rotationPointZ = 1.0F;
 		field_228867_g_ = new ModelRenderer(64, 64, 0, 0);
-		field_228867_g_.func_228301_a_(15.0F, -1.0F, 15.0F, 1.0F, 4.0F, 1.0F, 0.0F);
+		field_228867_g_.addBox(15.0F, -1.0F, 15.0F, 1.0F, 4.0F, 1.0F, 0.0F);
 		field_228867_g_.rotationPointY = 8.0F;
 		field_228869_i_ = new ModelRenderer(64, 64, 0, 19);
-		field_228869_i_.func_228301_a_(0.0F, 0.0F, 1.0F, 15.0F, 10.0F, 14.0F, 0.0F);
+		field_228869_i_.addBox(0.0F, 0.0F, 1.0F, 15.0F, 10.0F, 14.0F, 0.0F);
 		field_228868_h_ = new ModelRenderer(64, 64, 0, 0);
-		field_228868_h_.func_228301_a_(0.0F, 0.0F, 0.0F, 15.0F, 5.0F, 14.0F, 0.0F);
+		field_228868_h_.addBox(0.0F, 0.0F, 0.0F, 15.0F, 5.0F, 14.0F, 0.0F);
 		field_228868_h_.rotationPointY = 9.0F;
 		field_228868_h_.rotationPointZ = 1.0F;
 		field_228870_j_ = new ModelRenderer(64, 64, 0, 0);
-		field_228870_j_.func_228301_a_(0.0F, -1.0F, 15.0F, 1.0F, 4.0F, 1.0F, 0.0F);
+		field_228870_j_.addBox(0.0F, -1.0F, 15.0F, 1.0F, 4.0F, 1.0F, 0.0F);
 		field_228870_j_.rotationPointY = 8.0F;
 	}
 
 	@Override
-	public void func_225616_a_(KeypadChestTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
+	public void render(KeypadChestTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
 	{
 		World world = te.getWorld();
 		boolean hasWorld = world != null;
@@ -105,10 +105,10 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 			float horizontalAngle = state.get(ChestBlock.FACING).getHorizontalAngle();
 			TileEntityMerger.ICallbackWrapper<? extends ChestTileEntity> mergerCallback;
 
-			matrix.func_227860_a_(); //push
-			matrix.func_227861_a_(0.5D, 0.5D, 0.5D); //translate
-			matrix.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-horizontalAngle)); //rotate, POSITIVE_Y, rotate
-			matrix.func_227861_a_(-0.5D, -0.5D, -0.5D); //translate
+			matrix.push();
+			matrix.translate(0.5D, 0.5D, 0.5D);
+			matrix.rotate(Vector3f.field_229181_d_.func_229187_a_(-horizontalAngle)); //YP, rotationDegrees
+			matrix.translate(-0.5D, -0.5D, -0.5D);
 
 			if(hasWorld)
 				mergerCallback = chest.func_225536_a_(state, world, te.getPos(), true);
@@ -118,7 +118,7 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 			float callbackResult = mergerCallback.apply(ChestBlock.func_226917_a_(te)).get(partialTicks);
 			int brightness = mergerCallback.apply(new DualBrightnessCallback<>()).applyAsInt(p_225616_5_);
 			Material material = getMaterial(te, type, isChristmas, te.getLidAngle(partialTicks) >= 0.9F);
-			IVertexBuilder builder = material.func_229311_a_(buffer, RenderType::func_228638_b_);
+			IVertexBuilder builder = material.func_229311_a_(buffer, RenderType::entityCutout);
 
 			callbackResult = 1.0F - callbackResult;
 			callbackResult = 1.0F - callbackResult * callbackResult * callbackResult;
@@ -133,7 +133,7 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 			else
 				this.renderChest(matrix, builder, field_228862_a_, field_228864_d_, field_228863_c_, callbackResult, brightness, p_225616_6_);
 
-			matrix.func_227865_b_(); //pop
+			matrix.pop();
 		}
 	}
 
@@ -141,9 +141,9 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 	{
 		p_228871_3_.rotateAngleX = -(p_228871_6_ * ((float)Math.PI / 2F));
 		p_228871_4_.rotateAngleX = p_228871_3_.rotateAngleX;
-		p_228871_3_.func_228308_a_(matrix, builder, p_228871_7_, p_228871_8_);
-		p_228871_4_.func_228308_a_(matrix, builder, p_228871_7_, p_228871_8_);
-		p_228871_5_.func_228308_a_(matrix, builder, p_228871_7_, p_228871_8_);
+		p_228871_3_.render(matrix, builder, p_228871_7_, p_228871_8_);
+		p_228871_4_.render(matrix, builder, p_228871_7_, p_228871_8_);
+		p_228871_5_.render(matrix, builder, p_228871_7_, p_228871_8_);
 	}
 
 	private Material getMaterial(KeypadChestTileEntity te, ChestType type, boolean isChristmas, boolean isActive)
@@ -171,6 +171,6 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 
 	private static Material createMaterial(String name)
 	{
-		return new Material(Atlases.field_228747_f_, new ResourceLocation("securitycraft", "entity/chest/" + name));
+		return new Material(Atlases.CHEST_ATLAS, new ResourceLocation("securitycraft", "entity/chest/" + name));
 	}
 }

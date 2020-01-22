@@ -35,37 +35,37 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	}
 
 	@Override
-	public void func_225616_a_(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
 	{
 		BlockState state = te.getBlockState();
 		Material material = SignTileEntityRenderer.func_228877_a_(state.getBlock());
-		FontRenderer font = field_228858_b_.getFontRenderer();
+		FontRenderer font = renderDispatcher.getFontRenderer();
 		IVertexBuilder builder;
 
-		stack.func_227860_a_();
+		stack.push();
 
 		if(state.getBlock() instanceof SecretStandingSignBlock)
 		{
-			stack.func_227861_a_(0.5D, 0.5D, 0.5D);
-			stack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
-			model.field_78165_b.showModel = true;
+			stack.translate(0.5D, 0.5D, 0.5D);
+			stack.rotate(Vector3f.field_229181_d_.func_229187_a_(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			model.signStick.showModel = true;
 		}
 		else
 		{
-			stack.func_227861_a_(0.5D, 0.5D, 0.5D);
-			stack.func_227863_a_(Vector3f.field_229181_d_.func_229187_a_(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
-			stack.func_227861_a_(0.0D, -0.3125D, -0.4375D);
-			model.field_78165_b.showModel = false;
+			stack.translate(0.5D, 0.5D, 0.5D);
+			stack.rotate(Vector3f.field_229181_d_.func_229187_a_(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
+			stack.translate(0.0D, -0.3125D, -0.4375D);
+			model.signStick.showModel = false;
 		}
 
-		stack.func_227860_a_();
-		stack.func_227862_a_(0.6666667F, -0.6666667F, -0.6666667F);
+		stack.push();
+		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		builder = material.func_229311_a_(buffer, model::func_228282_a_);
-		model.field_78166_a.func_228308_a_(stack, builder, p_225616_5_, p_225616_6_);
-		model.field_78165_b.func_228308_a_(stack, builder, p_225616_5_, p_225616_6_);
-		stack.func_227865_b_();
-		stack.func_227861_a_(0.0D, 0.33333334F, 0.046666667F);
-		stack.func_227862_a_(0.010416667F, -0.010416667F, 0.010416667F);
+		model.signBoard.render(stack, builder, p_225616_5_, p_225616_6_);
+		model.signStick.render(stack, builder, p_225616_5_, p_225616_6_);
+		stack.pop();
+		stack.translate(0.0D, 0.33333334F, 0.046666667F);
+		stack.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
 		if(te.getOwner().isOwner(Minecraft.getInstance().player))
 		{
@@ -85,11 +85,11 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 				if(text != null)
 				{
-					font.func_228079_a_(text, -font.getStringWidth(text) / 2, line * 10 - te.signText.length * 5, i1, false, stack.func_227866_c_().func_227870_a_(), buffer, false, 0, p_225616_5_);
+					font.renderString(text, -font.getStringWidth(text) / 2, line * 10 - te.signText.length * 5, i1, false, stack.getLast().getPositionMatrix(), buffer, false, 0, p_225616_5_);
 				}
 			}
 		}
 
-		stack.func_227865_b_();
+		stack.pop();
 	}
 }

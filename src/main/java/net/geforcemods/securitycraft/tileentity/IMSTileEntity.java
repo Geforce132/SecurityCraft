@@ -85,9 +85,9 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 
-				double targetX = entity.func_226277_ct_() - (pos.getX() + 0.5D);
+				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
 				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = entity.func_226281_cx_() - (pos.getZ() + 0.5D);
+				double targetZ = entity.getPosZ() - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
@@ -108,9 +108,9 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 
-				double targetX = entity.func_226277_ct_() - (pos.getX() + 0.5D);
+				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
 				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = entity.func_226281_cx_() - (pos.getZ() + 0.5D);
+				double targetZ = entity.getPosZ() - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
@@ -130,14 +130,14 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
-				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.func_226277_ct_(), entity.func_226278_cu_() + entity.getEyeHeight(), entity.func_226281_cx_()))
+				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()))
 					continue;
 				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText()))
 					continue;
 
-				double targetX = entity.func_226277_ct_() - (pos.getX() + 0.5D);
+				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
 				double targetY = entity.getBoundingBox().minY + entity.getHeight() / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = entity.func_226281_cx_() - (pos.getZ() + 0.5D);
+				double targetZ = entity.getPosZ() - (pos.getZ() + 0.5D);
 
 				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 

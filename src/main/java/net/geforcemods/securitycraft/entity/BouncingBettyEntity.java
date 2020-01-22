@@ -40,7 +40,7 @@ public class BouncingBettyEntity extends Entity {
 	 * prevent them from trampling crops
 	 */
 	@Override
-	protected boolean func_225502_at_() //canTriggerWalking
+	protected boolean canTriggerWalking()
 	{
 		return false;
 	}
@@ -60,9 +60,9 @@ public class BouncingBettyEntity extends Entity {
 	@Override
 	public void tick()
 	{
-		prevPosX = func_226277_ct_();
-		prevPosY = func_226278_cu_();
-		prevPosZ = func_226281_cx_();
+		prevPosX = getPosX();
+		prevPosY = getPosY();
+		prevPosZ = getPosZ();
 		setMotion(getMotion().add(0, -0.03999999910593033D, 0));
 		move(MoverType.SELF, getMotion());
 		setMotion(getMotion().mul(0.9800000190734863D, 0.9800000190734863D, 0.9800000190734863D));
@@ -78,7 +78,7 @@ public class BouncingBettyEntity extends Entity {
 				explode();
 		}
 		else if(world.isRemote)
-			world.addParticle(ParticleTypes.SMOKE, false, func_226277_ct_(), func_226278_cu_() + 0.5D, func_226281_cx_(), 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, false, getPosX(), getPosY() + 0.5D, getPosZ(), 0.0D, 0.0D, 0.0D);
 	}
 
 	private void explode()
@@ -86,9 +86,9 @@ public class BouncingBettyEntity extends Entity {
 		float f = 6.0F;
 
 		if(ConfigHandler.CONFIG.smallerMineExplosion.get())
-			world.createExplosion(this, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), (f / 2), ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (f / 2), ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion(this, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), f, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), f, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 	}
 
 	/**

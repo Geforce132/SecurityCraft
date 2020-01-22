@@ -61,19 +61,19 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		if(playerName != null && PlayerUtils.isPlayerOnline(playerName)){
 			PlayerEntity target = PlayerUtils.getPlayerFromName(playerName);
 
-			double targetX = target.func_226277_ct_() - func_226277_ct_();
-			double targetY = target.getBoundingBox().minY + target.getHeight() / 2.0F - (func_226278_cu_() + 1.25D);
-			double targetZ = target.func_226281_cx_() - func_226281_cx_();
-			IMSBombEntity imsBomb = new IMSBombEntity(world, target, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), targetX, targetY, targetZ, 0);
+			double targetX = target.getPosX() - getPosX();
+			double targetY = target.getBoundingBox().minY + target.getHeight() / 2.0F - (getPosY() + 1.25D);
+			double targetZ = target.getPosZ() - getPosZ();
+			IMSBombEntity imsBomb = new IMSBombEntity(world, target, getPosX(), getPosY(), getPosZ(), targetX, targetY, targetZ, 0);
 
 			imsBomb.launching = false;
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(imsBomb));
 			remove();
 		}else if(targetMob != null && !targetMob.removed){
-			double targetX = targetMob.func_226277_ct_() - func_226277_ct_();
-			double targetY = targetMob.getBoundingBox().minY + targetMob.getHeight() / 2.0F - (func_226278_cu_() + 1.25D);
-			double targetZ = targetMob.func_226281_cx_() - func_226281_cx_();
-			IMSBombEntity imsBomb = new IMSBombEntity(world, targetMob, func_226277_ct_(), func_226278_cu_(), func_226281_cx_(), targetX, targetY, targetZ, 0);
+			double targetX = targetMob.getPosX() - getPosX();
+			double targetY = targetMob.getBoundingBox().minY + targetMob.getHeight() / 2.0F - (getPosY() + 1.25D);
+			double targetZ = targetMob.getPosZ() - getPosZ();
+			IMSBombEntity imsBomb = new IMSBombEntity(world, targetMob, getPosX(), getPosY(), getPosZ(), targetX, targetY, targetZ, 0);
 
 			imsBomb.launching = false;
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(imsBomb));
@@ -96,7 +96,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	@Override
-	protected boolean func_225502_at_(){ //canTriggerWalking
+	protected boolean canTriggerWalking(){
 		return false;
 	}
 

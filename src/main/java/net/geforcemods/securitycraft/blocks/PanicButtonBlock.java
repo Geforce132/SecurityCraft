@@ -57,7 +57,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		BlockUtils.setBlockProperty(world, pos, POWERED, !state.get(POWERED), true);
 

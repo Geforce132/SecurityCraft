@@ -30,7 +30,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 					(entity instanceof CreeperEntity && ((CreeperEntity) entity).func_225509_J__()))
 				return false;
 
-			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.func_226277_ct_(), entity.func_226278_cu_(), entity.func_226281_cx_(), false);
+			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false);
 
 			world.addEntity(lightning);
 			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);

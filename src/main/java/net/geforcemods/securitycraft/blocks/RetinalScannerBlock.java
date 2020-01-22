@@ -35,7 +35,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		if (!world.isRemote && state.get(POWERED).booleanValue())
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);

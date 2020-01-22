@@ -28,10 +28,10 @@ public class BulletRenderer extends EntityRenderer<BulletEntity>
 	}
 
 	@Override
-	public void func_225623_a_(BulletEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
+	public void render(BulletEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
-		matrix.func_227863_a_(new Quaternion(Vector3f.field_229181_d_, entity.rotationYaw, true)); //roate, POSITIVE_Y
-		MODEL.func_225598_a_(matrix, buffer.getBuffer(RenderType.func_228634_a_(getEntityTexture(entity))), p_225623_6_, OverlayTexture.field_229196_a_, 1.0F, 1.0F, 1.0F, 1.0F); //render
+		matrix.rotate(new Quaternion(Vector3f.field_229181_d_, entity.rotationYaw, true)); //YP
+		MODEL.render(matrix, buffer.getBuffer(RenderType.entitySolid(getEntityTexture(entity))), p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

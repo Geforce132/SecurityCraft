@@ -131,31 +131,31 @@ public class EditSecretSignScreen extends Screen
 		int j1 = editLine * 10 - te.signText.length * 5;
 		IRenderTypeBuffer.Impl buffer;
 		IVertexBuilder builder;
-		Matrix4f matrix4f;
+		Matrix4f positionMatrix;
 
-		RenderHelper.func_227783_c_();
+		RenderHelper.setupGuiFlatDiffuseLighting();
 		renderBackground();
 		drawCenteredString(font, title.getFormattedText(), width / 2, 40, 16777215);
-		stack.func_227860_a_();
-		stack.func_227861_a_(width / 2, 0.0D, 50.0D);
-		stack.func_227862_a_(93.75F, -93.75F, 93.75F);
-		stack.func_227861_a_(0.0D, -1.3125D, 0.0D);
+		stack.push();
+		stack.translate(width / 2, 0.0D, 50.0D);
+		stack.scale(93.75F, -93.75F, 93.75F);
+		stack.translate(0.0D, -1.3125D, 0.0D);
 
 		if(!isStanding)
-			stack.func_227861_a_(0.0D, -0.3125D, 0.0D);
+			stack.translate(0.0D, -0.3125D, 0.0D);
 
-		stack.func_227860_a_();
-		stack.func_227862_a_(0.6666667F, -0.6666667F, -0.6666667F);
+		stack.push();
+		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		buffer = minecraft.func_228019_au_().func_228487_b_();
 		builder = material.func_229311_a_(buffer, signModel::func_228282_a_);
-		signModel.field_78166_a.func_228308_a_(stack, builder, 15728880, OverlayTexture.field_229196_a_);
+		signModel.signBoard.render(stack, builder, 15728880, OverlayTexture.DEFAULT_LIGHT);
 
 		if(isStanding)
-			signModel.field_78165_b.func_228308_a_(stack, builder, 15728880, OverlayTexture.field_229196_a_);
+			signModel.signStick.render(stack, builder, 15728880, OverlayTexture.DEFAULT_LIGHT);
 
-		stack.func_227865_b_();
-		stack.func_227861_a_(0.0D, 0.33333334F, 0.046666667F);
-		stack.func_227862_a_(0.010416667F, -0.010416667F, 0.010416667F);
+		stack.pop();
+		stack.translate(0.0D, 0.33333334F, 0.046666667F);
+		stack.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
 		for(int j = 0; j < text.length; ++j)
 		{
@@ -166,7 +166,7 @@ public class EditSecretSignScreen extends Screen
 			});
 		}
 
-		matrix4f = stack.func_227866_c_().func_227870_a_();
+		positionMatrix = stack.getLast().getPositionMatrix();
 
 		for(int k1 = 0; k1 < text.length; ++k1)
 		{
@@ -176,7 +176,7 @@ public class EditSecretSignScreen extends Screen
 			{
 				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
 
-				minecraft.fontRenderer.func_228079_a_(s, f3, k1 * 10 - te.signText.length * 5, textColor, false, matrix4f, buffer, false, 0, 15728880);
+				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - te.signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 
 				if(k1 == this.editLine && k >= 0 && update)
 				{
@@ -184,7 +184,7 @@ public class EditSecretSignScreen extends Screen
 					int i2 = (l1 - minecraft.fontRenderer.getStringWidth(s) / 2) * i1;
 
 					if(k >= s.length())
-						minecraft.fontRenderer.func_228079_a_("_", i2, j1, textColor, false, matrix4f, buffer, false, 0, 15728880);
+						minecraft.fontRenderer.renderString("_", i2, j1, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 				}
 			}
 		}
@@ -201,7 +201,7 @@ public class EditSecretSignScreen extends Screen
 				int i4 = (l3 - minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
 
 				if(update && k < s1.length())
-					fill(matrix4f, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
+					fill(positionMatrix, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
 
 				if(l != k)
 				{
@@ -217,10 +217,10 @@ public class EditSecretSignScreen extends Screen
 					RenderSystem.enableColorLogicOp();
 					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 					buf.begin(7, DefaultVertexFormats.POSITION_COLOR);
-					buf.func_227888_a_(matrix4f, i3, j1 + 9, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
-					buf.func_227888_a_(matrix4f, j3, j1 + 9, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
-					buf.func_227888_a_(matrix4f, j3, j1, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
-					buf.func_227888_a_(matrix4f, i3, j1, 0.0F).func_225586_a_(0, 0, 255, 255).endVertex();
+					buf.pos(positionMatrix, i3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.pos(positionMatrix, j3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.pos(positionMatrix, j3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.pos(positionMatrix, i3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
 					buf.finishDrawing();
 					WorldVertexBufferUploader.draw(buf);
 					RenderSystem.disableColorLogicOp();
@@ -229,8 +229,8 @@ public class EditSecretSignScreen extends Screen
 			}
 		}
 
-		stack.func_227865_b_();
-		RenderHelper.func_227784_d_();
+		stack.pop();
+		RenderHelper.setupGui3DDiffuseLighting();
 		super.render(mouseX, mouseY, partialTicks);
 	}
 }

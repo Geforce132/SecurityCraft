@@ -122,7 +122,7 @@ public class SCEventHandler {
 		}
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().func_226277_ct_(), event.getEntity().func_226278_cu_(), event.getEntity().func_226281_cx_(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getPosX(), event.getEntity().getPosY(), event.getEntity().getPosZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
 	}
 
 	@SubscribeEvent

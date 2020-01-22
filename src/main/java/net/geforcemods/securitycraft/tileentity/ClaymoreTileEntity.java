@@ -71,9 +71,9 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 					if(PlayerUtils.isPlayerMountedOnCamera(MobEntity))
 						continue;
 
-					entityX = MobEntity.func_226277_ct_();
-					entityY = MobEntity.func_226278_cu_();
-					entityZ = MobEntity.func_226281_cx_();
+					entityX = MobEntity.getPosX();
+					entityY = MobEntity.getPosY();
+					entityZ = MobEntity.getPosZ();
 					cooldown = 20;
 					getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 					break;

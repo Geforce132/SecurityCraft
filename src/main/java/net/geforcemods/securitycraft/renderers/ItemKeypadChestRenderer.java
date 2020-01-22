@@ -17,11 +17,11 @@ public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer
 	private static KeypadChestTileEntityRenderer dummyRenderer = null;
 
 	@Override
-	public void func_228364_a_(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int p_228364_4_, int p_228364_5_)
+	public void render(ItemStack stack, MatrixStack matrix, IRenderTypeBuffer buffer, int p_228364_4_, int p_228364_5_)
 	{
 		if(dummyRenderer == null)
 			dummyRenderer = new KeypadChestTileEntityRenderer(TileEntityRendererDispatcher.instance);
 
-		dummyRenderer.func_225616_a_(DUMMY_TE, 0.0F, matrix, buffer, p_228364_4_, p_228364_5_);
+		dummyRenderer.render(DUMMY_TE, 0.0F, matrix, buffer, p_228364_4_, p_228364_5_);
 	}
 }

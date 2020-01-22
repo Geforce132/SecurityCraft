@@ -64,9 +64,9 @@ public class SecurityCameraEntity extends Entity{
 		blockPosX = (int) x;
 		blockPosY = (int) y;
 		blockPosZ = (int) z;
-		cameraUseX = player.func_226277_ct_();
-		cameraUseY = player.func_226278_cu_();
-		cameraUseZ = player.func_226281_cx_();
+		cameraUseX = player.getPosX();
+		cameraUseY = player.getPosY();
+		cameraUseZ = player.getPosZ();
 		cameraUseYaw = player.rotationYaw;
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
@@ -110,7 +110,7 @@ public class SecurityCameraEntity extends Entity{
 		{
 			rotationPitch = 30F;
 
-			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(func_226277_ct_()), (int) func_226278_cu_(), (int) Math.floor(func_226281_cx_())), SecurityCameraBlock.FACING);
+			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.NORTH)
 				rotationYaw = 180F;
@@ -161,12 +161,12 @@ public class SecurityCameraEntity extends Entity{
 				toggleLightCooldown -= 1;
 
 			if(lowestEntity.rotationYaw != rotationYaw){
-				lowestEntity.setPositionAndRotation(lowestEntity.func_226277_ct_(), lowestEntity.func_226278_cu_(), lowestEntity.func_226281_cx_(), rotationYaw, rotationPitch);
+				lowestEntity.setPositionAndRotation(lowestEntity.getPosX(), lowestEntity.getPosY(), lowestEntity.getPosZ(), rotationYaw, rotationPitch);
 				lowestEntity.rotationYaw = rotationYaw;
 			}
 
 			if(lowestEntity.rotationPitch != rotationPitch)
-				lowestEntity.setPositionAndRotation(lowestEntity.func_226277_ct_(), lowestEntity.func_226278_cu_(), lowestEntity.func_226281_cx_(), rotationYaw, rotationPitch);
+				lowestEntity.setPositionAndRotation(lowestEntity.getPosX(), lowestEntity.getPosY(), lowestEntity.getPosZ(), rotationYaw, rotationPitch);
 
 			checkKeysPressed();
 
@@ -175,7 +175,7 @@ public class SecurityCameraEntity extends Entity{
 			if(isMiddleDown && screenshotCooldown == 0){
 				screenshotCooldown = 30;
 				ClientUtils.takeScreenshot();
-				Minecraft.getInstance().world.playSound(new BlockPos(func_226277_ct_(), func_226278_cu_(), func_226281_cx_()), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+				Minecraft.getInstance().world.playSound(new BlockPos(getPosX(), getPosY(), getPosZ()), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
@@ -190,7 +190,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	private void checkKeysPressed() {
-		if (Minecraft.getInstance().gameSettings.field_228046_af_.isPressed())
+		if (Minecraft.getInstance().gameSettings.keyBindSneak.isPressed())
 			stopRiding();
 
 		if(Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
@@ -245,8 +245,8 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewLeft() {
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(func_226277_ct_()), (int) func_226278_cu_(), (int) Math.floor(func_226281_cx_())), SecurityCameraBlock.FACING)) {
-			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(func_226277_ct_()), (int) func_226278_cu_(), (int) Math.floor(func_226281_cx_())), SecurityCameraBlock.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING)) {
+			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
 			{
@@ -277,8 +277,8 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewRight(){
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(func_226277_ct_()), (int) func_226278_cu_(), (int) Math.floor(func_226281_cx_())), SecurityCameraBlock.FACING)) {
-			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(func_226277_ct_()), (int) func_226278_cu_(), (int) Math.floor(func_226281_cx_())), SecurityCameraBlock.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING)) {
+			Direction facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
 			{
@@ -319,11 +319,11 @@ public class SecurityCameraEntity extends Entity{
 			else if(zoomAmount == 1F)
 				zoomAmount = -0.5F;
 
-		Minecraft.getInstance().world.playSound(new BlockPos(func_226277_ct_(), func_226278_cu_(), func_226281_cx_()), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+		Minecraft.getInstance().world.playSound(new BlockPos(getPosX(), getPosY(), getPosZ()), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
-		BlockPos pos = BlockUtils.toPos((int) Math.floor(func_226277_ct_()), (int) func_226278_cu_(), (int) Math.floor(func_226281_cx_()));
+		BlockPos pos = BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()));
 
 		if(((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
 			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !BlockUtils.getBlockPropertyAsBoolean(world, pos, SecurityCameraBlock.POWERED)));

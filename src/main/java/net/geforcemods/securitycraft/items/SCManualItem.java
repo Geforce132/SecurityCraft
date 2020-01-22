@@ -31,8 +31,8 @@ public class SCManualItem extends Item {
 			ListNBT bookPages = new ListNBT();
 
 			par1ItemStack.setTagInfo("pages", bookPages);
-			par1ItemStack.setTagInfo("author", StringNBT.func_229705_a_("Geforce")); //create
-			par1ItemStack.setTagInfo("title", StringNBT.func_229705_a_("SecurityCraft"));
+			par1ItemStack.setTagInfo("author", StringNBT.valueOf("Geforce"));
+			par1ItemStack.setTagInfo("title", StringNBT.valueOf("SecurityCraft"));
 		}
 	}
 

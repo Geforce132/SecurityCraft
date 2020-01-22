@@ -178,15 +178,15 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IBucke
 	}
 
 	@Override
-	public void func_225534_a_(BlockState state, ServerWorld world, BlockPos pos, Random random) //tick
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		modelState.func_227033_a_(world, pos, random); //tick
 	}
 
 	@Override
-	public ActionResultType func_225533_a_(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) //onBlockActivated
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		return modelState.func_227031_a_(world, player, hand, hit); //onBlockActivated
+		return modelState.onBlockActivated(world, player, hand, hit);
 	}
 
 	@Override
