@@ -2,6 +2,7 @@
 
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
 - Change: Updated some help descriptions (Thanks supercat95!)
+- Change: The powered taser now inflicts one heart of damage instead of half a heart
 - Fix: JEI error on startup
 - Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
 - Fix: Players that don't own an Inventory Scanner can still take out its items
