@@ -122,7 +122,7 @@ public class EditSecretSignScreen extends Screen
 		BlockState state = this.te.getBlockState();
 		boolean isStanding = state.getBlock() instanceof StandingSignBlock;
 		boolean update = updateCounter / 6 % 2 == 0;
-		Material material = SignTileEntityRenderer.func_228877_a_(state.getBlock());
+		Material material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		int textColor = te.getTextColor().getTextColor();
 		String[] text = new String[4];
 		int k = textInputUtil.func_216896_c();
@@ -146,8 +146,8 @@ public class EditSecretSignScreen extends Screen
 
 		stack.push();
 		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
-		buffer = minecraft.func_228019_au_().func_228487_b_();
-		builder = material.func_229311_a_(buffer, signModel::func_228282_a_);
+		buffer = minecraft.getRenderTypeBuffers().getBufferSource();
+		builder = material.getBuffer(buffer, signModel::getRenderType);
 		signModel.signBoard.render(stack, builder, 15728880, OverlayTexture.DEFAULT_LIGHT);
 
 		if(isStanding)
@@ -189,7 +189,7 @@ public class EditSecretSignScreen extends Screen
 			}
 		}
 
-		buffer.func_228461_a_();
+		buffer.finish();
 
 		for(int k3 = 0; k3 < text.length; ++k3)
 		{

@@ -144,7 +144,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			player.closeScreen();
 
-			if(player.func_225608_bj_()) //isCrouching
+			if(player.isCrouching())
 				remove();
 			else if(item == SCContent.universalBlockRemover)
 			{

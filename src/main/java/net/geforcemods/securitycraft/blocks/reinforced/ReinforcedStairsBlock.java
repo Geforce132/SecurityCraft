@@ -180,7 +180,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IBucke
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
-		modelState.func_227033_a_(world, pos, random); //tick
+		modelState.tick(world, pos, random);
 	}
 
 	@Override

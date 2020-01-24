@@ -49,7 +49,7 @@ public class TaserItem extends Item {
 		if(!world.isRemote)
 		{
 			if(!stack.isDamaged()){
-				if(player.func_225608_bj_() && (player.isCreative() || !powered)) //isCrouching
+				if(player.isCrouching() && (player.isCreative() || !powered))
 				{
 					ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
 

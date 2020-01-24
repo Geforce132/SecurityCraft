@@ -107,7 +107,7 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 
 			matrix.push();
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.rotate(Vector3f.field_229181_d_.func_229187_a_(-horizontalAngle)); //YP, rotationDegrees
+			matrix.rotate(Vector3f.YP.rotationDegrees(-horizontalAngle));
 			matrix.translate(-0.5D, -0.5D, -0.5D);
 
 			if(hasWorld)
@@ -118,7 +118,7 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 			float callbackResult = mergerCallback.apply(ChestBlock.func_226917_a_(te)).get(partialTicks);
 			int brightness = mergerCallback.apply(new DualBrightnessCallback<>()).applyAsInt(p_225616_5_);
 			Material material = getMaterial(te, type, isChristmas, te.getLidAngle(partialTicks) >= 0.9F);
-			IVertexBuilder builder = material.func_229311_a_(buffer, RenderType::entityCutout);
+			IVertexBuilder builder = material.getBuffer(buffer, RenderType::entityCutout);
 
 			callbackResult = 1.0F - callbackResult;
 			callbackResult = 1.0F - callbackResult * callbackResult * callbackResult;

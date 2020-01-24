@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Quaternion;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -38,7 +37,7 @@ public class SentryRenderer extends EntityRenderer<SentryEntity>
 		stack.scale(-1, -1, 1); //rotate model rightside up
 		Minecraft.getInstance().textureManager.bindTexture(getEntityTexture(entity));
 		MODEL.renderBase(stack, builder, p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
-		stack.rotate(new Quaternion(Vector3f.field_229181_d_, entity.getDataManager().get(SentryEntity.HEAD_ROTATION), true)); //YP
+		stack.rotate(Vector3f.YP.rotationDegrees(entity.getDataManager().get(SentryEntity.HEAD_ROTATION)));
 		stack.translate(0.0F, entity.getHeadYTranslation(), 0.0F);
 		MODEL.render(stack, builder, p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
 	}

@@ -163,7 +163,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockState blockstate2 = iblockreader.getBlockState(blockpos4);
 		BlockPos blockpos5 = blockpos1.offset(direction2);
 		BlockState blockstate3 = iblockreader.getBlockState(blockpos5);
-		int i = (blockstate.func_224756_o(iblockreader, blockpos2) ? -1 : 0) + (blockstate1.func_224756_o(iblockreader, blockpos3) ? -1 : 0) + (blockstate2.func_224756_o(iblockreader, blockpos4) ? 1 : 0) + (blockstate3.func_224756_o(iblockreader, blockpos5) ? 1 : 0);
+		int i = (blockstate.isCollisionShapeOpaque(iblockreader, blockpos2) ? -1 : 0) + (blockstate1.isCollisionShapeOpaque(iblockreader, blockpos3) ? -1 : 0) + (blockstate2.isCollisionShapeOpaque(iblockreader, blockpos4) ? 1 : 0) + (blockstate3.isCollisionShapeOpaque(iblockreader, blockpos5) ? 1 : 0);
 		boolean flag = blockstate.getBlock() == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
 		boolean flag1 = blockstate2.getBlock() == this && blockstate2.get(HALF) == DoubleBlockHalf.LOWER;
 		if ((!flag || flag1) && i <= 0) {
@@ -323,7 +323,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockPos blockpos = pos.down();
 		BlockState blockstate = worldIn.getBlockState(blockpos);
 		if (state.get(HALF) == DoubleBlockHalf.LOWER) {
-			return blockstate.func_224755_d(worldIn, blockpos, Direction.UP);
+			return blockstate.isSolidSide(worldIn, blockpos, Direction.UP);
 		} else {
 			return blockstate.getBlock() == this;
 		}

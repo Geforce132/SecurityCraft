@@ -38,7 +38,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
 	{
 		BlockState state = te.getBlockState();
-		Material material = SignTileEntityRenderer.func_228877_a_(state.getBlock());
+		Material material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderDispatcher.getFontRenderer();
 		IVertexBuilder builder;
 
@@ -47,20 +47,20 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		if(state.getBlock() instanceof SecretStandingSignBlock)
 		{
 			stack.translate(0.5D, 0.5D, 0.5D);
-			stack.rotate(Vector3f.field_229181_d_.func_229187_a_(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			stack.rotate(Vector3f.YP.rotationDegrees(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.signStick.showModel = true;
 		}
 		else
 		{
 			stack.translate(0.5D, 0.5D, 0.5D);
-			stack.rotate(Vector3f.field_229181_d_.func_229187_a_(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
+			stack.rotate(Vector3f.YP.rotationDegrees(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
 			stack.translate(0.0D, -0.3125D, -0.4375D);
 			model.signStick.showModel = false;
 		}
 
 		stack.push();
 		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
-		builder = material.func_229311_a_(buffer, model::func_228282_a_);
+		builder = material.getBuffer(buffer, model::getRenderType);
 		model.signBoard.render(stack, builder, p_225616_5_, p_225616_6_);
 		model.signStick.render(stack, builder, p_225616_5_, p_225616_6_);
 		stack.pop();
@@ -70,10 +70,10 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		if(te.getOwner().isOwner(Minecraft.getInstance().player))
 		{
 			int textColor = te.getTextColor().getTextColor();
-			int j = (int)(NativeImage.func_227791_b_(textColor) * 0.4D);
-			int k = (int)(NativeImage.func_227793_c_(textColor) * 0.4D);
-			int l = (int)(NativeImage.func_227795_d_(textColor) * 0.4D);
-			int i1 = NativeImage.func_227787_a_(0, l, k, j);
+			int j = (int)(NativeImage.getRed(textColor) * 0.4D);
+			int k = (int)(NativeImage.getGreen(textColor) * 0.4D);
+			int l = (int)(NativeImage.getBlue(textColor) * 0.4D);
+			int i1 = NativeImage.getCombined(0, l, k, j);
 
 			for(int line = 0; line < 4; ++line)
 			{

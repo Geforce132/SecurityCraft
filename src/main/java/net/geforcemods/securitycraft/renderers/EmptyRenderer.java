@@ -14,7 +14,7 @@ public class EmptyRenderer<T extends Entity> extends EntityRenderer<T>
 	}
 
 	@Override
-	public boolean func_225626_a_(T entity, ClippingHelperImpl p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) //shouldRender
+	public boolean shouldRender(T entity, ClippingHelperImpl camera, double camX, double camY, double camZ)
 	{
 		return false;
 	}

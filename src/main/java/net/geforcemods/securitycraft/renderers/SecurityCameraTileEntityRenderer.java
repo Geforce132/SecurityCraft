@@ -24,10 +24,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<SecurityCameraTileEntity> {
 
-	private static final Quaternion POSITIVE_Y_180 = new Quaternion(Vector3f.field_229181_d_, 180.0F, true);
-	private static final Quaternion POSITIVE_Y_90 = new Quaternion(Vector3f.field_229181_d_, 90.0F, true);
-	private static final Quaternion POSITIVE_Y_NEGATIVE_90 = new Quaternion(Vector3f.field_229181_d_, -90.0F, true);
-	private static final Quaternion POSITIVE_X_180 = new Quaternion(Vector3f.field_229179_b_, 180.0F, true);
+	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
+	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
+	private static final Quaternion POSITIVE_Y_NEGATIVE_90 = Vector3f.YP.rotationDegrees(-90.0F);
+	private static final Quaternion POSITIVE_X_180 = Vector3f.YP.rotationDegrees(180.0F);
 
 	public SecurityCameraTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{

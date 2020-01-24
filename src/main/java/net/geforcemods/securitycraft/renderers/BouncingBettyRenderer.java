@@ -49,9 +49,9 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 		else
 			overlayTextureToUse = OverlayTexture.DEFAULT_LIGHT;
 
-		matrix.rotate(Vector3f.field_229181_d_.func_229187_a_(-90.0F));
+		matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
 		matrix.translate(-0.5D, -0.5D, 0.5D);
-		matrix.rotate(Vector3f.field_229181_d_.func_229187_a_(90.0F));
+		matrix.rotate(Vector3f.YP.rotationDegrees(90.0F));
 		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.bouncingBetty.getDefaultState(), matrix, buffer, p_225623_6_, overlayTextureToUse, EmptyModelData.INSTANCE);
 		matrix.pop();
 		super.render(entity, p_225623_2_, partialTicks, matrix, buffer, p_225623_6_);
