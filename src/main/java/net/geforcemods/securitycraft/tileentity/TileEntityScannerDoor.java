@@ -1,7 +1,11 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.ArrayList;
+
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -14,6 +18,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
+	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+
 	@Override
 	public void entityViewed(EntityLivingBase entity)
 	{
@@ -43,9 +49,16 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			world.markBlockRangeForRenderUpdate(pos.down(), pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
-			if(open)
+			if(open && sendMessage.asBoolean())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
 		}
+	}
+
+	@Override
+	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs)
+	{
+		if(action == EnumLinkedAction.OPTION_CHANGED)
+			sendMessage.copy((Option<?>)parameters[0]);
 	}
 
 	@Override
@@ -63,6 +76,6 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[]{};
+		return new Option[]{ sendMessage };
 	}
 }

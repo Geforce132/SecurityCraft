@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
@@ -54,8 +54,12 @@ public class ItemScannerDoor extends Item
 
 				if(world.getTileEntity(pos) != null)
 				{
-					((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					((TileEntityOwnable) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					CustomizableSCTE lowerTe = ((CustomizableSCTE) world.getTileEntity(pos));
+					CustomizableSCTE upperTe = ((CustomizableSCTE) world.getTileEntity(pos.up()));
+
+					lowerTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					upperTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					CustomizableSCTE.link(lowerTe, upperTe);
 				}
 
 				return EnumActionResult.SUCCESS;

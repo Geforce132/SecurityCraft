@@ -123,6 +123,6 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return new TileEntityScannerDoor().activatedByView();
+		return new TileEntityScannerDoor().linkable().activatedByView();
 	}
 }
