@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityProvider, IOverlayDisplay
+public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDisplay
 {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 
@@ -101,7 +100,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new BlockPocketTileEntity();
 	}

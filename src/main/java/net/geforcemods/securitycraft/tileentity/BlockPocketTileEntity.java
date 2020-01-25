@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 public class BlockPocketTileEntity extends CustomizableTileEntity
 {
 	private BlockPocketManagerTileEntity manager;
+	private BlockPos managerPos;
 
 	public BlockPocketTileEntity()
 	{
@@ -20,16 +21,32 @@ public class BlockPocketTileEntity extends CustomizableTileEntity
 	public void setManager(BlockPocketManagerTileEntity manager)
 	{
 		this.manager = manager;
+		managerPos = manager.getPos();
 	}
 
 	public void removeManager()
 	{
+		managerPos = null;
 		manager = null;
 	}
 
 	public BlockPocketManagerTileEntity getManager()
 	{
 		return manager;
+	}
+
+	@Override
+	public void tick()
+	{
+		super.tick();
+
+		if(manager == null && managerPos != null)
+		{
+			TileEntity te = world.getTileEntity(managerPos);
+
+			if(te instanceof BlockPocketManagerTileEntity)
+				manager = (BlockPocketManagerTileEntity)te;
+		}
 	}
 
 	@Override
@@ -55,12 +72,7 @@ public class BlockPocketTileEntity extends CustomizableTileEntity
 		super.read(tag);
 
 		if(tag.contains("ManagerPos"))
-		{
-			TileEntity te = world.getTileEntity(BlockPos.fromLong(tag.getLong("ManagerPos")));
-
-			if(te instanceof BlockPocketManagerTileEntity)
-				manager = (BlockPocketManagerTileEntity)te;
-		}
+			managerPos = BlockPos.fromLong(tag.getLong("ManagerPos"));
 	}
 
 	@Override

@@ -9,6 +9,7 @@
 - Fix: Break animations
 - Fix: Reinforced Doors and Scanner Doors can be broken using pistons
 - Fix: Block Pocket Wall's sides are visible through other Block Pocket Walls
+- Potential Fix: Block Pocket still loses its owner when reloading world/server
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
