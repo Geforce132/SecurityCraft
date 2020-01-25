@@ -51,40 +51,6 @@ public class BlockUtils{
 		return Block.hasSolidSide(world.getBlockState(pos), world, pos, side);
 	}
 
-	public static void setBlockInBox(World world, int x, int y, int z, Block block){
-		setBlock(world, x + 1, y + 1, z, block);
-		setBlock(world, x + 1, y + 2, z, block);
-		setBlock(world, x + 1, y + 3, z, block);
-		setBlock(world, x + 1, y + 1, z + 1, block);
-		setBlock(world, x + 1, y + 2, z + 1, block);
-		setBlock(world, x + 1, y + 3, z + 1, block);
-		setBlock(world, x - 1, y + 1, z, block);
-		setBlock(world, x - 1, y + 2, z, block);
-		setBlock(world, x - 1, y + 3, z, block);
-		setBlock(world, x - 1, y + 1, z + 1, block);
-		setBlock(world, x - 1, y + 2, z + 1, block);
-		setBlock(world, x - 1, y + 3, z + 1, block);
-		setBlock(world, x, y + 1, z + 1, block);
-		setBlock(world, x, y + 2, z + 1, block);
-		setBlock(world, x, y + 3, z + 1, block);
-
-		setBlock(world, x, y + 1, z - 1, block);
-		setBlock(world, x, y + 2, z - 1, block);
-		setBlock(world, x, y + 3, z - 1, block);
-		setBlock(world, x + 1, y + 1, z - 1, block);
-		setBlock(world, x + 1, y + 2, z - 1, block);
-		setBlock(world, x + 1, y + 3, z - 1, block);
-
-		setBlock(world, x - 1, y + 1, z - 1, block);
-		setBlock(world, x - 1, y + 2, z - 1, block);
-		setBlock(world, x - 1, y + 3, z - 1, block);
-
-		setBlock(world, x + 1, y + 4, z + 1, block);
-		setBlock(world, x + 1, y + 4, z - 1, block);
-		setBlock(world, x - 1, y + 4, z + 1, block);
-		setBlock(world, x - 1, y + 4, z - 1, block);
-	}
-
 	/**
 	 * Updates a block and notify's neighboring blocks of a change.
 	 *
@@ -101,10 +67,6 @@ public class BlockUtils{
 		world.neighborChanged(pos.north(), world.getBlockState(pos).getBlock(), pos);
 		world.neighborChanged(pos.up(), world.getBlockState(pos).getBlock(), pos);
 		world.neighborChanged(pos.down(), world.getBlockState(pos).getBlock(), pos);
-	}
-
-	public static void setBlock(World world, int x, int y, int z, Block block){
-		world.setBlockState(toPos(x, y, z), block.getDefaultState());
 	}
 
 	public static Block getBlock(World world, BlockPos pos){
