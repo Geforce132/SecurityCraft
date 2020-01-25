@@ -40,40 +40,6 @@ public class BlockUtils{
 			SCContent.reinforcedWoodenPressurePlate
 	});
 
-	public static void setBlockInBox(World world, int x, int y, int z, Block block){
-		setBlock(world, x + 1, y + 1, z, block);
-		setBlock(world, x + 1, y + 2, z, block);
-		setBlock(world, x + 1, y + 3, z, block);
-		setBlock(world, x + 1, y + 1, z + 1, block);
-		setBlock(world, x + 1, y + 2, z + 1, block);
-		setBlock(world, x + 1, y + 3, z + 1, block);
-		setBlock(world, x - 1, y + 1, z, block);
-		setBlock(world, x - 1, y + 2, z, block);
-		setBlock(world, x - 1, y + 3, z, block);
-		setBlock(world, x - 1, y + 1, z + 1, block);
-		setBlock(world, x - 1, y + 2, z + 1, block);
-		setBlock(world, x - 1, y + 3, z + 1, block);
-		setBlock(world, x, y + 1, z + 1, block);
-		setBlock(world, x, y + 2, z + 1, block);
-		setBlock(world, x, y + 3, z + 1, block);
-
-		setBlock(world, x, y + 1, z - 1, block);
-		setBlock(world, x, y + 2, z - 1, block);
-		setBlock(world, x, y + 3, z - 1, block);
-		setBlock(world, x + 1, y + 1, z - 1, block);
-		setBlock(world, x + 1, y + 2, z - 1, block);
-		setBlock(world, x + 1, y + 3, z - 1, block);
-
-		setBlock(world, x - 1, y + 1, z - 1, block);
-		setBlock(world, x - 1, y + 2, z - 1, block);
-		setBlock(world, x - 1, y + 3, z - 1, block);
-
-		setBlock(world, x + 1, y + 4, z + 1, block);
-		setBlock(world, x + 1, y + 4, z - 1, block);
-		setBlock(world, x - 1, y + 4, z + 1, block);
-		setBlock(world, x - 1, y + 4, z - 1, block);
-	}
-
 	/**
 	 * Updates a block and notify's neighboring blocks of a change.
 	 *
@@ -94,10 +60,6 @@ public class BlockUtils{
 
 	public static int getBlockMeta(World world, BlockPos pos){
 		return world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos));
-	}
-
-	private static void setBlock(World world, int x, int y, int z, Block block){
-		world.setBlockState(toPos(x, y, z), block.getDefaultState());
 	}
 
 	public static Block getBlock(IBlockAccess world, BlockPos pos){
