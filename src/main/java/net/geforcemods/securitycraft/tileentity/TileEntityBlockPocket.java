@@ -10,20 +10,37 @@ import net.minecraft.util.math.BlockPos;
 public class TileEntityBlockPocket extends CustomizableSCTE
 {
 	private TileEntityBlockPocketManager manager;
+	private BlockPos managerPos;
 
 	public void setManager(TileEntityBlockPocketManager manager)
 	{
 		this.manager = manager;
+		managerPos = manager.getPos();
 	}
 
 	public void removeManager()
 	{
+		managerPos = null;
 		manager = null;
 	}
 
 	public TileEntityBlockPocketManager getManager()
 	{
 		return manager;
+	}
+
+	@Override
+	public void update()
+	{
+		super.update();
+
+		if(manager == null && managerPos != null)
+		{
+			TileEntity te = world.getTileEntity(managerPos);
+
+			if(te instanceof TileEntityBlockPocketManager)
+				manager = (TileEntityBlockPocketManager)te;
+		}
 	}
 
 	@Override
@@ -49,12 +66,7 @@ public class TileEntityBlockPocket extends CustomizableSCTE
 		super.readFromNBT(tag);
 
 		if(tag.hasKey("ManagerPos"))
-		{
-			TileEntity te = world.getTileEntity(BlockPos.fromLong(tag.getLong("ManagerPos")));
-
-			if(te instanceof TileEntityBlockPocketManager)
-				manager = (TileEntityBlockPocketManager)te;
-		}
+			managerPos = BlockPos.fromLong(tag.getLong("ManagerPos"));
 	}
 
 	@Override
