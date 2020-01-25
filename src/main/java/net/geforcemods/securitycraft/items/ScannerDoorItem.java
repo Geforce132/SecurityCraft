@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -64,8 +64,12 @@ public class ScannerDoorItem extends Item
 
 				if(world.getTileEntity(pos) != null)
 				{
-					((OwnableTileEntity) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					((OwnableTileEntity) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					CustomizableTileEntity lowerTe = ((CustomizableTileEntity) world.getTileEntity(pos));
+					CustomizableTileEntity upperTe = ((CustomizableTileEntity) world.getTileEntity(pos.up()));
+
+					lowerTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					upperTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					CustomizableTileEntity.link(lowerTe, upperTe);
 				}
 
 				return ActionResultType.SUCCESS;

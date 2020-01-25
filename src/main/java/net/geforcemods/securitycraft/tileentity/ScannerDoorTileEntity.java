@@ -1,8 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.ArrayList;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -16,6 +20,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class ScannerDoorTileEntity extends CustomizableTileEntity
 {
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+
 	public ScannerDoorTileEntity()
 	{
 		super(SCContent.teTypeScannerDoor);
@@ -48,12 +54,17 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN).booleanValue()), 3);
 			world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN).booleanValue()), 3);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
-			((OwnableTileEntity)world.getTileEntity(pos)).getOwner().set(getOwner());
-			((OwnableTileEntity)world.getTileEntity(pos.down())).getOwner().set(getOwner());
 
-			if(open)
+			if(open && sendMessage.asBoolean())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.scannerDoorItem.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName().getFormattedText()), TextFormatting.GREEN);
 		}
+	}
+
+	@Override
+	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableTileEntity> excludedTEs)
+	{
+		if(action == LinkedAction.OPTION_CHANGED)
+			sendMessage.copy((Option<?>)parameters[0]);
 	}
 
 	@Override
@@ -71,6 +82,6 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[]{};
+		return new Option[]{ sendMessage };
 	}
 }

@@ -18,6 +18,7 @@ import net.minecraft.util.text.TextFormatting;
 public class RetinalScannerTileEntity extends DisguisableTileEntity {
 
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public RetinalScannerTileEntity()
 	{
@@ -41,7 +42,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 			BlockUtils.setBlockProperty(world, pos, RetinalScannerBlock.POWERED, true);
 			world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.retinalScanner, 60);
 
-			if(entity instanceof PlayerEntity)
+			if(entity instanceof PlayerEntity && sendMessage.asBoolean())
 				PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, ClientUtils.localize(SCContent.retinalScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName().getFormattedText()), TextFormatting.GREEN);
 		}
 	}
@@ -63,7 +64,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ activatedByEntities };
+		return new Option[]{ activatedByEntities, sendMessage };
 	}
 
 }
