@@ -744,6 +744,8 @@
 	"option.securitycraft.retinal_scanner.sendMessage.description": "Sendet dieser Scanner eine Nachricht wenn er aktiviert wird?",
 	"option.securitycraft.scanner_door.sendMessage": "Nachricht: #",
 	"option.securitycraft.scanner_door.sendMessage.description": "Sendet diese Scannertür eine Nachricht wenn sie aktiviert wird?",
+	"option.securitycraft.alarm.range": "Reichweite: #",
+	"option.securitycraft.alarm.range.description": "Wie viele Blöcke weit kann der Alarm-Sound gehört werden?",
     "option.securitycraft.cage_trap.captureMobs": "Mobs einfangen: #",
     "option.securitycraft.cage_trap.captureMobs.description": "Solle die Käfigfalle Mobs und Spieler einfangen, oder nur Spieler?",
     "option.securitycraft.motion_activated_light.searchRadius": "Suchradius: #",
