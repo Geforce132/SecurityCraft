@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
@@ -28,6 +29,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.HoverChecker;
+import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
 public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContainer>{
@@ -71,9 +73,13 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
 				Option<?> option = tileEntity.customOptions()[i];
 
-				if(option instanceof DoubleOption && ((DoubleOption)option).isSlider())
+				if(option instanceof ISlider && option.isSlider())
 				{
-					optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).getValue(), true, false, (DoubleOption)option);
+					if(option instanceof DoubleOption)
+						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).getValue(), true, false, (ISlider)option);
+					else if(option instanceof IntOption)
+						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).getValue(), true, false, (ISlider)option);
+
 					optionButtons[i].setFGColor(14737632);
 				}
 				else

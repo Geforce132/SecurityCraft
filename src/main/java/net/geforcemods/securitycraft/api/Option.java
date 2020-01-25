@@ -160,6 +160,13 @@ public class Option<T> {
 	}
 
 	/**
+	 * @return Whether this Option should be displayed as a slider
+	 */
+	public boolean isSlider() {
+		return false;
+	}
+
+	/**
 	 * A subclass of {@link Option}, already setup to handle booleans.
 	 */
 	public static class BooleanOption extends Option<Boolean>{
@@ -187,7 +194,9 @@ public class Option<T> {
 	/**
 	 * A subclass of {@link Option}, already setup to handle integers.
 	 */
-	public static class IntOption extends Option<Integer>{
+	public static class IntOption extends Option<Integer> implements ISlider{
+		private boolean slider;
+		private CustomizableTileEntity tileEntity;
 
 		public IntOption(String optionName, Integer value) {
 			super(optionName, value);
@@ -197,8 +206,17 @@ public class Option<T> {
 			super(optionName, value, min, max, increment);
 		}
 
+		public IntOption(CustomizableTileEntity te, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
+			super(optionName, value, min, max, increment);
+			slider = s;
+			tileEntity = te;
+		}
+
 		@Override
 		public void toggle() {
+			if(isSlider())
+				return;
+
 			if(getValue() >= getMax()) {
 				setValue(getMin());
 				return;
@@ -220,6 +238,23 @@ public class Option<T> {
 		@Override
 		public String toString() {
 			return (value) + "";
+		}
+
+		@Override
+		public boolean isSlider()
+		{
+			return slider;
+		}
+
+		@Override
+		public void onChangeSliderValue(Slider slider)
+		{
+			if(!isSlider() || !(slider instanceof NamedSlider))
+				return;
+
+			setValue((int)slider.getValue());
+			slider.setMessage((ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, getValue()));
 		}
 	}
 
@@ -274,6 +309,7 @@ public class Option<T> {
 			return Double.toString(value).length() > 5 ? Double.toString(value).substring(0, 5) : Double.toString(value);
 		}
 
+		@Override
 		public boolean isSlider()
 		{
 			return slider;

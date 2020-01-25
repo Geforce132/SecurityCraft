@@ -746,6 +746,8 @@
 	"option.securitycraft.retinal_scanner.sendMessage.description": "Does this scanner send a message upon activation?",
 	"option.securitycraft.scanner_door.sendMessage": "Message: #",
 	"option.securitycraft.scanner_door.sendMessage.description": "Does this scanner door send a message upon activation?",
+	"option.securitycraft.alarm.range": "Range: #",
+	"option.securitycraft.alarm.range.description": "How many blocks away can the alarm sound be heard?",
 	"option.securitycraft.cage_trap.captureMobs": "Capture mobs: #",
 	"option.securitycraft.cage_trap.captureMobs.description": "Should this cage trap capture hostile mobs and players, or only players?",
 	"option.securitycraft.motion_activated_light.searchRadius": "Search radius: #",

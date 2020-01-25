@@ -2,14 +2,20 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
 
-public class AlarmTileEntity extends OwnableTileEntity {
+public class AlarmTileEntity extends CustomizableTileEntity {
 
+	private IntOption range = new IntOption(this, "range", 17, 0, 100, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
@@ -20,16 +26,20 @@ public class AlarmTileEntity extends OwnableTileEntity {
 
 	@Override
 	public void tick(){
-		if(world.isRemote)
-			return;
-		else{
-			if(cooldown > 0){
+		if(!world.isRemote)
+		{
+			if(cooldown > 0)
 				cooldown--;
-			}
 
-			if(isPowered && cooldown == 0){
+			if(isPowered && cooldown == 0)
+			{
 				AlarmTileEntity te = (AlarmTileEntity) world.getTileEntity(pos);
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, ConfigHandler.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
+
+				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.asInteger(), 2)))
+				{
+					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
+				}
+
 				te.setCooldown((ConfigHandler.CONFIG.alarmTickDelay.get() * 20));
 				world.setBlockState(pos, world.getBlockState(pos).with(AlarmBlock.FACING, world.getBlockState(pos).get(AlarmBlock.FACING)), 2);
 				world.setTileEntity(pos, te);
@@ -78,4 +88,15 @@ public class AlarmTileEntity extends OwnableTileEntity {
 		this.isPowered = isPowered;
 	}
 
+	@Override
+	public CustomModules[] acceptedModules()
+	{
+		return new CustomModules[]{};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{ range };
+	}
 }
