@@ -53,7 +53,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				if(te instanceof INamedContainerProvider)
 					NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
 			}
-			else
+			else if(hand == Hand.MAIN_HAND)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.inventoryScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 
 			return ActionResultType.SUCCESS;
