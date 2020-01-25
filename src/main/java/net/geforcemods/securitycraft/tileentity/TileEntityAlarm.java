@@ -2,37 +2,45 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class TileEntityAlarm extends TileEntityOwnable {
+public class TileEntityAlarm extends CustomizableSCTE {
 
+	public OptionInt range = new OptionInt(this, "range", 17, 0, 100, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
 	@Override
 	public void update(){
-		if(world.isRemote)
-			return;
-		else{
-			if(cooldown > 0){
-				cooldown--;
+		if(cooldown > 0)
+		{
+			cooldown--;
 
-				if(cooldown == 0)
-					SecurityCraft.log("Cooldown is 0");
+			if(cooldown == 0)
+				SecurityCraft.log("Cooldown is 0");
+		}
+
+		if(isPowered && cooldown == 0)
+		{
+			TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
+
+			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.asInteger(), 2)))
+			{
+				world.playSound(player, player.getPosition(), SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.alarmSoundVolume, 1.0F);
 			}
 
-			if(isPowered && cooldown == 0){
-				TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, ConfigHandler.alarmSoundVolume, 1.0F);
-				te.setCooldown((ConfigHandler.alarmTickDelay * 20));
-				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
-				world.setTileEntity(pos, te);
-			}
+			te.setCooldown((ConfigHandler.alarmTickDelay * 20));
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
+			world.setTileEntity(pos, te);
 		}
 	}
 
@@ -78,4 +86,15 @@ public class TileEntityAlarm extends TileEntityOwnable {
 		this.isPowered = isPowered;
 	}
 
+	@Override
+	public EnumCustomModules[] acceptedModules()
+	{
+		return new EnumCustomModules[]{};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{ range };
+	}
 }

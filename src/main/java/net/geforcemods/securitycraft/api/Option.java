@@ -160,6 +160,13 @@ public class Option<T> {
 	}
 
 	/**
+	 * @return Whether this Option should be displayed as a slider
+	 */
+	public boolean isSlider() {
+		return false;
+	}
+
+	/**
 	 * A subclass of {@link Option}, already setup to handle booleans.
 	 */
 	public static class OptionBoolean extends Option<Boolean>{
@@ -187,18 +194,31 @@ public class Option<T> {
 	/**
 	 * A subclass of {@link Option}, already setup to handle integers.
 	 */
-	public static class OptionInt extends Option<Integer>{
+	public static class OptionInt extends Option<Integer> implements ISlider{
+		private boolean slider;
+		private CustomizableSCTE tileEntity;
 
 		public OptionInt(String optionName, Integer value) {
 			super(optionName, value);
+			slider = false;
 		}
 
 		public OptionInt(String optionName, Integer value, Integer min, Integer max, Integer increment) {
 			super(optionName, value, min, max, increment);
+			slider = false;
+		}
+
+		public OptionInt(CustomizableSCTE te, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
+			super(optionName, value, min, max, increment);
+			slider = s;
+			tileEntity = te;
 		}
 
 		@Override
 		public void toggle() {
+			if(isSlider())
+				return;
+
 			if(getValue() >= getMax()) {
 				setValue(getMin());
 				return;
@@ -220,6 +240,28 @@ public class Option<T> {
 		@Override
 		public String toString() {
 			return (value) + "";
+		}
+
+		@Override
+		public boolean isSlider()
+		{
+			return slider;
+		}
+
+		@Override
+		public void onChangeSliderValue(GuiSlider slider, String blockName, int id)
+		{
+			if(!isSlider())
+				return;
+
+			setValue((int)slider.getValue());
+			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()) + " ").replace("#", toString());
+		}
+
+		@Override
+		public void onMouseRelease(int id)
+		{
+			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, getValue()));
 		}
 	}
 
@@ -274,6 +316,7 @@ public class Option<T> {
 			return Double.toString(value).length() > 5 ? Double.toString(value).substring(0, 5) : Double.toString(value);
 		}
 
+		@Override
 		public boolean isSlider()
 		{
 			return slider;

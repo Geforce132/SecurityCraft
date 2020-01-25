@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -49,7 +51,13 @@ public class PacketSUpdateSliderValue implements IMessage{
 				EntityPlayer player = context.getServerHandler().player;
 
 				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE) {
-					((OptionDouble)((CustomizableSCTE) getWorld(player).getTileEntity(pos)).customOptions()[id]).setValue(value);
+					Option<?> o = ((CustomizableSCTE) player.world.getTileEntity(pos)).customOptions()[id];
+
+					if(o instanceof OptionDouble)
+						((OptionDouble)o).setValue(value);
+					else if(o instanceof OptionInt)
+						((OptionInt)o).setValue((int)value);
+
 					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(player).getTileEntity(pos)).customOptions()[id]);
 					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).sync();
 				}

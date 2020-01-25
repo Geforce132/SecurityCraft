@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -150,28 +151,36 @@ public class BlockAlarm extends BlockOwnable {
 	private void playSoundAndUpdate(World world, BlockPos pos){
 		if(!(world.getBlockState(pos).getBlock() instanceof BlockAlarm) || !(world.getTileEntity(pos) instanceof TileEntityAlarm)) return;
 
+		TileEntityAlarm te = (TileEntityAlarm)world.getTileEntity(pos);
+
 		if(world.getRedstonePowerFromNeighbors(pos) > 0){
-			boolean isPowered = ((TileEntityAlarm) world.getTileEntity(pos)).isPowered();
+			boolean isPowered = te.isPowered();
 
 			if(!isPowered){
-				Owner owner = ((TileEntityAlarm) world.getTileEntity(pos)).getOwner();
+				Owner owner = te.getOwner();
 				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(world, pos, FACING);
+				OptionInt range = te.range;
 				world.setBlockState(pos, SCContent.alarmLit.getDefaultState());
 				BlockUtils.setBlockProperty(world, pos, FACING, dir);
-				((TileEntityAlarm) world.getTileEntity(pos)).getOwner().set(owner);
-				((TileEntityAlarm) world.getTileEntity(pos)).setPowered(true);
+				te = (TileEntityAlarm)world.getTileEntity(pos);
+				te.getOwner().set(owner);
+				te.setPowered(true);
+				te.range.copy(range);
 			}
 
 		}else{
-			boolean isPowered = ((TileEntityAlarm) world.getTileEntity(pos)).isPowered();
+			boolean isPowered = te.isPowered();
 
 			if(isPowered){
-				Owner owner = ((TileEntityAlarm) world.getTileEntity(pos)).getOwner();
+				Owner owner = te.getOwner();
 				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(world, pos, FACING);
+				OptionInt range = te.range;
 				world.setBlockState(pos, SCContent.alarm.getDefaultState());
 				BlockUtils.setBlockProperty(world, pos, FACING, dir);
-				((TileEntityAlarm) world.getTileEntity(pos)).getOwner().set(owner);
-				((TileEntityAlarm) world.getTileEntity(pos)).setPowered(false);
+				te = (TileEntityAlarm)world.getTileEntity(pos);
+				te.getOwner().set(owner);
+				te.setPowered(false);
+				te.range.copy(range);
 			}
 		}
 	}

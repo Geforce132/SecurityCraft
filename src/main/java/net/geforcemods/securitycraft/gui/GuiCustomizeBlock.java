@@ -8,9 +8,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
+import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -67,11 +69,15 @@ public class GuiCustomizeBlock extends GuiContainer{
 		if(tileEntity.customOptions() != null)
 		{
 			for(int i = 0; i < tileEntity.customOptions().length; i++){
-				Option option = tileEntity.customOptions()[i];
+				Option<?> option = tileEntity.customOptions()[i];
 
-				if(option instanceof OptionDouble && ((OptionDouble)option).isSlider())
+				if(option instanceof ISlider && option.isSlider())
 				{
-					optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", (double)option.getMin(), (double)option.getMax(), (double)option.getValue(), true, true, (OptionDouble)option);
+					if(option instanceof OptionDouble)
+						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).getValue(), true, true, (ISlider)option);
+					else if(option instanceof OptionInt)
+						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt)option).getMin(), ((OptionInt)option).getMax(), ((OptionInt)option).getValue(), true, true, (ISlider)option);
+
 					optionButtons[i].packedFGColour = 14737632;
 				}
 				else

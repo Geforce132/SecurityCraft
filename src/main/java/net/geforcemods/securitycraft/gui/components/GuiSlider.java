@@ -53,6 +53,11 @@ public class GuiSlider extends GuiButtonExt
 		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, width, height, prefix, minVal, maxVal, currentVal, showDec, drawStr, null);
 	}
 
+	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, int minVal,int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
+	{
+		this(initialString, bN, id, xPos, yPos, width, height, prefix, (double)minVal, (double)maxVal, (double)currentVal, showDec, drawStr, par);
+	}
+
 	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
 	{
 		super(id, xPos, yPos, width, height, prefix);
@@ -92,19 +97,12 @@ public class GuiSlider extends GuiButtonExt
 	 * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
 	 * this button.
 	 */
-	/**
-	 * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-	 * this button.
-	 */
 	@Override
 	public int getHoverState(boolean par1)
 	{
 		return 0;
 	}
 
-	/**
-	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
-	 */
 	/**
 	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
 	 */
@@ -125,10 +123,6 @@ public class GuiSlider extends GuiButtonExt
 		}
 	}
 
-	/**
-	 * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
-	 * e).
-	 */
 	/**
 	 * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
 	 * e).
@@ -179,9 +173,6 @@ public class GuiSlider extends GuiButtonExt
 			parent.onChangeSliderValue(this, blockName, id);
 	}
 
-	/**
-	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
-	 */
 	/**
 	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
 	 */
