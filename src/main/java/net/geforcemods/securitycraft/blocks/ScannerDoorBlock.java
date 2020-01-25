@@ -100,7 +100,9 @@ public class ScannerDoorBlock extends DoorBlock
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
+
+		if(state.getBlock() != newState.getBlock())
+			world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -134,6 +136,6 @@ public class ScannerDoorBlock extends DoorBlock
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new ScannerDoorTileEntity().activatedByView();
+		return new ScannerDoorTileEntity().linkable().activatedByView();
 	}
 }
