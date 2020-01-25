@@ -189,18 +189,21 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader iblockreader = context.getWorld();
-		BlockPos blockpos = context.getPos();
-		IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-		BlockPos blockpos1 = blockpos.north();
-		BlockPos blockpos2 = blockpos.south();
-		BlockPos blockpos3 = blockpos.west();
-		BlockPos blockpos4 = blockpos.east();
-		BlockState blockstate = iblockreader.getBlockState(blockpos1);
-		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
-		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
-		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-		return getDefaultState().with(NORTH, Boolean.valueOf(canAttachTo(blockstate, Block.hasSolidSide(blockstate, iblockreader, blockpos1, Direction.SOUTH)))).with(SOUTH, Boolean.valueOf(canAttachTo(blockstate1, Block.hasSolidSide(blockstate1, iblockreader, blockpos2, Direction.NORTH)))).with(WEST, Boolean.valueOf(canAttachTo(blockstate2, Block.hasSolidSide(blockstate2, iblockreader, blockpos3, Direction.EAST)))).with(EAST, Boolean.valueOf(canAttachTo(blockstate3, Block.hasSolidSide(blockstate3, iblockreader, blockpos4, Direction.WEST)))).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
+		return getStateForPlacement(context.getWorld(), context.getPos());
+	}
+
+	public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
+	{
+		IFluidState fluidState = world.getFluidState(pos);
+		BlockPos northPos = pos.north();
+		BlockPos southPos = pos.south();
+		BlockPos westPos = pos.west();
+		BlockPos eastPos = pos.east();
+		BlockState northState = world.getBlockState(northPos);
+		BlockState southState = world.getBlockState(southPos);
+		BlockState westState = world.getBlockState(westPos);
+		BlockState eastState = world.getBlockState(eastPos);
+		return getDefaultState().with(NORTH, Boolean.valueOf(canAttachTo(northState, Block.hasSolidSide(northState, world, northPos, Direction.SOUTH)))).with(SOUTH, Boolean.valueOf(canAttachTo(southState, Block.hasSolidSide(southState, world, southPos, Direction.NORTH)))).with(WEST, Boolean.valueOf(canAttachTo(westState, Block.hasSolidSide(westState, world, westPos, Direction.EAST)))).with(EAST, Boolean.valueOf(canAttachTo(eastState, Block.hasSolidSide(eastState, world, eastPos, Direction.WEST)))).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
 	}
 
 	@Override

@@ -28,7 +28,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -230,154 +229,19 @@ public class SCEventHandler {
 						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
-						BlockPos pos = originalPos.east().up();
+						BlockPos middlePos = originalPos.up(4);
 
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
+						new CageTrapBlock.BlockModifier(event.getWorld(), new BlockPos.Mutable(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+							TileEntity te = w.getTileEntity(p);
 
-						pos = originalPos.east().up(2);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
+							if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
+							{
+								Block b = w.getBlockState(p).getBlock();
 
-						pos = originalPos.east().up(3);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up().south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(2).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(3).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(2);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(3);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up().south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(2).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(3).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up().south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(2).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(3).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(2);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(3);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up().north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(2).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(3).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up().north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(2).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(3).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up().north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(2).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(3).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(4).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(4).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.horizontalReinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
+								if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+									w.destroyBlock(p, false);
+							}
+						});
 
 						world.destroyBlock(originalPos, false);
 					}else{
