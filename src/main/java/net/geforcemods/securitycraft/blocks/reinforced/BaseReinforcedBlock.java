@@ -37,7 +37,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	 */
 	public BaseReinforcedBlock(Block.Properties properties, SoundType soundType, Block vB, String registryPath)
 	{
-		super(soundType, properties.func_226896_b_()); //notSolid
+		super(soundType, properties.notSolid());
 
 		vanillaBlock = vB;
 		setRegistryName(new ResourceLocation(SecurityCraft.MODID, registryPath));
