@@ -26,8 +26,8 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 	private static final Quaternion POSITIVE_Y_180 = Vector3f.YP.rotationDegrees(180.0F);
 	private static final Quaternion POSITIVE_Y_90 = Vector3f.YP.rotationDegrees(90.0F);
-	private static final Quaternion POSITIVE_Y_NEGATIVE_90 = Vector3f.YP.rotationDegrees(-90.0F);
-	private static final Quaternion POSITIVE_X_180 = Vector3f.YP.rotationDegrees(180.0F);
+	private static final Quaternion NEGATIVE_Y_90 = Vector3f.YN.rotationDegrees(90.0F);
+	private static final Quaternion POSITIVE_X_180 = Vector3f.XP.rotationDegrees(180.0F);
 
 	public SecurityCameraTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
@@ -54,7 +54,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 			else if(side == Direction.EAST)
 				matrix.rotate(POSITIVE_Y_90);
 			else if(side == Direction.WEST)
-				matrix.rotate(POSITIVE_Y_NEGATIVE_90);
+				matrix.rotate(NEGATIVE_Y_90);
 		}
 
 		matrix.rotate(POSITIVE_X_180);
