@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -107,7 +108,18 @@ public class SentryRemoteAccessToolItem extends Item {
 					continue;
 				}
 				else
-					tooltip.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:sentry") + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]));
+				{
+					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
+					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(pos));
+					String nameToShow;
+
+					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
+						nameToShow = sentries.get(0).getCustomName().getFormattedText();
+					else
+						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry") + " " + i;
+
+					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos)));
+				}
 			}
 			else
 				tooltip.add(new StringTextComponent(TextFormatting.GRAY + "---"));
