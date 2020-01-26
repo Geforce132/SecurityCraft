@@ -39,6 +39,7 @@ public class ConfigHandler {
 	public IntValue claymoreRange;
 	public IntValue imsRange;
 	public IntValue inventoryScannerRange;
+	public IntValue maxAlarmRange;
 	public DoubleValue motionActivatedLightSearchRadius;
 	public BooleanValue allowBlockClaim;
 	public BooleanValue sayThanksMessage;
@@ -160,6 +161,11 @@ public class ConfigHandler {
 				.translation("config.securitycraft:inventoryScannerRange")
 				.comment("From how many blocks away can an inventory scanner connect to another inventory scanner?")
 				.defineInRange("inventoryScannerRange", 2, 0, Integer.MAX_VALUE);
+
+		maxAlarmRange = builder
+				.translation("config.securitycraft:maxAlarmRange")
+				.comment("What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also not be finetuneable.")
+				.defineInRange("maxAlarmRange", 100, 1, Integer.MAX_VALUE);
 
 		motionActivatedLightSearchRadius = builder
 				.translation("config.securitycraft:motionActivatedLightSearchRadius")

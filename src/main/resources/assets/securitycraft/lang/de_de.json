@@ -719,6 +719,9 @@
     "config.securitycraft:cameraSpeed.tooltip": "Wie schnell kannst du dich bewegen wenn du in einer Kamera bist und W-A-S-D drückst?",
     "config.securitycraft:checkForUpdates": "Soll für Updates auf GitHub geprüft werden?",
     "config.securitycraft:checkForUpdates.tooltip": "Soll SecurityCraft nach Updates für den Mod mittels SecurityCraft's GitHub repo suchen?",
+	"config.securitycraft:maxAlarmRange": "Maximale Alarm Reichweite",
+	"config.securitycraft:maxAlarmRange.tooltip": "Was ist der maximale Wert der für die Reichweiten-Einstellung eines Alarms gesetzt werden kann? Beachte, dass dieser Wert durch die Ladedistanz von Chunks begrenzt sein kann. Höhere Werte können außerdem nicht fein eingestellt werden.",
+
 
     "option.securitycraft.portable_radar.searchRadius": "Suchradius: #",
     "option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",

@@ -15,7 +15,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
 
-	private IntOption range = new IntOption(this, "range", 17, 0, 100, 1, true);
+	private IntConfigOption range = new IntConfigOption(this, "range", 17, 0, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
@@ -98,5 +98,19 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	public Option<?>[] customOptions()
 	{
 		return new Option[]{ range };
+	}
+
+	private static class IntConfigOption extends IntOption
+	{
+		public IntConfigOption(CustomizableTileEntity te, String optionName, Integer value, Integer min, Integer increment, boolean s)
+		{
+			super(te, optionName, value, min, 0, increment, s);
+		}
+
+		@Override
+		public Integer getMax()
+		{
+			return ConfigHandler.CONFIG.maxAlarmRange.get();
+		}
 	}
 }
