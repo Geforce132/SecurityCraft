@@ -721,6 +721,8 @@
 	"config.securitycraft:checkForUpdates.tooltip": "Should SecurityCraft check for new updates of the mod through SecurityCraft's GitHub repository?",
 	"config.securitycraft:allowBlockClaim": "Allow claiming unowned blocks?",
 	"config.securitycraft:allowBlockClaim.tooltip": "Allow claiming unowned blocks?",
+	"config.securitycraft:maxAlarmRange": "Maximum Alarm Range",
+	"config.securitycraft:maxAlarmRange.tooltip": "What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also not be finetuneable.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
