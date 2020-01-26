@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TileEntityAlarm extends CustomizableSCTE {
 
-	public OptionInt range = new OptionInt(this, "range", 17, 0, 100, 1, true);
+	public OptionIntConfig range = new OptionIntConfig(this, "range", 17, 0, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
@@ -96,5 +96,19 @@ public class TileEntityAlarm extends CustomizableSCTE {
 	public Option<?>[] customOptions()
 	{
 		return new Option[]{ range };
+	}
+
+	public static class OptionIntConfig extends OptionInt
+	{
+		public OptionIntConfig(CustomizableSCTE te, String optionName, Integer value, Integer min, Integer increment, boolean s)
+		{
+			super(te, optionName, value, min, 0, increment, s);
+		}
+
+		@Override
+		public Integer getMax()
+		{
+			return ConfigHandler.maxAlarmRange;
+		}
 	}
 }

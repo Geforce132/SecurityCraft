@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.LangKey;
 import net.minecraftforge.common.config.Config.Name;
+import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
 @Config(modid=SecurityCraft.MODID, category="options")
@@ -111,6 +112,11 @@ public class ConfigHandler
 	@Name("Inventory Scanner range:")
 	@LangKey("config.securitycraft:inventoryScannerRange")
 	public static int inventoryScannerRange = 2;
+
+	@Name("Maximum Alarm range:")
+	@LangKey("config.securitycraft:maxAlarmRange")
+	@RangeInt(min=1)
+	public static int maxAlarmRange = 100;
 
 	@Name("Motion-activated light range:")
 	@LangKey("config.securitycraft:motionLightSearchRadius")
