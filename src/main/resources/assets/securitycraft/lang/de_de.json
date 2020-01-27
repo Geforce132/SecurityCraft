@@ -424,7 +424,7 @@
     "help.securitycraft.whitelist_module.info": "Das Whitelist-Modul verschont Spieler von einer Passworteingabe oder anderen Eigenschaften des Blocks.",
     "help.securitycraft.blacklist_module.info": "Das Blacklist-Modul ist das genaue Gegenteil zum Whitelist-Modul, z.B. blockiert es Spieler von der Eingabe eines Passwortes.",
     "help.securitycraft.harming_module.info": "Das Schadensmodul schadet Spielern, die nicht auf dem Whitelist-Modul sind, wenn diese z.B. durch einen Laser laufen.",
-    "help.securitycraft.smart_module.info": "Das schlaue Modul berücksichtigt auch Verzauberungs- und Metadata eines Items z.B. im Inventarscanner.",
+    "help.securitycraft.smart_module.info": "Das schlaue Modul berücksichtigt auch Verzauberungs- und NBT-Daten eines Items z.B. im Inventarscanner.",
     "help.securitycraft.storage_module.info": "Das Lagermodul gibt einem Block (mehr) Speicherkapazität.",
     "help.securitycraft.disguise_module.info": "Das Tarnmodul tarnt bestimmte Blöcke, wenn es hinzugefügt wird.",
     "help.securitycraft.wire_cutters.info": "Ein Rechtsklick mit ihm auf eine Mine entschärft diese.",
@@ -637,7 +637,7 @@
 
     "module.securitycraft.ims.whitelist_module.description": "Ein Whitelist-Modul in einem I.M.S. erlaubt gewhitelisteten Spielern, sich innerhalb des Angriffsradius der Mine zu bewegen, ohne angegriffen zu werden.",
     "module.securitycraft.inventory_scanner.whitelist_module.description": "Ein Whitelist-Modul in einem Inventarscanner erlaubt gewhitelistete Spieler, durch das Feld zu gehen, ohne deren Inventar überprüft zu bekommen.",
-    "module.securitycraft.inventory_scanner.smart_module.description": "Ein schlaues Modul in einem Inventarscanner erlaubt dem Scanner, auch auf Metadata und Verzauberungen Rücksicht zu nehmen.",
+    "module.securitycraft.inventory_scanner.smart_module.description": "Ein schlaues Modul in einem Inventarscanner erlaubt dem Scanner, auch auf NBT-Daten und Verzauberungen Rücksicht zu nehmen.",
     "module.securitycraft.inventory_scanner.storage_module.description": "Ein Lagermodul in einem Inventarscanner erlaubt, die aus einem Spielerinventar entfernten Items im Inventarscanner zu speichern.",
 	"module.securitycraft.inventory_scanner.disguise_module.description": "Wenn ein Tarnmodul zu einem Inventarscanner hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
     "module.securitycraft.keycard_reader.whitelist_module.description": "Ein Whitelist-Modul in einem Schlüsselkartenleser erlaubt Spielern, den Leser mit jeder Schlüsselkarte zu nutzen.",
