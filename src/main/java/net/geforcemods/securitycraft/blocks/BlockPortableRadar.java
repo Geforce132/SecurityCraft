@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -57,13 +56,13 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {
-		if(par5 && !world.getBlockState(pos).getValue(POWERED).booleanValue()){
-			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
-			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
-		}else if(!par5 && world.getBlockState(pos).getValue(POWERED).booleanValue()){
-			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
-			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
-		}
+		IBlockState state = world.getBlockState(pos);
+		boolean powered = state.getValue(POWERED);
+
+		if(par5 && !powered)
+			world.setBlockState(pos, state.withProperty(POWERED, true));
+		else if(!par5 && powered)
+			world.setBlockState(pos, state.withProperty(POWERED, false));
 	}
 
 	@Override
