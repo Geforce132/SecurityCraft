@@ -45,9 +45,9 @@ public class GuiUtils{
 			gui.blit(25, 2, 70, 218, 19, 16);
 		}
 
-		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, SecurityCameraBlock.FACING)) == 0) && (!((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
+		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (!((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
 			gui.blit(12, 2, 104, 0, 12, 12);
-		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockPropertyAsEnum(world, pos, SecurityCameraBlock.FACING)) == 0) && (((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
+		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
 			itemRender.renderItemAndEffectIntoGUI(new ItemStack(Items.REDSTONE), 10, 0);

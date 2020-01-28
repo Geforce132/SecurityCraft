@@ -56,7 +56,9 @@ public class MineBlock extends ExplosiveBlock {
 	 */
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		if(BlockUtils.getBlockMaterial(world, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(world, pos.down()) == Material.PLANTS)
+		Material mat = world.getBlockState(pos.down()).getMaterial();
+
+		if(mat == Material.GLASS || mat == Material.CACTUS || mat == Material.AIR || mat == Material.CAKE || mat == Material.PLANTS)
 			return false;
 		else
 			return true;
@@ -111,7 +113,7 @@ public class MineBlock extends ExplosiveBlock {
 		if(world.isRemote)
 			return;
 
-		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
+		if(!world.getBlockState(pos).get(DEACTIVATED)){
 			world.destroyBlock(pos, false);
 			if(ConfigHandler.CONFIG.smallerMineExplosion.get())
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
@@ -136,7 +138,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).get(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).get(DEACTIVATED);
 	}
 
 	@Override

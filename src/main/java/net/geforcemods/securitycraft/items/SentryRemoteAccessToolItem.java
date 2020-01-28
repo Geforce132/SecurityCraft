@@ -78,7 +78,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					if(stack.getTag() == null)
 						stack.setTag(new CompoundNBT());
 
-					stack.getTag().putIntArray(("sentry" + availSlot), new int[]{BlockUtils.fromPos(pos2)[0], BlockUtils.fromPos(pos2)[1], BlockUtils.fromPos(pos2)[2]});
+					stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.bound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.GREEN);
 				}else{

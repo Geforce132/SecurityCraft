@@ -77,7 +77,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	public void explode(World world, BlockPos pos){
 		if(world.isRemote)
 			return;
-		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+		if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 			return;
 
 		world.destroyBlock(pos, false);

@@ -27,7 +27,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 
 	@Override
 	public void entityViewed(LivingEntity entity){
-		if(!world.isRemote && !BlockUtils.getBlockPropertyAsBoolean(world, pos, RetinalScannerBlock.POWERED)){
+		if(!world.isRemote && !BlockUtils.getBlockProperty(world, pos, RetinalScannerBlock.POWERED)){
 			if(!(entity instanceof PlayerEntity) && !activatedByEntities.asBoolean())
 				return;
 

@@ -113,8 +113,8 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	}
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){
-		if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, KeypadFurnaceBlock.OPEN))
-			BlockUtils.setBlockProperty(world, pos, KeypadFurnaceBlock.OPEN, true, false);
+		if(!BlockUtils.getBlockProperty(world, pos, KeypadFurnaceBlock.OPEN))
+			BlockUtils.setBlockProperty(world, pos, KeypadFurnaceBlock.OPEN, true);
 
 		if(player instanceof ServerPlayerEntity)
 		{

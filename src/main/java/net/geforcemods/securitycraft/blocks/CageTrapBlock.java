@@ -60,7 +60,7 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
 					return;
 
-				if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+				if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 					return;
 
 				BlockPos topMiddle = pos.up(4);

@@ -63,7 +63,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
 
-					if(block == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, offsetPos, LaserBlock.POWERED))
+					if(block == SCContent.laserBlock && !BlockUtils.getBlockProperty(world, offsetPos, LaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 

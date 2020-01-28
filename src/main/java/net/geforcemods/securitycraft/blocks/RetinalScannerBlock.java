@@ -37,7 +37,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
-		if (!world.isRemote && state.get(POWERED).booleanValue())
+		if (!world.isRemote && state.get(POWERED))
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 	}
 
