@@ -18,6 +18,7 @@
 - Fix: Sentry Remote Access Tool tooltip does not show sentry names
 - Fix: Inventory Scanner removes its owner's items
 - Fix: Laser harms its owner if the harming module is installed
+- Fix: Trophy System does not target arrows shot from dispensers
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
@@ -68,11 +69,6 @@
 - Fix: Message about cage trap having trapped someone gets sent to the one being trapped and not the cage trap owner (Thanks LorenaGdL!)
 - Misc.: The minimum required Forge version is 30.0.17
 - Removed: Unused config options
-
---------------------------Changelog for v1.8.15-beta3 of SecurityCraft--------------------------
-
-- Fix: JEI error on startup
-- Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
 
 --------------------------Changelog for v1.8.15-beta2 of SecurityCraft--------------------------
 

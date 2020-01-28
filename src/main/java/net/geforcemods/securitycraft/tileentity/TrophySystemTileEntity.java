@@ -35,8 +35,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 			Entity target = getTarget();
 			UUID shooterUUID = getShooterUUID(target);
 
-			// disable second condition for testing
-			if(target != null && shooterUUID != null && !shooterUUID.toString().equals(getOwner().getUUID())) {
+			if(target != null && (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID()))) {
 				entityBeingTargeted = target;
 			}
 		}
