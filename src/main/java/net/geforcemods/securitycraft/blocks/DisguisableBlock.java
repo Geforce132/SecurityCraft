@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -21,6 +22,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	public DisguisableBlock(Block.Properties properties)
 	{
 		super(properties);
+	}
+
+	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
+		super(soundType, properties);
 	}
 
 	@Override
