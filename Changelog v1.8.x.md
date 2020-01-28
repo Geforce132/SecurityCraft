@@ -2,6 +2,7 @@
 
 - New: The Retinal Scanner and the Scanner Door now have an option to turn off the "Hello" message. Available by rightclicking them with a Universal Block Modifier
 - New: The Alarm now has an option to set the range of blocks that it can be heard in (0-100)
+- New: The Cage Trap can now be disguised
 - New: Add back HWYLA integration
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
 - Change: Updated some help descriptions (Thanks supercat95!)

@@ -97,13 +97,13 @@ public class ClientProxy implements IProxy
 			{
 				for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
 				{
-					register(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+					registerDisgiusedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
 				}
 			}
 
 			for(ResourceLocation facingBlock : facingBlocks)
 			{
-				register(event, facingBlock, "facing=" + facing);
+				registerDisgiusedModel(event, facingBlock, "facing=" + facing);
 			}
 		}
 
@@ -111,12 +111,15 @@ public class ClientProxy implements IProxy
 		{
 			for(ResourceLocation poweredBlock : poweredBlocks)
 			{
-				register(event, poweredBlock, "powered=" + bool);
+				registerDisgiusedModel(event, poweredBlock, "powered=" + bool);
 			}
 		}
+
+		registerDisgiusedModel(event, SCContent.cageTrap.getRegistryName(), "deactivated=true");
+		registerDisgiusedModel(event, SCContent.cageTrap.getRegistryName(), "deactivated=false");
 	}
 
-	private static void register(ModelBakeEvent event, ResourceLocation rl, String stateString)
+	private static void registerDisgiusedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
 	{
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
@@ -275,7 +278,7 @@ public class ClientProxy implements IProxy
 			}
 
 			return 0xFFFFFF;
-		}, SCContent.inventoryScanner, SCContent.keycardReader, SCContent.keypad, SCContent.laserBlock, SCContent.retinalScanner, SCContent.usernameLogger);
+		}, SCContent.cageTrap, SCContent.inventoryScanner, SCContent.keycardReader, SCContent.keypad, SCContent.laserBlock, SCContent.retinalScanner, SCContent.usernameLogger);
 	}
 
 	@Override

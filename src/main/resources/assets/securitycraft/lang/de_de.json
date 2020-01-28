@@ -660,6 +660,7 @@
     "module.securitycraft.block_pocket_manager.whitelist_module.description": "Ein Whitelist-Modul in einem Blocktaschenverwalter erlaubt gewhitelisteten Spielern, durch die Seiten der Blocktasche zu gehen.",
 	"module.securitycraft.reinforced_stone_pressure_plate.whitelist_module.description": "Ein Whitelist-Modul in einer Verstärkten Steindruckplatte erlaubt es gewhitelisteten Spielern, diese zu aktivieren.",
     "module.securitycraft.username_logger.disguise_module.description": "Wenn ein Tarnmodul zu einem Nutzernamen-Protokollierer hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
+    "module.securitycraft.cage_trap.disguise_module.description": "Wenn ein Tarnmodul zu einer Käfigfalle hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 
     "config.securitycraft:isCodebreakerAllowed": "Ist der Codebrecher erlaubt?",
     "config.securitycraft:isCodebreakerAllowed.tooltip": "Kann der Codebrecher benutzt werden?",

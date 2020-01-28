@@ -660,6 +660,7 @@
 	"module.securitycraft.block_pocket_manager.whitelist_module.description": "Adding a whitelist module to a Block Pocket Manager will allow whitelisted players to pass through the Block Pocket's sides.",
 	"module.securitycraft.reinforced_stone_pressure_plate.whitelist_module.description": "Adding a whitelist module to a Reinforced Stone Pressure Plate will allow whitelisted players to activate it.",
 	"module.securitycraft.username_logger.disguise_module.description": "Adding a disguise module to a username logger will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
+	"module.securitycraft.cage_trap.disguise_module.description": "Adding a disguise module to a cage trap will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Is codebreaker allowed?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Can the codebreaker be used?",

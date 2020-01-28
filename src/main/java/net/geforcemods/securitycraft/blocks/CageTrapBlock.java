@@ -35,7 +35,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class CageTrapBlock extends OwnableBlock implements IIntersectable {
+public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
@@ -46,7 +46,7 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		return state.get(DEACTIVATED) ? VoxelShapes.fullCube() : VoxelShapes.empty();
+		return state.get(DEACTIVATED) ? super.getCollisionShape(state, world, pos, ctx) : VoxelShapes.empty();
 	}
 
 	@Override
@@ -54,9 +54,8 @@ public class CageTrapBlock extends OwnableBlock implements IIntersectable {
 		if(!world.isRemote){
 			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof PlayerEntity;
-			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
 
-			if(isPlayer || (entity instanceof MobEntity && shouldCaptureMobs)){
+			if(isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())){
 				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
 					return;
 
