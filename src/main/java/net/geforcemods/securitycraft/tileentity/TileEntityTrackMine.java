@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEntityTrackMine extends TileEntityOwnable

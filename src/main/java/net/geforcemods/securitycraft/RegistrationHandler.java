@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -73,7 +74,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;

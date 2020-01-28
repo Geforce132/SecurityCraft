@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -25,6 +26,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -34,7 +36,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected {
+public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable {
 
 	private static final int[] slotsTop = new int[] {0};
 	private static final int[] slotsBottom = new int[] {2, 1};

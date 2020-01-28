@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;

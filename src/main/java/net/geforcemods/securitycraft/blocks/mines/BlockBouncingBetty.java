@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -144,7 +144,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityOwnable().intersectsEntities();
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 }

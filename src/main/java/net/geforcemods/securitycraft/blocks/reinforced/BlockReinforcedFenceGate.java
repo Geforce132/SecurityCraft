@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
@@ -109,7 +110,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityOwnable().intersectsEntities();
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 }

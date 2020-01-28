@@ -4,22 +4,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
@@ -32,7 +26,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  *
  * @author Geforce
  */
-public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
+public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
@@ -43,7 +37,6 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 	private double attackRange = 0.0D;
 
-	private int blockPlaceCooldown = 30;
 	private int viewCooldown = getViewCooldown();
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
@@ -69,11 +62,6 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 		}
 
 		if(viewActivated){
-			if(blockPlaceCooldown > 0){
-				blockPlaceCooldown--;
-				return;
-			}
-
 			if(viewCooldown > 0){
 				viewCooldown--;
 				return;
@@ -235,29 +223,6 @@ public class TileEntitySCTE extends TileEntity implements ITickable, INameable {
 
 		if (tag.hasKey("customName"))
 			customName = tag.getString("customName");
-	}
-
-	@Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState){
-		return (oldState.getBlock() != newState.getBlock());
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag()
-	{
-		return writeToNBT(new NBTTagCompound());
-	}
-
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket()
-	{
-		return new SPacketUpdateTileEntity(pos, 1, getUpdateTag());
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
-	{
-		readFromNBT(pkt.getNbtCompound());
 	}
 
 	@Override

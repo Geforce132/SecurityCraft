@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;

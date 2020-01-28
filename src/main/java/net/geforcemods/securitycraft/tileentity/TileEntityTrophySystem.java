@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityTrophySystem extends TileEntityOwnable {
+public class TileEntityTrophySystem extends TileEntityOwnable implements ITickable {
 
 	// The range (in blocks) that the trophy will search for projectiles in
 	public static final int range = 10;
@@ -22,8 +24,6 @@ public class TileEntityTrophySystem extends TileEntityOwnable {
 
 	@Override
 	public void update() {
-		super.update();
-
 		// If the trophy does not have a target, try looking for one
 		if(entityBeingTargeted == null) {
 			Entity target = getTarget();

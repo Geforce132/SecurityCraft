@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;

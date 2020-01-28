@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -110,7 +110,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityOwnable().intersectsEntities();
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 	@Override

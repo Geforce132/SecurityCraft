@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.ITileEntityProvider;
