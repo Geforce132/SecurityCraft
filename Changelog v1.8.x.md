@@ -2,6 +2,7 @@
 
 - New: The Retinal Scanner and the Scanner Door now have an option to turn off the "Hello" message. Available by rightclicking them with a Universal Block Modifier
 - New: The Alarm now has an option to set the range of blocks that it can be heard in (0-100)
+- New: The Cage Trap can now be disguised
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
 - Change: Updated some help descriptions (Thanks supercat95!)
 - Change: The powered taser now inflicts one heart of damage instead of half a heart
@@ -13,6 +14,7 @@
 - Fix: Activating a Cage Trap can delete blocks that shouldn't be deleted
 - Fix: Sentry Remote Access Tool tooltip does not show sentry names
 - Fix: Portable Radar can duplicate modules
+- Fix: Inventory Scanner deletes its owner's items
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
