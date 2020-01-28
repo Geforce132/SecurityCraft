@@ -92,7 +92,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			redstoneLoop(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule);
 			redstoneLoop(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule);
 		}
-		else if(te.getScanType().equals("check"))
+		else if(te.getScanType().equals("check") && !te.getOwner().isOwner(player))
 		{
 			checkLoop(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule);
 			checkLoop(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule);
