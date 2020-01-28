@@ -133,7 +133,7 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return (state.getValue(MINES).intValue());
+		return (state.getValue(MINES));
 	}
 
 	@Override

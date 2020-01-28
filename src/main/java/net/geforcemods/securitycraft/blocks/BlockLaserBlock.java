@@ -139,7 +139,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 	 */
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -151,7 +151,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 	 */
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -162,14 +162,14 @@ public class BlockLaserBlock extends BlockDisguisable {
 	 */
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if (!world.isRemote && state.getValue(POWERED).booleanValue())
+		if (!world.isRemote && state.getValue(POWERED))
 			world.setBlockState(pos, state.withProperty(BlockLaserBlock.POWERED, false));
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand){
-		if(state.getValue(POWERED).booleanValue()){
+		if(state.getValue(POWERED)){
 			double x = pos.getX() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.7F + (rand.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (rand.nextFloat() - 0.5F) * 0.2D;
@@ -194,7 +194,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getBlock() != this ? 0 : ((state.getValue(POWERED).booleanValue() ? 1 : 0));
+		return state.getBlock() != this ? 0 : ((state.getValue(POWERED) ? 1 : 0));
 	}
 
 	@Override

@@ -158,10 +158,10 @@ public class BlockAlarm extends BlockOwnable {
 
 			if(!isPowered){
 				Owner owner = te.getOwner();
-				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(world, pos, FACING);
+				EnumFacing dir = BlockUtils.getBlockProperty(world, pos, FACING);
 				OptionInt range = te.range;
 				world.setBlockState(pos, SCContent.alarmLit.getDefaultState());
-				BlockUtils.setBlockProperty(world, pos, FACING, dir);
+				BlockUtils.setFacingProperty(world, pos, FACING, dir);
 				te = (TileEntityAlarm)world.getTileEntity(pos);
 				te.getOwner().set(owner);
 				te.setPowered(true);
@@ -173,10 +173,10 @@ public class BlockAlarm extends BlockOwnable {
 
 			if(isPowered){
 				Owner owner = te.getOwner();
-				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(world, pos, FACING);
+				EnumFacing dir = BlockUtils.getBlockProperty(world, pos, FACING);
 				OptionInt range = te.range;
 				world.setBlockState(pos, SCContent.alarm.getDefaultState());
-				BlockUtils.setBlockProperty(world, pos, FACING, dir);
+				BlockUtils.setFacingProperty(world, pos, FACING, dir);
 				te = (TileEntityAlarm)world.getTileEntity(pos);
 				te.getOwner().set(owner);
 				te.setPowered(false);

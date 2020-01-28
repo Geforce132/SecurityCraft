@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -19,12 +20,11 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -50,12 +50,8 @@ public class BlockUtils{
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
 			world.scheduleUpdate(pos, block, delay);
-		world.neighborChanged(pos.east(), world.getBlockState(pos).getBlock(), pos);
-		world.neighborChanged(pos.west(), world.getBlockState(pos).getBlock(), pos);
-		world.neighborChanged(pos.south(), world.getBlockState(pos).getBlock(), pos);
-		world.neighborChanged(pos.north(), world.getBlockState(pos).getBlock(), pos);
-		world.neighborChanged(pos.up(), world.getBlockState(pos).getBlock(), pos);
-		world.neighborChanged(pos.down(), world.getBlockState(pos).getBlock(), pos);
+
+		world.notifyNeighborsOfStateChange(pos, block, false);
 	}
 
 	public static int getBlockMeta(World world, BlockPos pos){
@@ -147,7 +143,7 @@ public class BlockUtils{
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
 	}
 
-	public static void setBlockProperty(World world, BlockPos pos, PropertyEnum property, EnumFacing value) {
+	public static void setFacingProperty(World world, BlockPos pos, PropertyEnum<EnumFacing> property, EnumFacing value) {
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
 	}
 
@@ -160,32 +156,8 @@ public class BlockUtils{
 		}
 	}
 
-	public static boolean getBlockPropertyAsBoolean(World world, BlockPos pos, PropertyBool property){
-		return world.getBlockState(pos).getValue(property).booleanValue();
-	}
-
-	public static boolean getBlockPropertyAsBoolean(IBlockAccess access, BlockPos pos, PropertyBool property){
-		return access.getBlockState(pos).getValue(property).booleanValue();
-	}
-
-	public static int getBlockPropertyAsInteger(World world, BlockPos pos, PropertyInteger property){
-		return world.getBlockState(pos).getValue(property).intValue();
-	}
-
-	public static EnumFacing getBlockPropertyAsEnum(World world, BlockPos pos, PropertyEnum<?> property){
-		return ((EnumFacing) world.getBlockState(pos).getValue(property));
-	}
-
-	public static EnumFacing getBlockPropertyAsEnum(IBlockAccess world, BlockPos pos, PropertyEnum<?> property){
-		return ((EnumFacing) world.getBlockState(pos).getValue(property));
-	}
-
-	public static EnumFacing getBlockProperty(World world, BlockPos pos, PropertyDirection property) {
+	public static <T extends Comparable<T>> T getBlockProperty(IBlockAccess world, BlockPos pos, IProperty<T> property){
 		return world.getBlockState(pos).getValue(property);
-	}
-
-	public static Material getBlockMaterial(World world, BlockPos pos){
-		return world.getBlockState(pos).getMaterial();
 	}
 
 	/**
@@ -212,108 +184,32 @@ public class BlockUtils{
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)
 	{
-		return hasActiveLaserNextTo(world, pos) || hasActiveScannerNextTo(world, pos) || hasActiveKeypadNextTo(world, pos) || hasActiveReaderNextTo(world, pos) || hasActiveInventoryScannerNextTo(world, pos) || hasActiveReinforcedPressurePlateNextTo(world, pos);
+		TileEntity thisTile = world.getTileEntity(pos);
+
+		return hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.laserBlock, true, (state, te) -> state.getValue(BlockLaserBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.retinalScanner, true, (state, te) -> state.getValue(BlockRetinalScanner.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keypad, true, (state, te) -> state.getValue(BlockKeypad.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keycardReader, true, (state, te) -> state.getValue(BlockKeycardReader.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.inventoryScanner, true, (state, te) -> ((TileEntityInventoryScanner)te).getScanType().equals("redstone") && ((TileEntityInventoryScanner)te).shouldProvidePower()) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.getValue(BlockReinforcedPressurePlate.POWERED));
 	}
 
-	private static boolean hasActiveLaserNextTo(World world, BlockPos pos) {
-		if(BlockUtils.getBlock(world, pos.east()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockLaserBlock.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockLaserBlock.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockLaserBlock.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockLaserBlock.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockLaserBlock.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.laserBlock && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockLaserBlock.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else
-			return false;
-	}
+	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, Block block, boolean checkForBlock, BiFunction<IBlockState,TileEntity,Boolean> extraCondition)
+	{
+		for(EnumFacing facing : EnumFacing.values())
+		{
+			BlockPos offsetPos = pos.offset(facing);
+			IBlockState offsetState = world.getBlockState(offsetPos);
 
-	private static boolean hasActiveScannerNextTo(World world, BlockPos pos) {
-		if(BlockUtils.getBlock(world, pos.east()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockRetinalScanner.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockRetinalScanner.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockRetinalScanner.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockRetinalScanner.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockRetinalScanner.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.retinalScanner && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockRetinalScanner.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else
-			return false;
-	}
+			if(!checkForBlock || offsetState.getBlock() == block)
+			{
+				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-	private static boolean hasActiveKeypadNextTo(World world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos.east()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockKeypad.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockKeypad.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockKeypad.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockKeypad.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockKeypad.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.keypad && ((Boolean) BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockKeypad.POWERED)).booleanValue())
-			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else
-			return false;
-	}
+				if(extraCondition.apply(offsetState, offsetTe))
+					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
+			}
+		}
 
-	private static boolean hasActiveReaderNextTo(World world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos.east()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(world, pos.east(), BlockKeycardReader.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(world, pos.west(), BlockKeycardReader.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(world, pos.south(), BlockKeycardReader.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(world, pos.north(), BlockKeycardReader.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(world, pos.up(), BlockKeycardReader.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.keycardReader && BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), BlockKeycardReader.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else
-			return false;
-	}
-
-	private static boolean hasActiveInventoryScannerNextTo(World world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos.east()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.east())).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.west()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.west())).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.south()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.south())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.south())).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.north()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.north())).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.up()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.up())).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(BlockUtils.getBlock(world, pos.down()) == SCContent.inventoryScanner && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).getType().equals("redstone") && ((TileEntityInventoryScanner) world.getTileEntity(pos.down())).shouldProvidePower())
-			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else
-			return false;
-	}
-
-	private static boolean hasActiveReinforcedPressurePlateNextTo(World world, BlockPos pos){
-		if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.east())) && world.getBlockState(pos.east()).getValue(BlockReinforcedPressurePlate.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.east())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.west())) && world.getBlockState(pos.west()).getValue(BlockReinforcedPressurePlate.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.west())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.south())) && world.getBlockState(pos.south()).getValue(BlockReinforcedPressurePlate.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.south())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.north())) && world.getBlockState(pos.north()).getValue(BlockReinforcedPressurePlate.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.north())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.up())) && world.getBlockState(pos.up()).getValue(BlockReinforcedPressurePlate.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.up())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else if(PRESSURE_PLATES.contains(BlockUtils.getBlock(world, pos.down())) && world.getBlockState(pos.down()).getValue(BlockReinforcedPressurePlate.POWERED))
-			return ((IOwnable) world.getTileEntity(pos.down())).getOwner().owns((IOwnable) world.getTileEntity(pos));
-		else
-			return false;
+		return false;
 	}
 }

@@ -46,7 +46,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		Keyboard.enableRepeatEvents(true);
 
 		if(tileEntity.getOwner().isOwner(playerObj))
-			buttonList.add(new GuiButton(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
+			buttonList.add(new GuiButton(0, width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 63, 166, 20, tileEntity.getScanType().contains("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")));
 	}
 
 	@Override
@@ -66,9 +66,9 @@ public class GuiInventoryScanner extends GuiContainer {
 				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}
 		}
-		else if(tileEntity.getType() != null && tileEntity.getType() != ""){
+		else if(tileEntity.getScanType() != null && tileEntity.getScanType() != ""){
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
-			fontRenderer.drawString((tileEntity.getType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
+			fontRenderer.drawString((tileEntity.getScanType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
 		}
 
@@ -99,7 +99,7 @@ public class GuiInventoryScanner extends GuiContainer {
 	}
 
 	private void saveType(String type){
-		tileEntity.setType(type);
+		tileEntity.setScanType(type);
 		SecurityCraft.network.sendToServer(new PacketSetISType(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), type));
 	}
 

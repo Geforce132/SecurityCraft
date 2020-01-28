@@ -63,14 +63,14 @@ public class ItemModifiedBucket extends ItemBucket {
 					IBlockState state = world.getBlockState(pos);
 					Material material = state.getMaterial();
 
-					if (material == Material.WATER && state.getValue(BlockLiquid.LEVEL).intValue() == 0)
+					if (material == Material.WATER && state.getValue(BlockLiquid.LEVEL) == 0)
 					{
 						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 						player.addStat(StatList.getObjectUseStats(this));
 						player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
 						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fWaterBucket));
 					}
-					else if (material == Material.LAVA && state.getValue(BlockLiquid.LEVEL).intValue() == 0)
+					else if (material == Material.LAVA && state.getValue(BlockLiquid.LEVEL) == 0)
 					{
 						player.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
 						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);

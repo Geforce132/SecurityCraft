@@ -195,7 +195,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
+		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else if(state.getProperties().containsKey(FACING))
 			return state.getValue(FACING).getIndex();

@@ -60,7 +60,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 			return null;
 		else
 			return blockState.getBoundingBox(world, pos);
@@ -77,7 +77,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity)))
 					return;
 
-				if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+				if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 					return;
 
 				BlockPos topMiddle = pos.up(4);
@@ -122,7 +122,7 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(DEACTIVATED).booleanValue() ? 1 : 0;
+		return state.getValue(DEACTIVATED) ? 1 : 0;
 	}
 
 	@Override

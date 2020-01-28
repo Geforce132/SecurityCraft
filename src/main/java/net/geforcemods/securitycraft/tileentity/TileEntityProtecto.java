@@ -38,9 +38,9 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	public boolean canAttack() {
 		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
 
-		if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
+		if(canAttack && !BlockUtils.getBlockProperty(world, pos, BlockProtecto.ACTIVATED))
 			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, true);
-		else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockProtecto.ACTIVATED))
+		else if(!canAttack && BlockUtils.getBlockProperty(world, pos, BlockProtecto.ACTIVATED))
 			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
 
 		return canAttack;

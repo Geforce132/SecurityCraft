@@ -46,7 +46,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		GlStateManager.pushMatrix();
 
 		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
-			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
+			EnumFacing side = BlockUtils.getBlockProperty(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
 
 			if(side == EnumFacing.EAST)
 				rotation = -1F;

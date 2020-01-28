@@ -76,7 +76,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 			return 0; //Weird if statement I had to include because Waila kept
 		//crashing if I looked at one of these lights then looked away quickly.
 
-		return world.getBlockState(pos).getValue(LIT).booleanValue() ? 15 : 0;
+		return world.getBlockState(pos).getValue(LIT) ? 15 : 0;
 	}
 
 	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {
@@ -143,7 +143,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getProperties().containsKey(LIT) && state.getValue(LIT).booleanValue())
+		if(state.getProperties().containsKey(LIT) && state.getValue(LIT))
 			return (state.getValue(FACING).getIndex() + 6);
 		else{
 			if(!state.getProperties().containsKey(FACING)) return 15;

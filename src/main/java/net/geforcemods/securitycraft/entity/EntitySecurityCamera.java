@@ -115,7 +115,7 @@ public class EntitySecurityCamera extends Entity{
 		{
 			rotationPitch = 30F;
 
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.NORTH)
 				rotationYaw = 180F;
@@ -255,7 +255,7 @@ public class EntitySecurityCamera extends Entity{
 
 	public void moveViewLeft() {
 		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.EAST)
 			{
@@ -287,7 +287,7 @@ public class EntitySecurityCamera extends Entity{
 
 	public void moveViewRight(){
 		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.EAST)
 			{
@@ -335,9 +335,9 @@ public class EntitySecurityCamera extends Entity{
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ));
 
 		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
-			if(BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
+			if(BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
 				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
-			else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
+			else if(!BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
 				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) + 6));
 	}
 

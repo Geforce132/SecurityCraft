@@ -53,7 +53,7 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN))
+		if(BlockUtils.getBlockProperty(world, pos, OPEN))
 			return;
 
 		if(entity instanceof EntityItem)
@@ -83,15 +83,15 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 			boolean isPoweredSCBlock = isSCBlock(block) && world.isBlockPowered(pos);
 
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
-				if (isPoweredSCBlock && !state.getValue(OPEN).booleanValue() && !state.getValue(POWERED).booleanValue()) {
+				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
 					world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
 					world.playEvent((EntityPlayer)null, 1008, pos, 0);
 				}
-				else if (!isPoweredSCBlock && state.getValue(OPEN).booleanValue() && state.getValue(POWERED).booleanValue()) {
+				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
 					world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
 					world.playEvent((EntityPlayer)null, 1014, pos, 0);
 				}
-				else if (isPoweredSCBlock != state.getValue(POWERED).booleanValue())
+				else if (isPoweredSCBlock != state.getValue(POWERED))
 					world.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
 		}
 	}

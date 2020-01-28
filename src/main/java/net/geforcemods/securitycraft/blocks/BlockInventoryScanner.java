@@ -240,12 +240,12 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if(!(blockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getType() == null){
+		if(!(blockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType() == null){
 			SecurityCraft.log("type is null on the " + FMLCommonHandler.instance().getEffectiveSide() + " side");
 			return 0 ;
 		}
 
-		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getType().equals("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
+		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType().equals("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
 	}
 
 	/**
@@ -255,10 +255,10 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if(((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getType() == null)
+		if(((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType() == null)
 			return 0 ;
 
-		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getType().equals("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
+		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType().equals("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 					if(stack.getTagCompound() == null)
 						stack.setTagCompound(new NBTTagCompound());
 
-					stack.getTagCompound().setIntArray(("sentry" + availSlot), new int[]{BlockUtils.fromPos(pos2)[0], BlockUtils.fromPos(pos2)[1], BlockUtils.fromPos(pos2)[2]});
+					stack.getTagCompound().setIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
 					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.bound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.GREEN);
 				}else{

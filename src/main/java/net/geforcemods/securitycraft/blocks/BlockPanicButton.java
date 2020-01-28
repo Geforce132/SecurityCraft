@@ -34,7 +34,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(state.getValue(POWERED).booleanValue()){
+		if(state.getValue(POWERED)){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
 			world.markBlockRangeForRenderUpdate(pos, pos);
 			notifyNeighbors(world, pos, state.getValue(FACING));
@@ -70,7 +70,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		EnumFacing facing = state.getValue(FACING);
-		boolean isPowered = state.getValue(POWERED).booleanValue();
+		boolean isPowered = state.getValue(POWERED);
 		float height = (isPowered ? 1 : 2) / 16.0F;
 
 		switch (BlockPanicButton.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()])

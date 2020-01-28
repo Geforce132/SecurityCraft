@@ -76,7 +76,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
+		EnumFacing dir = BlockUtils.getBlockProperty(source, pos, FACING);
 		float px = 1.0F/16.0F; //one sixteenth of a block
 
 		if(dir == EnumFacing.SOUTH)
@@ -149,7 +149,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue() && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -157,7 +157,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue() && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -183,7 +183,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(POWERED).booleanValue())
+		if(state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();

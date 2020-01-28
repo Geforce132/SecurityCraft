@@ -42,7 +42,7 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 		if(world.isRemote)
 			return true;
 		else {
-			if(state.getValue(POWERED).booleanValue() || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST))
+			if(state.getValue(POWERED) || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST))
 				return false;
 
 			if(ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.WHITELIST)){
@@ -109,7 +109,7 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 	 */
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -121,7 +121,7 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 	 */
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -147,7 +147,7 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
+		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else{
 			if(!state.getProperties().containsKey(FACING)) return 15;

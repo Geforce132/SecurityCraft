@@ -65,7 +65,7 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	 */
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		if (!world.isRemote && state.getValue(POWERED).booleanValue())
+		if (!world.isRemote && state.getValue(POWERED))
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
 	}
 
@@ -86,7 +86,7 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -110,7 +110,7 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
+		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else if(state.getProperties().containsKey(FACING))
 			return state.getValue(FACING).getIndex();

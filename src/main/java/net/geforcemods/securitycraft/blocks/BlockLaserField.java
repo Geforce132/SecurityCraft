@@ -111,7 +111,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
 
-					if(block == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, offsetPos, BlockLaserBlock.POWERED))
+					if(block == SCContent.laserBlock && !BlockUtils.getBlockProperty(world, offsetPos, BlockLaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
@@ -157,11 +157,11 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 1)
+		if (source.getBlockState(pos).getValue(BOUNDTYPE) == 1)
 			return BOUNDTYPE_1_AABB;
-		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 2)
+		else if (source.getBlockState(pos).getValue(BOUNDTYPE) == 2)
 			return BOUNDTYPE_2_AABB;
-		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 3)
+		else if (source.getBlockState(pos).getValue(BOUNDTYPE) == 3)
 			return BOUNDTYPE_3_AABB;
 		else return FULL_BLOCK_AABB;
 	}
@@ -181,7 +181,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(BOUNDTYPE).intValue();
+		return state.getValue(BOUNDTYPE);
 	}
 
 	@Override

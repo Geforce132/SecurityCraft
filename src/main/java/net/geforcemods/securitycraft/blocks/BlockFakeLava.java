@@ -55,7 +55,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
-		int level = state.getValue(LEVEL).intValue();
+		int level = state.getValue(LEVEL);
 		byte levelToAdd = 1;
 
 		if (this.material == Material.LAVA && !world.provider.doesWaterVaporize())
@@ -94,7 +94,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 
 				if (stateBelow.getMaterial().isSolid())
 					nextLevel = 0;
-				else if (stateBelow.getMaterial() == this.material && stateBelow.getValue(LEVEL).intValue() == 0)
+				else if (stateBelow.getMaterial() == this.material && stateBelow.getValue(LEVEL) == 0)
 					nextLevel = 0;
 			}
 
@@ -186,7 +186,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 				BlockPos offsetPos = pos.offset(facing);
 				IBlockState offsetState = world.getBlockState(offsetPos);
 
-				if (!isBlocked(world, offsetPos, offsetState) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL).intValue() > 0))
+				if (!isBlocked(world, offsetPos, offsetState) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL) > 0))
 				{
 					if (!isBlocked(world, offsetPos.down(), offsetState))
 						return distance;
@@ -217,7 +217,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState offsetState = world.getBlockState(offsetPos);
 
-			if (!isBlocked(world, offsetPos, offsetState) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL).intValue() > 0))
+			if (!isBlocked(world, offsetPos, offsetState) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL) > 0))
 			{
 				int oppositeCost;
 

@@ -84,8 +84,8 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	}
 
 	public static void activate(World world, BlockPos pos, EntityPlayer player){
-		if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockKeypadFurnace.OPEN))
-			BlockUtils.setBlockProperty(world, pos, BlockKeypadFurnace.OPEN, true, false);
+		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypadFurnace.OPEN))
+			BlockUtils.setBlockProperty(world, pos, BlockKeypadFurnace.OPEN, true);
 
 		world.playEvent((EntityPlayer)null, 1006, pos, 0);
 		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
@@ -117,7 +117,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(OPEN).booleanValue())
+		if(state.getValue(OPEN))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();

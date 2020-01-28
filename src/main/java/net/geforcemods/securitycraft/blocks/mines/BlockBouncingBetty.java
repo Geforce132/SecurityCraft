@@ -86,7 +86,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	public void explode(World world, BlockPos pos){
 		if(world.isRemote)
 			return;
-		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+		if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 			return;
 
 		world.setBlockToAir(pos);
@@ -123,7 +123,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return (state.getValue(DEACTIVATED).booleanValue() ? 1 : 0);
+		return (state.getValue(DEACTIVATED) ? 1 : 0);
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override

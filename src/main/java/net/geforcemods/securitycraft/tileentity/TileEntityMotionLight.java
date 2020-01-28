@@ -22,7 +22,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 		if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera((EntityPlayer)entity))
 			BlockMotionActivatedLight.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), false);
 
-		if(entity instanceof EntityLivingBase && BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
+		if(entity instanceof EntityLivingBase && BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockProperty(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
 			BlockMotionActivatedLight.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), true);
 
 		return false;
@@ -30,7 +30,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 
 	@Override
 	public void attackFailed() {
-		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && BlockUtils.getBlockPropertyAsBoolean(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
+		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && BlockUtils.getBlockProperty(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
 			BlockMotionActivatedLight.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), false);
 	}
 

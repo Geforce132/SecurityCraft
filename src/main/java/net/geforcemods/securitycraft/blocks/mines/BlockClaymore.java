@@ -94,7 +94,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
@@ -106,7 +106,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
@@ -167,7 +167,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(DEACTIVATED).booleanValue())
+		if(state.getValue(DEACTIVATED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
@@ -181,7 +181,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override

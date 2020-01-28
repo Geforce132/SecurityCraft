@@ -53,12 +53,12 @@ public class PacketSetISType implements IMessage{
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 
-				((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).setType(message.type);
+				((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).setScanType(message.type);
 
 				SecurityCraft.log("Setting type to " + message.type);
 				getWorld(context.getServerHandler().player).scheduleUpdate(pos, BlockUtils.getBlock(getWorld(context.getServerHandler().player), pos), 1);
 
-				Utils.setISinTEAppropriately(getWorld(context.getServerHandler().player), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getType());
+				Utils.setISinTEAppropriately(getWorld(context.getServerHandler().player), pos, ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getContents(), ((TileEntityInventoryScanner) getWorld(context.getServerHandler().player).getTileEntity(pos)).getScanType());
 			});
 
 			return null;

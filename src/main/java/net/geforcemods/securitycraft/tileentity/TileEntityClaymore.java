@@ -30,7 +30,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 		if(getWorld().isRemote)
 			return;
 		else{
-			if(getWorld().getBlockState(getPos()).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+			if(getWorld().getBlockState(getPos()).getValue(BlockClaymore.DEACTIVATED))
 				return;
 
 			if(cooldown > 0){

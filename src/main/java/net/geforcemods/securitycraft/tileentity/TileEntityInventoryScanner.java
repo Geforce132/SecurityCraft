@@ -15,7 +15,7 @@ import net.minecraft.util.NonNullList;
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
-	private String type = "check";
+	private String scanType = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -50,7 +50,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 			cooldown = tag.getInteger("cooldown");
 
 		if(tag.hasKey("type"))
-			type = tag.getString("type");
+			scanType = tag.getString("type");
 
 	}
 
@@ -71,7 +71,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 		tag.setTag("Items", list);
 		tag.setInteger("cooldown", cooldown);
-		tag.setString("type", type);
+		tag.setString("type", scanType);
 		return tag;
 	}
 
@@ -208,16 +208,16 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		return true;
 	}
 
-	public String getType(){
-		return type;
+	public String getScanType(){
+		return scanType;
 	}
 
-	public void setType(String type){
-		this.type = type;
+	public void setScanType(String type){
+		this.scanType = type;
 	}
 
 	public boolean shouldProvidePower() {
-		return (type.equals("redstone") && isProvidingPower) ? true : false;
+		return (scanType.equals("redstone") && isProvidingPower) ? true : false;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {

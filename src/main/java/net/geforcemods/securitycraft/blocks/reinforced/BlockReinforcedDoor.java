@@ -88,11 +88,11 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			{
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.up());
 
-				if (((hasActiveSCBlock || neighborBlock.canProvidePower(stateAbove))) && neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(POWERED).booleanValue())
+				if (((hasActiveSCBlock || neighborBlock.canProvidePower(stateAbove))) && neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(POWERED))
 				{
 					world.setBlockState(blockAbove, stateAbove.withProperty(POWERED, Boolean.valueOf(hasActiveSCBlock)), 2);
 
-					if (hasActiveSCBlock != state.getValue(OPEN).booleanValue())
+					if (hasActiveSCBlock != state.getValue(OPEN))
 					{
 						world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(hasActiveSCBlock)), 2);
 						world.markBlockRangeForRenderUpdate(pos, pos);
@@ -103,7 +103,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 						{
 							secondDoorState = world.getBlockState(pos.north());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 								world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
@@ -112,7 +112,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 							{
 								secondDoorState = world.getBlockState(pos.south());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 									world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
@@ -123,7 +123,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 						{
 							secondDoorState = world.getBlockState(pos.east());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 								world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
@@ -132,7 +132,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 							{
 								secondDoorState = world.getBlockState(pos.west());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 									world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
@@ -143,7 +143,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 						{
 							secondDoorState = world.getBlockState(pos.south());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.south(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 								world.markBlockRangeForRenderUpdate(pos.south(), pos.south());
@@ -152,7 +152,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 							{
 								secondDoorState = world.getBlockState(pos.north());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.north(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 									world.markBlockRangeForRenderUpdate(pos.north(), pos.north());
@@ -163,7 +163,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 						{
 							secondDoorState = world.getBlockState(pos.west());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 							{
 								world.setBlockState(pos.west(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 								world.markBlockRangeForRenderUpdate(pos.west(), pos.west());
@@ -172,7 +172,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 							{
 								secondDoorState = world.getBlockState(pos.east());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN).booleanValue() != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.getValue(OPEN) != hasActiveSCBlock)
 								{
 									world.setBlockState(pos.east(), secondDoorState.withProperty(OPEN, hasActiveSCBlock), 2);
 									world.markBlockRangeForRenderUpdate(pos.east(), pos.east());
