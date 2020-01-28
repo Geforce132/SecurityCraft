@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
@@ -75,7 +76,6 @@ import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedPressurePlateTileEntity;
@@ -86,7 +86,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
-import net.geforcemods.securitycraft.util.Ownable;
+import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -310,7 +310,7 @@ public class RegistrationHandler
 		{
 			try
 			{
-				if(field.isAnnotationPresent(Ownable.class))
+				if(field.isAnnotationPresent(OwnableTE.class))
 					teOwnableBlocks.add((Block)field.get(null));
 
 			}
@@ -321,7 +321,7 @@ public class RegistrationHandler
 		}
 
 		event.getRegistry().register(TileEntityType.Builder.create(OwnableTileEntity::new, teOwnableBlocks.toArray(new Block[teOwnableBlocks.size()])).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ownable")));
-		event.getRegistry().register(TileEntityType.Builder.create(SecurityCraftTileEntity::new, SCContent.laserField, SCContent.inventoryScannerField).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
+		event.getRegistry().register(TileEntityType.Builder.create(SecurityCraftTileEntity::new, SCContent.laserField, SCContent.inventoryScannerField, SCContent.ironFence, SCContent.cobblestoneMine, SCContent.diamondOreMine, SCContent.dirtMine, SCContent.furnaceMine, SCContent.gravelMine, SCContent.sandMine, SCContent.stoneMine, SCContent.bouncingBetty, SCContent.reinforcedFencegate).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
 		event.getRegistry().register(TileEntityType.Builder.create(KeypadTileEntity::new, SCContent.keypad).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad")));
 		event.getRegistry().register(TileEntityType.Builder.create(LaserBlockTileEntity::new, SCContent.laserBlock).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block")));
 		event.getRegistry().register(TileEntityType.Builder.create(CageTrapTileEntity::new, SCContent.cageTrap).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cage_trap")));

@@ -6,7 +6,6 @@ import java.util.Iterator;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -27,7 +26,7 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableTileEntity extends OwnableTileEntity implements IInventory{
+public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IInventory{
 
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<LinkedBlock>();

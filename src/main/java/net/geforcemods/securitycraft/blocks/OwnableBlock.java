@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

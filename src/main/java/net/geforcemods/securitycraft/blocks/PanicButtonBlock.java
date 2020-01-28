@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;

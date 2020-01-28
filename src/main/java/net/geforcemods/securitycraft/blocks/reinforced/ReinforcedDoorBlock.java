@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

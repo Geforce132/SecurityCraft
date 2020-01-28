@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
