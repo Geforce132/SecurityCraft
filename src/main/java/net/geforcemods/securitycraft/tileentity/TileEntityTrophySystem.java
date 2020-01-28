@@ -29,7 +29,7 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 			Entity target = getTarget();
 			UUID shooterUUID = getShooterUUID(target);
 
-			if(target != null && shooterUUID != null &&!shooterUUID.toString().equals(getOwner().getUUID())) {
+			if(target != null && (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID()))) {
 				entityBeingTargeted = target;
 			}
 		}
