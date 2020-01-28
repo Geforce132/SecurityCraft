@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
+
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -23,7 +25,6 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -34,10 +35,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCageTrap extends BlockOwnable implements IIntersectable {
+public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
@@ -47,15 +46,9 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
+	public boolean isFullCube(IBlockState state)
 	{
-		return BlockRenderLayer.CUTOUT;
+		return false;
 	}
 
 	@Override
@@ -63,7 +56,14 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 			return null;
 		else
-			return blockState.getBoundingBox(world, pos);
+			return super.getCollisionBoundingBox(blockState, world, pos);
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
+	{
+		if(!(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED)))
+			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
 	}
 
 	@Override
@@ -71,9 +71,8 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		if(!world.isRemote){
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof EntityPlayer;
-			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
 
-			if(isPlayer || (entity instanceof EntityMob && shouldCaptureMobs)){
+			if(isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())){
 				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity)))
 					return;
 
