@@ -14,7 +14,8 @@
 - Fix: Activating a Cage Trap can delete blocks that shouldn't be deleted
 - Fix: Sentry Remote Access Tool tooltip does not show sentry names
 - Fix: Portable Radar can duplicate modules
-- Fix: Inventory Scanner deletes its owner's items
+- Fix: Inventory Scanner removes its owner's items
+- Fix: Laser harms its owner if the harming module is installed
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------

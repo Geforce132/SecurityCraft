@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -19,6 +20,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
@@ -122,8 +124,10 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumCustomModules.HARMING))
-							((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
-
+						{
+							if(!(entity instanceof EntityPlayer && ((IOwnable)te).getOwner().isOwner((EntityPlayer)entity)))
+								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+						}
 					}
 				}
 			}
