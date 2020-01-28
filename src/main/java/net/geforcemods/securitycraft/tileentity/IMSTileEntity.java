@@ -47,10 +47,10 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		super.tick();
 
 		if(!world.isRemote && updateBombCount){
-			int mineCount = BlockUtils.getBlockPropertyAsInteger(world, pos, IMSBlock.MINES);
+			int mineCount = BlockUtils.getBlockProperty(world, pos, IMSBlock.MINES);
 
 			if(!(mineCount - 1 < 0 || mineCount > 4))
-				BlockUtils.setBlockProperty(world, pos, IMSBlock.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, IMSBlock.MINES) - 1);
+				BlockUtils.setBlockProperty(world, pos, IMSBlock.MINES, BlockUtils.getBlockProperty(world, pos, IMSBlock.MINES) - 1);
 
 			updateBombCount = false;
 		}

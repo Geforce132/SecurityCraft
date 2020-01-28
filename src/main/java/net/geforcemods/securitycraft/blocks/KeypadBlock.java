@@ -45,7 +45,7 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 		if(world.isRemote)
 			return true;
 		else {
-			if(state.get(POWERED).booleanValue() || ModuleUtils.checkForModule(world, pos, player, CustomModules.BLACKLIST))
+			if(state.get(POWERED) || ModuleUtils.checkForModule(world, pos, player, CustomModules.BLACKLIST))
 				return false;
 
 			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST)){

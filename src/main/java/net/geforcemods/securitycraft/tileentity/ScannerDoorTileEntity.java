@@ -49,10 +49,10 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 				return;
 			}
 
-			boolean open = !BlockUtils.getBlockPropertyAsBoolean(world, pos.down(), DoorBlock.OPEN);
+			boolean open = !BlockUtils.getBlockProperty(world, pos.down(), DoorBlock.OPEN);
 
-			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN).booleanValue()), 3);
-			world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN).booleanValue()), 3);
+			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN)), 3);
+			world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN)), 3);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
 			if(open && sendMessage.asBoolean())
