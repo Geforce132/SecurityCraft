@@ -3,8 +3,9 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -240,6 +241,6 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new OwnableTileEntity().intersectsEntities();
+		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 }

@@ -6,13 +6,15 @@ import java.util.Random;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 
-public class TrophySystemTileEntity extends OwnableTileEntity {
+public class TrophySystemTileEntity extends OwnableTileEntity implements ITickableTileEntity {
 
 	// The range (in blocks) that the trophy will search for projectiles in
 	public static final int range = 10;

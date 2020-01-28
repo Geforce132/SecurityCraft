@@ -9,10 +9,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -35,7 +32,7 @@ import net.minecraft.util.text.StringTextComponent;
  *
  * @author Geforce
  */
-public class SecurityCraftTileEntity extends TileEntity implements ITickableTileEntity, INameable {
+public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
@@ -43,7 +40,6 @@ public class SecurityCraftTileEntity extends TileEntity implements ITickableTile
 	private boolean canBeNamed = false;
 	private ITextComponent customName = new StringTextComponent("name");
 	private double attackRange = 0.0D;
-	private int blockPlaceCooldown = 30;
 	private int viewCooldown = getViewCooldown();
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
@@ -73,16 +69,11 @@ public class SecurityCraftTileEntity extends TileEntity implements ITickableTile
 			while (iterator.hasNext())
 			{
 				entity = (Entity)iterator.next();
-				entitytersecting(entity);
+				entityIntersecting(entity);
 			}
 		}
 
 		if(viewActivated){
-			if(blockPlaceCooldown > 0){
-				blockPlaceCooldown--;
-				return;
-			}
-
 			if(viewCooldown > 0){
 				viewCooldown--;
 				return;
@@ -150,7 +141,7 @@ public class SecurityCraftTileEntity extends TileEntity implements ITickableTile
 		}
 	}
 
-	public void entitytersecting(Entity entity) {
+	public void entityIntersecting(Entity entity) {
 		if(!(world.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
 
 		((IIntersectable) world.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
@@ -244,18 +235,6 @@ public class SecurityCraftTileEntity extends TileEntity implements ITickableTile
 
 		if (tag.contains("customName"))
 			customName = new StringTextComponent(tag.getString("customName"));
-	}
-
-	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(packet.getNbtCompound());
 	}
 
 	@Override
