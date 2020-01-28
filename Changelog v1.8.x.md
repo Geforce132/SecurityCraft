@@ -14,6 +14,7 @@
 - Fix: Block Pocket Wall's sides are visible through other Block Pocket Walls
 - Fix: Activating a Cage Trap can delete blocks that shouldn't be deleted
 - Fix: Sentry Remote Access Tool tooltip does not show sentry names
+- Fix: Inventory Scanner deletes its owner's items
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is now 28.1.115
 
