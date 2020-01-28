@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.CustomModules;
@@ -75,8 +76,10 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).hasModule(CustomModules.HARMING))
-							((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
-
+						{
+							if(!(entity instanceof PlayerEntity && ((IOwnable)te).getOwner().isOwner((PlayerEntity)entity)))
+								((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+						}
 					}
 				}
 			}
