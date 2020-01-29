@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
+import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -223,7 +224,10 @@ public class SCEventHandler {
 						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
-
+					if(block == SCContent.keypadChest) {
+						BlockKeypadChest chest = (BlockKeypadChest) block;
+						chest.breakBlock(world,event.getPos(),chest.getBlockState().getBaseState());
+					}
 					if(block == SCContent.laserBlock){
 						world.destroyBlock(event.getPos(), true);
 						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
