@@ -14,7 +14,9 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
@@ -161,7 +163,17 @@ public class SCManualScreen extends Screen {
 					this.blit(startX + 81, 118, 36, 1, 17, 16);
 
 				if(te instanceof CustomizableTileEntity)
+				{
+					CustomizableTileEntity scte = (CustomizableTileEntity)te;
+
 					this.blit(startX + 213, 118, 72, 1, 16, 16);
+
+					if(scte.customOptions() != null && scte.customOptions().length > 0)
+						this.blit(startX + 136, 118, 88, 1, 16, 16);
+
+					if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+						this.blit(startX + 163, 118, 105, 1, 16, 16);
+				}
 			}
 
 			for(IngredientDisplay display : displays)
@@ -176,7 +188,7 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-						renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+						renderTooltip(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
 						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
 				}
@@ -362,7 +374,45 @@ public class SCManualScreen extends Screen {
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
 				if(te instanceof CustomizableTileEntity)
+				{
+					CustomizableTileEntity scte = (CustomizableTileEntity)te;
+
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+
+					if(scte.customOptions() != null && scte.customOptions().length > 0)
+					{
+						List<String> display = new ArrayList<>();
+
+						display.add(ClientUtils.localize("gui.securitycraft:scManual.options"));
+						display.add("---");
+
+						for(Option<?> option : scte.customOptions())
+						{
+							display.add("- " + ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description"));
+							display.add("");
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, 20, display));
+					}
+
+					if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+					{
+						List<String> display = new ArrayList<>();
+
+						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
+						display.add("---");
+
+						for(CustomModules module : scte.acceptedModules())
+						{
+							display.add("- " + ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description"));
+							display.add("");
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, 20, display));
+					}
+				}
 			}
 		}
 

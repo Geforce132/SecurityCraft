@@ -1,19 +1,32 @@
 package net.geforcemods.securitycraft.screen.components;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraftforge.fml.client.gui.HoverChecker;
 
 public class StringHoverChecker extends HoverChecker
 {
-	private String name;
+	private List<String> lines;
 
-	public StringHoverChecker(int top, int bottom, int left, int right, int threshold, String name)
+	public StringHoverChecker(int top, int bottom, int left, int right, int threshold, String line)
+	{
+		this(top, bottom, left, right, threshold, Arrays.asList(line));
+	}
+
+	public StringHoverChecker(int top, int bottom, int left, int right, int threshold, List<String> lines)
 	{
 		super(top, bottom, left, right, threshold);
-		this.name = name;
+		this.lines = lines;
 	}
 
 	public String getName()
 	{
-		return name;
+		return lines.get(0);
+	}
+
+	public List<String> getLines()
+	{
+		return lines;
 	}
 }

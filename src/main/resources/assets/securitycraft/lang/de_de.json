@@ -458,6 +458,8 @@
     "gui.securitycraft:scManual.viewActivatedBlock": "Sichtfeldaktivierung: Dieser Block wird aktiviert, indem du ihn mit deinem Fadenkreuz anschaust.",
     "gui.securitycraft:scManual.explosiveBlock": "Explosiv: Dieser Block kann in der Kabellosen Minensteuerungseinheit registriert werden.",
     "gui.securitycraft:scManual.customizableBlock": "Anpassbar: Bei diesem Block kannst du den Universellen Blockmodifizierer verwenden, um die Funktionen des Blockes anzupassen.",
+    "gui.securitycraft:scManual.options": "Verfügbare Einstellungen:",
+    "gui.securitycraft:scManual.modules": "Verfügbare Module:",
     "gui.securitycraft:scManual.recipe.keypad": "Platziere einen Rahmen und rechtsklicke ihn mit einem Nummernfeld.",
     "gui.securitycraft:scManual.recipe.keypad_chest": "Platziere eine Truhe und rechtsklicke sie mit einem Nummernfeld.",
     "gui.securitycraft:scManual.recipe.keypad_furnace": "Platziere einen Ofen und rechtsklicke ihn mit einem Nummernfeld.",
