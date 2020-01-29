@@ -3,11 +3,9 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.base.Predicate;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -21,18 +19,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPlanks.EnumType.class, new Predicate<BlockPlanks.EnumType>()
-	{
-		@Override
-		public boolean apply(BlockPlanks.EnumType type)
-		{
-			return type.getMetadata() >= 4;
-		}
-	});
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class, type -> type.getMetadata() >= 4);
 
 	public BlockReinforcedNewLog()
 	{
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockPlanks.EnumType.ACACIA).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.ACACIA).withProperty(LOG_AXIS, BlockLog.EnumAxis.Y));
 	}
 
 	/**
@@ -42,8 +33,8 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		list.add(new ItemStack(this, 1, BlockPlanks.EnumType.ACACIA.getMetadata() - 4));
-		list.add(new ItemStack(this, 1, BlockPlanks.EnumType.DARK_OAK.getMetadata() - 4));
+		list.add(new ItemStack(this, 1, EnumType.ACACIA.getMetadata() - 4));
+		list.add(new ItemStack(this, 1, EnumType.DARK_OAK.getMetadata() - 4));
 	}
 
 	/**
@@ -52,7 +43,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		IBlockState state = getDefaultState().withProperty(VARIANT, BlockPlanks.EnumType.byMetadata((meta & 3) + 4));
+		IBlockState state = getDefaultState().withProperty(VARIANT, EnumType.byMetadata((meta & 3) + 4));
 
 		switch (meta & 12)
 		{
@@ -79,9 +70,9 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 	public int getMetaFromState(IBlockState state)
 	{
 		byte b0 = 0;
-		int meta = b0 | ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata() - 4;
+		int meta = b0 | state.getValue(VARIANT).getMetadata() - 4;
 
-		switch (BlockReinforcedNewLog.SwitchEnumAxis.AXIS_LOOKUP[((BlockLog.EnumAxis)state.getValue(LOG_AXIS)).ordinal()])
+		switch (BlockReinforcedNewLog.SwitchEnumAxis.AXIS_LOOKUP[state.getValue(LOG_AXIS).ordinal()])
 		{
 			case 1:
 				meta |= 4;
@@ -109,7 +100,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return ((BlockPlanks.EnumType)state.getValue(VARIANT)).getMetadata() - 4;
+		return state.getValue(VARIANT).getMetadata() - 4;
 	}
 
 	@Override

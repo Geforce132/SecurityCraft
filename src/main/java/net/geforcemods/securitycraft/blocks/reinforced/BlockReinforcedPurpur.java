@@ -31,12 +31,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
-	public static final PropertyEnum<BlockReinforcedPurpur.EnumType> VARIANT = PropertyEnum.<BlockReinforcedPurpur.EnumType>create("variant", BlockReinforcedPurpur.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.<EnumType>create("variant", EnumType.class);
 
 	public BlockReinforcedPurpur()
 	{
 		super(Material.ROCK);
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.DEFAULT));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.DEFAULT));
 	}
 
 	/**
@@ -46,18 +46,18 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		if (meta == BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata())
+		if (meta == EnumType.LINES_Y.getMetadata())
 			switch (facing.getAxis())
 			{
 				case Z:
-					return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_Z);
+					return getDefaultState().withProperty(VARIANT, EnumType.LINES_Z);
 				case X:
-					return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_X);
+					return getDefaultState().withProperty(VARIANT, EnumType.LINES_X);
 				case Y:
-					return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_Y);
+					return getDefaultState().withProperty(VARIANT, EnumType.LINES_Y);
 			}
 
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.DEFAULT);
+		return getDefaultState().withProperty(VARIANT, EnumType.DEFAULT);
 	}
 
 	/**
@@ -67,8 +67,8 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		BlockReinforcedPurpur.EnumType type = state.getValue(VARIANT);
-		return type != BlockReinforcedPurpur.EnumType.LINES_X && type != BlockReinforcedPurpur.EnumType.LINES_Z ? type.getMetadata() : BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata();
+		EnumType type = state.getValue(VARIANT);
+		return type != EnumType.LINES_X && type != EnumType.LINES_Z ? type.getMetadata() : EnumType.LINES_Y.getMetadata();
 	}
 
 	/**
@@ -78,8 +78,8 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		list.add(new ItemStack(this, 1, BlockReinforcedPurpur.EnumType.DEFAULT.getMetadata()));
-		list.add(new ItemStack(this, 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata()));
+		list.add(new ItemStack(this, 1, EnumType.DEFAULT.getMetadata()));
+		list.add(new ItemStack(this, 1, EnumType.LINES_Y.getMetadata()));
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.byMetadata(meta));
+		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
 	/**
@@ -124,9 +124,9 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 				switch (state.getValue(VARIANT))
 				{
 					case LINES_X:
-						return state.withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_Z);
+						return state.withProperty(VARIANT, EnumType.LINES_Z);
 					case LINES_Z:
-						return state.withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_X);
+						return state.withProperty(VARIANT, EnumType.LINES_X);
 					default:
 						return state;
 				}
@@ -146,23 +146,14 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
-
-		for (IProperty prop : state.getProperties().keySet())
-		{
-			if (prop.getName().equals("variant") && prop.getValueClass() == EnumType.class)
-			{
-				EnumType current = (EnumType)state.getValue(prop);
-				EnumType next = current == EnumType.LINES_X ? EnumType.LINES_Y :
-					current == EnumType.LINES_Y ? EnumType.LINES_Z :
-						current == EnumType.LINES_Z ? EnumType.LINES_X : current;
-				if (next == current)
-					return false;
-				world.setBlockState(pos, state.withProperty(prop, next));
-				return true;
-			}
-		}
-
-		return false;
+		EnumType current = state.getValue(VARIANT);
+		EnumType next = current == EnumType.LINES_X ? EnumType.LINES_Y :
+			current == EnumType.LINES_Y ? EnumType.LINES_Z :
+				current == EnumType.LINES_Z ? EnumType.LINES_X : current;
+		if (next == current)
+			return false;
+		world.setBlockState(pos, state.withProperty(VARIANT, next));
+		return true;
 	}
 
 	@Override
@@ -199,7 +190,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 		LINES_X(2, "lines_x", "lines"),
 		LINES_Z(3, "lines_z", "lines");
 
-		private static final BlockReinforcedPurpur.EnumType[] META_LOOKUP = new BlockReinforcedPurpur.EnumType[values().length];
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String serializedName;
 		private final String unlocalizedName;
@@ -222,7 +213,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 			return unlocalizedName;
 		}
 
-		public static BlockReinforcedPurpur.EnumType byMetadata(int meta)
+		public static EnumType byMetadata(int meta)
 		{
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
@@ -238,7 +229,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 
 		static
 		{
-			for (BlockReinforcedPurpur.EnumType type : values())
+			for (EnumType type : values())
 				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}

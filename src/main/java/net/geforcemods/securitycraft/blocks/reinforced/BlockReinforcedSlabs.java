@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
 
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
 	private final boolean isDouble;
 	public BlockReinforcedSlabs(boolean isDouble, Material blockMaterial){
@@ -40,7 +40,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			useNeighborBrightness = true;
 
 		setSoundType(SoundType.STONE);
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.STONE));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.STONE));
 	}
 
 	@Override
@@ -70,12 +70,12 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	public int damageDropped(IBlockState state){
-		return ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
 	public String getTranslationKey(int meta){
-		return super.getTranslationKey() + "." + BlockReinforcedSlabs.EnumType.byMetadata(meta).getTranslationKey();
+		return super.getTranslationKey() + "." + EnumType.byMetadata(meta).getTranslationKey();
 	}
 
 	@Override
@@ -85,12 +85,12 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 
 	@Override
 	public Comparable<?> getTypeForItem(ItemStack stack) {
-		return BlockReinforcedSlabs.EnumType.byMetadata(stack.getMetadata() & 7);
+		return EnumType.byMetadata(stack.getMetadata() & 7);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		IBlockState state = getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs.EnumType.byMetadata(meta & 7));
+		IBlockState state = getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 7));
 
 		state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 
@@ -100,7 +100,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@Override
 	public int getMetaFromState(IBlockState state){
 		byte b0 = 0;
-		int meta = b0 | ((BlockReinforcedSlabs.EnumType)state.getValue(VARIANT)).getMetadata();
+		int meta = b0 | state.getValue(VARIANT).getMetadata();
 
 		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
 			meta |= 8;
@@ -138,7 +138,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		NETHERBRICK(5, "netherbrick", "netherbrick"),
 		QUARTZ(6, "quartz", "quartz");
 
-		private static final BlockReinforcedSlabs.EnumType[] META_LOOKUP = new BlockReinforcedSlabs.EnumType[values().length];
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
 		private final String unlocalizedName;
@@ -162,7 +162,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 			return name;
 		}
 
-		public static BlockReinforcedSlabs.EnumType byMetadata(int meta){
+		public static EnumType byMetadata(int meta){
 			if(meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
 
@@ -179,11 +179,11 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		}
 
 		static {
-			BlockReinforcedSlabs.EnumType[] values = values();
+			EnumType[] values = values();
 			int length = values.length;
 
 			for(int i = 0; i < length; ++i){
-				BlockReinforcedSlabs.EnumType type = values[i];
+				EnumType type = values[i];
 				META_LOOKUP[type.getMetadata()] = type;
 			}
 		}

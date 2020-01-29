@@ -29,12 +29,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedMetals.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
 	public BlockReinforcedMetals()
 	{
 		super(Material.ROCK);
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedMetals.EnumType.GOLD));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.GOLD));
 		setSoundType(SoundType.METAL);
 	}
 
@@ -45,7 +45,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	/**
@@ -55,9 +55,9 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		BlockReinforcedMetals.EnumType[] values = BlockReinforcedMetals.EnumType.values();
+		EnumType[] values = EnumType.values();
 
-		for (BlockReinforcedMetals.EnumType type : values)
+		for (EnumType type : values)
 			list.add(new ItemStack(this, 1, type.getMetadata()));
 	}
 
@@ -67,7 +67,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedMetals.EnumType.byMetadata(meta));
+		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 		DIAMOND(2, "diamond"),
 		EMERALD(3, "emerald"),
 		REDSTONE(4, "redstone");
-		private static final BlockReinforcedMetals.EnumType[] META_LOOKUP = new BlockReinforcedMetals.EnumType[values().length];
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
 
@@ -161,7 +161,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 			return name;
 		}
 
-		public static BlockReinforcedMetals.EnumType byMetadata(int meta)
+		public static EnumType byMetadata(int meta)
 		{
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
@@ -177,9 +177,9 @@ public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDispl
 
 		static
 		{
-			BlockReinforcedMetals.EnumType[] values = values();
+			EnumType[] values = values();
 
-			for (BlockReinforcedMetals.EnumType type : values)
+			for (EnumType type : values)
 				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
