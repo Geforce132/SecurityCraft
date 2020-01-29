@@ -17,6 +17,7 @@
 - Fix: Inventory Scanner removes its owner's items
 - Fix: Laser harms its owner if the harming module is installed
 - Fix: Trophy System does not target arrows shot from dispensers
+- Fix: SC Manual does not show tooltips for some blocks/items
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is now 28.1.115
 
