@@ -457,6 +457,8 @@
 	"gui.securitycraft:scManual.viewActivatedBlock": "View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.",
 	"gui.securitycraft:scManual.explosiveBlock": "Explosive: This block is able to be remotely detonated, and may be able to be activated/deactivated, using the Mine Remote Access Tool.",
 	"gui.securitycraft:scManual.customizableBlock": "Customizable: You may use the Universal Block Modifier and the various modules added by SecurityCraft to customize the functions of this block.",
+    "gui.securitycraft:scManual.options": "Available options:",
+    "gui.securitycraft:scManual.modules": "Available modules:",
 	"gui.securitycraft:scManual.recipe.keypad": "Place down a Frame and rightclick it with a Key Panel.",
 	"gui.securitycraft:scManual.recipe.keypad_chest": "Place down a Chest and rightclick it with a Key Panel.",
 	"gui.securitycraft:scManual.recipe.keypad_furnace": "Place down a Furnace and rightclick it with a Key Panel.",
