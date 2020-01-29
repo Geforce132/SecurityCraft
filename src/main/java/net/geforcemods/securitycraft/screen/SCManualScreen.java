@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
@@ -145,22 +144,25 @@ public class SCManualScreen extends Screen {
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
-			TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
+			if(item instanceof BlockItem){
+				Block block = ((BlockItem) item).getBlock();
+				TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
-			if(((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null) instanceof IExplosive)
-				this.blit(startX + 107, 117, 54, 1, 18, 18);
+				if(block instanceof IExplosive)
+					this.blit(startX + 107, 117, 54, 1, 18, 18);
 
-			if(te instanceof IOwnable)
-				this.blit(startX + 29, 118, 1, 1, 16, 16);
+				if(te instanceof IOwnable)
+					this.blit(startX + 29, 118, 1, 1, 16, 16);
 
-			if(te instanceof IPasswordProtected)
-				this.blit(startX + 55, 118, 18, 1, 17, 16);
+				if(te instanceof IPasswordProtected)
+					this.blit(startX + 55, 118, 18, 1, 17, 16);
 
-			if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-				this.blit(startX + 81, 118, 36, 1, 17, 16);
+				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+					this.blit(startX + 81, 118, 36, 1, 17, 16);
 
-			if(te instanceof CustomizableTileEntity)
-				this.blit(startX + 213, 118, 72, 1, 16, 16);
+				if(te instanceof CustomizableTileEntity)
+					this.blit(startX + 213, 118, 72, 1, 16, 16);
+			}
 
 			for(IngredientDisplay display : displays)
 			{
@@ -341,24 +343,27 @@ public class SCManualScreen extends Screen {
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-		TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-		Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
-		if(te != null){
-			if(te instanceof IOwnable)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
+		if(item instanceof BlockItem){
+			Block block = ((BlockItem) item).getBlock();
+			TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
-			if(te instanceof IPasswordProtected)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
-
-			if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
-
-			if(blockItem instanceof IExplosive)
+			if(block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
-			if(te instanceof CustomizableTileEntity)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+			if(te != null){
+				if(te instanceof IOwnable)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
+
+				if(te instanceof IPasswordProtected)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
+
+				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
+
+				if(te instanceof CustomizableTileEntity)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+			}
 		}
 
 		if(recipe != null && recipe.size() > 0)
