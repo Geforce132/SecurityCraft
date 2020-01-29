@@ -167,24 +167,16 @@ public class SCManualScreen extends Screen {
 				display.render(minecraft, partialTicks);
 			}
 
-			outer: for(int i = 0; i < 3; i++)
+			for(int i = 0; i < hoverCheckers.size(); i++)
 			{
-				for(int j = 0; j < 3; j++)
+				HoverChecker chc = hoverCheckers.get(i);
+
+				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
-					int index = (i * 3) + j;
-
-					if(index >= hoverCheckers.size())
-						break outer;
-
-					HoverChecker chc = hoverCheckers.get(index);
-
-					if(chc != null && chc.checkHover(mouseX, mouseY))
-					{
-						if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-							renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
-						else if(!displays[index].getCurrentStack().isEmpty())
-							renderTooltip(displays[index].getCurrentStack(), mouseX, mouseY);
-					}
+					if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
+						renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
+						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
 		}
