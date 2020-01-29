@@ -133,7 +133,6 @@ public class GuiEditModule extends GuiContainer
 				return;
 			case 3: //paste
 				module.setTagCompound(SecurityCraft.instance.getSavedModule());
-				SecurityCraft.instance.setSavedModule(null);
 				break;
 			case 4:
 				module.setTagCompound(new NBTTagCompound());
