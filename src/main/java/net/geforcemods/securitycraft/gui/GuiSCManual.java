@@ -12,9 +12,11 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.block.Block;
@@ -152,7 +154,17 @@ public class GuiSCManual extends GuiScreen {
 						this.drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
 
 					if(te instanceof CustomizableSCTE)
+					{
+						CustomizableSCTE scte = (CustomizableSCTE)te;
+
 						this.drawTexturedModalRect(startX + 213, 118, 72, 1, 16, 16);
+
+						if(scte.customOptions() != null && scte.customOptions().length > 0)
+							this.drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
+
+						if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+							this.drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
+					}
 				}
 			}
 
@@ -180,7 +192,7 @@ public class GuiSCManual extends GuiScreen {
 					if(chc instanceof StackHoverChecker && !((StackHoverChecker)chc).getStack().isEmpty())
 						renderToolTip(((StackHoverChecker)chc).getStack(), mouseX, mouseY);
 					else if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-						drawHoveringText(((StringHoverChecker)chc).getName(), mouseX, mouseY);
+						drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
 				}
 			}
 		}
@@ -350,7 +362,7 @@ public class GuiSCManual extends GuiScreen {
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
 		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
-		Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
+		Block block = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
 		if(te != null){
 			if(te instanceof IOwnable)
@@ -362,11 +374,49 @@ public class GuiSCManual extends GuiScreen {
 			if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-			if(itemBlock instanceof IExplosive)
+			if(block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te instanceof CustomizableSCTE)
+			{
+				CustomizableSCTE scte = (CustomizableSCTE)te;
+
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+
+				if(scte.customOptions() != null && scte.customOptions().length > 0)
+				{
+					List<String> display = new ArrayList<>();
+
+					display.add(ClientUtils.localize("gui.securitycraft:scManual.options"));
+					display.add("---");
+
+					for(Option<?> option : scte.customOptions())
+					{
+						display.add("- " + ClientUtils.localize("option." + block.getTranslationKey().substring(5) + "." + option.getName() + ".description"));
+						display.add("");
+					}
+
+					display.remove(display.size() - 1);
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, 20, display));
+				}
+
+				if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+				{
+					List<String> display = new ArrayList<>();
+
+					display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
+					display.add("---");
+
+					for(EnumCustomModules module : scte.acceptedModules())
+					{
+						display.add("- " + ClientUtils.localize("module." + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description"));
+						display.add("");
+					}
+
+					display.remove(display.size() - 1);
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, 20, display));
+				}
+			}
 		}
 
 		//set up subpages
