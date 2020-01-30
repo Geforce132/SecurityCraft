@@ -224,10 +224,7 @@ public class SCEventHandler {
 						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 						return;
 					}
-					if(block == SCContent.keypadChest) {
-						BlockKeypadChest chest = (BlockKeypadChest) block;
-						chest.breakBlock(world,event.getPos(),chest.getBlockState().getBaseState());
-					}
+					
 					if(block == SCContent.laserBlock){
 						world.destroyBlock(event.getPos(), true);
 						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
@@ -250,6 +247,11 @@ public class SCEventHandler {
 
 						world.destroyBlock(originalPos, false);
 					}else{
+						
+						if(block == SCContent.keypadChest) {
+							((BlockKeypadChest) block).breakBlock(world, event.getPos(), world.getBlockState(event.getPos()));
+						}
+						
 						world.destroyBlock(event.getPos(), true);
 						world.removeTileEntity(event.getPos());
 						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
