@@ -23,7 +23,8 @@
 - Fix: Trophy System does not target arrows shot from dispensers
 - Fix: SC Manual does not show tooltips for some blocks/items
 - Fix: Copied module lists can only be pasted once
-- Fix: Key names are not localized properly in camera GUI
+- Fix: Key names are not localized properly in camera UI
+- Fix: Reinforced Stairs cannot be placed as expected
 - Fix: Various language fixes
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is 31.0.9
