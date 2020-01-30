@@ -23,6 +23,7 @@
 - Fix: Trophy System does not target arrows shot from dispensers
 - Fix: SC Manual does not show tooltips for some blocks/items
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
+- Misc.: The minimum required Forge version is 31.0.9
 
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 

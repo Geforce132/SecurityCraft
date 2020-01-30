@@ -25,7 +25,7 @@ Message of the update: Finally! Cameras!
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[31,)"
+    versionRange="[31.0.9,)"
     ordering="NONE"
     side="BOTH"
 
