@@ -5,6 +5,7 @@
 - New: The Cage Trap can now be disguised
 - New: The SC Manual now shows available options and modules
 - New: Add back HWYLA integration
+- New: Add back TOP integration
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
 - Change: Updated some help descriptions (Thanks supercat95!)
 - Change: The powered taser now inflicts one heart of damage instead of half a heart
