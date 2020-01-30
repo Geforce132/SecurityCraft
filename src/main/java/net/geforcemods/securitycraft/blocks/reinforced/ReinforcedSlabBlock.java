@@ -4,9 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.IBucketPickupHandler;
-import net.minecraft.block.ILiquidContainer;
-import net.minecraft.block.SlabBlock;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
@@ -29,7 +27,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 
-public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketPickupHandler, ILiquidContainer
+public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLoggable
 {
 	public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -43,9 +41,9 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 	}
 
 	@Override
-	public int getOpacity(BlockState state, IBlockReader world, BlockPos pos)
+	public boolean isTransparent(BlockState state)
 	{
-		return world.getMaxLightLevel();
+		return state.get(TYPE) != SlabType.DOUBLE;
 	}
 
 	@Override
@@ -55,11 +53,11 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context)
 	{
-		SlabType slabtype = state.get(TYPE);
+		SlabType type = state.get(TYPE);
 
-		switch(slabtype)
+		switch(type)
 		{
 			case DOUBLE:
 				return VoxelShapes.fullCube();
@@ -74,17 +72,18 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		BlockState state = ctx.getWorld().getBlockState(ctx.getPos());
+		BlockPos pos = ctx.getPos();
+		BlockState state = ctx.getWorld().getBlockState(pos);
 
 		if(state.getBlock() == this)
 			return state.with(TYPE, SlabType.DOUBLE).with(WATERLOGGED, false);
 		else
 		{
-			IFluidState fluidState = ctx.getWorld().getFluidState(ctx.getPos());
-			BlockState newState = getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
+			IFluidState fluidState = ctx.getWorld().getFluidState(pos);
+			BlockState stateToSet = getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+			Direction dir = ctx.getFace();
 
-			Direction direction = ctx.getFace();
-			return direction != Direction.DOWN && (direction == Direction.UP || !(ctx.getHitVec().y - ctx.getPos().getY() > 0.5D)) ? newState : newState.with(TYPE, SlabType.TOP);
+			return dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getHitVec().y - pos.getY() > 0.5D)) ? stateToSet : stateToSet.with(TYPE, SlabType.TOP);
 		}
 	}
 
@@ -92,37 +91,25 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 	public boolean isReplaceable(BlockState state, BlockItemUseContext ctx)
 	{
 		ItemStack stack = ctx.getItem();
-		SlabType slabType = state.get(TYPE);
+		SlabType type = state.get(TYPE);
 
-		if(slabType != SlabType.DOUBLE && stack.getItem() == asItem())
+		if(type != SlabType.DOUBLE && stack.getItem() == asItem())
 		{
 			if(ctx.replacingClickedOnBlock())
 			{
-				boolean hitTop = ctx.getHitVec().y > 0.5D;
-				Direction facing = ctx.getFace();
+				boolean clickedUpperHalf = ctx.getHitVec().y - ctx.getPos().getY() > 0.5D;
+				Direction dir = ctx.getFace();
 
-				if(slabType == SlabType.BOTTOM)
-					return facing == Direction.UP || hitTop && facing.getAxis().isHorizontal();
+				if(type == SlabType.BOTTOM)
+					return dir == Direction.UP || clickedUpperHalf && dir.getAxis().isHorizontal();
 				else
-					return facing == Direction.DOWN || !hitTop && facing.getAxis().isHorizontal();
-			}
-			else
-				return true;
-		}
-		else
-			return false;
-	}
+					return dir == Direction.DOWN || !clickedUpperHalf && dir.getAxis().isHorizontal();
 
-	@Override
-	public Fluid pickupFluid(IWorld world, BlockPos pos, BlockState state)
-	{
-		if(state.get(WATERLOGGED))
-		{
-			world.setBlockState(pos, state.with(WATERLOGGED, false), 3);
-			return Fluids.WATER;
+			}
+			else return true;
 		}
-		else
-			return Fluids.EMPTY;
+		else return false;
+
 	}
 
 	@Override
@@ -132,26 +119,15 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 	}
 
 	@Override
-	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
+	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
 	{
-		return state.get(TYPE) != SlabType.DOUBLE && !state.get(WATERLOGGED) && fluid == Fluids.WATER;
+		return state.get(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.receiveFluid(world, pos, state, fluidState) : false;
 	}
 
 	@Override
-	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
+	public boolean canContainFluid(IBlockReader world, BlockPos pos, BlockState state, Fluid fluid)
 	{
-		if(state.get(TYPE) != SlabType.DOUBLE && !state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
-		{
-			if(!world.isRemote())
-			{
-				world.setBlockState(pos, state.with(WATERLOGGED, true), 3);
-				world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
-			}
-
-			return true;
-		}
-		else
-			return false;
+		return state.get(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.canContainFluid(world, pos, state, fluid) : false;
 	}
 
 	@Override
@@ -169,7 +145,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 		switch(type)
 		{
 			case LAND:
-				return state.get(TYPE) == SlabType.BOTTOM;
+				return false;
 			case WATER:
 				return world.getFluidState(pos).isTagged(FluidTags.WATER);
 			case AIR:
@@ -177,11 +153,5 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IBucketP
 			default:
 				return false;
 		}
-	}
-
-	@Override
-	public BlockState getConvertedState(BlockState vanillaState)
-	{
-		return getDefaultState().with(TYPE, vanillaState.get(SlabBlock.TYPE)).with(WATERLOGGED, vanillaState.get(SlabBlock.WATERLOGGED));
 	}
 }
