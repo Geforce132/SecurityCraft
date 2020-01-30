@@ -3,7 +3,7 @@
 - New: The Retinal Scanner and the Scanner Door now have an option to turn off the "Hello" message. Available by rightclicking them with a Universal Block Modifier
 - New: The Alarm now has an option to set the range of blocks that it can be heard in (0-100)
 - New: The Cage Trap can now be disguised
-- New: The SC Manual now shows available options and modules
+- New: The SC Manual now shows available options and modules for customizable blocks
 - New: Add back HWYLA integration
 - New: Add back TOP integration
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
@@ -22,6 +22,7 @@
 - Fix: Laser harms its owner if the harming module is installed
 - Fix: Trophy System does not target arrows shot from dispensers
 - Fix: SC Manual does not show tooltips for some blocks/items
+- Fix: Copied module lists can only be pasted once
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is 31.0.9
 

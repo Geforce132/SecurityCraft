@@ -134,7 +134,6 @@ public class EditModuleScreen extends Screen
 				return;
 			case 3: //paste
 				module.setTag(SecurityCraft.instance.getSavedModule());
-				SecurityCraft.instance.setSavedModule(null);
 				break;
 			case 4:
 				module.setTag(new CompoundNBT());
