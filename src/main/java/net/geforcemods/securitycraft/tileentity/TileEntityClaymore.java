@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,31 +51,32 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			if(dir == EnumFacing.NORTH)
 				area = area.contract(-0, -0, ConfigHandler.claymoreRange);
 			else if(dir == EnumFacing.SOUTH)
-				area = area.contract(-0, -0, -ConfigHandler.claymoreRange);if(dir == EnumFacing.EAST)
-					area = area.contract(-ConfigHandler.claymoreRange, -0, -0);
-				else if(dir == EnumFacing.WEST)
-					area = area.contract(ConfigHandler.claymoreRange, -0, -0);
+				area = area.contract(-0, -0, -ConfigHandler.claymoreRange);
+			else if(dir == EnumFacing.EAST)
+				area = area.contract(-ConfigHandler.claymoreRange, -0, -0);
+			else if(dir == EnumFacing.WEST)
+				area = area.contract(ConfigHandler.claymoreRange, -0, -0);
 
-				List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
-				Iterator<?> iterator = entities.iterator();
-				EntityLivingBase entityliving;
+			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
+			Iterator<?> iterator = entities.iterator();
+			EntityLivingBase entity;
 
-				while(iterator.hasNext()){
-					entityliving = (EntityLivingBase) iterator.next();
+			while(iterator.hasNext()){
+				entity = (EntityLivingBase) iterator.next();
 
-					if(PlayerUtils.isPlayerMountedOnCamera(entityliving))
-						continue;
+				if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
+					continue;
 
-					entityX = entityliving.posX;
-					entityY = entityliving.posY;
-					entityZ = entityliving.posZ;
-					cooldown = 20;
+				entityX = entity.posX;
+				entityY = entity.posY;
+				entityZ = entity.posZ;
+				cooldown = 20;
 
-					for(EntityPlayer player : getWorld().playerEntities)
-						getWorld().playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				for(EntityPlayer player : getWorld().playerEntities)
+					getWorld().playSound(player, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 
-					break;
-				}
+				break;
+			}
 		}
 
 	}

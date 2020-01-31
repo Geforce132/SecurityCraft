@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -45,7 +46,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
 		if(entity instanceof EntityItem)
 			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 

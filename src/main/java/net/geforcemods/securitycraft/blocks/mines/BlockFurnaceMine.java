@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -48,7 +49,7 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay 
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(world.isRemote)
 			return true;
-		else if(player.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine){
+		else if(player.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)){
 			explode(world, pos);
 			return true;
 		}

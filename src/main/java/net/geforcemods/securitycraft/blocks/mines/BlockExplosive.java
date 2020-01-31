@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -22,7 +23,7 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote){
-			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos)) {
+			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 				explode(world, pos);
 				return false;
 			}
@@ -41,7 +42,7 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive 
 				return false;
 			}
 
-			if(explodesWhenInteractedWith() && isActive(world, pos))
+			if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))
 				explode(world, pos);
 
 			return false;

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -84,7 +85,7 @@ public class BlockMine extends BlockExplosive {
 		if(!player.capabilities.isCreativeMode && !world.isRemote)
 			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
-			else{
+			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
 				explode(world, pos);
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			}
@@ -110,7 +111,7 @@ public class BlockMine extends BlockExplosive {
 			return;
 		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
 			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
