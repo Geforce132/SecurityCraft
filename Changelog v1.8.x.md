@@ -29,6 +29,7 @@
 - Fix: Various language fixes
 - Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
 - Fix: Various mines do not ignore their owner
+- Fix: Sentry can be placed in the same block space as other blocks
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is 31.0.9
 

@@ -149,7 +149,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			else if(item == SCContent.universalBlockRemover)
 			{
 				remove();
-				player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+				if(!player.isCreative())
+					player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 			}
 			else if(item == SCContent.disguiseModule)
 			{
