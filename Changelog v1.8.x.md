@@ -27,6 +27,7 @@
 - Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
 - Fix: Various mines do not ignore their owner
 - Fix: Sentry can be placed in the same block space as other blocks
+- Fix: Reinforced Double Slabs don't drop two slabs when being broken
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is now 28.1.115
 
