@@ -359,6 +359,7 @@
     "death.attack.securitycraft.laser": "%s è stato tagliato a metà da un laser",
     "death.attack.securitycraft.fakeWater": "%s è caduto nell'acqua avvelenata...?",
     "death.attack.securitycraft.electricity": "%s è stato folgorato.",
+	"death.attack.securitycraft.taser": "%s è stato elettrizzato fino alla morte.",
 
     "key.categories.securitycraft": "SecurityCraft",
     "key.securitycraft.cameraActivateNightVision": "Visione notturna",
@@ -457,6 +458,8 @@
     "gui.securitycraft:scManual.viewActivatedBlock": "Controllo retina: Questo blocco può essere attivato puntandoci sopra col cursore (stando abbastanza vicino al blocco).",
     "gui.securitycraft:scManual.explosiveBlock": "Esplosivo: Questo blocco può essere detonato/attivato/disattivato utilizzando il telecomando per mine.",
     "gui.securitycraft:scManual.customizableBlock": "Personalizzabile: Puoi usare il modifica-blocchi universale e i vari moduli della SecurityCraft per personalizzare le funzionalità del blocco.",
+    "gui.securitycraft:scManual.options": "Opzioni disponibili:",
+	"gui.securitycraft:scManual.modules": "Moduli disponibili:",
     "gui.securitycraft:scManual.recipe.keypad": "Piazza un blocco-cornice e cliccalo col tasto destro tenendo in mano un tastierino.",
     "gui.securitycraft:scManual.recipe.keypad_chest": "Piazza un baule e cliccalo col tasto destro (piegandoti) tenendo in mano un tastierino.",
     "gui.securitycraft:scManual.recipe.keypad_furnace": "Piazza una fornace e cliccala col tasto destro (piegandoti) tenendo in mano un tastierino.",
@@ -657,7 +660,8 @@
     "module.securitycraft.block_pocket_manager.whitelist_module.description": "Aggiungere un modulo lista bianca a un gestore di blocchi tascabili permetterà ai giocatori nella lista di passare attraverso i lati del blocco tascabile.",
     "module.securitycraft.reinforced_stone_pressure_plate.whitelist_module.description": "Aggiungere un modulo lista bianca a una pedana a pressione di pietra rinforzata permette ai giocatori nella lista stessa di attivarla.",
     "module.securitycraft.username_logger.disguise_module.description": "Aggiungere un modulo mascheramento a un autenticatore per nome utente cambia il modello e la texture con quelli del blocco nel modulo mascheramento.",
-    
+    "module.securitycraft.cage_trap.disguise_module.description": "Aggiungere un modulo mascheramento a una gabbia permette di cambiare la texture e il modello di essa in quelli del blocco inserito nel modulo.",
+
     "config.securitycraft:isCodebreakerAllowed": "Il decrittatore ha il permesso?",
     "config.securitycraft:isCodebreakerAllowed.tooltip": "Il decrittatore può essere usato?",
     "config.securitycraft:allowAdminTool": "L'attrezzo dell'amministratore ha il permesso?",
@@ -718,6 +722,8 @@
     "config.securitycraft:checkForUpdates.tooltip": "La SecurityCraft deve controllare nuovi aggiornamenti dalla Repository di GitHub?",
     "config.securitycraft:allowBlockClaim": "Possesso sui blocchi di nessuno?",
     "config.securitycraft:allowBlockClaim.tooltip": "Permettere di prendere il possesso di blocchi di proprietà di nessuno?",
+	"config.securitycraft:maxAlarmRange": "Raggio massimo dell'allarme",
+	"config.securitycraft:maxAlarmRange.tooltip": "Qual'è il valore massimo che può essere impostato in questa opzione? Nota che potrebbe essere ridotto dal caricamento dei chunk. Alti valori potrebbero non essere elaborati efficaciemente.",
 
     "option.securitycraft.portable_radar.searchRadius": "Range di ricerca: #",
     "option.securitycraft.portable_radar.searchRadius.description": "Il range in cui il radar ricerca.",
@@ -743,6 +749,12 @@
     "option.securitycraft.cage_trap.captureMobs.description": "Questa gabbia trappola deve catturare anche i mob o solo i giocatori?",
     "option.securitycraft.motion_activated_light.searchRadius": "Raggio di ricerca: #",
     "option.securitycraft.motion_activated_light.searchRadius.description": "La lampada rileva un'entità fino a quale distanza?",
+    "option.securitycraft.retinal_scanner.sendMessage": "Messaggio: #",
+    "option.securitycraft.retinal_scanner.sendMessage.description": "Questo scanner manda un messaggio quando attivato?",
+    "option.securitycraft.scanner_door.sendMessage": "Message: #",
+    "option.securitycraft.scanner_door.sendMessage.description": "Questa porta scanner manda un messaggio quando attivata?",
+    "option.securitycraft.alarm.range": "Raggio: #",
+    "option.securitycraft.alarm.range.description": "Da quanti blocchi di distanza si può udire il suono dell'allarme?",
 
     "securitycraft.subtitle.alarm": "L'allarme sta suonando",
     "securitycraft.subtitle.electrified": "Entità folgorata",
