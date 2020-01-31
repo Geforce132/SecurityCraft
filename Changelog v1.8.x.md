@@ -23,6 +23,8 @@
 - Fix: Key names are not localized properly in camera UI
 - Fix: Reinforced Stairs cannot be placed as expected
 - Fix: Reinforced Slabs cannot be placed as expected
+- Fix: Various language fixes
+- Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is now 28.1.115
 
