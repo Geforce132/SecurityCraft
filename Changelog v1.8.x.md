@@ -25,6 +25,7 @@
 - Fix: Reinforced Slabs cannot be placed as expected
 - Fix: Various language fixes
 - Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
+- Fix: Various mines do not ignore their owner
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is now 28.1.115
 

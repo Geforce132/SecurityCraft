@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -53,13 +54,13 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(entity instanceof LivingEntity)
+		if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			if(!PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
 				explode(world, pos);
 	}
 	@Override
 	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player){
-		if(!player.isCreative())
+		if(!player.isCreative() && !EntityUtils.doesPlayerOwn(player, world, pos))
 			explode(world, pos);
 	}
 
