@@ -27,6 +27,7 @@
 - Fix: Reinforced Stairs cannot be placed as expected
 - Fix: Reinforced Slabs cannot be placed as expected
 - Fix: Various language fixes
+- Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is 31.0.9
 
