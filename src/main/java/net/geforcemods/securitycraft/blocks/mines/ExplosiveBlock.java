@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,7 +35,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote){
-			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos)) {
+			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 				explode(world, pos);
 				return ActionResultType.SUCCESS;
 			}
@@ -53,7 +54,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 				return ActionResultType.SUCCESS;
 			}
 
-			if(explodesWhenInteractedWith() && isActive(world, pos))
+			if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))
 				explode(world, pos);
 
 			return ActionResultType.SUCCESS;

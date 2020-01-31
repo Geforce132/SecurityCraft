@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -89,7 +90,9 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+
+			if(!EntityUtils.doesPlayerOwn(player, world, pos))
+				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
