@@ -15,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.data.EmptyModelData;
 
 @OnlyIn(Dist.CLIENT)
 public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
@@ -27,14 +26,12 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	}
 
 	@Override
-	public void render(BouncingBettyEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
+	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight)
 	{
-		int overlayTextureToUse;
-
 		matrix.push();
 		matrix.translate(0.0D, 0.5D, 0.0D);
 
-		if (entity.fuse - partialTicks + 1.0F < 10.0F)
+		if(entity.fuse - partialTicks + 1.0F < 10.0F)
 		{
 			float alpha = 1.0F - (entity.fuse - partialTicks + 1.0F) / 10.0F;
 			alpha = MathHelper.clamp(alpha, 0.0F, 1.0F);
@@ -44,17 +41,12 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 			matrix.scale(scale, scale, scale);
 		}
 
-		if (entity.fuse / 5 % 2 == 0)
-			overlayTextureToUse = OverlayTexture.packLight(OverlayTexture.lightToInt(1.0F), 10);
-		else
-			overlayTextureToUse = OverlayTexture.DEFAULT_LIGHT;
-
 		matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
 		matrix.translate(-0.5D, -0.5D, 0.5D);
 		matrix.rotate(Vector3f.YP.rotationDegrees(90.0F));
-		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.bouncingBetty.getDefaultState(), matrix, buffer, p_225623_6_, overlayTextureToUse, EmptyModelData.INSTANCE);
+		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.bouncingBetty.getDefaultState(), matrix, buffer, packedLight, OverlayTexture.DEFAULT_LIGHT);
 		matrix.pop();
-		super.render(entity, p_225623_2_, partialTicks, matrix, buffer, p_225623_6_);
+		super.render(entity, entityYaw, partialTicks, matrix, buffer, packedLight);
 	}
 
 	@Override
