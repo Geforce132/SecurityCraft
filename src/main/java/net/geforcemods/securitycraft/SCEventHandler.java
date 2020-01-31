@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -27,6 +28,7 @@ import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
+import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -224,6 +226,14 @@ public class SCEventHandler {
 					}
 
 					if(block == SCContent.laserBlock){
+						CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
+
+						for(ItemStack module : te.modules)
+						{
+							if(!module.isEmpty())
+								te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModule()}, te);
+						}
+
 						world.destroyBlock(event.getPos(), true);
 						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
 						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
@@ -249,6 +259,14 @@ public class SCEventHandler {
 
 						if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 							pos = pos.down();
+
+						if(block == SCContent.inventoryScanner)
+						{
+							InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, event.getPos());
+
+							if(te != null)
+								te.modules.clear();
+						}
 
 						world.destroyBlock(pos, true);
 						world.removeTileEntity(pos);

@@ -31,6 +31,7 @@
 - Fix: Various mines do not ignore their owner
 - Fix: Sentry can be placed in the same block space as other blocks
 - Fix: Reinforced Double Slabs don't drop two slabs when being broken
+- Fix: Breaking a Laser Block/Inventory Scanner keeps modules in connected Laser Blocks/Inventory Scanners
 - Potential Fix: Block Pocket still loses its owner when reloading world/server
 - Misc.: The minimum required Forge version is 31.0.9
 
