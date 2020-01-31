@@ -110,19 +110,12 @@ public class BlockLaserBlock extends BlockDisguisable {
 			for(int i = 1; i <= ConfigHandler.laserBlockRange; i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
+				IBlockState state = world.getBlockState(offsetPos);
 
-				if(world.getBlockState(offsetPos).getBlock() == SCContent.laserBlock)
-				{
-					for(int j = 1; j < i; j++)
-					{
-						offsetPos = pos.offset(facing, j);
-
-						IBlockState state = world.getBlockState(offsetPos);
-
-						if(state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
-							world.destroyBlock(offsetPos, false);
-					}
-				}
+				if(state.getBlock() == SCContent.laserBlock)
+					return;
+				else if(state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
+					world.destroyBlock(offsetPos, false);
 			}
 		}
 	}
