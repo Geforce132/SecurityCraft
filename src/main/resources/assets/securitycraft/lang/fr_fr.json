@@ -470,8 +470,8 @@
 	"gui.securitycraft:scManual.recipe.sc_manual": "Le manuel SecurityCraft est uniquement disponible via l’inventaire ou en tapant \"/sc help\" (sans apostrophes).",
 	"gui.securitycraft:scManual.reinforced": "Blocs blindés",
 	"gui.securitycraft:scManual.designedBy": "Conçu par: %s",
-	"gui.securitycraft:scManual.author": "Traduit par marminot"
-	"gui.securitycraft:ims.hostileAndPlayers": "Mobs hostiles & joueurs",
+	"gui.securitycraft:scManual.author": "Traduit par marminot",
+	"gui.securitycraft:ims.hostileAndPlayers":"Mobs hostiles & joueurs",
 	"gui.securitycraft:ims.hostile": "Mobs hostiles",
 	"gui.securitycraft:ims.target": "Cible:",
 	"gui.securitycraft:invScan.emitRedstone": "Emettre redstone",
