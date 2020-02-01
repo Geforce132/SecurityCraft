@@ -9,11 +9,6 @@ import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
-import net.geforcemods.securitycraft.blocks.BlockCageTrap;
-import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
-import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -57,7 +52,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
@@ -623,9 +617,4 @@ public class SCEventHandler {
 
 		return tips[new Random().nextInt(tips.length)];
 	}
-
-	private boolean isOwnableBlock(Block block, TileEntity tileEntity){
-		return (tileEntity instanceof TileEntityOwnable || tileEntity instanceof IOwnable || block instanceof BlockOwnable);
-	}
-
 }

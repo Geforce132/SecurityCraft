@@ -334,8 +334,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, (NBTTagCompound)tag.getTag("InstalledModule"));
-		dataManager.set(WHITELIST, (NBTTagCompound)tag.getTag("InstalledWhitelist"));
+		dataManager.set(MODULE, tag.getCompoundTag("InstalledModule"));
+		dataManager.set(WHITELIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readEntityFromNBT(tag);
