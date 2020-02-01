@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
+import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -216,43 +217,6 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockRemover)){
-					event.setCanceled(true);
-
-					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-						return;
-					}
-
-					if(block == SCContent.laserBlock){
-						world.destroyBlock(event.getPos(), true);
-						BlockLaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
-						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
-					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).getValue(BlockCageTrap.DEACTIVATED)) {
-						BlockPos originalPos = event.getPos();
-						BlockPos middlePos = originalPos.up(4);
-
-						new BlockCageTrap.BlockModifier(event.getWorld(), new MutableBlockPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
-							TileEntity te = w.getTileEntity(p);
-
-							if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
-							{
-								Block b = w.getBlockState(p).getBlock();
-
-								if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
-									w.destroyBlock(p, false);
-							}
-						});
-
-						world.destroyBlock(originalPos, false);
-					}else{
-						world.destroyBlock(event.getPos(), true);
-						world.removeTileEntity(event.getPos());
-						event.getEntityPlayer().inventory.getCurrentItem().damageItem(1, event.getEntityPlayer());
-					}
-
-					return;
-				}
 			}
 
 			//outside !world.isRemote for properly checking the interaction
