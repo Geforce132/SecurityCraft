@@ -760,7 +760,7 @@
 	"option.securitycraft.motion_activated_light.searchRadius.description": "A quelle distance la lumière pourra détecter une entité?",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
-	"securitycraft.subtitle.electrified": "Entité électrocuté",
+	"securitycraft.subtitle.electrified": "Entité électrocutée",
 	"securitycraft.subtitle.camerazoomin": "Zoom de la Caméra",
 	"securitycraft.subtitle.camerasnap": "Obturateur de la Caméra",
 	"securitycraft.subtitle.taserfire": "Tir de taser",
