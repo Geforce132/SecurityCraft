@@ -4,10 +4,10 @@
 - New: The Alarm now has an option to set the range of blocks that it can be heard in (0-100)
 - New: The Cage Trap can now be disguised
 - New: The SC Manual now shows available options and modules for customizable blocks
+- New: French translation (Thanks marminot!)
 - New: Add back HWYLA integration
 - New: Add back TOP integration
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
-- Change: Updated some help descriptions (Thanks supercat95!)
 - Change: The powered taser now inflicts one heart of damage instead of half a heart
 - Fix: JEI error on startup
 - Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
@@ -26,7 +26,7 @@
 - Fix: Key names are not localized properly in camera UI
 - Fix: Reinforced Stairs cannot be placed as expected
 - Fix: Reinforced Slabs cannot be placed as expected
-- Fix: Various language fixes
+- Fix: Various language fixes and updates (Thanks supercat95 and Redstone_Dubstep!)
 - Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
 - Fix: Various mines do not ignore their owner
 - Fix: Sentry can be placed in the same block space as other blocks
