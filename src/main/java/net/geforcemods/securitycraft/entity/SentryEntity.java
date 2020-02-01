@@ -338,8 +338,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, (CompoundNBT)tag.get("InstalledModule"));
-		dataManager.set(WHITELIST, (CompoundNBT)tag.get("InstalledWhitelist"));
+		dataManager.set(MODULE, tag.getCompound("InstalledModule"));
+		dataManager.set(WHITELIST, tag.getCompound("InstalledWhitelist"));
 		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readAdditional(tag);
