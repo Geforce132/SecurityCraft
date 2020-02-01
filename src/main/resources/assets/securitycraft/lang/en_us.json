@@ -404,7 +404,8 @@
 	"help.securitycraft.block_pocket_wall.info": "Block Pocket Walls are used to build the Block Pocket. More info on the Block Pocket Manager's page.",
 	"help.securitycraft.block_pocket_manager.info": "The Block Pocket Manager is used to manage the Block Pocket, which is a room that only its owner and whitelisted players can enter. When opening its GUI, you see a selection of sizes. Choose one, then build the Block Pocket around the manager. Make sure that the manager is placed on the outside of the bottom layer. The Block Pocket is a cube of the size you chose. The corners are built with Reinforced Chiseled Crystal Quartz, the blocks between the corners are built with correctly oriented Reinforced Crystal Quartz Pillars, and the floor/wall/ceiling is built with Block Pocket Walls. See this image for an example of how it looks: https://i.imgur.com/opc7dqO.png - Clicking \"Activate\" after the structure is built will activate any added modules. See the customization GUI for more information (rightclick with Universal Block Modifier).",
 	"help.securitycraft.reinforced_stone_pressure_plate.info": "The Reinforced Stone Pressure Plate can only be activated by its owner or whitelisted players.",
-"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
+
+	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
 	"help.securitycraft.scanner_door_item.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it, but has to be closed manually.",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
@@ -764,3 +765,4 @@
 	"securitycraft.subtitle.taserfire": "Taser firing",
 	"securitycraft.subtitle.lock": "Container locking"
 }
+
