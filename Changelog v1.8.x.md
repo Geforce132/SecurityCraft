@@ -4,8 +4,8 @@
 - New: The Alarm now has an option to set the range of blocks that it can be heard in (0-100)
 - New: The Cage Trap can now be disguised
 - New: The SC Manual now shows available options and modules for customizable blocks
+- New: French translation (Thanks marminot!)
 - Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
-- Change: Updated some help descriptions (Thanks supercat95!)
 - Change: The powered taser now inflicts one heart of damage instead of half a heart
 - Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
 - Fix: Players that don't own an Inventory Scanner can still take out its items
@@ -19,7 +19,7 @@
 - Fix: Laser harms its owner if the harming module is installed
 - Fix: Trophy System does not target arrows shot from dispensers
 - Fix: Copied module lists can only be pasted once
-- Fix: Various language fixes
+- Fix: Various language fixes and updates (Thanks supercat95 and Redstone_Dubstep!)
 - Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
 - Fix: Various mines do not ignore their owner
 - Fix: Sentry can be placed in the same block space as other blocks
