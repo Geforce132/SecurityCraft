@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class RetinalScannerBlock extends DisguisableBlock {
@@ -46,6 +47,12 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public boolean canProvidePower(BlockState state)
 	{
 		return true;
+	}
+
+	@Override
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side)
+	{
+		return false;
 	}
 
 	/**
