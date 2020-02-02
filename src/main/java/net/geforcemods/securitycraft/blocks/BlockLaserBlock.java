@@ -113,7 +113,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 				IBlockState state = world.getBlockState(offsetPos);
 
 				if(state.getBlock() == SCContent.laserBlock)
-					return;
+					break;
 				else if(state.getBlock() == SCContent.laserField && state.getValue(BlockLaserField.BOUNDTYPE) == boundType)
 					world.destroyBlock(offsetPos, false);
 			}
