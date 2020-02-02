@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
 - Fix: Some disguised blocks do not give off power even when they should
+- Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
