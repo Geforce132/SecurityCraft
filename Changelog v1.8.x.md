@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
+
+- Fix: Some disguised blocks do not give off power even when they should
+
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
 - New: The Retinal Scanner and the Scanner Door now have an option to turn off the "Hello" message. Available by rightclicking them with a Universal Block Modifier
