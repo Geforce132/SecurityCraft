@@ -2,8 +2,9 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -56,7 +57,9 @@ public class MineBlock extends ExplosiveBlock {
 	 */
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		if(BlockUtils.getBlockMaterial(world, pos.down()) == Material.GLASS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CACTUS || BlockUtils.getBlockMaterial(world, pos.down()) == Material.AIR || BlockUtils.getBlockMaterial(world, pos.down()) == Material.CAKE || BlockUtils.getBlockMaterial(world, pos.down()) == Material.PLANTS)
+		Material mat = world.getBlockState(pos.down()).getMaterial();
+
+		if(mat == Material.GLASS || mat == Material.CACTUS || mat == Material.AIR || mat == Material.CAKE || mat == Material.PLANTS)
 			return false;
 		else
 			return true;
@@ -67,7 +70,7 @@ public class MineBlock extends ExplosiveBlock {
 		if(!world.isRemote)
 			if(player != null && player.isCreative() && !ConfigHandler.CONFIG.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
-			else{
+			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
 				explode(world, pos);
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			}
@@ -90,7 +93,7 @@ public class MineBlock extends ExplosiveBlock {
 			return;
 		else if(entity instanceof CreeperEntity || entity instanceof OcelotEntity || entity instanceof EndermanEntity || entity instanceof ItemEntity)
 			return;
-		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity))
+		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
@@ -111,7 +114,7 @@ public class MineBlock extends ExplosiveBlock {
 		if(world.isRemote)
 			return;
 
-		if(!world.getBlockState(pos).get(DEACTIVATED).booleanValue()){
+		if(!world.getBlockState(pos).get(DEACTIVATED)){
 			world.destroyBlock(pos, false);
 			if(ConfigHandler.CONFIG.smallerMineExplosion.get())
 				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
@@ -136,7 +139,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).get(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).get(DEACTIVATED);
 	}
 
 	@Override
@@ -145,7 +148,7 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new OwnableTileEntity();
 	}
 

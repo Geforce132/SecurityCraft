@@ -9,8 +9,10 @@ import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkedAction;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -24,19 +26,16 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
+import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -51,10 +50,10 @@ import net.minecraft.item.Items;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.ITextComponent;
@@ -62,9 +61,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -77,8 +74,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.BlockEvent.EntityPlaceEvent;
-import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -232,159 +227,32 @@ public class SCEventHandler {
 					}
 
 					if(block == SCContent.laserBlock){
+						CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
+
+						for(ItemStack module : te.modules)
+						{
+							if(!module.isEmpty())
+								te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModule()}, te);
+						}
+
 						world.destroyBlock(event.getPos(), true);
 						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
+						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
-						BlockPos pos = originalPos.east().up();
+						BlockPos middlePos = originalPos.up(4);
 
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
+						new CageTrapBlock.BlockModifier(event.getWorld(), new MutableBlockPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+							TileEntity te = w.getTileEntity(p);
 
-						pos = originalPos.east().up(2);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
+							if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
+							{
+								Block b = w.getBlockState(p).getBlock();
 
-						pos = originalPos.east().up(3);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up().south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(2).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(3).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(2);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(3);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up().south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(2).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(3).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up().south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(2).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(3).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(2);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(3);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up().north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(2).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(3).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up().north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(2).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(3).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up().north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(2).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(3).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(4).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.east().up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.west().up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(4).south();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(4).north();
-						if(BlockUtils.getBlock(world, pos) == SCContent.reinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
-
-						pos = originalPos.up(4);
-						if(BlockUtils.getBlock(world, pos) == SCContent.horizontalReinforcedIronBars && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner(event.getPlayer()))
-							world.destroyBlock(pos, false);
+								if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+									w.destroyBlock(p, false);
+							}
+						});
 
 						world.destroyBlock(originalPos, false);
 					}else{
@@ -393,9 +261,17 @@ public class SCEventHandler {
 						if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 							pos = pos.down();
 
+						if(block == SCContent.inventoryScanner)
+						{
+							InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, event.getPos());
+
+							if(te != null)
+								te.modules.clear();
+						}
+
 						world.destroyBlock(pos, true);
 						world.removeTileEntity(pos);
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> {});
+						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 					}
 
 					return;
@@ -437,129 +313,6 @@ public class SCEventHandler {
 	public static void onOwnership(OwnershipEvent event)
 	{
 		handleOwnableTEs(event);
-	}
-
-	@SubscribeEvent
-	public static void onBlockPlaced(EntityPlaceEvent event)
-	{
-		//reinforced obsidian portal handling
-		if(event.getState().getBlock() == Blocks.FIRE && event.getWorld().getBlockState(event.getPos().down()).getBlock() == SCContent.reinforcedObsidian)
-		{
-			PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
-
-			if(portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-				portalSize.placePortalBlocks();
-			else
-			{
-				portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
-
-				if(portalSize.isValid() && portalSize.getPortalBlockCount() == 0)
-					portalSize.placePortalBlocks();
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onEntityJoinWorld(EntityJoinWorldEvent event)
-	{
-		//fix for spawning under the portal
-		if(event.getEntity() instanceof PlayerEntity && !event.getWorld().isRemote && event.getWorld().getDimension().getType() == DimensionType.THE_NETHER) //nether
-		{
-			BlockPos pos = event.getEntity().getPosition();
-
-			//check for obsidian or reinforced obsidian from the player's position up to the world height
-			do
-			{
-				if(event.getWorld().getBlockState(pos).getBlock() == Blocks.OBSIDIAN)
-				{
-					//check if the block is part of a valid portal, and if so move the entity down
-					NetherPortalBlock.Size portalSize = new NetherPortalBlock.Size(event.getWorld(), pos, Direction.Axis.X);
-
-					if(portalSize.isValid())
-					{
-						double y = pos.getY() + 0.5D;
-
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL) //sometimes the top of the portal is more valid than the bottom o.O
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else //check other axis
-					{
-						portalSize = new NetherPortalBlock.Size(event.getWorld(), pos, Direction.Axis.Z);
-
-						if(portalSize.isValid())
-						{
-							double y = pos.getY() + 0.5D;
-
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
-				else if(event.getWorld().getBlockState(pos).getBlock() == SCContent.reinforcedObsidian) //analogous to if check above
-				{
-					PortalSize portalSize = new PortalSize(event.getWorld(), pos, Direction.Axis.X);
-
-					if(portalSize.isValid())
-					{
-						double y = pos.getY() + 0.5D;
-
-						if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-							y -= 3.0D;
-
-						event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-						break;
-					}
-					else
-					{
-						portalSize = new PortalSize(event.getWorld(), pos, Direction.Axis.Z);
-
-						if(portalSize.isValid())
-						{
-							double y = pos.getY() + 0.5D;
-
-							if(event.getWorld().getBlockState(pos.down()).getBlock() == Blocks.NETHER_PORTAL)
-								y -= 3.0D;
-
-							event.getEntity().setPosition(pos.getX() + 0.5D, y, pos.getZ() + 0.5D);
-							break;
-						}
-					}
-				}
-			}
-			while((pos = pos.up()).getY() < event.getWorld().getHeight());
-
-		}
-	}
-
-	@SubscribeEvent
-	public static void onNeighborNotify(NeighborNotifyEvent event)
-	{
-		//prevent portal blocks from disappearing because they think they're not inside of a proper portal frame
-		if(event.getState().getBlock() == Blocks.NETHER_PORTAL)
-		{
-			Direction.Axis axis = event.getState().get(NetherPortalBlock.AXIS);
-
-			if(axis == Direction.Axis.X)
-			{
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.X);
-
-				if(portalSize.isFinishedPortal())
-					event.setCanceled(true);
-			}
-			else if(axis == Direction.Axis.Z)
-			{
-				PortalSize portalSize = new PortalSize(event.getWorld(), event.getPos(), Direction.Axis.Z);
-
-				if(portalSize.isFinishedPortal())
-					event.setCanceled(true);
-			}
-		}
 	}
 
 	@SubscribeEvent
@@ -665,7 +418,7 @@ public class SCEventHandler {
 		TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
 
 		if(ConfigHandler.CONFIG.allowCodebreakerItem.get() && event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
-			event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> {});
+			event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
 			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.CONFIG.allowCodebreakerItem.get());

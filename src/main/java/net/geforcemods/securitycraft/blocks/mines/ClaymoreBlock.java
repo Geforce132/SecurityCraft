@@ -3,20 +3,17 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -35,9 +32,8 @@ import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
-public class ClaymoreBlock extends ContainerBlock implements IExplosive {
+public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
@@ -56,21 +52,9 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
-	{
-		if(placer instanceof PlayerEntity)
-			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
-	}
-
-	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
 		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	@Override
@@ -104,7 +88,9 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+
+			if(!EntityUtils.doesPlayerOwn(player, world, pos))
+				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -113,7 +99,7 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 	@Override
 	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
+		if (!world.isRemote && world.getBlockState(pos).has(ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
@@ -201,7 +187,7 @@ public class ClaymoreBlock extends ContainerBlock implements IExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new ClaymoreTileEntity();
 	}
 }

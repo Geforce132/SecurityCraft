@@ -5,7 +5,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -14,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -32,71 +30,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT)
 public class SCClientEventHandler {
-
-	@EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT, bus=Bus.MOD)
-	private static class ModBus
-	{
-		@SubscribeEvent
-		public static void onModelBake(ModelBakeEvent event)
-		{
-			String[] facings = {"east", "north", "south", "west"};
-			String[] bools = {"true", "false"};
-			ResourceLocation[] facingPoweredBlocks = {
-					SCContent.keycardReader.getRegistryName(),
-					SCContent.keypad.getRegistryName(),
-					SCContent.retinalScanner.getRegistryName()
-			};
-			ResourceLocation[] facingBlocks = {
-					SCContent.inventoryScanner.getRegistryName(),
-					SCContent.usernameLogger.getRegistryName()
-			};
-			ResourceLocation[] poweredBlocks = {
-					SCContent.laserBlock.getRegistryName()
-			};
-
-			for(String facing : facings)
-			{
-				for(String bool : bools)
-				{
-					for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
-					{
-						register(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
-					}
-				}
-
-				for(ResourceLocation facingBlock : facingBlocks)
-				{
-					register(event, facingBlock, "facing=" + facing);
-				}
-			}
-
-			for(String bool : bools)
-			{
-				for(ResourceLocation poweredBlock : poweredBlocks)
-				{
-					register(event, poweredBlock, "powered=" + bool);
-				}
-			}
-		}
-
-		private static void register(ModelBakeEvent event, ResourceLocation rl, String stateString)
-		{
-			ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
-
-			event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
-		}
-	}
 
 	@SubscribeEvent
 	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {

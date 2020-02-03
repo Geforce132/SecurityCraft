@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -23,6 +22,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,11 +34,6 @@ public class LaserBlock extends DisguisableBlock {
 	public LaserBlock(Material material) {
 		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().sound(SoundType.METAL));
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
-	}
-
-	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
 	}
 
 	/**
@@ -106,19 +101,12 @@ public class LaserBlock extends DisguisableBlock {
 			for(int i = 1; i <= ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
+				BlockState state = world.getBlockState(offsetPos);
 
-				if(world.getBlockState(offsetPos).getBlock() == SCContent.laserBlock)
-				{
-					for(int j = 1; j < i; j++)
-					{
-						offsetPos = pos.offset(facing, j);
-
-						BlockState state = world.getBlockState(offsetPos);
-
-						if(state.getBlock() == SCContent.laserField && state.get(LaserFieldBlock.BOUNDTYPE) == boundType)
-							world.destroyBlock(offsetPos, false);
-					}
-				}
+				if(state.getBlock() == SCContent.laserBlock)
+					break;
+				else if(state.getBlock() == SCContent.laserField && state.get(LaserFieldBlock.BOUNDTYPE) == boundType)
+					world.destroyBlock(offsetPos, false);
 			}
 		}
 	}
@@ -126,6 +114,12 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	public boolean canProvidePower(BlockState state){
 		return true;
+	}
+
+	@Override
+	public boolean shouldCheckWeakPower(BlockState state, IWorldReader world, BlockPos pos, Direction side)
+	{
+		return false;
 	}
 
 	/**
@@ -191,7 +185,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new LaserBlockTileEntity().linkable();
 	}
 

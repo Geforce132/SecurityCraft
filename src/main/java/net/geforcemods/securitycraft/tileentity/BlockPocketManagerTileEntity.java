@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;

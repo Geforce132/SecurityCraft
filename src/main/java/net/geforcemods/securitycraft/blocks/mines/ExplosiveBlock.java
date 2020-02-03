@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,7 +33,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if(!world.isRemote){
-			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos)) {
+			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
 				explode(world, pos);
 				return false;
 			}
@@ -40,9 +41,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
 				return false;
 
-			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
+			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.wireCutters) {
 				defuseMine(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> {});
+				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 				return false;
 			}
 
@@ -51,7 +52,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 				return false;
 			}
 
-			if(explodesWhenInteractedWith() && isActive(world, pos))
+			if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))
 				explode(world, pos);
 
 			return false;

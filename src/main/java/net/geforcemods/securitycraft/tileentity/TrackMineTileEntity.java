@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 public class TrackMineTileEntity extends OwnableTileEntity

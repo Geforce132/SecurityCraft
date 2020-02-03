@@ -14,14 +14,15 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
@@ -145,11 +146,11 @@ public class SCManualScreen extends Screen {
 
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
-			TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-			Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
+			if(item instanceof BlockItem){
+				Block block = ((BlockItem) item).getBlock();
+				TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
-			if(blockItem != null){
-				if(blockItem instanceof IExplosive)
+				if(block instanceof IExplosive)
 					this.blit(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te != null){
@@ -163,33 +164,34 @@ public class SCManualScreen extends Screen {
 						this.blit(startX + 81, 118, 36, 1, 17, 16);
 
 					if(te instanceof CustomizableTileEntity)
+					{
+						CustomizableTileEntity scte = (CustomizableTileEntity)te;
+
 						this.blit(startX + 213, 118, 72, 1, 16, 16);
+
+						if(scte.customOptions() != null && scte.customOptions().length > 0)
+							this.blit(startX + 136, 118, 88, 1, 16, 16);
+
+						if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+							this.blit(startX + 163, 118, 105, 1, 16, 16);
+					}
 				}
 			}
-
 			for(IngredientDisplay display : displays)
 			{
 				display.render(minecraft, partialTicks);
 			}
 
-			outer: for(int i = 0; i < 3; i++)
+			for(int i = 0; i < hoverCheckers.size(); i++)
 			{
-				for(int j = 0; j < 3; j++)
+				HoverChecker chc = hoverCheckers.get(i);
+
+				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
-					int index = (i * 3) + j;
-
-					if(index >= hoverCheckers.size())
-						break outer;
-
-					HoverChecker chc = hoverCheckers.get(index);
-
-					if(chc != null && chc.checkHover(mouseX, mouseY))
-					{
-						if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-							renderTooltip(((StringHoverChecker)chc).getName(), mouseX, mouseY);
-						else if(!displays[index].getCurrentStack().isEmpty())
-							renderTooltip(displays[index].getCurrentStack(), mouseX, mouseY);
-					}
+					if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
+						renderTooltip(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
+					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
+						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
 		}
@@ -354,24 +356,65 @@ public class SCManualScreen extends Screen {
 		}
 
 		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-		TileEntity te = ((item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((BlockItem) item).getBlock()).createNewTileEntity(Minecraft.getInstance().world) : null);
-		Block blockItem = ((item instanceof BlockItem) ? ((BlockItem) item).getBlock() : null);
 
-		if(te != null){
-			if(te instanceof IOwnable)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
+		if(item instanceof BlockItem){
+			Block block = ((BlockItem) item).getBlock();
+			TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
-			if(te instanceof IPasswordProtected)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
-
-			if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
-
-			if(blockItem instanceof IExplosive)
+			if(block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
-			if(te instanceof CustomizableTileEntity)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+			if(te != null){
+				if(te instanceof IOwnable)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
+
+				if(te instanceof IPasswordProtected)
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
+
+				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
+
+				if(te instanceof CustomizableTileEntity)
+				{
+					CustomizableTileEntity scte = (CustomizableTileEntity)te;
+
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+
+					if(scte.customOptions() != null && scte.customOptions().length > 0)
+					{
+						List<String> display = new ArrayList<>();
+
+						display.add(ClientUtils.localize("gui.securitycraft:scManual.options"));
+						display.add("---");
+
+						for(Option<?> option : scte.customOptions())
+						{
+							display.add("- " + ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description"));
+							display.add("");
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, 20, display));
+					}
+
+					if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+					{
+						List<String> display = new ArrayList<>();
+
+						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
+						display.add("---");
+
+						for(CustomModules module : scte.acceptedModules())
+						{
+							display.add("- " + ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description"));
+							display.add("");
+						}
+
+						display.remove(display.size() - 1);
+						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, 20, display));
+					}
+				}
+			}
 		}
 
 		if(recipe != null && recipe.size() > 0)

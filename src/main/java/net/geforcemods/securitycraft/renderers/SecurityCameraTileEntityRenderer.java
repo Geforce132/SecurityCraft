@@ -49,7 +49,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 		GlStateManager.pushMatrix();
 
 		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
-			Direction side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), SecurityCameraBlock.FACING);
+			Direction side = BlockUtils.getBlockProperty(getWorld(), par1TileEntity.getPos(), SecurityCameraBlock.FACING);
 
 			if(side == Direction.EAST)
 				rotation = -1F;

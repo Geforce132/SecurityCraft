@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.CustomModules;
@@ -11,9 +12,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -36,7 +35,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
+public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
 	private static final VoxelShape SHAPE_X = Block.makeCuboidShape(0, 6.75, 6.75, 16, 9.25, 9.25);
@@ -61,11 +60,6 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state){
-		return BlockRenderType.MODEL;
-	}
-
-	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
 		if(!world.isRemote && entity instanceof LivingEntity && !EntityUtils.doesMobHavePotionEffect((LivingEntity) entity, ForgeRegistries.POTIONS.getValue(new ResourceLocation("minecraft:invisibility"))))
@@ -77,7 +71,7 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
 
-					if(block == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, offsetPos, LaserBlock.POWERED))
+					if(block == SCContent.laserBlock && !BlockUtils.getBlockProperty(world, offsetPos, LaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
@@ -89,8 +83,10 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).hasModule(CustomModules.HARMING))
-							((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
-
+						{
+							if(!(entity instanceof PlayerEntity && ((IOwnable)te).getOwner().isOwner((PlayerEntity)entity)))
+								((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+						}
 					}
 				}
 			}
@@ -163,7 +159,7 @@ public class LaserFieldBlock extends ContainerBlock implements IIntersectable{
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,7 +9,6 @@ import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -67,7 +67,7 @@ public class TaserBulletEntity extends ThrowableEntity {
 
 				if(result.getEntity() instanceof LivingEntity)
 				{
-					if(((LivingEntity) result.getEntity()).attackEntityFrom(DamageSource.GENERIC, 1F))
+					if(((LivingEntity) result.getEntity()).attackEntityFrom(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
 					{
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;

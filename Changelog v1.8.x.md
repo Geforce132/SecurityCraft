@@ -1,3 +1,43 @@
+--------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
+
+- Fix: Some disguised blocks do not give off power even when they should
+- Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
+
+--------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
+
+- New: The Retinal Scanner and the Scanner Door now have an option to turn off the "Hello" message. Available by rightclicking them with a Universal Block Modifier
+- New: The Alarm now has an option to set the range of blocks that it can be heard in (0-100)
+- New: The Cage Trap can now be disguised
+- New: The SC Manual now shows available options and modules for customizable blocks
+- New: French translation (Thanks marminot!)
+- Change: Additionally to sneak-rightclicking, sentries can now also be removed using the Universal Block Remover
+- Change: The powered taser now inflicts one heart of damage instead of half a heart
+- Fix: JEI error on startup
+- Fix: Players other than the one mounted to a camera can take screenshots or otherwhise interact with the camera
+- Fix: Players that don't own an Inventory Scanner can still take out its items
+- Fix: Break animations
+- Fix: Reinforced Doors and Scanner Doors can be broken using pistons
+- Fix: Block Pocket Wall's sides are visible through other Block Pocket Walls
+- Fix: Activating a Cage Trap can delete blocks that shouldn't be deleted
+- Fix: Sentry Remote Access Tool tooltip does not show sentry names
+- Fix: Inventory Scanner removes its owner's items
+- Fix: Laser harms its owner if the harming module is installed
+- Fix: Trophy System does not target arrows shot from dispensers
+- Fix: SC Manual does not show tooltips for some blocks/items
+- Fix: Copied module lists can only be pasted once
+- Fix: Key names are not localized properly in camera UI
+- Fix: Reinforced Stairs cannot be placed as expected
+- Fix: Reinforced Slabs cannot be placed as expected
+- Fix: Various language fixes and updates (Thanks supercat95 and Redstone_Dubstep!)
+- Fix: Removing a laser (block) may sometimes break lasers that shouldn't be broken
+- Fix: Various mines do not ignore their owner
+- Fix: Sentry can be placed in the same block space as other blocks
+- Fix: Reinforced Double Slabs don't drop two slabs when being broken
+- Fix: Breaking a Laser Block/Inventory Scanner keeps modules in connected Laser Blocks/Inventory Scanners
+- Fix: Crash when summoning sentry using commands (Thanks LorenaGdL!)
+- Potential Fix: Block Pocket still loses its owner when reloading world/server
+- Misc.: The minimum required Forge version is now 28.1.115
+
 --------------------------Changelog for v1.8.15 of SecurityCraft--------------------------
 
 - New: Reinforced Prismarine, Reinforced Prismarine Bricks, Reinforced Dark Prismarine and Reinforced Sea Lanterns can now be used for building a conduit
@@ -15,7 +55,7 @@
 - Change: Lasers now look more like lasers
 - Change: Inventory Scanner Fields now look more like Inventory Scanner Fields (Thanks LorenaGdL!)
 - Change: More recipes now use reinforced blocks instead of their vanilla equivalent
-- Change: The Sentry no longer needs 4 blocks around it to be placable
+- Change: The Sentry no longer needs 4 blocks around it to be placeable
 - Change: The Cage Trap now has a ceiling to properly prevent players from escaping (Thanks LorenaGdL!)
 - Fix: Laser and Inventory Scanner Field's name is not localized
 - Fix: Inventory Scanner does not check for prohibited items in armor and offhand slots

@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
@@ -8,12 +10,10 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.OwnableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -31,7 +31,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedFenceGateBlock extends FenceGateBlock implements ITileEntityProvider, IIntersectable {
+public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable {
 
 	public ReinforcedFenceGateBlock(){
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
@@ -61,7 +61,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements ITileEnt
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN))
+		if(BlockUtils.getBlockProperty(world, pos, OPEN))
 			return;
 
 		if(entity instanceof ItemEntity)
@@ -91,15 +91,15 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements ITileEnt
 			boolean isPoweredSCBlock = isSCBlock(block) && world.isBlockPowered(pos);
 
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
-				if (isPoweredSCBlock && !state.get(OPEN).booleanValue() && !state.get(POWERED).booleanValue()) {
+				if (isPoweredSCBlock && !state.get(OPEN) && !state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(true)).with(POWERED, Boolean.valueOf(true)), 2);
 					world.playEvent((PlayerEntity)null, 1008, pos, 0);
 				}
-				else if (!isPoweredSCBlock && state.get(OPEN).booleanValue() && state.get(POWERED).booleanValue()) {
+				else if (!isPoweredSCBlock && state.get(OPEN) && state.get(POWERED)) {
 					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(false)).with(POWERED, Boolean.valueOf(false)), 2);
 					world.playEvent((PlayerEntity)null, 1014, pos, 0);
 				}
-				else if (isPoweredSCBlock != state.get(POWERED).booleanValue())
+				else if (isPoweredSCBlock != state.get(POWERED))
 					world.setBlockState(pos, state.with(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
 		}
 	}
@@ -117,8 +117,14 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements ITileEnt
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world) {
-		return new OwnableTileEntity().intersectsEntities();
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 
 }

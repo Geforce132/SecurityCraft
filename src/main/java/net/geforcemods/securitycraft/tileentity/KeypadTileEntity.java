@@ -134,7 +134,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypad.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, KeypadBlock.POWERED)) {
+		else if(!BlockUtils.getBlockProperty(world, pos, KeypadBlock.POWERED)) {
 			activate(player);
 			return true;
 		}

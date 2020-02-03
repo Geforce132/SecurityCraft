@@ -6,9 +6,9 @@ import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ScannerDoorBlock extends DoorBlock implements ITileEntityProvider
+public class ScannerDoorBlock extends DoorBlock
 {
 	public ScannerDoorBlock(Material material)
 	{
@@ -100,7 +100,9 @@ public class ScannerDoorBlock extends DoorBlock implements ITileEntityProvider
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
+
+		if(state.getBlock() != newState.getBlock())
+			world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -120,8 +122,20 @@ public class ScannerDoorBlock extends DoorBlock implements ITileEntityProvider
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
+	public PushReaction getPushReaction(BlockState state)
 	{
-		return new ScannerDoorTileEntity().activatedByView();
+		return PushReaction.BLOCK;
+	}
+
+	@Override
+	public boolean hasTileEntity(BlockState state)
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
+	{
+		return new ScannerDoorTileEntity().linkable().activatedByView();
 	}
 }

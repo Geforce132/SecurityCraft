@@ -34,10 +34,12 @@ public class SentryItem extends Item
 		{
 			pos = pos.offset(facing); //get sentry position
 
-			if(world.isAirBlock(pos.down()))
+			if(!world.isAirBlock(pos))
+				return ActionResultType.PASS;
+			else if(world.isAirBlock(pos.down()))
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
-				return ActionResultType.SUCCESS;
+				return ActionResultType.FAIL;
 			}
 
 			SentryEntity entity = SCContent.eTypeSentry.create(world);

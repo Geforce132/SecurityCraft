@@ -1,17 +1,18 @@
-package net.geforcemods.securitycraft.tileentity;
+package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 
-public class OwnableTileEntity extends SecurityCraftTileEntity implements IOwnable {
+/**
+ * Used to give this tile entity an owner
+ */
+public class OwnableTileEntity extends TileEntity implements IOwnable {
 
 	private Owner owner = new Owner();
 
@@ -58,21 +59,19 @@ public class OwnableTileEntity extends SecurityCraftTileEntity implements IOwnab
 	}
 
 	@Override
+	public CompoundNBT getUpdateTag()
+	{
+		return write(new CompoundNBT());
+	}
+
+	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
+		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
 		read(packet.getNbtCompound());
-	}
-
-	@Override
-	public OwnableTileEntity intersectsEntities(){
-		intersectsEntities = true;
-		return this;
 	}
 
 	@Override

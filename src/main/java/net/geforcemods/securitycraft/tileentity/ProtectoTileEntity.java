@@ -44,9 +44,9 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	public boolean canAttack() {
 		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
 
-		if(canAttack && !BlockUtils.getBlockPropertyAsBoolean(world, pos, ProtectoBlock.ACTIVATED))
+		if(canAttack && !BlockUtils.getBlockProperty(world, pos, ProtectoBlock.ACTIVATED))
 			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, true);
-		else if(!canAttack && BlockUtils.getBlockPropertyAsBoolean(world, pos, ProtectoBlock.ACTIVATED))
+		else if(!canAttack && BlockUtils.getBlockProperty(world, pos, ProtectoBlock.ACTIVATED))
 			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);
 
 		return canAttack;
