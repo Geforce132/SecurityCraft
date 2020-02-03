@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
+- Change: The Username Logger now displays logged users in a scrollable list
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 
