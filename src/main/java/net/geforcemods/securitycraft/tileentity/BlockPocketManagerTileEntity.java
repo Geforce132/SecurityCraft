@@ -38,6 +38,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public int size = 5;
 	private List<BlockPos> blocks = new ArrayList<>();
 	private List<BlockPos> walls = new ArrayList<>();
+	private List<BlockPos> floor = new ArrayList<>();
 
 	public BlockPocketManagerTileEntity()
 	{
@@ -57,6 +58,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
+			List<BlockPos> floor = new ArrayList<>();
 			final Direction managerFacing = world.getBlockState(pos).get(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.rotateY();
 			final Direction right = left.getOpposite();
@@ -126,6 +128,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
+								floor.add(currentPos);
 								sides.add(currentPos);
 							}
 						}
@@ -178,6 +181,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 			this.blocks = blocks;
 			this.walls = sides;
+			this.floor = floor;
 			enabled = true;
 
 			for(BlockPos blockPos : blocks)
@@ -186,6 +190,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 				if(te instanceof BlockPocketTileEntity)
 					((BlockPocketTileEntity)te).setManager(this);
+			}
+
+			for(BlockPos blockPos : floor)
+			{
+				world.setBlockState(blockPos, world.getBlockState(blockPos).with(BlockPocketWallBlock.SOLID, true));
 			}
 
 			setWalls(!hasModule(CustomModules.DISGUISE));
@@ -215,11 +224,17 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 					((BlockPocketTileEntity)te).removeManager();
 			}
 
+			for(BlockPos pos : floor)
+			{
+				world.setBlockState(pos, world.getBlockState(pos).with(BlockPocketWallBlock.SOLID, false));
+			}
+
 			if(hasModule(CustomModules.DISGUISE))
 				setWalls(true);
 
 			blocks.clear();
 			walls.clear();
+			floor.clear();
 		}
 	}
 
@@ -277,6 +292,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			tag.putLong("WallsList" + i, walls.get(i).toLong());
 		}
 
+		for(int i = 0; i < floor.size(); i++)
+		{
+			tag.putLong("FloorList" + i, floor.get(i).toLong());
+		}
+
 		return super.write(tag);
 	}
 
@@ -299,6 +319,14 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		while(tag.contains("WallsList" + i))
 		{
 			walls.add(BlockPos.fromLong(tag.getLong("WallsList" + i)));
+			i++;
+		}
+
+		i = 0;
+
+		while(tag.contains("FloorList" + i))
+		{
+			floor.add(BlockPos.fromLong(tag.getLong("FloorList" + i)));
 			i++;
 		}
 	}

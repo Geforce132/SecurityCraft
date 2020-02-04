@@ -29,12 +29,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDisplay
 {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
+	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 
 	public BlockPocketWallBlock()
 	{
 		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
 
-		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, false));
+		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, false).with(SOLID, false));
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		if(ctx instanceof EntitySelectionContext)
+		if(!state.get(SOLID) && ctx instanceof EntitySelectionContext)
 		{
 			Entity entity = ((EntitySelectionContext)ctx).getEntity();
 
@@ -84,7 +85,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@Override
 	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		return false;
+		return state.get(SOLID);
 	}
 
 	@Override
@@ -96,7 +97,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
-		builder.add(SEE_THROUGH);
+		builder.add(SEE_THROUGH, SOLID);
 	}
 
 	@Override
