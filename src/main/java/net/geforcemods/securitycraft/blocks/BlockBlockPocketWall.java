@@ -32,13 +32,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityProvider, IOverlayDisplay
 {
 	public static final PropertyBool SEE_THROUGH = PropertyBool.create("see_through");
+	public static final PropertyBool SOLID = PropertyBool.create("solid");
 	private static final AxisAlignedBB EMPTY_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
 	public BlockBlockPocketWall()
 	{
 		super(Material.ROCK);
 
-		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, false));
+		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, false).withProperty(SOLID, false));
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
 	{
-		if(entity instanceof EntityPlayer)
+		if(!state.getValue(SOLID) && entity instanceof EntityPlayer)
 		{
 			TileEntity te1 = world.getTileEntity(pos);
 
@@ -74,7 +75,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		return EMPTY_AABB;
+		return state.getValue(SOLID) ? FULL_BLOCK_AABB : EMPTY_AABB;
 	}
 
 	@Override
@@ -108,22 +109,29 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(SEE_THROUGH, true);
 	}
 
+	//meta | see_through | solid
+	//0    | 1			 | 0
+	//1    | 0			 | 0
+	//2    | 1			 | 1
+	//3    | 0			 | 1
+
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(SEE_THROUGH, meta == 0);
+		return getDefaultState().withProperty(SEE_THROUGH, meta == 0 || meta == 2).withProperty(SOLID, meta == 2 || meta == 3);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(SEE_THROUGH) ? 1 : 0;
+		int solid = state.getValue(SOLID) ? 0 : 2;
+		return state.getValue(SEE_THROUGH) ? 1 + solid : 0 + solid;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {SEE_THROUGH});
+		return new BlockStateContainer(this, new IProperty[] {SEE_THROUGH, SOLID});
 	}
 
 	@Override

@@ -31,6 +31,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	public int size = 5;
 	private List<BlockPos> blocks = new ArrayList<>();
 	private List<BlockPos> walls = new ArrayList<>();
+	private List<BlockPos> floor = new ArrayList<>();
 
 	/**
 	 * Enables the block pocket
@@ -45,6 +46,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
+			List<BlockPos> floor = new ArrayList<>();
 			final EnumFacing managerFacing = world.getBlockState(pos).getValue(BlockBlockPocketManager.FACING);
 			final EnumFacing left = managerFacing.rotateY();
 			final EnumFacing right = left.getOpposite();
@@ -114,6 +116,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall))
 									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
+								floor.add(currentPos);
 								sides.add(currentPos);
 							}
 						}
@@ -166,6 +169,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 			this.blocks = blocks;
 			this.walls = sides;
+			this.floor = floor;
 			enabled = true;
 
 			for(BlockPos blockPos : blocks)
@@ -174,6 +178,11 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 				if(te instanceof TileEntityBlockPocket)
 					((TileEntityBlockPocket)te).setManager(this);
+			}
+
+			for(BlockPos blockPos : floor)
+			{
+				world.setBlockState(blockPos, world.getBlockState(blockPos).withProperty(BlockBlockPocketWall.SOLID, true));
 			}
 
 			setWalls(!hasModule(EnumCustomModules.DISGUISE));
@@ -203,11 +212,17 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 					((TileEntityBlockPocket)te).removeManager();
 			}
 
+			for(BlockPos pos : floor)
+			{
+				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockBlockPocketWall.SOLID, false));
+			}
+
 			if(hasModule(EnumCustomModules.DISGUISE))
 				setWalls(true);
 
 			blocks.clear();
 			walls.clear();
+			floor.clear();
 		}
 	}
 
@@ -265,6 +280,11 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			tag.setLong("WallsList" + i, walls.get(i).toLong());
 		}
 
+		for(int i = 0; i < floor.size(); i++)
+		{
+			tag.setLong("FloorList" + i, floor.get(i).toLong());
+		}
+
 		return super.writeToNBT(tag);
 	}
 
@@ -287,6 +307,14 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		while(tag.hasKey("WallsList" + i))
 		{
 			walls.add(BlockPos.fromLong(tag.getLong("WallsList" + i)));
+			i++;
+		}
+
+		i = 0;
+
+		while(tag.hasKey("FloorList" + i))
+		{
+			floor.add(BlockPos.fromLong(tag.getLong("FloorList" + i)));
 			i++;
 		}
 	}

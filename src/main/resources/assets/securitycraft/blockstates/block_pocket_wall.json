@@ -1,6 +1,8 @@
 {
     "variants": {
-        "see_through=false":  { "model": "securitycraft:reinforced_quartz_default" },
-        "see_through=true":  { "model": "securitycraft:block_pocket_wall_see_through" }
+        "see_through=false,solid=false":  { "model": "securitycraft:reinforced_quartz_default" },
+        "see_through=true,solid=false":  { "model": "securitycraft:block_pocket_wall_see_through" },
+        "see_through=false,solid=true":  { "model": "securitycraft:reinforced_quartz_default" },
+        "see_through=true,solid=true":  { "model": "securitycraft:block_pocket_wall_see_through" }
     }
 }
