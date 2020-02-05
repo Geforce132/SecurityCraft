@@ -26,8 +26,7 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 	public boolean attackEntity(Entity entity) {
 		if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera((PlayerEntity)entity))
 			MotionActivatedLightBlock.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), false);
-
-		if(entity instanceof LivingEntity && BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockProperty(getWorld(), getPos(), MotionActivatedLightBlock.LIT))
+		else if(entity instanceof LivingEntity && BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockProperty(getWorld(), getPos(), MotionActivatedLightBlock.LIT))
 			MotionActivatedLightBlock.toggleLight(world, pos, searchRadiusOption.asDouble(), getOwner(), true);
 
 		return false;

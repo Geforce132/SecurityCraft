@@ -3,7 +3,8 @@
 - Change: The Username Logger now displays logged users in a scrollable list
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
-- Fix: Cannot see through Scanner Door 
+- Fix: Cannot see through Scanner Door
+- Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
