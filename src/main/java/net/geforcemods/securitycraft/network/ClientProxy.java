@@ -194,6 +194,7 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.translucent());
 		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.translucent());
 		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(SCContent.scannerDoor, RenderType.cutout());
 		RenderTypeLookup.setRenderLayer(SCContent.trackMine, RenderType.cutout());
 		RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.cutoutMipped());
 		RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.translucent());
