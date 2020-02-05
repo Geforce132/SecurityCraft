@@ -7,6 +7,7 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -15,9 +16,11 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -281,11 +284,17 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if(!world.isRemote)
-			if(entity instanceof EntityPlayer){
-				((EntityPlayer) entity).heal(4);
-				((EntityPlayer) entity).extinguish();
-			}
+		if(!world.isRemote && entity instanceof EntityLivingBase)
+		{
+			EntityLivingBase lEntity = (EntityLivingBase)entity;
+			Potion p = Potion.getPotionFromResourceLocation("minecraft:fire_resistance");
+
+			if(!EntityUtils.doesMobHavePotionEffect(lEntity, p))
+				lEntity.addPotionEffect(new PotionEffect(p, 1));
+
+			lEntity.extinguish();
+			lEntity.heal(4);
+		}
 	}
 
 	/**

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
@@ -13,6 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -56,7 +59,15 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		if(!world.isRemote && entity instanceof EntityLivingBase)
-			((EntityLivingBase)entity).heal(4);
+		{
+			EntityLivingBase lEntity = (EntityLivingBase)entity;
+			Potion p = Potion.getPotionFromResourceLocation("minecraft:fire_resistance");
+
+			if(!EntityUtils.doesMobHavePotionEffect(lEntity, p))
+				lEntity.addPotionEffect(new PotionEffect(p, 1));
+
+			lEntity.heal(4);
+		}
 	}
 
 	@Override

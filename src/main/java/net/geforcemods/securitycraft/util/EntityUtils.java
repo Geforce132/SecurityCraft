@@ -23,8 +23,6 @@ public class EntityUtils{
 
 			if(eName.equals(potion.getName()))
 				return true;
-			else
-				continue;
 		}
 
 		return false;
