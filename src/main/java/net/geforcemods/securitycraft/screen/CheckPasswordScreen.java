@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -95,17 +97,24 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode) {
-		if(isValidChar(typedChar) && typedChar == '\u001B')
-			ClientUtils.closePlayerScreen();
-		else if(isValidChar(typedChar) && typedChar != ''){
-			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
-			currentString += typedChar;
-			setTextboxCensoredText(keycodeTextbox, currentString);
-			checkCode(currentString);
-		}else if(isValidChar(typedChar) && typedChar == ''){
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+	{
+		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
+			setTextboxCensoredText(keycodeTextbox, currentString);
+			checkCode(currentString);
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean charTyped(char typedChar, int keyCode) {
+		if(isValidChar(typedChar)){
+			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
 		}

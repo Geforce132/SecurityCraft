@@ -7,6 +7,7 @@
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 - Fix: Being in fake lava creates a hurting sound
 - Fix: Entities keep burning when exiting fake lava
+- Fix: Backspace button does not work when setting up/inputting a password
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
