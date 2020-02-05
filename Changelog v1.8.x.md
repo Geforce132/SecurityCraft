@@ -5,6 +5,8 @@
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Cannot see through Scanner Door
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
+- Fix: Being in fake lava creates a hurting sound
+- Fix: Entities keep burning when exiting fake lava
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

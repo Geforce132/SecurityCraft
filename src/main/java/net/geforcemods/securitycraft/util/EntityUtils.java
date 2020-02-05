@@ -22,8 +22,6 @@ public class EntityUtils{
 
 			if(eName.equals(effect.getName()))
 				return true;
-			else
-				continue;
 		}
 
 		return false;
