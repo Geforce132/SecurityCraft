@@ -3,6 +3,7 @@
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
+- Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
