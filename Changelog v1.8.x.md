@@ -4,6 +4,7 @@
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
+- Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
