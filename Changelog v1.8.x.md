@@ -7,6 +7,7 @@
 - Fix: Being in fake lava creates a hurting sound
 - Fix: Entities keep burning when exiting fake lava
 - Fix: Some mines drop when exploding
+- Fix: Camera overlay is incorrect when only night vision is activated
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

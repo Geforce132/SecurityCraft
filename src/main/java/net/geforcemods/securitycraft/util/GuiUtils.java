@@ -45,6 +45,7 @@ public class GuiUtils{
 		else{
 			mc.getTextureManager().bindTexture(potionIcons);
 			gui.drawTexturedModalRect(25, 2, 70, 218, 19, 16);
+			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
 		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.FACING)) == 0) && (!((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
