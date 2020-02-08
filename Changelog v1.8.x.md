@@ -12,6 +12,7 @@
 - Fix: Throwing items into a Bouncing Betty crashes the game
 - Fix: Some mines drop when exploding (Thanks LorenaGdL!)
 - Fix: Camera overlay is incorrect when only night vision is activated
+- Fix: Track Mines cannot be defused/armed with Wire Cutters/Flint and Steel
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

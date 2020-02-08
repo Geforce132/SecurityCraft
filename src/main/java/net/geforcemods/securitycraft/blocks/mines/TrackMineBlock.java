@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RailBlock;
@@ -14,8 +16,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -25,6 +31,27 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 
 	public TrackMineBlock() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(0.7F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
+	}
+
+	@Override
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if(!world.isRemote){
+			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
+				return ActionResultType.SUCCESS;
+
+			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.wireCutters) {
+				defuseMine(world, pos);
+				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+				return ActionResultType.SUCCESS;
+			}
+
+			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
+				activateMine(world, pos);
+				return ActionResultType.SUCCESS;
+			}
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override
