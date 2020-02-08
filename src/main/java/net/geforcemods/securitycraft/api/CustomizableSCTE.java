@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -109,15 +108,14 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 			NBTTagList tagList = new NBTTagList();
 
 			WorldUtils.addScheduledTask(world, () -> {
-				Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
-
-				while(iterator.hasNext()) {
-					LinkedBlock block = iterator.next();
+				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
+				{
+					LinkedBlock block = linkedBlocks.get(i);
 					NBTTagCompound toAppend = new NBTTagCompound();
 
 					if(block != null) {
 						if(!block.validate(world)) {
-							linkedBlocks.remove(block);
+							linkedBlocks.remove(i);
 							continue;
 						}
 
