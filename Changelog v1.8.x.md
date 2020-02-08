@@ -8,6 +8,7 @@
 - Fix: Entities keep burning when exiting fake lava
 - Fix: Some mines drop when exploding
 - Fix: Camera overlay is incorrect when only night vision is activated
+- Fix: Track Mines cannot be defused/armed with Wire Cutters/Flint and Steel
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

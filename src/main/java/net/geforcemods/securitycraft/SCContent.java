@@ -133,6 +133,7 @@ public class SCContent
 	public static Item briefcase;
 	public static Item cameraMonitor;
 	public static Item codebreaker;
+	public static Item crystalQuartzItem;
 	public static Item fLavaBucket;
 	public static Item fWaterBucket;
 	public static Item keycardLvl1;
@@ -159,7 +160,6 @@ public class SCContent
 	public static Item universalKeyChanger;
 	public static Item universalOwnerChanger;
 	public static Item wireCutters;
-	public static Item crystalQuartzItem;
 
 	//Modules
 	public static ItemModule blacklistModule;
