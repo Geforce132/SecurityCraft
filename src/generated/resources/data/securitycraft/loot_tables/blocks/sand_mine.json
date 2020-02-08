@@ -12,6 +12,14 @@
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        },
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "condition": "minecraft:entity_properties",
+            "predicate": {},
+            "entity": "this"
+          }
         }
       ]
     }
