@@ -9,6 +9,9 @@
 - Fix: Being in fake lava creates a hurting sound
 - Fix: Entities keep burning when exiting fake lava
 - Fix: Backspace button does not work when setting up/inputting a password
+- Fix: Throwing items into a Bouncing Betty crashes the game
+- Fix: Some mines drop when exploding (Thanks LorenaGdL!)
+- Fix: Camera overlay is incorrect when only night vision is activated
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

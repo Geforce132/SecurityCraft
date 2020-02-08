@@ -43,6 +43,7 @@ public class GuiUtils{
 		else{
 			mc.getTextureManager().bindTexture(potionIcons);
 			gui.blit(25, 2, 70, 218, 19, 16);
+			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
 		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (!((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
