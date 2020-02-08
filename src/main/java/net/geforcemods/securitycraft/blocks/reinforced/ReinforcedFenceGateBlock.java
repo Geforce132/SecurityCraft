@@ -48,13 +48,6 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
-	{
-		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
-	}
-
-	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof PlayerEntity)
