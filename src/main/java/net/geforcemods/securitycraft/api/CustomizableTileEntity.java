@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -113,15 +112,14 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 			ListNBT tagList = new ListNBT();
 
 			WorldUtils.addScheduledTask(world, () -> {
-				Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
-
-				while(iterator.hasNext()) {
-					LinkedBlock block = iterator.next();
+				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
+				{
+					LinkedBlock block = linkedBlocks.get(i);
 					CompoundNBT toAppend = new CompoundNBT();
 
 					if(block != null) {
 						if(!block.validate(world)) {
-							linkedBlocks.remove(block);
+							linkedBlocks.remove(i);
 							continue;
 						}
 
