@@ -1,19 +1,25 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import java.util.Collections;
+import java.util.List;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
+import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntityProvider {
+public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntityProvider, IBlockWithNoDrops {
 
 	public BlockTrackMine() {
 		super();
@@ -85,4 +91,9 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 		return new TileEntityTrackMine();
 	}
 
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+	{
+		return Collections.EMPTY_LIST;
+	}
 }

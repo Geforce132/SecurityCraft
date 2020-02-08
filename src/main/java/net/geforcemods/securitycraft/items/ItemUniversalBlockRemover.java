@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,6 +75,8 @@ public class ItemUniversalBlockRemover extends Item {
 					if(te != null)
 						te.modules.clear();
 				}
+				else if(block instanceof IBlockWithNoDrops)
+					Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops)block).getUniversalBlockRemoverDrop());
 
 				world.destroyBlock(pos, true);
 				world.removeTileEntity(pos);
