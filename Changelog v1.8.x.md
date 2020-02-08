@@ -15,6 +15,7 @@
 - Fix: Track Mines cannot be defused/armed with Wire Cutters/Flint and Steel
 - Fix: Electrified Iron Fence Gates lose their owner when being opened
 - Fix: Electrified Iron Fence Gates cannot be opened by reinforced pressure plates
+- Fix: Feedback message is missing when changing the owner of a Sentry
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
