@@ -19,11 +19,14 @@ import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.ConstantRange;
 import net.minecraft.world.storage.loot.ItemLootEntry;
+import net.minecraft.world.storage.loot.LootContext.EntityTarget;
 import net.minecraft.world.storage.loot.LootParameterSets;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
+import net.minecraft.world.storage.loot.conditions.EntityHasProperty;
+import net.minecraft.world.storage.loot.conditions.Inverted;
 import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
 
 public class BlockLootTableGenerator implements IDataProvider
@@ -40,15 +43,15 @@ public class BlockLootTableGenerator implements IDataProvider
 	private void addTables()
 	{
 		putStandardBlockLootTable(SCContent.alarm);
-		putStandardBlockLootTable(SCContent.bouncingBetty);
+		putMineLootTable(SCContent.bouncingBetty);
 		putStandardBlockLootTable(SCContent.cageTrap);
-		putStandardBlockLootTable(SCContent.claymore);
-		putStandardBlockLootTable(SCContent.cobblestoneMine);
-		putStandardBlockLootTable(SCContent.diamondOreMine);
-		putStandardBlockLootTable(SCContent.dirtMine);
+		putMineLootTable(SCContent.claymore);
+		putMineLootTable(SCContent.cobblestoneMine);
+		putMineLootTable(SCContent.diamondOreMine);
+		putMineLootTable(SCContent.dirtMine);
 		putStandardBlockLootTable(SCContent.ironFence);
-		putStandardBlockLootTable(SCContent.furnaceMine);
-		putStandardBlockLootTable(SCContent.gravelMine);
+		putMineLootTable(SCContent.furnaceMine);
+		putMineLootTable(SCContent.gravelMine);
 		putStandardBlockLootTable(SCContent.inventoryScanner);
 		putDoorLootTable(SCContent.reinforcedDoor, SCContent.reinforcedDoorItem);
 		putStandardBlockLootTable(SCContent.keycardReader);
@@ -57,7 +60,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.keypadFurnace);
 		putStandardBlockLootTable(SCContent.keypad);
 		putStandardBlockLootTable(SCContent.laserBlock);
-		putStandardBlockLootTable(SCContent.mine);
+		putMineLootTable(SCContent.mine);
 		putStandardBlockLootTable(SCContent.motionActivatedLight);
 		putStandardBlockLootTable(SCContent.panicButton);
 		putStandardBlockLootTable(SCContent.portableRadar);
@@ -65,7 +68,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.reinforcedFencegate);
 		putStandardBlockLootTable(SCContent.reinforcedIronTrapdoor);
 		putStandardBlockLootTable(SCContent.retinalScanner);
-		putStandardBlockLootTable(SCContent.sandMine);
+		putMineLootTable(SCContent.sandMine);
 		putDoorLootTable(SCContent.scannerDoor, SCContent.scannerDoorItem);
 		putStandardBlockLootTable(SCContent.secretAcaciaSign);
 		putStandardBlockLootTable(SCContent.secretAcaciaWallSign);
@@ -80,8 +83,8 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.secretSpruceSign);
 		putStandardBlockLootTable(SCContent.secretSpruceWallSign);
 		putStandardBlockLootTable(SCContent.securityCamera);
-		putStandardBlockLootTable(SCContent.stoneMine);
-		putStandardBlockLootTable(SCContent.trackMine);
+		putMineLootTable(SCContent.stoneMine);
+		putMineLootTable(SCContent.trackMine);
 		putStandardBlockLootTable(SCContent.trophySystem);
 		putStandardBlockLootTable(SCContent.usernameLogger);
 	}
@@ -110,6 +113,16 @@ public class BlockLootTableGenerator implements IDataProvider
 	protected final void putStandardBlockLootTable(Block block)
 	{
 		lootTables.put(block, createStandardBlockLootTable(block));
+	}
+
+	protected final void putMineLootTable(Block mine)
+	{
+		lootTables.put(mine, LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(mine))
+						.acceptCondition(SurvivesExplosion.builder())
+						.acceptCondition(Inverted.builder(EntityHasProperty.builder(EntityTarget.THIS)))));
 	}
 
 	@Override
