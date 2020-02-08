@@ -63,7 +63,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
-			if(!PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+			if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
 				explode(world, pos);
 	}
 
