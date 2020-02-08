@@ -3,11 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
-import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
-import net.geforcemods.securitycraft.blocks.KeypadBlock;
-import net.geforcemods.securitycraft.blocks.LaserBlock;
-import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -83,25 +78,20 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
 		if(!world.isRemote) {
-			boolean isPoweredSCBlock = isSCBlock(block) && world.isBlockPowered(pos);
+			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
 			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
 				if (isPoweredSCBlock && !state.get(OPEN) && !state.get(POWERED)) {
-					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(true)).with(POWERED, Boolean.valueOf(true)), 2);
-					world.playEvent((PlayerEntity)null, 1008, pos, 0);
+					world.setBlockState(pos, state.with(OPEN, true).with(POWERED, true), 2);
+					world.playEvent(null, 1008, pos, 0);
 				}
 				else if (!isPoweredSCBlock && state.get(OPEN) && state.get(POWERED)) {
-					world.setBlockState(pos, state.with(OPEN, Boolean.valueOf(false)).with(POWERED, Boolean.valueOf(false)), 2);
-					world.playEvent((PlayerEntity)null, 1014, pos, 0);
+					world.setBlockState(pos, state.with(OPEN, false).with(POWERED, false), 2);
+					world.playEvent(null, 1014, pos, 0);
 				}
 				else if (isPoweredSCBlock != state.get(POWERED))
-					world.setBlockState(pos, state.with(POWERED, Boolean.valueOf(isPoweredSCBlock)), 2);
+					world.setBlockState(pos, state.with(POWERED, isPoweredSCBlock), 2);
 		}
-	}
-
-	private boolean isSCBlock(Block block) {
-		return (block instanceof LaserBlock || block instanceof RetinalScannerBlock ||
-				block instanceof KeypadBlock || block instanceof KeycardReaderBlock || block instanceof InventoryScannerBlock);
 	}
 
 	@Override

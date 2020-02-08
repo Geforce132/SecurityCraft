@@ -13,7 +13,8 @@
 - Fix: Some mines drop when exploding (Thanks LorenaGdL!)
 - Fix: Camera overlay is incorrect when only night vision is activated
 - Fix: Track Mines cannot be defused/armed with Wire Cutters/Flint and Steel
-- Fix: Electrified Iron Fence Gates lose their owner when being opened 
+- Fix: Electrified Iron Fence Gates lose their owner when being opened
+- Fix: Electrified Iron Fence Gates cannot be opened by reinforced pressure plates
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 
