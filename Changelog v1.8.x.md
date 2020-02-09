@@ -16,6 +16,7 @@
 - Fix: Electrified Iron Fence Gates lose their owner when being opened
 - Fix: Electrified Iron Fence Gates cannot be opened by reinforced pressure plates
 - Fix: Feedback message is missing when changing the owner of a Sentry
+- Fix: It's possible to reinforce more items than the universal block reinforcer has durability for
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------

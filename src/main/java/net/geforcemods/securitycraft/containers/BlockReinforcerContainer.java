@@ -120,7 +120,7 @@ public class BlockReinforcerContainer extends Container
 				slot = inventorySlots.get(currentIndex);
 				slotStack = slot.getStack();
 
-				if(!slotStack.isEmpty() && areItemsAndTagsEqual(stack, slotStack))
+				if(!slotStack.isEmpty() && areItemsAndTagsEqual(stack, slotStack) && slot.isItemValid(stack))
 				{
 					int combinedCount = slotStack.getCount() + stack.getCount();
 
@@ -158,7 +158,7 @@ public class BlockReinforcerContainer extends Container
 				slot = inventorySlots.get(currentIndex);
 				slotStack = slot.getStack();
 
-				if(slotStack.isEmpty() && slot.isItemValid(stack)) // Forge: Make sure to respect isItemValid in the slot.
+				if(slotStack.isEmpty() && slot.isItemValid(stack))
 				{
 					slot.putStack(stack.copy());
 					slot.onSlotChanged();
