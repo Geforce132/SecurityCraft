@@ -57,12 +57,17 @@ public class GuiUtils{
 	}
 
 	public static void drawItemToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
+		drawItemStackToGui(mc, new ItemStack(item), x, y, fixLighting);
+	}
+
+	public static void drawItemStackToGui(Minecraft mc, ItemStack stack, int x, int y, boolean fixLighting){
 		if(fixLighting)
 			GlStateManager.enableLighting();
 
 		RenderHelper.enableGUIStandardItemLighting();
 		GlStateManager.enableRescaleNormal();
-		itemRender.renderItemAndEffectIntoGUI(new ItemStack(item), x, y);
+		itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+		itemRender.renderItemOverlays(Minecraft.getInstance().fontRenderer, stack, x, y);
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
