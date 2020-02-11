@@ -20,6 +20,7 @@
 - Fix: It's possible to reinforce more items than the universal block reinforcer has durability for
 - Fix: Stairs and slabs lose their rotation/type when being reinforced
 - Fix: Rare crash on load
+- Fix: Codebreaker loses damage even when rightclicking blocks that are not password-protected
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
