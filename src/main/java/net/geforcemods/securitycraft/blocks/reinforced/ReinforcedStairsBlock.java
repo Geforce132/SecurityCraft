@@ -326,4 +326,10 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	{
 		return false;
 	}
+
+	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState().with(SHAPE, vanillaState.get(SHAPE)).with(FACING, vanillaState.get(FACING)).with(HALF, vanillaState.get(HALF)).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
+	}
 }

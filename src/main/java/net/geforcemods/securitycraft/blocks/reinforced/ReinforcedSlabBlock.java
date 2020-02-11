@@ -166,4 +166,10 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 			return NonNullList.from(ItemStack.EMPTY, new ItemStack(this), new ItemStack(this));
 		else return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
+
+	@Override
+	public BlockState getConvertedState(BlockState vanillaState)
+	{
+		return getDefaultState().with(TYPE, vanillaState.get(TYPE)).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
+	}
 }
