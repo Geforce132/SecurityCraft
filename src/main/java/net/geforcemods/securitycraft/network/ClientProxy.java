@@ -79,16 +79,16 @@ public class ClientProxy implements IProxy
 		String[] facings = {"east", "north", "south", "west"};
 		String[] bools = {"true", "false"};
 		ResourceLocation[] facingPoweredBlocks = {
-				SCContent.keycardReader.getRegistryName(),
-				SCContent.keypad.getRegistryName(),
-				SCContent.retinalScanner.getRegistryName()
+				new ResourceLocation(SecurityCraft.MODID, "keycard_reader"),
+				new ResourceLocation(SecurityCraft.MODID, "keypad"),
+				new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")
 		};
 		ResourceLocation[] facingBlocks = {
-				SCContent.inventoryScanner.getRegistryName(),
-				SCContent.usernameLogger.getRegistryName()
+				new ResourceLocation(SecurityCraft.MODID, "inventory_scanner"),
+				new ResourceLocation(SecurityCraft.MODID, "username_logger")
 		};
 		ResourceLocation[] poweredBlocks = {
-				SCContent.laserBlock.getRegistryName()
+				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
 
 		for(String facing : facings)
@@ -115,8 +115,10 @@ public class ClientProxy implements IProxy
 			}
 		}
 
-		registerDisgiusedModel(event, SCContent.cageTrap.getRegistryName(), "deactivated=true");
-		registerDisgiusedModel(event, SCContent.cageTrap.getRegistryName(), "deactivated=false");
+		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
+
+		registerDisgiusedModel(event, cageTrapRl, "deactivated=true");
+		registerDisgiusedModel(event, cageTrapRl, "deactivated=false");
 	}
 
 	private static void registerDisgiusedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
