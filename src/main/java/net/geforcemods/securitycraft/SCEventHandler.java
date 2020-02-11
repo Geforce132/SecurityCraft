@@ -594,14 +594,21 @@ public class SCEventHandler {
 	}
 
 	private boolean handleCodebreaking(PlayerInteractEvent event) {
-		World world = event.getEntityPlayer().world;
-		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
+		if(ConfigHandler.allowCodebreakerItem)
+		{
+			World world = event.getEntityPlayer().world;
+			TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-		if(ConfigHandler.allowCodebreakerItem && event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker) //safety so when codebreakers are disabled they can't take damage
-			event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
+			if(tileEntity != null && tileEntity instanceof IPasswordProtected)
+			{
+				if(event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
+					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
-		if(tileEntity != null && tileEntity instanceof IPasswordProtected && new Random().nextInt(3) == 1)
-			return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !ConfigHandler.allowCodebreakerItem);
+				if(new Random().nextInt(3) == 1)
+					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !ConfigHandler.allowCodebreakerItem);
+				else return true;
+			}
+		}
 
 		return false;
 	}
