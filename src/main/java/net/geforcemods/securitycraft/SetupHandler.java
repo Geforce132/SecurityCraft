@@ -227,12 +227,14 @@ public class SetupHandler
 		SCContent.reinforcedNormalStoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.STONE_SLAB, "reinforced_normal_stone_slab");
 		SCContent.reinforcedSmoothStoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.SMOOTH_STONE_SLAB, "reinforced_stone_slab");
 		SCContent.reinforcedSandstoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.SANDSTONE_SLAB, "reinforced_sandstone_slab");
+		SCContent.reinforcedCutSandstoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.CUT_SANDSTONE_SLAB, "reinforced_cut_sandstone_slab");
 		SCContent.reinforcedCobblestoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.COBBLESTONE_SLAB, "reinforced_cobblestone_slab");
 		SCContent.reinforcedBrickSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.BRICK_SLAB, "reinforced_brick_slab");
 		SCContent.reinforcedStoneBrickSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.STONE_BRICK_SLAB, "reinforced_stone_brick_slab");
 		SCContent.reinforcedNetherBrickSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.NETHER_BRICK_SLAB, "reinforced_nether_brick_slab");
 		SCContent.reinforcedQuartzSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.QUARTZ_SLAB, "reinforced_quartz_slab");
 		SCContent.reinforcedRedSandstoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.RED_SANDSTONE_SLAB, "reinforced_red_sandstone_slab");
+		SCContent.reinforcedCutRedSandstoneSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.CUT_RED_SANDSTONE_SLAB, "reinforced_cut_red_sandstone_slab");
 		SCContent.reinforcedPurpurSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.PURPUR_SLAB, "reinforced_purpur_slab");
 		SCContent.reinforcedPrismarineSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.PRISMARINE_SLAB, "reinforced_prismarine_slab");
 		SCContent.reinforcedPrismarineBrickSlab = new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.PRISMARINE_BRICK_SLAB, "reinforced_prismarine_brick_slab");

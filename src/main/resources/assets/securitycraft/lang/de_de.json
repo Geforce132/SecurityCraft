@@ -307,6 +307,8 @@
 	"block.securitycraft.reinforced_red_sand": "Verstärkter roter Sand",
 	"block.securitycraft.reinforced_bookshelf": "Verstärktes Bücherregal",
 	"block.securitycraft.reinforced_redstone_block": "Verstärkter Redstone-Block",
+	"block.securitycraft.reinforced_cut_sandstone_slab": "Verstärkte geschnittene Sandsteinstufe",
+	"block.securitycraft.reinforced_cut_red_sandstone_slab": "Verstärkte geschnittene rote Sandsteinstufe",
 	
     "item.securitycraft.codebreaker": "Codebrecher",
     "item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
