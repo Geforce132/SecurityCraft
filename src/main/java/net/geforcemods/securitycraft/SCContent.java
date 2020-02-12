@@ -189,12 +189,14 @@ public class SCContent
 	@OwnableTE @Reinforced public static Block reinforcedNormalStoneSlab;
 	@OwnableTE @Reinforced public static Block reinforcedSmoothStoneSlab;
 	@OwnableTE @Reinforced public static Block reinforcedSandstoneSlab;
+	@OwnableTE @Reinforced public static Block reinforcedCutSandstoneSlab;
 	@OwnableTE @Reinforced public static Block reinforcedCobblestoneSlab;
 	@OwnableTE @Reinforced public static Block reinforcedBrickSlab;
 	@OwnableTE @Reinforced public static Block reinforcedStoneBrickSlab;
 	@OwnableTE @Reinforced public static Block reinforcedNetherBrickSlab;
 	@OwnableTE @Reinforced public static Block reinforcedQuartzSlab;
 	@OwnableTE @Reinforced public static Block reinforcedRedSandstoneSlab;
+	@OwnableTE @Reinforced public static Block reinforcedCutRedSandstoneSlab;
 	@OwnableTE @Reinforced public static Block reinforcedPurpurSlab;
 	@OwnableTE @Reinforced public static Block reinforcedPrismarineSlab;
 	@OwnableTE @Reinforced public static Block reinforcedPrismarineBrickSlab;

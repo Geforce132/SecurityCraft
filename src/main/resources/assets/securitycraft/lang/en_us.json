@@ -307,6 +307,8 @@
 	"block.securitycraft.reinforced_red_sand": "Reinforced Red Sand",
 	"block.securitycraft.reinforced_bookshelf": "Reinforced Bookshelf",
 	"block.securitycraft.reinforced_redstone_block": "Reinforced Block of Redstone",
+	"block.securitycraft.reinforced_cut_sandstone_slab": "Reinforced Cut Sandstone Slab",
+	"block.securitycraft.reinforced_cut_red_sandstone_slab": "Reinforced Cut Red Sandstone Slab",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",

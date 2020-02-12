@@ -41,7 +41,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200109-1.14.3'
+    mappings channel: 'stable', version: '56-1.14.3'
 	
     runs {
         client {
