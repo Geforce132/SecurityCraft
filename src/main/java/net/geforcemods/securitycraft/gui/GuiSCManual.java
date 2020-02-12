@@ -132,7 +132,7 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemStackToGui(mc, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+			GuiUtils.drawItemToGui(mc, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
@@ -181,7 +181,7 @@ public class GuiSCManual extends GuiScreen {
 						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
-						GuiUtils.drawItemStackToGui(mc, matchingStacks[0].getItem(), matchingStacks[0].getItemDamage(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof ItemBlock));
+						GuiUtils.drawItemToGui(mc, matchingStacks[0].getItem(), matchingStacks[0].getItemDamage(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof ItemBlock));
 					}
 			}
 

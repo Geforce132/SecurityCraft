@@ -14,8 +14,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinforcedBlock
 {
@@ -30,7 +28,6 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
 		list.add(new ItemStack(this, 1, EnumType.ACACIA.getMetadata() - 4));

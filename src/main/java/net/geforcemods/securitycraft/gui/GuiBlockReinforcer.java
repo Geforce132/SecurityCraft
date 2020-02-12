@@ -1,15 +1,19 @@
 package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiBlockReinforcer extends GuiContainer
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/customize1.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
 
 	public GuiBlockReinforcer(Container container)
 	{
@@ -28,8 +32,30 @@ public class GuiBlockReinforcer extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.title"), 8, 5, 4210752);
+		ContainerBlockReinforcer container = (ContainerBlockReinforcer)inventorySlots;
+		NonNullList<ItemStack> inv = container.getInventory();
+		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
+
+		fontRenderer.drawString(ubr, (xSize - fontRenderer.getStringWidth(ubr)) / 2, 5, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+
+		if(!inv.get(0).isEmpty())
+		{
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 25, 4210752);
+			GuiUtils.drawItemStackToGui(mc, container.reinforcingSlot.getOutput(), 116, 20, false);
+
+			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
+				renderToolTip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
+		}
+
+		if(!inv.get(1).isEmpty())
+		{
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
+			GuiUtils.drawItemStackToGui(mc, container.unreinforcingSlot.getOutput(), 116, 46, false);
+
+			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)
+				renderToolTip(container.unreinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
+		}
 	}
 
 	@Override

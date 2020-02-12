@@ -21,8 +21,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
@@ -48,7 +46,6 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items)
 	{
 		EnumType[] values = EnumType.values();

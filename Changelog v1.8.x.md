@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
+- New: The Universal Block Reinforcer can now "unreinforce" blocks. Place items in the top slot to reinforce them, use the bottom slot instead for "unreinforcing" them
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
@@ -13,6 +14,7 @@
 - Fix: Feedback message is missing when changing the owner of a Sentry
 - Fix: It's possible to reinforce more items than the universal block reinforcer has durability for
 - Fix: Codebreaker loses damage even when rightclicking blocks that are not password-protected
+- Fix: Slabs and stairs cannot be reinforced
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
