@@ -14,7 +14,6 @@
 - Fix: Feedback message is missing when changing the owner of a Sentry
 - Fix: It's possible to reinforce more items than the universal block reinforcer has durability for
 - Fix: Codebreaker loses damage even when rightclicking blocks that are not password-protected
-- Fix: Slabs and stairs cannot be reinforced
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
