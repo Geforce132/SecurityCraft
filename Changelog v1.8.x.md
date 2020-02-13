@@ -4,7 +4,7 @@
 - New: Reinforced Cut Sandstone Slab and Reinforced Cut Red Sandstone Slab
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
-- Change: Slightly improve Reinforced (Stained) Glass textures
+- Change: Sli	ghtly improve Reinforced (Stained) Glass textures
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
@@ -25,6 +25,7 @@
 - Fix: Reinforced (Stained) Glass sides are visible through the same type of Reinforced (Stained) Glass
 - Fix: Reinforced (Stained) Glass throws a shadow
 - Fix: Dropped items get deleted in fake water
+- Fix: Camera does not render in third person view when being mounted to one
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
