@@ -2,6 +2,6 @@
     "variants": {
         "type=top": { "model": "securitycraft:block/reinforced_top_slab_cut_sandstone" },
         "type=bottom": { "model": "securitycraft:block/reinforced_half_slab_cut_sandstone" },
-        "type=double": { "model": "securitycraft:block/reinforced_cut_sandstone" }
+        "type=double": { "model": "securitycraft:block/reinforced_sandstone_smooth" }
     }
 }
