@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,7 +22,7 @@ public class FakeWaterBlock extends FlowingFluidBlock
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
 	{
-		if(!world.isRemote)
+		if(!world.isRemote && !(entity instanceof ItemEntity))
 		{
 			if(!(entity instanceof PlayerEntity) || !((PlayerEntity) entity).isCreative())
 				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
