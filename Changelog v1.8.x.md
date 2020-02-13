@@ -23,6 +23,8 @@
 - Fix: Stairs and slabs lose their rotation/type when being reinforced
 - Fix: Rare crash on load
 - Fix: Codebreaker loses damage even when rightclicking blocks that are not password-protected
+- Fix: Reinforced (Stained) Glass sides are visible through the same type of Reinforced (Stained) Glass
+- Fix: Reinforced (Stained) Glass throws a shadow
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
