@@ -151,6 +151,12 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onRightClickBlock(RightClickBlock event){
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))
+		{
+			event.setCanceled(true);
+			return;
+		}
+
 		if(event.getHand() == EnumHand.MAIN_HAND)
 		{
 			World world = event.getWorld();

@@ -18,6 +18,7 @@
 - Fix: Reinforced (Stained) Glass throws a shadow
 - Fix: Dropped items get destroyed in fake water
 - Fix: Camera does not render in third person view when being mounted to one
+- Fix: It's possible to remove or otherwise interact with a camera when being mounted to it
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
