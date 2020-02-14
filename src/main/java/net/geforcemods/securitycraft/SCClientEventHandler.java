@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -120,10 +119,9 @@ public class SCClientEventHandler
 	public static void onMouseClicked(MouseClickedEvent.Pre event) {
 		if(Minecraft.getInstance().world != null)
 		{
-			if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && event.getButton() != 1) //anything other than rightclick
+			if(event.getButton() != 1 && Minecraft.getInstance().player.openContainer == null) //anything other than rightclick and only if no gui is open)
 			{
-				//fix not being able to interact with the pause menu and camera monitor while mounted to a camera
-				if((Minecraft.getInstance().player.openContainer != null && !(Minecraft.getInstance().player.openContainer instanceof GenericContainer)) && !Minecraft.getInstance().isGamePaused())
+				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.inventory.getCurrentItem().getItem() != SCContent.cameraMonitor)
 					event.setCanceled(true);
 			}
 		}
