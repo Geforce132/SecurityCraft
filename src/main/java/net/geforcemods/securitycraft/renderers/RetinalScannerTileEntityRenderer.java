@@ -27,6 +27,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.LightType;
 
@@ -75,8 +76,9 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 			Matrix4f positionMatrix = matrix.getLast().getPositionMatrix();
 			Matrix3f normalMatrix = matrix.getLast().getNormalMatrix();
 			Vec3i normalVector = direction.getDirectionVec();
+			BlockPos offsetPos = te.getPos().offset(direction);
 
-			combinedLight = LightTexture.packLight(te.getWorld().getLightFor(LightType.BLOCK, te.getPos().offset(direction)), te.getWorld().getLightFor(LightType.SKY, te.getPos().offset(direction)));
+			combinedLight = LightTexture.packLight(te.getWorld().getLightFor(LightType.BLOCK, offsetPos), te.getWorld().getLightFor(LightType.SKY, offsetPos));
 
 			// face
 			vertexBuilder.pos(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).tex(0.125F, 0.25F).overlay(OverlayTexture.DEFAULT_LIGHT).lightmap(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
