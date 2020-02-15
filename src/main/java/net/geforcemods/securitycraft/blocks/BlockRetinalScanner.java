@@ -12,6 +12,7 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -58,6 +59,14 @@ public class BlockRetinalScanner extends BlockDisguisable {
 
 		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
 
+		if (entity instanceof EntityPlayer)
+		{
+			TileEntity tileentity = world.getTileEntity(pos);
+			if (!world.isRemote && tileentity instanceof TileEntityRetinalScanner)
+			{
+				((TileEntityRetinalScanner)tileentity).setPlayerProfile(((EntityPlayer)entity).getGameProfile());
+			}
+		}
 	}
 
 	/**
