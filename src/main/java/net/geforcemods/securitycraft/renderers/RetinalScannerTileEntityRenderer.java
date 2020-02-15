@@ -11,6 +11,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -18,11 +19,13 @@ import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
@@ -67,41 +70,90 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 			}
 
 			matrix.scale(-1.0F, -1.0F, 1.0F);
-			RenderHelper.disableStandardItemLighting();
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ZERO);
 
-			IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.entityDecal(this.getSkinTexture(te.getPlayerProfile())));
+			IVertexBuilder vertexBuilder = buffer.getBuffer(scFace(getSkinTexture(te.getPlayerProfile())));
+			Matrix4f positionMatrix = matrix.getLast().getPositionMatrix();
 
 			// face
-			vertexBuilder.pos(0 + CORRECT_FACTOR, 0 + CORRECT_FACTOR * 1.5, 0).tex(0.125F, 0.25F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
-			vertexBuilder.pos(0 + CORRECT_FACTOR, -0.5 - CORRECT_FACTOR / 2, 0).tex(0.125F, 0.125F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
-			vertexBuilder.pos(-0.5 - CORRECT_FACTOR, -0.5 - CORRECT_FACTOR / 2, 0).tex(0.25F, 0.125F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
-			vertexBuilder.pos(-0.5 - CORRECT_FACTOR, 0 + CORRECT_FACTOR * 1.5, 0).tex(0.25F, 0.25F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
+			vertexBuilder.pos(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).tex(0.125F, 0.25F).endVertex();
+			vertexBuilder.pos(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).tex(0.125F, 0.125F).endVertex();
+			vertexBuilder.pos(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).tex(0.25F, 0.125F).endVertex();
+			vertexBuilder.pos(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).tex(0.25F, 0.25F).endVertex();
 
 			// helmet
-			vertexBuilder.pos(0 + CORRECT_FACTOR, 0 + CORRECT_FACTOR * 1.5, 0).tex(0.625F, 0.25F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
-			vertexBuilder.pos(0 + CORRECT_FACTOR, -0.5 - CORRECT_FACTOR / 2, 0).tex(0.625F, 0.125F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
-			vertexBuilder.pos(-0.5 - CORRECT_FACTOR, -0.5 - CORRECT_FACTOR / 2, 0).tex(0.75F, 0.125F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
-			vertexBuilder.pos(-0.5 - CORRECT_FACTOR, 0 + CORRECT_FACTOR * 1.5, 0).tex(0.75F, 0.25F).lightmap(combinedLight).overlay(combinedOverlay).endVertex();
+			vertexBuilder.pos(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).tex(0.625F, 0.25F).endVertex();
+			vertexBuilder.pos(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).tex(0.625F, 0.125F).endVertex();
+			vertexBuilder.pos(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).tex(0.75F, 0.125F).endVertex();
+			vertexBuilder.pos(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).tex(0.75F, 0.25F).endVertex();
 
-			GlStateManager.disableBlend();
 			matrix.pop();
 		}
 	}
 
-	private ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
-		ResourceLocation resourcelocation = DefaultPlayerSkin.getDefaultSkinLegacy();
-		if (profile != null) {
+	public static RenderType scFace(ResourceLocation texture)
+	{
+		RenderType.State renderTypeState = RenderType.State.builder()
+				.texture(new RenderState.TextureState(texture, true, false))
+				.writeMask(RenderStateGetter.colorWrite())
+				.cull(RenderStateGetter.cullDisabled())
+				.transparency(RenderStateGetter.sourceOnlyTransparency())
+				.texturing(RenderStateGetter.defaultTexturing())
+				.alpha(RenderStateGetter.almostFullAlpha())
+				.build(false);
+		return RenderType.get("sc_face", DefaultVertexFormats.POSITION_TEX, GL11.GL_QUADS, 256, renderTypeState);
+	}
+
+	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
+		if(profile != null)
+		{
 			Minecraft minecraft = Minecraft.getInstance();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
-			if (map.containsKey(Type.SKIN)) {
-				resourcelocation = minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN);
-			} else {
-				resourcelocation = DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));
-			}
+			return map.containsKey(Type.SKIN) ? minecraft.getSkinManager().loadSkin(map.get(Type.SKIN), Type.SKIN) : DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(profile));
+		}
+		else return DefaultPlayerSkin.getDefaultSkinLegacy();
+	}
+
+	//used to circumvent protected without access transformers
+	static class RenderStateGetter extends RenderState
+	{
+		private static final TransparencyState SOURCE_ONLY_TRANSPARENCY = new TransparencyState("sc_face_transparency", () -> {
+			RenderSystem.enableBlend();
+			RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		}, () -> {
+			RenderSystem.disableBlend();
+			RenderSystem.defaultBlendFunc();
+		});
+		private static final AlphaState ALMOST_FULL_ALPHA = new AlphaState(0.99999997F);
+
+		/** Don't call */
+		private RenderStateGetter(String name, Runnable setupTask, Runnable clearTask)
+		{
+			super(name, setupTask, clearTask);
 		}
 
-		return resourcelocation;
+		static TransparencyState sourceOnlyTransparency()
+		{
+			return SOURCE_ONLY_TRANSPARENCY;
+		}
+
+		static WriteMaskState colorWrite()
+		{
+			return COLOR_DEPTH_WRITE;
+		}
+
+		static CullState cullDisabled()
+		{
+			return CULL_DISABLED;
+		}
+
+		static TexturingState defaultTexturing()
+		{
+			return DEFAULT_TEXTURING;
+		}
+
+		static AlphaState almostFullAlpha()
+		{
+			return ALMOST_FULL_ALPHA;
+		}
 	}
 }
