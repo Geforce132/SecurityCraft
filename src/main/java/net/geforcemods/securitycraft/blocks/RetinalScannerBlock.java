@@ -2,14 +2,17 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
@@ -20,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraft.world.server.ServerWorld;
 
 public class RetinalScannerBlock extends DisguisableBlock {
@@ -30,6 +34,23 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public RetinalScannerBlock(Material material) {
 		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
+	}
+
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
+	{
+		if (entity instanceof PlayerEntity)
+		{
+			TileEntity tileentity = world.getTileEntity(pos);
+			if (!world.isRemote && tileentity instanceof RetinalScannerTileEntity)
+			{
+				((RetinalScannerTileEntity)tileentity).setPlayerProfile(((PlayerEntity)entity).getGameProfile());
+			}
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
+		}
 	}
 
 	/**

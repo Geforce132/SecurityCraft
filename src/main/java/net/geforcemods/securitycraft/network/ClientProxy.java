@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
@@ -213,6 +214,7 @@ public class ClientProxy implements IProxy
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry, SentryRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBullet, BulletRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeKeypadChest, KeypadChestTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeRetinalScanner, RetinalScannerTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
