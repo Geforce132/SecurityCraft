@@ -58,16 +58,14 @@ public class UniversalBlockReinforcerItem extends Item
 			World world = player.getEntityWorld();
 			BlockState vanillaState = world.getBlockState(pos);
 			Block block = vanillaState.getBlock();
+			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
 
-			for(Block rb : IReinforcedBlock.BLOCKS)
+			if(rb != null)
 			{
-				if(((IReinforcedBlock)rb).getVanillaBlock() == block)
-				{
-					world.setBlockState(pos, ((IReinforcedBlock)rb).getConvertedState(vanillaState));
-					((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
-					return true;
-				}
+				world.setBlockState(pos, ((IReinforcedBlock)rb).getConvertedState(vanillaState));
+				((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
+				return true;
 			}
 		}
 

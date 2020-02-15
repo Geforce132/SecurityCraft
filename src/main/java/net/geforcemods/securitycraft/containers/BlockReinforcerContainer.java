@@ -188,14 +188,7 @@ public class BlockReinforcerContainer extends Container
 			if(!itemInventory.getStackInSlot((slotNumber + 1) % 2).isEmpty())
 				return false;
 
-			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch(reinforcedBlock -> {
-				if(reinforce)
-					return stack.getItem().equals(((IReinforcedBlock)reinforcedBlock).getVanillaBlock().asItem());
-				else
-					return stack.getItem().equals(reinforcedBlock.asItem());
-			});
-
-			return validBlock &&
+			return (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).containsKey(Block.getBlockFromItem(stack.getItem())) &&
 					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
 						blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
@@ -207,22 +200,12 @@ public class BlockReinforcerContainer extends Container
 
 			if(!stack.isEmpty())
 			{
-				for(Block block : IReinforcedBlock.BLOCKS)
-				{
-					IReinforcedBlock reinforcedBlock = (IReinforcedBlock)block;
+				Block block = (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(Block.getBlockFromItem(stack.getItem()));
 
-					if(reinforce && reinforcedBlock.getVanillaBlock() == Block.getBlockFromItem(stack.getItem()))
-					{
-						output = new ItemStack(block);
-						output.setCount(stack.getCount());
-						return;
-					}
-					else if(!reinforce && reinforcedBlock == Block.getBlockFromItem(stack.getItem()))
-					{
-						output = new ItemStack(reinforcedBlock.getVanillaBlock());
-						output.setCount(stack.getCount());
-						return;
-					}
+				if(block != null)
+				{
+					output = new ItemStack(block);
+					output.setCount(stack.getCount());
 				}
 			}
 		}

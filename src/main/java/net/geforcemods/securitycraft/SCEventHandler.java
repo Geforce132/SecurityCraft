@@ -359,16 +359,10 @@ public class SCEventHandler {
 
 			if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
 			{
-				for(Block rb : IReinforcedBlock.BLOCKS)
-				{
-					IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
+				Block block = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(event.getState().getBlock());
 
-					if(reinforcedBlock.getVanillaBlock() == event.getState().getBlock())
-					{
-						event.setNewSpeed(10000.0F);
-						return;
-					}
-				}
+				if(block != null)
+					event.setNewSpeed(10000.0F);
 			}
 		}
 	}

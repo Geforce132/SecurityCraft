@@ -100,7 +100,12 @@ public class SecurityCraft {
 			try
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
-					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+				{
+					Block block = (Block)field.get(null);
+					IReinforcedBlock rb = (IReinforcedBlock)block;
+					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
+					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
+				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
 			{

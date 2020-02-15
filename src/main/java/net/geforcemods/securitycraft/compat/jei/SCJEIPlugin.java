@@ -23,10 +23,8 @@ public class SCJEIPlugin implements IModPlugin
 		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
 			registration.addIngredientInfo(new ItemStack(pc), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getPath());
 		});
-		IReinforcedBlock.BLOCKS.forEach((rb) -> {
-			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
-
-			registration.addIngredientInfo(new ItemStack(rb), VanillaTypes.ITEM, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey());
+		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((v, sc) -> {
+			registration.addIngredientInfo(new ItemStack(sc), VanillaTypes.ITEM, "jei.securitycraft:reinforcedBlock.info", "", v.getTranslationKey());
 		});
 	}
 
