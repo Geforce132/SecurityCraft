@@ -93,8 +93,8 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 	public static RenderType scFace(ResourceLocation texture)
 	{
 		RenderType.State renderTypeState = RenderType.State.builder()
-				.texture(new RenderState.TextureState(texture, true, false))
-				.writeMask(RenderStateGetter.colorWrite())
+				.texture(new RenderState.TextureState(texture, false, false))
+				.writeMask(RenderStateGetter.colorDepthWrite())
 				.cull(RenderStateGetter.cullDisabled())
 				.transparency(RenderStateGetter.sourceOnlyTransparency())
 				.texturing(RenderStateGetter.defaultTexturing())
@@ -116,7 +116,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 	//used to circumvent protected without access transformers
 	static class RenderStateGetter extends RenderState
 	{
-		private static final TransparencyState SOURCE_ONLY_TRANSPARENCY = new TransparencyState("sc_face_transparency", () -> {
+		private static final TransparencyState SOURCE_ONLY_TRANSPARENCY = new TransparencyState("source_only_transparency", () -> {
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		}, () -> {
@@ -136,7 +136,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 			return SOURCE_ONLY_TRANSPARENCY;
 		}
 
-		static WriteMaskState colorWrite()
+		static WriteMaskState colorDepthWrite()
 		{
 			return COLOR_DEPTH_WRITE;
 		}
