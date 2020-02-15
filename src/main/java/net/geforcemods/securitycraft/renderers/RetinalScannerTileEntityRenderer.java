@@ -98,7 +98,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 				.cull(RenderStateGetter.cullDisabled())
 				.transparency(RenderStateGetter.sourceOnlyTransparency())
 				.texturing(RenderStateGetter.defaultTexturing())
-				.alpha(RenderStateGetter.almostFullAlpha())
+				.alpha(RenderStateGetter.halfAlpha())
 				.build(false);
 		return RenderType.get("sc_face", DefaultVertexFormats.POSITION_TEX, GL11.GL_QUADS, 256, renderTypeState);
 	}
@@ -113,7 +113,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 		else return DefaultPlayerSkin.getDefaultSkinLegacy();
 	}
 
-	//used to circumvent protected without access transformers
+	//used to circumvent protected access without the use of access transformers
 	static class RenderStateGetter extends RenderState
 	{
 		private static final TransparencyState SOURCE_ONLY_TRANSPARENCY = new TransparencyState("source_only_transparency", () -> {
@@ -123,7 +123,6 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 			RenderSystem.disableBlend();
 			RenderSystem.defaultBlendFunc();
 		});
-		private static final AlphaState ALMOST_FULL_ALPHA = new AlphaState(0.99999997F);
 
 		/** Don't call */
 		private RenderStateGetter(String name, Runnable setupTask, Runnable clearTask)
@@ -151,9 +150,9 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 			return DEFAULT_TEXTURING;
 		}
 
-		static AlphaState almostFullAlpha()
+		static AlphaState halfAlpha()
 		{
-			return ALMOST_FULL_ALPHA;
+			return HALF_ALPHA;
 		}
 	}
 }
