@@ -26,6 +26,7 @@ import net.minecraft.server.management.PlayerProfileCache;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class RetinalScannerTileEntity extends DisguisableTileEntity {
@@ -111,7 +112,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	@Override
 	public void read(CompoundNBT tag) {
 		super.read(tag);
-		if(tag.contains("ownerProfile", 10))
+		if(tag.contains("ownerProfile", Constants.NBT.TAG_COMPOUND))
 			ownerProfile = NBTUtil.readGameProfile(tag.getCompound("ownerProfile"));
 	}
 

@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
-import com.mojang.authlib.GameProfile;
-
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -48,8 +46,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 			TileEntity tileentity = world.getTileEntity(pos);
 			if (!world.isRemote && tileentity instanceof RetinalScannerTileEntity)
 			{
-				GameProfile profile = ((PlayerEntity)entity).getGameProfile();
-				((RetinalScannerTileEntity)tileentity).setPlayerProfile(profile);
+				((RetinalScannerTileEntity)tileentity).setPlayerProfile(((PlayerEntity)entity).getGameProfile());
 			}
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
 		}
