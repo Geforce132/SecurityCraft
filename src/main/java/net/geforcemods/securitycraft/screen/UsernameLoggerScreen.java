@@ -30,7 +30,6 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private UsernameLoggerTileEntity tileEntity;
 	private PlayerList playerList;
-	private static final DateFormat DATE_FORMAT = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 
 	public UsernameLoggerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
@@ -120,6 +119,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 
 	class PlayerList extends ScrollPanel
 	{
+		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		private final int slotHeight = 10, listLength = 100;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left)
@@ -152,7 +152,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
-						String localized = ClientUtils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.timestamps[slotIndex])));
+						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
 						renderTooltip(tileEntity.uuids[slotIndex].toString(), mouseX, mouseY);
 						font.drawString(localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
