@@ -25,7 +25,6 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 	@Override
 	public void render(SecurityCameraTileEntity te, double x, double y, double z, float par5, int par6) {
-		System.out.println(Minecraft.getInstance().gameSettings.thirdPersonView);
 		if(te.down || (Minecraft.getInstance().gameSettings.thirdPersonView == 0 && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(te.getPos())))
 			return;
 

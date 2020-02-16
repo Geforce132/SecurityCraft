@@ -502,6 +502,7 @@
     "gui.securitycraft:keycardSetup.lvlNeeded": "Benötigter Level:",
     "gui.securitycraft:protectedFurnace.name": "Passwort Gesicherter Ofen",
     "gui.securitycraft:logger.logged": "Protokollierte Spieler:",
+	"gui.securitycraft:logger.date": "Datum: %s",
     "gui.securitycraft:mrat.notBound": "Nicht verbunden!",
     "gui.securitycraft:mrat.mineLocations": "Mine bei #location",
     "gui.securitycraft:mrat": "Kabellose Steuerungseinheit für Minen",

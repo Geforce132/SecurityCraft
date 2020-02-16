@@ -1,5 +1,11 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -10,7 +16,9 @@ import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -36,7 +44,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);
-		children.add(playerList = new PlayerList(minecraft, xSize - 24, ySize - 30, guiTop + 20, guiLeft + 12));
+		children.add(playerList = new PlayerList(minecraft, xSize - 24, ySize - 40, guiTop + 20, guiLeft + 12));
 	}
 
 	/**
@@ -110,6 +118,9 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 
 	class PlayerList extends ScrollPanel
 	{
+		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
+		private final int slotHeight = 10, listLength = 100;
+
 		public PlayerList(Minecraft client, int width, int height, int top, int left)
 		{
 			super(client, width, height, top, left);
@@ -127,11 +138,71 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		}
 
 		@Override
+		public void render(int mouseX, int mouseY, float partialTicks)
+		{
+			super.render(mouseX, mouseY, partialTicks);
+
+			if(tileEntity.getOwner().isOwner(minecraft.player))
+			{
+				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+				int slotIndex = mouseListY / slotHeight;
+
+				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+				{
+					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
+					{
+						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+
+						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
+							renderTooltip(tileEntity.uuids[slotIndex], mouseX, mouseY);
+
+						font.drawString(localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
+					}
+				}
+			}
+		}
+
+		@Override
 		protected void drawPanel(int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
 		{
+			int baseY = top + border - (int)scrollDistance;
+			int slotBuffer = slotHeight - 3;
+			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int slotIndex = mouseListY / slotHeight;
+
+			//highlighted hovered slot
+			if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+			{
+				if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
+				{
+					int min = left;
+					int max = entryRight - 6; //6 is the width of the scrollbar
+					int slotTop = baseY + slotIndex * slotHeight;
+					BufferBuilder bufferBuilder = tess.getBuffer();
+
+					GlStateManager.enableBlend();
+					GlStateManager.disableTexture();
+					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+					bufferBuilder.pos(min, slotTop + slotBuffer + 2, 0).tex(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.pos(max, slotTop + slotBuffer + 2, 0).tex(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.pos(max, slotTop - 2, 0).tex(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.pos(min, slotTop - 2, 0).tex(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.pos(min + 1, slotTop + slotBuffer + 1, 0).tex(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.pos(max - 1, slotTop + slotBuffer + 1, 0).tex(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.pos(max - 1, slotTop - 1, 0).tex(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.pos(min + 1, slotTop - 1, 0).tex(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					tess.draw();
+					GlStateManager.enableTexture();
+					GlStateManager.disableBlend();
+				}
+			}
+
+			//draw entry strings
 			for(int i = 0; i < tileEntity.players.length; i++)
+			{
 				if(tileEntity.players[i] != "")
 					font.drawString(tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (10 * i), 0xC6C6C6);
+			}
 		}
 	}
 }
