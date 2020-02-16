@@ -8,7 +8,7 @@
 - Change: Slightly improve Reinforced (Stained) Glass textures
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
-- Fix: Cannot see through Scanner Door
+- Fix: Cannot see through Scanner Door and Reinforced Iron Trapdoor
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 - Fix: Being in fake lava creates a hurting sound
 - Fix: Entities keep burning when exiting fake lava	
@@ -30,6 +30,7 @@
 - Fix: Camera does not render in third person view when being mounted to one
 - Fix: Clicking in GUIs doesn't work when viewing a camera
 - Fix: It's possible to remove or otherwise interact with a camera when being mounted to it
+- Fix: Can see through blocks directly behind reinforced door
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------

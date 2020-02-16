@@ -24,7 +24,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinforcedBlock {
 
 	public ReinforcedIronTrapDoorBlock(Material material) {
-		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F).notSolid());
 	}
 
 	@Override

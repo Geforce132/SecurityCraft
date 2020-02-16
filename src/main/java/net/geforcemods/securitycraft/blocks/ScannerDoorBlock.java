@@ -25,7 +25,7 @@ public class ScannerDoorBlock extends DoorBlock
 {
 	public ScannerDoorBlock(Material material)
 	{
-		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F).notSolid());
 	}
 
 	@Override
