@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -24,6 +25,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
 	public String[] players = new String[100];
+	public UUID[] uuids = new UUID[100];
+	public long[] timestamps = new long[100];
 
 	public UsernameLoggerTileEntity()
 	{
@@ -59,22 +62,28 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	private void addPlayer(PlayerEntity player) {
-		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName().getFormattedText()))
+		long timestamp = System.currentTimeMillis();
+
+		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName().getFormattedText(), timestamp))
+		{
 			for(int i = 0; i < players.length; i++)
+			{
 				if(players[i] == "" || players[i] == null){
 					players[i] = player.getName().getFormattedText();
+					uuids[i] = player.getGameProfile().getId();
+					timestamps[i] = timestamp;
 					break;
 				}
-				else
-					continue;
+			}
+		}
 	}
 
-	private boolean hasPlayerName(String username) {
+	private boolean hasPlayerName(String username, long timestamp) {
 		for(int i = 0; i < players.length; i++)
-			if(players[i] == username)
+		{
+			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
 				return true;
-			else
-				continue;
+		}
 
 		return false;
 	}
@@ -84,8 +93,11 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		super.write(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if(players[i] != null)
-				tag.putString("player" + i, players[i]);
+		{
+			tag.putString("player" + i, players[i] == null ? "" : players[i]);
+			tag.putUniqueId("uuid" + i, uuids[i] == null ? new UUID(0, 0) : uuids[i]);
+			tag.putLong("timestamp" + i, timestamps[i]);
+		}
 
 		return tag;
 	}
@@ -95,16 +107,26 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		super.read(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if (tag.contains("player" + i))
+		{
+			if(tag.contains("player" + i))
 				players[i] = tag.getString("player" + i);
+
+			if(tag.contains("uuid" + i))
+				uuids[i] = tag.getUniqueId("uuid" + i);
+
+			if(tag.contains("timestamp" + i))
+				timestamps[i] = tag.getLong("timestamp" + i);
+		}
 	}
 
 	public void sendChangeToClient(boolean clear){
 		if(!clear)
 		{
 			for(int i = 0; i < players.length; i++)
+			{
 				if(players[i] != null)
-					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+			}
 		}
 		else
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(pos));

@@ -3,6 +3,7 @@
 - New: The Universal Block Reinforcer can now "unreinforce" blocks. Place items in the top slot to reinforce them, use the bottom slot instead for "unreinforcing" them
 - New: Reinforced Cut Sandstone Slab and Reinforced Cut Red Sandstone Slab
 - New: The Retinal Scanner now renders its owner's face (Thanks LorenaGdL!)
+- New: The Username Logger now displays the UUID of logged players and the time they were logged at to its owner
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures
@@ -31,6 +32,7 @@
 - Fix: Clicking in GUIs doesn't work when viewing a camera
 - Fix: It's possible to remove or otherwise interact with a camera when being mounted to it
 - Fix: Can see through blocks directly behind reinforced door
+- Fix: Username Logger can log the same player twice at the same time
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------

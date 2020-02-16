@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.network.client;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,17 +17,21 @@ public class UpdateLogger {
 
 	private int x, y, z, i;
 	private String username;
+	private UUID uuid;
+	private long timestamp;
 
 	public UpdateLogger(){
 
 	}
 
-	public UpdateLogger(int x, int y, int z, int i, String username){
+	public UpdateLogger(int x, int y, int z, int i, String username, UUID uuid, long timestamp){
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.i = i;
 		this.username = username;
+		this.uuid = uuid;
+		this.timestamp = timestamp;
 	}
 
 	public void toBytes(PacketBuffer buf) {
@@ -36,6 +40,8 @@ public class UpdateLogger {
 		buf.writeInt(z);
 		buf.writeInt(i);
 		buf.writeString(username);
+		buf.writeUniqueId(uuid == null ? new UUID(0, 0) : uuid);
+		buf.writeLong(timestamp);
 	}
 
 	public void fromBytes(PacketBuffer buf) {
@@ -44,6 +50,8 @@ public class UpdateLogger {
 		z = buf.readInt();
 		i = buf.readInt();
 		username = buf.readString(Integer.MAX_VALUE / 4);
+		uuid = buf.readUniqueId();
+		timestamp = buf.readLong();
 	}
 
 	public static void encode(UpdateLogger message, PacketBuffer packet)
@@ -70,13 +78,15 @@ public class UpdateLogger {
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			int i = message.i;
-			String username = message.username;
-			PlayerEntity player = Minecraft.getInstance().player;
 
-			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) player.world.getTileEntity(pos);
+			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) Minecraft.getInstance().player.world.getTileEntity(pos);
 
 			if(te != null)
-				te.players[i] = username;
+			{
+				te.players[i] = message.username;
+				te.uuids[i] = message.uuid;
+				te.timestamps[i] = message.timestamp;
+			}
 		});
 
 		ctx.get().setPacketHandled(true);

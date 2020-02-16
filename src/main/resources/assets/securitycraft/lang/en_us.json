@@ -501,6 +501,7 @@
 	"gui.securitycraft:keycardSetup.lvlNeeded": "Level of security needed:",
 	"gui.securitycraft:protectedFurnace.name": "Protected Furnace",
 	"gui.securitycraft:logger.logged": "Logged players:",
+	"gui.securitycraft:logger.date": "Date: %s",
 	"gui.securitycraft:mrat.notBound": "Not bound!",
 	"gui.securitycraft:mrat.mineLocations": "Mine at #location",
 	"gui.securitycraft:mrat": "Remote access tool for mines",
