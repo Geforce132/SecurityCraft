@@ -148,13 +148,15 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				int mouseListY = (int)(mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
-				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom && tileEntity.uuids[slotIndex] != null)
+				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
 						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
-						renderTooltip(tileEntity.uuids[slotIndex].toString(), mouseX, mouseY);
+						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
+							renderTooltip(tileEntity.uuids[slotIndex], mouseX, mouseY);
+
 						font.drawString(localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
 					}
 				}

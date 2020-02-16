@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.network.client;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
@@ -17,14 +16,14 @@ public class UpdateLogger {
 
 	private int x, y, z, i;
 	private String username;
-	private UUID uuid;
+	private String uuid;
 	private long timestamp;
 
 	public UpdateLogger(){
 
 	}
 
-	public UpdateLogger(int x, int y, int z, int i, String username, UUID uuid, long timestamp){
+	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -40,7 +39,7 @@ public class UpdateLogger {
 		buf.writeInt(z);
 		buf.writeInt(i);
 		buf.writeString(username);
-		buf.writeUniqueId(uuid == null ? new UUID(0, 0) : uuid);
+		buf.writeString(uuid);
 		buf.writeLong(timestamp);
 	}
 
@@ -50,7 +49,7 @@ public class UpdateLogger {
 		z = buf.readInt();
 		i = buf.readInt();
 		username = buf.readString(Integer.MAX_VALUE / 4);
-		uuid = buf.readUniqueId();
+		uuid = buf.readString(Integer.MAX_VALUE / 4);
 		timestamp = buf.readLong();
 	}
 

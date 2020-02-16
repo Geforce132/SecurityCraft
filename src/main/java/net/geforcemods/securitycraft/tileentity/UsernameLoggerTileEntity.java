@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -25,7 +24,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
 	public String[] players = new String[100];
-	public UUID[] uuids = new UUID[100];
+	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
 
 	public UsernameLoggerTileEntity()
@@ -70,7 +69,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 			{
 				if(players[i] == "" || players[i] == null){
 					players[i] = player.getName().getFormattedText();
-					uuids[i] = player.getGameProfile().getId();
+					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;
 					break;
 				}
@@ -95,7 +94,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		for(int i = 0; i < players.length; i++)
 		{
 			tag.putString("player" + i, players[i] == null ? "" : players[i]);
-			tag.putUniqueId("uuid" + i, uuids[i] == null ? new UUID(0, 0) : uuids[i]);
+			tag.putString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
 			tag.putLong("timestamp" + i, timestamps[i]);
 		}
 
@@ -112,7 +111,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 				players[i] = tag.getString("player" + i);
 
 			if(tag.contains("uuid" + i))
-				uuids[i] = tag.getUniqueId("uuid" + i);
+				uuids[i] = tag.getString("uuid" + i);
 
 			if(tag.contains("timestamp" + i))
 				timestamps[i] = tag.getLong("timestamp" + i);
