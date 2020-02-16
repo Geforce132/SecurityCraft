@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -136,6 +137,24 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				height = bottom - top - 8;
 
 			return height;
+		}
+
+		@Override
+		public boolean mouseClicked(double mouseX, double mouseY, int button)
+		{
+			if(tileEntity.getOwner().isOwner(minecraft.player))
+			{
+				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+				int slotIndex = mouseListY / slotHeight;
+
+				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+				{
+					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
+						GLFW.glfwSetClipboardString(minecraft.getMainWindow().getHandle(), tileEntity.uuids[slotIndex]);
+				}
+			}
+
+			return super.mouseClicked(mouseX, mouseY, button);
 		}
 
 		@Override
