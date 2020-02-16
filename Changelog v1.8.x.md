@@ -2,6 +2,7 @@
 
 - New: The Universal Block Reinforcer can now "unreinforce" blocks. Place items in the top slot to reinforce them, use the bottom slot instead for "unreinforcing" them
 - New: The Retinal Scanner now renders its owner's face (Thanks LorenaGdL!)
+- New: The Username Logger now displays the UUID of logged players and the time they were logged at to its owner. Click an entry to copy the UUID
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
@@ -20,6 +21,7 @@
 - Fix: Dropped items get destroyed in fake water
 - Fix: Camera does not render in third person view when being mounted to one
 - Fix: It's possible to remove or otherwise interact with a camera when being mounted to it
+- Fix: Username Logger can log the same player twice at the same time
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------

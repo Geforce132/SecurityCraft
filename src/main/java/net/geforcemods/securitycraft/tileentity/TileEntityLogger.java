@@ -16,6 +16,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 public class TileEntityLogger extends TileEntityDisguisable {
 
 	public String[] players = new String[100];
+	public String[] uuids = new String[100];
+	public long[] timestamps = new long[100];
 
 	@Override
 	public boolean attackEntity(Entity entity) {
@@ -46,22 +48,28 @@ public class TileEntityLogger extends TileEntityDisguisable {
 	}
 
 	private void addPlayer(EntityPlayer player) {
-		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName()))
+		long timestamp = System.currentTimeMillis();
+
+		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName(), timestamp))
+		{
 			for(int i = 0; i < players.length; i++)
+			{
 				if(players[i] == "" || players[i] == null){
 					players[i] = player.getName();
+					uuids[i] = player.getGameProfile().getId().toString();
+					timestamps[i] = timestamp;
 					break;
 				}
-				else
-					continue;
+			}
+		}
 	}
 
-	private boolean hasPlayerName(String username) {
+	private boolean hasPlayerName(String username, long timestamp) {
 		for(int i = 0; i < players.length; i++)
-			if(players[i] == username)
+		{
+			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
 				return true;
-			else
-				continue;
+		}
 
 		return false;
 	}
@@ -71,8 +79,14 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		super.writeToNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
+		{
 			if(players[i] != null)
-				tag.setString("player" + i, players[i]);
+			{
+				tag.setString("player" + i, players[i] == null ? "" : players[i]);
+				tag.setString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
+				tag.setLong("timestamp" + i, timestamps[i]);
+			}
+		}
 
 		return tag;
 	}
@@ -82,16 +96,26 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		super.readFromNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if (tag.hasKey("player" + i))
+		{
+			if(tag.hasKey("player" + i))
 				players[i] = tag.getString("player" + i);
+
+			if(tag.hasKey("uuid" + i))
+				uuids[i] = tag.getString("uuid" + i);
+
+			if(tag.hasKey("timestamp" + i))
+				timestamps[i] = tag.getLong("timestamp" + i);
+		}
 	}
 
 	public void sendChangeToClient(boolean clear){
 		if(!clear)
 		{
 			for(int i = 0; i < players.length; i++)
+			{
 				if(players[i] != null)
-					SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+					SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+			}
 		}
 		else
 			SecurityCraft.network.sendToAll(new PacketCClearLogger(pos));
