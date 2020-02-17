@@ -60,6 +60,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
 		keycodeTextbox.setMaxStringLength(11);
+		keycodeTextbox.setFocused2(true);
 	}
 
 	@Override

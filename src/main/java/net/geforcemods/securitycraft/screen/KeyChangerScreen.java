@@ -49,6 +49,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		textboxNewPasscode.setDisabledTextColour(-1);
 		textboxNewPasscode.setEnableBackgroundDrawing(true);
 		textboxNewPasscode.setMaxStringLength(20);
+		textboxNewPasscode.setFocused2(true);
 
 		textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, "");
 
