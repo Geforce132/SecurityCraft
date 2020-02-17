@@ -401,7 +401,7 @@ public class SetupHandler
 		SCContent.reinforcedGreenStainedGlassPane = new ReinforcedStainedGlassPaneBlock(DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE, "reinforced_green_stained_glass_pane");
 		SCContent.reinforcedRedStainedGlassPane = new ReinforcedStainedGlassPaneBlock(DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE, "reinforced_red_stained_glass_pane");
 		SCContent.reinforcedBlackStainedGlassPane = new ReinforcedStainedGlassPaneBlock(DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE, "reinforced_black_stained_glass_pane");
-		//anything else, alphabetical
+		//anything else
 		SCContent.reinforcedChiseledCrystalQuartz = new BlockPocketBlock(Material.ROCK, SCContent.chiseledCrystalQuartz, "reinforced_chiseled_crystal_quartz_block");
 		SCContent.reinforcedCrystalQuartz = new BlockPocketBlock(Material.ROCK, SCContent.crystalQuartz, "reinforced_crystal_quartz_block");
 		SCContent.reinforcedCrystalQuartzPillar = new ReinforcedRotatedCrystalQuartzPillar(Material.ROCK, SCContent.crystalQuartzPillar, "reinforced_crystal_quartz_pillar");
@@ -421,13 +421,13 @@ public class SetupHandler
 	public static void setupMines()
 	{
 		SCContent.mine = (MineBlock) new MineBlock(Material.MISCELLANEOUS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "mine"));
-		SCContent.dirtMine = new BaseFullMineBlock(Material.EARTH, SoundType.GROUND, Blocks.DIRT, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dirt_mine"));
-		SCContent.stoneMine = new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.STONE, 2.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "stone_mine"));
-		SCContent.cobblestoneMine = new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.COBBLESTONE, 2.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cobblestone_mine"));
-		SCContent.sandMine = new FallingBlockMineBlock(Material.SAND, SoundType.SAND, Blocks.SAND, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sand_mine"));
-		SCContent.diamondOreMine = new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.DIAMOND_ORE, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "diamond_mine"));
-		SCContent.furnaceMine = new FurnaceMineBlock(Material.ROCK, 3.75F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "furnace_mine"));
-		SCContent.gravelMine = new FallingBlockMineBlock(Material.EARTH, SoundType.GROUND, Blocks.GRAVEL, 1.25F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "gravel_mine"));
+		SCContent.dirtMine = new BaseFullMineBlock(Material.EARTH, SoundType.GROUND, Blocks.DIRT, 0.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dirt_mine"));
+		SCContent.stoneMine = new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.STONE, 1.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "stone_mine"));
+		SCContent.cobblestoneMine = new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.COBBLESTONE, 2.0F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cobblestone_mine"));
+		SCContent.sandMine = new FallingBlockMineBlock(Material.SAND, SoundType.SAND, Blocks.SAND, 0.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sand_mine"));
+		SCContent.diamondOreMine = new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.DIAMOND_ORE, 3.0F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "diamond_mine"));
+		SCContent.furnaceMine = new FurnaceMineBlock(Material.ROCK, 3.5F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "furnace_mine"));
+		SCContent.gravelMine = new FallingBlockMineBlock(Material.EARTH, SoundType.GROUND, Blocks.GRAVEL, 0.6F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "gravel_mine"));
 		SCContent.trackMine = new TrackMineBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine"));
 		SCContent.bouncingBetty = new BouncingBettyBlock(Material.MISCELLANEOUS, 1F).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncing_betty"));
 		SCContent.claymore = new ClaymoreBlock(Material.MISCELLANEOUS).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore"));
