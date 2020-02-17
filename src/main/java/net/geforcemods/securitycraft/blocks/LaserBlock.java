@@ -5,6 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -71,14 +72,18 @@ public class LaserBlock extends DisguisableBlock {
 					{
 						CustomizableTileEntity.link(thisTe, thatTe);
 
-						for(int j = 1; j < i; j++)
+						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((BooleanOption)thisTe.getOptionByName("enabled")).getValue() && ((BooleanOption)thatTe.getOptionByName("enabled")).getValue())
 						{
-							offsetPos = pos.offset(facing, j);
+							for(int j = 1; j < i; j++)
+							{
+								offsetPos = pos.offset(facing, j);
 
-							if(world.getBlockState(offsetPos).isAir(world, offsetPos))
-								world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
+								if(world.getBlockState(offsetPos).isAir(world, offsetPos))
+									world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
+							}
 						}
 					}
+					break inner;
 				}
 			}
 		}
@@ -110,6 +115,12 @@ public class LaserBlock extends DisguisableBlock {
 					world.destroyBlock(offsetPos, false);
 			}
 		}
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag)
+	{
+		setLaser(world, pos);
 	}
 
 	@Override
