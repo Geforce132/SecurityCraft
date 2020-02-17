@@ -50,6 +50,7 @@ public class GuiSetPassword extends GuiContainer {
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
 		keycodeTextbox.setMaxStringLength(11);
+		keycodeTextbox.setFocused(true);
 
 		updateButtonText();
 	}

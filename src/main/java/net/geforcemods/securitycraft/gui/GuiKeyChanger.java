@@ -50,6 +50,7 @@ public class GuiKeyChanger extends GuiContainer {
 		textboxNewPasscode.setDisabledTextColour(-1);
 		textboxNewPasscode.setEnableBackgroundDrawing(true);
 		textboxNewPasscode.setMaxStringLength(20);
+		textboxNewPasscode.setFocused(true);
 
 		textboxConfirmPasscode = new GuiTextField(1, fontRenderer, width / 2 - 57, height / 2 - 7, 110, 12);
 

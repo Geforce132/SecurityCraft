@@ -43,6 +43,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
 		keycodeTextbox.setMaxStringLength(4);
+		keycodeTextbox.setFocused(true);
 
 		updateButtonText();
 	}
