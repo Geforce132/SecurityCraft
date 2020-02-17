@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.List;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.block.Block;
@@ -9,8 +10,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock
@@ -49,6 +53,12 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 		vanillaBlock = vB;
 		setRegistryName(new ResourceLocation(SecurityCraft.MODID, registryPath));
+	}
+
+	@Override
+	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+	{
+		return this == SCContent.reinforcedNetherrack && side == Direction.UP;
 	}
 
 	@Override

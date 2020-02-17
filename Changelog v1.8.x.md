@@ -4,6 +4,7 @@
 - New: Reinforced Cut Sandstone Slab and Reinforced Cut Red Sandstone Slab
 - New: The Retinal Scanner now renders its owner's face (Thanks LorenaGdL!)
 - New: The Username Logger now displays the UUID of logged players and the time they were logged at to its owner. Click an entry to copy the UUID
+- New: Fire on Reinforced Netherrack now doesn't get removed
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures
