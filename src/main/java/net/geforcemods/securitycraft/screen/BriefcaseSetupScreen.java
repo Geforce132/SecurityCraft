@@ -45,6 +45,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
 		keycodeTextbox.setMaxStringLength(4);
+		keycodeTextbox.setFocused2(true);
 
 		updateButtonText();
 	}

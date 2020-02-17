@@ -8,6 +8,7 @@
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures
+- Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
