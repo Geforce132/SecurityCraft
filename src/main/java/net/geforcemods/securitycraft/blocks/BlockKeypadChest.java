@@ -95,7 +95,7 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 
 	private static boolean isBelowSolidBlock(World world, BlockPos pos)
 	{
-		return world.getBlockState(pos.up()).isSideSolid(world, pos.up(), EnumFacing.DOWN);
+		return world.getBlockState(pos.up()).doesSideBlockChestOpening(world, pos.up(), EnumFacing.DOWN);
 	}
 
 	private static boolean isOcelotSittingOnChest(World world, BlockPos pos)
