@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -44,7 +43,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote) {
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof KeypadChestTileEntity)
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos))
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 
@@ -109,7 +108,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 
 	private static boolean isBelowSolidBlock(World world, BlockPos pos)
 	{
-		return BlockUtils.isSideSolid(world, pos.up(), Direction.DOWN);
+		return world.getBlockState(pos.up()).isNormalCube(world, pos.up());
 	}
 
 	@Override
