@@ -9,17 +9,9 @@ import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
-import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
-import net.geforcemods.securitycraft.blocks.LaserBlock;
-import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
-import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -28,7 +20,6 @@ import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -40,15 +31,9 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -58,7 +43,6 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -76,7 +60,6 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
@@ -174,34 +157,6 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(tileEntity != null && tileEntity instanceof CustomizableTileEntity && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.universalBlockModifier)){
-					event.setCanceled(true);
-
-					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-						return;
-					}
-
-					if(event.getPlayer() instanceof ServerPlayerEntity)
-					{
-						NetworkHooks.openGui((ServerPlayerEntity)event.getPlayer(), new INamedContainerProvider() {
-							@Override
-							public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-							{
-								return new CustomizeBlockContainer(windowId, world, event.getPos(), inv);
-							}
-
-							@Override
-							public ITextComponent getDisplayName()
-							{
-								return new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey());
-							}
-						}, event.getPos());
-					}
-
-					return;
-				}
-
 				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG) && event.getPlayer().inventory.getCurrentItem().hasDisplayName()){
 					event.setCanceled(true);
 
@@ -220,65 +175,6 @@ public class SCEventHandler {
 						event.getPlayer().inventory.getCurrentItem().shrink(1);
 
 					((INameable) tileEntity).setCustomSCName(event.getPlayer().inventory.getCurrentItem().getDisplayName());
-					return;
-				}
-
-				if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.universalBlockRemover)){
-					event.setCanceled(true);
-
-					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockRemover.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-						return;
-					}
-
-					if(block == SCContent.laserBlock){
-						CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
-
-						for(ItemStack module : te.modules)
-						{
-							if(!module.isEmpty())
-								te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModule()}, te);
-						}
-
-						world.destroyBlock(event.getPos(), true);
-						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
-					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
-						BlockPos originalPos = event.getPos();
-						BlockPos middlePos = originalPos.up(4);
-
-						new CageTrapBlock.BlockModifier(event.getWorld(), new BlockPos.Mutable(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
-							TileEntity te = w.getTileEntity(p);
-
-							if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
-							{
-								Block b = w.getBlockState(p).getBlock();
-
-								if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
-									w.destroyBlock(p, false);
-							}
-						});
-
-						world.destroyBlock(originalPos, false);
-					}else{
-						BlockPos pos = event.getPos();
-
-						if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
-							pos = pos.down();
-
-						if(block == SCContent.inventoryScanner)
-						{
-							InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, event.getPos());
-
-							if(te != null)
-								te.modules.clear();
-						}
-
-						world.destroyBlock(pos, true);
-						world.removeTileEntity(pos);
-						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
-					}
-
 					return;
 				}
 			}
@@ -443,9 +339,4 @@ public class SCEventHandler {
 
 		return tips[new Random().nextInt(tips.length)];
 	}
-
-	private static boolean isOwnableBlock(Block block, TileEntity tileEntity){
-		return (tileEntity instanceof OwnableTileEntity || tileEntity instanceof IOwnable || block instanceof OwnableBlock);
-	}
-
 }

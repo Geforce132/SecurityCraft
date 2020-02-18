@@ -9,6 +9,7 @@
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
+- Change: Laser Blocks now create connections more easily
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Cannot see through Scanner Door and Reinforced Iron Trapdoor
@@ -35,6 +36,7 @@
 - Fix: It's possible to remove or otherwise interact with a camera when being mounted to it
 - Fix: Username Logger can log the same player twice at the same time
 - Fix: Block mines don't have the same hardness as their vanilla counterpart
+- Fix: Some universal tools needs to be shift-rightclicked in order to work
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
