@@ -72,7 +72,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable && block.getRegistryName().getPath().equals(SecurityCraft.MODID))
+		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
 			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName()));
 
 		if(disguised)
