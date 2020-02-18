@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.blocks.LoggerBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
+import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -150,6 +151,7 @@ public class SetupHandler
 		SCContent.stairsCrystalQuartz = new CustomStairsBlock(SCContent.crystalQuartz.getDefaultState(), Block.Properties.from(SCContent.crystalQuartz)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "crystal_quartz_stairs"));
 		SCContent.blockPocketWall = new BlockPocketWallBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_wall"));
 		SCContent.blockPocketManager = new BlockPocketManagerBlock().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager"));
+		SCContent.projector = new ProjectorBlock(Block.Properties.create(Material.IRON)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector"));
 	}
 
 	public static void setupReinforcedBlocks()

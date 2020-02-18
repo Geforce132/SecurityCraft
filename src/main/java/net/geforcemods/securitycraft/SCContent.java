@@ -32,6 +32,7 @@ import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
+import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedPressurePlateTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
@@ -113,6 +114,7 @@ public class SCContent
 	@OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static MineBlock mine;
 	public static FlowingFluidBlock fakeWaterBlock;
 	public static FlowingFluidBlock fakeLavaBlock;
+	@OwnableTE @RegisterItemBlock public static Block projector;
 
 	//Reinforced Blocks (ordered by vanilla building blocks creative tab order)
 	@OwnableTE @Reinforced(hasPage=true) public static Block reinforcedStone;
@@ -484,6 +486,8 @@ public class SCContent
 	public static TileEntityType<BlockPocketTileEntity> teTypeBlockPocket;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
 	public static TileEntityType<ReinforcedPressurePlateTileEntity> teTypeReinforcedPressurePlate;
+	@ObjectHolder(SecurityCraft.MODID + ":projector")
+	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 
 	//Entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

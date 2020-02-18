@@ -77,6 +77,7 @@ import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
+import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedPressurePlateTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
@@ -189,6 +190,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.stairsCrystalQuartz, false);
 		registerBlock(event, SCContent.blockPocketWall);
 		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
+		registerBlock(event, SCContent.projector);
 
 		//register reinforced blocks
 		for(Field field : SCContent.class.getFields())
@@ -345,6 +347,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketManagerTileEntity::new, SCContent.blockPocketManager).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketTileEntity::new, SCContent.blockPocketWall, SCContent.reinforcedCrystalQuartz, SCContent.reinforcedChiseledCrystalQuartz, SCContent.reinforcedCrystalQuartzPillar).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket")));
 		event.getRegistry().register(TileEntityType.Builder.create(ReinforcedPressurePlateTileEntity::new, SCContent.reinforcedStonePressurePlate, SCContent.reinforcedAcaciaPressurePlate, SCContent.reinforcedBirchPressurePlate, SCContent.reinforcedDarkOakPressurePlate, SCContent.reinforcedJunglePressurePlate, SCContent.reinforcedOakPressurePlate, SCContent.reinforcedSprucePressurePlate).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_pressure_plate")));
+		event.getRegistry().register(TileEntityType.Builder.create(ProjectorTileEntity::new, SCContent.projector).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
 	}
 
 	@SubscribeEvent

@@ -1,4 +1,4 @@
-{
+﻿{
 	"block.securitycraft.laser_block": "Laser Block",
 	"block.securitycraft.laser.name": "Laser",
 	"block.securitycraft.laser_active": "Active Laser",
@@ -48,6 +48,7 @@
 	"block.securitycraft.keypad_furnace": "Password-protected Furnace",
 	"block.securitycraft.claymore": "Claymore",
 	"block.securitycraft.security_camera": "Security Camera",
+	"block.securitycraft.projector": "Projector",
 	"block.securitycraft.reinforced_stone_stairs": "Reinforced Stone Stairs",
 	"block.securitycraft.reinforced_cobblestone_stairs": "Reinforced Cobblestone Stairs",
 	"block.securitycraft.reinforced_sandstone_stairs": "Reinforced Sandstone Stairs",
