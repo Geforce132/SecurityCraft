@@ -14,10 +14,13 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -52,10 +55,28 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 
 	@Override
 	public void appendBody(List<ITextComponent> body, IDataAccessor data, IPluginConfig config) {
-		if(data.getBlock() instanceof IOverlayDisplay && !((IOverlayDisplay) data.getBlock()).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
+		Block block = data.getBlock();
+		boolean disguised = false;
 
-		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable)
+		if(block instanceof DisguisableBlock)
+		{
+			BlockState disguisedBlockState = ((DisguisableBlock)block).getDisguisedBlockState(data.getWorld(), data.getPosition());
+
+			if(disguisedBlockState != null)
+			{
+				disguised = true;
+				block = disguisedBlockState.getBlock();
+			}
+		}
+
+		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return;
+
+		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
+		if(config.get(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable && block.getRegistryName().getPath().equals(SecurityCraft.MODID))
 			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName()));
+
+		if(disguised)
+			return;
 
 		if(config.get(SHOW_MODULES) && data.getTileEntity() instanceof CustomizableTileEntity && ((CustomizableTileEntity) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
 			if(!((CustomizableTileEntity) data.getTileEntity()).getModules().isEmpty())

@@ -123,6 +123,7 @@
 - Fix: Trophy System does not drop
 - Fix: I.M.S. bomb does not show up
 - Fix: Message about cage trap having trapped someone gets sent to the one being trapped and not the cage trap owner (Thanks LorenaGdL!)
+- Fix: HWYLA doesn't show information of disguised blocks correctly
 - Misc.: The minimum required Forge version is 30.0.17
 - Removed: Unused config options
 
