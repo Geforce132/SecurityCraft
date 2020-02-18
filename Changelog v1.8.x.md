@@ -7,6 +7,7 @@
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
+- Change: Laser Blocks now create connections more easily
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 - Fix: Being in fake lava creates a hurting sound

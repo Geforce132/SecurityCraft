@@ -5,6 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.minecraft.block.Block;
@@ -73,20 +74,25 @@ public class BlockLaserBlock extends BlockDisguisable {
 					break inner;
 				else if(id == SCContent.laserBlock)
 				{
+					CustomizableSCTE thisTe = (CustomizableSCTE)world.getTileEntity(pos);
 					CustomizableSCTE thatTe = (CustomizableSCTE)world.getTileEntity(offsetPos);
 
 					if(owner.equals(thatTe.getOwner()))
 					{
-						CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), thatTe);
+						CustomizableSCTE.link(thisTe, thatTe);
 
-						for(int j = 1; j < i; j++)
+						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((OptionBoolean)thisTe.getOptionByName("enabled")).getValue() && ((OptionBoolean)thatTe.getOptionByName("enabled")).getValue())
 						{
-							offsetPos = pos.offset(facing, j);
+							for(int j = 1; j < i; j++)
+							{
+								offsetPos = pos.offset(facing, j);
 
-							if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
-								world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
+								if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
+									world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
+							}
 						}
 					}
+					break inner;
 				}
 			}
 		}
@@ -118,6 +124,11 @@ public class BlockLaserBlock extends BlockDisguisable {
 					world.destroyBlock(offsetPos, false);
 			}
 		}
+	}
+
+	@Override
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
+		setLaser(((CustomizableSCTE)world.getTileEntity(pos)).getOwner(), world, pos);
 	}
 
 	@Override
