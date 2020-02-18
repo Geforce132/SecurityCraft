@@ -46,11 +46,9 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 		if(!world.isRemote) {
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof KeypadChestTileEntity)
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
-
-			return ActionResultType.SUCCESS;
 		}
 
-		return ActionResultType.PASS;
+		return ActionResultType.SUCCESS;
 	}
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){

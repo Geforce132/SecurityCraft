@@ -44,9 +44,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(world.isRemote)
-			return ActionResultType.PASS;
-		else{
+		if(!world.isRemote)
+		{
 			if(isFacingAnotherScanner(world, pos) && player instanceof ServerPlayerEntity)
 			{
 				TileEntity te = world.getTileEntity(pos);
@@ -56,9 +55,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			}
 			else if(hand == Hand.MAIN_HAND)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.inventoryScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
-
-			return ActionResultType.SUCCESS;
 		}
+
+		return ActionResultType.SUCCESS;
 	}
 
 	/**

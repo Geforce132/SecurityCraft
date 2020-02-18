@@ -95,8 +95,6 @@ public class IMSBlock extends OwnableBlock {
 					if(te instanceof INamedContainerProvider)
 						NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
 				}
-
-				return ActionResultType.SUCCESS;
 			}
 		}
 
