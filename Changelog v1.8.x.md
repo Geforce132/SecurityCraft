@@ -35,6 +35,7 @@
 - Fix: It's possible to remove or otherwise interact with a camera when being mounted to it
 - Fix: Username Logger can log the same player twice at the same time
 - Fix: Block mines don't have the same hardness as their vanilla counterpart
+- Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
