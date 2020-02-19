@@ -38,6 +38,7 @@
 - Fix: Block mines don't have the same hardness as their vanilla counterpart
 - Fix: Some universal tools needs to be shift-rightclicked in order to work
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
+- Fix: Some sounds don't become quieter when moving away from them
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
