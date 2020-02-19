@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
-import net.minecraftforge.common.Tags;
 
 public class ItemTagGenerator extends ItemTagsProvider
 {
@@ -50,10 +49,6 @@ public class ItemTagGenerator extends ItemTagsProvider
 		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS).add(SCContent.stairsCrystalQuartz.asItem());
 		getBuilder(ItemTags.SIGNS).add(SCTags.Items.SECRET_SIGNS);
 		getBuilder(ItemTags.TRAPDOORS).add(SCContent.reinforcedIronTrapdoor.asItem());
-
-		//forge tags
-		copy(Tags.Blocks.SUPPORTS_BEACON, Tags.Items.SUPPORTS_BEACON);
-		copy(Tags.Blocks.SUPPORTS_CONDUIT, Tags.Items.SUPPORTS_CONDUIT);
 	}
 
 	@Override

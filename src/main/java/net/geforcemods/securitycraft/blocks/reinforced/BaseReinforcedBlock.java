@@ -15,6 +15,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock
@@ -59,6 +60,18 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side)
 	{
 		return this == SCContent.reinforcedNetherrack && side == Direction.UP;
+	}
+
+	@Override
+	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon)
+	{
+		return this == SCContent.reinforcedIronBlock || this == SCContent.reinforcedGoldBlock || this == SCContent.reinforcedDiamondBlock || this == SCContent.reinforcedEmeraldBlock;
+	}
+
+	@Override
+	public boolean isConduitFrame(BlockState state, IWorldReader world, BlockPos pos, BlockPos conduit)
+	{
+		return this == SCContent.reinforcedPrismarine || this == SCContent.reinforcedPrismarineBricks || this == SCContent.reinforcedSeaLantern || this == SCContent.reinforcedDarkPrismarine;
 	}
 
 	@Override

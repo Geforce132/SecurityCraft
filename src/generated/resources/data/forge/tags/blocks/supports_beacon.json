@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "securitycraft:reinforced_iron_block",
-    "securitycraft:reinforced_gold_block",
-    "securitycraft:reinforced_diamond_block",
-    "securitycraft:reinforced_emerald_block"
-  ]
-}

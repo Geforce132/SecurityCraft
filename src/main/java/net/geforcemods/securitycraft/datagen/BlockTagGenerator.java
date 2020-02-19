@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
-import net.minecraftforge.common.Tags;
 
 public class BlockTagGenerator extends BlockTagsProvider
 {
@@ -204,10 +203,6 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getBuilder(BlockTags.STANDING_SIGNS).add(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		getBuilder(BlockTags.TRAPDOORS).add(SCContent.reinforcedIronTrapdoor);
 		getBuilder(BlockTags.WALL_SIGNS).add(SCTags.Blocks.SECRET_WALL_SIGNS);
-
-		//forge tags
-		getBuilder(Tags.Blocks.SUPPORTS_BEACON).add(SCContent.reinforcedIronBlock, SCContent.reinforcedGoldBlock, SCContent.reinforcedDiamondBlock, SCContent.reinforcedEmeraldBlock);
-		getBuilder(Tags.Blocks.SUPPORTS_CONDUIT).add(SCContent.reinforcedPrismarine, SCContent.reinforcedPrismarineBricks, SCContent.reinforcedSeaLantern, SCContent.reinforcedDarkPrismarine);
 	}
 
 	@Override

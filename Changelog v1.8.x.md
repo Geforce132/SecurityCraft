@@ -40,6 +40,7 @@
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Some sounds don't become quieter when moving away from them
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
+- Misc.: The minimum required Forge version is now 31.1.14
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

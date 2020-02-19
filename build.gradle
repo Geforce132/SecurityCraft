@@ -41,7 +41,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200130-1.15.1'
+    mappings channel: 'snapshot', version: '20200211-1.15.1'
 	
     runs {
         client {
@@ -99,7 +99,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.0.14'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.1.14'
 
     compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.7-B71_1.15.1") {
         transitive = false
