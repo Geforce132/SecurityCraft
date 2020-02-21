@@ -1,10 +1,14 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
+import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -28,6 +32,7 @@ public class GuiMRAT extends GuiContainer{
 	private ItemStack mrat;
 	private GuiButton[][] buttons = new GuiButton[6][4]; //6 buttons, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
+	private List<StringHoverChecker> hoverCheckers = new ArrayList<StringHoverChecker>();
 
 	public GuiMRAT(InventoryPlayer inventory, ItemStack item) {
 		super(new ContainerGeneric(inventory, null));
@@ -45,18 +50,14 @@ public class GuiMRAT extends GuiContainer{
 		int y = padding;
 		int[] coords = null;
 		int id = 0;
+		hoverCheckers.clear();
 
 		for(int i = 0; i < 6; i++)
 		{
 			y += 30;
 			coords = getMineCoordinates(i);
 
-			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
-			Block block = mc.world.getBlockState(minePos).getBlock();
-			boolean active = block instanceof IExplosive && ((IExplosive) block).isActive(mc.world, minePos);
-			boolean defusable = (block instanceof IExplosive && ((IExplosive) block).isDefusable());
-			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
-
+			//initialize buttons
 			for(int j = 0; j < 4; j++)
 			{
 				int btnX = guiLeft + j * padding + 154;
@@ -66,23 +67,54 @@ public class GuiMRAT extends GuiContainer{
 				{
 					case DEFUSE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(SCContent.wireCutters));
-						buttons[i][j].enabled = active && bound && defusable;
+						buttons[i][j].enabled = false;
 						break;
 					case ACTIVATE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, itemRender, new ItemStack(Items.FLINT_AND_STEEL));
-						buttons[i][j].enabled = !active && bound && defusable;
+						buttons[i][j].enabled = false;
 						break;
 					case DETONATE:
 						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18);
-						buttons[i][j].enabled = active && bound;
+						buttons[i][j].enabled = false;
 						break;
 					case UNBIND:
 						buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
-						buttons[i][j].enabled = bound;
+						buttons[i][j].enabled = false;
 						break;
 				}
 
 				buttonList.add(buttons[i][j]);
+			}
+			
+			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				if (Minecraft.getMinecraft().player.world.isBlockLoaded(minePos, false)) {
+					Block block = mc.world.getBlockState(minePos).getBlock();
+					if (block instanceof IExplosive) {
+						boolean active = ((IExplosive) block).isActive(mc.world, minePos);
+						boolean defusable = ((IExplosive) block).isDefusable();
+
+						buttons[i][DEFUSE].enabled = active && defusable;
+						buttons[i][ACTIVATE].enabled = !active && defusable;
+						buttons[i][DETONATE].enabled = active;
+						buttons[i][UNBIND].enabled = true;	
+						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], 20, ClientUtils.localize("gui.securitycraft:mrat.defuse")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], 20, ClientUtils.localize("gui.securitycraft:mrat.activate")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], 20, ClientUtils.localize("gui.securitycraft:mrat.detonate")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+					}
+					else {
+						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.player);	
+						for (int j = 0; j < 4; j++) {	
+							buttons[i][j].enabled = false;
+						}	
+					}
+				}
+				else {
+					for (int j = 0; j < 4; j++) {	
+						hoverCheckers.add(new StringHoverChecker(buttons[i][j], 20, ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
+					}
+				}
 			}
 		}
 	}
@@ -121,6 +153,17 @@ public class GuiMRAT extends GuiContainer{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		for(StringHoverChecker chc : hoverCheckers)
+		{
+			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
+				drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY, fontRenderer);
+		}
 	}
 
 	@Override

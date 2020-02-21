@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -8,6 +9,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
+import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSetSentryMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -32,6 +34,7 @@ public class GuiSRAT extends GuiContainer {
 	private String[] names = new String[12];
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
+	private List<StringHoverChecker> hoverCheckers = new ArrayList<StringHoverChecker>();
 
 	public GuiSRAT(InventoryPlayer inventory, ItemStack item) {
 		super(new ContainerGeneric(inventory, null));
@@ -50,6 +53,7 @@ public class GuiSRAT extends GuiContainer {
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
+		hoverCheckers.clear();
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
@@ -83,23 +87,41 @@ public class GuiSRAT extends GuiContainer {
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
-			List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
+			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				if (Minecraft.getMinecraft().player.world.isBlockLoaded(sentryPos, false)) {
+					List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
 
-			if (!sentries.isEmpty()) {
-				EntitySentry sentry = sentries.get(0);
-				boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE;
-				boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE;
-				boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE;
-				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
+					if (!sentries.isEmpty()) {
+						EntitySentry sentry = sentries.get(0);
+						boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE;
+						boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE;
+						boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE;
 
-				if(sentry.hasCustomName())
-					names[i] = sentry.getCustomNameTag();
+						if(sentry.hasCustomName())
+							names[i] = sentry.getCustomNameTag();
 
-				buttons[i][AGGRESSIVE].enabled = !aggressiveMode && bound;
-				buttons[i][CAMOUFLAGE].enabled = !camouflageMode && bound;
-				buttons[i][IDLE].enabled = !idleMode && bound;
-				buttons[i][UNBIND].enabled = bound;
-				foundSentry = true;
+						buttons[i][AGGRESSIVE].enabled = !aggressiveMode;
+						buttons[i][CAMOUFLAGE].enabled = !camouflageMode;
+						buttons[i][IDLE].enabled = !idleMode;
+						buttons[i][UNBIND].enabled = true;
+						hoverCheckers.add(new StringHoverChecker(buttons[i][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
+						foundSentry = true;
+					}
+					else {
+						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
+						for (int j = 0; j < 4; j++) {	
+							buttons[i][j].enabled = false;
+						}
+					}
+				}
+				else {
+					for (int j = 0; j < 4; j++) {	
+						hoverCheckers.add(new StringHoverChecker(buttons[i][j], 20, ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
+					}
+				}
 			}
 		}
 
@@ -150,6 +172,17 @@ public class GuiSRAT extends GuiContainer {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		drawModalRectWithCustomSizedTexture(startX, startY, 0, 0, xSize, ySize, 512, 256);
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		super.drawScreen(mouseX, mouseY, partialTicks);
+
+		for(StringHoverChecker chc : hoverCheckers)
+		{
+			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
+				drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY, fontRenderer);
+		}
 	}
 
 	/**
