@@ -97,20 +97,6 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					addButton(guiButtons[i][j]);
 				}
 			}
-			else {
-				int btnY = startY + y - 48;
-
-				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
-				guiButtons[i][0] = new PictureButton(id++, startX + 0 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18, this::actionPerformed);
-				guiButtons[i][1] = new PictureButton(id++, startX + 1 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18, this::actionPerformed);
-				guiButtons[i][2] = new PictureButton(id++, startX + 2 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
-				guiButtons[i][3] = new ClickButton(id++, startX + 3 * paddingX + 127 + x, btnY, 20, 20, "X", this::actionPerformed);
-
-				for (int j = 0; j < 4; j++) {
-					guiButtons[i][j].active = false;
-					addButton(guiButtons[i][j]);
-				}
-			}
 		}
 
 		//Add buttons for global operation (all sentries), large id
