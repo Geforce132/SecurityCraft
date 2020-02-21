@@ -49,11 +49,38 @@ public class GuiSRAT extends GuiContainer {
 		int paddingY = 25;
 		int[] coords = null;
 		int id = 0;
+		boolean foundSentry = false;
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
 			int y = ((i % 6) + 1) * 30 + paddingY;
 			coords = getSentryCoordinates(i);
+
+			//initialize buttons
+			for (int j = 0; j < 4; j++) {
+				int btnX = guiLeft + j * paddingX + 127 + x;
+				int btnY = guiTop + y - 48;
+
+				switch (j) {
+					case AGGRESSIVE:
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
+						buttons[i][j].enabled = false;
+						break;
+					case CAMOUFLAGE:
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
+						buttons[i][j].enabled = false;
+						break;
+					case IDLE:
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
+						buttons[i][j].enabled = false;
+						break;
+					case UNBIND:
+						buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
+						buttons[i][j].enabled = false;
+						break;
+				}
+				buttonList.add(buttons[i][j]);
+			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 			List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
@@ -69,29 +96,23 @@ public class GuiSRAT extends GuiContainer {
 					names[i] = sentry.getCustomNameTag();
 
 				for (int j = 0; j < 4; j++) {
-					int btnX = guiLeft + j * paddingX + 127 + x;
-					int btnY = guiTop + y - 48;
-
 					switch (j) {
 						case AGGRESSIVE:
-							buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
 							buttons[i][j].enabled = !aggressiveMode && bound;
 							break;
 						case CAMOUFLAGE:
-							buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
 							buttons[i][j].enabled = !camouflageMode && bound;
 							break;
 						case IDLE:
-							buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
 							buttons[i][j].enabled = !idleMode && bound;
 							break;
 						case UNBIND:
-							buttons[i][j] = new GuiButton(id++, btnX, btnY, 20, 20, "X");
 							buttons[i][j].enabled = bound;
 							break;
 					}
-					buttonList.add(buttons[i][j]);
 				}
+
+				foundSentry = true;
 			}
 		}
 
@@ -100,7 +121,7 @@ public class GuiSRAT extends GuiContainer {
 		buttonsGlobal[0][1] = new GuiPictureButton(1001, guiLeft + 22 + 260, guiTop + 188, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
 		buttonsGlobal[0][2] = new GuiPictureButton(1002, guiLeft + 44 + 260, guiTop + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
 		for (int j = 0; j < 3; j++) {
-			buttonsGlobal[0][j].enabled = true;
+			buttonsGlobal[0][j].enabled = foundSentry;
 			buttonList.add(buttonsGlobal[0][j]);
 		}
 	}
@@ -177,6 +198,16 @@ public class GuiSRAT extends GuiContainer {
 					removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
 					for (int i = 0; i < 4; i++) {
 						buttons[sentry][i].enabled = false;
+					}
+
+					for(int i = 0; i < buttons.length; i++)
+					{
+						if(buttons[i][UNBIND].enabled)
+							return;
+					}
+
+					for (int i = 0; i < 3; i++) {
+						buttonsGlobal[0][i].enabled = false;
 					}
 			}
 		}
