@@ -93,19 +93,6 @@ public class GuiSRAT extends GuiContainer {
 					buttonList.add(buttons[i][j]);
 				}
 			}
-			else {
-				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
-				int btnY = guiTop + y - 48;
-				buttons[i][0] = new GuiPictureButton(id++, guiLeft + 0 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18);
-				buttons[i][1] = new GuiPictureButton(id++, guiLeft + 1 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18);
-				buttons[i][2] = new GuiPictureButton(id++, guiLeft + 2 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17);
-				buttons[i][3] = new GuiButton(id++, guiLeft + 3 * paddingX + 127 + x, btnY, 20, 20, "X");
-
-				for (int j = 0; j < 4; j++) {
-					buttons[i][j].enabled = false;
-					buttonList.add(buttons[i][j]);
-				}
-			}
 		}
 
 		//Add buttons for global operation (all sentries), large id
