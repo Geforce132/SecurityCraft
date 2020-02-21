@@ -87,31 +87,18 @@ public class GuiSRAT extends GuiContainer {
 
 			if (!sentries.isEmpty()) {
 				EntitySentry sentry = sentries.get(0);
-				boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE ? true : false;
-				boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE ? true : false;
-				boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE ? true : false;
+				boolean aggressiveMode = sentry.getMode() == EnumSentryMode.AGGRESSIVE;
+				boolean camouflageMode = sentry.getMode() == EnumSentryMode.CAMOUFLAGE;
+				boolean idleMode = sentry.getMode() == EnumSentryMode.IDLE;
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
 				if(sentry.hasCustomName())
 					names[i] = sentry.getCustomNameTag();
 
-				for (int j = 0; j < 4; j++) {
-					switch (j) {
-						case AGGRESSIVE:
-							buttons[i][j].enabled = !aggressiveMode && bound;
-							break;
-						case CAMOUFLAGE:
-							buttons[i][j].enabled = !camouflageMode && bound;
-							break;
-						case IDLE:
-							buttons[i][j].enabled = !idleMode && bound;
-							break;
-						case UNBIND:
-							buttons[i][j].enabled = bound;
-							break;
-					}
-				}
-
+				buttons[i][AGGRESSIVE].enabled = !aggressiveMode && bound;
+				buttons[i][CAMOUFLAGE].enabled = !camouflageMode && bound;
+				buttons[i][IDLE].enabled = !idleMode && bound;
+				buttons[i][UNBIND].enabled = bound;
 				foundSentry = true;
 			}
 		}
