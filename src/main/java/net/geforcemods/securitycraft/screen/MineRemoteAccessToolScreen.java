@@ -87,12 +87,6 @@ public class MineRemoteAccessToolScreen extends Screen{
 				}
 
 				addButton(guiButtons[i][j]);
-
-				if(!(block instanceof IExplosive))
-				{
-					removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], minecraft.player);
-					guiButtons[i][j].active = false;
-				}
 			}
 		}
 	}

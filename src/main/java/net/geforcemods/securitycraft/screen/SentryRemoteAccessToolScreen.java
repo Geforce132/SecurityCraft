@@ -52,64 +52,54 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int paddingY = 25;
 		int[] coords = null;
 		int id = 0;
+		boolean foundSentry = false;
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
 			int y = ((i % 6) + 1) * 30 + paddingY;
 			coords = getSentryCoordinates(i);
 
+			for (int j = 0; j < 4; j++) {
+				int btnX = startX + j * paddingX + 127 + x;
+				int btnY = startY + y - 48;
+
+				switch (j) {
+					case AGGRESSIVE:
+						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
+						guiButtons[i][j].active = false;
+						break;
+					case CAMOUFLAGE:
+						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
+						guiButtons[i][j].active = false;
+						break;
+					case IDLE:
+						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+						guiButtons[i][j].active = false;
+						break;
+					case UNBIND:
+						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
+						guiButtons[i][j].active = false;
+						break;
+				}
+
+				addButton(guiButtons[i][j]);
+			}
+
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 			List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
 			if (!sentries.isEmpty()) {
 				SentryEntity sentry = sentries.get(0);
-				boolean aggressiveMode = sentry.getMode() == SentryMode.AGGRESSIVE ? true : false;
-				boolean camouflageMode = sentry.getMode() == SentryMode.CAMOUFLAGE ? true : false;
-				boolean idleMode = sentry.getMode() == SentryMode.IDLE ? true : false;
+				boolean aggressiveMode = sentry.getMode() == SentryMode.AGGRESSIVE;
+				boolean camouflageMode = sentry.getMode() == SentryMode.CAMOUFLAGE;
+				boolean idleMode = sentry.getMode() == SentryMode.IDLE;
 				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 
-				if(sentry.hasCustomName())
-					names[i] = sentry.getCustomName();
-
-				for (int j = 0; j < 4; j++) {
-					int btnX = startX + j * paddingX + 127 + x;
-					int btnY = startY + y - 48;
-
-					switch (j) {
-						case AGGRESSIVE:
-							guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
-							guiButtons[i][j].active = !aggressiveMode && bound;
-							break;
-						case CAMOUFLAGE:
-							guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
-							guiButtons[i][j].active = !camouflageMode && bound;
-							break;
-						case IDLE:
-							guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
-							guiButtons[i][j].active = !idleMode && bound;
-							break;
-						case UNBIND:
-							guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
-							guiButtons[i][j].active = bound;
-							break;
-					}
-
-					addButton(guiButtons[i][j]);
-				}
-			}
-			else {
-				int btnY = startY + y - 48;
-
-				removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
-				guiButtons[i][0] = new PictureButton(id++, startX + 0 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS,	-2, -1, 18, 18, this::actionPerformed);
-				guiButtons[i][1] = new PictureButton(id++, startX + 1 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS,	40, -1, 18, 18, this::actionPerformed);
-				guiButtons[i][2] = new PictureButton(id++, startX + 2 * paddingX + 127 + x, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
-				guiButtons[i][3] = new ClickButton(id++, startX + 3 * paddingX + 127 + x, btnY, 20, 20, "X", this::actionPerformed);
-
-				for (int j = 0; j < 4; j++) {
-					guiButtons[i][j].active = false;
-					addButton(guiButtons[i][j]);
-				}
+				guiButtons[i][AGGRESSIVE].active = !aggressiveMode && bound;
+				guiButtons[i][CAMOUFLAGE].active = !camouflageMode && bound;
+				guiButtons[i][IDLE].active = !idleMode && bound;
+				guiButtons[i][UNBIND].active = bound;
+				foundSentry = true;
 			}
 		}
 
@@ -119,7 +109,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		guiButtonsGlobal[0][2] = new PictureButton(1002, startX + 44 + 260, startY + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
 
 		for (int j = 0; j < 3; j++) {
-			guiButtonsGlobal[0][j].active = true;
+			guiButtonsGlobal[0][j].active = foundSentry;
 			addButton(guiButtonsGlobal[0][j]);
 		}
 	}
@@ -189,6 +179,16 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 					for(int i = 0; i < 4; i++) {
 						guiButtons[sentry][i].active = false;
+					}
+
+					for(int i = 0; i < guiButtons.length; i++)
+					{
+						if(guiButtons[i][UNBIND].active)
+							return;
+					}
+
+					for (int i = 0; i < 3; i++) {
+						guiButtonsGlobal[0][i].active = false;
 					}
 			}
 		}

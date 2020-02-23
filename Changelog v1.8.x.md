@@ -39,6 +39,7 @@
 - Fix: Some universal tools needs to be shift-rightclicked in order to work
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Some sounds don't become quieter when moving away from them
+- Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Misc.: The minimum required Forge version is now 31.1.14
 
