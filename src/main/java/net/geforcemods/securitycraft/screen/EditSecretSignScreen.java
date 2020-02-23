@@ -148,10 +148,10 @@ public class EditSecretSignScreen extends Screen
 		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		buffer = minecraft.getRenderTypeBuffers().getBufferSource();
 		builder = material.getBuffer(buffer, signModel::getRenderType);
-		signModel.signBoard.render(stack, builder, 15728880, OverlayTexture.DEFAULT_LIGHT);
+		signModel.signBoard.render(stack, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
 		if(isStanding)
-			signModel.signStick.render(stack, builder, 15728880, OverlayTexture.DEFAULT_LIGHT);
+			signModel.signStick.render(stack, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
 		stack.pop();
 		stack.translate(0.0D, 0.33333334F, 0.046666667F);
@@ -166,7 +166,7 @@ public class EditSecretSignScreen extends Screen
 			});
 		}
 
-		positionMatrix = stack.getLast().getPositionMatrix();
+		positionMatrix = stack.getLast().getMatrix();
 
 		for(int k1 = 0; k1 < text.length; ++k1)
 		{

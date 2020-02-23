@@ -31,7 +31,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBombEntity> {
 		matrix.translate(-0.1D, 0, 0.1D);
 		matrix.scale(1.4F, 1.4F, 1.4F);
 		Minecraft.getInstance().textureManager.bindTexture(getEntityTexture(imsBomb));
-		modelBomb.render(matrix, buffer.getBuffer(RenderType.entitySolid(getEntityTexture(imsBomb))), p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
+		modelBomb.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(getEntityTexture(imsBomb))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

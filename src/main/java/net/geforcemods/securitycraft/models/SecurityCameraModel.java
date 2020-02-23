@@ -79,5 +79,5 @@ public class SecurityCameraModel extends EntityModel<SecurityCameraEntity> {
 	}
 
 	@Override
-	public void render(SecurityCameraEntity entity, float p_225597_2_, float p_225597_3_, float p_225597_4_, float p_225597_5_, float p_225597_6_) {}
+	public void setRotationAngles(SecurityCameraEntity entity, float p_225597_2_, float p_225597_3_, float p_225597_4_, float p_225597_5_, float p_225597_6_) {}
 }

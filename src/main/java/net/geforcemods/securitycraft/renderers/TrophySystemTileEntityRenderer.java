@@ -28,8 +28,8 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 
 		if(te.entityBeingTargeted == null) return;
 
-		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
-		Matrix4f positionMatrix = matrix.getLast().getPositionMatrix();
+		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
+		Matrix4f positionMatrix = matrix.getLast().getMatrix();
 		BlockPos pos = te.getPos();
 
 		//pos, color

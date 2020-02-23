@@ -86,7 +86,7 @@ public class ModuleItem extends Item{
 		}
 		catch(NoSuchMethodError e) {/*:^)*/}
 
-		return ActionResult.func_226250_c_(stack); //pass
+		return ActionResult.resultPass(stack);
 	}
 
 	@Override

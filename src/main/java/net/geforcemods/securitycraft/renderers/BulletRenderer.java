@@ -31,7 +31,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity>
 	public void render(BulletEntity entity, float p_225623_2_, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int p_225623_6_)
 	{
 		matrix.rotate(new Quaternion(Vector3f.YP, entity.rotationYaw, true)); //YP
-		MODEL.render(matrix, buffer.getBuffer(RenderType.entitySolid(getEntityTexture(entity))), p_225623_6_, OverlayTexture.DEFAULT_LIGHT, 1.0F, 1.0F, 1.0F, 1.0F);
+		MODEL.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(getEntityTexture(entity))), p_225623_6_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override

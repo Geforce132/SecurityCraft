@@ -22,7 +22,7 @@ public class SCManualItem extends Item {
 		if(world.isRemote)
 			SecurityCraft.proxy.displaySCManualGui();
 
-		return ActionResult.func_226250_c_(player.getHeldItem(hand)); //pass
+		return ActionResult.resultPass(player.getHeldItem(hand));
 	}
 
 	@Override

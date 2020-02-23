@@ -70,7 +70,7 @@ public class TaserItem extends Item {
 						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
 					}
 
-					return ActionResult.func_226250_c_(stack); //pass
+					return ActionResult.resultPass(stack);
 				}
 
 				WorldUtils.addScheduledTask(world, () -> world.addEntity(new TaserBulletEntity(world, player, powered)));
@@ -91,7 +91,7 @@ public class TaserItem extends Item {
 			}
 		}
 
-		return ActionResult.func_226250_c_(stack); //pass
+		return ActionResult.resultPass(stack);
 	}
 
 	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)

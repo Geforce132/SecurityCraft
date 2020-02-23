@@ -96,14 +96,14 @@ public class CameraMonitorItem extends Item {
 		if (world.isRemote) {
 			if(!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return ActionResult.func_226250_c_(stack); //pass
+				return ActionResult.resultPass(stack);
 			}
 
 			if(stack.getItem() == SCContent.cameraMonitor)
 				SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
 		}
 
-		return ActionResult.func_226250_c_(stack); //pass
+		return ActionResult.resultPass(stack);
 	}
 
 	@Override

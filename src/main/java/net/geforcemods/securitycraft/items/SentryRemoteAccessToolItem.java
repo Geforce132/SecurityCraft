@@ -46,7 +46,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		if(world.isRemote)
 			SecurityCraft.proxy.displaySRATGui(stack);
 
-		return ActionResult.func_226250_c_(stack);
+		return ActionResult.resultPass(stack);
 	}
 
 	@Override
