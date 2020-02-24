@@ -36,7 +36,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(!world.isRemote)
-			player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+			player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, player.getServer().getPlayerList().getEntityViewDistance(), (int)player.posY, (int)player.posZ);
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
@@ -76,7 +76,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 				}
 			}
 			else
-				player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, player.getServer().getPlayerList().getEntityViewDistance(), (int) player.posY, (int) player.posZ);
 		}
 
 		return EnumActionResult.SUCCESS;

@@ -123,7 +123,7 @@ public class GuiHandler implements IGuiHandler {
 				else return null;
 			case SRAT_MENU_ID:
 				if(!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry)
-					return new GuiSRAT(player.inventory, player.getHeldItemMainhand());
+					return new GuiSRAT(player.inventory, player.getHeldItemMainhand(), x);
 				else return null;
 			case INVENTORY_SCANNER_GUI_ID:
 				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) te, player);

@@ -35,13 +35,16 @@ public class GuiSRAT extends GuiContainer {
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 	private List<StringHoverChecker> hoverCheckers = new ArrayList<StringHoverChecker>();
+	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering EntitySentry
+	private int viewDistance;
 
-	public GuiSRAT(InventoryPlayer inventory, ItemStack item) {
+	public GuiSRAT(InventoryPlayer inventory, ItemStack item, int viewDistance) {
 		super(new ContainerGeneric(inventory, null));
 
 		srat = item;
 		xSize = 440;
 		ySize = 215;
+		this.viewDistance = viewDistance;
 	}
 
 	@Override
@@ -88,7 +91,7 @@ public class GuiSRAT extends GuiContainer {
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
-				if (Minecraft.getMinecraft().player.world.isBlockLoaded(sentryPos, false)) {
+				if (Minecraft.getMinecraft().player.world.isBlockLoaded(sentryPos, false) && isSentryVisibleToPlayer(sentryPos)) {
 					List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
 
 					if (!sentries.isEmpty()) {
@@ -291,5 +294,14 @@ public class GuiSRAT extends GuiContainer {
 				}
 			}
 		}
+	}
+
+	// Based on EntityTrackerEntry#isVisibleTo
+	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
+		EntityPlayer player = Minecraft.getMinecraft().player;
+		double d0 = player.posX - (double)sentryPos.getX();
+		double d1 = player.posZ - (double)sentryPos.getZ();
+		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
+		return d0 >= (double)(-i) && d0 <= (double)i && d1 >= (double)(-i) && d1 <= (double)i;
 	}
 }
