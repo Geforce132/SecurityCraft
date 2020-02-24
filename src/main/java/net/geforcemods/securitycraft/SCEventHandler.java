@@ -6,6 +6,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -36,6 +37,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
@@ -479,7 +481,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public void renderGameOverlay(RenderGameOverlayEvent event) {
+	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(Minecraft.getMinecraft().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
 			if(event.getType() == ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
 				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ)));
@@ -494,18 +496,18 @@ public class SCEventHandler {
 			if(held < 0 || held >= player.inventory.mainInventory.size())
 				return;
 
-			ItemStack monitor = player.inventory.mainInventory.get(held);
+			ItemStack stack = player.inventory.mainInventory.get(held);
 
-			if(!monitor.isEmpty() && monitor.getItem() == SCContent.cameraMonitor)
+			if(!stack.isEmpty() && stack.getItem() == SCContent.cameraMonitor)
 			{
-				String textureToUse = "camera_not_bound";
+				String textureToUse = "item_not_bound";
 				double eyeHeight = player.getEyeHeight();
 				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
 				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
 
 				if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
 				{
-					NBTTagCompound cameras = monitor.getTagCompound();
+					NBTTagCompound cameras = stack.getTagCompound();
 
 					if(cameras != null)
 						for(int i = 1; i < 31; i++)
@@ -517,8 +519,69 @@ public class SCEventHandler {
 
 							if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
 							{
-								textureToUse = "camera_bound";
+								textureToUse = "item_bound";
 								break;
+							}
+						}
+
+					GlStateManager.enableAlpha();
+					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
+					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + held * 20 + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					GlStateManager.disableAlpha();
+				}
+			}
+			else if(!stack.isEmpty() && stack.getItem() == SCContent.remoteAccessMine)
+			{
+				String textureToUse = "item_not_bound";
+				double eyeHeight = player.getEyeHeight();
+				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+				RayTraceResult mop = world.rayTraceBlocks(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec);
+
+				if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof IExplosive)
+				{
+					NBTTagCompound mines = stack.getTagCompound();
+
+					if(mines != null)
+						for(int i = 1; i <= 6; i++)
+						{
+							if(stack.getTagCompound().getIntArray("mine" + i).length > 0)
+							{
+								int[] coords = mines.getIntArray("mine" + i);
+
+								if(coords[0] == mop.getBlockPos().getX() && coords[1] == mop.getBlockPos().getY() && coords[2] == mop.getBlockPos().getZ())
+								{
+									textureToUse = "item_bound";
+									break;
+								}
+							}
+						}
+
+					GlStateManager.enableAlpha();
+					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
+					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + held * 20 + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					GlStateManager.disableAlpha();
+				}
+			}
+			else if(!stack.isEmpty() && stack.getItem() == SCContent.remoteAccessSentry)
+			{
+				String textureToUse = "item_not_bound";
+				Entity hitEntity = Minecraft.getMinecraft().pointedEntity;
+
+				if(hitEntity != null && hitEntity instanceof EntitySentry)
+				{
+					NBTTagCompound sentries = stack.getTagCompound();
+
+					if(sentries != null)
+						for(int i = 1; i <= 12; i++)
+						{
+							if(stack.getTagCompound().getIntArray("sentry" + i).length > 0)
+							{
+								int[] coords = sentries.getIntArray("sentry" + i);
+								if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+								{
+									textureToUse = "item_bound";
+									break;
+								}
 							}
 						}
 
