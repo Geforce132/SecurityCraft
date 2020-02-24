@@ -34,7 +34,7 @@ public class GuiSRAT extends GuiContainer {
 	private String[] names = new String[12];
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
-	private List<StringHoverChecker> hoverCheckers = new ArrayList<StringHoverChecker>();
+	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering EntitySentry
 	private int viewDistance;
 
@@ -91,6 +91,7 @@ public class GuiSRAT extends GuiContainer {
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				buttons[i][UNBIND].enabled = true;
 				if (Minecraft.getMinecraft().player.world.isBlockLoaded(sentryPos, false) && isSentryVisibleToPlayer(sentryPos)) {
 					List<EntitySentry> sentries = Minecraft.getMinecraft().player.world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(sentryPos));
 
@@ -106,7 +107,6 @@ public class GuiSRAT extends GuiContainer {
 						buttons[i][AGGRESSIVE].enabled = !aggressiveMode;
 						buttons[i][CAMOUFLAGE].enabled = !camouflageMode;
 						buttons[i][IDLE].enabled = !idleMode;
-						buttons[i][UNBIND].enabled = true;
 						hoverCheckers.add(new StringHoverChecker(buttons[i][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
@@ -115,15 +115,16 @@ public class GuiSRAT extends GuiContainer {
 					}
 					else {
 						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
-						for (int j = 0; j < 4; j++) {	
+						for (int j = 0; j < 4; j++) {
 							buttons[i][j].enabled = false;
 						}
 					}
 				}
 				else {
-					for (int j = 0; j < 4; j++) {	
+					for (int j = 0; j < 3; j++) {
 						hoverCheckers.add(new StringHoverChecker(buttons[i][j], 20, ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
+					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
 		}
@@ -135,6 +136,9 @@ public class GuiSRAT extends GuiContainer {
 		for (int j = 0; j < 3; j++) {
 			buttonsGlobal[0][j].enabled = foundSentry;
 			buttonList.add(buttonsGlobal[0][j]);
+			hoverCheckers.add(new StringHoverChecker(buttonsGlobal[0][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
+			hoverCheckers.add(new StringHoverChecker(buttonsGlobal[0][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
+			hoverCheckers.add(new StringHoverChecker(buttonsGlobal[0][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
 		}
 	}
 
@@ -184,7 +188,7 @@ public class GuiSRAT extends GuiContainer {
 		for(StringHoverChecker chc : hoverCheckers)
 		{
 			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY, fontRenderer);
+				drawHoveringText(chc.getLines(), mouseX, mouseY, fontRenderer);
 		}
 	}
 
@@ -217,21 +221,22 @@ public class GuiSRAT extends GuiContainer {
 					buttons[sentry][CAMOUFLAGE].enabled = true;
 					buttons[sentry][IDLE].enabled = false;
 					break;
-				case UNBIND:
-					removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
-					for (int i = 0; i < 4; i++) {
-						buttons[sentry][i].enabled = false;
-					}
+			}
+		}
+		if (mode == UNBIND) {
+			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
+			for (int i = 0; i < 4; i++) {
+				buttons[sentry][i].enabled = false;
+			}
 
-					for(int i = 0; i < buttons.length; i++)
-					{
-						if(buttons[i][UNBIND].enabled)
-							return;
-					}
+			for(int i = 0; i < buttons.length; i++)
+			{
+				if(buttons[i][UNBIND].enabled)
+					return;
+			}
 
-					for (int i = 0; i < 3; i++) {
-						buttonsGlobal[0][i].enabled = false;
-					}
+			for (int i = 0; i < 3; i++) {
+				buttonsGlobal[0][i].enabled = false;
 			}
 		}
 	}
