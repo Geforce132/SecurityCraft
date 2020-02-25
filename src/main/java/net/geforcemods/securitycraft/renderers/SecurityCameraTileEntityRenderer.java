@@ -45,7 +45,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
-		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera)
+		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.SECURITY_CAMERA.get())
 		{
 			Direction side = te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING);
 

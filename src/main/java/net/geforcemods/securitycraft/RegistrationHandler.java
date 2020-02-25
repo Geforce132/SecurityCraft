@@ -107,124 +107,111 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DataSerializerEntry;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class RegistrationHandler
 {
-	private static ArrayList<Block> blockPages = new ArrayList<Block>();
+	private static ArrayList<Block> blockPages = new ArrayList<>();
 	private static Map<Block,String> blocksDesignedBy = new HashMap<>();
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
 	{
-		//fluids first so the fluid blocks can be registered correctly
-		SetupHandler.setupFluids();
-		SetupHandler.setupBlocks();
-		SetupHandler.setupReinforcedBlocks();
-		SetupHandler.setupMines();
-
-		ForgeRegistries.FLUIDS.register(SCContent.flowingFakeWater.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_water")));
-		ForgeRegistries.FLUIDS.register(SCContent.fakeWater.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_water")));
-		ForgeRegistries.FLUIDS.register(SCContent.flowingFakeLava.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "flowing_fake_lava")));
-		ForgeRegistries.FLUIDS.register(SCContent.fakeLava.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "fake_lava")));
-
-		registerBlock(event, SCContent.laserBlock);
-		event.getRegistry().register(SCContent.laserField);
-		registerBlock(event, SCContent.keypad);
-		registerBlock(event, SCContent.mine);
-		registerBlock(event, SCContent.dirtMine);
-		registerBlock(event, SCContent.stoneMine, false);
-		registerBlock(event, SCContent.cobblestoneMine, false);
-		registerBlock(event, SCContent.diamondOreMine, false);
-		registerBlock(event, SCContent.sandMine, false);
-		registerBlock(event, SCContent.furnaceMine);
-		registerBlock(event, SCContent.retinalScanner);
-		event.getRegistry().register(SCContent.reinforcedDoor);
-		registerBlock(event, SCContent.keycardReader);
-		registerBlock(event, SCContent.reinforcedIronTrapdoor);
-		registerBlock(event, SCContent.bouncingBetty);
-		registerBlock(event, SCContent.inventoryScanner);
-		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.trackMine);
-		registerBlock(event, SCContent.cageTrap);
-		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
-		registerBlock(event, SCContent.portableRadar);
-		registerBlock(event, SCContent.keypadChest);
-		registerBlock(event, SCContent.usernameLogger);
-		registerBlock(event, SCContent.alarm);
-		registerBlock(event, SCContent.reinforcedFencegate);
-		registerBlock(event, SCContent.panicButton);
-		registerBlock(event, SCContent.frame);
-		registerBlock(event, SCContent.claymore);
-		registerBlock(event, SCContent.keypadFurnace);
-		registerBlock(event, SCContent.securityCamera);
-		registerBlock(event, SCContent.ironFence);
-		registerBlock(event, SCContent.ims);
-		registerBlock(event, SCContent.protecto);
-		event.getRegistry().register(SCContent.scannerDoor);
-		event.getRegistry().register(SCContent.secretOakWallSign);
-		event.getRegistry().register(SCContent.secretOakSign);
-		event.getRegistry().register(SCContent.secretSpruceWallSign);
-		event.getRegistry().register(SCContent.secretSpruceSign);
-		event.getRegistry().register(SCContent.secretBirchWallSign);
-		event.getRegistry().register(SCContent.secretBirchSign);
-		event.getRegistry().register(SCContent.secretJungleWallSign);
-		event.getRegistry().register(SCContent.secretJungleSign);
-		event.getRegistry().register(SCContent.secretAcaciaWallSign);
-		event.getRegistry().register(SCContent.secretAcaciaSign);
-		event.getRegistry().register(SCContent.secretDarkOakWallSign);
-		event.getRegistry().register(SCContent.secretDarkOakSign);
-		registerBlock(event, SCContent.motionActivatedLight);
-		registerBlock(event, SCContent.gravelMine, false);
-		registerBlock(event, SCContent.fakeLavaBlock, false);
-		registerBlock(event, SCContent.fakeWaterBlock, false);
-		registerBlock(event, SCContent.trophySystem);
-		registerBlock(event, SCContent.crystalQuartz, true);
-		registerBlock(event, SCContent.chiseledCrystalQuartz, false);
-		registerBlock(event, SCContent.crystalQuartzPillar, false);
-		registerBlock(event, SCContent.crystalQuartzSlab, false);
-		registerBlock(event, SCContent.stairsCrystalQuartz, false);
-		registerBlock(event, SCContent.blockPocketWall);
-		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
-		registerBlock(event, SCContent.projector);
+		//		registerBlock(event, SCContent.LASER_BLOCK);
+		//		event.getRegistry().register(SCContent.LASER_FIELD);
+		//		registerBlock(event, SCContent.KEYPAD);
+		//		registerBlock(event, SCContent.MINE);
+		//		registerBlock(event, SCContent.DIRT_MINE);
+		//		registerBlock(event, SCContent.STONE_MINE, false);
+		//		registerBlock(event, SCContent.COBBLESTONE_MINE, false);
+		//		registerBlock(event, SCContent.DIAMOND_ORE_MINE, false);
+		//		registerBlock(event, SCContent.SAND_MINE, false);
+		//		registerBlock(event, SCContent.FURNACE_MINE);
+		//		registerBlock(event, SCContent.RETINAL_SCANNER);
+		//		event.getRegistry().register(SCContent.REINFORCED_DOOR);
+		//		registerBlock(event, SCContent.KEYCARD_READER);
+		//		registerBlock(event, SCContent.REINFORCED_IRON_TRAPDOOR);
+		//		registerBlock(event, SCContent.BOUNCING_BETTY);
+		//		registerBlock(event, SCContent.INVENTORY_SCANNER);
+		//		event.getRegistry().register(SCContent.INVENTORY_SCANNER_FIELD);
+		//		registerBlock(event, SCContent.TRACK_MINE);
+		//		registerBlock(event, SCContent.CAGE_TRAP);
+		//		event.getRegistry().register(SCContent.HORIZONTAL_REINFORCED_IRON_BARS);
+		//		registerBlock(event, SCContent.PORTABLE_RADAR);
+		//		registerBlock(event, SCContent.KEYPAD_CHEST);
+		//		registerBlock(event, SCContent.USERNAME_LOGGER);
+		//		registerBlock(event, SCContent.ALARM);
+		//		registerBlock(event, SCContent.REINFORCED_FENCEGATE);
+		//		registerBlock(event, SCContent.PANIC_BUTTON);
+		//		registerBlock(event, SCContent.FRAME);
+		//		registerBlock(event, SCContent.CLAYMORE);
+		//		registerBlock(event, SCContent.KEYPAD_FURNACE);
+		//		registerBlock(event, SCContent.SECURITY_CAMERA);
+		//		registerBlock(event, SCContent.IRON_FENCE);
+		//		registerBlock(event, SCContent.IMS);
+		//		registerBlock(event, SCContent.PROTECTO);
+		//		event.getRegistry().register(SCContent.SCANNER_DOOR);
+		//		event.getRegistry().register(SCContent.SECRET_OAK_WALL_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_OAK_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_SPRUCE_WALL_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_SPRUCE_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_BIRCH_WALL_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_BIRCH_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_JUNGLE_WALL_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_JUNGLE_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_ACACIA_WALL_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_ACACIA_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_DARK_OAK_WALL_SIGN);
+		//		event.getRegistry().register(SCContent.SECRET_DARK_OAK_SIGN);
+		//		registerBlock(event, SCContent.MOTION_ACTIVATED_LIGHT);
+		//		registerBlock(event, SCContent.GRAVEL_MINE, false);
+		//		registerBlock(event, SCContent.FAKE_LAVA_BLOCK, false);
+		//		registerBlock(event, SCContent.FAKE_WATER_BLOCK, false);
+		//		registerBlock(event, SCContent.TROPHY_SYSTEM);
+		//		registerBlock(event, SCContent.CRYSTAL_QUARTZ, true);
+		//		registerBlock(event, SCContent.CHISELED_CRYSTAL_QUARTZ, false);
+		//		registerBlock(event, SCContent.CRYSTAL_QUARTZ_PILLAR, false);
+		//		registerBlock(event, SCContent.CRYSTAL_QUARTZ_SLAB, false);
+		//		registerBlock(event, SCContent.STAIRS_CRYSTAL_QUARTZ, false);
+		//		registerBlock(event, SCContent.BLOCK_POCKET_WALL);
+		//		registerBlock(event, SCContent.BLOCK_POCKET_MANAGER, "Henzoid");
+		//		registerBlock(event, SCContent.PROJECTOR);
 
 		//register reinforced blocks
-		for(Field field : SCContent.class.getFields())
-		{
-			try
-			{
-				if(field.isAnnotationPresent(Reinforced.class))
-					registerBlock(event, (Block)field.get(null), field.getAnnotation(Reinforced.class).hasPage());
-			}
-			catch(IllegalArgumentException | IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		//		for(Field field : SCContent.class.getFields())
+		//		{
+		//			try
+		//			{
+		//				if(field.isAnnotationPresent(Reinforced.class))
+		//					registerBlock(event, (Block)field.get(null), field.getAnnotation(Reinforced.class).hasPage());
+		//			}
+		//			catch(IllegalArgumentException | IllegalAccessException e)
+		//			{
+		//				e.printStackTrace();
+		//			}
+		//		}
 	}
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
-		SetupHandler.setupItems();
-
 		//register item blocks from annotated fields
 		for(Field field : SCContent.class.getFields())
 		{
 			try
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
-					event.getRegistry().register(new ReinforcedBlockItem((Block)field.get(null)));
+					event.getRegistry().register(new ReinforcedBlockItem(((RegistryObject<Block>)field.get(null)).get()));
 				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();
-					Block block = (Block)field.get(null);
+					RegistryObject<Block> block = (RegistryObject<Block>)field.get(null);
 
-					event.getRegistry().register(new BlockItem(block, new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.getRegistryName()));
+					event.getRegistry().register(new BlockItem(block.get(), new Item.Properties().group(tab == 0 ? SecurityCraft.groupSCTechnical : (tab == 1 ? SecurityCraft.groupSCMine : SecurityCraft.groupSCDecoration))).setRegistryName(block.get().getRegistryName()));
 				}
 
 			}
@@ -234,12 +221,12 @@ public class RegistrationHandler
 			}
 		}
 
-		SecurityCraft.proxy.registerKeypadChestItem(event);
+		//		SecurityCraft.proxy.registerKeypadChestItem(event);
 
 		//init block sc manual pages
 		for(Block block : blockPages)
 		{
-			if(block == SCContent.reinforcedStone)
+			if(block == SCContent.REINFORCED_STONE.get())
 				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help.securitycraft:reinforced.info"));
 			else
 			{
@@ -253,49 +240,49 @@ public class RegistrationHandler
 		}
 
 		//items
-		registerItem(event, SCContent.codebreaker);
-		registerItem(event, SCContent.reinforcedDoorItem);
-		registerItem(event, SCContent.scannerDoorItem);
-		registerItem(event, SCContent.universalBlockRemover);
-		registerItem(event, SCContent.keycardLvl1, () -> ConfigHandler.CONFIG.ableToCraftKeycard1.get());
-		registerItem(event, SCContent.keycardLvl2, () -> ConfigHandler.CONFIG.ableToCraftKeycard2.get());
-		registerItem(event, SCContent.keycardLvl3, () -> ConfigHandler.CONFIG.ableToCraftKeycard3.get());
-		registerItem(event, SCContent.keycardLvl4, () -> ConfigHandler.CONFIG.ableToCraftKeycard4.get());
-		registerItem(event, SCContent.keycardLvl5, () -> ConfigHandler.CONFIG.ableToCraftKeycard5.get());
-		registerItem(event, SCContent.limitedUseKeycard, () -> ConfigHandler.CONFIG.ableToCraftLUKeycard.get());
-		registerItem(event, SCContent.remoteAccessMine);
-		registerItem(event, SCContent.remoteAccessSentry);
-		registerItem(event, SCContent.fWaterBucket);
-		registerItem(event, SCContent.fLavaBucket);
-		registerItem(event, SCContent.universalBlockModifier);
-		registerItem(event, SCContent.redstoneModule);
-		registerItem(event, SCContent.whitelistModule);
-		registerItem(event, SCContent.blacklistModule);
-		registerItem(event, SCContent.harmingModule);
-		registerItem(event, SCContent.smartModule);
-		registerItem(event, SCContent.storageModule);
-		registerItem(event, SCContent.disguiseModule);
-		registerItem(event, SCContent.wireCutters);
-		registerItem(event, SCContent.adminTool);
-		registerItem(event, SCContent.keyPanel);
-		registerItem(event, SCContent.cameraMonitor);
-		registerItem(event, SCContent.taser);
-		registerItem(event, SCContent.scManual);
-		registerItem(event, SCContent.universalOwnerChanger);
-		registerItem(event, SCContent.universalBlockReinforcerLvL1);
-		registerItem(event, SCContent.universalBlockReinforcerLvL2);
-		registerItem(event, SCContent.universalBlockReinforcerLvL3);
-		registerItem(event, SCContent.briefcase);
-		registerItem(event, SCContent.universalKeyChanger);
-		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
-		registerItem(event, SCContent.secretOakSignItem);
-		event.getRegistry().register(SCContent.secretSpruceSignItem);
-		event.getRegistry().register(SCContent.secretBirchSignItem);
-		event.getRegistry().register(SCContent.secretJungleSignItem);
-		event.getRegistry().register(SCContent.secretAcaciaSignItem);
-		event.getRegistry().register(SCContent.secretDarkOakSignItem);
-		registerItem(event, SCContent.sentry, "Henzoid");
-		registerItem(event, SCContent.crystalQuartzItem);
+		//		registerItem(event, SCContent.CODEBREAKER);
+		//		registerItem(event, SCContent.REINFORCED_DOOR_ITEM);
+		//		registerItem(event, SCContent.SCANNER_DOOR_ITEM);
+		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REMOVER);
+		//		registerItem(event, SCContent.KEYCARD_LVL_1, () -> ConfigHandler.CONFIG.ableToCraftKeycard1.get());
+		//		registerItem(event, SCContent.KEYCARD_LVL_2, () -> ConfigHandler.CONFIG.ableToCraftKeycard2.get());
+		//		registerItem(event, SCContent.KEYCARD_LVL_3, () -> ConfigHandler.CONFIG.ableToCraftKeycard3.get());
+		//		registerItem(event, SCContent.KEYCARD_LVL_4, () -> ConfigHandler.CONFIG.ableToCraftKeycard4.get());
+		//		registerItem(event, SCContent.KEYCARD_LVL_5, () -> ConfigHandler.CONFIG.ableToCraftKeycard5.get());
+		//		registerItem(event, SCContent.LIMITED_USE_KEYCARD, () -> ConfigHandler.CONFIG.ableToCraftLUKeycard.get());
+		//		registerItem(event, SCContent.REMOTE_ACCESS_MINE);
+		//		registerItem(event, SCContent.REMOVE_ACCESS_SENTRY);
+		//		registerItem(event, SCContent.FAKE_WATER_BUCKET);
+		//		registerItem(event, SCContent.FAKE_LAVA_BUCKET);
+		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_MODIFIER);
+		//		registerItem(event, SCContent.redstoneModule);
+		//		registerItem(event, SCContent.whitelistModule);
+		//		registerItem(event, SCContent.blacklistModule);
+		//		registerItem(event, SCContent.harmingModule);
+		//		registerItem(event, SCContent.smartModule);
+		//		registerItem(event, SCContent.storageModule);
+		//		registerItem(event, SCContent.disguiseModule);
+		//		registerItem(event, SCContent.WIRE_CUTTERS);
+		//		registerItem(event, SCContent.ADMIN_TOOL);
+		//		registerItem(event, SCContent.KEY_PANEL);
+		//		registerItem(event, SCContent.CAMERA_MONITOR);
+		//		registerItem(event, SCContent.TASER);
+		//		registerItem(event, SCContent.SC_MANUAL);
+		//		registerItem(event, SCContent.UNIVERSAL_OWNER_CHANGER);
+		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1);
+		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2);
+		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3);
+		//		registerItem(event, SCContent.BRIEFCASE);
+		//		registerItem(event, SCContent.UNIVERSAL_KEY_CHANGER);
+		//		event.getRegistry().register(SCContent.TASER_POWERED); //won't show up in the manual
+		//		registerItem(event, SCContent.SECRET_OAK_SIGN_ITEM);
+		//		event.getRegistry().register(SCContent.SECRET_SPRUCE_SIGN_ITEM);
+		//		event.getRegistry().register(SCContent.SECRET_BIRCH_SIGN_ITEM);
+		//		event.getRegistry().register(SCContent.SECRET_JUNGLE_SIGN_ITEM);
+		//		event.getRegistry().register(SCContent.SECRET_ACACIA_SIGN_ITEM);
+		//		event.getRegistry().register(SCContent.SECRET_DARK_OAK_SIGN_ITEM);
+		//		registerItem(event, SCContent.SENTRY, "Henzoid");
+		//		registerItem(event, SCContent.CRYSTAL_QUARTZ_ITEM);
 
 		//clear unused memory
 		blockPages = null;
@@ -313,7 +300,7 @@ public class RegistrationHandler
 			try
 			{
 				if(field.isAnnotationPresent(OwnableTE.class))
-					teOwnableBlocks.add((Block)field.get(null));
+					teOwnableBlocks.add(((RegistryObject<Block>)field.get(null)).get());
 
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -323,31 +310,31 @@ public class RegistrationHandler
 		}
 
 		event.getRegistry().register(TileEntityType.Builder.create(OwnableTileEntity::new, teOwnableBlocks.toArray(new Block[teOwnableBlocks.size()])).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ownable")));
-		event.getRegistry().register(TileEntityType.Builder.create(SecurityCraftTileEntity::new, SCContent.laserField, SCContent.inventoryScannerField, SCContent.ironFence, SCContent.cobblestoneMine, SCContent.diamondOreMine, SCContent.dirtMine, SCContent.furnaceMine, SCContent.gravelMine, SCContent.sandMine, SCContent.stoneMine, SCContent.bouncingBetty, SCContent.reinforcedFencegate).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
-		event.getRegistry().register(TileEntityType.Builder.create(KeypadTileEntity::new, SCContent.keypad).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad")));
-		event.getRegistry().register(TileEntityType.Builder.create(LaserBlockTileEntity::new, SCContent.laserBlock).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block")));
-		event.getRegistry().register(TileEntityType.Builder.create(CageTrapTileEntity::new, SCContent.cageTrap).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cage_trap")));
-		event.getRegistry().register(TileEntityType.Builder.create(KeycardReaderTileEntity::new, SCContent.keycardReader).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_reader")));
-		event.getRegistry().register(TileEntityType.Builder.create(InventoryScannerTileEntity::new, SCContent.inventoryScanner).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
-		event.getRegistry().register(TileEntityType.Builder.create(PortableRadarTileEntity::new, SCContent.portableRadar).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "portable_radar")));
-		event.getRegistry().register(TileEntityType.Builder.create(SecurityCameraTileEntity::new, SCContent.securityCamera).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "security_camera")));
-		event.getRegistry().register(TileEntityType.Builder.create(UsernameLoggerTileEntity::new, SCContent.usernameLogger).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
-		event.getRegistry().register(TileEntityType.Builder.create(RetinalScannerTileEntity::new, SCContent.retinalScanner).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")));
-		event.getRegistry().register(TileEntityType.Builder.create(KeypadChestTileEntity::new, SCContent.keypadChest).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest")));
-		event.getRegistry().register(TileEntityType.Builder.create(AlarmTileEntity::new, SCContent.alarm).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "alarm")));
-		event.getRegistry().register(TileEntityType.Builder.create(ClaymoreTileEntity::new, SCContent.claymore).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore")));
-		event.getRegistry().register(TileEntityType.Builder.create(KeypadFurnaceTileEntity::new, SCContent.keypadFurnace).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
-		event.getRegistry().register(TileEntityType.Builder.create(IMSTileEntity::new, SCContent.ims).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
-		event.getRegistry().register(TileEntityType.Builder.create(ProtectoTileEntity::new, SCContent.protecto).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "protecto")));
-		event.getRegistry().register(TileEntityType.Builder.create(ScannerDoorTileEntity::new, SCContent.scannerDoor).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door")));
-		event.getRegistry().register(TileEntityType.Builder.create(SecretSignTileEntity::new, SCContent.secretOakSign, SCContent.secretOakWallSign, SCContent.secretSpruceSign, SCContent.secretSpruceWallSign, SCContent.secretBirchSign, SCContent.secretBirchWallSign, SCContent.secretJungleSign, SCContent.secretJungleWallSign, SCContent.secretAcaciaSign, SCContent.secretAcaciaWallSign, SCContent.secretDarkOakSign, SCContent.secretDarkOakWallSign).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign")));
-		event.getRegistry().register(TileEntityType.Builder.create(MotionActivatedLightTileEntity::new, SCContent.motionActivatedLight).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_light")));
-		event.getRegistry().register(TileEntityType.Builder.create(TrackMineTileEntity::new, SCContent.trackMine).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine")));
-		event.getRegistry().register(TileEntityType.Builder.create(TrophySystemTileEntity::new, SCContent.trophySystem).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
-		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketManagerTileEntity::new, SCContent.blockPocketManager).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
-		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketTileEntity::new, SCContent.blockPocketWall, SCContent.reinforcedCrystalQuartz, SCContent.reinforcedChiseledCrystalQuartz, SCContent.reinforcedCrystalQuartzPillar).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket")));
-		event.getRegistry().register(TileEntityType.Builder.create(ReinforcedPressurePlateTileEntity::new, SCContent.reinforcedStonePressurePlate, SCContent.reinforcedAcaciaPressurePlate, SCContent.reinforcedBirchPressurePlate, SCContent.reinforcedDarkOakPressurePlate, SCContent.reinforcedJunglePressurePlate, SCContent.reinforcedOakPressurePlate, SCContent.reinforcedSprucePressurePlate).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_pressure_plate")));
-		event.getRegistry().register(TileEntityType.Builder.create(ProjectorTileEntity::new, SCContent.projector).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
+		event.getRegistry().register(TileEntityType.Builder.create(SecurityCraftTileEntity::new, SCContent.LASER_FIELD.get(), SCContent.INVENTORY_SCANNER_FIELD.get(), SCContent.IRON_FENCE.get(), SCContent.COBBLESTONE_MINE.get(), SCContent.DIAMOND_ORE_MINE.get(), SCContent.DIRT_MINE.get(), SCContent.FURNACE_MINE.get(), SCContent.GRAVEL_MINE.get(), SCContent.SAND_MINE.get(), SCContent.STONE_MINE.get(), SCContent.BOUNCING_BETTY.get(), SCContent.REINFORCED_FENCEGATE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "abstract")));
+		event.getRegistry().register(TileEntityType.Builder.create(KeypadTileEntity::new, SCContent.KEYPAD.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad")));
+		event.getRegistry().register(TileEntityType.Builder.create(LaserBlockTileEntity::new, SCContent.LASER_BLOCK.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "laser_block")));
+		event.getRegistry().register(TileEntityType.Builder.create(CageTrapTileEntity::new, SCContent.CAGE_TRAP.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "cage_trap")));
+		event.getRegistry().register(TileEntityType.Builder.create(KeycardReaderTileEntity::new, SCContent.KEYCARD_READER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_reader")));
+		event.getRegistry().register(TileEntityType.Builder.create(InventoryScannerTileEntity::new, SCContent.INVENTORY_SCANNER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
+		event.getRegistry().register(TileEntityType.Builder.create(PortableRadarTileEntity::new, SCContent.PORTABLE_RADAR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "portable_radar")));
+		event.getRegistry().register(TileEntityType.Builder.create(SecurityCameraTileEntity::new, SCContent.SECURITY_CAMERA.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "security_camera")));
+		event.getRegistry().register(TileEntityType.Builder.create(UsernameLoggerTileEntity::new, SCContent.USERNAME_LOGGER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
+		event.getRegistry().register(TileEntityType.Builder.create(RetinalScannerTileEntity::new, SCContent.RETINAL_SCANNER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")));
+		event.getRegistry().register(TileEntityType.Builder.create(KeypadChestTileEntity::new, SCContent.KEYPAD_CHEST.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_chest")));
+		event.getRegistry().register(TileEntityType.Builder.create(AlarmTileEntity::new, SCContent.ALARM.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "alarm")));
+		event.getRegistry().register(TileEntityType.Builder.create(ClaymoreTileEntity::new, SCContent.CLAYMORE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "claymore")));
+		event.getRegistry().register(TileEntityType.Builder.create(KeypadFurnaceTileEntity::new, SCContent.KEYPAD_FURNACE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
+		event.getRegistry().register(TileEntityType.Builder.create(IMSTileEntity::new, SCContent.IMS.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
+		event.getRegistry().register(TileEntityType.Builder.create(ProtectoTileEntity::new, SCContent.PROTECTO.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "protecto")));
+		event.getRegistry().register(TileEntityType.Builder.create(ScannerDoorTileEntity::new, SCContent.SCANNER_DOOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "scanner_door")));
+		event.getRegistry().register(TileEntityType.Builder.create(SecretSignTileEntity::new, SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "secret_sign")));
+		event.getRegistry().register(TileEntityType.Builder.create(MotionActivatedLightTileEntity::new, SCContent.MOTION_ACTIVATED_LIGHT.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "motion_light")));
+		event.getRegistry().register(TileEntityType.Builder.create(TrackMineTileEntity::new, SCContent.TRACK_MINE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "track_mine")));
+		event.getRegistry().register(TileEntityType.Builder.create(TrophySystemTileEntity::new, SCContent.TROPHY_SYSTEM.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
+		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketManagerTileEntity::new, SCContent.BLOCK_POCKET_MANAGER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketTileEntity::new, SCContent.BLOCK_POCKET_WALL.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket")));
+		event.getRegistry().register(TileEntityType.Builder.create(ReinforcedPressurePlateTileEntity::new, SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(), SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_pressure_plate")));
+		event.getRegistry().register(TileEntityType.Builder.create(ProjectorTileEntity::new, SCContent.PROJECTOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
 	}
 
 	@SubscribeEvent
@@ -500,7 +487,7 @@ public class RegistrationHandler
 			@Override
 			public DataParameter<Owner> createKey(int id)
 			{
-				return new DataParameter<Owner>(id, this);
+				return new DataParameter<>(id, this);
 			}
 
 			@Override

@@ -146,14 +146,14 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			if(player.isCrouching())
 				remove();
-			else if(item == SCContent.universalBlockRemover)
+			else if(item == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 			{
 				remove();
 
 				if(!player.isCreative())
 					player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 			}
-			else if(item == SCContent.disguiseModule)
+			else if(item == SCContent.disguiseModule.get())
 			{
 				ItemStack module = getDisguiseModule();
 
@@ -165,7 +165,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.whitelistModule)
+			else if(item == SCContent.whitelistModule.get())
 			{
 				ItemStack module = getWhitelistModule();
 
@@ -177,7 +177,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.universalBlockModifier)
+			else if(item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 			{
 				world.destroyBlock(getPosition(), false);
 				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
@@ -185,19 +185,19 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				dataManager.set(MODULE, new CompoundNBT());
 				dataManager.set(WHITELIST, new CompoundNBT());
 			}
-			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
+			else if(item == SCContent.REMOVE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
 				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
 			else if(item == Items.NAME_TAG)
 			{
 				setCustomName(player.getHeldItemMainhand().getDisplayName());
 				player.getHeldItemMainhand().shrink(1);
 			}
-			else if(item == SCContent.universalOwnerChanger)
+			else if(item == SCContent.UNIVERSAL_OWNER_CHANGER.get())
 			{
 				String newOwner = player.getHeldItemMainhand().getDisplayName().getFormattedText();
 
 				dataManager.set(OWNER, new Owner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner));
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			}
 			else
 				toggleMode(player);
@@ -216,7 +216,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	public void remove()
 	{
 		super.remove();
-		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.sentry));
+		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.SENTRY.get()));
 		Block.spawnAsEntity(world, getPosition(), getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, getPosition(), getWhitelistModule()); //if there is none, nothing will drop
 		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
@@ -242,7 +242,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
 		else
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
 	}
@@ -260,7 +260,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
 	}

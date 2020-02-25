@@ -39,7 +39,7 @@ public class TaserItem extends Item {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
 	{
-		return slotChanged || ((oldStack.getItem() == SCContent.taser && newStack.getItem() == SCContent.taserPowered) || (oldStack.getItem() == SCContent.taserPowered && newStack.getItem() == SCContent.taser));
+		return slotChanged || ((oldStack.getItem() == SCContent.TASER.get() && newStack.getItem() == SCContent.TASER_POWERED.get()) || (oldStack.getItem() == SCContent.TASER_POWERED.get() && newStack.getItem() == SCContent.TASER.get()));
 	}
 
 	@Override
@@ -55,10 +55,10 @@ public class TaserItem extends Item {
 
 					if(player.isCreative())
 					{
-						if(player.getHeldItem(hand).getItem() == SCContent.taser)
-							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
+						if(player.getHeldItem(hand).getItem() == SCContent.TASER.get())
+							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
 						else
-							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taser, 1));
+							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER.get(), 1));
 					}
 					else if(player.inventory.hasItemStack(oneRedstone))
 					{
@@ -67,7 +67,7 @@ public class TaserItem extends Item {
 
 						redstoneStack.setCount(redstoneStack.getCount() - 1);
 						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
-						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
+						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
 					}
 
 					return ActionResult.resultPass(stack);
@@ -80,7 +80,7 @@ public class TaserItem extends Item {
 				{
 					if(powered)
 					{
-						ItemStack taser = new ItemStack(SCContent.taser, 1);
+						ItemStack taser = new ItemStack(SCContent.TASER.get(), 1);
 
 						taser.damageItem(150, player, p -> p.sendBreakAnimation(hand));
 						setSlotBasedOnHand(player, hand, taser);

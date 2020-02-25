@@ -13,9 +13,9 @@ public class ReinforcedStainedGlassPaneBlock extends ReinforcedPaneBlock impleme
 {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassPaneBlock(DyeColor color, Block vB, String registryPath)
+	public ReinforcedStainedGlassPaneBlock(DyeColor color, Block vB)
 	{
-		super(SoundType.GLASS, Material.GLASS, vB, registryPath);
+		super(SoundType.GLASS, Material.GLASS, vB);
 		this.color = color;
 	}
 

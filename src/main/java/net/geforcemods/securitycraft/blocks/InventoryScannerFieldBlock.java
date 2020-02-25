@@ -235,7 +235,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		{
 			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
 			{
-				if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.INVENTORY_SCANNER.get())
 				{
 					for(int j = 1; j < i; j++)
 					{
@@ -248,7 +248,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
 			{
-				if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.INVENTORY_SCANNER.get())
 				{
 					for(int j = 1; j < i; j++)
 					{
@@ -261,7 +261,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
 			{
-				if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.INVENTORY_SCANNER.get())
 				{
 					for(int j = 1; j < i; j++)
 					{
@@ -274,7 +274,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
 			{
-				if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.INVENTORY_SCANNER.get())
 				{
 					for(int j = 1; j < i; j++)
 					{

@@ -36,10 +36,10 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if(!world.isRemote){
-			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
+			if(PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE))
 				return ActionResultType.SUCCESS;
 
-			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.wireCutters) {
+			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
 				defuseMine(world, pos);
 				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 				return ActionResultType.SUCCESS;

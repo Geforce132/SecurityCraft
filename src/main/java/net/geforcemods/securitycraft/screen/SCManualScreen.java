@@ -48,7 +48,7 @@ public class SCManualScreen extends Screen {
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
 	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-	private List<HoverChecker> hoverCheckers = new ArrayList<HoverChecker>();
+	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private static int lastPage = -1;
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
@@ -60,7 +60,7 @@ public class SCManualScreen extends Screen {
 	private final int subpageLength = 1285;
 
 	public SCManualScreen() {
-		super(new TranslationTextComponent(SCContent.scManual.getTranslationKey()));
+		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
 	}
 
 	@Override

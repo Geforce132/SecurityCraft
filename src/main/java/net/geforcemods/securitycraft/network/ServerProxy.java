@@ -1,28 +1,23 @@
 package net.geforcemods.securitycraft.network;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
-import net.minecraftforge.event.RegistryEvent.Register;
 
 public class ServerProxy implements IProxy
 {
 	@Override
 	public void clientSetup() {}
 
-	@Override
-	public void registerKeypadChestItem(Register<Item> event)
-	{
-		event.getRegistry().register(new BlockItem(SCContent.keypadChest, new Item.Properties().group(SecurityCraft.groupSCTechnical)).setRegistryName(SCContent.keypadChest.getRegistryName()));
-	}
+	//	@Override
+	//	public void registerKeypadChestItem(Register<Item> event)
+	//	{
+	//		event.getRegistry().register(new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical)).setRegistryName(SCContent.KEYPAD_CHEST.get().getRegistryName()));
+	//	}
 
 	@Override
 	public void tint() {}

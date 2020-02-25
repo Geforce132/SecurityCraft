@@ -283,6 +283,6 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.inventoryScanner.getTranslationKey());
+		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getTranslationKey());
 	}
 }

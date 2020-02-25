@@ -90,7 +90,7 @@ public class ScannerDoorBlock extends DoorBlock
 				if(!world.isRemote)
 				{
 					world.destroyBlock(pos, false);
-					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.scannerDoorItem));
+					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.SCANNER_DOOR_ITEM.get()));
 				}
 			}
 		}
@@ -118,7 +118,7 @@ public class ScannerDoorBlock extends DoorBlock
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
-		return new ItemStack(SCContent.scannerDoorItem);
+		return new ItemStack(SCContent.SCANNER_DOOR_ITEM.get());
 	}
 
 	@Override

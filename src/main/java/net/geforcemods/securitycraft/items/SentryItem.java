@@ -38,7 +38,7 @@ public class SentryItem extends Item
 				return ActionResultType.PASS;
 			else if(world.isAirBlock(pos.down()))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.sentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return ActionResultType.FAIL;
 			}
 

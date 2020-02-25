@@ -252,7 +252,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.ims.getTranslationKey());
+		return new TranslationTextComponent(SCContent.IMS.get().getTranslationKey());
 	}
 
 	public static enum IMSTargetingMode {

@@ -44,9 +44,9 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 	protected final VoxelShape[] field_196410_A;
 	protected final VoxelShape[] field_196412_B;
 
-	public ReinforcedPaneBlock(SoundType soundType, Material mat, Block vB, String registryPath)
+	public ReinforcedPaneBlock(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, registryPath, 0);
+		super(soundType, mat, vB, 0);
 		field_196410_A = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		field_196412_B = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(WATERLOGGED, false));
@@ -106,7 +106,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 		{
 			if(!world.isRemote())
 			{
-				world.setBlockState(pos, state.with(WATERLOGGED, Boolean.valueOf(true)), 3);
+				world.setBlockState(pos, state.with(WATERLOGGED, true), 3);
 				world.getPendingFluidTicks().scheduleTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
 			}
 
@@ -203,7 +203,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 		BlockState southState = world.getBlockState(southPos);
 		BlockState westState = world.getBlockState(westPos);
 		BlockState eastState = world.getBlockState(eastPos);
-		return getDefaultState().with(NORTH, Boolean.valueOf(canAttachTo(northState, Block.hasSolidSide(northState, world, northPos, Direction.SOUTH)))).with(SOUTH, Boolean.valueOf(canAttachTo(southState, Block.hasSolidSide(southState, world, southPos, Direction.NORTH)))).with(WEST, Boolean.valueOf(canAttachTo(westState, Block.hasSolidSide(westState, world, westPos, Direction.EAST)))).with(EAST, Boolean.valueOf(canAttachTo(eastState, Block.hasSolidSide(eastState, world, eastPos, Direction.WEST)))).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
+		return getDefaultState().with(NORTH, canAttachTo(northState, Block.hasSolidSide(northState, world, northPos, Direction.SOUTH))).with(SOUTH, canAttachTo(southState, Block.hasSolidSide(southState, world, southPos, Direction.NORTH))).with(WEST, canAttachTo(westState, Block.hasSolidSide(westState, world, westPos, Direction.EAST))).with(EAST, canAttachTo(eastState, Block.hasSolidSide(eastState, world, eastPos, Direction.WEST))).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	@Override
@@ -212,7 +212,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 		if(state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 
-		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), Boolean.valueOf(canAttachTo(facingState, Block.hasSolidSide(facingState, world, facingPos, facing.getOpposite())))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), canAttachTo(facingState, Block.hasSolidSide(facingState, world, facingPos, facing.getOpposite()))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@OnlyIn(Dist.CLIENT)

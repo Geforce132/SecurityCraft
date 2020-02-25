@@ -43,7 +43,9 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		font.drawString(ClientUtils.localize(SCContent.ims.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.ims.getTranslationKey())) / 2, 6, 4210752);
+		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
+
+		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
 		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 

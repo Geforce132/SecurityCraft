@@ -74,11 +74,11 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote)
-			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
-				world.setBlockState(pos, SCContent.claymore.getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, true));
+			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.WIRE_CUTTERS.get()){
+				world.setBlockState(pos, SCContent.CLAYMORE.get().getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, true));
 				return ActionResultType.SUCCESS;
 			}else if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				world.setBlockState(pos, SCContent.claymore.getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, false));
+				world.setBlockState(pos, SCContent.CLAYMORE.get().getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, false));
 				return ActionResultType.SUCCESS;
 			}
 

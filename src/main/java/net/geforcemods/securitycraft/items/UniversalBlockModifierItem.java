@@ -42,7 +42,7 @@ public class UniversalBlockModifierItem extends Item
 		{
 			if(!((IOwnable) te).getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) te).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) te).getOwner().getName()), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 			else if(player instanceof ServerPlayerEntity)

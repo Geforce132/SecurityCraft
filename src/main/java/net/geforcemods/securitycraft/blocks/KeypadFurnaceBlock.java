@@ -105,7 +105,7 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	{
 		if(!world.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
+			if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
 				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 
@@ -165,7 +165,7 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 		CompoundNBT tag = furnace.write(new CompoundNBT());
 
 		furnace.clear();
-		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().with(FACING, facing).with(OPEN, false));
+		world.setBlockState(pos, SCContent.KEYPAD_FURNACE.get().getDefaultState().with(FACING, facing).with(OPEN, false));
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
 		((KeypadFurnaceTileEntity)world.getTileEntity(pos)).read(tag);
 		return true;

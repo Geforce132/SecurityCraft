@@ -103,7 +103,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							//checking the corners
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							{
-								if(currentState.getBlock() != SCContent.reinforcedChiseledCrystalQuartz)
+								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 							}
 							//checking the sides parallel to the block pocket manager
@@ -111,7 +111,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							{
 								Axis typeToCheckFor = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.X : Axis.Z;
 
-								if(currentState.getBlock() != SCContent.reinforcedCrystalQuartzPillar || currentState.get(BlockStateProperties.AXIS) != typeToCheckFor)
+								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.get(BlockStateProperties.AXIS) != typeToCheckFor)
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock.pillar", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 							}
 							//checking the sides orthogonal to the block pocket manager
@@ -119,7 +119,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							{
 								Axis typeToCheckFor = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.Z : Axis.X;
 
-								if(currentState.getBlock() != SCContent.reinforcedCrystalQuartzPillar || currentState.get(BlockStateProperties.AXIS) != typeToCheckFor)
+								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.get(BlockStateProperties.AXIS) != typeToCheckFor)
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock.pillar", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 							}
 							//checking the middle plane
@@ -135,7 +135,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						//checking the corner edges
 						else if(yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 						{
-							if(currentState.getBlock() != SCContent.reinforcedCrystalQuartzPillar || currentState.get(BlockStateProperties.AXIS) != Axis.Y)
+							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.get(BlockStateProperties.AXIS) != Axis.Y)
 								return new TranslationTextComponent("messages.securitycraft:blockpocket.invalidBlock.pillar", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 						}
 						//checking the walls
@@ -211,7 +211,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(world.isRemote)
 			{
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, false, size));
-				PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey()), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
 			}
 
 			enabled = false;
@@ -355,6 +355,6 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.blockPocketManager.getTranslationKey());
+		return new TranslationTextComponent(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
 	}
 }

@@ -49,11 +49,11 @@ public class UniversalBlockRemoverItem extends Item
 		{
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalBlockRemover.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 
-			if(block == SCContent.laserBlock)
+			if(block == SCContent.LASER_BLOCK.get())
 			{
 				CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(pos);
 
@@ -67,7 +67,7 @@ public class UniversalBlockRemoverItem extends Item
 				LaserBlock.destroyAdjacentLasers(world, pos);
 				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
 			}
-			else if(block == SCContent.cageTrap && world.getBlockState(pos).get(CageTrapBlock.DEACTIVATED))
+			else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(pos).get(CageTrapBlock.DEACTIVATED))
 			{
 				BlockPos originalPos = pos;
 				BlockPos middlePos = originalPos.up(4);
@@ -79,7 +79,7 @@ public class UniversalBlockRemoverItem extends Item
 					{
 						Block b = w.getBlockState(p).getBlock();
 
-						if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+						if(b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
 							w.destroyBlock(p, false);
 					}
 				});
@@ -91,7 +91,7 @@ public class UniversalBlockRemoverItem extends Item
 				if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 					pos = pos.down();
 
-				if(block == SCContent.inventoryScanner)
+				if(block == SCContent.INVENTORY_SCANNER.get())
 				{
 					InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 

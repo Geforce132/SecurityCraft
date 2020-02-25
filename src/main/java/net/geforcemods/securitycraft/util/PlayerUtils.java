@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.client.Minecraft;
@@ -21,8 +22,6 @@ public class PlayerUtils{
 
 	/**
 	 * Gets the PlayerEntity instance of a player (if they're online) using their name. <p>
-	 *
-	 * Args: playerName.
 	 */
 	public static PlayerEntity getPlayerFromName(String name){
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
@@ -52,8 +51,6 @@ public class PlayerUtils{
 
 	/**
 	 * Returns true if a player with the given name is in the world.
-	 *
-	 * Args: playerName.
 	 */
 	public static boolean isPlayerOnline(String name) {
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
@@ -74,8 +71,6 @@ public class PlayerUtils{
 
 	/**
 	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p>
-	 *
-	 * Args: sender, prefix, text, link, color.
 	 */
 	public static void sendMessageEndingWithLink(ICommandSource sender, String prefix, String text, String link, TextFormatting color){
 		sender.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
@@ -83,8 +78,13 @@ public class PlayerUtils{
 
 	/**
 	 * Returns true if the player is holding the given item.
-	 *
-	 * Args: player, item.
+	 */
+	public static boolean isHoldingItem(PlayerEntity player, Supplier<Item> item){
+		return isHoldingItem(player, item.get());
+	}
+
+	/**
+	 * Returns true if the player is holding the given item.
 	 */
 	public static boolean isHoldingItem(PlayerEntity player, Item item){
 		if(item == null && player.inventory.getCurrentItem().isEmpty())
@@ -95,8 +95,6 @@ public class PlayerUtils{
 
 	/**
 	 * Is the entity mounted on to a security camera?
-	 *
-	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
 		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof SecurityCameraEntity;

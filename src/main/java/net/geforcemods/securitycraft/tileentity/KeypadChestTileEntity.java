@@ -125,7 +125,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.keypadChest.getTranslationKey());
+						return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
 					}
 				}, pos);
 			}
@@ -146,7 +146,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.keypadChest.getTranslationKey());
+							return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
 						}
 					}, pos);
 				}
@@ -159,7 +159,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadChest.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else {
 			activate(player);
 			return true;

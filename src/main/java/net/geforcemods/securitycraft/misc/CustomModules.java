@@ -1,11 +1,11 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * Simple enum that is supposed to be used in conjunction with {@link CustomizableTileEntity}.
@@ -23,18 +23,18 @@ public enum CustomModules {
 	STORAGE(SCContent.storageModule, "storage_module", "Storage module"),
 	DISGUISE(SCContent.disguiseModule, "disguise_module", "Disguise module");
 
-	private ModuleItem module;
+	private Supplier<ModuleItem> module;
 	private String moduleUnlocalizedName;
 	private String moduleLocalizedName;
 
-	private CustomModules(ModuleItem moduleItem, String unlocalizedName, String localizedName){
+	private CustomModules(Supplier<ModuleItem> moduleItem, String unlocalizedName, String localizedName){
 		module = moduleItem;
 		moduleUnlocalizedName = unlocalizedName;
 		moduleLocalizedName = localizedName;
 	}
 
 	public ModuleItem getItem() {
-		return module;
+		return module.get();
 	}
 
 	public String getTranslationKey() {
@@ -53,11 +53,6 @@ public enum CustomModules {
 				return module;
 
 		return null;
-	}
-
-	public static void refresh() {
-		for(CustomModules module : values())
-			module.module = (ModuleItem) ForgeRegistries.ITEMS.getValue(new ResourceLocation("securitycraft" + ":" + module.getTranslationKey()));
 	}
 
 }

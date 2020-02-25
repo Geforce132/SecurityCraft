@@ -35,19 +35,19 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public Fluid getFlowingFluid()
 	{
-		return SCContent.flowingFakeLava;
+		return SCContent.FLOWING_FAKE_LAVA.get();
 	}
 
 	@Override
 	public Fluid getStillFluid()
 	{
-		return SCContent.fakeLava;
+		return SCContent.FAKE_LAVA.get();
 	}
 
 	@Override
 	public Item getFilledBucket()
 	{
-		return SCContent.fLavaBucket;
+		return SCContent.FAKE_LAVA_BUCKET.get();
 	}
 
 	@Override
@@ -171,13 +171,13 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public BlockState getBlockState(IFluidState state)
 	{
-		return SCContent.fakeLavaBlock.getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
+		return SCContent.FAKE_LAVA_BLOCK.get().getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
 	}
 
 	@Override
 	public boolean isEquivalentTo(Fluid fluid)
 	{
-		return fluid == SCContent.fakeLava || fluid == SCContent.flowingFakeLava;
+		return fluid == SCContent.FAKE_LAVA.get() || fluid == SCContent.FLOWING_FAKE_LAVA.get();
 	}
 
 	@Override

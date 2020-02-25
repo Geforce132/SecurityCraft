@@ -12,7 +12,7 @@ public class ReinforcedRedstoneBlock extends BaseReinforcedBlock
 {
 	public ReinforcedRedstoneBlock()
 	{
-		super(SoundType.METAL, Material.IRON, Blocks.REDSTONE_BLOCK, "reinforced_redstone_block");
+		super(SoundType.METAL, Material.IRON, Blocks.REDSTONE_BLOCK);
 	}
 
 	@Override

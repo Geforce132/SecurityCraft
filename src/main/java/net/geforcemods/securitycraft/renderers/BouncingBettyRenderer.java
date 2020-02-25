@@ -44,7 +44,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 		matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
 		matrix.translate(-0.5D, -0.5D, 0.5D);
 		matrix.rotate(Vector3f.YP.rotationDegrees(90.0F));
-		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.bouncingBetty.getDefaultState(), matrix, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.BOUNCING_BETTY.get().getDefaultState(), matrix, buffer, packedLight, OverlayTexture.NO_OVERLAY);
 		matrix.pop();
 		super.render(entity, entityYaw, partialTicks, matrix, buffer, packedLight);
 	}

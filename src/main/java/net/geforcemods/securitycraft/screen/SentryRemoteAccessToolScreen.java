@@ -126,7 +126,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		blit(startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(mouseX, mouseY, partialTicks);
-		font.drawString(ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.drawString(ClientUtils.localize(SCContent.REMOVE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -235,7 +235,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private int[] getSentryCoordinates(int sentry) {
 		sentry++; // sentries are stored starting by sentry1 up to sentry12
 
-		if (srat.getItem() != null && srat.getItem() == SCContent.remoteAccessSentry && srat.getTag() != null && srat.getTag().getIntArray("sentry" + sentry) != null && srat.getTag().getIntArray("sentry" + sentry).length > 0)
+		if (srat.getItem() != null && srat.getItem() == SCContent.REMOVE_ACCESS_SENTRY.get() && srat.getTag() != null && srat.getTag().getIntArray("sentry" + sentry) != null && srat.getTag().getIntArray("sentry" + sentry).length > 0)
 			return srat.getTag().getIntArray("sentry" + sentry);
 		else
 			return new int[] { 0, 0, 0 };

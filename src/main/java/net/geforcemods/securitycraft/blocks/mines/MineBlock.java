@@ -128,7 +128,7 @@ public class MineBlock extends ExplosiveBlock {
 	 */
 	@Override
 	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
-		return new ItemStack(SCContent.mine.asItem());
+		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
 	@Override

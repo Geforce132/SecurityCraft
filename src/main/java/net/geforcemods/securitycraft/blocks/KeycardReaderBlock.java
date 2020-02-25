@@ -70,19 +70,19 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		if(world.isRemote)
 		{
 			if(requiredLevel != -1 && ((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel != cardLvl)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keycardReader.getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + ((BaseKeycardItem) stack.getItem()).getKeycardLvl(stack)), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + ((BaseKeycardItem) stack.getItem()).getKeycardLvl(stack)), TextFormatting.RED);
 			else if(requiredLevel == -1)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keycardReader.getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 		}
 	}
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof BaseKeycardItem) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
+		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof BaseKeycardItem) && player.inventory.getCurrentItem().getItem() != SCContent.ADMIN_TOOL.get()))
 			((KeycardReaderTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
-		else if(player.inventory.getCurrentItem().getItem() == SCContent.adminTool)
-			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.limitedUseKeycard, 1), player);
+		else if(player.inventory.getCurrentItem().getItem() == SCContent.ADMIN_TOOL.get())
+			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.LIMITED_USE_KEYCARD.get(), 1), player);
 		else
 			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.inventory.getCurrentItem(), player);
 
@@ -91,8 +91,8 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 	public static void activate(World world, BlockPos pos){
 		BlockUtils.setBlockProperty(world, pos, POWERED, true);
-		world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.keycardReader, 60);
+		world.notifyNeighborsOfStateChange(pos, SCContent.KEYCARD_READER.get());
+		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), 60);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	{
 		if(!world.isRemote){
 			BlockUtils.setBlockProperty(world, pos, POWERED, false);
-			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader);
+			world.notifyNeighborsOfStateChange(pos, SCContent.KEYCARD_READER.get());
 		}
 	}
 

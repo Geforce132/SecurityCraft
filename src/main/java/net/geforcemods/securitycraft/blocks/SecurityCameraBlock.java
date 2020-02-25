@@ -99,7 +99,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		BlockState state = getDefaultState().with(POWERED, Boolean.valueOf(false));
+		BlockState state = getDefaultState().with(POWERED, false);
 
 		if(BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing))
 			return state.with(FACING, facing).with(POWERED, false);
@@ -120,7 +120,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
 		if(!world.isRemote && player.getRidingEntity() == null)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.securityCamera.getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted"), TextFormatting.GREEN);
 
 		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof SecurityCameraEntity){
 			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, (SecurityCameraEntity) player.getRidingEntity());

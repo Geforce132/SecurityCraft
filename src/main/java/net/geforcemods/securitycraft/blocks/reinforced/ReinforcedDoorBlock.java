@@ -129,7 +129,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		if (blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context)) {
 			World world = context.getWorld();
 			boolean flag = world.isBlockPowered(blockpos) || world.isBlockPowered(blockpos.up());
-			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(HINGE, this.getHingeSide(context)).with(OPEN, Boolean.valueOf(flag)).with(HALF, DoubleBlockHalf.LOWER);
+			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(HINGE, this.getHingeSide(context)).with(OPEN, flag).with(HALF, DoubleBlockHalf.LOWER);
 		} else {
 			return null;
 		}
@@ -233,7 +233,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 				if(!world.isRemote)
 				{
 					world.destroyBlock(pos, false);
-					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.reinforcedDoorItem));
+					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
 				}
 			}
 			else
@@ -252,13 +252,13 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 						{
 							secondDoorState = world.getBlockState(pos.north());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 								world.setBlockState(pos.north(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							else
 							{
 								secondDoorState = world.getBlockState(pos.south());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 									world.setBlockState(pos.south(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							}
 						}
@@ -266,13 +266,13 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 						{
 							secondDoorState = world.getBlockState(pos.east());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 								world.setBlockState(pos.east(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							else
 							{
 								secondDoorState = world.getBlockState(pos.west());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 									world.setBlockState(pos.west(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							}
 						}
@@ -280,13 +280,13 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 						{
 							secondDoorState = world.getBlockState(pos.south());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 								world.setBlockState(pos.south(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							else
 							{
 								secondDoorState = world.getBlockState(pos.north());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 									world.setBlockState(pos.north(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							}
 						}
@@ -294,13 +294,13 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 						{
 							secondDoorState = world.getBlockState(pos.west());
 
-							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+							if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 								world.setBlockState(pos.west(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							else
 							{
 								secondDoorState = world.getBlockState(pos.east());
 
-								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.reinforcedDoor && secondDoorState.get(OPEN) != hasActiveSCBlock)
+								if(secondDoorState != null && secondDoorState.getBlock() == SCContent.REINFORCED_DOOR.get() && secondDoorState.get(OPEN) != hasActiveSCBlock)
 									world.setBlockState(pos.east(), secondDoorState.with(OPEN, hasActiveSCBlock), 2);
 							}
 						}
@@ -369,7 +369,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
-		return new ItemStack(SCContent.reinforcedDoorItem);
+		return new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get());
 	}
 
 	@Override

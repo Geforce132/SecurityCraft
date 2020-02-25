@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
@@ -16,14 +18,19 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock
 {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public ReinforcedRotatedPillarBlock(Material mat, Block vB, String registryPath)
+	public ReinforcedRotatedPillarBlock(Material mat, Block vB)
 	{
-		this(SoundType.STONE, mat, vB, registryPath);
+		this(SoundType.STONE, mat, () -> vB);
 	}
 
-	public ReinforcedRotatedPillarBlock(SoundType soundType, Material mat, Block vB, String registryPath)
+	public ReinforcedRotatedPillarBlock(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, registryPath);
+		this(soundType, mat, () -> vB);
+	}
+
+	public ReinforcedRotatedPillarBlock(SoundType soundType, Material mat, Supplier<Block> vB)
+	{
+		super(soundType, mat, vB, 0);
 
 		setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));
 	}

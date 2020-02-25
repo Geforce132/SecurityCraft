@@ -31,7 +31,8 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize(SCContent.disguiseModule.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.disguiseModule.getTranslationKey())) / 2, 6, 4210752);
+		String disguiseModuleName = ClientUtils.localize(SCContent.disguiseModule.get().getTranslationKey());
+		font.drawString(disguiseModuleName, xSize / 2 - font.getStringWidth(disguiseModuleName) / 2, 6, 4210752);
 	}
 
 	@Override

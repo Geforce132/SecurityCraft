@@ -69,7 +69,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 				switch(j)
 				{
 					case DEFUSE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.wireCutters), this::actionPerformed);
+						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.WIRE_CUTTERS.get()), this::actionPerformed);
 						guiButtons[i][j].active = active && bound && defusable;
 						break;
 					case ACTIVATE:
@@ -101,7 +101,8 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
-		font.drawString(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey())), startY + -25 + 13, 0xFF0000);
+		String mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
+		font.drawString(mratName, startX + xSize / 2 - font.getStringWidth(mratName), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -166,7 +167,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 	{
 		mine++; //mines are stored starting by mine1 up to mine6
 
-		if(mrat.getItem() != null && mrat.getItem() == SCContent.remoteAccessMine && mrat.getTag() != null &&  mrat.getTag().getIntArray("mine" + mine) != null && mrat.getTag().getIntArray("mine" + mine).length > 0)
+		if(mrat.getItem() != null && mrat.getItem() == SCContent.REMOTE_ACCESS_MINE.get() && mrat.getTag() != null &&  mrat.getTag().getIntArray("mine" + mine) != null && mrat.getTag().getIntArray("mine" + mine).length > 0)
 			return mrat.getTag().getIntArray("mine" + mine);
 		else
 			return new int[] {0,0,0};
