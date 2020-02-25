@@ -522,15 +522,15 @@ public class SCContent
 	public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)));
 
 	//Modules
-	public static final RegistryObject<ModuleItem> blacklistModule = ITEMS.register("blacklist_module", () -> new ModuleItem(CustomModules.BLACKLIST, true, true));
-	public static final RegistryObject<ModuleItem> disguiseModule = ITEMS.register("disguise_module", () -> new ModuleItem(CustomModules.DISGUISE, false, true, 0, 1));
-	public static final RegistryObject<ModuleItem> harmingModule = ITEMS.register("harming_module", () -> new ModuleItem(CustomModules.HARMING, false));
-	public static final RegistryObject<ModuleItem> redstoneModule = ITEMS.register("redstone_module", () -> new ModuleItem(CustomModules.REDSTONE, false));
-	public static final RegistryObject<ModuleItem> smartModule = ITEMS.register("smart_module", () -> new ModuleItem(CustomModules.SMART, false));
-	public static final RegistryObject<ModuleItem> storageModule = ITEMS.register("storage_module", () -> new ModuleItem(CustomModules.STORAGE, false));
-	public static final RegistryObject<ModuleItem> whitelistModule = ITEMS.register("whitelist_module", () -> new ModuleItem(CustomModules.WHITELIST, true, true));
+	public static final RegistryObject<ModuleItem> BLACKLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(CustomModules.BLACKLIST, true, true));
+	public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(CustomModules.DISGUISE, false, true, 0, 1));
+	public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(CustomModules.HARMING, false));
+	public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(CustomModules.REDSTONE, false));
+	public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(CustomModules.SMART, false));
+	public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(CustomModules.STORAGE, false));
+	public static final RegistryObject<ModuleItem> WHITELIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(CustomModules.WHITELIST, true, true));
 
-	//Tile entity typses
+	//Tile entity types
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
 	public static TileEntityType<OwnableTileEntity> teTypeOwnable;
 	@ObjectHolder(SecurityCraft.MODID + ":abstract")

@@ -15,13 +15,13 @@ import net.minecraft.item.ItemStack;
  */
 public enum CustomModules {
 
-	REDSTONE(SCContent.redstoneModule, "redstone_module", "Redstone module"),
-	WHITELIST(SCContent.whitelistModule, "whitelist_module", "Whitelist module"),
-	BLACKLIST(SCContent.blacklistModule, "blacklist_module", "Blacklist module"),
-	HARMING(SCContent.harmingModule, "harming_module", "Harming module"),
-	SMART(SCContent.smartModule, "smart_module", "Smart module"),
-	STORAGE(SCContent.storageModule, "storage_module", "Storage module"),
-	DISGUISE(SCContent.disguiseModule, "disguise_module", "Disguise module");
+	REDSTONE(SCContent.REDSTONE_MODULE, "redstone_module", "Redstone module"),
+	WHITELIST(SCContent.WHITELIST_MODULE, "whitelist_module", "Whitelist module"),
+	BLACKLIST(SCContent.BLACKLIST_MODULE, "blacklist_module", "Blacklist module"),
+	HARMING(SCContent.HARMING_MODULE, "harming_module", "Harming module"),
+	SMART(SCContent.SMART_MODULE, "smart_module", "Smart module"),
+	STORAGE(SCContent.STORAGE_MODULE, "storage_module", "Storage module"),
+	DISGUISE(SCContent.DISGUISE_MODULE, "disguise_module", "Disguise module");
 
 	private Supplier<ModuleItem> module;
 	private String moduleUnlocalizedName;

@@ -153,7 +153,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(hand));
 			}
-			else if(item == SCContent.disguiseModule.get())
+			else if(item == SCContent.DISGUISE_MODULE.get())
 			{
 				ItemStack module = getDisguiseModule();
 
@@ -165,7 +165,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.whitelistModule.get())
+			else if(item == SCContent.WHITELIST_MODULE.get())
 			{
 				ItemStack module = getWhitelistModule();
 
