@@ -32,7 +32,7 @@ public class GuiMRAT extends GuiContainer{
 	private ItemStack mrat;
 	private GuiButton[][] buttons = new GuiButton[6][4]; //6 buttons, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
-	private List<StringHoverChecker> hoverCheckers = new ArrayList<StringHoverChecker>();
+	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public GuiMRAT(InventoryPlayer inventory, ItemStack item) {
 		super(new ContainerGeneric(inventory, null));
@@ -85,7 +85,7 @@ public class GuiMRAT extends GuiContainer{
 
 				buttonList.add(buttons[i][j]);
 			}
-			
+
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				if (Minecraft.getMinecraft().player.world.isBlockLoaded(minePos, false)) {
@@ -97,21 +97,21 @@ public class GuiMRAT extends GuiContainer{
 						buttons[i][DEFUSE].enabled = active && defusable;
 						buttons[i][ACTIVATE].enabled = !active && defusable;
 						buttons[i][DETONATE].enabled = active;
-						buttons[i][UNBIND].enabled = true;	
+						buttons[i][UNBIND].enabled = true;
 						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], 20, ClientUtils.localize("gui.securitycraft:mrat.defuse")));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], 20, ClientUtils.localize("gui.securitycraft:mrat.activate")));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], 20, ClientUtils.localize("gui.securitycraft:mrat.detonate")));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
-						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.player);	
-						for (int j = 0; j < 4; j++) {	
+						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.player);
+						for (int j = 0; j < 4; j++) {
 							buttons[i][j].enabled = false;
-						}	
+						}
 					}
 				}
 				else {
-					for (int j = 0; j < 4; j++) {	
+					for (int j = 0; j < 4; j++) {
 						hoverCheckers.add(new StringHoverChecker(buttons[i][j], 20, ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
 				}
@@ -162,7 +162,7 @@ public class GuiMRAT extends GuiContainer{
 		for(StringHoverChecker chc : hoverCheckers)
 		{
 			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY, fontRenderer);
+				drawHoveringText(chc.getLines(), mouseX, mouseY, fontRenderer);
 		}
 	}
 

@@ -48,7 +48,7 @@ public class GuiSCManual extends GuiScreen {
 	private ResourceLocation infoBookTitlePage = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
 	private ResourceLocation infoBookIcons = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
 	private static ResourceLocation bookGuiTextures = new ResourceLocation("textures/gui/book.png");
-	private List<HoverChecker> hoverCheckers = new ArrayList<HoverChecker>();
+	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private static int lastPage = -1;
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
@@ -77,6 +77,12 @@ public class GuiSCManual extends GuiScreen {
 		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
 		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
+		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey());
+			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey());
+
+			return key1.compareTo(key2);
+		});
 	}
 
 	@Override

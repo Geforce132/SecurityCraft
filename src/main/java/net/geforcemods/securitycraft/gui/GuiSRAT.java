@@ -34,7 +34,7 @@ public class GuiSRAT extends GuiContainer {
 	private String[] names = new String[12];
 	private GuiButton[][] buttonsGlobal = new GuiButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
-	private List<StringHoverChecker> hoverCheckers = new ArrayList<StringHoverChecker>();
+	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public GuiSRAT(InventoryPlayer inventory, ItemStack item) {
 		super(new ContainerGeneric(inventory, null));
@@ -112,13 +112,13 @@ public class GuiSRAT extends GuiContainer {
 					}
 					else {
 						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
-						for (int j = 0; j < 4; j++) {	
+						for (int j = 0; j < 4; j++) {
 							buttons[i][j].enabled = false;
 						}
 					}
 				}
 				else {
-					for (int j = 0; j < 4; j++) {	
+					for (int j = 0; j < 4; j++) {
 						hoverCheckers.add(new StringHoverChecker(buttons[i][j], 20, ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
 				}
@@ -181,7 +181,7 @@ public class GuiSRAT extends GuiContainer {
 		for(StringHoverChecker chc : hoverCheckers)
 		{
 			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				drawHoveringText(((StringHoverChecker)chc).getLines(), mouseX, mouseY, fontRenderer);
+				drawHoveringText(chc.getLines(), mouseX, mouseY, fontRenderer);
 		}
 	}
 
