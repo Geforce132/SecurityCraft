@@ -37,6 +37,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -325,6 +326,10 @@ public class ClientProxy implements IProxy {
 				}
 			}
 		}
+
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
+			return world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1;
+		}, SCContent.fakeWater, SCContent.bogusWaterFlowing);
 	}
 
 	@Override
