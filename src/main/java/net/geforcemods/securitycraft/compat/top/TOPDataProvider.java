@@ -15,6 +15,8 @@ import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
+import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
+import net.geforcemods.securitycraft.blocks.BlockFakeWaterBase;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
@@ -22,6 +24,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextFormatting;
@@ -37,15 +40,43 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 	public Void apply(ITheOneProbe theOneProbe)
 	{
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
+			boolean edited = false;
+			ItemStack item = ItemStack.EMPTY;
+			ItemStack itemLabel = ItemStack.EMPTY;
+			String labelText = "";
+			String text = formatting + "Minecraft";
+
+			//split up so the display override does not work for every block
 			if(blockState.getBlock() instanceof BlockDisguisable)
 			{
-				ItemStack disguisedAs = ((BlockDisguisable)blockState.getBlock()).getDisguisedStack(world, data.getPos());
+				item = ((BlockDisguisable)blockState.getBlock()).getDisguisedStack(world, data.getPos());
+				itemLabel = item;
+				text = formatting + Loader.instance().getIndexedModList().get(item.getItem().getRegistryName().getNamespace()).getName();
+				edited = true;
+			}
+			else if(blockState.getBlock() instanceof BlockFakeLavaBase)
+			{
+				item = new ItemStack(Items.LAVA_BUCKET);
+				labelText = ClientUtils.localize("tile.lava.name");
+				edited = true;
+			}
+			else if(blockState.getBlock() instanceof BlockFakeWaterBase)
+			{
+				item = new ItemStack(Items.WATER_BUCKET);
+				labelText = ClientUtils.localize("tile.water.name");
+				edited = true;
+			}
 
-				probeInfo.horizontal()
-				.item(disguisedAs)
-				.vertical()
-				.itemLabel(disguisedAs)
-				.text(formatting + Loader.instance().getIndexedModList().get(disguisedAs.getItem().getRegistryName().getNamespace()).getName());
+			if(edited)
+			{
+				IProbeInfo info = probeInfo.horizontal().item(item).vertical();
+
+				if(itemLabel.isEmpty())
+					info.text(labelText);
+				else
+					info.itemLabel(itemLabel);
+
+				info.text(text);
 				return true;
 			}
 

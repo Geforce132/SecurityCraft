@@ -93,7 +93,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SCEventHandler {
 
-	public static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
+	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 
 	public SCEventHandler()
 	{

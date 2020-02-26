@@ -30,6 +30,7 @@
 - Fix: HWYLA doesn't show information of disguised blocks correctly
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
+- Fix: The One Probe doesn't show fake liquids correctly
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
