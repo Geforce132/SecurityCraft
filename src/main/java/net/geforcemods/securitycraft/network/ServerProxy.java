@@ -6,27 +6,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
 
 public class ServerProxy implements IProxy
 {
 	@Override
 	public void clientSetup() {}
 
-	//	@Override
-	//	public void registerKeypadChestItem(Register<Item> event)
-	//	{
-	//		event.getRegistry().register(new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical)).setRegistryName(SCContent.KEYPAD_CHEST.get().getRegistryName()));
-	//	}
-
 	@Override
 	public void tint() {}
-
-	@Override
-	public World getClientWorld()
-	{
-		return null;
-	}
 
 	@Override
 	public PlayerEntity getClientPlayer()

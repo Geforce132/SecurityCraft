@@ -15,13 +15,16 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
@@ -60,12 +63,14 @@ public class SecurityCraft {
 
 	public SecurityCraft()
 	{
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
-		SCContent.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		SCContent.FLUIDS.register(FMLJavaModLoadingContext.get().getModEventBus());
-		SCContent.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+		SCContent.BLOCKS.register(modEventBus);
+		SCContent.FLUIDS.register(modEventBus);
+		SCContent.ITEMS.register(modEventBus);
 	}
 
 	@SubscribeEvent
@@ -108,6 +113,35 @@ public class SecurityCraft {
 					IReinforcedBlock rb = (IReinforcedBlock)block;
 					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
 					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
+				}
+
+				if(field.isAnnotationPresent(HasManualPage.class))
+				{
+					Object o = ((RegistryObject<?>)field.get(null)).get();
+					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
+					boolean isBlock = true;
+					Item item;
+					String key;
+
+					if(o instanceof Block)
+						item = ((Block)o).asItem();
+					else
+					{
+						item = (Item)o;
+						isBlock = false;
+					}
+
+					if(hmp.specialInfoKey().isEmpty())
+						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+					else
+						key = hmp.specialInfoKey();
+
+					SCManualPage page = new SCManualPage(item, key);
+
+					if(!hmp.designedBy().isEmpty())
+						page.setDesignedBy(hmp.designedBy());
+
+					instance.manualPages.add(page);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)

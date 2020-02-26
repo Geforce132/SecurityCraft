@@ -57,7 +57,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -236,12 +235,6 @@ public class ClientProxy implements IProxy
 		KeyBindings.init();
 	}
 
-	//	@Override
-	//	public void registerKeypadChestItem(Register<Item> event)
-	//	{
-	//		event.getRegistry().register(new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical).setISTER(() -> () -> new ItemKeypadChestRenderer())).setRegistryName(SCContent.KEYPAD_CHEST.get().getRegistryName()));
-	//	}
-
 	@Override
 	public void tint()
 	{
@@ -284,12 +277,6 @@ public class ClientProxy implements IProxy
 
 			return 0xFFFFFF;
 		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
-	}
-
-	@Override
-	public World getClientWorld()
-	{
-		return Minecraft.getInstance().world;
 	}
 
 	@Override

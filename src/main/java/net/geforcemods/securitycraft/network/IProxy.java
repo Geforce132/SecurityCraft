@@ -6,14 +6,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
 
 public interface IProxy
 {
 	public void clientSetup();
-	//	public void registerKeypadChestItem(Register<Item> event);
 	public void tint();
-	public World getClientWorld();
 	public PlayerEntity getClientPlayer();
 	public void displayMRATGui(ItemStack stack);
 	public void displaySRATGui(ItemStack stack);

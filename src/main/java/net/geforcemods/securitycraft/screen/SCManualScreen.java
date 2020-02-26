@@ -87,6 +87,12 @@ public class SCManualScreen extends Screen {
 		}
 
 		updateRecipeAndIcons();
+		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey());
+			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey());
+
+			return key1.compareTo(key2);
+		});
 	}
 
 	@Override

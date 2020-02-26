@@ -2,10 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BooleanSupplier;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
@@ -27,7 +24,6 @@ import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.TaserBulletEntity;
 import net.geforcemods.securitycraft.items.ReinforcedBlockItem;
-import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard1Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard2Condition;
@@ -115,87 +111,6 @@ import net.minecraftforge.registries.DataSerializerEntry;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class RegistrationHandler
 {
-	private static ArrayList<Block> blockPages = new ArrayList<>();
-	private static Map<Block,String> blocksDesignedBy = new HashMap<>();
-
-	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event)
-	{
-		//		registerBlock(event, SCContent.LASER_BLOCK);
-		//		event.getRegistry().register(SCContent.LASER_FIELD);
-		//		registerBlock(event, SCContent.KEYPAD);
-		//		registerBlock(event, SCContent.MINE);
-		//		registerBlock(event, SCContent.DIRT_MINE);
-		//		registerBlock(event, SCContent.STONE_MINE, false);
-		//		registerBlock(event, SCContent.COBBLESTONE_MINE, false);
-		//		registerBlock(event, SCContent.DIAMOND_ORE_MINE, false);
-		//		registerBlock(event, SCContent.SAND_MINE, false);
-		//		registerBlock(event, SCContent.FURNACE_MINE);
-		//		registerBlock(event, SCContent.RETINAL_SCANNER);
-		//		event.getRegistry().register(SCContent.REINFORCED_DOOR);
-		//		registerBlock(event, SCContent.KEYCARD_READER);
-		//		registerBlock(event, SCContent.REINFORCED_IRON_TRAPDOOR);
-		//		registerBlock(event, SCContent.BOUNCING_BETTY);
-		//		registerBlock(event, SCContent.INVENTORY_SCANNER);
-		//		event.getRegistry().register(SCContent.INVENTORY_SCANNER_FIELD);
-		//		registerBlock(event, SCContent.TRACK_MINE);
-		//		registerBlock(event, SCContent.CAGE_TRAP);
-		//		event.getRegistry().register(SCContent.HORIZONTAL_REINFORCED_IRON_BARS);
-		//		registerBlock(event, SCContent.PORTABLE_RADAR);
-		//		registerBlock(event, SCContent.KEYPAD_CHEST);
-		//		registerBlock(event, SCContent.USERNAME_LOGGER);
-		//		registerBlock(event, SCContent.ALARM);
-		//		registerBlock(event, SCContent.REINFORCED_FENCEGATE);
-		//		registerBlock(event, SCContent.PANIC_BUTTON);
-		//		registerBlock(event, SCContent.FRAME);
-		//		registerBlock(event, SCContent.CLAYMORE);
-		//		registerBlock(event, SCContent.KEYPAD_FURNACE);
-		//		registerBlock(event, SCContent.SECURITY_CAMERA);
-		//		registerBlock(event, SCContent.IRON_FENCE);
-		//		registerBlock(event, SCContent.IMS);
-		//		registerBlock(event, SCContent.PROTECTO);
-		//		event.getRegistry().register(SCContent.SCANNER_DOOR);
-		//		event.getRegistry().register(SCContent.SECRET_OAK_WALL_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_OAK_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_SPRUCE_WALL_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_SPRUCE_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_BIRCH_WALL_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_BIRCH_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_JUNGLE_WALL_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_JUNGLE_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_ACACIA_WALL_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_ACACIA_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_DARK_OAK_WALL_SIGN);
-		//		event.getRegistry().register(SCContent.SECRET_DARK_OAK_SIGN);
-		//		registerBlock(event, SCContent.MOTION_ACTIVATED_LIGHT);
-		//		registerBlock(event, SCContent.GRAVEL_MINE, false);
-		//		registerBlock(event, SCContent.FAKE_LAVA_BLOCK, false);
-		//		registerBlock(event, SCContent.FAKE_WATER_BLOCK, false);
-		//		registerBlock(event, SCContent.TROPHY_SYSTEM);
-		//		registerBlock(event, SCContent.CRYSTAL_QUARTZ, true);
-		//		registerBlock(event, SCContent.CHISELED_CRYSTAL_QUARTZ, false);
-		//		registerBlock(event, SCContent.CRYSTAL_QUARTZ_PILLAR, false);
-		//		registerBlock(event, SCContent.CRYSTAL_QUARTZ_SLAB, false);
-		//		registerBlock(event, SCContent.STAIRS_CRYSTAL_QUARTZ, false);
-		//		registerBlock(event, SCContent.BLOCK_POCKET_WALL);
-		//		registerBlock(event, SCContent.BLOCK_POCKET_MANAGER, "Henzoid");
-		//		registerBlock(event, SCContent.PROJECTOR);
-
-		//register reinforced blocks
-		//		for(Field field : SCContent.class.getFields())
-		//		{
-		//			try
-		//			{
-		//				if(field.isAnnotationPresent(Reinforced.class))
-		//					registerBlock(event, (Block)field.get(null), field.getAnnotation(Reinforced.class).hasPage());
-		//			}
-		//			catch(IllegalArgumentException | IllegalAccessException e)
-		//			{
-		//				e.printStackTrace();
-		//			}
-		//		}
-	}
-
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
@@ -220,73 +135,6 @@ public class RegistrationHandler
 				e.printStackTrace();
 			}
 		}
-
-		//		SecurityCraft.proxy.registerKeypadChestItem(event);
-
-		//init block sc manual pages
-		for(Block block : blockPages)
-		{
-			if(block == SCContent.REINFORCED_STONE.get())
-				SecurityCraft.instance.manualPages.add(new SCManualPage(block.asItem(), "help.securitycraft:reinforced.info"));
-			else
-			{
-				SCManualPage page = new SCManualPage(block.asItem(), "help" + block.getTranslationKey().substring(5) + ".info");
-
-				if(blocksDesignedBy.containsKey(block))
-					page.setDesignedBy(blocksDesignedBy.get(block));
-
-				SecurityCraft.instance.manualPages.add(page);
-			}
-		}
-
-		//items
-		//		registerItem(event, SCContent.CODEBREAKER);
-		//		registerItem(event, SCContent.REINFORCED_DOOR_ITEM);
-		//		registerItem(event, SCContent.SCANNER_DOOR_ITEM);
-		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REMOVER);
-		//		registerItem(event, SCContent.KEYCARD_LVL_1, () -> ConfigHandler.CONFIG.ableToCraftKeycard1.get());
-		//		registerItem(event, SCContent.KEYCARD_LVL_2, () -> ConfigHandler.CONFIG.ableToCraftKeycard2.get());
-		//		registerItem(event, SCContent.KEYCARD_LVL_3, () -> ConfigHandler.CONFIG.ableToCraftKeycard3.get());
-		//		registerItem(event, SCContent.KEYCARD_LVL_4, () -> ConfigHandler.CONFIG.ableToCraftKeycard4.get());
-		//		registerItem(event, SCContent.KEYCARD_LVL_5, () -> ConfigHandler.CONFIG.ableToCraftKeycard5.get());
-		//		registerItem(event, SCContent.LIMITED_USE_KEYCARD, () -> ConfigHandler.CONFIG.ableToCraftLUKeycard.get());
-		//		registerItem(event, SCContent.REMOTE_ACCESS_MINE);
-		//		registerItem(event, SCContent.REMOVE_ACCESS_SENTRY);
-		//		registerItem(event, SCContent.FAKE_WATER_BUCKET);
-		//		registerItem(event, SCContent.FAKE_LAVA_BUCKET);
-		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_MODIFIER);
-		//		registerItem(event, SCContent.redstoneModule);
-		//		registerItem(event, SCContent.whitelistModule);
-		//		registerItem(event, SCContent.blacklistModule);
-		//		registerItem(event, SCContent.harmingModule);
-		//		registerItem(event, SCContent.smartModule);
-		//		registerItem(event, SCContent.storageModule);
-		//		registerItem(event, SCContent.disguiseModule);
-		//		registerItem(event, SCContent.WIRE_CUTTERS);
-		//		registerItem(event, SCContent.ADMIN_TOOL);
-		//		registerItem(event, SCContent.KEY_PANEL);
-		//		registerItem(event, SCContent.CAMERA_MONITOR);
-		//		registerItem(event, SCContent.TASER);
-		//		registerItem(event, SCContent.SC_MANUAL);
-		//		registerItem(event, SCContent.UNIVERSAL_OWNER_CHANGER);
-		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1);
-		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2);
-		//		registerItem(event, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3);
-		//		registerItem(event, SCContent.BRIEFCASE);
-		//		registerItem(event, SCContent.UNIVERSAL_KEY_CHANGER);
-		//		event.getRegistry().register(SCContent.TASER_POWERED); //won't show up in the manual
-		//		registerItem(event, SCContent.SECRET_OAK_SIGN_ITEM);
-		//		event.getRegistry().register(SCContent.SECRET_SPRUCE_SIGN_ITEM);
-		//		event.getRegistry().register(SCContent.SECRET_BIRCH_SIGN_ITEM);
-		//		event.getRegistry().register(SCContent.SECRET_JUNGLE_SIGN_ITEM);
-		//		event.getRegistry().register(SCContent.SECRET_ACACIA_SIGN_ITEM);
-		//		event.getRegistry().register(SCContent.SECRET_DARK_OAK_SIGN_ITEM);
-		//		registerItem(event, SCContent.SENTRY, "Henzoid");
-		//		registerItem(event, SCContent.CRYSTAL_QUARTZ_ITEM);
-
-		//clear unused memory
-		blockPages = null;
-		blocksDesignedBy = null;
 	}
 
 	@SubscribeEvent
@@ -397,17 +245,17 @@ public class RegistrationHandler
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericContainer(SCContent.cTypeBriefcase, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BriefcaseContainer(windowId, inv, new BriefcaseInventory(inv.getCurrentItem()))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_inventory")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_setup")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new CustomizeBlockContainer(windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "customize_block")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new CustomizeBlockContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "customize_block")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new DisguiseModuleContainer(windowId, inv, new ModuleInventory(inv.getCurrentItem()))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new InventoryScannerContainer(windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadFurnaceContainer(windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeSetPassword, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "set_password")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeIMS, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeycardSetup, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeyChanger, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeBlockPocketManager, windowId, SecurityCraft.proxy.getClientWorld(), data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new InventoryScannerContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadFurnaceContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeSetPassword, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "set_password")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "username_logger")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeIMS, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeycardSetup, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeyChanger, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeBlockPocketManager, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 	}
 
 	public static void registerPackets()
@@ -496,94 +344,5 @@ public class RegistrationHandler
 				return new Owner(value.getName(), value.getUUID());
 			}
 		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
-	}
-
-	/**
-	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item
-	 * @param block The block to register
-	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, String designedBy)
-	{
-		registerBlock(event, block, true, designedBy);
-	}
-
-	/**
-	 * Registers a block and its BlockItem and adds the help info for the block to the SecurityCraft manual item
-	 * @param block The block to register
-	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
-	{
-		registerBlock(event, block, true, null);
-	}
-
-	/**
-	 * Registers a block and its BlockItem
-	 * @param block The Block to register
-	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
-	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage)
-	{
-		registerBlock(event, block, initPage, null);
-	}
-
-	/**
-	 * Registers a block and its ItemBlock
-	 * @param block The Block to register
-	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
-	 * @param designedBy The name of the person who designed this block
-	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean initPage, String designedBy)
-	{
-		event.getRegistry().register(block);
-
-		if(initPage)
-			blockPages.add(block);
-
-		if(designedBy != null)
-			blocksDesignedBy.put(block, designedBy);
-	}
-
-	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item)
-	{
-		registerItem(event, item, "");
-	}
-
-	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
-	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, BooleanSupplier configValue)
-	{
-		registerItem(event, item, configValue, "");
-	}
-
-	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, String designedBy)
-	{
-		event.getRegistry().register(item); //need this call first before accessing the translation key
-
-		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info");
-
-		page.setDesignedBy(designedBy);
-		SecurityCraft.instance.manualPages.add(page);
-	}
-
-	/**
-	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft manual item.
-	 * Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
-	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, BooleanSupplier configValue, String designedBy)
-	{
-		event.getRegistry().register(item); //need this call first before accessing the translation key
-
-		SCManualPage page = new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", configValue);
-
-		page.setDesignedBy(designedBy);
-		SecurityCraft.instance.manualPages.add(page);
 	}
 }
