@@ -129,7 +129,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		if (blockpos.getY() < 255 && context.getWorld().getBlockState(blockpos.up()).isReplaceable(context)) {
 			World world = context.getWorld();
 			boolean flag = world.isBlockPowered(blockpos) || world.isBlockPowered(blockpos.up());
-			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(HINGE, this.getHingeSide(context)).with(OPEN, Boolean.valueOf(flag)).with(HALF, DoubleBlockHalf.LOWER);
+			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing()).with(HINGE, this.getHingeSide(context)).with(OPEN, flag).with(HALF, DoubleBlockHalf.LOWER);
 		} else {
 			return null;
 		}

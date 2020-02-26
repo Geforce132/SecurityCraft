@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,7 +27,7 @@ import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
-public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay {
+public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
