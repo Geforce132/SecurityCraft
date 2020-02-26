@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.function.BiFunction;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
@@ -233,56 +235,27 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	{
 		if(!world.isRemote())
 		{
-			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
+			checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
+			checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
+			checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
+			checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
+		}
+	}
+
+	private void checkAndDestroyFields(IWorld world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
+	{
+		for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
+		{
+			BlockPos modifiedPos = posModifier.apply(pos, i);
+
+			if(BlockUtils.getBlock(world, modifiedPos) == SCContent.INVENTORY_SCANNER.get())
 			{
-				if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.INVENTORY_SCANNER.get())
+				for(int j = 1; j < i; j++)
 				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.west(j), false);
-					}
-
-					break;
+					world.destroyBlock(modifiedPos, false);
 				}
-			}
 
-			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
-			{
-				if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.INVENTORY_SCANNER.get())
-				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.east(j), false);
-					}
-
-					break;
-				}
-			}
-
-			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
-			{
-				if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.INVENTORY_SCANNER.get())
-				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.north(j), false);
-					}
-
-					break;
-				}
-			}
-
-			for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
-			{
-				if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.INVENTORY_SCANNER.get())
-				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.south(j), false);
-					}
-
-					break;
-				}
+				break;
 			}
 		}
 	}

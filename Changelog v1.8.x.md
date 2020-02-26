@@ -10,6 +10,7 @@
 - Change: Slightly improve Reinforced (Stained) Glass textures
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Change: Laser Blocks now create connections more easily
+- Change: The SC Manual now displays pages alphabetically
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Cannot see through Scanner Door and Reinforced Iron Trapdoor
