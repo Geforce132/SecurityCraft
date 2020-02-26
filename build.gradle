@@ -9,6 +9,10 @@ buildscript {
     }
 }
 
+plugins {
+	id "com.wynprice.cursemaven" version "2.1.1"
+}
+
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -101,12 +105,9 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.15.2-31.1.14'
 
-    compile fg.deobf (project.dependencies.create("mcp.mobius.waila:Hwyla:1.10.7-B71_1.15.1") {
-        transitive = false
-    })
-    compile fg.deobf (project.dependencies.create("mcjty.theoneprobe:TheOneProbe-1.15:1.15-2.0.0-3") {
-        transitive = false
-    })
+    implementation fg.deobf("mcp.mobius.waila:Hwyla:1.10.7-B71_1.15.1")
+    implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.15:1.15-2.0.0-3")
+    compileOnly fg.deobf("curse.maven:cyclic:2883170")
 	compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2:api")
 	runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.2")
 }

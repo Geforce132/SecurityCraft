@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
+import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
@@ -50,8 +51,8 @@ public class SecurityCraft {
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
-	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
+	public HashMap<String, Object[]> cameraUsePositions = new HashMap<>();
+	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
 	private CompoundNBT savedModule;
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
@@ -62,6 +63,9 @@ public class SecurityCraft {
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
+
+		if(ModList.get().isLoaded("cyclic"))
+			MinecraftForge.EVENT_BUS.addListener(CyclicCompat::onRightClickBlock);
 	}
 
 	@SubscribeEvent

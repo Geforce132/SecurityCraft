@@ -41,6 +41,7 @@
 - Fix: Some sounds don't become quieter when moving away from them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
 - Fix: Some universal tools can identify disguised blocks and block mines
+- Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Misc.: The minimum required Forge version is now 31.1.14
 
