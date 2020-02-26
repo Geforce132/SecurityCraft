@@ -52,7 +52,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getBuilder(SCTags.Blocks.REINFORCED_JUNGLE_LOGS).add(
 				SCContent.REINFORCED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_JUNGLE_WOOD.get(),
-				SCContent.REINFORCED_STRIPPED_JUNGLE_LÖG.get(),
+				SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
 		getBuilder(SCTags.Blocks.REINFORCED_LOGS).add(
 				SCTags.Blocks.REINFORCED_ACACIA_LOGS,
