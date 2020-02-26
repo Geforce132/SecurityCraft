@@ -54,8 +54,6 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 
 			if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))
 				explode(world, pos);
-
-			return false;
 		}
 
 		return false;

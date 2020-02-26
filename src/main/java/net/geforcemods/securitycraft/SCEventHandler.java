@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -28,9 +29,11 @@ import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -44,6 +47,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -83,7 +87,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
-	public static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
+	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 
 	static
 	{
@@ -179,7 +183,9 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						if(!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock))
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+
 						return;
 					}
 
@@ -228,7 +234,9 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockRemover.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						if(!(block instanceof IBlockMine) && !(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock))
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockRemover.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+
 						return;
 					}
 
