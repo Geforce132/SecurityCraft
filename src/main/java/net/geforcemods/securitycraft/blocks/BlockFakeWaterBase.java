@@ -11,6 +11,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -55,9 +56,9 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntity
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if(!world.isRemote && !(entity instanceof EntityItem))
+		if(!world.isRemote && !(entity instanceof EntityItem) && !(entity instanceof EntityBoat))
 		{
-			if(!(entity instanceof EntityPlayer) || !((EntityPlayer) entity).capabilities.isCreativeMode)
+			if(!(entity instanceof EntityPlayer) || (!((EntityPlayer) entity).capabilities.isCreativeMode && !(((EntityPlayer)entity).getRidingEntity() instanceof EntityBoat)))
 				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
 		}
 	}

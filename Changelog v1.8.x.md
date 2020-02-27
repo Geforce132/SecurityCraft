@@ -8,6 +8,8 @@
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Change: Laser Blocks now create connections more easily
+- Change: The SC Manual now displays pages alphabetically
+- Change: You can now use boats in fake water
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 - Fix: Being in fake lava creates a hurting sound
@@ -29,6 +31,10 @@
 - Fix: HWYLA doesn't show information of disguised blocks correctly
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
+- Fix: The One Probe doesn't show fake liquids correctly
+- Fix: Some (universal) tools can identify disguised blocks and block mines
+- Fix: Fake water doesn't change its tint depending on the biome
+- Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------

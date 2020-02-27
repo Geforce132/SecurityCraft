@@ -56,8 +56,8 @@ public class ItemMineRemoteAccessTool extends Item {
 					}
 
 					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.cantBind"), TextFormatting.RED);
-						return EnumActionResult.FAIL;
+						player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+						return EnumActionResult.SUCCESS;
 					}
 
 					if(stack.getTagCompound() == null)

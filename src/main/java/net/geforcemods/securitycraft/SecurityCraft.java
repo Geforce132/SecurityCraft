@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandSC;
+import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -50,8 +52,8 @@ public class SecurityCraft {
 	public static SimpleNetworkWrapper network;
 	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
-	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
-	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
+	public HashMap<String, Object[]> cameraUsePositions = new HashMap<>();
+	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
 	private NBTTagCompound savedModule;
 	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
@@ -115,6 +117,9 @@ public class SecurityCraft {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(SecurityCraft.eventHandler);
+
+		if(Loader.isModLoaded("cyclicmagic"))
+			MinecraftForge.EVENT_BUS.register(new CyclicCompat());
 
 		for(Field field : SCContent.class.getFields())
 		{
