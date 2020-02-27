@@ -31,7 +31,7 @@
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
 - Fix: The One Probe doesn't show fake liquids correctly
-- Fix: Some universal tools can identify disguised blocks and block mines
+- Fix: Some (universal) tools can identify disguised blocks and block mines
 - Fix: Fake water doesn't change its tint depending on the biome
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 

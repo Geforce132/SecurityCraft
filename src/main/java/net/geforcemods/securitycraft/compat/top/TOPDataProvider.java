@@ -66,6 +66,12 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				labelText = ClientUtils.localize("tile.water.name");
 				edited = true;
 			}
+			else if(blockState.getBlock() instanceof IOverlayDisplay)
+			{
+				item = ((IOverlayDisplay)blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+				itemLabel = item;
+				edited = true;
+			}
 
 			if(edited)
 			{
