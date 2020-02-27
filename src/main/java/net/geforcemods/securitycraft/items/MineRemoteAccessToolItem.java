@@ -64,9 +64,10 @@ public class MineRemoteAccessToolItem extends Item {
 						return ActionResultType.FAIL;
 					}
 
-					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessMine.getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.cantBind"), TextFormatting.RED);
-						return ActionResultType.FAIL;
+					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
+					{
+						SecurityCraft.proxy.displayMRATGui(stack);
+						return ActionResultType.SUCCESS;
 					}
 
 					if(stack.getTag() == null)

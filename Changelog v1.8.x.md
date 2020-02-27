@@ -10,6 +10,7 @@
 - Change: Slightly improve Reinforced (Stained) Glass textures
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Change: Laser Blocks now create connections more easily
+- Change: You can now use boats in fake water
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Cannot see through Scanner Door and Reinforced Iron Trapdoor
@@ -40,6 +41,8 @@
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Some sounds don't become quieter when moving away from them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
+- Fix: Some (universal) tools can identify disguised blocks and block mines
+- Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Misc.: The minimum required Forge version is now 31.1.14
 

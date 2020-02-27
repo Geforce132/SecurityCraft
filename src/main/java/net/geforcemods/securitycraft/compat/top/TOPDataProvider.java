@@ -37,10 +37,15 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 	public Void apply(ITheOneProbe theOneProbe)
 	{
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, world, blockState, data) -> {
-			if(blockState.getBlock() instanceof DisguisableBlock)
-			{
-				ItemStack disguisedAs = ((DisguisableBlock)blockState.getBlock()).getDisguisedStack(world, data.getPos());
+			ItemStack disguisedAs = ItemStack.EMPTY;
 
+			if(blockState.getBlock() instanceof DisguisableBlock)
+				disguisedAs = ((DisguisableBlock)blockState.getBlock()).getDisguisedStack(world, data.getPos());
+			else if(blockState.getBlock() instanceof IOverlayDisplay)
+				disguisedAs = ((IOverlayDisplay)blockState.getBlock()).getDisplayStack(world, blockState, data.getPos());
+
+			if(!disguisedAs.isEmpty())
+			{
 				probeInfo.horizontal()
 				.item(disguisedAs)
 				.vertical()

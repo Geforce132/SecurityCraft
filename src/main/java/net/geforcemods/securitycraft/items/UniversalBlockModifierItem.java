@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -33,6 +36,9 @@ public class UniversalBlockModifierItem extends Item
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
+		if(ctx.getWorld().isRemote)
+			return ActionResultType.FAIL;
+
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		TileEntity te = world.getTileEntity(pos);
@@ -42,7 +48,9 @@ public class UniversalBlockModifierItem extends Item
 		{
 			if(!((IOwnable) te).getOwner().isOwner(player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) te).getOwner().getName()), TextFormatting.RED);
+				if(!(te instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) te).getOwner().getName()), TextFormatting.RED);
+
 				return ActionResultType.FAIL;
 			}
 			else if(player instanceof ServerPlayerEntity)

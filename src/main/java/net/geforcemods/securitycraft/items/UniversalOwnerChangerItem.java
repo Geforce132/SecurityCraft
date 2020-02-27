@@ -6,12 +6,17 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -37,6 +42,7 @@ public class UniversalOwnerChangerItem extends Item
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction side, double hitX, double hitY, double hitZ)
 	{
+		Block block = world.getBlockState(pos).getBlock();
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName().getFormattedText();
 
@@ -53,7 +59,9 @@ public class UniversalOwnerChangerItem extends Item
 
 			if(!owner.isOwner(player) && !isDefault)
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
+				if(!(block instanceof IBlockMine) && (!(te instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
+
 				return ActionResultType.FAIL;
 			}
 
