@@ -304,9 +304,9 @@ public class GuiSRAT extends GuiContainer {
 	// Based on EntityTrackerEntry#isVisibleTo
 	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
 		EntityPlayer player = Minecraft.getMinecraft().player;
-		double d0 = player.posX - (double)sentryPos.getX();
-		double d1 = player.posZ - (double)sentryPos.getZ();
+		double d0 = player.posX - sentryPos.getX();
+		double d1 = player.posZ - sentryPos.getZ();
 		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
-		return d0 >= (double)(-i) && d0 <= (double)i && d1 >= (double)(-i) && d1 <= (double)i;
+		return d0 >= (-i) && d0 <= i && d1 >= (-i) && d1 <= i;
 	}
 }
