@@ -53,15 +53,10 @@ public class MineRemoteAccessToolScreen extends Screen{
 		{
 			y += 30;
 			coords = getMineCoordinates(i);
-
-			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
-			Block block = minecraft.world.getBlockState(minePos).getBlock();
-			boolean active = block instanceof IExplosive && ((IExplosive) block).isActive(minecraft.world, minePos);
-			boolean defusable = (block instanceof IExplosive && ((IExplosive) block).isDefusable());
-			boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
 			int startX = (width - xSize) / 2;
 			int startY = (height - ySize) / 2;
 
+			// initialize buttons
 			for(int j = 0; j < 4; j++)
 			{
 				int btnX = startX + j * padding + 154;
@@ -71,23 +66,45 @@ public class MineRemoteAccessToolScreen extends Screen{
 				{
 					case DEFUSE:
 						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(SCContent.wireCutters), this::actionPerformed);
-						guiButtons[i][j].active = active && bound && defusable;
+						guiButtons[i][j].active = false;
 						break;
 					case ACTIVATE:
 						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, itemRenderer, new ItemStack(Items.FLINT_AND_STEEL), this::actionPerformed);
-						guiButtons[i][j].active = !active && bound && defusable;
+						guiButtons[i][j].active = false;
 						break;
 					case DETONATE:
 						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18, this::actionPerformed);
-						guiButtons[i][j].active = active && bound;
+						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
 						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
-						guiButtons[i][j].active = bound;
+						guiButtons[i][j].active = false;
 						break;
 				}
 
 				addButton(guiButtons[i][j]);
+			}
+
+			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				guiButtons[i][UNBIND].active = true;
+				if (Minecraft.getInstance().player.world.isBlockPresent(minePos)) {
+					Block block = minecraft.world.getBlockState(minePos).getBlock();
+					if (block instanceof IExplosive) {
+						boolean active = ((IExplosive) block).isActive(minecraft.world, minePos);
+						boolean defusable = ((IExplosive) block).isDefusable();
+
+						guiButtons[i][DEFUSE].active = active && defusable;
+						guiButtons[i][ACTIVATE].active = !active && defusable;
+						guiButtons[i][DETONATE].active = active;
+					}
+					else {
+						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], minecraft.player);
+						for (int j = 0; j < 4; j++) {
+							guiButtons[i][j].active = false;
+						}
+					}
+				}
 			}
 		}
 	}
