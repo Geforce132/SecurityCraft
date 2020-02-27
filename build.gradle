@@ -8,16 +8,20 @@ buildscript {
     }
 }
 
+plugins {
+	id "com.wynprice.cursemaven" version "1.2.3"
+}
+
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "1.0"
-group= "net.geforcemods.securitycraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "net.geforcemods.securitycraft"
 archivesBaseName = "securitycraft"
 
-sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
+sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
@@ -59,6 +63,7 @@ repositories {
 dependencies {
     deobfCompile "mcp.mobius.waila:Hwyla:1.8.26-B41_1.12.2"
 	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
+    compileOnly curse.resolve("cyclic", "2883487")
     runtime 'mezz.jei:jei_1.12.2:4.11.0.204'
     deobfProvided 'mezz.jei:jei_1.12.2:4.11.0.204:api'
 }
