@@ -5,6 +5,8 @@
 - New: The Retinal Scanner now renders its owner's face (Thanks LorenaGdL!)
 - New: The Username Logger now displays the UUID of logged players and the time they were logged at to its owner. Click an entry to copy the UUID
 - New: Fire on Reinforced Netherrack now doesn't get removed
+- New: The Sentry Remote Access Tool now shows explanatory tooltips when hovering over buttons
+- New: The Mine-/Sentry Remote Access Tool now show whether a mine/sentry the player is looking at is bound to them on the hotbar (just like the Camera Monitor)
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures
@@ -43,6 +45,7 @@
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
 - Fix: Some (universal) tools can identify disguised blocks and block mines
 - Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
+- Fix: Sentry Remote Access Tool GUI pauses the game
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Misc.: The minimum required Forge version is now 31.1.14
 
