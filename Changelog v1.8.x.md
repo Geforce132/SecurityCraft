@@ -10,6 +10,7 @@
 - Change: Slightly improve Reinforced (Stained) Glass textures
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Change: Laser Blocks now create connections more easily
+- Change: You can now use boats in fake water
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
@@ -38,7 +39,7 @@
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Some sounds don't become quieter when moving away from them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
-- Fix: Some universal tools can identify disguised blocks and block mines
+- Fix: Some (universal) tools can identify disguised blocks and block mines
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
