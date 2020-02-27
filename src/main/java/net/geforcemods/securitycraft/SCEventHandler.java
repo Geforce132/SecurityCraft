@@ -234,7 +234,7 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
-						if(!(block instanceof IBlockMine) && !(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock))
+						if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock)))
 							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockRemover.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 						return;
