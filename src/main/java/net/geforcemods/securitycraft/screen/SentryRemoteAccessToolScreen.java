@@ -301,10 +301,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	// Based on ChunkManager$EntityTrackerEntry#updateTrackingState
 	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
 		PlayerEntity player = Minecraft.getInstance().player;
-		double d0 = player.getPosX() - (double)sentryPos.getX();
-		double d1 = player.getPosZ() - (double)sentryPos.getZ();
+		double d0 = player.getPosX() - sentryPos.getX();
+		double d1 = player.getPosZ() - sentryPos.getZ();
 		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
-		return d0 >= (double)(-i) && d0 <= (double)i && d1 >= (double)(-i) && d1 <= (double)i;
+		return d0 >= (-i) && d0 <= i && d1 >= (-i) && d1 <= i;
 	}
 
 	@Override
