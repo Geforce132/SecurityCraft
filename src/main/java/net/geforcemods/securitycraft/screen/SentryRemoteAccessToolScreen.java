@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -12,6 +13,7 @@ import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -38,6 +40,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private int xSize = 440, ySize = 215;
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
 	private int viewDistance;
+	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
 		super(new TranslationTextComponent(item.getTranslationKey()));
@@ -57,6 +60,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
+		hoverCheckers.clear();
 
 		for (int i = 0; i < 12; i++) {
 			int x = (i / 6) * xSize / 2; //first six sentries in the left column, second six sentries in the right column
@@ -107,6 +111,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][AGGRESSIVE].active = !aggressiveMode;
 						guiButtons[i][CAMOUFLAGE].active = !camouflageMode;
 						guiButtons[i][IDLE].active = !idleMode;
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
 					else {
@@ -115,6 +123,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 							guiButtons[i][j].active = false;
 						}
 					}
+				}
+				else {
+					for (int j = 0; j < 3; j++) {
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], 20, ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
+					}
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
 		}
@@ -127,6 +141,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for (int j = 0; j < 3; j++) {
 			guiButtonsGlobal[0][j].active = foundSentry;
 			addButton(guiButtonsGlobal[0][j]);
+			hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[0][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
+			hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[0][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
+			hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[0][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
 		}
 	}
 
@@ -157,6 +174,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			font.drawString(line, startX + xSize / 4 - font.getStringWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 			font.drawString(modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
+		}
+
+		for(StringHoverChecker chc : hoverCheckers)
+		{
+			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
+				renderTooltip(chc.getLines(), mouseX, mouseY);
 		}
 	}
 
