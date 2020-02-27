@@ -308,9 +308,9 @@ public class ClientProxy implements IProxy
 	}
 
 	@Override
-	public void displaySRATGui(ItemStack stack)
+	public void displaySRATGui(ItemStack stack, int viewDistance)
 	{
-		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack));
+		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
 	}
 
 	@Override

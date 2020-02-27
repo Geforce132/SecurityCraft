@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard5Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleLimitedUseKeycardCondition;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
+import net.geforcemods.securitycraft.network.client.OpenSRATGui;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
@@ -455,6 +456,7 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, ClearLoggerClient.class, ClearLoggerClient::encode, ClearLoggerClient::decode, ClearLoggerClient::onMessage);
 		SecurityCraft.channel.registerMessage(index++, RefreshDisguisableModel.class, RefreshDisguisableModel::encode, RefreshDisguisableModel::decode, RefreshDisguisableModel::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SetSentryMode.class, SetSentryMode::encode, SetSentryMode::decode, SetSentryMode::onMessage);
+		SecurityCraft.channel.registerMessage(index++, OpenSRATGui.class, OpenSRATGui::encode, OpenSRATGui::decode, OpenSRATGui::onMessage);	
 	}
 
 	@SubscribeEvent

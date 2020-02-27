@@ -43,7 +43,7 @@ public class ServerProxy implements IProxy
 	public void displayMRATGui(ItemStack stack) {}
 
 	@Override
-	public void displaySRATGui(ItemStack stack) {}
+	public void displaySRATGui(ItemStack stack, int viewDistance) {}
 
 	@Override
 	public void displayEditModuleGui(ItemStack stack) {}

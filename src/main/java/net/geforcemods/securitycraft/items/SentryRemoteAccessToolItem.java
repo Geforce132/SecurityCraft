@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.network.client.OpenSRATGui;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -43,8 +44,8 @@ public class SentryRemoteAccessToolItem extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(world.isRemote)
-			SecurityCraft.proxy.displaySRATGui(stack);
+		if (!world.isRemote)
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 
 		return ActionResult.resultPass(stack);
 	}
@@ -86,10 +87,9 @@ public class SentryRemoteAccessToolItem extends Item {
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.unbound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.RED);
 				}
 			}
+			else
+				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 		}
-		else if(sentries.isEmpty())
-			SecurityCraft.proxy.displaySRATGui(stack);
-
 		return ActionResultType.SUCCESS;
 	}
 

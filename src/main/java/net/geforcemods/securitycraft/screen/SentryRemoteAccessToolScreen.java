@@ -36,11 +36,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private ClickButton[][] guiButtonsGlobal = new ClickButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 	private int xSize = 440, ySize = 215;
+	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
+	private int viewDistance;
 
-	public SentryRemoteAccessToolScreen(ItemStack item) {
+	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
 		super(new TranslationTextComponent(item.getTranslationKey()));
 
 		srat = item;
+		this.viewDistance = viewDistance;
 	}
 
 	@Override
@@ -87,20 +90,32 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
-			List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
+			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
+				guiButtons[i][UNBIND].active = true;
+				if (Minecraft.getInstance().player.world.isBlockPresent(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
+					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
-			if (!sentries.isEmpty()) {
-				SentryEntity sentry = sentries.get(0);
-				boolean aggressiveMode = sentry.getMode() == SentryMode.AGGRESSIVE;
-				boolean camouflageMode = sentry.getMode() == SentryMode.CAMOUFLAGE;
-				boolean idleMode = sentry.getMode() == SentryMode.IDLE;
-				boolean bound = !(coords[0] == 0 && coords[1] == 0 && coords[2] == 0);
+					if (!sentries.isEmpty()) {
+						SentryEntity sentry = sentries.get(0);
+						boolean aggressiveMode = sentry.getMode() == SentryMode.AGGRESSIVE;
+						boolean camouflageMode = sentry.getMode() == SentryMode.CAMOUFLAGE;
+						boolean idleMode = sentry.getMode() == SentryMode.IDLE;
 
-				guiButtons[i][AGGRESSIVE].active = !aggressiveMode && bound;
-				guiButtons[i][CAMOUFLAGE].active = !camouflageMode && bound;
-				guiButtons[i][IDLE].active = !idleMode && bound;
-				guiButtons[i][UNBIND].active = bound;
-				foundSentry = true;
+						if(sentry.hasCustomName())
+							names[i] = sentry.getCustomName();
+
+						guiButtons[i][AGGRESSIVE].active = !aggressiveMode;
+						guiButtons[i][CAMOUFLAGE].active = !camouflageMode;
+						guiButtons[i][IDLE].active = !idleMode;
+						foundSentry = true;
+					}
+					else {
+						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
+						for (int j = 0; j < 4; j++) {
+							guiButtons[i][j].active = false;
+						}
+					}
+				}
 			}
 		}
 
@@ -175,22 +190,23 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					guiButtons[sentry][CAMOUFLAGE].active = true;
 					guiButtons[sentry][IDLE].active = false;
 					break;
-				case UNBIND:
-					removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getInstance().player);
+			}
+		}
+		if (mode == UNBIND) {
+			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getInstance().player);
 
-					for(int i = 0; i < 4; i++) {
-						guiButtons[sentry][i].active = false;
-					}
+			for(int i = 0; i < 4; i++) {
+				guiButtons[sentry][i].active = false;
+			}
 
-					for(int i = 0; i < guiButtons.length; i++)
-					{
-						if(guiButtons[i][UNBIND].active)
-							return;
-					}
+			for(int i = 0; i < guiButtons.length; i++)
+			{
+				if(guiButtons[i][UNBIND].active)
+					return;
+			}
 
-					for (int i = 0; i < 3; i++) {
-						guiButtonsGlobal[0][i].active = false;
-					}
+			for (int i = 0; i < 3; i++) {
+				guiButtonsGlobal[0][i].active = false;
 			}
 		}
 	}
@@ -257,6 +273,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				}
 			}
 		}
+	}
+
+	// Based on ChunkManager$EntityTrackerEntry#updateTrackingState
+	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
+		PlayerEntity player = Minecraft.getInstance().player;
+		double d0 = player.getPosX() - (double)sentryPos.getX();
+		double d1 = player.getPosZ() - (double)sentryPos.getZ();
+		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
+		return d0 >= (double)(-i) && d0 <= (double)i && d1 >= (double)(-i) && d1 <= (double)i;
 	}
 
 	@Override
