@@ -14,6 +14,7 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -110,7 +111,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 					world.setBlockToAir(pos);
 				else
 				{
-					state = state.withProperty(LEVEL, Integer.valueOf(nextLevel));
+					state = state.withProperty(LEVEL, nextLevel);
 					world.setBlockState(pos, state, 2);
 					world.scheduleUpdate(pos, this, tickRate);
 					world.notifyNeighborsOfStateChange(pos, this, false);
@@ -167,7 +168,7 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 				else
 					state.getBlock().dropBlockAsItem(world, pos, state, 0);
 
-			world.setBlockState(pos, getDefaultState().withProperty(LEVEL, Integer.valueOf(level)), 3);
+			world.setBlockState(pos, getDefaultState().withProperty(LEVEL, level), 3);
 		}
 	}
 
@@ -280,11 +281,11 @@ public class BlockFakeWater extends BlockDynamicLiquid{
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if(!world.isRemote && !(entity instanceof EntityItem))
-			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
-				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
-			else
+		if(!world.isRemote && !(entity instanceof EntityItem) && !(entity instanceof EntityBoat))
+		{
+			if(!(entity instanceof EntityPlayer) || (!((EntityPlayer) entity).capabilities.isCreativeMode && !(((EntityPlayer)entity).getRidingEntity() instanceof EntityBoat)))
 				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
+		}
 	}
 
 	/**

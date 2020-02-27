@@ -9,6 +9,7 @@
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Change: Laser Blocks now create connections more easily
 - Change: The SC Manual now displays pages alphabetically
+- Change: You can now use boats in fake water
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
 - Fix: Motion Activated Light activates when a player is mounted to a camera in its range
 - Fix: Being in fake lava creates a hurting sound
