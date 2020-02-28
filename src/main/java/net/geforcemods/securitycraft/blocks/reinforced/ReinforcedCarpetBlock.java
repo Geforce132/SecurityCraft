@@ -16,9 +16,9 @@ public class ReinforcedCarpetBlock extends BaseReinforcedBlock
 {
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public ReinforcedCarpetBlock(Block block, String registryPath)
+	public ReinforcedCarpetBlock(Block block)
 	{
-		super(SoundType.CLOTH, Material.WOOL, block, registryPath);
+		super(SoundType.CLOTH, Material.WOOL, block);
 	}
 
 	@Override

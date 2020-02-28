@@ -12,23 +12,26 @@ import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
-import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -38,6 +41,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
@@ -60,9 +64,14 @@ public class SecurityCraft {
 
 	public SecurityCraft()
 	{
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
+		SCContent.BLOCKS.register(modEventBus);
+		SCContent.FLUIDS.register(modEventBus);
+		SCContent.ITEMS.register(modEventBus);
 
 		if(ModList.get().isLoaded("cyclic"))
 			MinecraftForge.EVENT_BUS.addListener(CyclicCompat::onRightClickBlock);
@@ -93,7 +102,6 @@ public class SecurityCraft {
 				InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
 		});
 
-		CustomModules.refresh();
 		proxy.tint();
 	}
 
@@ -105,10 +113,39 @@ public class SecurityCraft {
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
 				{
-					Block block = (Block)field.get(null);
+					Block block = ((RegistryObject<Block>)field.get(null)).get();
 					IReinforcedBlock rb = (IReinforcedBlock)block;
 					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
 					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
+				}
+
+				if(field.isAnnotationPresent(HasManualPage.class))
+				{
+					Object o = ((RegistryObject<?>)field.get(null)).get();
+					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
+					boolean isBlock = true;
+					Item item;
+					String key;
+
+					if(o instanceof Block)
+						item = ((Block)o).asItem();
+					else
+					{
+						item = (Item)o;
+						isBlock = false;
+					}
+
+					if(hmp.specialInfoKey().isEmpty())
+						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+					else
+						key = hmp.specialInfoKey();
+
+					SCManualPage page = new SCManualPage(item, key);
+
+					if(!hmp.designedBy().isEmpty())
+						page.setDesignedBy(hmp.designedBy());
+
+					instance.manualPages.add(page);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)

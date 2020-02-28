@@ -18,7 +18,7 @@ public class SCExplosivesGroup extends ItemGroup
 	@OnlyIn(Dist.CLIENT)
 	public ItemStack createIcon()
 	{
-		return new ItemStack(SCContent.mine.asItem());
+		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
 
-					if(block == SCContent.laserBlock && !BlockUtils.getBlockProperty(world, offsetPos, LaserBlock.POWERED))
+					if(block == SCContent.LASER_BLOCK.get() && !BlockUtils.getBlockProperty(world, offsetPos, LaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
@@ -72,8 +72,8 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 							return;
 
 						BlockUtils.setBlockProperty(world, offsetPos, LaserBlock.POWERED, true, true);
-						world.notifyNeighborsOfStateChange(offsetPos, SCContent.laserBlock);
-						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.laserBlock, 50);
+						world.notifyNeighborsOfStateChange(offsetPos, SCContent.LASER_BLOCK.get());
+						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
 						if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).hasModule(CustomModules.HARMING))
 						{
@@ -98,7 +98,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 			{
 				for(int i = 0; i < ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 				{
-					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.laserBlock)
+					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.LASER_BLOCK.get())
 					{
 						for(int j = 1; j < i; j++)
 						{

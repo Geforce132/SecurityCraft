@@ -65,7 +65,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
-	public static HashMap<String, String> tipsWithLink = new HashMap<String, String>();
+	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 
 	static
 	{
@@ -138,7 +138,7 @@ public class SCEventHandler {
 				BlockState state  = world.getBlockState(event.getPos());
 				Block block = state.getBlock();
 
-				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.keyPanel))
+				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL))
 				{
 					for(Block pc : IPasswordConvertible.BLOCKS)
 					{
@@ -152,7 +152,7 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.codebreaker) && handleCodebreaking(event)) {
+				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.CODEBREAKER) && handleCodebreaking(event)) {
 					event.setCanceled(true);
 					return;
 				}
@@ -253,7 +253,7 @@ public class SCEventHandler {
 		{
 			Item held = event.getPlayer().getHeldItemMainhand().getItem();
 
-			if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 			{
 				Block block = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(event.getState().getBlock());
 
@@ -288,12 +288,12 @@ public class SCEventHandler {
 	private static ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block == SCContent.fakeWaterBlock){
+		if(block == SCContent.FAKE_WATER_BLOCK.get()){
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return new ItemStack(SCContent.fWaterBucket, 1);
-		}else if(block == SCContent.fakeLavaBlock){
+			return new ItemStack(SCContent.FAKE_WATER_BUCKET.get(), 1);
+		}else if(block == SCContent.FAKE_LAVA_BLOCK.get()){
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return new ItemStack(SCContent.fLavaBucket, 1);
+			return new ItemStack(SCContent.FAKE_LAVA_BUCKET.get(), 1);
 		}
 		else
 			return ItemStack.EMPTY;
@@ -316,7 +316,7 @@ public class SCEventHandler {
 
 			if(tileEntity != null && tileEntity instanceof IPasswordProtected)
 			{
-				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
+				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 				if(new Random().nextInt(3) == 1)

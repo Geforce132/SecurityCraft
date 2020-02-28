@@ -12,6 +12,7 @@
 - Change: Slightly improve Reinforced (Stained) Glass textures
 - Change: Textboxes when setting up/inserting/changing passwords are now automatically focused
 - Change: Laser Blocks now create connections more easily
+- Change: The SC Manual now displays pages alphabetically
 - Change: You can now use boats in fake water
 - Fix: Some disguised blocks do not give off power even when they should
 - Fix: Lasers don't get removed correctly (Thanks Redstone_Dubstep!)
@@ -43,11 +44,13 @@
 - Fix: Password-protected Chests cannot be opened when a half-slab or similar is placed above them
 - Fix: Some sounds don't become quieter when moving away from them
 - Fix: Mine-/Sentry Remote Access Tools lose their mines/sentries when rightclicking the tool out of range
+- Fix: Various (red) sandstone variants cannot be reliably reinforced
 - Fix: Some (universal) tools can identify disguised blocks and block mines
 - Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
 - Fix: Sentry Remote Access Tool GUI pauses the game
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Misc.: The minimum required Forge version is now 31.1.14
+- Internal: Now using deffered registers for block/item/etc. registration
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

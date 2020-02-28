@@ -22,9 +22,9 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock
 {
 	public static boolean fallInstantly;
 
-	public ReinforcedFallingBlock(SoundType soundType, Material mat, Block vB, String registryPath)
+	public ReinforcedFallingBlock(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, registryPath);
+		super(soundType, mat, vB);
 	}
 
 	@Override

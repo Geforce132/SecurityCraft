@@ -79,7 +79,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@OnlyIn(Dist.CLIENT)
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
 	{
-		return state.get(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.blockPocketWall;
+		return state.get(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	@Override
 	public ItemStack getDisplayStack(World world, BlockState state, BlockPos pos)
 	{
-		return new ItemStack(SCContent.blockPocketWall, 1);
+		return new ItemStack(SCContent.BLOCK_POCKET_WALL.get(), 1);
 	}
 
 	@Override

@@ -61,9 +61,9 @@ public class LaserBlock extends DisguisableBlock {
 				BlockState state = world.getBlockState(offsetPos);
 				Block id = world.getBlockState(offsetPos).getBlock();
 
-				if(!state.isAir(world, offsetPos) && id != SCContent.laserBlock)
+				if(!state.isAir(world, offsetPos) && id != SCContent.LASER_BLOCK.get())
 					break inner;
-				else if(id == SCContent.laserBlock)
+				else if(id == SCContent.LASER_BLOCK.get())
 				{
 					CustomizableTileEntity thisTe = (CustomizableTileEntity)world.getTileEntity(pos);
 					CustomizableTileEntity thatTe = (CustomizableTileEntity)world.getTileEntity(offsetPos);
@@ -79,7 +79,7 @@ public class LaserBlock extends DisguisableBlock {
 								offsetPos = pos.offset(facing, j);
 
 								if(world.getBlockState(offsetPos).isAir(world, offsetPos))
-									world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
+									world.setBlockState(offsetPos, SCContent.LASER_FIELD.get().getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
 							}
 						}
 					}
@@ -109,9 +109,9 @@ public class LaserBlock extends DisguisableBlock {
 				BlockPos offsetPos = pos.offset(facing, i);
 				BlockState state = world.getBlockState(offsetPos);
 
-				if(state.getBlock() == SCContent.laserBlock)
+				if(state.getBlock() == SCContent.LASER_BLOCK.get())
 					break;
-				else if(state.getBlock() == SCContent.laserField && state.get(LaserFieldBlock.BOUNDTYPE) == boundType)
+				else if(state.getBlock() == SCContent.LASER_FIELD.get() && state.get(LaserFieldBlock.BOUNDTYPE) == boundType)
 					world.destroyBlock(offsetPos, false);
 			}
 		}

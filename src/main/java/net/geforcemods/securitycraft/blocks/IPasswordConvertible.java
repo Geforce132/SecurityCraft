@@ -12,9 +12,9 @@ import net.minecraft.world.World;
 public interface IPasswordConvertible
 {
 	public static final List<Block> BLOCKS = Arrays.asList(new Block[] {
-			SCContent.keypad,
-			SCContent.keypadChest,
-			SCContent.keypadFurnace
+			SCContent.KEYPAD.get(),
+			SCContent.KEYPAD_CHEST.get(),
+			SCContent.KEYPAD_FURNACE.get()
 	});
 
 	public Block getOriginalBlock();

@@ -76,7 +76,9 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		font.drawString(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), xSize / 2 - font.getStringWidth(ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey())) / 2, 6, 4210752);
+		String ukcName = ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey());
+
+		font.drawString(ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
 		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
 		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
@@ -141,7 +143,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 				SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
 				ClientUtils.closePlayerScreen();
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
 		}
 	}
 

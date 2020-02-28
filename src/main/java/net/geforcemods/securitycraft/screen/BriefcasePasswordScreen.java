@@ -140,7 +140,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 					keys[3]--;
 				break;
 			case 8:
-				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.briefcase)) {
+				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE)) {
 					CompoundNBT nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTag();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 

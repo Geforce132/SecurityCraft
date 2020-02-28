@@ -54,7 +54,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 					NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
 			}
 			else if(hand == Hand.MAIN_HAND)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.inventoryScanner.getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 		}
 
 		return ActionResultType.SUCCESS;
@@ -86,13 +86,13 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		for(int i = 1; i < loopBoundary; i++)
 		{
-			if(world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.inventoryScannerField)
+			if(world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.INVENTORY_SCANNER_FIELD.get())
 				return;
 		}
 
 		for(int i = 1; i < loopBoundary; i++)
 		{
-			world.setBlockState(pos.offset(facing, i), SCContent.inventoryScannerField.getDefaultState().with(FACING, facing));
+			world.setBlockState(pos.offset(facing, i), SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing));
 		}
 
 		CustomizableTileEntity.link((CustomizableTileEntity)world.getTileEntity(pos), connectedScanner);
@@ -111,7 +111,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			{
 				BlockPos offsetIPos = pos.offset(facing, i);
 
-				if(BlockUtils.getBlock(world, offsetIPos) == SCContent.inventoryScanner)
+				if(BlockUtils.getBlock(world, offsetIPos) == SCContent.INVENTORY_SCANNER.get())
 				{
 					for(int j = 1; j < i; j++)
 					{
@@ -119,7 +119,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 						BlockState field = world.getBlockState(offsetJPos);
 
 						//checking if the field is oriented correctly
-						if(field.getBlock() == SCContent.inventoryScannerField)
+						if(field.getBlock() == SCContent.INVENTORY_SCANNER_FIELD.get())
 						{
 							if(facing == Direction.WEST || facing == Direction.EAST)
 							{
@@ -166,10 +166,10 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			BlockState state = world.getBlockState(offsetPos);
 			Block block = state.getBlock();
 
-			if(!state.isAir(world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+			if(!state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
 				return null;
 
-			if(block == SCContent.inventoryScanner && state.get(FACING) == facing.getOpposite())
+			if(block == SCContent.INVENTORY_SCANNER.get() && state.get(FACING) == facing.getOpposite())
 				return (InventoryScannerTileEntity)world.getTileEntity(offsetPos);
 		}
 

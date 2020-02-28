@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
-import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
@@ -55,17 +54,14 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -150,60 +146,60 @@ public class ClientProxy implements IProxy
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event)
 	{
-		RenderTypeLookup.setRenderLayer(SCContent.blockPocketManager, RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.blockPocketWall, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.cageTrap, RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.inventoryScanner, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.inventoryScannerField, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.keycardReader, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.keypad, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.laserBlock, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.laserField, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.retinalScanner, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.usernameLogger, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedDoor, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlass, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGlassPane, RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedIronBars, RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.horizontalReinforcedIronBars, RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlass, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedWhiteStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedOrangeStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedMagentaStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightBlueStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedYellowStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLimeStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPinkStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGrayStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedLightGrayStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedCyanStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedPurpleStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlueStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBrownStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedGreenStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedRedStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedBlackStainedGlassPane, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.scannerDoor, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.trackMine, RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(SCContent.trophySystem, RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.flowingFakeWater, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.fakeWater, RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(SCContent.reinforcedIronTrapdoor, RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.CAGE_TRAP.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.KEYCARD_READER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.LASER_BLOCK.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.LASER_FIELD.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.RETINAL_SCANNER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.USERNAME_LOGGER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_DOOR.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.SCANNER_DOOR.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.TRACK_MINE.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.TROPHY_SYSTEM.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.FAKE_WATER.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_TRAPDOOR.get(), RenderType.getCutout());
 	}
 
 	@Override
@@ -240,12 +236,6 @@ public class ClientProxy implements IProxy
 	}
 
 	@Override
-	public void registerKeypadChestItem(Register<Item> event)
-	{
-		event.getRegistry().register(new BlockItem(SCContent.keypadChest, new Item.Properties().group(SecurityCraft.groupSCTechnical).setISTER(() -> () -> new ItemKeypadChestRenderer())).setRegistryName(SCContent.keypadChest.getRegistryName()));
-	}
-
-	@Override
 	public void tint()
 	{
 		Map<Block,Integer> toTint = new HashMap<>();
@@ -256,7 +246,7 @@ public class ClientProxy implements IProxy
 			{
 				try
 				{
-					toTint.put((Block)field.get(null), field.getAnnotation(Reinforced.class).tint());
+					toTint.put(((RegistryObject<Block>)field.get(null)).get(), field.getAnnotation(Reinforced.class).tint());
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
@@ -265,13 +255,13 @@ public class ClientProxy implements IProxy
 			}
 		}
 
-		toTint.put(SCContent.blockPocketManager, 0x0E7063);
-		toTint.put(SCContent.blockPocketWall, 0x0E7063);
-		toTint.put(SCContent.chiseledCrystalQuartz, 0x15b3a2);
-		toTint.put(SCContent.crystalQuartz, 0x15b3a2);
-		toTint.put(SCContent.crystalQuartzPillar, 0x15b3a2);
-		toTint.put(SCContent.crystalQuartzSlab, 0x15b3a2);
-		toTint.put(SCContent.stairsCrystalQuartz, 0x15b3a2);
+		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), 0x0E7063);
+		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), 0x0E7063);
+		toTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), 0x15b3a2);
+		toTint.put(SCContent.CRYSTAL_QUARTZ.get(), 0x15b3a2);
+		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), 0x15b3a2);
+		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), 0x15b3a2);
+		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), 0x15b3a2);
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
@@ -286,13 +276,7 @@ public class ClientProxy implements IProxy
 			}
 
 			return 0xFFFFFF;
-		}, SCContent.cageTrap, SCContent.inventoryScanner, SCContent.keycardReader, SCContent.keypad, SCContent.laserBlock, SCContent.retinalScanner, SCContent.usernameLogger);
-	}
-
-	@Override
-	public World getClientWorld()
-	{
-		return Minecraft.getInstance().world;
+		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
 	}
 
 	@Override

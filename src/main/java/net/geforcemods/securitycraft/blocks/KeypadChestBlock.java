@@ -43,7 +43,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote) {
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos))
+			if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos))
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 
@@ -145,7 +145,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 		CompoundNBT tag = chest.write(new CompoundNBT());
 
 		chest.clear();
-		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().with(FACING, facing).with(TYPE, type));
+		world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
 		((ChestTileEntity)world.getTileEntity(pos)).read(tag);
 	}

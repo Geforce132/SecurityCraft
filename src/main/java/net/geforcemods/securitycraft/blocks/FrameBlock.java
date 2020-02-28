@@ -55,7 +55,7 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		return player.getHeldItem(hand).getItem() == SCContent.keyPanel ? ActionResultType.SUCCESS : ActionResultType.PASS;
+		return player.getHeldItem(hand).getItem() == SCContent.KEY_PANEL.get() ? ActionResultType.SUCCESS : ActionResultType.PASS;
 	}
 
 	@Override

@@ -37,9 +37,9 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
 
-	public HorizontalReinforcedIronBars(SoundType soundType, Material mat, Block vB, String registryPath)
+	public HorizontalReinforcedIronBars(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, registryPath);
+		super(soundType, mat, vB);
 		setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false));
 	}
 
@@ -66,7 +66,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 		else
 		{
 			IFluidState fluidState = ctx.getWorld().getFluidState(ctx.getPos());
-			BlockState newState = getDefaultState().with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
+			BlockState newState = getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 			return newState;
 		}
 	}
@@ -142,6 +142,6 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
-		return new ItemStack(SCContent.reinforcedIronBars);
+		return new ItemStack(SCContent.REINFORCED_IRON_BARS.get());
 	}
 }

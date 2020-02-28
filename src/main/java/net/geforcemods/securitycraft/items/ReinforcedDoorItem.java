@@ -55,7 +55,7 @@ public class ReinforcedDoorItem extends Item
 				int offsetX = angleFacing.getXOffset();
 				int offsetZ = angleFacing.getZOffset();
 				boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
-				placeDoor(world, pos, angleFacing, SCContent.reinforcedDoor, flag);
+				placeDoor(world, pos, angleFacing, SCContent.REINFORCED_DOOR.get(), flag);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
 				world.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
@@ -94,7 +94,7 @@ public class ReinforcedDoorItem extends Item
 
 		BlockPos blockAbove = pos.up();
 		boolean isAnyPowered = world.isBlockPowered(pos) || world.isBlockPowered(blockAbove);
-		BlockState state = door.getDefaultState().with(ReinforcedDoorBlock.FACING, facing).with(ReinforcedDoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(ReinforcedDoorBlock.OPEN, Boolean.valueOf(isAnyPowered));
+		BlockState state = door.getDefaultState().with(ReinforcedDoorBlock.FACING, facing).with(ReinforcedDoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(ReinforcedDoorBlock.OPEN, isAnyPowered);
 		world.setBlockState(pos, state.with(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
 		world.setBlockState(blockAbove, state.with(ReinforcedDoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
 		world.notifyNeighborsOfStateChange(pos, door);

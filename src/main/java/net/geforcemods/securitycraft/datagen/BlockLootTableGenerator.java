@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.datagen;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,7 +33,7 @@ import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
 public class BlockLootTableGenerator implements IDataProvider
 {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-	protected final Map<Block,LootTable.Builder> lootTables = new HashMap<>();
+	protected final Map<Supplier<Block>,LootTable.Builder> lootTables = new HashMap<>();
 	private final DataGenerator generator;
 
 	public BlockLootTableGenerator(DataGenerator generator)
@@ -42,85 +43,85 @@ public class BlockLootTableGenerator implements IDataProvider
 
 	private void addTables()
 	{
-		putStandardBlockLootTable(SCContent.alarm);
-		putMineLootTable(SCContent.bouncingBetty);
-		putStandardBlockLootTable(SCContent.cageTrap);
-		putMineLootTable(SCContent.claymore);
-		putMineLootTable(SCContent.cobblestoneMine);
-		putMineLootTable(SCContent.diamondOreMine);
-		putMineLootTable(SCContent.dirtMine);
-		putStandardBlockLootTable(SCContent.ironFence);
-		putMineLootTable(SCContent.furnaceMine);
-		putMineLootTable(SCContent.gravelMine);
-		putStandardBlockLootTable(SCContent.inventoryScanner);
-		putDoorLootTable(SCContent.reinforcedDoor, SCContent.reinforcedDoorItem);
-		putStandardBlockLootTable(SCContent.keycardReader);
-		putStandardBlockLootTable(SCContent.keypadChest);
-		putStandardBlockLootTable(SCContent.frame);
-		putStandardBlockLootTable(SCContent.keypadFurnace);
-		putStandardBlockLootTable(SCContent.keypad);
-		putStandardBlockLootTable(SCContent.laserBlock);
-		putMineLootTable(SCContent.mine);
-		putStandardBlockLootTable(SCContent.motionActivatedLight);
-		putStandardBlockLootTable(SCContent.panicButton);
-		putStandardBlockLootTable(SCContent.portableRadar);
-		putStandardBlockLootTable(SCContent.protecto);
-		putStandardBlockLootTable(SCContent.reinforcedFencegate);
-		putStandardBlockLootTable(SCContent.reinforcedIronTrapdoor);
-		putStandardBlockLootTable(SCContent.retinalScanner);
-		putMineLootTable(SCContent.sandMine);
-		putDoorLootTable(SCContent.scannerDoor, SCContent.scannerDoorItem);
-		putStandardBlockLootTable(SCContent.secretAcaciaSign);
-		putStandardBlockLootTable(SCContent.secretAcaciaWallSign);
-		putStandardBlockLootTable(SCContent.secretBirchSign);
-		putStandardBlockLootTable(SCContent.secretBirchWallSign);
-		putStandardBlockLootTable(SCContent.secretDarkOakSign);
-		putStandardBlockLootTable(SCContent.secretDarkOakWallSign);
-		putStandardBlockLootTable(SCContent.secretJungleSign);
-		putStandardBlockLootTable(SCContent.secretJungleWallSign);
-		putStandardBlockLootTable(SCContent.secretOakSign);
-		putStandardBlockLootTable(SCContent.secretOakWallSign);
-		putStandardBlockLootTable(SCContent.secretSpruceSign);
-		putStandardBlockLootTable(SCContent.secretSpruceWallSign);
-		putStandardBlockLootTable(SCContent.securityCamera);
-		putMineLootTable(SCContent.stoneMine);
-		putMineLootTable(SCContent.trackMine);
-		putStandardBlockLootTable(SCContent.trophySystem);
-		putStandardBlockLootTable(SCContent.usernameLogger);
+		putStandardBlockLootTable(SCContent.ALARM);
+		putMineLootTable(SCContent.BOUNCING_BETTY);
+		putStandardBlockLootTable(SCContent.CAGE_TRAP);
+		putMineLootTable(SCContent.CLAYMORE);
+		putMineLootTable(SCContent.COBBLESTONE_MINE);
+		putMineLootTable(SCContent.DIAMOND_ORE_MINE);
+		putMineLootTable(SCContent.DIRT_MINE);
+		putStandardBlockLootTable(SCContent.IRON_FENCE);
+		putMineLootTable(SCContent.FURNACE_MINE);
+		putMineLootTable(SCContent.GRAVEL_MINE);
+		putStandardBlockLootTable(SCContent.INVENTORY_SCANNER);
+		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
+		putStandardBlockLootTable(SCContent.KEYCARD_READER);
+		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
+		putStandardBlockLootTable(SCContent.FRAME);
+		putStandardBlockLootTable(SCContent.KEYPAD_FURNACE);
+		putStandardBlockLootTable(SCContent.KEYPAD);
+		putStandardBlockLootTable(SCContent.LASER_BLOCK);
+		putMineLootTable(SCContent.MINE);
+		putStandardBlockLootTable(SCContent.MOTION_ACTIVATED_LIGHT);
+		putStandardBlockLootTable(SCContent.PANIC_BUTTON);
+		putStandardBlockLootTable(SCContent.PORTABLE_RADAR);
+		putStandardBlockLootTable(SCContent.PROTECTO);
+		putStandardBlockLootTable(SCContent.REINFORCED_FENCEGATE);
+		putStandardBlockLootTable(SCContent.REINFORCED_IRON_TRAPDOOR);
+		putStandardBlockLootTable(SCContent.RETINAL_SCANNER);
+		putMineLootTable(SCContent.SAND_MINE);
+		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
+		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_BIRCH_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_BIRCH_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_JUNGLE_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_JUNGLE_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_OAK_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_OAK_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
+		putMineLootTable(SCContent.STONE_MINE);
+		putMineLootTable(SCContent.TRACK_MINE);
+		putStandardBlockLootTable(SCContent.TROPHY_SYSTEM);
+		putStandardBlockLootTable(SCContent.USERNAME_LOGGER);
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Block block)
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)
 	{
 		return LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(block))
+						.addEntry(ItemLootEntry.builder(block.get()))
 						.acceptCondition(SurvivesExplosion.builder()));
 	}
 
-	protected final void putDoorLootTable(Block door, Item doorItem)
+	protected final void putDoorLootTable(Supplier<Block> door, Supplier<Item> doorItem)
 	{
 		lootTables.put(door, LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(doorItem)
-								.acceptCondition(BlockStateProperty.builder(door)
+						.addEntry(ItemLootEntry.builder(doorItem.get())
+								.acceptCondition(BlockStateProperty.builder(door.get())
 										.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
 												.withProp(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
 								.acceptCondition(SurvivesExplosion.builder()))));
 	}
 
-	protected final void putStandardBlockLootTable(Block block)
+	protected final void putStandardBlockLootTable(Supplier<Block> block)
 	{
 		lootTables.put(block, createStandardBlockLootTable(block));
 	}
 
-	protected final void putMineLootTable(Block mine)
+	protected final void putMineLootTable(Supplier<Block> mine)
 	{
 		lootTables.put(mine, LootTable.builder()
 				.addLootPool(LootPool.builder()
 						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(mine))
+						.addEntry(ItemLootEntry.builder(mine.get()))
 						.acceptCondition(SurvivesExplosion.builder())
 						.acceptCondition(Inverted.builder(EntityHasProperty.builder(EntityTarget.THIS)))));
 	}
@@ -132,9 +133,9 @@ public class BlockLootTableGenerator implements IDataProvider
 
 		addTables();
 
-		for(Map.Entry<Block,LootTable.Builder> entry : lootTables.entrySet())
+		for(Map.Entry<Supplier<Block>,LootTable.Builder> entry : lootTables.entrySet())
 		{
-			tables.put(entry.getKey().getLootTable(), entry.getValue().setParameterSet(LootParameterSets.BLOCK).build());
+			tables.put(entry.getKey().get().getLootTable(), entry.getValue().setParameterSet(LootParameterSets.BLOCK).build());
 		}
 
 		tables.forEach((key, lootTable) -> {

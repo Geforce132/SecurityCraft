@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import net.minecraft.block.Block;
@@ -65,9 +66,14 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	private final Block modelBlock;
 	private final BlockState modelState;
 
-	public ReinforcedStairsBlock(SoundType soundType, Material mat, Block vB, String registryPath)
+	public ReinforcedStairsBlock(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, registryPath, 0);
+		this(soundType, mat, () -> vB);
+	}
+
+	public ReinforcedStairsBlock(SoundType soundType, Material mat, Supplier<Block> vB)
+	{
+		super(soundType, mat, vB, 0);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
 		modelBlock = getVanillaBlock();
@@ -193,7 +199,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 		Direction dir = ctx.getFace();
 		BlockPos pos = ctx.getPos();
 		IFluidState fluidState = ctx.getWorld().getFluidState(pos);
-		BlockState state = this.getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getHitVec().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, Boolean.valueOf(fluidState.getFluid() == Fluids.WATER));
+		BlockState state = this.getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getHitVec().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 
 		return state.with(SHAPE, getShapeProperty(state, ctx.getWorld(), pos));
 	}

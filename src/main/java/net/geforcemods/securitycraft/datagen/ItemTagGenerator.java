@@ -34,21 +34,21 @@ public class ItemTagGenerator extends ItemTagsProvider
 		copy(SCTags.Blocks.REINFORCED_WOODEN_STAIRS, SCTags.Items.REINFORCED_WOODEN_STAIRS);
 		copy(SCTags.Blocks.REINFORCED_WOOL, SCTags.Items.REINFORCED_WOOL);
 		getBuilder(SCTags.Items.SECRET_SIGNS).add(
-				SCContent.secretAcaciaSignItem,
-				SCContent.secretBirchSignItem,
-				SCContent.secretDarkOakSignItem,
-				SCContent.secretJungleSignItem,
-				SCContent.secretOakSignItem,
-				SCContent.secretSpruceSignItem);
+				SCContent.SECRET_ACACIA_SIGN_ITEM.get(),
+				SCContent.SECRET_BIRCH_SIGN_ITEM.get(),
+				SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(),
+				SCContent.SECRET_JUNGLE_SIGN_ITEM.get(),
+				SCContent.SECRET_OAK_SIGN_ITEM.get(),
+				SCContent.SECRET_SPRUCE_SIGN_ITEM.get());
 
 		//minecraft tags
 		getBuilder(ItemTags.CARPETS).add(SCTags.Items.REINFORCED_CARPETS);
-		getBuilder(ItemTags.FENCES).add(SCContent.ironFence.asItem());
-		getBuilder(ItemTags.RAILS).add(SCContent.trackMine.asItem());
-		getBuilder(ItemTags.SLABS).add(SCTags.Items.REINFORCED_SLABS).add(SCContent.crystalQuartzSlab.asItem());
-		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS).add(SCContent.stairsCrystalQuartz.asItem());
+		getBuilder(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
+		getBuilder(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
+		getBuilder(ItemTags.SLABS).add(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
+		getBuilder(ItemTags.STAIRS).add(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
 		getBuilder(ItemTags.SIGNS).add(SCTags.Items.SECRET_SIGNS);
-		getBuilder(ItemTags.TRAPDOORS).add(SCContent.reinforcedIronTrapdoor.asItem());
+		getBuilder(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
 	}
 
 	@Override

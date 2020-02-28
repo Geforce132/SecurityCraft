@@ -71,9 +71,9 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					if(w.isAirBlock(p))
 					{
 						if(p.equals(topMiddle))
-							w.setBlockState(p, SCContent.horizontalReinforcedIronBars.getDefaultState());
+							w.setBlockState(p, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().getDefaultState());
 						else
-							w.setBlockState(p, ((ReinforcedPaneBlock)SCContent.reinforcedIronBars).getStateForPlacement(w, p));
+							w.setBlockState(p, ((ReinforcedPaneBlock)SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(w, p));
 					}
 				});
 				placer.loop((w, p, o) -> {
@@ -86,7 +86,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
-					PlayerUtils.getPlayerFromName(ownerName).sendMessage(new TranslationTextComponent("["+ TextFormatting.BLACK + ClientUtils.localize(SCContent.cageTrap.getTranslationKey()) + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((PlayerEntity) entity).getName().getFormattedText()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					PlayerUtils.getPlayerFromName(ownerName).sendMessage(new TranslationTextComponent("["+ TextFormatting.BLACK + ClientUtils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()) + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((PlayerEntity) entity).getName().getFormattedText()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}

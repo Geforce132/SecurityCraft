@@ -24,7 +24,7 @@ public class BaseKeycardItem extends Item{
 		this.level = level;
 	}
 
-	public int getKeycardLvl(ItemStack par1ItemStack){
+	public int getKeycardLvl(ItemStack stack){
 		if(level == 0)
 			return 1;
 		else if(level == 1)

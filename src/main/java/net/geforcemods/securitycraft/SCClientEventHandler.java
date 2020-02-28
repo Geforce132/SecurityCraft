@@ -71,7 +71,7 @@ public class SCClientEventHandler
 
 			ItemStack stack = player.inventory.mainInventory.get(held);
 
-			if(!stack.isEmpty() && stack.getItem() == SCContent.cameraMonitor)
+			if(!stack.isEmpty() && stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			{
 				String textureToUse = "item_not_bound";
 				double eyeHeight = player.getEyeHeight();
@@ -103,7 +103,7 @@ public class SCClientEventHandler
 					RenderSystem.disableAlphaTest();
 				}
 			}
-			else if(!stack.isEmpty() && stack.getItem() == SCContent.remoteAccessMine)
+			else if(!stack.isEmpty() && stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
 			{
 				String textureToUse = "item_not_bound";
 				double eyeHeight = player.getEyeHeight();
@@ -135,7 +135,7 @@ public class SCClientEventHandler
 					RenderSystem.disableAlphaTest();
 				}
 			}
-			else if(!stack.isEmpty() && stack.getItem() == SCContent.remoteAccessSentry)
+			else if(!stack.isEmpty() && stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
 			{
 				String textureToUse = "item_not_bound";
 				Entity hitEntity = Minecraft.getInstance().pointedEntity;
@@ -185,7 +185,7 @@ public class SCClientEventHandler
 		{
 			if(event.getButton() != 1 && Minecraft.getInstance().player.openContainer == null) //anything other than rightclick and only if no gui is open)
 			{
-				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.inventory.getCurrentItem().getItem() != SCContent.cameraMonitor)
+				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.inventory.getCurrentItem().getItem() != SCContent.CAMERA_MONITOR.get())
 					event.setCanceled(true);
 			}
 		}

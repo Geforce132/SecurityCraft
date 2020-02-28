@@ -140,6 +140,6 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.usernameLogger.getTranslationKey());
+		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getTranslationKey());
 	}
 }

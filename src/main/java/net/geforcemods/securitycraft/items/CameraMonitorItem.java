@@ -48,9 +48,9 @@ public class CameraMonitorItem extends Item {
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
-			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
+			if(BlockUtils.getBlock(world, pos) == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)){
 				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((SecurityCameraTileEntity)world.getTileEntity(pos)).hasModule(CustomModules.SMART)){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 					return ActionResultType.SUCCESS;
 				}
 
@@ -61,14 +61,14 @@ public class CameraMonitorItem extends Item {
 
 				if(isCameraAdded(player.inventory.getCurrentItem().getTag(), view)){
 					player.inventory.getCurrentItem().getTag().remove(getTagNameFromPosition(player.inventory.getCurrentItem().getTag(), view));
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return ActionResultType.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
 					if (!player.inventory.getCurrentItem().getTag().contains("Camera" + i)){
 						player.inventory.getCurrentItem().getTag().putString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
 
@@ -76,9 +76,9 @@ public class CameraMonitorItem extends Item {
 
 				return ActionResultType.SUCCESS;
 			}
-		}else if(world.isRemote && (BlockUtils.getBlock(world, pos) != SCContent.securityCamera || PlayerUtils.isPlayerMountedOnCamera(player))){
+		}else if(world.isRemote && (BlockUtils.getBlock(world, pos) != SCContent.SECURITY_CAMERA.get() || PlayerUtils.isPlayerMountedOnCamera(player))){
 			if(stack.getTag() == null || stack.getTag().isEmpty()) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return ActionResultType.SUCCESS;
 			}
 
@@ -95,11 +95,11 @@ public class CameraMonitorItem extends Item {
 
 		if (world.isRemote) {
 			if(!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.cameraMonitor.getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 				return ActionResult.resultPass(stack);
 			}
 
-			if(stack.getItem() == SCContent.cameraMonitor)
+			if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
 				SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
 		}
 
@@ -150,7 +150,7 @@ public class CameraMonitorItem extends Item {
 	}
 
 	public ArrayList<CameraView> getCameraPositions(CompoundNBT tag){
-		ArrayList<CameraView> list = new ArrayList<CameraView>();
+		ArrayList<CameraView> list = new ArrayList<>();
 
 		for(int i = 1; i <= 30; i++)
 			if(tag != null && tag.contains("Camera" + i)){

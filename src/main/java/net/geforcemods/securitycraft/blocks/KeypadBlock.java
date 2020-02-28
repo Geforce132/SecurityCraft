@@ -52,7 +52,7 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 
 			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST))
 				activate(world, pos);
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 
@@ -61,15 +61,15 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 
 	public static void activate(World world, BlockPos pos){
 		BlockUtils.setBlockProperty(world, pos, POWERED, true);
-		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.keypad, 60);
+		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
+		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), 60);
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		BlockUtils.setBlockProperty(world, pos, POWERED, false);
-		world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
+		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 	}
 
 	@Override
@@ -142,13 +142,13 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	@Override
 	public Block getOriginalBlock()
 	{
-		return SCContent.frame;
+		return SCContent.FRAME.get();
 	}
 
 	@Override
 	public boolean convert(PlayerEntity player, World world, BlockPos pos)
 	{
-		world.setBlockState(pos, SCContent.keypad.getDefaultState().with(KeypadBlock.FACING, world.getBlockState(pos).get(FrameBlock.FACING)).with(KeypadBlock.POWERED, false));
+		world.setBlockState(pos, SCContent.KEYPAD.get().getDefaultState().with(KeypadBlock.FACING, world.getBlockState(pos).get(FrameBlock.FACING)).with(KeypadBlock.POWERED, false));
 		((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());
 		return true;
 	}

@@ -413,7 +413,7 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.keypadFurnace.getTranslationKey());
+						return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
 					}
 				}, pos);
 			}
@@ -434,7 +434,7 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.keypadFurnace.getTranslationKey());
+							return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
 						}
 					}, pos);
 				}
@@ -447,7 +447,7 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadFurnace.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else {
 			activate(player);
 			return true;
@@ -475,6 +475,6 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.keypadFurnace.getTranslationKey());
+		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
 	}
 }

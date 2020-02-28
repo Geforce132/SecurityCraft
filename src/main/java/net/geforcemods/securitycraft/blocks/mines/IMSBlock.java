@@ -80,7 +80,7 @@ public class IMSBlock extends OwnableBlock {
 				ItemStack held = player.getHeldItem(hand);
 				int mines = state.get(MINES);
 
-				if(held.getItem() == SCContent.bouncingBetty.asItem() && mines < 4)
+				if(held.getItem() == SCContent.BOUNCING_BETTY.get().asItem() && mines < 4)
 				{
 					if(!player.isCreative())
 						held.shrink(1);
@@ -131,7 +131,7 @@ public class IMSBlock extends OwnableBlock {
 		int mines = state.get(MINES);
 
 		if(mines != 0)
-			return NonNullList.from(ItemStack.EMPTY, new ItemStack(SCContent.bouncingBetty, mines));
+			return NonNullList.from(ItemStack.EMPTY, new ItemStack(SCContent.BOUNCING_BETTY.get(), mines));
 		else return super.getDrops(state, builder);
 	}
 

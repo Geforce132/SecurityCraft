@@ -50,7 +50,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String translation = ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey());
+		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
 
 		font.drawString(translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
 	}
@@ -78,7 +78,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			feedback = te.enableMultiblock();
 
 			if(feedback != null)
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey()), ClientUtils.localize(feedback.getKey(), feedback.getFormatArgs()), TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize(feedback.getKey(), feedback.getFormatArgs()), TextFormatting.DARK_AQUA);
 		}
 
 		Minecraft.getInstance().player.closeScreen();

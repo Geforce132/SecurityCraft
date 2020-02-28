@@ -35,19 +35,19 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	@Override
 	public Fluid getFlowingFluid()
 	{
-		return SCContent.flowingFakeWater;
+		return SCContent.FLOWING_FAKE_WATER.get();
 	}
 
 	@Override
 	public Fluid getStillFluid()
 	{
-		return SCContent.fakeWater;
+		return SCContent.FAKE_WATER.get();
 	}
 
 	@Override
 	public Item getFilledBucket()
 	{
-		return SCContent.fWaterBucket;
+		return SCContent.FAKE_WATER_BUCKET.get();
 	}
 
 	@Override
@@ -105,13 +105,13 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	@Override
 	public BlockState getBlockState(IFluidState state)
 	{
-		return SCContent.fakeWaterBlock.getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
+		return SCContent.FAKE_WATER_BLOCK.get().getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
 	}
 
 	@Override
 	public boolean isEquivalentTo(Fluid fluid)
 	{
-		return fluid == SCContent.fakeWater || fluid == SCContent.flowingFakeWater;
+		return fluid == SCContent.FAKE_WATER.get() || fluid == SCContent.FLOWING_FAKE_WATER.get();
 	}
 
 	@Override
