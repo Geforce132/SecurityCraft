@@ -37,6 +37,7 @@
 - Fix: Some (universal) tools can identify disguised blocks and block mines
 - Fix: Fake water doesn't change its tint depending on the biome
 - Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
+- Fix: Keycard Reader does not send an error message when using an incorrect keycard with "equal to or higher than" mode
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------

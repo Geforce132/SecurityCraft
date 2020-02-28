@@ -96,8 +96,13 @@ public class BlockKeycardReader extends BlockDisguisable  {
 
 		if(!world.isRemote)
 		{
-			if(requiredLevel != -1 && ((TileEntityKeycardReader)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel != cardLvl)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + cardLvl), TextFormatting.RED);
+			if(requiredLevel != -1)
+			{
+				boolean exact = ((TileEntityKeycardReader)world.getTileEntity(pos)).doesRequireExactKeycard();
+
+				if((exact && requiredLevel != cardLvl) || (!exact && cardLvl < requiredLevel))
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + cardLvl), TextFormatting.RED);
+			}
 			else if(requiredLevel == -1)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 		}
