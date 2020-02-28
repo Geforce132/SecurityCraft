@@ -5,30 +5,21 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
-import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -67,76 +58,7 @@ public class BlockUtils{
 	}
 
 	public static void setBlockProperty(World world, BlockPos pos, PropertyBool property, boolean value) {
-		setBlockProperty(world, pos, property, value, false);
-	}
-
-	public static void setBlockProperty(World world, BlockPos pos, PropertyBool property, boolean value, boolean retainOldTileEntity) {
-		if(retainOldTileEntity){
-			NonNullList<ItemStack> modules = null;
-			NonNullList<ItemStack> inventory = null;
-			int[] times = new int[4];
-			String password = "";
-			Owner owner = null;
-			int cooldown = -1;
-
-			if(world.getTileEntity(pos) instanceof CustomizableSCTE)
-				modules = ((CustomizableSCTE) world.getTileEntity(pos)).modules;
-
-			if(world.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
-				inventory = ((TileEntityKeypadFurnace) world.getTileEntity(pos)).furnaceItemStacks;
-				times[0] = ((TileEntityKeypadFurnace) world.getTileEntity(pos)).furnaceBurnTime;
-				times[1] = ((TileEntityKeypadFurnace) world.getTileEntity(pos)).currentItemBurnTime;
-				times[2] = ((TileEntityKeypadFurnace) world.getTileEntity(pos)).cookTime;
-				times[3] = ((TileEntityKeypadFurnace) world.getTileEntity(pos)).totalCookTime;
-			}
-
-			if(world.getTileEntity(pos) instanceof TileEntityOwnable && ((TileEntityOwnable) world.getTileEntity(pos)).getOwner() != null)
-				owner = ((TileEntityOwnable) world.getTileEntity(pos)).getOwner();
-
-			if(world.getTileEntity(pos) instanceof TileEntityKeypad && ((TileEntityKeypad) world.getTileEntity(pos)).getPassword() != null)
-				password = ((TileEntityKeypad) world.getTileEntity(pos)).getPassword();
-
-			if(world.getTileEntity(pos) instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace) world.getTileEntity(pos)).getPassword() != null)
-				password = ((TileEntityKeypadFurnace) world.getTileEntity(pos)).getPassword();
-
-			if(world.getTileEntity(pos) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) world.getTileEntity(pos)).getPassword() != null)
-				password = ((TileEntityKeypadChest) world.getTileEntity(pos)).getPassword();
-
-			if(world.getTileEntity(pos) instanceof TileEntityPortableRadar && ((TileEntityPortableRadar) world.getTileEntity(pos)).getAttackCooldown() != 0)
-				cooldown = ((TileEntityPortableRadar) world.getTileEntity(pos)).getAttackCooldown();
-
-			TileEntity tileEntity = world.getTileEntity(pos);
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
-			world.setTileEntity(pos, tileEntity);
-
-			if(modules != null)
-				((CustomizableSCTE) world.getTileEntity(pos)).modules = modules;
-
-			if(inventory != null && world.getTileEntity(pos) instanceof TileEntityKeypadFurnace){
-				((TileEntityKeypadFurnace) world.getTileEntity(pos)).furnaceItemStacks = inventory;
-				((TileEntityKeypadFurnace) world.getTileEntity(pos)).furnaceBurnTime = times[0];
-				((TileEntityKeypadFurnace) world.getTileEntity(pos)).currentItemBurnTime = times[1];
-				((TileEntityKeypadFurnace) world.getTileEntity(pos)).cookTime = times[2];
-				((TileEntityKeypadFurnace) world.getTileEntity(pos)).totalCookTime = times[3];
-			}
-
-			if(owner != null)
-				((TileEntityOwnable) world.getTileEntity(pos)).getOwner().set(owner);
-
-			if(!password.isEmpty() && world.getTileEntity(pos) instanceof TileEntityKeypad)
-				((TileEntityKeypad) world.getTileEntity(pos)).setPassword(password);
-
-			if(!password.isEmpty() && world.getTileEntity(pos) instanceof TileEntityKeypadFurnace)
-				((TileEntityKeypadFurnace) world.getTileEntity(pos)).setPassword(password);
-
-			if(!password.isEmpty() && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
-				((TileEntityKeypadChest) world.getTileEntity(pos)).setPassword(password);
-
-			if(cooldown != -1 && world.getTileEntity(pos) instanceof TileEntityPortableRadar)
-				((TileEntityPortableRadar) world.getTileEntity(pos)).setAttackCooldown(cooldown);
-		}
-		else
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
 	}
 
 	public static void setBlockProperty(World world, BlockPos pos, PropertyInteger property, int value) {

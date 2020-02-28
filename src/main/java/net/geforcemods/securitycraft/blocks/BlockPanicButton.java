@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -34,17 +33,10 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(state.getValue(POWERED)){
-			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
-			world.markBlockRangeForRenderUpdate(pos, pos);
-			notifyNeighbors(world, pos, state.getValue(FACING));
-			return true;
-		}else{
-			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
-			world.markBlockRangeForRenderUpdate(pos, pos);
-			notifyNeighbors(world, pos, state.getValue(FACING));
-			return true;
-		}
+		world.setBlockState(pos, state.withProperty(POWERED, !state.getValue(POWERED)));
+		world.markBlockRangeForRenderUpdate(pos, pos);
+		notifyNeighbors(world, pos, state.getValue(FACING));
+		return true;
 	}
 
 	private void notifyNeighbors(World world, BlockPos pos, EnumFacing facing)
