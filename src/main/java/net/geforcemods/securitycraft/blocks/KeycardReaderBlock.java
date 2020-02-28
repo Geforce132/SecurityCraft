@@ -69,8 +69,13 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 		if(world.isRemote)
 		{
-			if(requiredLevel != -1 && ((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel != cardLvl)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + ((BaseKeycardItem) stack.getItem()).getKeycardLvl(stack)), TextFormatting.RED);
+			if(requiredLevel != -1)
+			{
+				boolean exact = ((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard();
+
+				if((exact && requiredLevel != cardLvl) || (!exact && cardLvl < requiredLevel))
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required").replace("#r", ((IPasswordProtected) world.getTileEntity(pos)).getPassword()).replace("#c", "" + ((BaseKeycardItem) stack.getItem()).getKeycardLvl(stack)), TextFormatting.RED);
+			}
 			else if(requiredLevel == -1)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 		}
