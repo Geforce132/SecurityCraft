@@ -37,7 +37,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> help()
 	{
 		return Commands.literal("help").executes(ctx -> {
-			ctx.getSource().asPlayer().addItemStackToInventory(new ItemStack(SCContent.scManual));
+			ctx.getSource().asPlayer().addItemStackToInventory(new ItemStack(SCContent.SC_MANUAL.get()));
 			return 0;
 		});
 	}

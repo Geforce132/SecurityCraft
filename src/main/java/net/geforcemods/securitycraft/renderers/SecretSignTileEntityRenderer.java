@@ -137,16 +137,16 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 	private ResourceLocation getTextureForSign(Block sign)
 	{
-		if(sign != SCContent.secretOakSign && sign != SCContent.secretOakWallSign)
+		if(sign != SCContent.SECRET_OAK_SIGN.get() && sign != SCContent.SECRET_OAK_WALL_SIGN.get())
 		{
-			if(sign != SCContent.secretSpruceSign && sign != SCContent.secretSpruceWallSign)
+			if(sign != SCContent.SECRET_SPRUCE_SIGN.get() && sign != SCContent.SECRET_SPRUCE_WALL_SIGN.get())
 			{
-				if(sign != SCContent.secretBirchSign && sign != SCContent.secretBirchWallSign)
+				if(sign != SCContent.SECRET_BIRCH_SIGN.get() && sign != SCContent.SECRET_BIRCH_WALL_SIGN.get())
 				{
-					if(sign != SCContent.secretAcaciaSign && sign != SCContent.secretAcaciaWallSign)
+					if(sign != SCContent.SECRET_ACACIA_SIGN.get() && sign != SCContent.SECRET_ACACIA_WALL_SIGN.get())
 					{
-						if(sign != SCContent.secretJungleSign && sign != SCContent.secretJungleWallSign)
-							return sign != SCContent.secretDarkOakSign && sign != SCContent.secretDarkOakWallSign ? OAK_TEXTURE : DARK_OAK_TEXTURE;
+						if(sign != SCContent.SECRET_JUNGLE_SIGN.get() && sign != SCContent.SECRET_JUNGLE_WALL_SIGN.get())
+							return sign != SCContent.SECRET_DARK_OAK_SIGN.get() && sign != SCContent.SECRET_DARK_OAK_WALL_SIGN.get() ? OAK_TEXTURE : DARK_OAK_TEXTURE;
 						else return JUNGLE_TEXTURE;
 					}
 					else return ACACIA_TEXTURE;

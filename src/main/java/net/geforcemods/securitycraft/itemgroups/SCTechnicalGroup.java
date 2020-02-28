@@ -18,7 +18,7 @@ public class SCTechnicalGroup extends ItemGroup
 	@OnlyIn(Dist.CLIENT)
 	public ItemStack createIcon()
 	{
-		return new ItemStack(SCContent.usernameLogger.asItem());
+		return new ItemStack(SCContent.USERNAME_LOGGER.get().asItem());
 	}
 
 	@Override

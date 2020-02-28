@@ -56,7 +56,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if(world.isRemote)
 			return true;
-		else if(player.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)){
+		else if(player.inventory.getCurrentItem().getItem() != SCContent.REMOTE_ACCESS_MINE.get() && !EntityUtils.doesPlayerOwn(player, world, pos)){
 			explode(world, pos);
 			return true;
 		}

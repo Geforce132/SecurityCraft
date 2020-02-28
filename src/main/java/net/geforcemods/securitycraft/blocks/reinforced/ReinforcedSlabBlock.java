@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -38,9 +39,14 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	protected static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	protected static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public ReinforcedSlabBlock(SoundType soundType, Material mat, Block vB, String registryPath)
+	public ReinforcedSlabBlock(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, registryPath);
+		this(soundType, mat, () -> vB);
+	}
+
+	public ReinforcedSlabBlock(SoundType soundType, Material mat, Supplier<Block> vB)
+	{
+		super(soundType, mat, vB, 0);
 		setDefaultState(stateContainer.getBaseState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, false));
 	}
 

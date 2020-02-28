@@ -67,12 +67,12 @@ public class SentryRemoteAccessToolItem extends Item {
 					int availSlot = getNextAvaliableSlot(stack);
 
 					if(availSlot == 0){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
 						return ActionResultType.FAIL;
 					}
 
 					if(world.getTileEntity(pos2) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos2)).getOwner().isOwner(player)){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 						return ActionResultType.FAIL;
 					}
 
@@ -81,10 +81,10 @@ public class SentryRemoteAccessToolItem extends Item {
 
 					stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.bound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.bound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, pos2, player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.remoteAccessSentry.getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.unbound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.unbound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.RED);
 				}
 			}
 			else

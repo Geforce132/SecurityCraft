@@ -11,23 +11,26 @@ import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
-import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
+import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -37,6 +40,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
@@ -50,8 +54,8 @@ public class SecurityCraft {
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public HashMap<String, Object[]> cameraUsePositions = new HashMap<String, Object[]>();
-	public ArrayList<SCManualPage> manualPages = new ArrayList<SCManualPage>();
+	public HashMap<String, Object[]> cameraUsePositions = new HashMap<>();
+	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
 	private CompoundNBT savedModule;
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
@@ -59,9 +63,14 @@ public class SecurityCraft {
 
 	public SecurityCraft()
 	{
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
+		SCContent.BLOCKS.register(modEventBus);
+		SCContent.FLUIDS.register(modEventBus);
+		SCContent.ITEMS.register(modEventBus);
 	}
 
 	@SubscribeEvent
@@ -89,7 +98,6 @@ public class SecurityCraft {
 				InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
 		});
 
-		CustomModules.refresh();
 		proxy.tint();
 	}
 
@@ -100,7 +108,36 @@ public class SecurityCraft {
 			try
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
-					IReinforcedBlock.BLOCKS.add((Block)field.get(null));
+					IReinforcedBlock.BLOCKS.add(((RegistryObject<Block>)field.get(null)).get());
+
+				if(field.isAnnotationPresent(HasManualPage.class))
+				{
+					Object o = ((RegistryObject<?>)field.get(null)).get();
+					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
+					boolean isBlock = true;
+					Item item;
+					String key;
+
+					if(o instanceof Block)
+						item = ((Block)o).asItem();
+					else
+					{
+						item = (Item)o;
+						isBlock = false;
+					}
+
+					if(hmp.specialInfoKey().isEmpty())
+						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+					else
+						key = hmp.specialInfoKey();
+
+					SCManualPage page = new SCManualPage(item, key);
+
+					if(!hmp.designedBy().isEmpty())
+						page.setDesignedBy(hmp.designedBy());
+
+					instance.manualPages.add(page);
+				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
 			{

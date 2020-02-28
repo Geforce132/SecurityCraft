@@ -13,9 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedGlassBlock extends BaseReinforcedBlock
 {
-	public ReinforcedGlassBlock(Block vB, String registryPath)
+	public ReinforcedGlassBlock(Block vB)
 	{
-		super(SoundType.GLASS, Material.GLASS, vB, registryPath);
+		super(Block.Properties.create(Material.GLASS).hardnessAndResistance(-1.0F, 6000000.0F), SoundType.GLASS, vB);
 	}
 
 	@Override

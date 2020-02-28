@@ -17,7 +17,7 @@ public class FakeWaterBlock extends FlowingFluidBlock
 {
 	public FakeWaterBlock()
 	{
-		super(SCContent.fakeWater, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F));
+		super(SCContent.FAKE_WATER, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F));
 	}
 
 	@Override

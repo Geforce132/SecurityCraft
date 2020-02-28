@@ -18,7 +18,7 @@ public class SCDecorationGroup extends ItemGroup
 	@OnlyIn(Dist.CLIENT)
 	public ItemStack createIcon()
 	{
-		return new ItemStack(SCContent.reinforcedOakStairs.asItem());
+		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
 	}
 
 	@Override

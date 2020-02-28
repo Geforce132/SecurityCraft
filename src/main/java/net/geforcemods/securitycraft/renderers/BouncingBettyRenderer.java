@@ -43,7 +43,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 		bindEntityTexture(entity);
 		GlStateManager.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 		GlStateManager.translatef(-0.5F, -0.5F, 0.5F);
-		blockrendererdispatcher.renderBlockBrightness(SCContent.bouncingBetty.getDefaultState(), entity.getBrightness());
+		blockrendererdispatcher.renderBlockBrightness(SCContent.BOUNCING_BETTY.get().getDefaultState(), entity.getBrightness());
 		GlStateManager.translatef(0.0F, 0.0F, 1.0F);
 		GlStateManager.popMatrix();
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);

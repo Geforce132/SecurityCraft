@@ -17,7 +17,7 @@ public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer {
 	public void renderByItem(ItemStack item) {
 		Block block = Block.getBlockFromItem(item.getItem());
 
-		if (block == SCContent.keypadChest)
+		if (block == SCContent.KEYPAD_CHEST.get())
 			TileEntityRendererDispatcher.instance.renderAsItem(DUMMY);
 		else
 			super.renderByItem(item);

@@ -36,13 +36,13 @@ import net.minecraft.world.World;
 
 public class BlockUtils{
 	private static final List<Block> PRESSURE_PLATES = Arrays.asList(new Block[] {
-			SCContent.reinforcedStonePressurePlate,
-			SCContent.reinforcedOakPressurePlate,
-			SCContent.reinforcedSprucePressurePlate,
-			SCContent.reinforcedBirchPressurePlate,
-			SCContent.reinforcedJunglePressurePlate,
-			SCContent.reinforcedAcaciaPressurePlate,
-			SCContent.reinforcedDarkOakPressurePlate
+			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get()
 	});
 
 	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
@@ -179,11 +179,11 @@ public class BlockUtils{
 	{
 		TileEntity thisTile = world.getTileEntity(pos);
 
-		return hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.laserBlock, true, (state, te) -> state.get(LaserBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.retinalScanner, true, (state, te) -> state.get(RetinalScannerBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keypad, true, (state, te) -> state.get(KeypadBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keycardReader, true, (state, te) -> state.get(KeycardReaderBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.inventoryScanner, true, (state, te) -> ((InventoryScannerTileEntity)te).getScanType().equals("redstone") && ((InventoryScannerTileEntity)te).shouldProvidePower()) ||
+		return hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.LASER_BLOCK.get(), true, (state, te) -> state.get(LaserBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.RETINAL_SCANNER.get(), true, (state, te) -> state.get(RetinalScannerBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.KEYPAD.get(), true, (state, te) -> state.get(KeypadBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.KEYCARD_READER.get(), true, (state, te) -> state.get(KeycardReaderBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.INVENTORY_SCANNER.get(), true, (state, te) -> ((InventoryScannerTileEntity)te).getScanType().equals("redstone") && ((InventoryScannerTileEntity)te).shouldProvidePower()) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.get(ReinforcedPressurePlateBlock.POWERED));
 	}
 

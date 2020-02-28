@@ -4,18 +4,13 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
-import net.minecraftforge.event.RegistryEvent.Register;
 
 public interface IProxy
 {
 	public void clientSetup();
-	public void registerKeypadChestItem(Register<Item> event);
 	public void tint();
-	public World getClientWorld();
 	public PlayerEntity getClientPlayer();
 	public void displayMRATGui(ItemStack stack);
 	public void displaySRATGui(ItemStack stack, int viewDistance);

@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
-import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
@@ -58,16 +57,13 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -161,12 +157,6 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void registerKeypadChestItem(Register<Item> event)
-	{
-		event.getRegistry().register(new BlockItem(SCContent.keypadChest, new Item.Properties().group(SecurityCraft.groupSCTechnical).setTEISR(() -> () -> new ItemKeypadChestRenderer())).setRegistryName(SCContent.keypadChest.getRegistryName()));
-	}
-
-	@Override
 	public void tint()
 	{
 		Map<Block,Integer> toTint = new HashMap<>();
@@ -177,7 +167,7 @@ public class ClientProxy implements IProxy {
 			{
 				try
 				{
-					toTint.put((Block)field.get(null), field.getAnnotation(Reinforced.class).tint());
+					toTint.put(((RegistryObject<Block>)field.get(null)).get(), field.getAnnotation(Reinforced.class).tint());
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
@@ -186,13 +176,13 @@ public class ClientProxy implements IProxy {
 			}
 		}
 
-		toTint.put(SCContent.blockPocketManager, 0x0E7063);
-		toTint.put(SCContent.blockPocketWall, 0x0E7063);
-		toTint.put(SCContent.chiseledCrystalQuartz, 0x15b3a2);
-		toTint.put(SCContent.crystalQuartz, 0x15b3a2);
-		toTint.put(SCContent.crystalQuartzPillar, 0x15b3a2);
-		toTint.put(SCContent.crystalQuartzSlab, 0x15b3a2);
-		toTint.put(SCContent.stairsCrystalQuartz, 0x15b3a2);
+		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), 0x0E7063);
+		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), 0x0E7063);
+		toTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), 0x15b3a2);
+		toTint.put(SCContent.CRYSTAL_QUARTZ.get(), 0x15b3a2);
+		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), 0x15b3a2);
+		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), 0x15b3a2);
+		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), 0x15b3a2);
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
@@ -207,13 +197,7 @@ public class ClientProxy implements IProxy {
 			}
 
 			return 0xFFFFFF;
-		}, SCContent.cageTrap, SCContent.inventoryScanner, SCContent.keycardReader, SCContent.keypad, SCContent.laserBlock, SCContent.retinalScanner, SCContent.usernameLogger);
-	}
-
-	@Override
-	public World getClientWorld()
-	{
-		return Minecraft.getInstance().world;
+		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
 	}
 
 	@Override

@@ -109,6 +109,6 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.keycardReader.getTranslationKey());
+		return new TranslationTextComponent(SCContent.KEYCARD_READER.get().getTranslationKey());
 	}
 }

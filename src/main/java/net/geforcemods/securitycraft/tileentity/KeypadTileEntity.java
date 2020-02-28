@@ -33,11 +33,11 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 			if(getValue()) {
 				BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, true);
-				world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
+				world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 			}
 			else {
 				BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, false);
-				world.notifyNeighborsOfStateChange(pos, SCContent.keypad);
+				world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 			}
 		}
 	};
@@ -99,7 +99,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.keypad.getTranslationKey());
+						return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
 					}
 				}, pos);
 			}
@@ -120,7 +120,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.keypad.getTranslationKey());
+							return new TranslationTextComponent(SCContent.KEYPAD.get().getTranslationKey());
 						}
 					}, pos);
 				}
@@ -133,7 +133,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	@Override
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypad.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 		else if(!BlockUtils.getBlockProperty(world, pos, KeypadBlock.POWERED)) {
 			activate(player);
 			return true;

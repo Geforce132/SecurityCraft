@@ -139,7 +139,7 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	private void playSoundAndUpdate(World world, BlockPos pos){
-		if(world.getBlockState(pos).getBlock() != SCContent.alarm || !(world.getTileEntity(pos) instanceof AlarmTileEntity)) return;
+		if(world.getBlockState(pos).getBlock() != SCContent.ALARM.get() || !(world.getTileEntity(pos) instanceof AlarmTileEntity)) return;
 
 		if(world.getRedstonePowerFromNeighbors(pos) > 0){
 			boolean isPowered = ((AlarmTileEntity) world.getTileEntity(pos)).isPowered();
@@ -166,7 +166,7 @@ public class AlarmBlock extends OwnableBlock {
 	@Override
 	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
 	{
-		return new ItemStack(SCContent.alarm.asItem());
+		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 
 	@Override

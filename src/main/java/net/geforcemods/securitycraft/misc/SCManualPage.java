@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.misc;
 
 import java.util.function.BooleanSupplier;
 
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
@@ -18,12 +20,19 @@ public class SCManualPage {
 		this.item = item;
 		this.helpInfo = helpInfo;
 		customRecipe = null;
-	}
 
-	public SCManualPage(Item item, String helpInfo, BooleanSupplier configValue){
-		this.item = item;
-		this.helpInfo = helpInfo;
-		this.configValue = configValue;
+		if(item == SCContent.KEYCARD_LVL_1.get()) {
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard1.get();}
+		else if(item == SCContent.KEYCARD_LVL_2.get()) {
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard2.get();}
+		else if(item == SCContent.KEYCARD_LVL_3.get()) {
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard3.get();}
+		else if(item == SCContent.KEYCARD_LVL_4.get()) {
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard4.get();}
+		else if(item == SCContent.KEYCARD_LVL_5.get()) {
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard5.get();}
+		else if(item == SCContent.LIMITED_USE_KEYCARD.get())
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftLUKeycard.get();
 	}
 
 	public Item getItem() {

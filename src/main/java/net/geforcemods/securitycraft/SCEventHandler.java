@@ -160,7 +160,7 @@ public class SCEventHandler {
 				BlockState state  = world.getBlockState(event.getPos());
 				Block block = state.getBlock();
 
-				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.keyPanel))
+				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL))
 				{
 					for(Block pc : IPasswordConvertible.BLOCKS)
 					{
@@ -174,17 +174,17 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.codebreaker) && handleCodebreaking(event)) {
+				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.CODEBREAKER) && handleCodebreaking(event)) {
 					event.setCanceled(true);
 					return;
 				}
 
-				if(tileEntity != null && tileEntity instanceof CustomizableTileEntity && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.universalBlockModifier)){
+				if(tileEntity != null && tileEntity instanceof CustomizableTileEntity && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.UNIVERSAL_BLOCK_MODIFIER.get())){
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
 						if(!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock))
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockModifier.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 						return;
 					}
@@ -230,17 +230,17 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.universalBlockRemover)){
+				if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.UNIVERSAL_BLOCK_REMOVER.get())){
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
 						if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock)))
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.universalBlockRemover.getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 						return;
 					}
 
-					if(block == SCContent.laserBlock){
+					if(block == SCContent.LASER_BLOCK.get()){
 						CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
 
 						for(ItemStack module : te.modules)
@@ -252,7 +252,7 @@ public class SCEventHandler {
 						world.destroyBlock(event.getPos(), true);
 						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
 						event.getPlayer().inventory.getCurrentItem().damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
-					}else if(block == SCContent.cageTrap && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
+					}else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
 						BlockPos originalPos = event.getPos();
 						BlockPos middlePos = originalPos.up(4);
 
@@ -263,7 +263,7 @@ public class SCEventHandler {
 							{
 								Block b = w.getBlockState(p).getBlock();
 
-								if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+								if(b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
 									w.destroyBlock(p, false);
 							}
 						});
@@ -275,7 +275,7 @@ public class SCEventHandler {
 						if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 							pos = pos.down();
 
-						if(block == SCContent.inventoryScanner)
+						if(block == SCContent.INVENTORY_SCANNER.get())
 						{
 							InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, event.getPos());
 
@@ -366,7 +366,7 @@ public class SCEventHandler {
 		{
 			Item held = event.getPlayer().getHeldItemMainhand().getItem();
 
-			if(held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3)
+			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 			{
 				for(Block rb : IReinforcedBlock.BLOCKS)
 				{
@@ -407,12 +407,12 @@ public class SCEventHandler {
 	private static ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 
-		if(block == SCContent.fakeWaterBlock){
+		if(block == SCContent.FAKE_WATER_BLOCK.get()){
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return new ItemStack(SCContent.fWaterBucket, 1);
-		}else if(block == SCContent.fakeLavaBlock){
+			return new ItemStack(SCContent.FAKE_WATER_BUCKET.get(), 1);
+		}else if(block == SCContent.FAKE_LAVA_BLOCK.get()){
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return new ItemStack(SCContent.fLavaBucket, 1);
+			return new ItemStack(SCContent.FAKE_LAVA_BUCKET.get(), 1);
 		}
 		else
 			return ItemStack.EMPTY;
@@ -435,7 +435,7 @@ public class SCEventHandler {
 
 			if(tileEntity != null && tileEntity instanceof IPasswordProtected)
 			{
-				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
+				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 				if(new Random().nextInt(3) == 1)

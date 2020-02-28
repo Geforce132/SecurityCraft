@@ -48,7 +48,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 		GlStateManager.pushMatrix();
 
-		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera){
+		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.SECURITY_CAMERA.get()){
 			Direction side = BlockUtils.getBlockProperty(getWorld(), te.getPos(), SecurityCameraBlock.FACING);
 
 			if(side == Direction.EAST)

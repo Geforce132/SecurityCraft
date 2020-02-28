@@ -69,7 +69,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 				if(((IOwnable) world.getTileEntity(pos)) != null)
 					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 
-				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
+				BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
 			}
 			else
 			{
@@ -78,7 +78,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 				if(((IOwnable) world.getTileEntity(pos)) != null)
 					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 
-				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
+				BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
 			}
 		}
 	}

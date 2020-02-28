@@ -47,7 +47,7 @@ public class CameraMonitorScreen extends Screen {
 	private int page = 1;
 
 	public CameraMonitorScreen(PlayerInventory inventory, CameraMonitorItem item, CompoundNBT itemNBTTag) {
-		super(new TranslationTextComponent(SCContent.cameraMonitor.getTranslationKey()));
+		super(new TranslationTextComponent(SCContent.CAMERA_MONITOR.get().getTranslationKey()));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
@@ -106,7 +106,7 @@ public class CameraMonitorScreen extends Screen {
 
 				TileEntity te = Minecraft.getInstance().world.getTileEntity(view.getLocation());
 
-				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.securityCamera || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(CustomModules.SMART)))
+				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(CustomModules.SMART)))
 				{
 					button.active = false;
 					cameraTEs[button.id - 1] = null;
@@ -172,7 +172,7 @@ public class CameraMonitorScreen extends Screen {
 
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
 
-			if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) == SCContent.securityCamera) {
+			if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) == SCContent.SECURITY_CAMERA.get()) {
 				((SecurityCameraBlock) BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation())).mountCamera(Minecraft.getInstance().world, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
 				SecurityCraft.channel.sendToServer(new MountCamera(view.x, view.y, view.z, camID));
 				Minecraft.getInstance().player.closeScreen();
