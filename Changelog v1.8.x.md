@@ -45,6 +45,7 @@
 - Fix: Various (red) sandstone variants cannot be reliably reinforced
 - Fix: Some (universal) tools can identify disguised blocks and block mines
 - Fix: Sentry Remote Access Tool GUI pauses the game
+- Fix: Keycard Reader does not send an error message when using an incorrect keycard with "equal to or higher than" mode
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Internal: Now using deffered registers for block/item/etc. registration
 
