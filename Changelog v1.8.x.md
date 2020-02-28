@@ -49,9 +49,10 @@
 - Fix: Cyclic's Sack of Holding can pick up blocks that are owned by different players
 - Fix: Sentry Remote Access Tool GUI pauses the game
 - Fix: Keycard Reader does not send an error message when using an incorrect keycard with "equal to or higher than" mode
+- Fix: Double Slabs can be created by people who don't own the single slab
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
 - Misc.: The minimum required Forge version is now 31.1.14
-- Internal: Now using deffered registers for block/item/fluid registration
+- Internal: Now using deferred registers for block/item/fluid registration
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
 

@@ -5,6 +5,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -22,14 +25,17 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLoggable
@@ -82,11 +88,23 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
+		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
-		BlockState state = ctx.getWorld().getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
+		TileEntity te = world.getTileEntity(pos);
 
 		if(state.getBlock() == this)
+		{
+			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(ctx.getPlayer()))
+			{
+				if(world.isRemote)
+					PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+
+				return state;
+			}
+
 			return state.with(TYPE, SlabType.DOUBLE).with(WATERLOGGED, false);
+		}
 		else
 		{
 			IFluidState fluidState = ctx.getWorld().getFluidState(pos);
