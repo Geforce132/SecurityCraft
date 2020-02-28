@@ -7,6 +7,7 @@
 - New: Fire on Reinforced Netherrack now doesn't get removed
 - New: The Mine-/Sentry Remote Access Tool GUI now shows explanatory tooltips when hovering over buttons
 - New: The Mine-/Sentry Remote Access Tool now show whether a mine/sentry the player is looking at is bound to them on the hotbar (just like the Camera Monitor)
+- New: Spanish translation (Thanks Ryo567!)
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures
