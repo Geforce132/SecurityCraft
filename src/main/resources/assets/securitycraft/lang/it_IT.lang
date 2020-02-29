@@ -676,6 +676,8 @@ config.securitycraft:checkForUpdates=Controllo aggiornamenti da GitHub?
 config.securitycraft:checkForUpdates.tooltip=La SecurityCraft deve controllare nuovi aggiornamenti dalla Repository di GitHub?
 config.securitycraft:maxAlarmRange=Raggio massimo dell'allarme
 config.securitycraft:maxAlarmRange.tooltip=Qual'è il valore massimo che può essere impostato in questa opzione? Nota che potrebbe essere ridotto dal caricamento dei chunk. Alti valori potrebbero non essere elaborati efficaciemente.
+config.securitycraft:respectInvisibility=Rispetta l'invisibilità?
+config.securitycraft:respectInvisibility.tooltip=La sentinella, lo scanner dell'inventario, il blocco laser, ecc. dovrebbero ignorare i giocatori e le entità invisibili?
 
 option.securitycraft:portableRadar.searchRadius=Range di ricerca: #
 option.securitycraft:portableRadar.searchRadius.description=Il range in cui il radar ricerca.
