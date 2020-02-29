@@ -28,9 +28,8 @@ public class TileEntityClaymore extends TileEntitySCTE{
 
 	@Override
 	public void update() {
-		if(getWorld().isRemote)
-			return;
-		else{
+		if(!getWorld().isRemote)
+		{
 			if(getWorld().getBlockState(getPos()).getValue(BlockClaymore.DEACTIVATED))
 				return;
 
@@ -57,7 +56,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			else if(dir == EnumFacing.WEST)
 				area = area.contract(ConfigHandler.claymoreRange, -0, -0);
 
-			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area);
+			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> iterator = entities.iterator();
 			EntityLivingBase entity;
 

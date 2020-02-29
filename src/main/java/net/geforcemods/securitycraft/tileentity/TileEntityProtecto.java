@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +19,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 
 	@Override
 	public boolean attackEntity(Entity entity){
-		if (entity instanceof EntityLivingBase) {
+		if (entity instanceof EntityLivingBase && !EntityUtils.isInvisible(((EntityLivingBase)entity))) {
 			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))) ||
 					entity instanceof EntityPigZombie ||
 					(entity instanceof EntityCreeper && ((EntityCreeper) entity).getPowered()))

@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
@@ -13,8 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -61,10 +60,9 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 		if(!world.isRemote && entity instanceof EntityLivingBase)
 		{
 			EntityLivingBase lEntity = (EntityLivingBase)entity;
-			Potion p = Potion.getPotionFromResourceLocation("minecraft:fire_resistance");
 
-			if(!EntityUtils.doesMobHavePotionEffect(lEntity, p))
-				lEntity.addPotionEffect(new PotionEffect(p, 1));
+			if(!lEntity.isPotionActive(MobEffects.FIRE_RESISTANCE))
+				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
 
 			lEntity.heal(4);
 		}

@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,7 +41,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 
 	@Override
 	public void entityViewed(EntityLivingBase entity){
-		if(!world.isRemote && !BlockUtils.getBlockProperty(world, pos, BlockRetinalScanner.POWERED)){
+		if(!world.isRemote && !BlockUtils.getBlockProperty(world, pos, BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity)){
 			if(!(entity instanceof EntityPlayer) && !activatedByEntities.asBoolean())
 				return;
 

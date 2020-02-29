@@ -7,7 +7,6 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
@@ -18,8 +17,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -114,7 +113,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 					world.setBlockToAir(pos);
 				else
 				{
-					state = state.withProperty(LEVEL, Integer.valueOf(nextLevel));
+					state = state.withProperty(LEVEL, nextLevel);
 					world.setBlockState(pos, state, 2);
 					world.scheduleUpdate(pos, this, tickRate);
 					world.notifyNeighborsOfStateChange(pos, this, false);
@@ -171,7 +170,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 				else
 					state.getBlock().dropBlockAsItem(world, pos, state, 0);
 
-			world.setBlockState(pos, getDefaultState().withProperty(LEVEL, Integer.valueOf(level)), 3);
+			world.setBlockState(pos, getDefaultState().withProperty(LEVEL, level), 3);
 		}
 	}
 
@@ -287,10 +286,9 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 		if(!world.isRemote && entity instanceof EntityLivingBase)
 		{
 			EntityLivingBase lEntity = (EntityLivingBase)entity;
-			Potion p = Potion.getPotionFromResourceLocation("minecraft:fire_resistance");
 
-			if(!EntityUtils.doesMobHavePotionEffect(lEntity, p))
-				lEntity.addPotionEffect(new PotionEffect(p, 1));
+			if(!lEntity.isPotionActive(MobEffects.FIRE_RESISTANCE))
+				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
 
 			lEntity.extinguish();
 			lEntity.heal(4);

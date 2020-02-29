@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,7 +51,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 	private void addPlayer(EntityPlayer player) {
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName(), timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName(), timestamp))
 		{
 			for(int i = 0; i < players.length; i++)
 			{
