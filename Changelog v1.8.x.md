@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
+
+- Fix: Crash when disguising a block with itself
+
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
 - New: The Universal Block Reinforcer can now "unreinforce" blocks. Place items in the top slot to reinforce them, use the bottom slot instead for "unreinforcing" them

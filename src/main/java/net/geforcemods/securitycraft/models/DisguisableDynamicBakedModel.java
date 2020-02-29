@@ -49,7 +49,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 			{
 				final IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState());
 
-				if(model != null)
+				if(model != null && model != this)
 					return model.getQuads(state, side, rand, modelData);
 			}
 		}
