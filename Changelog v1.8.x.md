@@ -8,6 +8,7 @@
 - New: The Mine-/Sentry Remote Access Tool GUI now shows explanatory tooltips when hovering over buttons
 - New: The Mine-/Sentry Remote Access Tool now show whether a mine/sentry the player is looking at is bound to them on the hotbar (just like the Camera Monitor)
 - New: Spanish translation (Thanks Ryo567!)
+- New: Configuration option to account for invisibility (Sentries, Inventory Scanners, Lasers, etc. won't detect entities if they're invisible, config option is off by default)
 - Change: The Username Logger now displays logged users in a scrollable list
 - Change: The floor of Block Pockets is now solid (reactivate Block Pockets to fix this for already existing ones)
 - Change: Slightly improve Reinforced (Stained) Glass textures

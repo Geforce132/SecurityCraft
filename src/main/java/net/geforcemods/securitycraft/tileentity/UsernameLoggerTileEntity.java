@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -63,7 +64,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	private void addPlayer(PlayerEntity player) {
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !hasPlayerName(player.getName().getFormattedText(), timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName().getFormattedText(), timestamp))
 		{
 			for(int i = 0; i < players.length; i++)
 			{

@@ -78,7 +78,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * within range of the trophy
 	 */
 	private Entity getTarget() {
-		List<Entity> potentialTargets = new ArrayList<Entity>();
+		List<Entity> potentialTargets = new ArrayList<>();
 		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range, range, range);
 
 		// Add all arrows and fireballs to the targets list. Could always add more

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
@@ -33,7 +32,7 @@ public class FakeLavaBlock extends FlowingFluidBlock
 
 			lEntity.extinguish();
 
-			if(!EntityUtils.doesMobHavePotionEffect(lEntity, Effects.FIRE_RESISTANCE))
+			if(!lEntity.isPotionActive(Effects.FIRE_RESISTANCE))
 				lEntity.addPotionEffect(SHORT_FIRE_RESISTANCE);
 
 			lEntity.heal(4);

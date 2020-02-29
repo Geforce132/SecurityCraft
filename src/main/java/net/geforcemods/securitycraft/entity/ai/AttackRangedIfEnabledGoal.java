@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -35,7 +36,7 @@ public class AttackRangedIfEnabledGoal extends Goal
 
 		if(potentialTarget == null)
 			return false;
-		else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
+		else if(sentry.isTargetingWhitelistedPlayer(potentialTarget) || EntityUtils.isInvisible(potentialTarget))
 		{
 			sentry.setAttackTarget(null);
 			return false;

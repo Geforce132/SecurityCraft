@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -28,7 +29,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	@Override
 	public boolean shouldExecute()
 	{
-		List<LivingEntity> list = goalOwner.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> true);
+		List<LivingEntity> list = goalOwner.world.<LivingEntity>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> !EntityUtils.isInvisible(e));
 
 		if(list.isEmpty())
 			return false;
