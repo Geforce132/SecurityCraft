@@ -50,7 +50,7 @@
 - Fix: Keycard Reader does not send an error message when using an incorrect keycard with "equal to or higher than" mode
 - Fix: Double Slabs can be created by people who don't own the single slab
 - Potential Fix: ConcurrentModificationException when saving a linkable tile entity
-- Misc.: The minimum required Forge version is now 31.1.14
+- Misc.: The minimum required Forge version is now 28.1.115
 - Internal: Now using deferred registers for block/item/fluid registration
 
 --------------------------Changelog for v1.8.16 of SecurityCraft--------------------------
