@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -33,7 +34,7 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 		BlockState upperState = world.getBlockState(pos);
 		BlockState lowerState = world.getBlockState(pos.down());
 
-		if(!world.isRemote && upperState.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER)
+		if(!world.isRemote && upperState.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
 		{
 			if(!(entity instanceof PlayerEntity))
 				return;

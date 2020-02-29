@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -69,8 +70,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			double range = ConfigHandler.CONFIG.imsRange.get();
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
-			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area);
-			List<?> mobs = world.getEntitiesWithinAABB(MonsterEntity.class, area);
+			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e));
+			List<?> mobs = world.getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> playerIterator = players.iterator();
 			Iterator<?> mobIterator = mobs.iterator();
 

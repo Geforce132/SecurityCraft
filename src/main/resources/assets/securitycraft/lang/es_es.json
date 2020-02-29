@@ -741,6 +741,8 @@
 	"config.securitycraft:allowBlockClaim.tooltip": "¿Permitir reclamar bloques sin propietario?",
 	"config.securitycraft:maxAlarmRange": "Alcance máximo de alarma",
 	"config.securitycraft:maxAlarmRange.tooltip": "¿Cuál es el máximo nivel de alcance que se puede establecer para la alarma? Recuerda, esto puede estar limitado por la distancia de carga del mapa. Los valores altos pueden dar problemas.",
+	"config.securitycraft:respectInvisibility": "¿Respetar invisibilidad?",
+	"config.securitycraft:respectInvisibility.tooltip": "¿Deberían las torretas/escáneres de inventario/bloques láser/etc. ignorar a jugadores y entidades que son invisibles?",
 
 	"option.securitycraft.portable_radar.searchRadius": "Radio de búsqueda: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "Radio en el que busca el radar.",

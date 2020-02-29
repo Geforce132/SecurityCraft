@@ -23,7 +23,6 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -32,7 +31,6 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
@@ -55,7 +53,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
 	{
-		if(!world.isRemote && entity instanceof LivingEntity && !EntityUtils.doesMobHavePotionEffect((LivingEntity) entity, ForgeRegistries.POTIONS.getValue(new ResourceLocation("minecraft:invisibility"))))
+		if(!world.isRemote && entity instanceof LivingEntity && !EntityUtils.isInvisible((LivingEntity)entity))
 		{
 			for(Direction facing : Direction.values())
 			{

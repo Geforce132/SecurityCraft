@@ -34,9 +34,8 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 
 	@Override
 	public void tick() {
-		if(getWorld().isRemote)
-			return;
-		else{
+		if(!getWorld().isRemote)
+		{
 			if(getWorld().getBlockState(getPos()).get(ClaymoreBlock.DEACTIVATED))
 				return;
 
@@ -63,7 +62,7 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 			else if(dir == Direction.WEST)
 				area = area.contract(ConfigHandler.CONFIG.claymoreRange.get(), -0, -0);
 
-			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area);
+			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 

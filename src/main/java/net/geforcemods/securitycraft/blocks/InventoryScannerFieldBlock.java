@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -62,7 +63,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		if(connectedScanner == null)
 			return;
 
-		if(entity instanceof PlayerEntity)
+		if(entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity))
 		{
 			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, CustomModules.WHITELIST))
 				return;

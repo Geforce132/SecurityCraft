@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +25,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean attackEntity(Entity entity){
-		if (entity instanceof LivingEntity) {
+		if (entity instanceof LivingEntity && !EntityUtils.isInvisible(((LivingEntity)entity))) {
 			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))) ||
 					entity instanceof ZombiePigmanEntity ||
 					(entity instanceof CreeperEntity && ((CreeperEntity) entity).func_225509_J__()))

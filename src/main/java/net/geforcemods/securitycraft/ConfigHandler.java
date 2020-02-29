@@ -45,8 +45,9 @@ public class ConfigHandler {
 	public BooleanValue sayThanksMessage;
 	public DoubleValue alarmSoundVolume;
 	public DoubleValue cameraSpeed;
+	public BooleanValue respectInvisibility;
 
-	public ConfigHandler(ForgeConfigSpec.Builder builder)
+	ConfigHandler(ForgeConfigSpec.Builder builder)
 	{
 		allowCodebreakerItem = builder
 				.translation("config.securitycraft:isCodebreakerAllowed")
@@ -191,5 +192,10 @@ public class ConfigHandler {
 				.translation("config.securitycraft:cameraSpeed")
 				.comment("How fast can you rotate when mounted to a camera and holding W-A-S-D?")
 				.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
+
+		respectInvisibility = builder
+				.translation("config.securitycraft:respectInvisibility")
+				.comment("Should the sentry/inventory scanner/laser block/etc. ignore players and entities that are invisible?")
+				.define("respect_invisibility", false);
 	}
 }
