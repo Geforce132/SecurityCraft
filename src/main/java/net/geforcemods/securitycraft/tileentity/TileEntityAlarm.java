@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
@@ -11,7 +10,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TileEntityAlarm extends CustomizableSCTE {
 
@@ -22,12 +20,7 @@ public class TileEntityAlarm extends CustomizableSCTE {
 	@Override
 	public void update(){
 		if(cooldown > 0)
-		{
 			cooldown--;
-
-			if(cooldown == 0)
-				SecurityCraft.log("Cooldown is 0");
-		}
 
 		if(isPowered && cooldown == 0)
 		{
@@ -74,7 +67,6 @@ public class TileEntityAlarm extends CustomizableSCTE {
 	}
 
 	public void setCooldown(int cooldown){
-		SecurityCraft.log("Setting cooldown to " + cooldown + " | " + FMLCommonHandler.instance().getEffectiveSide());
 		this.cooldown = cooldown;
 	}
 

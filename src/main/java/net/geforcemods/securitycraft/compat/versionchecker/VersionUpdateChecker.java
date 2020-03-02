@@ -29,10 +29,8 @@ public class VersionUpdateChecker {
 
 			if(update == null) return null;
 
-			if((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.getVersion())){
-				SecurityCraft.log("Running the latest version, no new updates avaliable.");
+			if((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.getVersion()))
 				return null;
-			}
 
 			tag.setString("newVersion", update.getVersion());
 			tag.setString("updateUrl", update.getDownloadURL());
