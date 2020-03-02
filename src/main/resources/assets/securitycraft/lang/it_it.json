@@ -547,7 +547,7 @@
     "gui.securitycraft:blockPocketManager.size": "Misura: %sx%sx%s",
 
     "messages.securitycraft:bugReport": "Puoi riportare un crash o un bug usando questo form di GoogleDocs",
-    "messages.securitycraft:securityCamera.mounted": "Ora sei collegato a una telecamera. Usa WASD per muovere la vista ed i pulsanti +/- per zoomare.",
+    "messages.securitycraft:securityCamera.mounted": "Ora sei collegato a una telecamera. Usa #w#a#s#d per muovere la vista ed i pulsanti #i/#o per zoomare.",
     "messages.securitycraft:retinalScanner.hello": "Ciao #.",
     "messages.securitycraft:retinalScanner.notOwner": "Spiacente, non puoi usare questo scanner. È di #.",
     "messages.securitycraft:portableRadar.withName": "#p è vicino a #n (radar portatile).",
