@@ -66,7 +66,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 		{
 			Block block = ForgeRegistries.BLOCKS.getValue(rl);
 
-			if(block != null)
+			if(block != null && !(block instanceof DisguisableBlock))
 				return Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(block.getDefaultState()).getParticleTexture(modelData);
 		}
 
