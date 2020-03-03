@@ -35,7 +35,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -77,13 +76,6 @@ public class SecurityCraft {
 	public static void onFMLCommonSetup(FMLCommonSetupEvent event) //stage 1
 	{
 		RegistrationHandler.registerPackets();
-	}
-
-	//stage 2 is FMLClientSetupEvent/FMLDedicatedServerSetupEvent
-	@SubscribeEvent
-	public static void onFMLClientSetup(FMLClientSetupEvent event)
-	{
-		proxy.clientSetup();
 	}
 
 	@SubscribeEvent

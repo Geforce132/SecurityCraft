@@ -10,9 +10,6 @@ import net.minecraft.nbt.CompoundNBT;
 public class ServerProxy implements IProxy
 {
 	@Override
-	public void clientSetup() {}
-
-	@Override
 	public void tint() {}
 
 	@Override

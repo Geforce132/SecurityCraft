@@ -68,6 +68,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID, value=Dist.CLIENT, bus=Bus.MOD)
 public class ClientProxy implements IProxy {
@@ -126,8 +127,8 @@ public class ClientProxy implements IProxy {
 		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
 	}
 
-	@Override
-	public void clientSetup()
+	@SubscribeEvent
+	public static void onFMLClientSetup(FMLClientSetupEvent event)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(BouncingBettyEntity.class, BouncingBettyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(IMSBombEntity.class, IMSBombRenderer::new);

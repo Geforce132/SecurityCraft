@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundNBT;
 
 public interface IProxy
 {
-	public void clientSetup();
 	public void tint();
 	public PlayerEntity getClientPlayer();
 	public void displayMRATGui(ItemStack stack);
