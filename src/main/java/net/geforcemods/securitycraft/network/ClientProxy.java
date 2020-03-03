@@ -200,11 +200,6 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(SCContent.FAKE_WATER.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_TRAPDOOR.get(), RenderType.getCutout());
-	}
-
-	@Override
-	public void clientSetup()
-	{
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeTaserBullet, EmptyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb, IMSBombRenderer::new);
