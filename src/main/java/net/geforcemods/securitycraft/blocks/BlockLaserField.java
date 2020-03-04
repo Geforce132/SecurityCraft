@@ -141,7 +141,9 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	{
 		if(!world.isRemote)
 		{
-			for(EnumFacing facing : EnumFacing.VALUES)
+			EnumFacing[] facingArray = {EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2), EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2).getOpposite()};
+
+			for(EnumFacing facing : facingArray)
 			{
 				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
 				{
@@ -151,6 +153,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 						{
 							world.destroyBlock(pos.offset(facing, j), false);
 						}
+						break;
 					}
 				}
 			}
