@@ -548,7 +548,7 @@
 	"gui.securitycraft:blockPocketManager.size": "Size: %sx%sx%s",
 
 	"messages.securitycraft:bugReport": "You can report a crash or a bug using this GoogleDocs form",
-	"messages.securitycraft:securityCamera.mounted": "You are now mounted to a camera. Use the WASD keys to move the camera's view, and the +/- buttons to zoom in and out.",
+	"messages.securitycraft:securityCamera.mounted": "You are now mounted to a camera. Use the #w#a#s#d keys to move the camera's view, and the #i/#o buttons to zoom in and out.",
 	"messages.securitycraft:retinalScanner.hello": "Hello #.",
 	"messages.securitycraft:retinalScanner.notOwner": "I'm sorry, you cannot use this scanner. It is owned by #.",
 	"messages.securitycraft:portableRadar.withName": "#p is near your portable radar named #n.",
