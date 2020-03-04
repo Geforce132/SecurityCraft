@@ -1,3 +1,9 @@
+--------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
+
+- Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
+- Fix: Localization for camera keybindings is incorrect
+- Fix: Incorrect laser removal in creative mode
+
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
 - New: The Universal Block Reinforcer can now "unreinforce" blocks. Place items in the top slot to reinforce them, use the bottom slot instead for "unreinforcing" them
