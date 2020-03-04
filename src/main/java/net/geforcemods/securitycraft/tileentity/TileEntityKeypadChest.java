@@ -16,7 +16,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
 
@@ -41,6 +43,12 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		}
 
 		return tag;
+	}
+
+	@Override
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+	{
+		return oldState.getBlock() != newState.getBlock();
 	}
 
 	/**

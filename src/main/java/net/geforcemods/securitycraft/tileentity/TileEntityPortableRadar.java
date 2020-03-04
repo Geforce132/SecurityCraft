@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -33,7 +34,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
 	@Override
 	public boolean attackEntity(Entity attacked) {
-		if (attacked instanceof EntityPlayer)
+		if (attacked instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer)attacked))
 		{
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
 			List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);

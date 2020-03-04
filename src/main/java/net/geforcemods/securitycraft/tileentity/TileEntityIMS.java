@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -53,8 +54,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 			double range = ConfigHandler.imsRange;
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
-			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area);
-			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area);
+			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e));
+			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> playerIterator = players.iterator();
 			Iterator<?> mobIterator = mobs.iterator();
 

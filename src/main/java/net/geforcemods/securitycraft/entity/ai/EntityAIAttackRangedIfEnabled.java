@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity.ai;
 
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -33,7 +34,7 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase
 
 		if(potentialTarget == null)
 			return false;
-		else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
+		else if(sentry.isTargetingWhitelistedPlayer(potentialTarget) || EntityUtils.isInvisible(potentialTarget))
 		{
 			sentry.setAttackTarget(null);
 			return false;

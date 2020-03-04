@@ -28,8 +28,6 @@ import net.minecraft.world.World;
 public class WailaDataProvider implements IWailaDataProvider {
 
 	public static void callbackRegister(IWailaRegistrar registrar){
-		SecurityCraft.log("Adding Waila support!");
-
 		registrar.addConfig("SecurityCraft", "securitycraft.showowner", ClientUtils.localize("waila.securitycraft:displayOwner"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showmodules", ClientUtils.localize("waila.securitycraft:showModules"));
 		registrar.addConfig("SecurityCraft", "securitycraft.showpasswords", ClientUtils.localize("waila.securitycraft:showPasswords"));

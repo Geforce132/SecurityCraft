@@ -129,4 +129,8 @@ public class ConfigHandler
 	@Name("Allow claiming unowned blocks?")
 	@LangKey("config.securitycraft:allowBlockClaim")
 	public static boolean allowBlockClaim = false;
+
+	@Name("Respect invisibility?")
+	@LangKey("config.securitycraft:respectInvisibility")
+	public static boolean respectInvisibility = false;
 }

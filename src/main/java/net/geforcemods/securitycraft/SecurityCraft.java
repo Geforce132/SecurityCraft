@@ -41,8 +41,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
-	//********************************* This is v1.8.16 for MC 1.12.2!
-	protected static final String VERSION = "v1.8.16";
+	//********************************* This is v1.8.17 for MC 1.12.2!
+	protected static final String VERSION = "v1.8.17";
 	protected static final String DEPENDENCIES = "required-after:forge@[14.23.5.2826,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
@@ -66,21 +66,11 @@ public class SecurityCraft {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
-		log("Starting to load....");
-		log("Loading config file....");
-		log(SecurityCraft.VERSION + " of SecurityCraft is for a post MC-1.6.4 version! Configuration files are useless for setting anything besides options.");
-		log("Config file loaded.");
-		log("Setting up network....");
 		SecurityCraft.network = NetworkRegistry.INSTANCE.newSimpleChannel(SecurityCraft.MODID);
 		RegistrationHandler.registerPackets(SecurityCraft.network);
-		log("Network setup.");
-
-		log("Loading mod content....");
 		SetupHandler.setupBlocks();
 		SetupHandler.setupMines();
 		SetupHandler.setupItems();
-		log("Finished loading mod content.");
-		log("Regisering mod content... (PT 1/2)");
 
 		ModMetadata modMeta = event.getModMetadata();
 		modMeta.authorList = Arrays.asList(new String[] {
@@ -97,7 +87,6 @@ public class SecurityCraft {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event){
-		log("Setting up inter-mod stuff...");
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
 
@@ -107,7 +96,6 @@ public class SecurityCraft {
 				FMLInterModComms.sendRuntimeMessage(MODID, "VersionChecker", "addUpdate", vcUpdateTag);
 		}
 
-		log("Registering mod content... (PT 2/2)");
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
 		EnumCustomModules.refresh();
 		proxy.registerRenderThings();
@@ -133,8 +121,6 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
-
-		log("Mod finished loading correctly! :D");
 	}
 
 	public Object[] getUsePosition(String playerName) {
@@ -151,18 +137,6 @@ public class SecurityCraft {
 
 	public void setSavedModule(NBTTagCompound savedModule) {
 		this.savedModule = savedModule;
-	}
-
-	/**
-	 * Prints a String to the console. Only will print if SecurityCraft is in debug mode.
-	 */
-	public static void log(String line) {
-		log(line, false);
-	}
-
-	public static void log(String line, boolean isSevereError) {
-		if(ConfigHandler.debug)
-			System.out.println(isSevereError ? "{SecurityCraft} {" + FMLCommonHandler.instance().getEffectiveSide() + "} {Severe}: " + line : "[SecurityCraft] [" + FMLCommonHandler.instance().getEffectiveSide() + "] " + line);
 	}
 
 	public static String getVersion() {
