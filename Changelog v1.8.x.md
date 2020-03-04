@@ -1,6 +1,8 @@
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
 - Fix: Crash when disguising a block with itself
+- Fix: Localization for camera keybindings is incorrect
+- Fix: Incorrect laser removal in creative mode
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
