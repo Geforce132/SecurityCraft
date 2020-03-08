@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:dyes/light_blue"
+    },
+    {
+      "item": "securitycraft:reinforced_white_wool"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_light_blue_wool"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/birch_logs"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_birch_planks",
+    "count": 4
+  }
+}

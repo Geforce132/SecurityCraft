@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_crystal_quartz_slab": {
+    "has_slab": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_crystal_quartz_slab",
+      "has_slab",
       "has_the_recipe"
     ]
   ]

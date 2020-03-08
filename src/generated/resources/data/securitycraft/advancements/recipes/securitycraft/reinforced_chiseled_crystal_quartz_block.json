@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_mossy_cobblestone"
+      "securitycraft:reinforced_chiseled_crystal_quartz_block"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_slab": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/cobblestones"
+            "item": "securitycraft:reinforced_crystal_quartz_slab"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:reinforced_mossy_cobblestone"
+        "recipe": "securitycraft:reinforced_chiseled_crystal_quartz_block"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_slab",
       "has_the_recipe"
     ]
   ]

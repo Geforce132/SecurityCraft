@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_mossy_cobblestone"
+      "securitycraft:reinforced_stone"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_reinforced_cobblestone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/cobblestones"
+            "item": "securitycraft:reinforced_cobblestone"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:reinforced_mossy_cobblestone"
+        "recipe": "securitycraft:reinforced_stone"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_reinforced_cobblestone",
       "has_the_recipe"
     ]
   ]

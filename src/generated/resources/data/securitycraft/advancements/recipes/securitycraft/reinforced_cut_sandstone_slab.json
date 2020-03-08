@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_mossy_cobblestone"
+      "securitycraft:reinforced_cut_sandstone_slab"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "securitycraft:reinforced/cobblestones"
+            "item": "securitycraft:reinforced_cut_sandstone"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:reinforced_mossy_cobblestone"
+        "recipe": "securitycraft:reinforced_cut_sandstone_slab"
       }
     }
   },
