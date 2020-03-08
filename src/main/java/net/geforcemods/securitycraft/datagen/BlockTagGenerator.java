@@ -44,7 +44,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_GREEN_CARPET.get(),
 				SCContent.REINFORCED_RED_CARPET.get(),
 				SCContent.REINFORCED_BLACK_CARPET.get());
-		getBuilder(SCTags.Blocks.REINFORCED_COBBLESTONES).add(
+		getBuilder(SCTags.Blocks.REINFORCED_COBBLESTONE).add(
 				SCContent.REINFORCED_COBBLESTONE.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
 		getBuilder(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS).add(

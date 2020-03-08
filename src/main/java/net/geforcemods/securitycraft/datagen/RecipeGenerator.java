@@ -189,12 +189,6 @@ public class RecipeGenerator extends RecipeProvider
 		.key('C', SCContent.CRYSTAL_QUARTZ_ITEM.get())
 		.addCriterion("has_crystal_quartz_item", hasItem(SCContent.CRYSTAL_QUARTZ_ITEM.get()))
 		.build(consumer);
-		/*ShapedRecipeBuilder.shapedRecipe(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), 2)
-		.patternLine("B")
-		.patternLine("B")
-		.key('B', SCContent.CRYSTAL_QUARTZ.get())
-		.addCriterion("has_crystal_quartz", hasItem(SCContent.CRYSTAL_QUARTZ.get()))
-		.build(consumer); */
 		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_DOOR_ITEM.get())
 		.patternLine("III")
 		.patternLine("IDI")
@@ -511,7 +505,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "briefcase_reset"));
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_ANDESITE.get(), 2)
 		.addIngredient(SCContent.REINFORCED_DIORITE.get())
-		.addIngredient(SCTags.Items.REINFORCED_COBBLESTONES)
+		.addIngredient(SCTags.Items.REINFORCED_COBBLESTONE)
 		.addCriterion("has_cobblestone", hasItem(Tags.Items.COBBLESTONE))
 		.build(consumer);
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
@@ -523,11 +517,6 @@ public class RecipeGenerator extends RecipeProvider
 		.addIngredient(Tags.Items.GEMS_QUARTZ)
 		.addCriterion("has_quartz", hasItem(Tags.Items.GEMS_QUARTZ))
 		.build(consumer);
-		/*ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
-		.addIngredient(Items.VINE)
-		.addIngredient(SCContent.REINFORCED_COBBLESTONE.get())
-		.addCriterion("has_reinforced_cobblestone", hasItem(SCContent.REINFORCED_COBBLESTONE.get()))
-		.build(consumer); */
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.SC_MANUAL.get())
 		.addIngredient(Items.BOOK)
 		.addIngredient(Blocks.IRON_BARS)
@@ -615,7 +604,7 @@ public class RecipeGenerator extends RecipeProvider
 		addModuleRecipe(consumer, Tags.Items.ENDER_PEARLS, SCContent.SMART_MODULE.get());
 		addModuleRecipe(consumer, SCContent.KEYPAD_CHEST.get(), SCContent.STORAGE_MODULE.get());
 		addModuleRecipe(consumer, Items.PAPER, SCContent.WHITELIST_MODULE.get());
-		addMossyRecipe(consumer, SCTags.Items.REINFORCED_COBBLESTONES, SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
+		addMossyRecipe(consumer, SCTags.Items.REINFORCED_COBBLESTONE, SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
 		addMossyRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICKS.get());
 		addPillarRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get());
 		addPillarRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
@@ -888,14 +877,17 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> block, IItemProvider result) {
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> block, IItemProvider result)
+	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 				.addIngredient(block)
 				.addIngredient(Items.VINE)
 				.addCriterion("has_block", hasItem(block))
 				.build(consumer);
 	}
-	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result) {
+	
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 				.addIngredient(block)
 				.addIngredient(Items.VINE)
