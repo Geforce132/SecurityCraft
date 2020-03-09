@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/jungle_logs"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_jungle_planks",
+    "count": 4
+  }
+}

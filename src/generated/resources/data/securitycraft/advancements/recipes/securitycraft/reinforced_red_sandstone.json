@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:crystal_quartz_pillar"
+      "securitycraft:reinforced_red_sandstone"
     ]
   },
   "criteria": {
@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:crystal_quartz"
+            "item": "securitycraft:reinforced_red_sand"
           }
         ]
       }
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:crystal_quartz_pillar"
+        "recipe": "securitycraft:reinforced_red_sandstone"
       }
     }
   },

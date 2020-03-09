@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:crystal_quartz_pillar"
+      "securitycraft:reinforced_purpur_pillar"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_slab": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:crystal_quartz"
+            "item": "securitycraft:reinforced_purpur_slab"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:crystal_quartz_pillar"
+        "recipe": "securitycraft:reinforced_purpur_pillar"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_slab",
       "has_the_recipe"
     ]
   ]

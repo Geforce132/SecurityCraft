@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:crystal_quartz_pillar"
+      "securitycraft:reinforced_orange_wool"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_wool": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:crystal_quartz"
+            "item": "securitycraft:reinforced_white_wool"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:crystal_quartz_pillar"
+        "recipe": "securitycraft:reinforced_orange_wool"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_wool",
       "has_the_recipe"
     ]
   ]

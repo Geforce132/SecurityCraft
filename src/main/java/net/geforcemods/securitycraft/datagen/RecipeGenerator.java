@@ -152,12 +152,6 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
-		ShapedRecipeBuilder.shapedRecipe(SCContent.CHISELED_CRYSTAL_QUARTZ.get())
-		.patternLine("B")
-		.patternLine("B")
-		.key('B', SCContent.CRYSTAL_QUARTZ_SLAB.get())
-		.addCriterion("has_crystal_quartz_slab", hasItem(SCContent.CRYSTAL_QUARTZ_SLAB.get()))
-		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.CLAYMORE.get())
 		.patternLine("HSH")
 		.patternLine("SBS")
@@ -194,12 +188,6 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("CC")
 		.key('C', SCContent.CRYSTAL_QUARTZ_ITEM.get())
 		.addCriterion("has_crystal_quartz_item", hasItem(SCContent.CRYSTAL_QUARTZ_ITEM.get()))
-		.build(consumer);
-		ShapedRecipeBuilder.shapedRecipe(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), 2)
-		.patternLine("B")
-		.patternLine("B")
-		.key('B', SCContent.CRYSTAL_QUARTZ.get())
-		.addCriterion("has_crystal_quartz", hasItem(SCContent.CRYSTAL_QUARTZ.get()))
 		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_DOOR_ITEM.get())
 		.patternLine("III")
@@ -312,6 +300,14 @@ public class RecipeGenerator extends RecipeProvider
 		.key('D', Blocks.DAYLIGHT_DETECTOR)
 		.key('E', Items.ENDER_EYE)
 		.addCriterion("has_ender_eye", hasItem(Items.ENDER_EYE))
+		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_BOOKSHELF.get())
+		.patternLine("PPP")
+		.patternLine("BBB")
+		.patternLine("PPP")
+		.key('B', Items.BOOK)
+		.key('P', SCTags.Items.REINFORCED_PLANKS)
+		.addCriterion("has_book", hasItem(Items.BOOK))
 		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_DIORITE.get(), 2)
 		.patternLine("CQ")
@@ -509,7 +505,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "briefcase_reset"));
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_ANDESITE.get(), 2)
 		.addIngredient(SCContent.REINFORCED_DIORITE.get())
-		.addIngredient(SCContent.REINFORCED_COBBLESTONE.get())
+		.addIngredient(SCTags.Items.REINFORCED_COBBLESTONE)
 		.addCriterion("has_cobblestone", hasItem(Tags.Items.COBBLESTONE))
 		.build(consumer);
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
@@ -520,11 +516,6 @@ public class RecipeGenerator extends RecipeProvider
 		.addIngredient(SCContent.REINFORCED_DIORITE.get())
 		.addIngredient(Tags.Items.GEMS_QUARTZ)
 		.addCriterion("has_quartz", hasItem(Tags.Items.GEMS_QUARTZ))
-		.build(consumer);
-		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_MOSSY_COBBLESTONE.get())
-		.addIngredient(Items.VINE)
-		.addIngredient(SCContent.REINFORCED_COBBLESTONE.get())
-		.addCriterion("has_reinforced_cobblestone", hasItem(SCContent.REINFORCED_COBBLESTONE.get()))
 		.build(consumer);
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.SC_MANUAL.get())
 		.addIngredient(Items.BOOK)
@@ -547,8 +538,14 @@ public class RecipeGenerator extends RecipeProvider
 		addBarkRecipe(consumer, SCContent.REINFORCED_BIRCH_LOG.get(), SCContent.REINFORCED_BIRCH_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_DARK_OAK_LOG.get(), SCContent.REINFORCED_DARK_OAK_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_JUNGLE_LOG.get(), SCContent.REINFORCED_JUNGLE_WOOD.get());
-		addBarkRecipe(consumer, SCContent.REINFORCED_SPRUCE_LOG.get(), SCContent.REINFORCED_SPRUCE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_OAK_LOG.get(), SCContent.REINFORCED_OAK_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_SPRUCE_LOG.get(), SCContent.REINFORCED_SPRUCE_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_ACACIA_LOG.get(), SCContent.REINFORCED_STRIPPED_ACACIA_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_BIRCH_LOG.get(), SCContent.REINFORCED_STRIPPED_BIRCH_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get(), SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(), SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
+		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
 		addBlockMineRecipe(consumer, Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DIRT, SCContent.DIRT_MINE.get());
@@ -572,6 +569,28 @@ public class RecipeGenerator extends RecipeProvider
 		addCarpetRecipe(consumer, SCContent.REINFORCED_RED_WOOL.get(), SCContent.REINFORCED_RED_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_WHITE_WOOL.get(), SCContent.REINFORCED_WHITE_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_YELLOW_WOOL.get(), SCContent.REINFORCED_YELLOW_CARPET.get());
+		addChiselingRecipe(consumer, SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get());
+		addChiselingRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
+		addChiselingRecipe(consumer, SCContent.REINFORCED_PURPUR_SLAB.get(), SCContent.REINFORCED_PURPUR_PILLAR.get());
+		addChiselingRecipe(consumer, SCContent.REINFORCED_QUARTZ_SLAB.get(), SCContent.REINFORCED_CHISELED_QUARTZ.get());
+		addChiselingRecipe(consumer, SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(), SCContent.REINFORCED_CHISELED_RED_SANDSTONE.get());
+		addChiselingRecipe(consumer, SCContent.REINFORCED_SANDSTONE_SLAB.get(), SCContent.REINFORCED_CHISELED_SANDSTONE.get());
+		addChiselingRecipe(consumer, SCContent.REINFORCED_STONE_BRICK_SLAB.get(), SCContent.REINFORCED_CHISELED_STONE_BRICKS.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_RED, SCContent.REINFORCED_RED_WOOL.get());
+		addColoredWoolRecipe(consumer, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get());
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get(), ToggleKeycard1Condition.INSTANCE);
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get(), ToggleKeycard2Condition.INSTANCE);
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get(), ToggleKeycard3Condition.INSTANCE);
@@ -585,9 +604,26 @@ public class RecipeGenerator extends RecipeProvider
 		addModuleRecipe(consumer, Tags.Items.ENDER_PEARLS, SCContent.SMART_MODULE.get());
 		addModuleRecipe(consumer, SCContent.KEYPAD_CHEST.get(), SCContent.STORAGE_MODULE.get());
 		addModuleRecipe(consumer, Items.PAPER, SCContent.WHITELIST_MODULE.get());
+		addMossyRecipe(consumer, SCTags.Items.REINFORCED_COBBLESTONE, SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
+		addMossyRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICKS.get());
+		addPillarRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get());
+		addPillarRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
+		addPillarRecipe(consumer, SCContent.REINFORCED_QUARTZ.get(), SCContent.REINFORCED_QUARTZ_PILLAR.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_ACACIA_LOGS, SCContent.REINFORCED_ACACIA_PLANKS.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_BIRCH_LOGS, SCContent.REINFORCED_BIRCH_PLANKS.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_DARK_OAK_LOGS, SCContent.REINFORCED_DARK_OAK_PLANKS.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_JUNGLE_LOGS, SCContent.REINFORCED_JUNGLE_PLANKS.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_OAK_LOGS, SCContent.REINFORCED_OAK_PLANKS.get());
+		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_SPRUCE_LOGS, SCContent.REINFORCED_SPRUCE_PLANKS.get());
 		addPolishingRecipe(consumer, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_POLISHED_ANDESITE.get());
 		addPolishingRecipe(consumer, SCContent.REINFORCED_DIORITE.get(), SCContent.REINFORCED_POLISHED_DIORITE.get());
+		addPolishingRecipe(consumer, SCContent.REINFORCED_END_STONE.get(), SCContent.REINFORCED_END_STONE_BRICKS.get());
 		addPolishingRecipe(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_POLISHED_GRANITE.get());
+		addPolishingRecipe(consumer, SCContent.REINFORCED_RED_SAND.get(), SCContent.REINFORCED_RED_SANDSTONE.get());
+		addPolishingRecipe(consumer, SCContent.REINFORCED_RED_SANDSTONE.get(), SCContent.REINFORCED_CUT_RED_SANDSTONE.get());
+		addPolishingRecipe(consumer, SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_SANDSTONE.get());
+		addPolishingRecipe(consumer, SCContent.REINFORCED_SANDSTONE.get(), SCContent.REINFORCED_CUT_SANDSTONE.get());
+		addPolishingRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_BRICKS.get());
 		addSecretSignRecipe(consumer, Items.ACACIA_SIGN, SCContent.SECRET_ACACIA_SIGN.get());
 		addSecretSignRecipe(consumer, Items.BIRCH_SIGN, SCContent.SECRET_BIRCH_SIGN.get());
 		addSecretSignRecipe(consumer, Items.DARK_OAK_SIGN, SCContent.SECRET_DARK_OAK_SIGN.get());
@@ -597,6 +633,8 @@ public class RecipeGenerator extends RecipeProvider
 		addSlabRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
+		addSlabRecipe(consumer, SCContent.REINFORCED_CUT_SANDSTONE.get(), SCContent.REINFORCED_CUT_SANDSTONE_SLAB.get());
+		addSlabRecipe(consumer, SCContent.REINFORCED_CUT_RED_SANDSTONE.get(), SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_DARK_PRISMARINE.get(), SCContent.REINFORCED_DARK_PRISMARINE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_DIORITE.get(), SCContent.REINFORCED_DIORITE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_END_STONE_BRICKS.get(), SCContent.REINFORCED_END_STONE_BRICK_SLAB.get());
@@ -711,17 +749,26 @@ public class RecipeGenerator extends RecipeProvider
 		addStairsRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 
 		//furnace recipes
+		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_COBBLESTONE.get()), SCContent.REINFORCED_STONE.get(), 0.1F, 200)
+		.addCriterion("has_reinforced_cobblestone", hasItem(SCContent.REINFORCED_COBBLESTONE.get()))
+		.build(consumer);
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_QUARTZ.get()), SCContent.REINFORCED_SMOOTH_QUARTZ.get(), 0.1F, 200)
 		.addCriterion("has_reinforced_quartz", hasItem(SCContent.REINFORCED_QUARTZ.get()))
 		.build(consumer);
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_RED_SANDSTONE.get()), SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.get(), 0.1F, 200)
 		.addCriterion("has_reinforced_red_sandstone", hasItem(SCContent.REINFORCED_RED_SANDSTONE.get()))
 		.build(consumer);
+		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_SAND.get()), SCContent.REINFORCED_GLASS.get(), 0.1F, 200)
+		.addCriterion("has_reinforced_sand", hasItem(SCContent.REINFORCED_SAND.get()))
+		.build(consumer);
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_SANDSTONE.get()), SCContent.REINFORCED_SMOOTH_SANDSTONE.get(), 0.1F, 200)
 		.addCriterion("has_reinforced_sandstone", hasItem(SCContent.REINFORCED_SANDSTONE.get()))
 		.build(consumer);
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_STONE.get()), SCContent.REINFORCED_SMOOTH_STONE.get(), 0.1F, 200)
 		.addCriterion("has_reinforced_stone", hasItem(SCContent.REINFORCED_STONE.get()))
+		.build(consumer);
+		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_STONE_BRICKS.get()), SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(), 0.1F, 200)
+		.addCriterion("has_reinforced_stone_bricks", hasItem(SCContent.REINFORCED_STONE_BRICKS.get()))
 		.build(consumer);
 	}
 
@@ -764,6 +811,25 @@ public class RecipeGenerator extends RecipeProvider
 		.key('W', wool)
 		.addCriterion("has_wool", hasItem(SCTags.Items.REINFORCED_WOOL))
 		.build(consumer);
+	}
+
+	protected final void addChiselingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider slab, IItemProvider result)
+	{
+		ShapedRecipeBuilder.shapedRecipe(result)
+				.patternLine("S")
+				.patternLine("S")
+				.key('S', slab)
+				.addCriterion("has_slab", hasItem(slab))
+				.build(consumer);
+	}
+
+	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
+	{
+		ShapelessRecipeBuilder.shapelessRecipe(result)
+				.addIngredient(dye)
+				.addIngredient(SCContent.REINFORCED_WHITE_WOOL.get())
+				.addCriterion("has_wool", hasItem(SCContent.REINFORCED_WHITE_WOOL.get()))
+				.build(consumer);
 	}
 
 	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
@@ -809,6 +875,42 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', specialIngredient)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+	}
+
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> block, IItemProvider result)
+	{
+		ShapelessRecipeBuilder.shapelessRecipe(result)
+				.addIngredient(block)
+				.addIngredient(Items.VINE)
+				.addCriterion("has_block", hasItem(block))
+				.build(consumer);
+	}
+	
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	{
+		ShapelessRecipeBuilder.shapelessRecipe(result)
+				.addIngredient(block)
+				.addIngredient(Items.VINE)
+				.addCriterion("has_block", hasItem(block))
+				.build(consumer);
+	}
+
+	protected final void addPillarRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	{
+		ShapedRecipeBuilder.shapedRecipe(result, 2)
+				.patternLine("B")
+				.patternLine("B")
+				.key('B', block)
+				.addCriterion("has_block", hasItem(block))
+				.build(consumer);
+	}
+
+	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> log, IItemProvider result)
+	{
+		ShapelessRecipeBuilder.shapelessRecipe(result, 4)
+				.addIngredient(log)
+				.addCriterion("has_log", hasItem(log))
+				.build(consumer);
 	}
 
 	protected final void addPolishingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)

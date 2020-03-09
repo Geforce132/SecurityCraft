@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "tag": "securitycraft:reinforced/cobblestone"
+      "item": "securitycraft:reinforced_stone_bricks"
     },
     {
       "item": "minecraft:vine"
     }
   ],
   "result": {
-    "item": "securitycraft:reinforced_mossy_cobblestone"
+    "item": "securitycraft:reinforced_mossy_stone_bricks"
   }
 }

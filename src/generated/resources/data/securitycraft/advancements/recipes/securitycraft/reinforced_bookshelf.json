@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:crystal_quartz_pillar"
+      "securitycraft:reinforced_bookshelf"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_book": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:crystal_quartz"
+            "item": "minecraft:book"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:crystal_quartz_pillar"
+        "recipe": "securitycraft:reinforced_bookshelf"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_book",
       "has_the_recipe"
     ]
   ]

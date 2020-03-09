@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:crystal_quartz_pillar"
+      "securitycraft:reinforced_stripped_jungle_wood"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_log": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:crystal_quartz"
+            "item": "securitycraft:reinforced_stripped_jungle_log"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:crystal_quartz_pillar"
+        "recipe": "securitycraft:reinforced_stripped_jungle_wood"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_log",
       "has_the_recipe"
     ]
   ]

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "BBB",
+    "PPP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "P": {
+      "tag": "securitycraft:reinforced/planks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_bookshelf"
+  }
+}
