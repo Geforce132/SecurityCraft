@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/oak_logs"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_oak_planks",
+    "count": 4
+  }
+}

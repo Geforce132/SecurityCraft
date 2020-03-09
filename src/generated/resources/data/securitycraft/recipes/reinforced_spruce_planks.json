@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/spruce_logs"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_spruce_planks",
+    "count": 4
+  }
+}

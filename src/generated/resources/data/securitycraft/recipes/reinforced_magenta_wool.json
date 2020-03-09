@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:dyes/magenta"
+    },
+    {
+      "item": "securitycraft:reinforced_white_wool"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_magenta_wool"
+  }
+}

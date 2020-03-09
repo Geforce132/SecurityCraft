@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_purpur_slab"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_purpur_pillar"
+  }
+}

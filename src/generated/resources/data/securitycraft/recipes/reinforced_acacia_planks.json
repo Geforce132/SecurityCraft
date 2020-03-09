@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "securitycraft:reinforced/acacia_logs"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_acacia_planks",
+    "count": 4
+  }
+}
