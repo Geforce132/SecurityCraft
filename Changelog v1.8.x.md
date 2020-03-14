@@ -3,6 +3,7 @@
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
+- Fix: Crash when trying to view the Codebreaker help page in Spanish
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
