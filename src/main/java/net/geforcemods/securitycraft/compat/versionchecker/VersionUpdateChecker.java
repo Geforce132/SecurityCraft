@@ -12,8 +12,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SharedConstants;
 
 public class VersionUpdateChecker {
 
@@ -22,7 +22,7 @@ public class VersionUpdateChecker {
 		Gson gson = new GsonBuilder().create();
 
 		try{
-			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + Minecraft.getInstance().getVersion() + ".json");
+			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + SharedConstants.getVersion().getId() + ".json");
 			BufferedReader in = new BufferedReader(new InputStreamReader(updateURL.openStream()));
 
 			Update update = gson.fromJson(in, Update.class);
