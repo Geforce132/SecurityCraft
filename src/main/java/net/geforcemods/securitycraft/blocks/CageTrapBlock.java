@@ -28,6 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -47,6 +48,14 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
+		if(ctx instanceof EntitySelectionContext && ((EntitySelectionContext)ctx).getEntity() instanceof PlayerEntity)
+		{
+			TileEntity te = world.getTileEntity(pos);
+
+			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner((PlayerEntity)((EntitySelectionContext)ctx).getEntity()))
+				return VoxelShapes.fullCube();
+		}
+
 		return state.get(DEACTIVATED) ? super.getCollisionShape(state, world, pos, ctx) : VoxelShapes.empty();
 	}
 
