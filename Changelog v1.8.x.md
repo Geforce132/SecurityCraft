@@ -6,6 +6,7 @@
 - Fix: Incorrect laser removal in creative mode
 - Fix: Reinforced Glowstone and Reinforced Sea Lantern don't give off light (Thanks Redstone_Dubstep!)
 - Fix: German language fixes (Thanks Redstone_Dubstep!)
+- Fix: Incorrect version check with VersionChecker mod integration
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
