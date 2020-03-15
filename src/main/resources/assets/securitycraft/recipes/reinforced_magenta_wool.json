@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:dye",
+      "data": 13
+    },
+    {
+      "item": "securitycraft:reinforced_wool",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_wool",
+    "data": 2
+  }
+}

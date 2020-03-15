@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "securitycraft:reinforced_stone_brick",
+      "data": 0
+    },
+    {
+      "item": "minecraft:vine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_stone_brick",
+    "data": 1
+  }
+}
