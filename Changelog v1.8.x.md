@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
+- New: Fake Water/Lava Buckets can now be properly used in dispensers
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
