@@ -10,6 +10,7 @@
 - Fix: German language fixes (Thanks Redstone_Dubstep!)
 - Fix: Incorrect version check with VersionChecker mod integration
 - Fix: Cage Trap owner collision is incorrect
+- Fix: Inventory Scanners can connect to Inventory Scanners by different owners
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
