@@ -62,6 +62,17 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
 	{
+		if(entity instanceof EntityPlayer)
+		{
+			TileEntity te = world.getTileEntity(pos);
+
+			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(((EntityPlayer)entity)))
+			{
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+				return;
+			}
+		}
+
 		if(!(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED)))
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
 	}

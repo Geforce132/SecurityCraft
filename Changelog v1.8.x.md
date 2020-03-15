@@ -6,6 +6,7 @@
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
 - Fix: Crash when trying to view the Codebreaker help page in Spanish
+- Fix: Cage Trap owner collision is incorrect
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
