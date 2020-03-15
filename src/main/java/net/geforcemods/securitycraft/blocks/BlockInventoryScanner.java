@@ -115,16 +115,17 @@ public class BlockInventoryScanner extends BlockDisguisable {
 			facing = EnumFacing.WEST;
 
 		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
-
-		checkAndPlaceAppropriately(world, pos);
-
+		checkAndPlaceAppropriately(world, pos, entity);
 	}
 
-	private void checkAndPlaceAppropriately(World world, BlockPos pos)
+	private void checkAndPlaceAppropriately(World world, BlockPos pos, EntityLivingBase entity)
 	{
+		if(!(entity instanceof EntityPlayer))
+			return;
+
 		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(world, pos);
 
-		if(connectedScanner == null)
+		if(connectedScanner == null || !connectedScanner.getOwner().isOwner((EntityPlayer)entity))
 			return;
 
 		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
