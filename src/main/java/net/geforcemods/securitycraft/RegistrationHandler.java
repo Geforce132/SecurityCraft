@@ -451,7 +451,7 @@ public class RegistrationHandler
 			@Override
 			public DataParameter<Owner> createKey(int id)
 			{
-				return new DataParameter<Owner>(id, this);
+				return new DataParameter<>(id, this);
 			}
 
 			@Override

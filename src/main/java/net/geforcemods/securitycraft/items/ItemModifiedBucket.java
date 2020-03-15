@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -33,6 +36,18 @@ public class ItemModifiedBucket extends ItemBucket {
 	public ItemModifiedBucket(Block containedBlock) {
 		super(containedBlock);
 		this.containedBlock = containedBlock;
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorDefaultDispenseItem() {
+			private final BehaviorDefaultDispenseItem instance = new BehaviorDefaultDispenseItem();
+
+			@Override
+			public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
+			{
+				ItemBucket itembucket = (ItemBucket)stack.getItem();
+				BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
+
+				return itembucket.tryPlaceContainedLiquid(null, source.getWorld(), blockpos) ? new ItemStack(Items.BUCKET) : instance.dispense(source, stack);
+			}
+		});
 	}
 
 	@Override
@@ -45,19 +60,19 @@ public class ItemModifiedBucket extends ItemBucket {
 		if (eventResult != null) return eventResult;
 
 		if (rayTrace == null)
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			return new ActionResult<>(EnumActionResult.PASS, stack);
 		else if (rayTrace.typeOfHit != RayTraceResult.Type.BLOCK)
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			return new ActionResult<>(EnumActionResult.PASS, stack);
 		else
 		{
 			BlockPos pos = rayTrace.getBlockPos();
 
 			if (!world.isBlockModifiable(player, pos))
-				return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+				return new ActionResult<>(EnumActionResult.FAIL, stack);
 			else if (isAir)
 			{
 				if (!player.canPlayerEdit(pos.offset(rayTrace.sideHit), rayTrace.sideHit, stack))
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
 				else
 				{
 					IBlockState state = world.getBlockState(pos);
@@ -68,17 +83,17 @@ public class ItemModifiedBucket extends ItemBucket {
 						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 						player.addStat(StatList.getObjectUseStats(this));
 						player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fWaterBucket));
+						return new ActionResult<>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fWaterBucket));
 					}
 					else if (material == Material.LAVA && state.getValue(BlockLiquid.LEVEL) == 0)
 					{
 						player.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
 						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 						player.addStat(StatList.getObjectUseStats(this));
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fLavaBucket));
+						return new ActionResult<>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fLavaBucket));
 					}
 					else
-						return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+						return new ActionResult<>(EnumActionResult.FAIL, stack);
 				}
 			}
 			else
@@ -87,14 +102,14 @@ public class ItemModifiedBucket extends ItemBucket {
 				BlockPos offsetPos = isReplaceable && rayTrace.sideHit == EnumFacing.UP ? pos : pos.offset(rayTrace.sideHit);
 
 				if (!player.canPlayerEdit(offsetPos, rayTrace.sideHit, stack))
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
 				else if (this.tryPlaceContainedLiquid(player, world, offsetPos))
 				{
 					player.addStat(StatList.getObjectUseStats(this));
-					return !player.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+					return !player.capabilities.isCreativeMode ? new ActionResult<>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<>(EnumActionResult.SUCCESS, stack);
 				}
 				else
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}
 		}
 	}
