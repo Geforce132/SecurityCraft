@@ -2,10 +2,13 @@ package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
+import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag.Builder;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.RegistryObject;
 
 public class BlockTagGenerator extends BlockTagsProvider
 {
@@ -201,6 +204,9 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
 
 		//minecraft tags
+		Builder<Block> dragonImmune = getBuilder(BlockTags.DRAGON_IMMUNE);
+		Builder<Block> witherImmune = getBuilder(BlockTags.WITHER_IMMUNE);
+
 		getBuilder(BlockTags.CARPETS).add(SCTags.Blocks.REINFORCED_CARPETS);
 		getBuilder(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		getBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
@@ -210,6 +216,17 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getBuilder(BlockTags.STANDING_SIGNS).add(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		getBuilder(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		getBuilder(BlockTags.WALL_SIGNS).add(SCTags.Blocks.SECRET_WALL_SIGNS);
+
+		for(RegistryObject<Block> ro : SCContent.BLOCKS.getEntries())
+		{
+			Block block = ro.get();
+
+			if(block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get())
+			{
+				dragonImmune.add(block);
+				witherImmune.add(block);
+			}
+		}
 
 		//forge tags
 		getBuilder(Tags.Blocks.SUPPORTS_BEACON).add(SCContent.REINFORCED_IRON_BLOCK.get(), SCContent.REINFORCED_GOLD_BLOCK.get(), SCContent.REINFORCED_DIAMOND_BLOCK.get(), SCContent.REINFORCED_EMERALD_BLOCK.get());
