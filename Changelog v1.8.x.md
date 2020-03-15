@@ -1,8 +1,11 @@
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
+- New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
+- Fix: Reinforced Glowstone and Reinforced Sea Lantern don't give off light (Thanks Redstone_Dubstep!)
+- Fix: German language fixes (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
