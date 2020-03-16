@@ -59,18 +59,20 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 			if (((EntitySelectionContext) ctx).getEntity() instanceof PlayerEntity) {
 				if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((PlayerEntity) ((EntitySelectionContext) ctx).getEntity()))
 					return super.getCollisionShape(state, world, pos, ctx);
-
 			}
+
 			if (((EntitySelectionContext) ctx).getEntity() instanceof MobEntity && te instanceof CageTrapTileEntity && !((CageTrapTileEntity) te).capturesMobs()) {
 				return super.getCollisionShape(state, world, pos, ctx);
 			}
+
 			if (((EntitySelectionContext) ctx).getEntity() instanceof ItemEntity && te instanceof DisguisableTileEntity)
 			{
 				DisguisableTileEntity te1 = (DisguisableTileEntity) te;
+
 				if (!te1.getModule(CustomModules.DISGUISE).isEmpty() && (((ModuleItem)te1.getModule(CustomModules.DISGUISE).getItem()).getBlockAddons(te1.getModule(CustomModules.DISGUISE).getTag()).size() > 0))
-				{
 					return super.getCollisionShape(state, world, pos, ctx);
-				}
+
+
 			}
 
 		}

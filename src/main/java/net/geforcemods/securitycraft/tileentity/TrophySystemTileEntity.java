@@ -8,7 +8,9 @@ import java.util.UUID;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.*;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
@@ -54,7 +56,6 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 			return;
 		}
 
-
 		destroyTarget();
 	}
 
@@ -88,11 +89,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
-		potentialTargets.addAll(world.getEntitiesWithinAABB(ArrowEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(FireballEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(DragonFireballEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(WitherSkullEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(ShulkerBulletEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;

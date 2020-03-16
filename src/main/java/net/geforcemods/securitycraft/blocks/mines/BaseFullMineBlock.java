@@ -52,27 +52,27 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 		if(ctx instanceof EntitySelectionContext)
 		{
 			Entity entity = ((EntitySelectionContext)ctx).getEntity();
+
 			if (entity instanceof  ItemEntity)
-			{
 				return VoxelShapes.fullCube();
-			}
-			if(entity instanceof PlayerEntity)
+
+			else if(entity instanceof PlayerEntity)
 			{
-				TileEntity te1 = world.getTileEntity(pos);
+				TileEntity te = world.getTileEntity(pos);
 
-				if(te1 instanceof OwnableTileEntity)
+				if(te instanceof OwnableTileEntity)
 				{
-					OwnableTileEntity te = (OwnableTileEntity) te1;
+					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
 
-					if(te.getOwner().isOwner((PlayerEntity)entity))
+					if(ownableTe.getOwner().isOwner((PlayerEntity)entity))
 						return VoxelShapes.fullCube();
-
 				}
 			}
 		}
 
 		return VoxelShapes.empty();
 	}
+
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
 		if(entity instanceof ItemEntity)
