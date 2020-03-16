@@ -47,7 +47,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 
 		if (!entityBeingTargeted.isAlive())
 		{
-			entityBeingTargeted = null;
+			resetTarget();
 			return;
 		}
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
@@ -89,6 +89,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
+		potentialTargets.addAll(world.getEntitiesWithinAABB(ArrowEntity.class, area));
 		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
 
 		// If there are no projectiles, return

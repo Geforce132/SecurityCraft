@@ -4,7 +4,7 @@
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
 - New: Add all ownable blocks to DRAGON_IMMUNE and WITHER_IMMUNE block tags
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls
-- Change: Bouncing Betty now jump as high as the player's head
+- Change: Bouncing Betty now jumps as high as the player's head
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -15,8 +15,8 @@
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
 - Fix: Bouncing Betty doesn't play a sound when triggered
 - Fix: Block Mines let items and the owner go through
-- Fix: Trophy System destroys projectile even if it has already been removed
-- Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access tool are transparent at the sides
+- Fix: Trophy System destroys projectiles even if they have already been removed
+- Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

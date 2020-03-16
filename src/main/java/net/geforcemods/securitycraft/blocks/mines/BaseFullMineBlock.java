@@ -53,9 +53,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 		{
 			Entity entity = ((EntitySelectionContext)ctx).getEntity();
 
-			if (entity instanceof  ItemEntity)
+			if (entity instanceof ItemEntity)
 				return VoxelShapes.fullCube();
-
 			else if(entity instanceof PlayerEntity)
 			{
 				TileEntity te = world.getTileEntity(pos);
