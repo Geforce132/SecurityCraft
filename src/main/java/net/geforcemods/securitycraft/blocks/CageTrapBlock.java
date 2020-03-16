@@ -7,7 +7,10 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -18,8 +21,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
@@ -47,15 +52,36 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		if(ctx instanceof EntitySelectionContext && ((EntitySelectionContext)ctx).getEntity() instanceof PlayerEntity)
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof DisguisableTileEntity)
 		{
-			TileEntity te = world.getTileEntity(pos);
+			DisguisableTileEntity disguisableTe = (DisguisableTileEntity)te;
 
-			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner((PlayerEntity)((EntitySelectionContext)ctx).getEntity()))
-				return VoxelShapes.fullCube();
+			if(ctx instanceof EntitySelectionContext)
+			{
+				EntitySelectionContext esc = (EntitySelectionContext)ctx;
+
+				if(esc.getEntity() instanceof PlayerEntity && te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((PlayerEntity)esc.getEntity()))
+					return getCorrectShape(state, world, pos, ctx, disguisableTe);
+				if(esc.getEntity() instanceof MobEntity && te instanceof CageTrapTileEntity && !state.get(DEACTIVATED))
+					return (((CageTrapTileEntity) te).capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, disguisableTe));
+				else if(esc.getEntity() instanceof ItemEntity)
+					return getCorrectShape(state, world, pos, ctx, disguisableTe);
+			}
+
+			return state.get(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, disguisableTe) : VoxelShapes.empty();
 		}
+		else return VoxelShapes.empty(); //shouldn't happen
+	}
 
-		return state.get(DEACTIVATED) ? super.getCollisionShape(state, world, pos, ctx) : VoxelShapes.empty();
+	private VoxelShape getCorrectShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx, DisguisableTileEntity disguisableTe)
+	{
+		ItemStack moduleStack = disguisableTe.getModule(CustomModules.DISGUISE);
+
+		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddons(moduleStack.getTag()).size() > 0))
+			return super.getCollisionShape(state, world, pos, ctx);
+		else return VoxelShapes.fullCube();
 	}
 
 	@Override

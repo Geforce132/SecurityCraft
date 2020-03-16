@@ -3,17 +3,23 @@
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
 - New: Add all ownable blocks to DRAGON_IMMUNE and WITHER_IMMUNE block tags
+- New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
+- Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
 - Fix: Reinforced Glowstone and Reinforced Sea Lantern don't give off light (Thanks Redstone_Dubstep!)
 - Fix: German language fixes (Thanks Redstone_Dubstep!)
 - Fix: Incorrect version check with VersionChecker mod integration
-- Fix: Cage Trap owner collision is incorrect
+- Fix: Cage Trap collision is incorrect
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
 - Fix: Crash when pressing backspace in password screens and the textbox is empty
 - Fix: Password setup screen displays long block names incorrectly
 - Fix: Night vision icon does not show correctly in Security Camera overlay
+- Fix: Bouncing Betty doesn't play a sound when triggered (Thanks Redstone_Dubstep!)
+- Fix: Block Mines let items and the owner go through (Thanks Redstone_Dubstep!)
+- Fix: Trophy System destroys projectiles even if they have already been removed (Thanks Redstone_Dubstep!)
+- Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

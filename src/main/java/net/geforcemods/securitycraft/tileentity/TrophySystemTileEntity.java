@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -43,6 +44,12 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		// If there are no entities to target, return
 		if(entityBeingTargeted == null)
 			return;
+
+		if(!entityBeingTargeted.isAlive())
+		{
+			resetTarget();
+			return;
+		}
 
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
 		if(cooldown > 0) {
@@ -84,7 +91,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ArrowEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(FireballEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
