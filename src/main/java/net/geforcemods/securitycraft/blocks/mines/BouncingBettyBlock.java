@@ -84,9 +84,9 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 		world.destroyBlock(pos, false);
 		BouncingBettyEntity entitytntprimed = new BouncingBettyEntity(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
-		entitytntprimed.setMotion(entitytntprimed.getMotion().mul(1, 0, 1).add(0, 0.05D, 0));
+		entitytntprimed.setMotion(entitytntprimed.getMotion().mul(1, 0, 1).add(0, 0.5D, 0));
 		WorldUtils.addScheduledTask(world, () -> world.addEntity(entitytntprimed));
-		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("game.tnt.primed")), 1.0F, 1.0F);
+		entitytntprimed.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
 	/**

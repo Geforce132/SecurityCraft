@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -16,12 +17,12 @@ import net.minecraft.world.Explosion;
 
 public class TrophySystemTileEntity extends OwnableTileEntity implements ITickableTileEntity {
 
-	// The range (in blocks) that the trophy will search for projectiles in
-	public static final int range = 10;
-	// Number of ticks that the trophy takes to "charge"
-	public static final int cooldownTime = 8;
+	/* The range (in blocks) that the trophy system will search for projectiles in */
+	public static final int RANGE = 10;
+	/* Number of ticks that the trophy takes to "charge" */
+	public static final int COOLDOWN_TIME = 8;
 	public Entity entityBeingTargeted = null;
-	public int cooldown = cooldownTime;
+	public int cooldown = COOLDOWN_TIME;
 
 	public TrophySystemTileEntity()
 	{
@@ -44,6 +45,12 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		if(entityBeingTargeted == null)
 			return;
 
+		if(!entityBeingTargeted.isAlive())
+		{
+			resetTarget();
+			return;
+		}
+
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
 		if(cooldown > 0) {
 			cooldown--;
@@ -60,7 +67,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		entityBeingTargeted.remove();
 
 		if(!world.isRemote)
-			world.createExplosion(null, entityBeingTargeted.posX, entityBeingTargeted.posY, entityBeingTargeted.posZ, 1.0F, Explosion.Mode.NONE);
+			world.createExplosion(null, entityBeingTargeted.posX, entityBeingTargeted.posY, entityBeingTargeted.posZ, 0.1F, Explosion.Mode.NONE);
 
 		resetTarget();
 	}
@@ -69,7 +76,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * Resets the cooldown and targeted entity variables
 	 */
 	private void resetTarget() {
-		cooldown = cooldownTime;
+		cooldown = COOLDOWN_TIME;
 		entityBeingTargeted = null;
 	}
 
@@ -79,12 +86,12 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 */
 	private Entity getTarget() {
 		List<Entity> potentialTargets = new ArrayList<>();
-		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range, range, range);
+		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ArrowEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(FireballEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
