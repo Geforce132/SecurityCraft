@@ -28,7 +28,7 @@ import net.minecraftforge.common.util.Constants;
 public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IInventory{
 
 	private boolean linkable = false;
-	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<LinkedBlock>();
+	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListNBT nbtTagStorage = null;
 
 	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
@@ -379,7 +379,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	 * @return An ArrayList of all EnumCustomModules currently inserted in the TileEntity.
 	 */
 	public ArrayList<CustomModules> getModules(){
-		ArrayList<CustomModules> modules = new ArrayList<CustomModules>();
+		ArrayList<CustomModules> modules = new ArrayList<>();
 
 		for(ItemStack stack : this.modules)
 			if(!stack.isEmpty() && stack.getItem() instanceof ModuleItem)
@@ -470,7 +470,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	public ArrayList<CustomModules> getAcceptedModules(){
-		ArrayList<CustomModules> list = new ArrayList<CustomModules>();
+		ArrayList<CustomModules> list = new ArrayList<>();
 
 		for(CustomModules module : acceptedModules())
 			list.add(module);
@@ -574,7 +574,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	 * @param excludedTE The CustomizableSCTE which called this method, prevents infinite loops.
 	 */
 	public void createLinkedBlockAction(LinkedAction action, Object[] parameters, CustomizableTileEntity excludedTE) {
-		ArrayList<CustomizableTileEntity> list = new ArrayList<CustomizableTileEntity>();
+		ArrayList<CustomizableTileEntity> list = new ArrayList<>();
 
 		list.add(excludedTE);
 

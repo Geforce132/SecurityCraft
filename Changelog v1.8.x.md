@@ -11,6 +11,7 @@
 - Fix: Incorrect version check with VersionChecker mod integration
 - Fix: Cage Trap owner collision is incorrect
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
+- Fix: Crash when pressing backspace in password screens and the textbox is empty
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
