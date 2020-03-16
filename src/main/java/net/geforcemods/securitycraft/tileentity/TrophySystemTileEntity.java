@@ -17,12 +17,12 @@ import net.minecraft.world.Explosion;
 
 public class TrophySystemTileEntity extends OwnableTileEntity implements ITickableTileEntity {
 
-	// The range (in blocks) that the trophy will search for projectiles in
-	public static final int range = 10;
-	// Number of ticks that the trophy takes to "charge"
-	public static final int cooldownTime = 8;
+	/* The range (in blocks) that the trophy system will search for projectiles in */
+	public static final int RANGE = 10;
+	/* Number of ticks that the trophy takes to "charge" */
+	public static final int COOLDOWN_TIME = 8;
 	public Entity entityBeingTargeted = null;
-	public int cooldown = cooldownTime;
+	public int cooldown = COOLDOWN_TIME;
 
 	public TrophySystemTileEntity()
 	{
@@ -67,7 +67,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		entityBeingTargeted.remove();
 
 		if(!world.isRemote)
-			world.createExplosion(null, entityBeingTargeted.getPosX(), entityBeingTargeted.getPosY(), entityBeingTargeted.getPosZ(), 1.0F, Explosion.Mode.NONE);
+			world.createExplosion(null, entityBeingTargeted.getPosX(), entityBeingTargeted.getPosY(), entityBeingTargeted.getPosZ(), 0.1F, Explosion.Mode.NONE);
 
 		resetTarget();
 	}
@@ -76,7 +76,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * Resets the cooldown and targeted entity variables
 	 */
 	private void resetTarget() {
-		cooldown = cooldownTime;
+		cooldown = COOLDOWN_TIME;
 		entityBeingTargeted = null;
 	}
 
@@ -86,7 +86,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 */
 	private Entity getTarget() {
 		List<Entity> potentialTargets = new ArrayList<>();
-		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range, range, range);
+		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
