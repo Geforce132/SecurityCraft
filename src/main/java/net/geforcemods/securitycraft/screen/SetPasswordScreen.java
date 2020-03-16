@@ -94,7 +94,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
 	{
-		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
+		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getText().length() > 0){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			keycodeTextbox.setText(keycodeTextbox.getText().substring(0, keycodeTextbox.getText().length() - 1));
 			return true;

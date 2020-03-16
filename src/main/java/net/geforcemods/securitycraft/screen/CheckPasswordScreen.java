@@ -100,7 +100,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
 	{
-		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
+		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
