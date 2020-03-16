@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -39,6 +40,17 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 	public boolean isOpaqueCube(IBlockState state)
 	{
 		return false;
+	}
+
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity)
+	{
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if(actualState != null && actualState.getBlock() != this)
+			return actualState.getBlock().getSoundType(state, world, pos, entity);
+		else
+			return blockSoundType;
 	}
 
 	@Override
