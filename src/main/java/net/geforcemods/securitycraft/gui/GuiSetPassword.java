@@ -75,7 +75,16 @@ public class GuiSetPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawSplitString(blockName + " " + ClientUtils.localize("gui.securitycraft:password.setup"), xSize / 2 - fontRenderer.getStringWidth(blockName + " " + ClientUtils.localize("gui.securitycraft:password.setup")) / 2, 6, xSize, 4210752);
+		String setup = ClientUtils.localize("gui.securitycraft:password.setup");
+		String combined = blockName + " " + setup;
+
+		if(fontRenderer.getStringWidth(combined) < xSize - 10)
+			fontRenderer.drawString(combined, xSize / 2 - fontRenderer.getStringWidth(combined) / 2, 6, 4210752);
+		else
+		{
+			fontRenderer.drawString(blockName, xSize / 2 - fontRenderer.getStringWidth(blockName) / 2, 6, 4210752);
+			fontRenderer.drawString(setup, xSize / 2 - fontRenderer.getStringWidth(setup) / 2, 16, 4210752);
+		}
 	}
 
 	/**

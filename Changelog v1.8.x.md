@@ -8,6 +8,7 @@
 - Fix: Crash when trying to view the Codebreaker help page in Spanish
 - Fix: Cage Trap owner collision is incorrect
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
+- Fix: Password setup screen displays long block names incorrectly
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
