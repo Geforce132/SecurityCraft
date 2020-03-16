@@ -9,7 +9,10 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
+import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -20,10 +23,13 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -62,19 +68,50 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
 	{
-		if(entity instanceof EntityPlayer)
-		{
-			TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(((EntityPlayer)entity)))
+		if(te instanceof TileEntityDisguisable)
+		{
+			TileEntityDisguisable disguisableTe = (TileEntityDisguisable)te;
+
+			if(entity instanceof EntityPlayer && te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((EntityPlayer)entity))
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+			if(entity instanceof EntityLiving && te instanceof TileEntityCageTrap && !state.getValue(DEACTIVATED))
 			{
-				addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+				if(((TileEntityCageTrap)te).capturesMobs())
+				{
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+					return;
+				}
+				else
+				{
+					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+					return;
+				}
+			}
+			else if(entity instanceof EntityItem)
+			{
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
 				return;
 			}
-		}
 
-		if(!(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED)))
+			if(state.getValue(DEACTIVATED))
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+			else
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+		}
+		else //shouldn't happen
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+	}
+
+	private void addCorrectShape(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState, TileEntityDisguisable disguisableTe)
+	{
+		ItemStack moduleStack = disguisableTe.getModule(EnumCustomModules.DISGUISE);
+
+		if(!moduleStack.isEmpty() && (((ItemModule)moduleStack.getItem()).getBlockAddons(moduleStack.getTagCompound()).size() > 0))
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
+		else
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 	}
 
 	@Override

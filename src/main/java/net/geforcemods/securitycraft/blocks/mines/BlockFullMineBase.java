@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -14,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,6 +45,33 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos){
 		return null;
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
+	{
+		if(entity instanceof EntityItem)
+		{
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+			return;
+		}
+		else if(entity instanceof EntityPlayer)
+		{
+			TileEntity te = world.getTileEntity(pos);
+
+			if(te instanceof TileEntityOwnable)
+			{
+				TileEntityOwnable ownableTe = (TileEntityOwnable) te;
+
+				if(ownableTe.getOwner().isOwner((EntityPlayer)entity))
+				{
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+					return;
+				}
+			}
+		}
+
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 	}
 
 	@Override

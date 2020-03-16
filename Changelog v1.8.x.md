@@ -2,6 +2,7 @@
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
+- New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -9,6 +10,10 @@
 - Fix: Cage Trap owner collision is incorrect
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
 - Fix: Password setup screen displays long block names incorrectly
+- Fix: Bouncing Betty doesn't play a sound when triggered (Thanks Redstone_Dubstep!)
+- Fix: Block Mines let items and the owner go through (Thanks Redstone_Dubstep!)
+- Fix: Trophy System destroys projectiles even if they have already been removed (Thanks Redstone_Dubstep!)
+- Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

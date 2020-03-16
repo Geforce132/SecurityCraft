@@ -9,18 +9,19 @@ import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.projectile.EntityShulkerBullet;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityTrophySystem extends TileEntityOwnable implements ITickable {
 
-	// The range (in blocks) that the trophy will search for projectiles in
-	public static final int range = 10;
-	// Number of ticks that the trophy takes to "charge"
-	public static final int cooldownTime = 8;
+	/* The range (in blocks) that the trophy system will search for projectiles in */
+	public static final int RANGE = 10;
+	/* Number of ticks that the trophy takes to "charge" */
+	public static final int COOLDOWN_TIME = 8;
 
 	public Entity entityBeingTargeted = null;
-	public int cooldown = cooldownTime;
+	public int cooldown = COOLDOWN_TIME;
 
 	@Override
 	public void update() {
@@ -38,6 +39,12 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 		if(entityBeingTargeted == null)
 			return;
 
+		if(!entityBeingTargeted.isEntityAlive())
+		{
+			resetTarget();
+			return;
+		}
+
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
 		if(cooldown > 0) {
 			cooldown--;
@@ -54,7 +61,7 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 		entityBeingTargeted.setDead();
 
 		if(!world.isRemote)
-			world.createExplosion(null, entityBeingTargeted.posX, entityBeingTargeted.posY, entityBeingTargeted.posZ, 1.0F, false);
+			world.createExplosion(null, entityBeingTargeted.posX, entityBeingTargeted.posY, entityBeingTargeted.posZ, 0.1F, false);
 
 		resetTarget();
 	}
@@ -63,7 +70,7 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 	 * Resets the cooldown and targeted entity variables
 	 */
 	private void resetTarget() {
-		cooldown = cooldownTime;
+		cooldown = COOLDOWN_TIME;
 		entityBeingTargeted = null;
 	}
 
@@ -73,12 +80,13 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 	 */
 	private Entity getTarget() {
 		List<Entity> potentialTargets = new ArrayList<>();
-		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range, range, range);
+		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
 		potentialTargets.addAll(world.getEntitiesWithinAABB(EntityArrow.class, area));
 		potentialTargets.addAll(world.getEntitiesWithinAABB(EntityFireball.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(EntityShulkerBullet.class, area));
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;

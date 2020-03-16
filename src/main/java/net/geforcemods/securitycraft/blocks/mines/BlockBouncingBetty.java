@@ -93,9 +93,9 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 		world.setBlockToAir(pos);
 		EntityBouncingBetty entitytntprimed = new EntityBouncingBetty(world, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);
 		entitytntprimed.fuse = 15;
-		entitytntprimed.motionY = 0.50D;
+		entitytntprimed.motionY = 0.5D;
 		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitytntprimed));
-		entitytntprimed.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("game.tnt.primed")), 1.0F, 1.0F);
+		entitytntprimed.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.tnt.primed")), 1.0F, 1.0F);
 	}
 
 	/**
