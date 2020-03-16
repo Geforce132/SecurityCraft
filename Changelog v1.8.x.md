@@ -12,6 +12,7 @@
 - Fix: Cage Trap owner collision is incorrect
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
 - Fix: Crash when pressing backspace in password screens and the textbox is empty
+- Fix: Password setup screen displays long block names incorrectly
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

@@ -75,7 +75,16 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		font.drawSplitString(blockName + " " + ClientUtils.localize("gui.securitycraft:password.setup"), xSize / 2 - font.getStringWidth(blockName + " " + ClientUtils.localize("gui.securitycraft:password.setup")) / 2, 6, xSize, 4210752);
+		String setup = ClientUtils.localize("gui.securitycraft:password.setup");
+		String combined = blockName + " " + setup;
+
+		if(font.getStringWidth(combined) < xSize - 10)
+			font.drawString(combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
+		else
+		{
+			font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+			font.drawString(setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
+		}
 	}
 
 	/**
