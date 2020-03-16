@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -14,9 +15,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -44,10 +47,32 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx){
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	{
+		if(ctx instanceof EntitySelectionContext)
+		{
+			Entity entity = ((EntitySelectionContext)ctx).getEntity();
+			if (entity instanceof  ItemEntity)
+			{
+				return VoxelShapes.fullCube();
+			}
+			if(entity instanceof PlayerEntity)
+			{
+				TileEntity te1 = world.getTileEntity(pos);
+
+				if(te1 instanceof OwnableTileEntity)
+				{
+					OwnableTileEntity te = (OwnableTileEntity) te1;
+
+					if(te.getOwner().isOwner((PlayerEntity)entity))
+						return VoxelShapes.fullCube();
+
+				}
+			}
+		}
+
 		return VoxelShapes.empty();
 	}
-
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
 		if(entity instanceof ItemEntity)

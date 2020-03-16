@@ -8,8 +8,7 @@ import java.util.UUID;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.*;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
@@ -44,11 +43,17 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		if(entityBeingTargeted == null)
 			return;
 
+		if (!entityBeingTargeted.isAlive())
+		{
+			entityBeingTargeted = null;
+			return;
+		}
 		// If the cooldown hasn't finished yet, don't destroy any projectiles
 		if(cooldown > 0) {
 			cooldown--;
 			return;
 		}
+
 
 		destroyTarget();
 	}
@@ -60,7 +65,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		entityBeingTargeted.remove();
 
 		if(!world.isRemote)
-			world.createExplosion(null, entityBeingTargeted.getPosX(), entityBeingTargeted.getPosY(), entityBeingTargeted.getPosZ(), 1.0F, Explosion.Mode.NONE);
+			world.createExplosion(null, entityBeingTargeted.getPosX(), entityBeingTargeted.getPosY(), entityBeingTargeted.getPosZ(), 0.1F, Explosion.Mode.NONE);
 
 		resetTarget();
 	}
@@ -85,6 +90,9 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		// projectile types if we think of any
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ArrowEntity.class, area));
 		potentialTargets.addAll(world.getEntitiesWithinAABB(FireballEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(DragonFireballEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(WitherSkullEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(ShulkerBulletEntity.class, area));
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;

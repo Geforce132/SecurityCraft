@@ -3,6 +3,7 @@
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
 - New: Add all ownable blocks to DRAGON_IMMUNE and WITHER_IMMUNE block tags
+- New: Trophy system now destroys Shulker bullets, Dragon fireballs and Wither skulls
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -11,6 +12,10 @@
 - Fix: Incorrect version check with VersionChecker mod integration
 - Fix: Cage Trap owner collision is incorrect
 - Fix: Inventory Scanners can connect to Inventory Scanners by different owners
+- Fix: Bouncing Betty doesn't play a sound when triggered and doesn't jump as high as expected
+- Fix: Block Mines let items and the owner go through
+- Fix: Trophy system destroys projectile even if it has already been removed
+- Fix: Textures of UBM and UOC are transparent at the sides
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

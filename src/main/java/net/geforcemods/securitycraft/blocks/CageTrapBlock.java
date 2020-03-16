@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
+import net.minecraft.entity.item.ItemEntity;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -47,12 +51,28 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		if(ctx instanceof EntitySelectionContext && ((EntitySelectionContext)ctx).getEntity() instanceof PlayerEntity)
-		{
+		if(ctx instanceof EntitySelectionContext) {
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner((PlayerEntity)((EntitySelectionContext)ctx).getEntity()))
-				return VoxelShapes.fullCube();
+
+
+			if (((EntitySelectionContext) ctx).getEntity() instanceof PlayerEntity) {
+				if (te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((PlayerEntity) ((EntitySelectionContext) ctx).getEntity()))
+					return super.getCollisionShape(state, world, pos, ctx);
+
+			}
+			if (((EntitySelectionContext) ctx).getEntity() instanceof MobEntity && te instanceof CageTrapTileEntity && !((CageTrapTileEntity) te).capturesMobs()) {
+				return super.getCollisionShape(state, world, pos, ctx);
+			}
+			if (((EntitySelectionContext) ctx).getEntity() instanceof ItemEntity && te instanceof DisguisableTileEntity)
+			{
+				DisguisableTileEntity te1 = (DisguisableTileEntity) te;
+				if (!te1.getModule(CustomModules.DISGUISE).isEmpty() && (((ModuleItem)te1.getModule(CustomModules.DISGUISE).getItem()).getBlockAddons(te1.getModule(CustomModules.DISGUISE).getTag()).size() > 0))
+				{
+					return super.getCollisionShape(state, world, pos, ctx);
+				}
+			}
+
 		}
 
 		return state.get(DEACTIVATED) ? super.getCollisionShape(state, world, pos, ctx) : VoxelShapes.empty();
