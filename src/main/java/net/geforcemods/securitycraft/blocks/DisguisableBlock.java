@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay
@@ -25,6 +27,16 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
 		super(soundType, properties);
+	}
+
+	@Override
+	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity)
+	{
+		BlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.getSoundType(world, pos, entity);
+		else return super.getSoundType(state, world, pos, entity);
 	}
 
 	@Override

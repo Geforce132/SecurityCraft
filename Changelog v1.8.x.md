@@ -2,7 +2,7 @@
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
-- New: Add all ownable blocks to DRAGON_IMMUNE and WITHER_IMMUNE block tags
+- New: Make all reinforced blocks immunte to the ender dragon and the wither by adding them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
@@ -20,6 +20,7 @@
 - Fix: Block Mines let items and the owner go through (Thanks Redstone_Dubstep!)
 - Fix: Trophy System destroys projectiles even if they have already been removed (Thanks Redstone_Dubstep!)
 - Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
+- Fix: Step sounds of disguised blocks are wrong
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
