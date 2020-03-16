@@ -13,16 +13,15 @@ import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class GuiUtils{
 
 	public static ResourceLocation cameraDashboard = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
-	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
-	private static final ResourceLocation nightVis = new ResourceLocation("minecraft:night_vision");
+	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/mob_effect/night_vision.png");
 	private static ItemRenderer itemRender = Minecraft.getInstance().getItemRenderer();
 
 	public static void drawCameraOverlay(Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
@@ -38,11 +37,11 @@ public class GuiUtils{
 		gui.blit(5, 0, 0, 0, 90, 20);
 		gui.blit(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
-		if(player.getActivePotionEffect(ForgeRegistries.POTIONS.getValue(nightVis)) == null)
+		if(!player.isPotionActive(Effects.NIGHT_VISION))
 			gui.blit(28, 4, 90, 12, 16, 11);
 		else{
 			mc.getTextureManager().bindTexture(potionIcons);
-			gui.blit(25, 2, 70, 218, 19, 16);
+			AbstractGui.blit(27, -1, 0, 0, 18, 18, 18, 18);
 			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
