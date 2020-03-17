@@ -167,13 +167,15 @@ public class CameraMonitorItem extends Item {
 	public int getNumberOfCamerasBound(CompoundNBT tag) {
 		if(tag == null) return 0;
 
-		for(int i = 1; i <= 31; i++)
-			if(tag.contains("Camera" + i))
-				continue;
-			else
-				return i - 1;
+		int amount = 0;
 
-		return 0;
+		for(int i = 1; i <= 31; i++)
+		{
+			if(tag.contains("Camera" + i))
+				amount++;
+		}
+
+		return amount;
 	}
 
 }

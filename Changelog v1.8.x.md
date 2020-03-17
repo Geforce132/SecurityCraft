@@ -21,6 +21,7 @@
 - Fix: Trophy System destroys projectiles even if they have already been removed (Thanks Redstone_Dubstep!)
 - Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
 - Fix: Step sounds of disguised blocks are wrong
+- Fix: Camera Monitor tooltip shows amount of first X bound cameras instead of amount of all bound cameras
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
