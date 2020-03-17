@@ -140,7 +140,7 @@ public class ItemCameraMonitor extends Item {
 	}
 
 	public ArrayList<CameraView> getCameraPositions(NBTTagCompound tag){
-		ArrayList<CameraView> list = new ArrayList<CameraView>();
+		ArrayList<CameraView> list = new ArrayList<>();
 
 		for(int i = 1; i <= 30; i++)
 			if(tag != null && tag.hasKey("Camera" + i)){
@@ -157,13 +157,15 @@ public class ItemCameraMonitor extends Item {
 	public int getNumberOfCamerasBound(NBTTagCompound tag) {
 		if(tag == null) return 0;
 
-		for(int i = 1; i <= 31; i++)
-			if(tag.hasKey("Camera" + i))
-				continue;
-			else
-				return i - 1;
+		int amount = 0;
 
-		return 0;
+		for(int i = 1; i <= 31; i++)
+		{
+			if(tag.hasKey("Camera" + i))
+				amount++;
+		}
+
+		return amount;
 	}
 
 }
