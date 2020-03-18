@@ -146,12 +146,6 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		switch (placer.getHorizontalFacing()) {
-			case NORTH:return getDefaultState().with(FACING, Direction.SOUTH).with(DEACTIVATED, false);
-			case EAST:return getDefaultState().with(FACING, Direction.WEST).with(DEACTIVATED, false);
-			case SOUTH:return getDefaultState().with(FACING, Direction.NORTH).with(DEACTIVATED, false);
-			case WEST:return getDefaultState().with(FACING, Direction.EAST).with(DEACTIVATED, false);
-		}
 		return getDefaultState().with(FACING, placer.getHorizontalFacing()).with(DEACTIVATED, false);
 	}
 

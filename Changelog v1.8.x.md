@@ -25,9 +25,7 @@
 - Fix: Step sounds of disguised blocks are wrong
 - Fix: Camera Monitor tooltip shows amount of first X bound cameras instead of amount of all bound cameras
 - Fix: Mines and Portable Radar can exist without a support block
-- Fix: Claymore placement is inverted
 - Fix: Claymore spawns too many particles
-- Fix: Motion activated light item model is upside down
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

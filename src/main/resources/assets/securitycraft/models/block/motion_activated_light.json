@@ -93,8 +93,8 @@
 			"rotation": [90, 0, 90]
 		},
 		"ground": {
-			"rotation": [0, 0, 0],
-			"translation": [0, 3.5, 7]
+			"rotation": [-90, 0, 0],
+			"translation": [0, 3.5, 0]
 		},
 		"gui": {
 			"scale": [1.5, 1.5, 1.5],
