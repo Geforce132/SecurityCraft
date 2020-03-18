@@ -44,6 +44,16 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 		return SHAPE;
 	}
 
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else if (world.getBlockState(pos).get(DEACTIVATED))
+			world.destroyBlock(pos, true);
+		else
+			explode(world, pos);
+	}
+
 	/**
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, x, y, z
 	 */

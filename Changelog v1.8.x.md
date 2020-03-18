@@ -5,6 +5,7 @@
 - New: Make all reinforced blocks immunte to the ender dragon and the wither by adding them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - New: Reinforced Blocks: Cobblestone Wall, Mossy Cobblestone Wall, Brick Wall, Prismarine Wall, Red Sandstene Wall, Mossy Stone Brick Wall, Granite Wall, Stone Brick Wall, Nether Brick Wall, Andesite Wall, Red Nether Brick Wall, Sandstone Wall, End Stone Brick Wall, Diorite Wall
+- New: Reinforced Observer Block
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
@@ -23,6 +24,10 @@
 - Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
 - Fix: Step sounds of disguised blocks are wrong
 - Fix: Camera Monitor tooltip shows amount of first X bound cameras instead of amount of all bound cameras
+- Fix: Mines and Portable Radar exist without bottom support block
+- Fix: Claymore placement is inverted
+- Fix: Claymore spawns too many particles
+- Fix: Motion activated light item model is upside down
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

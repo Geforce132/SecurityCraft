@@ -18,6 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class PortableRadarBlock extends OwnableBlock {
@@ -34,6 +35,19 @@ public class PortableRadarBlock extends OwnableBlock {
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
 		return SHAPE;
+	}
+
+	@Override
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
+		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else
+			world.destroyBlock(pos, true);
 	}
 
 	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {

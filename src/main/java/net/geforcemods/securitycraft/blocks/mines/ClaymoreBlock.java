@@ -61,7 +61,34 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	@Override
 	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx)
 	{
-		return VoxelShapes.empty();
+		if (!blockState.get(DEACTIVATED))
+		{
+			switch (blockState.get(FACING)) {
+				case NORTH: return NORTH_ON;
+				case EAST: return EAST_ON;
+				case SOUTH: return SOUTH_ON;
+				case WEST: return WEST_ON;
+				default: return VoxelShapes.fullCube();
+			}
+		}
+		else
+		{
+			switch (blockState.get(FACING)) {
+				case NORTH: return NORTH_OFF;
+				case EAST: return EAST_OFF;
+				case SOUTH: return SOUTH_OFF;
+				case WEST: return WEST_OFF;
+				default: return VoxelShapes.fullCube();
+			}
+		}
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else
+			world.destroyBlock(pos, true);
 	}
 
 	@Override
@@ -119,6 +146,12 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
+		switch (placer.getHorizontalFacing()) {
+			case NORTH:return getDefaultState().with(FACING, Direction.SOUTH).with(DEACTIVATED, false);
+			case EAST:return getDefaultState().with(FACING, Direction.WEST).with(DEACTIVATED, false);
+			case SOUTH:return getDefaultState().with(FACING, Direction.NORTH).with(DEACTIVATED, false);
+			case WEST:return getDefaultState().with(FACING, Direction.EAST).with(DEACTIVATED, false);
+		}
 		return getDefaultState().with(FACING, placer.getHorizontalFacing()).with(DEACTIVATED, false);
 	}
 

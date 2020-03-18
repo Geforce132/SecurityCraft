@@ -71,6 +71,14 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else
+			world.destroyBlock(pos, true);
+	}
+
+	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote)
