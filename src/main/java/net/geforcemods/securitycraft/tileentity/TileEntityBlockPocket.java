@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -48,7 +49,7 @@ public class TileEntityBlockPocket extends CustomizableSCTE
 	{
 		super.onTileEntityDestroyed();
 
-		if(manager != null)
+		if(manager != null && world.getBlockState(pos).getBlock() != SCContent.blockPocketWall && world.getBlockState(pos).getBlock() != SCContent.reinforcedCrystalQuartz)
 			manager.disableMultiblock();
 	}
 
