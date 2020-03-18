@@ -3,11 +3,13 @@ package net.geforcemods.securitycraft.datagen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.WallBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
@@ -38,6 +40,37 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		reinforcedWallBlock(SCContent.REINFORCED_SANDSTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_DIORITE_WALL.get());
+
+		blockMine(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
+		blockMine(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
+		blockMine(Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
+		blockMine(Blocks.DIRT, SCContent.DIRT_MINE.get());
+		blockMine(Blocks.EMERALD_ORE, SCContent.EMERALD_ORE_MINE.get());
+		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
+		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
+		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
+		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
+		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
+		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
+		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
+		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());
+		blockMine(Blocks.STONE, SCContent.STONE_MINE.get());
+	}
+
+	public void blockMine(Block vanillaBlock, Block block)
+	{
+		String baseName = block.getRegistryName().toString();
+		ModelFile model = models().cubeAll(baseName, blockTexture(vanillaBlock));
+
+		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(model)});
+	}
+
+	public void furnaceMine(Block vanillaBlock, Block block)
+	{
+		String baseName = block.getRegistryName().toString();
+		ModelFile model = models().cubeAll(baseName, blockTexture(vanillaBlock));
+
+		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(model)});
 	}
 
 	public void reinforcedWallBlock(Block block)

@@ -324,6 +324,13 @@
 	"block.securitycraft.reinforced_sandstone_wall": "Reinforced Sandstone Wall",
 	"block.securitycraft.reinforced_end_stone_brick_wall": "Reinforced End Brick Wall",
 	"block.securitycraft.reinforced_diorite_wall": "Reinforced Diorite Wall",
+	"block.securitycraft.gold_mine": "Gold Ore Mine",
+	"block.securitycraft.iron_mine": "Iron Ore Mine",
+	"block.securitycraft.coal_mine": "Coal Ore Mine",
+	"block.securitycraft.lapis_mine": "Lapis Lazuli Ore Mine",
+	"block.securitycraft.redstone_mine": "Redstone Ore Mine",
+	"block.securitycraft.emerald_mine": "Emerald Ore Mine",
+	"block.securitycraft.quartz_mine": "Nether Quartz Ore Mine",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
