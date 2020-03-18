@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:block_mines",
+  "ingredients": [
+    {
+      "item": "minecraft:nether_quartz_ore"
+    },
+    {
+      "item": "securitycraft:mine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:quartz_mine"
+  }
+}

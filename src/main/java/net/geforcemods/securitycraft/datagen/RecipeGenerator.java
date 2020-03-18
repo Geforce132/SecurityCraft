@@ -546,11 +546,18 @@ public class RecipeGenerator extends RecipeProvider
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(), SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
+		addBlockMineRecipe(consumer, Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DIRT, SCContent.DIRT_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.EMERALD_ORE, SCContent.EMERALD_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.FURNACE, SCContent.FURNACE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
+		addBlockMineRecipe(consumer, Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.SAND, SCContent.SAND_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.STONE, SCContent.STONE_MINE.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_BLACK_WOOL.get(), SCContent.REINFORCED_BLACK_CARPET.get());
@@ -816,20 +823,20 @@ public class RecipeGenerator extends RecipeProvider
 	protected final void addChiselingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider slab, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result)
-				.patternLine("S")
-				.patternLine("S")
-				.key('S', slab)
-				.addCriterion("has_slab", hasItem(slab))
-				.build(consumer);
+		.patternLine("S")
+		.patternLine("S")
+		.key('S', slab)
+		.addCriterion("has_slab", hasItem(slab))
+		.build(consumer);
 	}
 
 	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
-				.addIngredient(dye)
-				.addIngredient(SCContent.REINFORCED_WHITE_WOOL.get())
-				.addCriterion("has_wool", hasItem(SCContent.REINFORCED_WHITE_WOOL.get()))
-				.build(consumer);
+		.addIngredient(dye)
+		.addIngredient(SCContent.REINFORCED_WHITE_WOOL.get())
+		.addCriterion("has_wool", hasItem(SCContent.REINFORCED_WHITE_WOOL.get()))
+		.build(consumer);
 	}
 
 	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
@@ -880,37 +887,37 @@ public class RecipeGenerator extends RecipeProvider
 	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> block, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
-				.addIngredient(block)
-				.addIngredient(Items.VINE)
-				.addCriterion("has_block", hasItem(block))
-				.build(consumer);
+		.addIngredient(block)
+		.addIngredient(Items.VINE)
+		.addCriterion("has_block", hasItem(block))
+		.build(consumer);
 	}
-	
+
 	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
-				.addIngredient(block)
-				.addIngredient(Items.VINE)
-				.addCriterion("has_block", hasItem(block))
-				.build(consumer);
+		.addIngredient(block)
+		.addIngredient(Items.VINE)
+		.addCriterion("has_block", hasItem(block))
+		.build(consumer);
 	}
 
 	protected final void addPillarRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 2)
-				.patternLine("B")
-				.patternLine("B")
-				.key('B', block)
-				.addCriterion("has_block", hasItem(block))
-				.build(consumer);
+		.patternLine("B")
+		.patternLine("B")
+		.key('B', block)
+		.addCriterion("has_block", hasItem(block))
+		.build(consumer);
 	}
 
 	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> log, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result, 4)
-				.addIngredient(log)
-				.addCriterion("has_log", hasItem(log))
-				.build(consumer);
+		.addIngredient(log)
+		.addCriterion("has_log", hasItem(log))
+		.build(consumer);
 	}
 
 	protected final void addPolishingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)

@@ -35,11 +35,25 @@ public class ItemModelGenerator extends ItemModelProvider
 		reinforcedWallInventory(SCContent.REINFORCED_SANDSTONE_WALL.get(), Blocks.SANDSTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), Blocks.END_STONE_BRICK_WALL, "end_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DIORITE_WALL.get(), Blocks.DIORITE_WALL);
+		simpleParent(SCContent.COAL_ORE_MINE.get());
+		simpleParent(SCContent.COBBLESTONE_MINE.get());
+		simpleParent(SCContent.DIAMOND_ORE_MINE.get());
+		simpleParent(SCContent.DIRT_MINE.get());
+		simpleParent(SCContent.EMERALD_ORE_MINE.get());
+		simpleParent(SCContent.FURNACE_MINE.get());
+		simpleParent(SCContent.GRAVEL_MINE.get());
+		simpleParent(SCContent.GOLD_ORE_MINE.get());
+		simpleParent(SCContent.IRON_ORE_MINE.get());
+		simpleParent(SCContent.LAPIS_ORE_MINE.get());
+		simpleParent(SCContent.QUARTZ_ORE_MINE.get());
+		simpleParent(SCContent.REDSTONE_ORE_MINE.get());
+		simpleParent(SCContent.SAND_MINE.get());
+		simpleParent(SCContent.STONE_MINE.get());
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock)
 	{
-		return reinforcedWallInventory(block, vanillaBlock,vanillaBlock.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
+		return reinforcedWallInventory(block, vanillaBlock, vanillaBlock.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock, String textureName)
@@ -49,7 +63,22 @@ public class ItemModelGenerator extends ItemModelProvider
 
 	public ItemModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture)
 	{
-		return getBuilder(name).parent(new UncheckedModelFile(parent)).texture(textureKey, texture);
+		return parent(name, parent).texture(textureKey, texture);
+	}
+
+	public void simpleParent(Block block)
+	{
+		simpleParent(block.getRegistryName());
+	}
+
+	public ItemModelBuilder simpleParent(ResourceLocation name)
+	{
+		return parent(name.toString(), modLoc(BLOCK_FOLDER + "/" + name.getPath()));
+	}
+
+	public ItemModelBuilder parent(String name, ResourceLocation parent)
+	{
+		return getBuilder(name).parent(new UncheckedModelFile(parent));
 	}
 
 	@Override
