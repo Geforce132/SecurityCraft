@@ -24,7 +24,7 @@
 - Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
 - Fix: Step sounds of disguised blocks are wrong
 - Fix: Camera Monitor tooltip shows amount of first X bound cameras instead of amount of all bound cameras
-- Fix: Mines and Portable Radar exist without bottom support block
+- Fix: Mines and Portable Radar can exist without a support block
 - Fix: Claymore placement is inverted
 - Fix: Claymore spawns too many particles
 - Fix: Motion activated light item model is upside down

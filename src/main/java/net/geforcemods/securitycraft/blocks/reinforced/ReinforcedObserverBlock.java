@@ -19,7 +19,6 @@ import java.util.List;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
 {
-
     public ReinforcedObserverBlock() {
         super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
     }
@@ -41,7 +40,6 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
     {
         return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
     }
-
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
