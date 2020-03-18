@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWall;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -227,6 +228,9 @@ public class ClientProxy implements IProxy {
 				new ResourceLocation("securitycraft:reinforced_carpet_green"),
 				new ResourceLocation("securitycraft:reinforced_carpet_red"),
 				new ResourceLocation("securitycraft:reinforced_carpet_black"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_walls"),
+				new ResourceLocation("securitycraft:reinforced_cobblestone_wall"),
+				new ResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall"));
 
 		Item fakeWater = findItem(SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
@@ -277,6 +281,7 @@ public class ClientProxy implements IProxy {
 		});
 
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedStainedGlassPanes, new StateMap.Builder().withName(BlockColored.COLOR).withSuffix("_reinforced_stained_glass_panes").build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedWalls, new StateMap.Builder().withName(BlockReinforcedWall.VARIANT).withSuffix("_wall").build());
 	}
 
 	private Item findItem(String modid, String resourceName)

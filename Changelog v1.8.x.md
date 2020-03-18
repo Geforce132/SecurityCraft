@@ -3,6 +3,7 @@
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
 - New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
+- New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode

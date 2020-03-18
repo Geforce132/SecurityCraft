@@ -32,6 +32,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedSlabs2;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStainedBlock;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWalls;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -246,6 +247,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStonePressurePlate, true);
 		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, false);
 		registerBlock(event, SCContent.reinforcedBookshelf, false);
+		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
 	}
 
 	@SubscribeEvent
@@ -699,6 +701,8 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStonePressurePlate), 0, new ModelResourceLocation("securitycraft:reinforced_stone_pressure_plate", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWoodenPressurePlate), 0, new ModelResourceLocation("securitycraft:reinforced_wooden_pressure_plate", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedBookshelf), 0, new ModelResourceLocation("securitycraft:reinforced_bookshelf", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 0, new ModelResourceLocation("securitycraft:reinforced_cobblestone_wall", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 1, new ModelResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall", "inventory"));
 
 		//Items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

@@ -255,6 +255,8 @@ tile.securitycraft:blockPocketManager.name=Blocktaschenverwalter
 tile.securitycraft:reinforced_stone_pressure_plate.name=Verstärkte Steindruckplatte
 tile.securitycraft:reinforced_wooden_pressure_plate.name=Verstärkte Holzdruckplatte
 tile.securitycraft:reinforcedBookshelf.name=Verstärktes Bücherregal
+tile.securitycraft:reinforced_walls_cobble.name=Verstärkte Bruchsteinmauer
+tile.securitycraft:reinforced_walls_mossy.name=Verstärkte bemooste Bruchsteinmauer
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
