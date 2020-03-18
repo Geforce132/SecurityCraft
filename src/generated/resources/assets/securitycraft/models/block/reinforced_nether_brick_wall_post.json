@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_wall_post",
+  "textures": {
+    "wall": "block/nether_bricks"
+  }
+}
