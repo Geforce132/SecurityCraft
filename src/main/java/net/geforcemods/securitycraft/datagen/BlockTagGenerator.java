@@ -215,6 +215,20 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getBuilder(BlockTags.STANDING_SIGNS).add(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		getBuilder(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		getBuilder(BlockTags.WALL_SIGNS).add(SCTags.Blocks.SECRET_WALL_SIGNS);
+		getBuilder(BlockTags.WALLS).add(SCContent.REINFORCED_COBBLESTONE_WALL.get(),
+				SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(),
+				SCContent.REINFORCED_BRICK_WALL.get(),
+				SCContent.REINFORCED_PRISMARINE_WALL.get(),
+				SCContent.REINFORCED_RED_SANDSTONE_WALL.get(),
+				SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(),
+				SCContent.REINFORCED_GRANITE_WALL.get(),
+				SCContent.REINFORCED_STONE_BRICK_WALL.get(),
+				SCContent.REINFORCED_NETHER_BRICK_WALL.get(),
+				SCContent.REINFORCED_ANDESITE_WALL.get(),
+				SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(),
+				SCContent.REINFORCED_SANDSTONE_WALL.get(),
+				SCContent.REINFORCED_END_STONE_BRICK_WALL.get(),
+				SCContent.REINFORCED_DIORITE_WALL.get());
 
 		for(RegistryObject<Block> ro : SCContent.BLOCKS.getEntries())
 		{

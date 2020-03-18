@@ -16,7 +16,9 @@ public class DataGenRegistrar
 		DataGenerator generator = event.getGenerator();
 
 		generator.addProvider(new BlockLootTableGenerator(generator));
+		generator.addProvider(new BlockModelAndStateGenerator(generator, event.getExistingFileHelper()));
 		generator.addProvider(new BlockTagGenerator(generator));
+		generator.addProvider(new ItemModelGenerator(generator, event.getExistingFileHelper()));
 		generator.addProvider(new FluidTagGenerator(generator));
 		generator.addProvider(new ItemTagGenerator(generator));
 		generator.addProvider(new RecipeGenerator(generator));

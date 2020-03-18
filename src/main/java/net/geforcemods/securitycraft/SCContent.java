@@ -56,6 +56,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -428,6 +429,20 @@ public class SCContent
 	//ordered by vanilla decoration blocks creative tab order
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedPaneBlock(SoundType.METAL, Material.IRON, Blocks.IRON_BARS));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_GLASS_PANE = BLOCKS.register("reinforced_glass_pane", () -> new ReinforcedPaneBlock(SoundType.GLASS, Material.GLASS, Blocks.GLASS_PANE));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE_WALL = BLOCKS.register("reinforced_cobblestone_wall", () -> new ReinforcedWallBlock(Blocks.COBBLESTONE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE_WALL = BLOCKS.register("reinforced_mossy_cobblestone_wall", () -> new ReinforcedWallBlock(Blocks.MOSSY_COBBLESTONE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BRICK_WALL = BLOCKS.register("reinforced_brick_wall", () -> new ReinforcedWallBlock(Blocks.BRICK_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PRISMARINE_WALL = BLOCKS.register("reinforced_prismarine_wall", () -> new ReinforcedWallBlock(Blocks.PRISMARINE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE_WALL = BLOCKS.register("reinforced_red_sandstone_wall", () -> new ReinforcedWallBlock(Blocks.RED_SANDSTONE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MOSSY_STONE_BRICK_WALL = BLOCKS.register("reinforced_mossy_stone_brick_wall", () -> new ReinforcedWallBlock(Blocks.MOSSY_STONE_BRICK_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRANITE_WALL = BLOCKS.register("reinforced_granite_wall", () -> new ReinforcedWallBlock(Blocks.GRANITE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_BRICK_WALL = BLOCKS.register("reinforced_stone_brick_wall", () -> new ReinforcedWallBlock(Blocks.STONE_BRICK_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_WALL = BLOCKS.register("reinforced_nether_brick_wall", () -> new ReinforcedWallBlock(Blocks.NETHER_BRICK_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ANDESITE_WALL = BLOCKS.register("reinforced_andesite_wall", () -> new ReinforcedWallBlock(Blocks.ANDESITE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICK_WALL = BLOCKS.register("reinforced_red_nether_brick_wall", () -> new ReinforcedWallBlock(Blocks.RED_NETHER_BRICK_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SANDSTONE_WALL = BLOCKS.register("reinforced_sandstone_wall", () -> new ReinforcedWallBlock(Blocks.SANDSTONE_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_END_STONE_BRICK_WALL = BLOCKS.register("reinforced_end_stone_brick_wall", () -> new ReinforcedWallBlock(Blocks.END_STONE_BRICK_WALL));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIORITE_WALL = BLOCKS.register("reinforced_diorite_wall", () -> new ReinforcedWallBlock(Blocks.DIORITE_WALL));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_WHITE_CARPET = BLOCKS.register("reinforced_white_carpet", () -> new ReinforcedCarpetBlock(Blocks.WHITE_CARPET));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ORANGE_CARPET = BLOCKS.register("reinforced_orange_carpet", () -> new ReinforcedCarpetBlock(Blocks.ORANGE_CARPET));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MAGENTA_CARPET = BLOCKS.register("reinforced_magenta_carpet", () -> new ReinforcedCarpetBlock(Blocks.MAGENTA_CARPET));
