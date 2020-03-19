@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "securitycraft:block/quartz_mine"
+      "model": "minecraft:block/nether_quartz_ore"
     }
   }
 }

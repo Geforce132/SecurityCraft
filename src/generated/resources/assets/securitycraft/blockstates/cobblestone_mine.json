@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "securitycraft:block/cobblestone_mine"
+      "model": "minecraft:block/cobblestone"
     }
   }
 }

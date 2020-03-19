@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "securitycraft:block/stone_mine"
+      "model": "minecraft:block/stone"
     }
   }
 }

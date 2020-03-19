@@ -21,6 +21,10 @@ import net.minecraft.world.World;
 
 public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive {
 
+	public ExplosiveBlock(Block.Properties properties) {
+		super(properties);
+	}
+
 	public ExplosiveBlock(SoundType soundType, Material material, float baseHardness) {
 		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(baseHardness, 6000000.0F));
 	}
