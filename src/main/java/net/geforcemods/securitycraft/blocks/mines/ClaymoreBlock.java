@@ -59,31 +59,6 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx)
-	{
-		if (!blockState.get(DEACTIVATED))
-		{
-			switch (blockState.get(FACING)) {
-				case NORTH: return NORTH_ON;
-				case EAST: return EAST_ON;
-				case SOUTH: return SOUTH_ON;
-				case WEST: return WEST_ON;
-				default: return VoxelShapes.fullCube();
-			}
-		}
-		else
-		{
-			switch (blockState.get(FACING)) {
-				case NORTH: return NORTH_OFF;
-				case EAST: return EAST_OFF;
-				case SOUTH: return SOUTH_OFF;
-				case WEST: return WEST_OFF;
-				default: return VoxelShapes.fullCube();
-			}
-		}
-	}
-
-	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;

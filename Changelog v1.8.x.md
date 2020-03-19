@@ -25,7 +25,8 @@
 - Fix: Step sounds of disguised blocks are wrong
 - Fix: Camera Monitor tooltip shows amount of first X bound cameras instead of amount of all bound cameras
 - Fix: Mines and Portable Radar can exist without a support block
-- Fix: Claymore spawns too many particles
+- Fix: Claymore spawns too many particles when being broken
+- Fix: Claymore has no collision
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
