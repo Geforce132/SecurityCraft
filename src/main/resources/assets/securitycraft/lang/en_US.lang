@@ -263,6 +263,7 @@ tile.securitycraft:lapis_mine.name=Lapis Lazuli Ore Mine
 tile.securitycraft:redstone_mine.name=Redstone Ore Mine
 tile.securitycraft:emerald_mine.name=Emerald Ore Mine
 tile.securitycraft:quartz_mine.name=Nether Quartz Ore Mine
+tile.securitycraft:reinforced_observer.name=Reinforced Observer
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door

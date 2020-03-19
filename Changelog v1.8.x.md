@@ -5,6 +5,7 @@
 - New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
+- New: Reinforced Observer (Thanks Redstone_Dubstep!)
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -18,6 +19,9 @@
 - Fix: Textures of Universal Block Modifier, Universal Owner Changer and the Mine Remote Access Tool are transparent at the sides (Thanks Redstone_Dubstep!)
 - Fix: Step sounds of disguised blocks are wrong
 - Fix: Camera Monitor tooltip shows amount of first X bound cameras instead of amount of all bound cameras
+- Fix: Mines and Portable Radar can exist without a support block (Thanks Redstone_Dubstep!)
+- Fix: Claymore spawns too many particles when being broken (Thanks Redstone_Dubstep!)
+- Fix: Claymore has no collision (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

@@ -81,6 +81,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedNetherBrick;
 	@Reinforced @Tinted public static Block reinforcedNetherrack;
 	@Reinforced @Tinted public static Block reinforcedNewLogs;
+	@Reinforced @Tinted public static Block reinforcedObserver;
 	@Reinforced @Tinted public static Block reinforcedObsidian;
 	@Reinforced @Tinted public static Block reinforcedOldLogs;
 	@Reinforced @Tinted public static Block reinforcedPrismarine;

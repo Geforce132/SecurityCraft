@@ -59,6 +59,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedObserver;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedOldLog;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPrismarine;
@@ -216,6 +217,7 @@ public class SetupHandler
 		SCContent.reinforcedBookshelf = new BlockReinforcedBookshelf(Material.WOOD, 1, Blocks.BOOKSHELF).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bookshelf").setTranslationKey("securitycraft:reinforcedBookshelf");
 		SCContent.horizontalReinforcedIronBars = new BlockHorizontalReinforcedIronBars().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("horizontal_reinforced_iron_bars");
 		SCContent.reinforcedWalls = new BlockReinforcedWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_walls").setTranslationKey("securitycraft:reinforced_walls");
+		SCContent.reinforcedObserver = new BlockReinforcedObserver().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_observer").setTranslationKey("securitycraft:reinforced_observer");
 	}
 
 	public static void setupMines()

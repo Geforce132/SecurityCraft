@@ -264,6 +264,7 @@ tile.securitycraft:lapis_mine.name=Lapislazulierzmine
 tile.securitycraft:redstone_mine.name=Redstone-Erzmine
 tile.securitycraft:emerald_mine.name=Smaragderzmine
 tile.securitycraft:quartz_mine.name=Netherquarzerzmine
+tile.securitycraft:reinforced_observer.name=Verstärkter Beobachter
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür

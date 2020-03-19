@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -55,16 +56,15 @@ public class BlockMine extends BlockExplosive {
 		return false;
 	}
 
-	/**
-	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
-	 * their own) Args: x, y, z, neighbor blockID
-	 */
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor){
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	{
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
+		else if (world.getBlockState(pos).getValue(DEACTIVATED))
+			world.destroyBlock(pos, true);
 		else
-			explode((World)world, pos);
+			explode(world, pos);
 	}
 
 	/**
