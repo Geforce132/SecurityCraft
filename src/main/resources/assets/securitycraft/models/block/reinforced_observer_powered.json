@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_observer",
+  "textures": {
+    "south": "block/observer_back_on"
+  }
+}
