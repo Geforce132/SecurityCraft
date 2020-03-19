@@ -48,9 +48,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
@@ -58,7 +60,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -502,6 +503,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock());
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock());
 	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_LAMP = BLOCKS.register("reinforced_redstone_lamp", () -> new ReinforcedRedstoneLampBlock());
 
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());

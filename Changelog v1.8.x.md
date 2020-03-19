@@ -8,6 +8,7 @@
 - New: Reinforced Blocks: Brick Wall, Prismarine Wall, Red Sandstone Wall, Mossy Stone Brick Wall, Granite Wall, Stone Brick Wall, Nether Brick Wall, Andesite Wall, Red Nether Brick Wall, Sandstone Wall, End Stone Brick Wall, Diorite Wall
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Reinforced Observer (Thanks Redstone_Dubstep!)
+- New: Reinforced Redstone Lamp
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect

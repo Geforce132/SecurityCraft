@@ -321,7 +321,6 @@
     "securitycraft:reinforced_green_stained_glass_pane",
     "securitycraft:reinforced_red_stained_glass_pane",
     "securitycraft:reinforced_black_stained_glass_pane",
-    "securitycraft:reinforced_observer",
     "securitycraft:reinforced_chiseled_crystal_quartz_block",
     "securitycraft:reinforced_crystal_quartz_block",
     "securitycraft:reinforced_crystal_quartz_pillar",
@@ -336,6 +335,8 @@
     "securitycraft:reinforced_acacia_pressure_plate",
     "securitycraft:reinforced_dark_oak_pressure_plate",
     "securitycraft:reinforced_redstone_block",
-    "securitycraft:horizontal_reinforced_iron_bars"
+    "securitycraft:reinforced_observer",
+    "securitycraft:horizontal_reinforced_iron_bars",
+    "securitycraft:reinforced_redstone_lamp"
   ]
 }

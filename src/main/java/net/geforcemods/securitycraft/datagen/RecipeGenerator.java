@@ -333,6 +333,14 @@ public class RecipeGenerator extends RecipeProvider
 		.key('R', Tags.Items.DUSTS_REDSTONE)
 		.addCriterion("has_quartz", hasItem(Tags.Items.GEMS_QUARTZ))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_REDSTONE_LAMP.get())
+		.patternLine(" R ")
+		.patternLine("RGR")
+		.patternLine(" R ")
+		.key('G', SCContent.REINFORCED_GLOWSTONE.get())
+		.key('R', Tags.Items.DUSTS_REDSTONE)
+		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
+		.build(consumer);
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get());

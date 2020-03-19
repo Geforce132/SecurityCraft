@@ -332,6 +332,7 @@
 	"block.securitycraft.redstone_mine": "Redstone Ore Mine",
 	"block.securitycraft.emerald_mine": "Emerald Ore Mine",
 	"block.securitycraft.quartz_mine": "Nether Quartz Ore Mine",
+    "block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
