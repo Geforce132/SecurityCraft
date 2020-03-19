@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "securitycraft:block/coal_mine"
+      "model": "minecraft:block/coal_ore"
     }
   }
 }

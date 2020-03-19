@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "securitycraft:block/emerald_mine"
+      "model": "minecraft:block/emerald_ore"
     }
   }
 }
