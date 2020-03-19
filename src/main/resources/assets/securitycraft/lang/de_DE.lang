@@ -257,6 +257,13 @@ tile.securitycraft:reinforced_wooden_pressure_plate.name=Verstärkte Holzdruckpl
 tile.securitycraft:reinforcedBookshelf.name=Verstärktes Bücherregal
 tile.securitycraft:reinforced_walls_cobble.name=Verstärkte Bruchsteinmauer
 tile.securitycraft:reinforced_walls_mossy.name=Verstärkte bemooste Bruchsteinmauer
+tile.securitycraft:gold_mine.name=Golderzmine
+tile.securitycraft:iron_mine.name=Eisenerzmine
+tile.securitycraft:coal_mine.name=Steinkohlemine
+tile.securitycraft:lapis_mine.name=Lapislazulierzmine
+tile.securitycraft:redstone_mine.name=Redstone-Erzmine
+tile.securitycraft:emerald_mine.name=Smaragderzmine
+tile.securitycraft:quartz_mine.name=Netherquarzerzmine
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür

@@ -4,6 +4,7 @@
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
 - New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
+- New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode

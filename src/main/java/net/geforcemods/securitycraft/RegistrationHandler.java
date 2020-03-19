@@ -136,12 +136,6 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.keypad);
 		registerBlock(event, SCContent.mine);
 		event.getRegistry().register(SCContent.mineCut);
-		registerBlock(event, SCContent.dirtMine);
-		registerBlock(event, SCContent.stoneMine, false);
-		registerBlock(event, SCContent.cobblestoneMine, false);
-		registerBlock(event, SCContent.diamondOreMine, false);
-		registerBlock(event, SCContent.sandMine, false);
-		registerBlock(event, SCContent.furnaceMine);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
 		registerBlock(event, SCContent.fakeLava, false);
@@ -230,7 +224,6 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStainedGlassPanes, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlassPanes), true);
 		registerBlock(event, SCContent.reinforcedCarpet, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedCarpet), false);
 		registerBlock(event, SCContent.reinforcedGlowstone, false);
-		registerBlock(event, SCContent.gravelMine, false);
 		registerBlock(event, SCContent.reinforcedSand, new ItemBlockReinforcedSand(SCContent.reinforcedSand), false);
 		registerBlock(event, SCContent.reinforcedGravel, false);
 		registerBlock(event, SCContent.trophySystem);
@@ -248,6 +241,21 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, false);
 		registerBlock(event, SCContent.reinforcedBookshelf, false);
 		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
+		//block mines
+		registerBlock(event, SCContent.stoneMine, false);
+		registerBlock(event, SCContent.dirtMine);
+		registerBlock(event, SCContent.cobblestoneMine, false);
+		registerBlock(event, SCContent.sandMine, false);
+		registerBlock(event, SCContent.gravelMine, false);
+		registerBlock(event, SCContent.goldOreMine, false);
+		registerBlock(event, SCContent.ironOreMine, false);
+		registerBlock(event, SCContent.coalOreMine, false);
+		registerBlock(event, SCContent.lapisOreMine, false);
+		registerBlock(event, SCContent.diamondOreMine, false);
+		registerBlock(event, SCContent.redstoneOreMine, false);
+		registerBlock(event, SCContent.emeraldOreMine, false);
+		registerBlock(event, SCContent.quartzOreMine, false);
+		registerBlock(event, SCContent.furnaceMine);
 	}
 
 	@SubscribeEvent
@@ -468,7 +476,7 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerResourceLocations(ModelRegistryEvent event)
 	{
-		//Blocks
+		//blocks
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.keypad), 0, new ModelResourceLocation("securitycraft:keypad", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.frame), 0, new ModelResourceLocation("securitycraft:keypad_frame", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStone), 0, new ModelResourceLocation("securitycraft:reinforced_stone_default", "inventory"));
@@ -704,7 +712,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 0, new ModelResourceLocation("securitycraft:reinforced_cobblestone_wall", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 1, new ModelResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall", "inventory"));
 
-		//Items
+		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.remoteAccessMine, 0, new ModelResourceLocation("securitycraft:remote_access_mine", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.remoteAccessSentry, 0, new ModelResourceLocation("securitycraft:remote_access_sentry", "inventory"));
@@ -744,7 +752,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.sentry, 0, new ModelResourceLocation("securitycraft:sentry", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.crystalQuartzItem, 0, new ModelResourceLocation("securitycraft:crystal_quartz_item", "inventory"));
 
-		//Mines
+		//mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.dirtMine), 0, new ModelResourceLocation("securitycraft:dirt_mine", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.stoneMine), 0, new ModelResourceLocation("securitycraft:stone_mine", "inventory"));
@@ -757,6 +765,13 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.claymore), 0, new ModelResourceLocation("securitycraft:claymore", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.ims), 0, new ModelResourceLocation("securitycraft:ims", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.gravelMine), 0, new ModelResourceLocation("securitycraft:gravel_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.coalOreMine), 0, new ModelResourceLocation("securitycraft:coal_ore_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.emeraldOreMine), 0, new ModelResourceLocation("securitycraft:emerald_ore_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.goldOreMine), 0, new ModelResourceLocation("securitycraft:gold_ore_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.ironOreMine), 0, new ModelResourceLocation("securitycraft:iron_ore_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.lapisOreMine), 0, new ModelResourceLocation("securitycraft:lapis_ore_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.quartzOreMine), 0, new ModelResourceLocation("securitycraft:quartz_ore_mine", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.redstoneOreMine), 0, new ModelResourceLocation("securitycraft:redstone_ore_mine", "inventory"));
 	}
 
 	/**

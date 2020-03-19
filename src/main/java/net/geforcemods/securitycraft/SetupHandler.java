@@ -232,6 +232,13 @@ public class SetupHandler
 		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
 		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
 		SCContent.ims = new BlockIMS(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("ims").setTranslationKey("securitycraft:ims");
+		SCContent.coalOreMine = new BlockFullMineBase(Material.ROCK, Blocks.COAL_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("coal_mine").setTranslationKey("securitycraft:coal_mine");
+		SCContent.emeraldOreMine = new BlockFullMineBase(Material.ROCK, Blocks.EMERALD_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("emerald_mine").setTranslationKey("securitycraft:emerald_mine");
+		SCContent.goldOreMine = new BlockFullMineBase(Material.ROCK, Blocks.GOLD_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("gold_mine").setTranslationKey("securitycraft:gold_mine");
+		SCContent.ironOreMine = new BlockFullMineBase(Material.ROCK, Blocks.IRON_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("iron_mine").setTranslationKey("securitycraft:iron_mine");
+		SCContent.lapisOreMine = new BlockFullMineBase(Material.ROCK, Blocks.LAPIS_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("lapis_mine").setTranslationKey("securitycraft:lapis_mine");
+		SCContent.quartzOreMine = new BlockFullMineBase(Material.ROCK, Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
+		SCContent.redstoneOreMine = new BlockFullMineBase(Material.ROCK, Blocks.REDSTONE_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
 	}
 
 	public static void setupItems()

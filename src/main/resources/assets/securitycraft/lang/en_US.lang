@@ -256,6 +256,13 @@ tile.securitycraft:reinforced_wooden_pressure_plate.name=Reinforced Wooden Press
 tile.securitycraft:reinforcedBookshelf.name=Reinforced Bookshelf
 tile.securitycraft:reinforced_walls_cobble.name=Reinforced Cobblestone Wall
 tile.securitycraft:reinforced_walls_mossy.name=Reinforced Mossy Cobblestone Wall
+tile.securitycraft:gold_mine.name=Gold Ore Mine
+tile.securitycraft:iron_mine.name=Iron Ore Mine
+tile.securitycraft:coal_mine.name=Coal Ore Mine
+tile.securitycraft:lapis_mine.name=Lapis Lazuli Ore Mine
+tile.securitycraft:redstone_mine.name=Redstone Ore Mine
+tile.securitycraft:emerald_mine.name=Emerald Ore Mine
+tile.securitycraft:quartz_mine.name=Nether Quartz Ore Mine
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
