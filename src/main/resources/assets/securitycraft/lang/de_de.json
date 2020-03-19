@@ -323,7 +323,7 @@
 	"block.securitycraft.reinforced_sandstone_wall": "Verstärkte Sandsteinmauer",
 	"block.securitycraft.reinforced_end_stone_brick_wall": "Verstärkte Endsteinziegelmauer",
 	"block.securitycraft.reinforced_diorite_wall": "Verstärkte Dioritmauer",
-  "block.securitycraft.reinforced_observer": "Verstärkter Beobachter",
+    "block.securitycraft.reinforced_observer": "Verstärkter Beobachter",
 	"block.securitycraft.gold_mine": "Golderzmine",
 	"block.securitycraft.iron_mine": "Eisenerzmine",
 	"block.securitycraft.coal_mine": "Steinkohlemine",
@@ -331,6 +331,7 @@
 	"block.securitycraft.redstone_mine": "Redstone-Erzmine",
 	"block.securitycraft.emerald_mine": "Smaragderzmine",
 	"block.securitycraft.quartz_mine": "Netherquarzerzmine",
+    "block.securitycraft.reinforced_redstone_lamp": "Verstärkte Redstone-Lampe",
 	
     "item.securitycraft.codebreaker": "Codebrecher",
     "item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",

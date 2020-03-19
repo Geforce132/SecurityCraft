@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "RGR",
+    " R "
+  ],
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_glowstone"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_redstone_lamp"
+  }
+}
