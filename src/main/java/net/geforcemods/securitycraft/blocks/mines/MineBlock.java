@@ -48,6 +48,8 @@ public class MineBlock extends ExplosiveBlock {
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
+		else if (world.getBlockState(pos).get(DEACTIVATED))
+			world.destroyBlock(pos, true);
 		else
 			explode(world, pos);
 	}

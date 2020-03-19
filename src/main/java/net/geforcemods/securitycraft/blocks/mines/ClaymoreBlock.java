@@ -59,9 +59,11 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader access, BlockPos pos, ISelectionContext ctx)
-	{
-		return VoxelShapes.empty();
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else
+			world.destroyBlock(pos, true);
 	}
 
 	@Override

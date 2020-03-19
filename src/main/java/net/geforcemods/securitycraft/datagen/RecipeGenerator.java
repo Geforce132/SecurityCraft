@@ -324,6 +324,15 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', Tags.Items.FENCE_GATES_WOODEN)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_OBSERVER.get())
+		.patternLine("CCC")
+		.patternLine("RRQ")
+		.patternLine("CCC")
+		.key('C', SCTags.Items.REINFORCED_COBBLESTONE)
+		.key('Q', Tags.Items.GEMS_QUARTZ)
+		.key('R', Tags.Items.DUSTS_REDSTONE)
+		.addCriterion("has_quartz", hasItem(Tags.Items.GEMS_QUARTZ))
+		.build(consumer);
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get());

@@ -58,6 +58,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -499,6 +500,7 @@ public class SCContent
 	@Reinforced public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.ACACIA_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_PRESSURE_PLATE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock());
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock());
 	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK));
 
 	//fluids

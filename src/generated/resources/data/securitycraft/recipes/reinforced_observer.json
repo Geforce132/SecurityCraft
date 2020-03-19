@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "RRQ",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "tag": "securitycraft:reinforced/cobblestone"
+    },
+    "Q": {
+      "tag": "forge:gems/quartz"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_observer"
+  }
+}
