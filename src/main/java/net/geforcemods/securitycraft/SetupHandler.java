@@ -39,6 +39,7 @@ import net.geforcemods.securitycraft.blocks.mines.BlockFullMineFalling;
 import net.geforcemods.securitycraft.blocks.mines.BlockFurnaceMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
+import net.geforcemods.securitycraft.blocks.mines.BlockRedstoneOreMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockHorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
@@ -238,7 +239,7 @@ public class SetupHandler
 		SCContent.ironOreMine = new BlockFullMineBase(Material.ROCK, Blocks.IRON_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("iron_mine").setTranslationKey("securitycraft:iron_mine");
 		SCContent.lapisOreMine = new BlockFullMineBase(Material.ROCK, Blocks.LAPIS_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("lapis_mine").setTranslationKey("securitycraft:lapis_mine");
 		SCContent.quartzOreMine = new BlockFullMineBase(Material.ROCK, Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
-		SCContent.redstoneOreMine = new BlockFullMineBase(Material.ROCK, Blocks.REDSTONE_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
+		SCContent.redstoneOreMine = new BlockRedstoneOreMine().setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
 	}
 
 	public static void setupItems()

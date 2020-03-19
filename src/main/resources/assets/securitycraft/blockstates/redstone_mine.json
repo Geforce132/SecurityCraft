@@ -1,7 +1,10 @@
 {
   "variants": {
-    "normal": {
-      "model": "securitycraft:redstone_mine"
+    "lit=false": {
+      "model": "redstone_ore"
+    },
+    "lit=true": {
+      "model": "lit_redstone_ore"
     }
   }
 }
