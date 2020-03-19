@@ -34,6 +34,12 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	private final Block blockDisguisedAs;
 	private final SoundType soundType;
 
+	public BaseFullMineBlock(Block.Properties properties, Block disguisedBlock) {
+		super(properties);
+		blockDisguisedAs = disguisedBlock;
+		this.soundType = SoundType.STONE;
+	}
+
 	public BaseFullMineBlock(Material material, SoundType soundType, Block disguisedBlock, float baseHardness) {
 		super(soundType, material, baseHardness);
 		blockDisguisedAs = disguisedBlock;

@@ -250,17 +250,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public void remove()
-	{
-		super.remove();
-		disableMultiblock();
-	}
-
-	@Override
 	public void onTileEntityDestroyed()
 	{
 		super.onTileEntityDestroyed();
-		disableMultiblock();
+		if (world.getBlockState(pos).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
+			disableMultiblock();
 	}
 
 	@Override

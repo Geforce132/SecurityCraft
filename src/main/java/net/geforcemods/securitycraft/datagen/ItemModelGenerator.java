@@ -35,11 +35,25 @@ public class ItemModelGenerator extends ItemModelProvider
 		reinforcedWallInventory(SCContent.REINFORCED_SANDSTONE_WALL.get(), Blocks.SANDSTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), Blocks.END_STONE_BRICK_WALL, "end_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DIORITE_WALL.get(), Blocks.DIORITE_WALL);
+		blockMine(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
+		blockMine(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
+		blockMine(Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
+		blockMine(Blocks.DIRT, SCContent.DIRT_MINE.get());
+		blockMine(Blocks.EMERALD_ORE, SCContent.EMERALD_ORE_MINE.get());
+		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get());
+		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
+		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
+		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
+		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
+		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
+		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
+		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());
+		blockMine(Blocks.STONE, SCContent.STONE_MINE.get());
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock)
 	{
-		return reinforcedWallInventory(block, vanillaBlock,vanillaBlock.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
+		return reinforcedWallInventory(block, vanillaBlock, vanillaBlock.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock, String textureName)
@@ -49,7 +63,27 @@ public class ItemModelGenerator extends ItemModelProvider
 
 	public ItemModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture)
 	{
-		return getBuilder(name).parent(new UncheckedModelFile(parent)).texture(textureKey, texture);
+		return parent(name, parent).texture(textureKey, texture);
+	}
+
+	public ItemModelBuilder blockMine(Block vanillaBlock, Block block)
+	{
+		return parent(block.getRegistryName().toString(), mcLoc(BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath()));
+	}
+
+	public ItemModelBuilder simpleParent(Block block)
+	{
+		return simpleParent(block.getRegistryName());
+	}
+
+	public ItemModelBuilder simpleParent(ResourceLocation name)
+	{
+		return parent(name.toString(), modLoc(BLOCK_FOLDER + "/" + name.getPath()));
+	}
+
+	public ItemModelBuilder parent(String name, ResourceLocation parent)
+	{
+		return getBuilder(name).parent(new UncheckedModelFile(parent));
 	}
 
 	@Override
