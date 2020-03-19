@@ -89,6 +89,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedQuartz;
 	@Reinforced @Tinted public static Block reinforcedRedNetherBrick;
 	@Reinforced @Tinted public static Block reinforcedRedSandstone;
+	@Reinforced @Tinted public static Block reinforcedRedstoneLamp;
 	@Reinforced @Tinted public static Block reinforcedSand;
 	@Reinforced @Tinted public static Block reinforcedSandstone;
 	@Reinforced @Tinted public static Block reinforcedSeaLantern;

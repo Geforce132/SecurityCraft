@@ -66,6 +66,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPrismarine
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPurpur;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedQuartz;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRedSandstone;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRedstoneLamp;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSand;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
@@ -218,6 +219,7 @@ public class SetupHandler
 		SCContent.horizontalReinforcedIronBars = new BlockHorizontalReinforcedIronBars().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("horizontal_reinforced_iron_bars");
 		SCContent.reinforcedWalls = new BlockReinforcedWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_walls").setTranslationKey("securitycraft:reinforced_walls");
 		SCContent.reinforcedObserver = new BlockReinforcedObserver().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_observer").setTranslationKey("securitycraft:reinforced_observer");
+		SCContent.reinforcedRedstoneLamp = new BlockReinforcedRedstoneLamp().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_redstone_lamp").setTranslationKey("securitycraft:reinforced_redstone_lamp");
 	}
 
 	public static void setupMines()

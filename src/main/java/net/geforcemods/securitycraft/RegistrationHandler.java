@@ -242,6 +242,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedBookshelf, false);
 		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
 		registerBlock(event, SCContent.reinforcedObserver, false);
+		registerBlock(event, SCContent.reinforcedRedstoneLamp, false);
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
 		registerBlock(event, SCContent.dirtMine);
@@ -713,6 +714,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 0, new ModelResourceLocation("securitycraft:reinforced_cobblestone_wall", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 1, new ModelResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedObserver), 0, new ModelResourceLocation("securitycraft:reinforced_observer", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedRedstoneLamp), 0, new ModelResourceLocation("securitycraft:reinforced_redstone_lamp", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

@@ -6,6 +6,7 @@
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Reinforced Observer (Thanks Redstone_Dubstep!)
+- New: Reinforced Redstone Lamp
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
