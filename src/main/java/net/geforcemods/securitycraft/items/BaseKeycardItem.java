@@ -20,7 +20,7 @@ public class BaseKeycardItem extends Item{
 	private final int level;
 
 	public BaseKeycardItem(int level) {
-		super(new Item.Properties().maxStackSize(0).group(SecurityCraft.groupSCTechnical));
+		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
 		this.level = level;
 	}
 
