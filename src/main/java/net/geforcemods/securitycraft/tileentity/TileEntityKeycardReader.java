@@ -7,9 +7,12 @@ import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityKeycardReader extends TileEntityDisguisable implements IPasswordProtected {
 
@@ -60,7 +63,12 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null)
-			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		{
+			if(getOwner().isOwner(player))
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			else
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+		}
 	}
 
 	@Override
