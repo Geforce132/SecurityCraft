@@ -33,6 +33,7 @@
 - Fix: Giving keycards via commands (e.g. /give @p securitycraft:keycard_lv1) hangs the game
 - Fix: Backspace does not work in Universal Key Changer's GUI
 - Fix: Crash when breaking the floor/ceiling of an activated Block Pocket
+- Fix: Keycard Readers can be set up by players other than the owner
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
