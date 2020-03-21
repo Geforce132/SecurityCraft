@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,6 +17,7 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -72,7 +75,12 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	@Override
 	public void openPasswordGUI(PlayerEntity player) {
 		if(getPassword() == null && player instanceof ServerPlayerEntity)
-			NetworkHooks.openGui((ServerPlayerEntity)player, this, pos);
+		{
+			if(getOwner().isOwner(player))
+				NetworkHooks.openGui((ServerPlayerEntity)player, this, pos);
+			else
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+		}
 	}
 
 	@Override
