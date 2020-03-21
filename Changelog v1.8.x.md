@@ -32,6 +32,7 @@
 - Fix: Claymore has no collision (Thanks Redstone_Dubstep!)
 - Fix: Giving keycards via commands (e.g. /give @p securitycraft:keycard_lv1) hangs the game
 - Fix: Backspace does not work in Universal Key Changer's GUI
+- Fix: Crash when breaking the floor/ceiling of an activated Block Pocket
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
