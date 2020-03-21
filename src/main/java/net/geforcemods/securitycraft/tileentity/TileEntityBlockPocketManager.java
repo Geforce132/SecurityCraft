@@ -214,7 +214,10 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 			for(BlockPos pos : floor)
 			{
-				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockBlockPocketWall.SOLID, false));
+				IBlockState state = world.getBlockState(pos);
+
+				if(state.getProperties().containsKey(BlockBlockPocketWall.SOLID))
+					world.setBlockState(pos, state.withProperty(BlockBlockPocketWall.SOLID, false));
 			}
 
 			if(hasModule(EnumCustomModules.DISGUISE))

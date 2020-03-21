@@ -23,6 +23,7 @@
 - Fix: Mines and Portable Radar can exist without a support block (Thanks Redstone_Dubstep!)
 - Fix: Claymore spawns too many particles when being broken (Thanks Redstone_Dubstep!)
 - Fix: Claymore has no collision (Thanks Redstone_Dubstep!)
+- Fix: Crash when breaking the floor/ceiling of an activated Block Pocket
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
