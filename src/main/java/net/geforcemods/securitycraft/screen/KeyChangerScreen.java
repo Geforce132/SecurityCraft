@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -10,6 +12,7 @@ import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -20,6 +23,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
 public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
@@ -91,6 +95,23 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+	{
+		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
+			TextFieldWidget focusedTextField = textboxNewPasscode.isFocused() ? textboxNewPasscode : (textboxConfirmPasscode.isFocused() ? textboxConfirmPasscode : null);
+
+			if(focusedTextField.getText().length() > 0)
+			{
+				Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
+				focusedTextField.setText(Utils.removeLastChar(focusedTextField.getText()));
+				return true;
+			}
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
