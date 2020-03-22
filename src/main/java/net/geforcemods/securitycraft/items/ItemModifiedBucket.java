@@ -21,9 +21,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -146,14 +144,13 @@ public class ItemModifiedBucket extends ItemBucket {
 				return false;
 			else
 			{
-				if (world.provider.doesWaterVaporize() && containedBlock == SCContent.fakeWater)
+				if (world.provider.doesWaterVaporize() && containedBlock == SCContent.bogusWaterFlowing)
 				{
 					int x = pos.getX();
 					int y = pos.getY();
 					int z = pos.getZ();
 
-					for(EntityPlayer p : world.playerEntities)
-						world.playSound(p, new BlockPos(x + 0.5F, y + 0.5F, z + 0.5F), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.fizz")), SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+					world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
 					for (int l = 0; l < 8; ++l)
 						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
