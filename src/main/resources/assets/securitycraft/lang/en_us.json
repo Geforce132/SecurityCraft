@@ -766,6 +766,8 @@
 	"config.securitycraft:maxAlarmRange.tooltip": "What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also not be finetuneable.",
 	"config.securitycraft:respectInvisibility": "Respect invisibility?",
 	"config.securitycraft:respectInvisibility.tooltip": "Should the sentry/inventory scanner/laser block/etc. ignore players and entities that are invisible?",
+	"config.securitycraft:reinforcedBlockTint": "Darker reinforced block textures?",
+	"config.securitycraft:reinforcedBlockTint.tooltip": "Should reinforced blocks' textures be slightly darker than their vanilla counterparts?",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",

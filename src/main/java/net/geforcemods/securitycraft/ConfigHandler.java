@@ -46,6 +46,7 @@ public class ConfigHandler {
 	public DoubleValue alarmSoundVolume;
 	public DoubleValue cameraSpeed;
 	public BooleanValue respectInvisibility;
+	public BooleanValue reinforcedBlockTint;
 
 	ConfigHandler(ForgeConfigSpec.Builder builder)
 	{
@@ -197,5 +198,10 @@ public class ConfigHandler {
 				.translation("config.securitycraft:respectInvisibility")
 				.comment("Should the sentry/inventory scanner/laser block/etc. ignore players and entities that are invisible?")
 				.define("respect_invisibility", false);
+
+		reinforcedBlockTint = builder
+				.translation("config.securitycraft:reinforcedBlockTint")
+				.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts?")
+				.define("reinforced_block_tint", true);
 	}
 }

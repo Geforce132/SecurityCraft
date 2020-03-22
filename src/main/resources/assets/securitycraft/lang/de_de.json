@@ -763,6 +763,8 @@
 	"config.securitycraft:maxAlarmRange.tooltip": "Was ist der maximale Wert der für die Reichweiten-Einstellung eines Alarms gesetzt werden kann? Beachte, dass dieser Wert durch die Ladedistanz von Chunks begrenzt sein kann. Höhere Werte können außerdem nicht fein eingestellt werden.",
 	"config.securitycraft:respectInvisibility": "Unsichtbarkeit berücksichtigen?",
 	"config.securitycraft:respectInvisibility.tooltip": "Soll das Geschütz/der Inventarscanner/Laser Block/etc. Spieler und Mobs ignorieren, die unsichtbar sind?",
+	"config.securitycraft:reinforcedBlockTint": "Dunklere Texturen für verstärkte Blöcke?",
+	"config.securitycraft:reinforcedBlockTint.tooltip": "Sollen die Texturen für verstärkte Blöcke dunkler als die ihres Vanilla-Gegenstücks sein?",
 
     "option.securitycraft.portable_radar.searchRadius": "Suchradius: #",
     "option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",

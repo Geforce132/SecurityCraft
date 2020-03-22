@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -250,27 +251,48 @@ public class ClientProxy implements IProxy
 			}
 		}
 
-		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), 0x0E7063);
-		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), 0x0E7063);
-		toTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), 0x15b3a2);
-		toTint.put(SCContent.CRYSTAL_QUARTZ.get(), 0x15b3a2);
-		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), 0x15b3a2);
-		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), 0x15b3a2);
-		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), 0x15b3a2);
-		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> tint, block));
-		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> tint, item));
+		boolean tintBlocks = ConfigHandler.CONFIG.reinforcedBlockTint.get();
+		int noTint = 0xFFFFFF;
+		int crystalQuartzTint = 0x15B3A2;
+		int reinforcedCrystalQuartzTint = 0x0E7063;
+
+		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), reinforcedCrystalQuartzTint);
+		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), reinforcedCrystalQuartzTint);
+		toTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		toTint.put(SCContent.CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
+		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
+		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
+			if(tintBlocks)
+				return noTint;
+			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
+				return crystalQuartzTint;
+			else
+				return noTint;
+		}, block));
+		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+			if(tintBlocks)
+				return tint;
+			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
+				return crystalQuartzTint;
+			else return noTint;
+		}, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			Block block = state.getBlock();
-
-			if(block instanceof DisguisableBlock)
+			if(tintBlocks)
 			{
-				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
+				Block block = state.getBlock();
 
-				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
-					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
+				if(block instanceof DisguisableBlock)
+				{
+					Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
+
+					if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
+						return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
+				}
 			}
 
-			return 0xFFFFFF;
+			return noTint;
 		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
 	}
 

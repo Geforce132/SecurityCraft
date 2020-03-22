@@ -9,6 +9,7 @@
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Reinforced Observer (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
+- New: Configuration option to turn off the darker textures of reinforced blocks
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
