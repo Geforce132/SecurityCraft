@@ -265,7 +265,7 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			if(tintBlocks)
-				return noTint;
+				return tint;
 			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
 				return crystalQuartzTint;
 			else
