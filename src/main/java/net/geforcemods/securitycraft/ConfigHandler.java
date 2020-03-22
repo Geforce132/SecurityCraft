@@ -133,4 +133,8 @@ public class ConfigHandler
 	@Name("Respect invisibility?")
 	@LangKey("config.securitycraft:respectInvisibility")
 	public static boolean respectInvisibility = false;
+
+	@Name("Darker reinforced block textures?")
+	@LangKey("config.securitycraft:reinforcedBlockTint")
+	public static boolean reinforcedBlockTint = true;
 }

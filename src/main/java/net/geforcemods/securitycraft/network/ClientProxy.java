@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network;
 
 import java.lang.reflect.Field;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWall;
@@ -317,13 +318,30 @@ public class ClientProxy implements IProxy {
 			if(field.isAnnotationPresent(Tinted.class))
 			{
 				int tint = field.getAnnotation(Tinted.class).value();
+				int noTint = 0xFFFFFF;
+				int crystalQuartzTint = 0x15B3A2;
+				int reinforcedCrystalQuartzTint = 0x0E7063;
 
 				try
 				{
 					//registering reinforced blocks color overlay for world
-					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> tint, (Block)field.get(null));
+					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
+						if(ConfigHandler.reinforcedBlockTint)
+							return tint;
+						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
+							return crystalQuartzTint;
+						else
+							return noTint;
+					}, (Block)field.get(null));
 					//same thing for inventory
-					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> tint, (Block)field.get(null));
+					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> {
+						if(ConfigHandler.reinforcedBlockTint)
+							return tint;
+						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
+							return crystalQuartzTint;
+						else
+							return noTint;
+					}, (Block)field.get(null));
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
