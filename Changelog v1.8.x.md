@@ -11,6 +11,7 @@
 - New: Reinforced Redstone Lamp
 - New: Configuration option to turn off the darker textures of reinforced blocks
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
+- Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
