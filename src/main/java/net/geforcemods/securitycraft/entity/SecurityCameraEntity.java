@@ -53,6 +53,7 @@ public class SecurityCameraEntity extends Entity{
 	private boolean shouldProvideNightVision = false;
 	private float zoomAmount = 1F;
 	private String playerViewingName = null;
+	private boolean zooming = false;
 
 	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world){
 		super(SCContent.eTypeSecurityCamera, world);
@@ -214,10 +215,17 @@ public class SecurityCameraEntity extends Entity{
 			enableNightVision();
 
 		if(KeyBindings.cameraZoomIn.isPressed())
-			zoomCameraView(-1);
-
-		if(KeyBindings.cameraZoomOut.isPressed())
-			zoomCameraView(1);
+		{
+			zoomIn();
+			zooming = true;
+		}
+		else if(KeyBindings.cameraZoomOut.isPressed())
+		{
+			zoomOut();
+			zooming = true;
+		}
+		else
+			zooming = false;
 	}
 
 	public void moveViewUp() {
@@ -307,19 +315,20 @@ public class SecurityCameraEntity extends Entity{
 		}
 	}
 
-	public void zoomCameraView(int zoom) {
-		if(zoom > 0){
-			if(zoomAmount == -0.5F)
-				zoomAmount = 1F;
-			else if(zoomAmount == 1F)
-				zoomAmount = 2F;
-		}else if(zoom < 0)
-			if(zoomAmount == 2F)
-				zoomAmount = 1F;
-			else if(zoomAmount == 1F)
-				zoomAmount = -0.5F;
+	public void zoomIn()
+	{
+		zoomAmount = Math.min(zoomAmount - 0.1F, 2.0F);
 
-		Minecraft.getInstance().world.playSound(new BlockPos(getPosX(), getPosY(), getPosZ()), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+		if(!zooming)
+			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+	}
+
+	public void zoomOut()
+	{
+		zoomAmount = Math.max(zoomAmount + 0.1F, -0.5F);
+
+		if(!zooming)
+			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
