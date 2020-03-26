@@ -1,0 +1,12 @@
+{
+    "parent": "securitycraft:block/reinforced_block",
+    "textures": {
+        "south": "block/grass_block_snow",
+        "west": "block/grass_block_snow",
+        "east": "block/grass_block_snow",
+        "up": "block/grass_block_top",
+        "down": "block/dirt",
+        "north": "block/grass_block_snow",
+        "particle": "block/dirt"
+    }
+}

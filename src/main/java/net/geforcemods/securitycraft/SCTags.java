@@ -16,6 +16,9 @@ public class SCTags
 		public static final Tag<Block> REINFORCED_CARPETS = tag("reinforced/carpets");
 		public static final Tag<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final Tag<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
+		public static final Tag<Block> REINFORCED_DIRT = tag("reinforced/dirt");
+		public static final Tag<Block> REINFORCED_END_STONES = tag("reinforced/end_stones");
+		public static final Tag<Block> REINFORCED_ICE = tag("reinforced/ice");
 		public static final Tag<Block> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final Tag<Block> REINFORCED_LOGS = tag("reinforced/logs");
 		public static final Tag<Block> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");
@@ -46,6 +49,9 @@ public class SCTags
 		public static final Tag<Item> REINFORCED_CARPETS = tag("reinforced/carpets");
 		public static final Tag<Item> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final Tag<Item> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
+		public static final Tag<Item> REINFORCED_DIRT = tag("reinforced/dirt");
+		public static final Tag<Item> REINFORCED_END_STONES = tag("reinforced/end_stones");
+		public static final Tag<Item> REINFORCED_ICE = tag("reinforced/ice");
 		public static final Tag<Item> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final Tag<Item> REINFORCED_LOGS = tag("reinforced/logs");
 		public static final Tag<Item> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");

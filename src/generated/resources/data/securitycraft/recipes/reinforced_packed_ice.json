@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    "BBB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_ice"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_packed_ice"
+  }
+}

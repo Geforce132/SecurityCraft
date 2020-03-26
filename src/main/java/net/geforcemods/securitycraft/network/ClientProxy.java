@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -58,6 +59,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.GrassColors;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -161,7 +164,10 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_DOOR.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRASS_BLOCK.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ICE.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), RenderType.getCutoutMipped());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_COBWEB.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(), RenderType.getCutoutMipped());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), RenderType.getTranslucent());
@@ -264,6 +270,9 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
+			if (block == SCContent.REINFORCED_GRASS_BLOCK.get())
+				if (!world.getBlockState(pos).get(ReinforcedSnowyDirtBlock.SNOWY))
+					return world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 			if(tintBlocks)
 				return tint;
 			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
@@ -272,6 +281,8 @@ public class ClientProxy implements IProxy
 				return noTint;
 		}, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+			if (item == SCContent.REINFORCED_GRASS_BLOCK.get())
+				return GrassColors.get(0.5D, 1.0D);
 			if(tintBlocks)
 				return tint;
 			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)

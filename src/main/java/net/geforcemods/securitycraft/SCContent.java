@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -231,7 +232,10 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_DIORITE = BLOCKS.register("reinforced_polished_diorite", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.POLISHED_DIORITE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ANDESITE = BLOCKS.register("reinforced_andesite", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.ANDESITE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE = BLOCKS.register("reinforced_polished_andesite", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.POLISHED_ANDESITE));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRASS_BLOCK = BLOCKS.register("reinforced_grass_block", () -> new ReinforcedSnowyDirtBlock(Material.ORGANIC, SoundType.PLANT, Blocks.GRASS_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIRT = BLOCKS.register("reinforced_dirt", () -> new BaseReinforcedBlock(SoundType.GROUND, Material.EARTH, Blocks.DIRT));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COARSE_DIRT = BLOCKS.register("reinforced_coarse_dirt", () -> new BaseReinforcedBlock(SoundType.GROUND, Material.EARTH, Blocks.COARSE_DIRT));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PODZOL = BLOCKS.register("reinforced_podzol", () -> new ReinforcedSnowyDirtBlock( Material.EARTH, SoundType.GROUND, Blocks.PODZOL));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE = BLOCKS.register("reinforced_cobblestone", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.COBBLESTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OAK_PLANKS = BLOCKS.register("reinforced_oak_planks", () -> new BaseReinforcedBlock(SoundType.WOOD, Material.WOOD, Blocks.OAK_PLANKS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SPRUCE_PLANKS = BLOCKS.register("reinforced_spruce_planks", () -> new BaseReinforcedBlock(SoundType.WOOD, Material.WOOD, Blocks.SPRUCE_PLANKS));
@@ -324,6 +328,9 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OAK_STAIRS = BLOCKS.register("reinforced_oak_stairs", () -> new ReinforcedStairsBlock(SoundType.WOOD, Material.WOOD, Blocks.OAK_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIAMOND_BLOCK = BLOCKS.register("reinforced_diamond_block", () -> new BaseReinforcedBlock(SoundType.METAL, Material.IRON, Blocks.DIAMOND_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE_STAIRS = BLOCKS.register("reinforced_cobblestone_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.COBBLESTONE_STAIRS));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(Block.Properties.create(Material.ICE).hardnessAndResistance(-1.0F, 6000000.0F).slipperiness(0.98F), SoundType.GLASS, Blocks.ICE));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SNOW_BLOCK = BLOCKS.register("reinforced_snow_block", () -> new BaseReinforcedBlock(SoundType.SNOW, Material.SNOW_BLOCK, Blocks.SNOW_BLOCK));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CLAY = BLOCKS.register("reinforced_clay", () -> new BaseReinforcedBlock(SoundType.GROUND, Material.CLAY, Blocks.CLAY));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHERRACK = BLOCKS.register("reinforced_netherrack", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.NETHERRACK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GLOWSTONE = BLOCKS.register("reinforced_glowstone", () -> new BaseReinforcedBlock(SoundType.GLASS, Material.GLASS, Blocks.GLOWSTONE, 15));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_BRICKS = BLOCKS.register("reinforced_stone_bricks", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.STONE_BRICKS));
@@ -332,6 +339,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CHISELED_STONE_BRICKS = BLOCKS.register("reinforced_chiseled_stone_bricks", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.CHISELED_STONE_BRICKS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BRICK_STAIRS = BLOCKS.register("reinforced_brick_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.BRICK_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_BRICK_STAIRS = BLOCKS.register("reinforced_stone_brick_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.STONE_BRICK_STAIRS));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MYCELIUM = BLOCKS.register("reinforced_mycelium", () -> new ReinforcedSnowyDirtBlock(Material.ORGANIC, SoundType.PLANT, Blocks.MYCELIUM));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHER_BRICKS = BLOCKS.register("reinforced_nether_bricks", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.NETHER_BRICKS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_STAIRS = BLOCKS.register("reinforced_nether_brick_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.NETHER_BRICK_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_END_STONE = BLOCKS.register("reinforced_end_stone", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.END_STONE));
@@ -363,6 +371,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLACK_TERRACOTTA = BLOCKS.register("reinforced_black_terracotta", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.BLACK_TERRACOTTA));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_TERRACOTTA = BLOCKS.register("reinforced_hardened_clay", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.TERRACOTTA));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COAL_BLOCK = BLOCKS.register("reinforced_coal_block", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.COAL_BLOCK));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_PACKED_ICE = BLOCKS.register("reinforced_packed_ice", () -> new BaseReinforcedBlock(SoundType.GLASS, Material.PACKED_ICE, Blocks.PACKED_ICE, 0.98F));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_ACACIA_STAIRS = BLOCKS.register("reinforced_acacia_stairs", () -> new ReinforcedStairsBlock(SoundType.WOOD, Material.WOOD, Blocks.ACACIA_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_STAIRS = BLOCKS.register("reinforced_dark_oak_stairs", () -> new ReinforcedStairsBlock(SoundType.WOOD, Material.WOOD, Blocks.DARK_OAK_STAIRS));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.register("reinforced_white_stained_glass", () -> new ReinforcedStainedGlassBlock(DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS));
@@ -392,6 +401,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CHISELED_RED_SANDSTONE = BLOCKS.register("reinforced_chiseled_red_sandstone", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.CHISELED_RED_SANDSTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CUT_RED_SANDSTONE = BLOCKS.register("reinforced_cut_red_sandstone", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.CUT_RED_SANDSTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE_STAIRS = BLOCKS.register("reinforced_red_sandstone_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.RED_SANDSTONE_STAIRS));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHER_WART_BLOCK = BLOCKS.register("reinforced_nether_wart_block", () -> new BaseReinforcedBlock(SoundType.WOOD, Material.ORGANIC, Blocks.NETHER_WART_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICKS = BLOCKS.register("reinforced_red_nether_bricks", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.RED_NETHER_BRICKS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BONE_BLOCK = BLOCKS.register("reinforced_bone_block", () -> new ReinforcedRotatedPillarBlock(Material.ROCK, Blocks.BONE_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_WHITE_CONCRETE = BLOCKS.register("reinforced_white_concrete", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.WHITE_CONCRETE));
@@ -410,6 +420,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GREEN_CONCRETE = BLOCKS.register("reinforced_green_concrete", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.GREEN_CONCRETE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_CONCRETE = BLOCKS.register("reinforced_red_concrete", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.RED_CONCRETE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLACK_CONCRETE = BLOCKS.register("reinforced_black_concrete", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.BLACK_CONCRETE));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLUE_ICE = BLOCKS.register("reinforced_blue_ice", () -> new BaseReinforcedBlock(SoundType.GLASS, Material.PACKED_ICE, Blocks.BLUE_ICE, 0.989F));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_GRANITE_STAIRS = BLOCKS.register("reinforced_polished_granite_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.POLISHED_GRANITE_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS = BLOCKS.register("reinforced_smooth_red_sandstone_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.SMOOTH_RED_SANDSTONE_STAIRS));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MOSSY_STONE_BRICK_STAIRS = BLOCKS.register("reinforced_mossy_stone_brick_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, Blocks.MOSSY_STONE_BRICK_STAIRS));
@@ -438,6 +449,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE_SLAB = BLOCKS.register("reinforced_polished_andesite_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.POLISHED_ANDESITE_SLAB));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIORITE_SLAB = BLOCKS.register("reinforced_diorite_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.DIORITE_SLAB));
 	//ordered by vanilla decoration blocks creative tab order
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new BaseReinforcedBlock(Block.Properties.create(Material.WEB).doesNotBlockMovement(), Blocks.COBWEB));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedPaneBlock(SoundType.METAL, Material.IRON, Blocks.IRON_BARS));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_GLASS_PANE = BLOCKS.register("reinforced_glass_pane", () -> new ReinforcedPaneBlock(SoundType.GLASS, Material.GLASS, Blocks.GLASS_PANE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE_WALL = BLOCKS.register("reinforced_cobblestone_wall", () -> new ReinforcedWallBlock(Blocks.COBBLESTONE_WALL));
