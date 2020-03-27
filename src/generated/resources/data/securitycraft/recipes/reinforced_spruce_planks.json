@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:reinforced_planks",
   "ingredients": [
     {
       "tag": "securitycraft:reinforced/spruce_logs"
