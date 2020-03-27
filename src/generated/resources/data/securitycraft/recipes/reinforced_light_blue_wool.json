@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:reinforced_wool",
   "ingredients": [
     {
       "tag": "forge:dyes/light_blue"

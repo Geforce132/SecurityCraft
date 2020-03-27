@@ -850,6 +850,7 @@ public class RecipeGenerator extends RecipeProvider
 	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
+		.setGroup("securitycraft:reinforced_wool")
 		.addIngredient(dye)
 		.addIngredient(SCContent.REINFORCED_WHITE_WOOL.get())
 		.addCriterion("has_wool", hasItem(SCContent.REINFORCED_WHITE_WOOL.get()))
@@ -932,6 +933,7 @@ public class RecipeGenerator extends RecipeProvider
 	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> log, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result, 4)
+		.setGroup("securitycraft:reinforced_planks")
 		.addIngredient(log)
 		.addCriterion("has_log", hasItem(log))
 		.build(consumer);
