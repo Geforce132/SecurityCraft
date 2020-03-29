@@ -131,9 +131,9 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	public static GameProfile updateGameProfile(GameProfile input) {
-		if (profileCache == null)
+		if (profileCache == null && ServerLifecycleHooks.getCurrentServer() != null)
 			setProfileCache(ServerLifecycleHooks.getCurrentServer().getPlayerProfileCache());
-		if(sessionService == null)
+		if(sessionService == null && ServerLifecycleHooks.getCurrentServer() != null)
 			setSessionService(ServerLifecycleHooks.getCurrentServer().getMinecraftSessionService());
 
 		if (input != null && !StringUtils.isNullOrEmpty(input.getName())) {
