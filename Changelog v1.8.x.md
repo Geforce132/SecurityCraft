@@ -28,6 +28,7 @@
 - Fix: Crash when breaking the floor/ceiling of an activated Block Pocket
 - Fix: Keycard Readers can be set up by players other than the owner
 - Fix: Fake Water can be placed in the nether
+- Fix: Occasional Retinal Scanner crash
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

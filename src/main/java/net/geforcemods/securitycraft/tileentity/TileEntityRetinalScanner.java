@@ -130,9 +130,9 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 	}
 
 	public static GameProfile updateGameProfile(GameProfile input) {
-		if (profileCache == null)
+		if (profileCache == null && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
 			setProfileCache(FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerProfileCache());
-		if(sessionService == null)
+		if(sessionService == null && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
 			setSessionService(FMLCommonHandler.instance().getMinecraftServerInstance().getMinecraftSessionService());
 
 		if (input != null && !StringUtils.isNullOrEmpty(input.getName())) {
