@@ -17,9 +17,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -109,7 +106,7 @@ public class BlockMine extends BlockExplosive {
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity){
 		if(world.isRemote)
 			return;
-		else if(entity instanceof EntityCreeper || entity instanceof EntityOcelot || entity instanceof EntityEnderman || entity instanceof EntityItem)
+		else if(entity instanceof EntityItem)
 			return;
 		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);

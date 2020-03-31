@@ -8,7 +8,9 @@
 - New: Reinforced Observer (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Configuration option to turn off the darker textures of reinforced blocks
+- New: Korean translation (Thanks mindy15963!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
+- Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
