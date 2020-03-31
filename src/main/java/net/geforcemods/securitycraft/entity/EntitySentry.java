@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
@@ -303,7 +304,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, d2 + f, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
-		world.spawnEntity(throwableEntity);
+		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(throwableEntity));
 	}
 
 	@Override
