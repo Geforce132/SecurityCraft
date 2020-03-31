@@ -13,9 +13,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.EndermanEntity;
-import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
@@ -93,7 +90,7 @@ public class MineBlock extends ExplosiveBlock {
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity){
 		if(world.isRemote)
 			return;
-		else if(entity instanceof CreeperEntity || entity instanceof OcelotEntity || entity instanceof EndermanEntity || entity instanceof ItemEntity)
+		else if(entity instanceof ItemEntity)
 			return;
 		else if(entity instanceof LivingEntity && !PlayerUtils.isPlayerMountedOnCamera((LivingEntity)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
