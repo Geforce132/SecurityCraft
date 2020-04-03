@@ -164,7 +164,7 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_DOOR.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), RenderType.getCutoutMipped());
-		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRASS_BLOCK.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_GRASS_BLOCK.get(), RenderType.getCutoutMipped());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_ICE.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), RenderType.getCutoutMipped());
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_COBWEB.get(), RenderType.getCutout());
@@ -237,6 +237,19 @@ public class ClientProxy implements IProxy
 		KeyBindings.init();
 	}
 
+	private int mixTints(int tint1, int tint2)
+	{
+		int red = (tint1 >> 0x10) & 0xFF;
+		int green = (tint1 >> 0x8) & 0xFF;
+		int blue = tint1 & 0xFF;
+
+		red *= (float)(tint2 >> 0x10 & 0xFF) / 0xFF;
+		green *= (float)(tint2 >> 0x8 & 0xFF) / 0xFF;
+		blue *= (float)(tint2 & 0xFF) / 0xFF;
+
+		return ((red << 8) + green << 8) + blue;
+	}
+
 	@Override
 	public void tint()
 	{
@@ -270,10 +283,14 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			if (block == SCContent.REINFORCED_GRASS_BLOCK.get())
-				if (!world.getBlockState(pos).get(ReinforcedSnowyDirtBlock.SNOWY))
-					return world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
-			if(tintBlocks)
+			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !world.getBlockState(pos).get(ReinforcedSnowyDirtBlock.SNOWY))
+			{
+				if(tintIndex == 0)
+					return tintBlocks ? tint : noTint;
+				int grassTint = world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+				return tintBlocks ? mixTints(grassTint, tint) : grassTint;
+			}
+			else if(tintBlocks)
 				return tint;
 			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
 				return crystalQuartzTint;
@@ -281,9 +298,14 @@ public class ClientProxy implements IProxy
 				return noTint;
 		}, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-			if (item == SCContent.REINFORCED_GRASS_BLOCK.get())
-				return GrassColors.get(0.5D, 1.0D);
-			if(tintBlocks)
+			if(item == SCContent.REINFORCED_GRASS_BLOCK.get())
+			{
+				if(tintIndex == 0)
+					return tintBlocks ? tint : noTint;
+				int grassTint = GrassColors.get(0.5D, 1.0D);
+				return tintBlocks ? mixTints(grassTint, tint) : grassTint;
+			}
+			else if(tintBlocks)
 				return tint;
 			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
 				return crystalQuartzTint;

@@ -32,6 +32,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.PlantType;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock
 {
@@ -93,19 +94,21 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (this == SCContent.REINFORCED_COBWEB.get())
+		{
 			if (entity instanceof PlayerEntity)
 			{
 				TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof OwnableTileEntity)
+				if (te instanceof OwnableTileEntity)
 				{
 					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
 
-					if(ownableTe.getOwner().isOwner((PlayerEntity)entity))
+					if (ownableTe.getOwner().isOwner((PlayerEntity) entity))
 						return;
 				}
 			}
-		entity.setMotionMultiplier(state, new Vec3d(0.25D, (double) 0.05F, 0.25D));
+			entity.setMotionMultiplier(state, new Vec3d(0.25D, (double) 0.05F, 0.25D));
+		}
 	}
 
 	@Override
@@ -129,7 +132,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
 		BlockState plant = plantable.getPlant(world, pos.offset(facing));
-		net.minecraftforge.common.PlantType type = plantable.getPlantType(world, pos.offset(facing));
+		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
 		if (plant.getBlock() == Blocks.CACTUS)
 			return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
