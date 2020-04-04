@@ -101,12 +101,11 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 				if (te instanceof OwnableTileEntity)
 				{
-					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
-
-					if (ownableTe.getOwner().isOwner((PlayerEntity) entity))
+					if(((OwnableTileEntity)te).getOwner().isOwner((PlayerEntity) entity))
 						return;
 				}
 			}
+
 			entity.setMotionMultiplier(state, new Vec3d(0.25D, (double) 0.05F, 0.25D));
 		}
 	}
@@ -141,7 +140,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			case Desert: return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
 			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);
 			case Plains: return SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock());
-			case Water:  return this.getBlock() == SCContent.FAKE_WATER_BLOCK.get() || this.getFluidState(state) == SCContent.FAKE_WATER.get() ;
 			case Beach:
 				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock()) || this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
 				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||

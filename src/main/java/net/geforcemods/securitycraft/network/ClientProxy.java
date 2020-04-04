@@ -237,19 +237,6 @@ public class ClientProxy implements IProxy
 		KeyBindings.init();
 	}
 
-	private int mixTints(int tint1, int tint2)
-	{
-		int red = (tint1 >> 0x10) & 0xFF;
-		int green = (tint1 >> 0x8) & 0xFF;
-		int blue = tint1 & 0xFF;
-
-		red *= (float)(tint2 >> 0x10 & 0xFF) / 0xFF;
-		green *= (float)(tint2 >> 0x8 & 0xFF) / 0xFF;
-		blue *= (float)(tint2 & 0xFF) / 0xFF;
-
-		return ((red << 8) + green << 8) + blue;
-	}
-
 	@Override
 	public void tint()
 	{
@@ -327,6 +314,19 @@ public class ClientProxy implements IProxy
 
 			return noTint;
 		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
+	}
+
+	private int mixTints(int tint1, int tint2)
+	{
+		int red = (tint1 >> 0x10) & 0xFF;
+		int green = (tint1 >> 0x8) & 0xFF;
+		int blue = tint1 & 0xFF;
+
+		red *= (float)(tint2 >> 0x10 & 0xFF) / 0xFF;
+		green *= (float)(tint2 >> 0x8 & 0xFF) / 0xFF;
+		blue *= (float)(tint2 & 0xFF) / 0xFF;
+
+		return ((red << 8) + green << 8) + blue;
 	}
 
 	@Override
