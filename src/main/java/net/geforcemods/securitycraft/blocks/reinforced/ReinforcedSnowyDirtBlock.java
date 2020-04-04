@@ -26,6 +26,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.PlantType;
 
 import java.util.List;
 import java.util.Random;
@@ -56,11 +57,11 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 		return this.getDefaultState().with(SNOWY, Boolean.valueOf(block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get()));
 	}
 
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if (this == SCContent.REINFORCED_MYCELIUM.get()) {
-			super.animateTick(stateIn, worldIn, pos, rand);
+			super.animateTick(state, world, pos, rand);
 			if (rand.nextInt(10) == 0) {
-				worldIn.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), (double) pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
+				world.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
 			}
 		}
 
@@ -69,8 +70,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
-		BlockState plant = plantable.getPlant(world, pos.offset(facing));
-		net.minecraftforge.common.PlantType type = plantable.getPlantType(world, pos.offset(facing));
+		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
 		switch (type) {
 			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);
@@ -82,6 +82,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.south()).getMaterial() == Material.WATER);
 				return isBeach && hasWater;
+			default: break;
 		}
 		return false;
 	}

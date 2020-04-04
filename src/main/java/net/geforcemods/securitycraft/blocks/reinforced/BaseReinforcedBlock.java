@@ -106,7 +106,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				}
 			}
 
-			entity.setMotionMultiplier(state, new Vec3d(0.25D, (double) 0.05F, 0.25D));
+			entity.setMotionMultiplier(state, new Vec3d(0.25D, 0.05D, 0.25D));
 		}
 	}
 
@@ -147,6 +147,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.south()).getMaterial() == Material.WATER);
 				return isBeach && hasWater;
+			default: break;
 		}
 		return false;
 	}
@@ -182,18 +183,18 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
 		if (this == SCContent.REINFORCED_ICE.get())
 		{
-			if (worldIn.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(worldIn, pos))
+			if (world.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(world, pos))
 			{
-				if (worldIn.dimension.doesWaterVaporize()) {
-					worldIn.removeBlock(pos, false);
+				if (world.dimension.doesWaterVaporize()) {
+					world.removeBlock(pos, false);
 				}
 				else {
-					worldIn.setBlockState(pos, Blocks.WATER.getDefaultState());
-					worldIn.neighborChanged(pos, Blocks.WATER, pos);
+					world.setBlockState(pos, Blocks.WATER.getDefaultState());
+					world.neighborChanged(pos, Blocks.WATER, pos);
 				}
 			}
 		}

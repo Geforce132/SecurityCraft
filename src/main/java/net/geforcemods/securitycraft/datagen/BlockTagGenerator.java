@@ -62,11 +62,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
 		getBuilder(SCTags.Blocks.REINFORCED_END_STONES).add(
-				SCContent.REINFORCED_END_STONE.get(),
-				SCContent.REINFORCED_END_STONE_BRICKS.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_SLAB.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_STAIRS.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_WALL.get());
+				SCContent.REINFORCED_END_STONE.get());
 		getBuilder(SCTags.Blocks.REINFORCED_ICE).add(
 				SCContent.REINFORCED_ICE.get(),
 				SCContent.REINFORCED_PACKED_ICE.get(),
