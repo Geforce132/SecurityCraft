@@ -1,10 +1,6 @@
 {
   "replace": false,
   "values": [
-    "securitycraft:reinforced_end_stone",
-    "securitycraft:reinforced_end_stone_bricks",
-    "securitycraft:reinforced_end_stone_brick_slab",
-    "securitycraft:reinforced_end_stone_brick_stairs",
-    "securitycraft:reinforced_end_stone_brick_wall"
+    "securitycraft:reinforced_end_stone"
   ]
 }
