@@ -1,7 +1,10 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_red_sand" }
+            { "model": "securitycraft:block/reinforced_red_sand" },
+            { "model": "securitycraft:block/reinforced_red_sand", "y": 90 },
+            { "model": "securitycraft:block/reinforced_red_sand", "y": 180 },
+            { "model": "securitycraft:block/reinforced_red_sand", "y": 270 }
         ]
     }
 }

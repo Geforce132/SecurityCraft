@@ -55,6 +55,18 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_DARK_OAK_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
+		getBuilder(SCTags.Blocks.REINFORCED_DIRT).add(
+				SCContent.REINFORCED_GRASS_BLOCK.get(),
+				SCContent.REINFORCED_DIRT.get(),
+				SCContent.REINFORCED_COARSE_DIRT.get(),
+				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_MYCELIUM.get());
+		getBuilder(SCTags.Blocks.REINFORCED_END_STONES).add(
+				SCContent.REINFORCED_END_STONE.get());
+		getBuilder(SCTags.Blocks.REINFORCED_ICE).add(
+				SCContent.REINFORCED_ICE.get(),
+				SCContent.REINFORCED_PACKED_ICE.get(),
+				SCContent.REINFORCED_BLUE_ICE.get());
 		getBuilder(SCTags.Blocks.REINFORCED_JUNGLE_LOGS).add(
 				SCContent.REINFORCED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_JUNGLE_WOOD.get(),
