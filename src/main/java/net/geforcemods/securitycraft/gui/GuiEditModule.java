@@ -37,7 +37,7 @@ public class GuiEditModule extends GuiContainer
 		super.initGui();
 
 		Keyboard.enableRepeatEvents(true);
-		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 100, 15);
+		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 110, 15);
 		buttonList.add(new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
 		buttonList.add(new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
 		buttonList.add(new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
