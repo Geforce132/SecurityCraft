@@ -1,0 +1,6 @@
+{
+    "parent": "securitycraft:block/reinforced_block_mirrored_all",
+    "textures": {
+        "all": "block/stone"
+    }
+}
