@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiEditModule extends GuiContainer
 {
+	private static NBTTagCompound savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
 	private GuiTextField inputField;
@@ -129,12 +130,12 @@ public class GuiEditModule extends GuiContainer
 				}
 				break;
 			case 2: //copy
-				SecurityCraft.instance.setSavedModule(module.getTagCompound());
+				savedModule = module.getTagCompound();
 				return;
 			case 3: //paste
-				module.setTagCompound(SecurityCraft.instance.getSavedModule());
+				module.setTagCompound(savedModule);
 				break;
-			case 4:
+			case 4: //clear
 				module.setTagCompound(new NBTTagCompound());
 				break;
 			default: return;

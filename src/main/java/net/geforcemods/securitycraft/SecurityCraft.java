@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandSC;
@@ -54,9 +53,7 @@ public class SecurityCraft {
 	public static SimpleNetworkWrapper network;
 	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
-	public HashMap<String, Object[]> cameraUsePositions = new HashMap<>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
-	private NBTTagCompound savedModule;
 	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
@@ -127,22 +124,6 @@ public class SecurityCraft {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public Object[] getUsePosition(String playerName) {
-		return cameraUsePositions.get(playerName);
-	}
-
-	public boolean hasUsePosition(String playerName) {
-		return cameraUsePositions.containsKey(playerName);
-	}
-
-	public NBTTagCompound getSavedModule() {
-		return savedModule;
-	}
-
-	public void setSavedModule(NBTTagCompound savedModule) {
-		this.savedModule = savedModule;
 	}
 
 	public static String getVersion() {
