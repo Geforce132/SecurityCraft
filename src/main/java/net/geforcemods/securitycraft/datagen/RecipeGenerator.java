@@ -309,6 +309,13 @@ public class RecipeGenerator extends RecipeProvider
 		.key('P', SCTags.Items.REINFORCED_PLANKS)
 		.addCriterion("has_book", hasItem(Items.BOOK))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_COARSE_DIRT.get(), 4)
+		.patternLine("DG")
+		.patternLine("GD")
+		.key('D', SCContent.REINFORCED_DIRT.get())
+		.key('G', SCContent.REINFORCED_GRAVEL.get())
+		.addCriterion("has_reinforced_gravel", hasItem(SCContent.REINFORCED_GRAVEL.get()))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_DIORITE.get(), 2)
 		.patternLine("CQ")
 		.patternLine("QC")
@@ -615,6 +622,8 @@ public class RecipeGenerator extends RecipeProvider
 		addColoredWoolRecipe(consumer, Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_WOOL.get());
 		addColoredWoolRecipe(consumer, Tags.Items.DYES_RED, SCContent.REINFORCED_RED_WOOL.get());
 		addColoredWoolRecipe(consumer, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get());
+		addCompressingRecipe(consumer, SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
+		addCompressingRecipe(consumer, SCContent.REINFORCED_PACKED_ICE.get(), SCContent.REINFORCED_BLUE_ICE.get());
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get(), ToggleKeycard1Condition.INSTANCE);
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get(), ToggleKeycard2Condition.INSTANCE);
 		addKeycardRecipe(consumer, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get(), ToggleKeycard3Condition.INSTANCE);
@@ -794,6 +803,9 @@ public class RecipeGenerator extends RecipeProvider
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_STONE_BRICKS.get()), SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(), 0.1F, 200)
 		.addCriterion("has_reinforced_stone_bricks", hasItem(SCContent.REINFORCED_STONE_BRICKS.get()))
 		.build(consumer);
+		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(SCContent.REINFORCED_CLAY.get()), SCContent.REINFORCED_TERRACOTTA.get(), 0.35F, 200)
+		.addCriterion("has_reinforced_clay", hasItem(SCContent.REINFORCED_CLAY.get()))
+		.build(consumer);
 	}
 
 	protected final void addBarkRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider log, IItemProvider result) //woof
@@ -855,6 +867,17 @@ public class RecipeGenerator extends RecipeProvider
 		.addIngredient(SCContent.REINFORCED_WHITE_WOOL.get())
 		.addCriterion("has_wool", hasItem(SCContent.REINFORCED_WHITE_WOOL.get()))
 		.build(consumer);
+	}
+
+	protected final void addCompressingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
+	{
+		ShapedRecipeBuilder.shapedRecipe(result)
+				.patternLine("BBB")
+				.patternLine("BBB")
+				.patternLine("BBB")
+				.key('B', block)
+				.addCriterion("has_block", hasItem(block))
+				.build(consumer);
 	}
 
 	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)

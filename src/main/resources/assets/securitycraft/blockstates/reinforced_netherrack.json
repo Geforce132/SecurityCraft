@@ -1,7 +1,22 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_netherrack" }
+            { "model": "securitycraft:block/reinforced_netherrack" },
+            { "model": "securitycraft:block/reinforced_netherrack", "x": 90 },
+            { "model": "securitycraft:block/reinforced_netherrack", "x": 180 },
+            { "model": "securitycraft:block/reinforced_netherrack", "x": 270 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 90 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 90, "x": 90 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 90, "x": 180 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 90, "x": 270 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 180 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 180, "x": 90 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 180, "x": 180 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 180, "x": 270 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 270 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 270, "x": 90 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 270, "x": 180 },
+            { "model": "securitycraft:block/reinforced_netherrack", "y": 270, "x": 270 }
         ]
     }
 }
