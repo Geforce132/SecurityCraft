@@ -270,11 +270,16 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
+			if(world != null && pos != null)
+				return tint;
+
 			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !world.getBlockState(pos).get(ReinforcedSnowyDirtBlock.SNOWY))
 			{
 				if(tintIndex == 0)
 					return tintBlocks ? tint : noTint;
-				int grassTint = world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+
+				int grassTint = BiomeColors.getGrassColor(world, pos);
+
 				return tintBlocks ? mixTints(grassTint, tint) : grassTint;
 			}
 			else if(tintBlocks)
@@ -289,7 +294,9 @@ public class ClientProxy implements IProxy
 			{
 				if(tintIndex == 0)
 					return tintBlocks ? tint : noTint;
+
 				int grassTint = GrassColors.get(0.5D, 1.0D);
+
 				return tintBlocks ? mixTints(grassTint, tint) : grassTint;
 			}
 			else if(tintBlocks)
