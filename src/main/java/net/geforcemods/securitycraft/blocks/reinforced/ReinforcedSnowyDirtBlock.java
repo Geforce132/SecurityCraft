@@ -1,12 +1,19 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.List;
+import java.util.Random;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.SnowyDirtBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -28,43 +35,44 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.PlantType;
 
-import java.util.List;
-import java.util.Random;
-
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, IGrowable
 {
-	private Block BLOCK;
+	private Block vanillaBlock;
 
 	public ReinforcedSnowyDirtBlock(Material mat, SoundType soundType, Block vB)
 	{
 		super(Block.Properties.create(mat).sound(soundType).hardnessAndResistance(-1.0F, 6000000.0F));
-		this.BLOCK = vB;
+		this.vanillaBlock = vB;
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (facing != Direction.UP) {
-			return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-		} else {
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	{
+		if(facing != Direction.UP)
+			return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		else
+		{
 			Block block = facingState.getBlock();
-			return stateIn.with(SNOWY, Boolean.valueOf(block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get()));
+			return state.with(SNOWY, block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get());
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		Block block = context.getWorld().getBlockState(context.getPos().up()).getBlock();
-		return this.getDefaultState().with(SNOWY, Boolean.valueOf(block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get()));
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		Block block = ctx.getWorld().getBlockState(ctx.getPos().up()).getBlock();
+		return getDefaultState().with(SNOWY, block == Blocks.SNOW_BLOCK || block == Blocks.SNOW || block == SCContent.REINFORCED_SNOW_BLOCK.get());
 	}
 
-	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if (this == SCContent.REINFORCED_MYCELIUM.get()) {
+	@Override
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
+	{
+		if(this == SCContent.REINFORCED_MYCELIUM.get())
+		{
 			super.animateTick(state, world, pos, rand);
-			if (rand.nextInt(10) == 0) {
-				world.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
-			}
-		}
 
+			if(rand.nextInt(10) == 0)
+				world.addParticle(ParticleTypes.MYCELIUM, (double) pos.getX() + (double) rand.nextFloat(), pos.getY() + 1.1D, (double) pos.getZ() + (double) rand.nextFloat(), 0.0D, 0.0D, 0.0D);
+		}
 	}
 
 	@Override
@@ -72,11 +80,12 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	{
 		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
-		switch (type) {
-			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);
+		switch(type)
+		{
+			case Cave: return Block.hasSolidSide(state, world, pos, Direction.UP);
 			case Plains: return true;
 			case Beach:
-				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
+				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
@@ -84,71 +93,81 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 				return isBeach && hasWater;
 			default: break;
 		}
+
 		return false;
 	}
 
 	@Override
-	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && worldIn.getBlockState(pos.up()).isAir();
+	public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient)
+	{
+		return this == SCContent.REINFORCED_GRASS_BLOCK.get() && world.getBlockState(pos.up()).isAir(world, pos.up());
 	}
 
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
+	@Override
+	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, BlockState state)
+	{
 		return this == SCContent.REINFORCED_GRASS_BLOCK.get();
 	}
 
-	public void grow(ServerWorld p_225535_1_, Random p_225535_2_, BlockPos p_225535_3_, BlockState p_225535_4_) {
-		BlockPos blockpos = p_225535_3_.up();
-		BlockState blockstate = Blocks.GRASS.getDefaultState();
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void grow(ServerWorld world, Random rand, BlockPos pos, BlockState state) {
+		BlockPos posAbove = pos.up();
+		BlockState grass = Blocks.GRASS.getDefaultState();
 
-		for(int i = 0; i < 128; ++i) {
-			BlockPos blockpos1 = blockpos;
+		for(int i = 0; i < 128; ++i)
+		{
+			BlockPos tempPos = posAbove;
 			int j = 0;
 
-			while(true) {
-				if (j >= i / 16) {
-					BlockState blockstate2 = p_225535_1_.getBlockState(blockpos1);
-					if (blockstate2.getBlock() == blockstate.getBlock() && p_225535_2_.nextInt(10) == 0) {
-						((IGrowable)blockstate.getBlock()).grow(p_225535_1_, p_225535_2_, blockpos1, blockstate2);
-					}
+			while(true)
+			{
+				if(j >= i / 16)
+				{
+					BlockState tempState = world.getBlockState(tempPos);
 
-					if (!blockstate2.isAir()) {
+					if(tempState.getBlock() == grass.getBlock() && rand.nextInt(10) == 0)
+						((IGrowable)grass.getBlock()).grow(world, rand, tempPos, tempState);
+
+					if(!tempState.isAir(world, tempPos))
 						break;
-					}
 
-					BlockState blockstate1;
-					if (p_225535_2_.nextInt(8) == 0) {
-						List<ConfiguredFeature<?, ?>> list = p_225535_1_.getBiome(blockpos1).getFlowers();
-						if (list.isEmpty()) {
+					BlockState placeState;
+
+					if(rand.nextInt(8) == 0)
+					{
+						List<ConfiguredFeature<?, ?>> flowers = world.getBiome(tempPos).getFlowers();
+
+						if(flowers.isEmpty())
 							break;
-						}
 
-						ConfiguredFeature<?, ?> configuredfeature = ((DecoratedFeatureConfig)(list.get(0)).config).feature;
-						blockstate1 = ((FlowersFeature)configuredfeature.feature).getFlowerToPlace(p_225535_2_, blockpos1, configuredfeature.config);
-					} else {
-						blockstate1 = blockstate;
-					}
+						ConfiguredFeature<?, ?> configuredfeature = ((DecoratedFeatureConfig)(flowers.get(0)).config).feature;
 
-					if (blockstate1.isValidPosition(p_225535_1_, blockpos1)) {
-						p_225535_1_.setBlockState(blockpos1, blockstate1, 3);
+						placeState = ((FlowersFeature)configuredfeature.feature).getFlowerToPlace(rand, tempPos, configuredfeature.config);
 					}
+					else
+						placeState = grass;
+
+					if(placeState.isValidPosition(world, tempPos))
+						world.setBlockState(tempPos, placeState, 3);
+
 					break;
 				}
 
-				blockpos1 = blockpos1.add(p_225535_2_.nextInt(3) - 1, (p_225535_2_.nextInt(3) - 1) * p_225535_2_.nextInt(3) / 2, p_225535_2_.nextInt(3) - 1);
-				if (p_225535_1_.getBlockState(blockpos1.down()).getBlock() != this || p_225535_1_.getBlockState(blockpos1).isCollisionShapeOpaque(p_225535_1_, blockpos1)) {
+				tempPos = tempPos.add(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
+
+				if(world.getBlockState(tempPos.down()).getBlock() != this || world.getBlockState(tempPos).isCollisionShapeOpaque(world, tempPos))
 					break;
-				}
 
 				++j;
 			}
 		}
-
 	}
 
 	@Override
 	public Block getVanillaBlock()
 	{
-		return BLOCK;
+		return vanillaBlock;
 	}
 
 	@Override
