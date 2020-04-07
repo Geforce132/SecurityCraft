@@ -19,6 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class EditModuleScreen extends Screen
 {
+	private static CompoundNBT savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
 	private TextFieldWidget inputField;
@@ -130,12 +131,12 @@ public class EditModuleScreen extends Screen
 				}
 				break;
 			case 2: //copy
-				SecurityCraft.instance.setSavedModule(module.getTag());
+				savedModule = module.getTag();
 				return;
 			case 3: //paste
-				module.setTag(SecurityCraft.instance.getSavedModule());
+				module.setTag(savedModule);
 				break;
-			case 4:
+			case 4: //clear
 				module.setTag(new CompoundNBT());
 				break;
 			default: return;
