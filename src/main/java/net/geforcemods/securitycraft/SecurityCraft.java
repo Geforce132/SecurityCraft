@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
@@ -54,9 +53,7 @@ public class SecurityCraft {
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public HashMap<String, Object[]> cameraUsePositions = new HashMap<>();
 	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
-	private CompoundNBT savedModule;
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
 	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
@@ -149,22 +146,6 @@ public class SecurityCraft {
 
 	public void serverStarting(FMLServerStartingEvent event){
 		SCCommand.register(event.getCommandDispatcher());
-	}
-
-	public Object[] getUsePosition(String playerName) {
-		return cameraUsePositions.get(playerName);
-	}
-
-	public boolean hasUsePosition(String playerName) {
-		return cameraUsePositions.containsKey(playerName);
-	}
-
-	public CompoundNBT getSavedModule() {
-		return savedModule;
-	}
-
-	public void setSavedModule(CompoundNBT savedModule) {
-		this.savedModule = savedModule;
 	}
 
 	public static String getVersion() {
