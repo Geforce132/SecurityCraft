@@ -37,7 +37,7 @@ public class EditModuleScreen extends Screen
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		inputField = new TextFieldWidget(font, width / 2 - 50, height / 2 - 65, 100, 15, "");
+		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, "");
 		addButton(new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
 		addButton(new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
 		addButton(new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
