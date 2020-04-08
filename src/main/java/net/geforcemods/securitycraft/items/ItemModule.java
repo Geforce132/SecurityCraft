@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemModule extends Item{
 
+	public static final int MAX_PLAYERS = 50;
 	private final EnumCustomModules module;
 	private final boolean nbtCanBeModified;
 	private boolean canBeCustomized;
@@ -84,7 +85,7 @@ public class ItemModule extends Item{
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
 
 			if(stack.getTagCompound() != null)
-				for(int i = 1; i <= 10; i++)
+				for(int i = 1; i <= MAX_PLAYERS; i++)
 					if(!stack.getTagCompound().getString("Player" + i).isEmpty())
 						list.add(stack.getTagCompound().getString("Player" + i));
 		}

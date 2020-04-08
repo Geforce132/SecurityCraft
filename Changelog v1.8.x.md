@@ -11,6 +11,7 @@
 - New: Korean translation (Thanks mindy15963!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
+- Change: White-/Blacklist Modules can now hold up to 50 players
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode

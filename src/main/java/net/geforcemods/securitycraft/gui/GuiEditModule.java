@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
@@ -108,7 +109,7 @@ public class GuiEditModule extends GuiContainer
 				if(module.getTagCompound() == null)
 					module.setTagCompound(new NBTTagCompound());
 
-				for(int i = 1; i <= 10; i++)
+				for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
 				{
 					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
 						return;
@@ -123,7 +124,7 @@ public class GuiEditModule extends GuiContainer
 				if(module.getTagCompound() == null)
 					module.setTagCompound(new NBTTagCompound());
 
-				for(int i = 1; i <= 10; i++)
+				for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
 				{
 					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
 						module.getTagCompound().removeTag("Player" + i);
@@ -146,7 +147,7 @@ public class GuiEditModule extends GuiContainer
 	}
 
 	private int getNextSlot(NBTTagCompound tag) {
-		for(int i = 1; i <= 10; i++)
+		for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
 			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;
 			else

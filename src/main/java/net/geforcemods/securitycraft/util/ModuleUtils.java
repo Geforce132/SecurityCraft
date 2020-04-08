@@ -32,7 +32,7 @@ public class ModuleUtils{
 
 		if(stack.getItem() instanceof ItemModule)
 		{
-			for(int i = 1; i <= 10; i++)
+			for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
 			{
 				if(stack.getTagCompound() != null && stack.getTagCompound().getString("Player" + i) != null && !stack.getTagCompound().getString("Player" + i).isEmpty())
 					list.add(stack.getTagCompound().getString("Player" + i).toLowerCase());
