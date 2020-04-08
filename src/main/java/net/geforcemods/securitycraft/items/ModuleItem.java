@@ -34,6 +34,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
 
+	public static final int MAX_PLAYERS = 50;
 	private final CustomModules module;
 	private final boolean nbtCanBeModified;
 	private boolean canBeCustomized;
@@ -102,7 +103,7 @@ public class ModuleItem extends Item{
 			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
 
 			if(stack.getTag() != null)
-				for(int i = 1; i <= 10; i++)
+				for(int i = 1; i <= MAX_PLAYERS; i++)
 					if(!stack.getTag().getString("Player" + i).isEmpty())
 						list.add(new StringTextComponent(TextFormatting.GRAY + stack.getTag().getString("Player" + i)));
 		}

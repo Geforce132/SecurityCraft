@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -109,7 +110,7 @@ public class EditModuleScreen extends Screen
 				if(module.getTag() == null)
 					module.setTag(new CompoundNBT());
 
-				for(int i = 1; i <= 10; i++)
+				for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 				{
 					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 						return;
@@ -124,7 +125,7 @@ public class EditModuleScreen extends Screen
 				if(module.getTag() == null)
 					module.setTag(new CompoundNBT());
 
-				for(int i = 1; i <= 10; i++)
+				for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 				{
 					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 						module.getTag().remove("Player" + i);
@@ -147,7 +148,7 @@ public class EditModuleScreen extends Screen
 	}
 
 	private int getNextSlot(CompoundNBT tag) {
-		for(int i = 1; i <= 10; i++)
+		for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;
 			else

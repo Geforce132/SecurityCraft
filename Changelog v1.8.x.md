@@ -15,6 +15,7 @@
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: Some reinforced block models are now randomly rotated (Thanks Redstone_Dubstep!)
+- Change: White-/Blacklist Modules can now hold up to 50 players
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
