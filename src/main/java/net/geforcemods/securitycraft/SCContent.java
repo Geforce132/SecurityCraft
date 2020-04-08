@@ -56,11 +56,11 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;

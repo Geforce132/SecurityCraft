@@ -11,7 +11,7 @@ public class ProjectorBlock extends OwnableBlock {
 	public ProjectorBlock(Properties properties) {
 		super(SoundType.METAL, properties);
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new ProjectorTileEntity();

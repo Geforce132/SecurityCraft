@@ -22,7 +22,7 @@ public class CageTrapTileEntity extends DisguisableTileEntity {
 	{
 		return shouldCaptureMobsOption.asBoolean();
 	}
-	
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] { shouldCaptureMobsOption };

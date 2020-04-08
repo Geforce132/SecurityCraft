@@ -93,7 +93,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 		if(!world.isRemote())
 		{
 			Direction[] facingArray = {Direction.byIndex((state.get(LaserFieldBlock.BOUNDTYPE) - 1) * 2), Direction.byIndex((state.get(LaserFieldBlock.BOUNDTYPE) - 1) * 2).getOpposite()};
-			
+
 			for(Direction facing : facingArray)
 			{
 				for(int i = 0; i < ConfigHandler.CONFIG.laserBlockRange.get(); i++)

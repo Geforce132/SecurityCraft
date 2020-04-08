@@ -1,8 +1,14 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.ObserverBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,8 +20,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.List;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
 {

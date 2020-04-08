@@ -49,7 +49,7 @@ public class UpdateNBTTagOnClient{
 
 	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx) {
 		if(!Minecraft.getInstance().player.inventory.getCurrentItem().isEmpty() && Minecraft.getInstance().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName)){
-			Minecraft.getInstance().player.inventory.getCurrentItem().setTag(message.stackTag);;
+			Minecraft.getInstance().player.inventory.getCurrentItem().setTag(message.stackTag);
 		}
 
 		ctx.get().setPacketHandled(true);

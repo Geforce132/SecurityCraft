@@ -9,10 +9,10 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -135,7 +135,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 		if (plant.getBlock() == Blocks.CACTUS)
 			return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
-		
+
 		switch (type) {
 			case Desert: return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
 			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);

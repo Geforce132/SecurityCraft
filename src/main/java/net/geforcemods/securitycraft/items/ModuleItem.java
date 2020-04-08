@@ -145,7 +145,7 @@ public class ModuleItem extends Item{
 	}
 
 	public ArrayList<Block> getBlockAddons(CompoundNBT tag){
-		ArrayList<Block> list = new ArrayList<Block>();
+		ArrayList<Block> list = new ArrayList<>();
 
 		if(tag == null) return list;
 
@@ -167,7 +167,7 @@ public class ModuleItem extends Item{
 	}
 
 	public ArrayList<ItemStack> getAddons(CompoundNBT tag){
-		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> list = new ArrayList<>();
 
 		if(tag == null) return list;
 
