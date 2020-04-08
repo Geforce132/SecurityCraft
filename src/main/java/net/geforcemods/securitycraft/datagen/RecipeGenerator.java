@@ -872,12 +872,12 @@ public class RecipeGenerator extends RecipeProvider
 	protected final void addCompressingRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider block, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result)
-				.patternLine("BBB")
-				.patternLine("BBB")
-				.patternLine("BBB")
-				.key('B', block)
-				.addCriterion("has_block", hasItem(block))
-				.build(consumer);
+		.patternLine("BBB")
+		.patternLine("BBB")
+		.patternLine("BBB")
+		.key('B', block)
+		.addCriterion("has_block", hasItem(block))
+		.build(consumer);
 	}
 
 	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)

@@ -53,7 +53,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-	    return SHAPE;
+		return SHAPE;
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	{
 		return getDefaultState().with(WATERLOGGED, vanillaState.get(SlabBlock.WATERLOGGED));
 	}
-	
+
 	@Override
 	public BlockRenderLayer getRenderLayer()
 	{
@@ -145,7 +145,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	{
 		return NonNullList.from(ItemStack.EMPTY);
 	}
-	
+
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{

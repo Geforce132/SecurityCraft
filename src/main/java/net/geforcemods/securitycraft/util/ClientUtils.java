@@ -42,7 +42,7 @@ public class ClientUtils{
 	 */
 	@OnlyIn(Dist.CLIENT)
 	public static String getFormattedMinecraftTime(){
-		Long time = Long.valueOf(Minecraft.getInstance().world.getDayTime());
+		Long time = Minecraft.getInstance().world.getDayTime();
 
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
