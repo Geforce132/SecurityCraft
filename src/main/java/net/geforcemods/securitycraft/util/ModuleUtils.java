@@ -33,7 +33,7 @@ public class ModuleUtils{
 
 		if(stack.getItem() instanceof ModuleItem)
 		{
-			for(int i = 1; i <= 10; i++)
+			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			{
 				if(stack.getTag() != null && stack.getTag().getString("Player" + i) != null && !stack.getTag().getString("Player" + i).isEmpty())
 					list.add(stack.getTag().getString("Player" + i).toLowerCase());
