@@ -101,7 +101,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -110,7 +110,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -119,7 +119,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -128,7 +128,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -137,7 +137,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -146,7 +146,7 @@ public class BlockPanicButton extends BlockButton implements ITileEntityProvider
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 		}
 	}

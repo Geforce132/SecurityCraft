@@ -3,10 +3,10 @@
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
 - New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
-- New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
-- New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
-- New: Reinforced Observer (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
+- New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
+- New: Reinforced Blocks: Observer, Grass Block, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Blue Ice, Cobweb (Thanks Redstone_Dubstep!)
+- New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Configuration option to turn off the darker textures of reinforced blocks
 - New: Korean translation (Thanks mindy15963!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels

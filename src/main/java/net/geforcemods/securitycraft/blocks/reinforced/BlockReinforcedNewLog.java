@@ -126,7 +126,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -135,7 +135,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 
 			try
@@ -144,7 +144,7 @@ public class BlockReinforcedNewLog extends BlockReinforcedLog implements IReinfo
 			}
 			catch (NoSuchFieldError e)
 			{
-				;
+
 			}
 		}
 	}

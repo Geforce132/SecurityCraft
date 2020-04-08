@@ -51,7 +51,7 @@ public class ItemSecretSign extends Item
 					if (facing == EnumFacing.UP)
 					{
 						int i = MathHelper.floor((player.rotationYaw + 180.0F) * 16.0F / 360.0F + 0.5D) & 15;
-						world.setBlockState(pos, SCContent.secretSignStanding.getDefaultState().withProperty(BlockSecretSignStanding.ROTATION, Integer.valueOf(i)), 11);
+						world.setBlockState(pos, SCContent.secretSignStanding.getDefaultState().withProperty(BlockSecretSignStanding.ROTATION, i), 11);
 					}
 					else
 					{

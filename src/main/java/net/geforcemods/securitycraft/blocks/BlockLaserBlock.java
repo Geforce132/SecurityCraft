@@ -127,7 +127,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 	}
 
 	@Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos){
 		setLaser(((CustomizableSCTE)world.getTileEntity(pos)).getOwner(), world, pos);
 	}
 

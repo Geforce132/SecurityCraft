@@ -269,37 +269,37 @@ public class BlockAlarm extends BlockOwnable {
 			try{
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
 			}catch (NoSuchFieldError e){
-				;
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
 			}catch (NoSuchFieldError e){
-				;
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
 			}catch (NoSuchFieldError e){
-				;
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
 			}catch (NoSuchFieldError e){
-				;
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
 			}catch (NoSuchFieldError e){
-				;
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
 			}catch (NoSuchFieldError e){
-				;
+
 			}
 		}
 	}

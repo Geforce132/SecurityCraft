@@ -53,6 +53,7 @@ public class BlockSecretSign extends BlockContainer
 		return SIGN_AABB;
 	}
 
+	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
 	{

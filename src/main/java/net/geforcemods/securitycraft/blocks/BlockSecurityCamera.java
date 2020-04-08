@@ -96,7 +96,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
 	{
-		IBlockState state = getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+		IBlockState state = getDefaultState().withProperty(POWERED, false);
 
 		if(world.isSideSolid(pos.offset(facing.getOpposite()), facing))
 			return state.withProperty(FACING, facing).withProperty(POWERED, false);

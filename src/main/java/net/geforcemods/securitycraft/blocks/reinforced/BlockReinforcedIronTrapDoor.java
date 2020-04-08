@@ -33,7 +33,7 @@ public class BlockReinforcedIronTrapDoor extends BlockTrapDoor implements ITileE
 
 		if(hasActiveSCBlock != state.getValue(OPEN))
 		{
-			world.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(BlockUtils.hasActiveSCBlockNextTo(world, pos))), 2);
+			world.setBlockState(pos, state.withProperty(OPEN, BlockUtils.hasActiveSCBlockNextTo(world, pos)), 2);
 			world.markBlockRangeForRenderUpdate(pos, pos);
 			playSound((EntityPlayer)null, world, pos, hasActiveSCBlock);
 		}

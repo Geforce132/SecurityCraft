@@ -29,7 +29,7 @@ import net.minecraftforge.common.util.Constants;
 public abstract class CustomizableSCTE extends TileEntitySCTE implements IInventory{
 
 	private boolean linkable = false;
-	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<LinkedBlock>();
+	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private NBTTagList nbtTagStorage = null;
 
 	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
@@ -401,7 +401,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	 * @return An ArrayList of all EnumCustomModules currently inserted in the TileEntity.
 	 */
 	public ArrayList<EnumCustomModules> getModules(){
-		ArrayList<EnumCustomModules> modules = new ArrayList<EnumCustomModules>();
+		ArrayList<EnumCustomModules> modules = new ArrayList<>();
 
 		for(ItemStack stack : this.modules)
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemModule)
@@ -493,7 +493,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	}
 
 	public ArrayList<EnumCustomModules> getAcceptedModules(){
-		ArrayList<EnumCustomModules> list = new ArrayList<EnumCustomModules>();
+		ArrayList<EnumCustomModules> list = new ArrayList<>();
 
 		for(EnumCustomModules module : acceptedModules())
 			list.add(module);
@@ -597,7 +597,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	 * @param excludedTE The CustomizableSCTE which called this method, prevents infinite loops.
 	 */
 	public void createLinkedBlockAction(EnumLinkedAction action, Object[] parameters, CustomizableSCTE excludedTE) {
-		ArrayList<CustomizableSCTE> list = new ArrayList<CustomizableSCTE>();
+		ArrayList<CustomizableSCTE> list = new ArrayList<>();
 
 		list.add(excludedTE);
 

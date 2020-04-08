@@ -127,7 +127,7 @@ public class ItemModule extends Item{
 	}
 
 	public ArrayList<Block> getBlockAddons(NBTTagCompound tag){
-		ArrayList<Block> list = new ArrayList<Block>();
+		ArrayList<Block> list = new ArrayList<>();
 
 		if(tag == null) return list;
 
@@ -149,7 +149,7 @@ public class ItemModule extends Item{
 	}
 
 	public ArrayList<ItemStack> getAddons(NBTTagCompound tag){
-		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> list = new ArrayList<>();
 
 		if(tag == null) return list;
 

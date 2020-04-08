@@ -23,7 +23,7 @@ public class CommandSC extends CommandBase implements ICommand{
 	private List<String> nicknames;
 
 	public CommandSC(){
-		nicknames = new ArrayList<String>();
+		nicknames = new ArrayList<>();
 		nicknames.add("sc");
 	}
 

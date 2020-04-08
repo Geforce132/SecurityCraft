@@ -42,7 +42,7 @@ public class PortalSize
 
 		for (BlockPos blockPos = pos; pos.getY() > blockPos.getY() - 21 && pos.getY() > 0 && this.isEmptyBlock(world.getBlockState(pos.down()).getBlock()); pos = pos.down())
 		{
-			;
+
 		}
 
 		int distanceToEdge = this.getDistanceUntilEdge(pos, this.leftDir) - 1;

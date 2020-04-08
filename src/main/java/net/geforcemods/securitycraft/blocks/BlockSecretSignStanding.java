@@ -16,7 +16,7 @@ public class BlockSecretSignStanding extends BlockSecretSign
 
 	public BlockSecretSignStanding()
 	{
-		setDefaultState(blockState.getBaseState().withProperty(ROTATION, Integer.valueOf(0)));
+		setDefaultState(blockState.getBaseState().withProperty(ROTATION, 0));
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(ROTATION, Integer.valueOf(meta));
+		return getDefaultState().withProperty(ROTATION, meta);
 	}
 
 	@Override
@@ -46,13 +46,13 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot)
 	{
-		return state.withProperty(ROTATION, Integer.valueOf(rot.rotate(state.getValue(ROTATION), 16)));
+		return state.withProperty(ROTATION, rot.rotate(state.getValue(ROTATION), 16));
 	}
 
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn)
 	{
-		return state.withProperty(ROTATION, Integer.valueOf(mirrorIn.mirrorRotation(state.getValue(ROTATION), 16)));
+		return state.withProperty(ROTATION, mirrorIn.mirrorRotation(state.getValue(ROTATION), 16));
 	}
 
 	@Override
