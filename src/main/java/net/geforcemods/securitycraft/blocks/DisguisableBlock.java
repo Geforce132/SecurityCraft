@@ -22,11 +22,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 {
 	public DisguisableBlock(Block.Properties properties)
 	{
-		super(properties);
+		super(properties.notSolid());
 	}
 
 	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
-		super(soundType, properties);
+		super(soundType, properties.notSolid());
 	}
 
 	@Override
