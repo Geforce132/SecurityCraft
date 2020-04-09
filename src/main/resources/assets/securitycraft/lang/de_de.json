@@ -393,9 +393,13 @@
     "entity.securitycraft.bullet": "Kugel",
 
     "death.attack.securitycraft.laser": "%s wurde von einem Laser zerschnitten.",
+    "death.attack.securitycraft.laser.player": "%1$s wurde während des Kampfes mit %2$s von einem Laser zerschnitten.",
     "death.attack.securitycraft.fakeWater": "%s fiel in giftiges Wasser...?",
+    "death.attack.securitycraft.fakeWater.player": "%1$s fiel während des Kampfes mit %2$s in giftiges Wasser...?",
     "death.attack.securitycraft.electricity": "%s erlitt einen Stromschlag.",
+    "death.attack.securitycraft.electricity.player": "%1$s erlitt während des Kampfes mit %2$s einen Stromschlag.",
 	"death.attack.securitycraft.taser": "%s wurde zu Tode getasert.",
+	"death.attack.securitycraft.taser.player": "%1$s wurde während des Kampfes mit %2$s zu Tode getasert.",
 
     "key.categories.securitycraft": "SecurityCraft",
     "key.securitycraft.cameraActivateNightVision": "Nachtsicht",
