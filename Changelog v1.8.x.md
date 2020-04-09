@@ -41,6 +41,7 @@
 - Fix: Crash when breaking the floor/ceiling of an activated Block Pocket
 - Fix: Keycard Readers can be set up by players other than the owner
 - Fix: Occasional Retinal Scanner crash
+- Fix: Crash when disguising block with specific other blocks
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
