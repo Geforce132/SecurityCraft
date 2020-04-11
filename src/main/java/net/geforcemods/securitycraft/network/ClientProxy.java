@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWall;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
@@ -39,6 +40,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -232,6 +234,10 @@ public class ClientProxy implements IProxy {
 		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_walls"),
 				new ResourceLocation("securitycraft:reinforced_cobblestone_wall"),
 				new ResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_dirt"),
+				new ResourceLocation("securitycraft:reinforced_dirt"),
+				new ResourceLocation("securitycraft:reinforced_coarse_dirt"),
+				new ResourceLocation("securitycraft:reinforced_podzol"));
 
 		Item fakeWater = findItem(SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
@@ -324,24 +330,44 @@ public class ClientProxy implements IProxy {
 
 				try
 				{
+					Block block = (Block)field.get(null);
+
 					//registering reinforced blocks color overlay for world
 					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-						if(ConfigHandler.reinforcedBlockTint)
+						if(state.getBlock() == SCContent.reinforcedGrass && !state.getValue(BlockReinforcedGrass.SNOWY))
+						{
+							if(tintIndex == 0)
+								return ConfigHandler.reinforcedBlockTint ? tint : noTint;
+
+							int grassTint = BiomeColorHelper.getGrassColorAtPos(world, pos);
+
+							return ConfigHandler.reinforcedBlockTint ? mixTints(grassTint, tint) : grassTint;
+						}
+						else if(ConfigHandler.reinforcedBlockTint)
 							return tint;
 						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
 							return crystalQuartzTint;
 						else
 							return noTint;
-					}, (Block)field.get(null));
+					}, block);
 					//same thing for inventory
 					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> {
-						if(ConfigHandler.reinforcedBlockTint)
+						if(block == SCContent.reinforcedGrass)
+						{
+							if(tintIndex == 0)
+								return ConfigHandler.reinforcedBlockTint ? tint : noTint;
+
+							int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
+
+							return ConfigHandler.reinforcedBlockTint ? mixTints(grassTint, tint) : grassTint;
+						}
+						else if(ConfigHandler.reinforcedBlockTint)
 							return tint;
 						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
 							return crystalQuartzTint;
 						else
 							return noTint;
-					}, (Block)field.get(null));
+					}, block);
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
@@ -353,6 +379,19 @@ public class ClientProxy implements IProxy {
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
 			return world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1;
 		}, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+	}
+
+	private int mixTints(int tint1, int tint2)
+	{
+		int red = (tint1 >> 0x10) & 0xFF;
+		int green = (tint1 >> 0x8) & 0xFF;
+		int blue = tint1 & 0xFF;
+
+		red *= (float)(tint2 >> 0x10 & 0xFF) / 0xFF;
+		green *= (float)(tint2 >> 0x8 & 0xFF) / 0xFF;
+		blue *= (float)(tint2 & 0xFF) / 0xFF;
+
+		return ((red << 8) + green << 8) + blue;
 	}
 
 	@Override

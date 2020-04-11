@@ -1,0 +1,12 @@
+{ 
+  "parent": "securitycraft:block/reinforced_block", 
+  "textures": { 
+    "particle": "blocks/mycelium_side", 
+    "down": "blocks/dirt", 
+    "up": "blocks/mycelium_top", 
+    "north": "blocks/mycelium_side", 
+    "west": "blocks/mycelium_side", 
+    "south": "blocks/mycelium_side", 
+    "east": "blocks/mycelium_side" 
+  } 
+}

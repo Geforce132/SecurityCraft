@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCrystalQuartzSlab;
+import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedDirt;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedLog;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedMetals;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedPlanks;
@@ -158,7 +159,7 @@ public class RegistrationHandler
 		event.getRegistry().register(SCContent.alarmLit);
 		registerBlock(event, SCContent.reinforcedStone, new ItemBlockReinforcedStone(SCContent.reinforcedStone), true);
 		registerBlock(event, SCContent.reinforcedSandstone, new ItemBlockReinforcedSandstone(SCContent.reinforcedSandstone), false);
-		registerBlock(event, SCContent.reinforcedDirt, false);
+		registerBlock(event, SCContent.reinforcedDirt, new ItemBlockReinforcedDirt(SCContent.reinforcedDirt), false);
 		registerBlock(event, SCContent.reinforcedCobblestone, false);
 		registerBlock(event, SCContent.reinforcedFencegate);
 		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), false);
@@ -243,6 +244,15 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
 		registerBlock(event, SCContent.reinforcedObserver, false);
 		registerBlock(event, SCContent.reinforcedRedstoneLamp, false);
+		registerBlock(event, SCContent.reinforcedCobweb, false);
+		registerBlock(event, SCContent.reinforcedGrass, false);
+		registerBlock(event, SCContent.reinforcedSnowBlock, false);
+		registerBlock(event, SCContent.reinforcedIce, false);
+		registerBlock(event, SCContent.reinforcedPackedIce, false);
+		registerBlock(event, SCContent.reinforcedMycelium, false);
+		registerBlock(event, SCContent.reinforcedClay, false);
+		registerBlock(event, SCContent.reinforcedNetherWartBlock, false);
+
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
 		registerBlock(event, SCContent.dirtMine);
@@ -541,6 +551,8 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.panicButton), 0, new ModelResourceLocation("securitycraft:panic_button", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.securityCamera), 0, new ModelResourceLocation("securitycraft:security_camera", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedDirt), 0, new ModelResourceLocation("securitycraft:reinforced_dirt", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedDirt), 1, new ModelResourceLocation("securitycraft:reinforced_coarse_dirt", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedDirt), 2, new ModelResourceLocation("securitycraft:reinforced_podzol", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCobblestone), 0, new ModelResourceLocation("securitycraft:reinforced_cobblestone", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSandstone), 0, new ModelResourceLocation("securitycraft:reinforced_sandstone_normal", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSandstone), 1, new ModelResourceLocation("securitycraft:reinforced_sandstone_chiseled", "inventory"));
@@ -715,6 +727,14 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWalls), 1, new ModelResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedObserver), 0, new ModelResourceLocation("securitycraft:reinforced_observer", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedRedstoneLamp), 0, new ModelResourceLocation("securitycraft:reinforced_redstone_lamp", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedCobweb), 0, new ModelResourceLocation("securitycraft:reinforced_cobweb", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedGrass), 0, new ModelResourceLocation("securitycraft:reinforced_grass_block", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedSnowBlock), 0, new ModelResourceLocation("securitycraft:reinforced_snow_block", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedIce), 0, new ModelResourceLocation("securitycraft:reinforced_ice", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedPackedIce), 0, new ModelResourceLocation("securitycraft:reinforced_packed_ice", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedMycelium), 0, new ModelResourceLocation("securitycraft:reinforced_mycelium", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedClay), 0, new ModelResourceLocation("securitycraft:reinforced_clay", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedNetherWartBlock), 0, new ModelResourceLocation("securitycraft:reinforced_nether_wart_block", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

@@ -266,6 +266,17 @@ tile.securitycraft:emerald_mine.name=Smaragderzmine
 tile.securitycraft:quartz_mine.name=Netherquarzerzmine
 tile.securitycraft:reinforced_observer.name=Verstärkter Beobachter
 tile.securitycraft:reinforced_redstone_lamp.name=Verstärkte Redstone-Lampe
+tile.securitycraft:reinforced_cobweb.name=Verstärktes Spinnennetz
+tile.securitycraft:reinforced_grass.name=Verstärktes Gras
+tile.securitycraft:reinforced_snow_block.name=Verstärkter Schneeblock
+tile.securitycraft:reinforced_coarse_dirt.name=Verstärkte grobe Erde
+tile.securitycraft:reinforced_podzol.name=Verstärkter Podsol
+tile.securitycraft:reinforced_mycelium.name=Verstärktes Myzel
+tile.securitycraft:reinforced_ice.name=Verstärktes Eis
+tile.securitycraft:reinforced_packed_ice.name=Verstärktes Packeis
+tile.securitycraft:reinforced_mycelium.name=Verstärktes Myzel
+tile.securitycraft:reinforced_clay.name=Verstärkter Ton
+tile.securitycraft:reinforced_nether_wart_block.name=Verstärkter Netherwarzenblock
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür

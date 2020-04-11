@@ -265,6 +265,17 @@ tile.securitycraft:emerald_mine.name=Emerald Ore Mine
 tile.securitycraft:quartz_mine.name=Nether Quartz Ore Mine
 tile.securitycraft:reinforced_observer.name=Reinforced Observer
 tile.securitycraft:reinforced_redstone_lamp.name=Reinforced Redstone Lamp
+tile.securitycraft:reinforced_cobweb.name=Reinforced Cobweb
+tile.securitycraft:reinforced_grass.name=Reinforced Grass
+tile.securitycraft:reinforced_snow_block.name=Reinforced Snow Block
+tile.securitycraft:reinforced_coarse_dirt.name=Reinforced Coarse Dirt
+tile.securitycraft:reinforced_podzol.name=Reinforced Podzol
+tile.securitycraft:reinforced_mycelium.name=Reinfored Mycelium
+tile.securitycraft:reinforced_ice.name=Reinforced Ice
+tile.securitycraft:reinforced_packed_ice.name=Reinforced Packed Ice
+tile.securitycraft:reinforced_mycelium.name=Reinforced Mycelium
+tile.securitycraft:reinforced_clay.name=Reinforced Clay
+tile.securitycraft:reinforced_nether_wart_block.name=Reinforced Nether Wart Block
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
