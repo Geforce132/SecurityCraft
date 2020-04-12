@@ -5,9 +5,10 @@
 - New: Make all reinforced blocks immunte to the ender dragon and the wither by adding them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
+- New: Reinforced Blue Ice (Thanks Redstone_Dubstep!)
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
 - New: Reinforced Blocks: Brick Wall, Prismarine Wall, Red Sandstone Wall, Mossy Stone Brick Wall, Granite Wall, Stone Brick Wall, Nether Brick Wall, Andesite Wall, Red Nether Brick Wall, Sandstone Wall, End Stone Brick Wall, Diorite Wall
-- New: Reinforced Blocks: Observer, Grass Block, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Blue Ice, Cobweb (Thanks Redstone_Dubstep!)
+- New: Reinforced Blocks: Observer, Grass Block, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Configuration option to turn off the darker textures of reinforced blocks
 - New: Korean translation (Thanks mindy15963!)
