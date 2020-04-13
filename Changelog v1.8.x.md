@@ -43,6 +43,7 @@
 - Fix: Keycard Readers can be set up by players other than the owner
 - Fix: Occasional Retinal Scanner crash
 - Fix: Crash when disguising block with specific other blocks
+- Fix: Reinforced Stairs can be destroyed by explosions
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
