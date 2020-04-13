@@ -17,6 +17,7 @@
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: Some reinforced block models are now randomly rotated (Thanks Redstone_Dubstep!)
 - Change: White-/Blacklist Modules can now hold up to 50 players
+- Change: Crystal Quartz Texture (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
