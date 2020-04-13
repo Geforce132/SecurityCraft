@@ -30,6 +30,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	private String blockName;
 	private TextFieldWidget keycodeTextbox;
 	private String currentString = "";
+	private static final int MAX_CHARS = 11;
 
 	public CheckPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
@@ -59,7 +60,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
-		keycodeTextbox.setMaxStringLength(11);
+		keycodeTextbox.setMaxStringLength(MAX_CHARS);
 		keycodeTextbox.setFocused2(true);
 	}
 
@@ -113,7 +114,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
-		if(isValidChar(typedChar)){
+		if(isValidChar(typedChar) && currentString.length() < MAX_CHARS){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
@@ -125,8 +126,8 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	private boolean isValidChar(char c) {
-		for(int x = 1; x <= allowedChars.length; x++)
-			if(c == allowedChars[x - 1])
+		for(int i = 0; i < allowedChars.length; i++)
+			if(c == allowedChars[i])
 				return true;
 			else
 				continue;

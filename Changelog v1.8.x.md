@@ -46,6 +46,7 @@
 - Fix: Reinforced Stairs can be destroyed by explosions
 - Fix: Config option "mineExplodesWhenInCreative" does not work for block mines
 - Fix: Backspace does not work in Briefcase setup screen
+- Fix: When inserting a password, adding more characters after the limit has been reached results in having to press backspace more times than needed
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
