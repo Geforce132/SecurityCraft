@@ -141,12 +141,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public float getExplosionResistance()
-	{
-		return modelBlock.getExplosionResistance();
-	}
-
-	@Override
 	public int tickRate(IWorldReader world)
 	{
 		return modelBlock.tickRate(world);
