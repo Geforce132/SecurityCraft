@@ -41,9 +41,16 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay,
 	}
 
 	@Override
-	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state){
-		if (!world.isRemote)
-			explode(world, pos);
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+		if(!player.capabilities.isCreativeMode && !world.isRemote)
+			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
+				explode(world, pos);
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			}
+
+		return super.removedByPlayer(state, world, pos, player, willHarvest);
 	}
 
 	@Override
