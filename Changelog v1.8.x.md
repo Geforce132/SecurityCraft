@@ -33,6 +33,7 @@
 - Fix: Fake Water can be placed in the nether
 - Fix: Occasional Retinal Scanner crash
 - Fix: Config option "mineExplodesWhenInCreative" does not work for block mines
+- Fix: When inserting a password, adding more characters after the limit has been reached results in having to press backspace more times than needed
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

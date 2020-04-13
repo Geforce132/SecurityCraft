@@ -31,6 +31,7 @@ public class GuiCheckPassword extends GuiContainer {
 	private String blockName;
 	private GuiTextField keycodeTextbox;
 	private String currentString = "";
+	private static final int MAX_CHARS = 11;
 
 	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
@@ -60,7 +61,7 @@ public class GuiCheckPassword extends GuiContainer {
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
-		keycodeTextbox.setMaxStringLength(11);
+		keycodeTextbox.setMaxStringLength(MAX_CHARS);
 		keycodeTextbox.setFocused(true);
 	}
 
@@ -102,7 +103,7 @@ public class GuiCheckPassword extends GuiContainer {
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if(isValidChar(typedChar) && typedChar == '\u001B')
 			ClientUtils.closePlayerScreen();
-		else if(isValidChar(typedChar) && typedChar != ''){
+		else if(isValidChar(typedChar) && typedChar != '' && currentString.length() < MAX_CHARS){
 			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
@@ -118,8 +119,8 @@ public class GuiCheckPassword extends GuiContainer {
 	}
 
 	private boolean isValidChar(char c) {
-		for(int x = 1; x <= allowedChars.length; x++)
-			if(c == allowedChars[x - 1])
+		for(int i = 0; i < allowedChars.length; i++)
+			if(c == allowedChars[i])
 				return true;
 			else
 				continue;

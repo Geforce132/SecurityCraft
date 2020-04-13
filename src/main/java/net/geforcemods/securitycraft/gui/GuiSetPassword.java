@@ -109,8 +109,8 @@ public class GuiSetPassword extends GuiContainer {
 	}
 
 	private boolean isValidChar(char c) {
-		for(int x = 1; x <= allowedChars.length; x++)
-			if(c == allowedChars[x - 1])
+		for(int i = 0; i < allowedChars.length; i++)
+			if(c == allowedChars[i])
 				return true;
 			else
 				continue;
