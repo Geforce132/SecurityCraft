@@ -44,6 +44,7 @@
 - Fix: Occasional Retinal Scanner crash
 - Fix: Crash when disguising block with specific other blocks
 - Fix: Reinforced Stairs can be destroyed by explosions
+- Fix: Config option "mineExplodesWhenInCreative" does not work for block mines
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 
