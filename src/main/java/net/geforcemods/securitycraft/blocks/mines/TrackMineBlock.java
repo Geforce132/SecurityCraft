@@ -120,7 +120,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 	{
 		TileEntity te = world.getTileEntity(pos);
 
-		return te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive() && ((TrackMineTileEntity)te).isActive();
+		return te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive();
 	}
 
 	@Override

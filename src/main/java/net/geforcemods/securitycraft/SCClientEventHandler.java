@@ -68,7 +68,7 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ()))) instanceof SecurityCameraBlock)))
+			if((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ()))) instanceof SecurityCameraBlock))
 				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ())));
 		}
 		else if(event.getType() == ElementType.ALL)
@@ -152,7 +152,7 @@ public class SCClientEventHandler
 				String textureToUse = "item_not_bound";
 				Entity hitEntity = Minecraft.getInstance().pointedEntity;
 
-				if(hitEntity != null && hitEntity instanceof SentryEntity)
+				if(hitEntity instanceof SentryEntity)
 				{
 					CompoundNBT sentries = stack.getTag();
 

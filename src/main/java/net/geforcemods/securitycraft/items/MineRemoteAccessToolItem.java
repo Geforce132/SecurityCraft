@@ -56,7 +56,7 @@ public class MineRemoteAccessToolItem extends Item {
 		if(!world.isRemote)
 		{
 			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
-				if(!isMineAdded(stack, world, pos)){
+				if(!isMineAdded(stack, pos)){
 					int availSlot = getNextAvaliableSlot(stack);
 
 					if(availSlot == 0){
@@ -129,7 +129,7 @@ public class MineRemoteAccessToolItem extends Item {
 		return;
 	}
 
-	private boolean isMineAdded(ItemStack stack, World world, BlockPos pos) {
+	private boolean isMineAdded(ItemStack stack, BlockPos pos) {
 		if(stack.getTag() == null)
 			return false;
 

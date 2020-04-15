@@ -240,7 +240,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			{
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.up());
 
-				if(((hasActiveSCBlock || neighborBlock.canProvidePower(stateAbove))) && neighborBlock != this && hasActiveSCBlock != stateAbove.get(OPEN))
+				if((hasActiveSCBlock || neighborBlock.canProvidePower(stateAbove)) && neighborBlock != this && hasActiveSCBlock != stateAbove.get(OPEN))
 				{
 					if(hasActiveSCBlock != state.get(OPEN))
 					{

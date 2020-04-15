@@ -222,7 +222,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			//draw entry strings
 			for(int i = 0; i < tileEntity.players.length; i++)
 			{
-				if(tileEntity.players[i] != "")
+				if(!tileEntity.players[i].equals(""))
 					font.drawString(tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (10 * i), 0xC6C6C6);
 			}
 		}

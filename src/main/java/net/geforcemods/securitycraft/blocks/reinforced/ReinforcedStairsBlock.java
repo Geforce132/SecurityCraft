@@ -82,7 +82,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 
 	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
 	{
-		return IntStream.range(0, 16).mapToObj((p_199780_5_) -> combineShapes(p_199780_5_, slabShape, nwCorner, neCorner, swCorner, seCorner)).toArray((p_199778_0_) -> new VoxelShape[p_199778_0_]);
+		return IntStream.range(0, 16).mapToObj(shape -> combineShapes(shape, slabShape, nwCorner, neCorner, swCorner, seCorner)).toArray(size -> new VoxelShape[size]);
 	}
 
 	private static VoxelShape combineShapes(int bitfield, VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
@@ -149,7 +149,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving)
 	{
-		if(state.getBlock() != state.getBlock())
+		if(state.getBlock() != oldState.getBlock())
 		{
 			modelState.neighborChanged(world, pos, Blocks.AIR, pos, false);
 			modelBlock.onBlockAdded(modelState, world, pos, oldState, false);

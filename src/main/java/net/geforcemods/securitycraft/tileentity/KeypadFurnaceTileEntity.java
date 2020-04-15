@@ -114,7 +114,7 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 
 		if (index == 0 && !areStacksEqual)
 		{
-			totalCookTime = getTotalCookTime(stack);
+			totalCookTime = getTotalCookTime();
 			cookTime = 0;
 			markDirty();
 		}
@@ -256,7 +256,7 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 					if (cookTime == totalCookTime)
 					{
 						cookTime = 0;
-						totalCookTime = getTotalCookTime(furnaceItemStacks.get(0));
+						totalCookTime = getTotalCookTime();
 						smeltItem();
 						shouldMarkDirty = true;
 					}
@@ -273,7 +273,7 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 			markDirty();
 	}
 
-	public int getTotalCookTime(ItemStack stack)
+	public int getTotalCookTime()
 	{
 		return 200;
 	}

@@ -61,7 +61,7 @@ public class SetPassword {
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
 
-			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
+			if(getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
 				((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
 				checkForAdjacentChest(pos, password, player);
 			}
@@ -71,14 +71,14 @@ public class SetPassword {
 	}
 
 	private static void checkForAdjacentChest(BlockPos pos, String codeToSet, PlayerEntity player) {
-		if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof KeypadChestTileEntity)
-			if(getWorld(player).getTileEntity(pos.east()) != null && getWorld(player).getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
+		if(getWorld(player).getTileEntity(pos) instanceof KeypadChestTileEntity)
+			if(getWorld(player).getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.east())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.west()) != null && getWorld(player).getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
+			else if(getWorld(player).getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.west())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.south()) != null && getWorld(player).getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
+			else if(getWorld(player).getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.south())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.north()) != null && getWorld(player).getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
+			else if(getWorld(player).getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
 				((IPasswordProtected) getWorld(player).getTileEntity(pos.north())).setPassword(codeToSet);
 	}
 

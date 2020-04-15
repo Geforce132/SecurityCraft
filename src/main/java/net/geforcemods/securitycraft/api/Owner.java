@@ -59,10 +59,7 @@ public class Owner {
 		if(uuid != null && uuid.equals(playerUUID))
 			return true;
 
-		if(owner != null && playerUUID.equals("ownerUUID") && owner.equals(playerName))
-			return true;
-
-		return false;
+		return owner != null && playerUUID.equals("ownerUUID") && owner.equals(playerName);
 	}
 
 	/**

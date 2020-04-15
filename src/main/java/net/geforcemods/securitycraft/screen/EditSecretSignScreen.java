@@ -159,8 +159,8 @@ public class EditSecretSignScreen extends Screen
 
 		for(int j = 0; j < text.length; ++j)
 		{
-			text[j] = te.getRenderText(j, (p_228192_1_) -> {
-				List<ITextComponent> list = RenderComponentsUtil.splitText(p_228192_1_, 90, minecraft.fontRenderer, false, true);
+			text[j] = te.getRenderText(j, textComponent -> {
+				List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, minecraft.fontRenderer, false, true);
 
 				return list.isEmpty() ? "" : list.get(0).getFormattedText();
 			});

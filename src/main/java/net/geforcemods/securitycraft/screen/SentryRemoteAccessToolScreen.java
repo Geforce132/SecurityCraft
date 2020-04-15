@@ -118,7 +118,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						foundSentry = true;
 					}
 					else {
-						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], minecraft.player);
+						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 						for (int j = 0; j < 4; j++) {
 							guiButtons[i][j].active = false;
 						}
@@ -216,7 +216,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			}
 		}
 		if (mode == UNBIND) {
-			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getInstance().player);
+			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 
 			for(int i = 0; i < 4; i++) {
 				guiButtons[sentry][i].active = false;
@@ -281,7 +281,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			return new int[] { 0, 0, 0 };
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, PlayerEntity player) {
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
 		if (stack.getTag() == null)
 			return;
 

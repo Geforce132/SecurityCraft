@@ -52,9 +52,7 @@ public class OpenSRATGui
 	@OnlyIn(Dist.CLIENT)
 	public static void handleMessage(OpenSRATGui message, Supplier<NetworkEvent.Context> ctx)
 	{
-		ctx.get().enqueueWork(() -> {
-			SecurityCraft.proxy.displaySRATGui(Minecraft.getInstance().player.inventory.getCurrentItem(), message.viewDistance);
-		});
+		ctx.get().enqueueWork(() -> SecurityCraft.proxy.displaySRATGui(Minecraft.getInstance().player.inventory.getCurrentItem(), message.viewDistance));
 
 		ctx.get().setPacketHandled(true);
 	}

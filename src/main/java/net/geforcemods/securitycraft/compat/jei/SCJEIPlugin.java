@@ -20,7 +20,7 @@ public class SCJEIPlugin implements IModPlugin
 	public void registerRecipes(IRecipeRegistration registration)
 	{
 		registration.addIngredientInfo(new ItemStack(SCContent.ADMIN_TOOL.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.adminTool");
-		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
+		IPasswordConvertible.BLOCKS.forEach(pc -> {
 			registration.addIngredientInfo(new ItemStack(pc), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getPath());
 		});
 		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.forEach((v, sc) -> {

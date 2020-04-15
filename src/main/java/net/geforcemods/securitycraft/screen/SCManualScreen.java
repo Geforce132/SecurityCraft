@@ -298,40 +298,35 @@ public class SCManualScreen extends Screen {
 			return;
 		}
 
-		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
-			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
-		else
+		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 		{
-			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
-			{
-				if(object instanceof ShapedRecipe){
-					ShapedRecipe recipe = (ShapedRecipe) object;
+			if(object instanceof ShapedRecipe){
+				ShapedRecipe recipe = (ShapedRecipe) object;
 
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
-						for(int i = 0; i < recipeItems.size(); i++)
-							recipeItems.set(i, recipe.getIngredients().get(i));
+					for(int i = 0; i < recipeItems.size(); i++)
+						recipeItems.set(i, recipe.getIngredients().get(i));
 
-						this.recipe = recipeItems;
-						break;
-					}
-				}else if(object instanceof ShapelessRecipe){
-					ShapelessRecipe recipe = (ShapelessRecipe) object;
-
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
-
-						for(int i = 0; i < recipeItems.size(); i++)
-							recipeItems.set(i, recipe.getIngredients().get(i));
-
-						this.recipe = recipeItems;
-						break;
-					}
+					this.recipe = recipeItems;
+					break;
 				}
+			}else if(object instanceof ShapelessRecipe){
+				ShapelessRecipe recipe = (ShapelessRecipe) object;
 
-				recipe = null;
+				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+
+					for(int i = 0; i < recipeItems.size(); i++)
+						recipeItems.set(i, recipe.getIngredients().get(i));
+
+					this.recipe = recipeItems;
+					break;
+				}
 			}
+
+			recipe = null;
 		}
 
 		boolean reinforcedPage = SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info");

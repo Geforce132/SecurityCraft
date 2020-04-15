@@ -77,8 +77,8 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 			for(int line = 0; line < 4; ++line)
 			{
-				String text = te.getRenderText(line, (p_212491_1_) -> {
-					List<ITextComponent> list = RenderComponentsUtil.splitText(p_212491_1_, 90, font, false, true);
+				String text = te.getRenderText(line, textComponent -> {
+					List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, font, false, true);
 
 					return list.isEmpty() ? "" : list.get(0).getFormattedText();
 				});

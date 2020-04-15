@@ -64,11 +64,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 		if(state.getBlock() == this)
 			return state;
 		else
-		{
-			IFluidState fluidState = ctx.getWorld().getFluidState(ctx.getPos());
-			BlockState newState = getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
-			return newState;
-		}
+			return getDefaultState().with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getPos()).getFluid() == Fluids.WATER);
 	}
 
 	@Override

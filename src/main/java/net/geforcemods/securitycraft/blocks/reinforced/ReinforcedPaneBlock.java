@@ -38,9 +38,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
 	public static final BooleanProperty WEST = SixWayBlock.WEST;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((p_199775_0_) -> {
-		return p_199775_0_.getKey().getAxis().isHorizontal();
-	}).collect(Util.toMapCollector());
+	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().stream().filter(entry -> entry.getKey().getAxis().isHorizontal()).collect(Util.toMapCollector());
 	protected final VoxelShape[] field_196410_A;
 	protected final VoxelShape[] field_196412_B;
 

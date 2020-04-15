@@ -124,7 +124,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 		if(!world.isRemote && player.getRidingEntity() == null)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted").replace("#w", KeyBinding.getDisplayString("key.forward").get().toUpperCase()).replace("#a", KeyBinding.getDisplayString("key.left").get().toUpperCase()).replace("#s", KeyBinding.getDisplayString("key.back").get().toUpperCase()).replace("#d", KeyBinding.getDisplayString("key.right").get().toUpperCase()).replace("#i", KeyBindings.cameraZoomIn.getLocalizedName()).replace("#o", KeyBindings.cameraZoomOut.getLocalizedName()), TextFormatting.GREEN);
 
-		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof SecurityCameraEntity){
+		if(player.getRidingEntity() instanceof SecurityCameraEntity){
 			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, (SecurityCameraEntity) player.getRidingEntity());
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));
 			player.startRiding(dummyEntity);

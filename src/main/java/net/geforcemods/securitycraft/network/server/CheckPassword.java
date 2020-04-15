@@ -60,7 +60,7 @@ public class CheckPassword {
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
 
-			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof IPasswordProtected)
+			if(player.world.getTileEntity(pos) instanceof IPasswordProtected)
 				if(((IPasswordProtected) player.world.getTileEntity(pos)).getPassword().equals(password)){
 					((ServerPlayerEntity) player).closeScreen();
 					((IPasswordProtected) player.world.getTileEntity(pos)).activate(player);

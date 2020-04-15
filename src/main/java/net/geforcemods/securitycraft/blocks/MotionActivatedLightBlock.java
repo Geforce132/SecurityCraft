@@ -59,7 +59,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		return state.get(LIT) ? 15 : 0;
 	}
 
-	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {
+	public static void toggleLight(World world, BlockPos pos, Owner owner, boolean isLit) {
 		if(!world.isRemote)
 		{
 			if(isLit)

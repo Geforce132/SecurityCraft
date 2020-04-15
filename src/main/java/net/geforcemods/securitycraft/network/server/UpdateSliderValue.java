@@ -59,7 +59,7 @@ public class UpdateSliderValue {
 			double value = message.value;
 			PlayerEntity player = ctx.get().getSender();
 
-			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
+			if(player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
 				Option<?> o = ((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id];
 
 				if(o instanceof DoubleOption)

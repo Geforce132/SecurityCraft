@@ -76,9 +76,6 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	}
 
 	@Override
-	public abstract void explode(World world, BlockPos pos);
-
-	@Override
 	public boolean isDefusable(){
 		return true;
 	}

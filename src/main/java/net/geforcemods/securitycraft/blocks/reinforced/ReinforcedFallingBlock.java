@@ -20,8 +20,6 @@ import net.minecraft.world.server.ServerWorld;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock
 {
-	public static boolean fallInstantly;
-
 	public ReinforcedFallingBlock(SoundType soundType, Material mat, Block vB)
 	{
 		super(soundType, mat, vB);
@@ -51,7 +49,7 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock
 	{
 		if(canFallThrough(world.getBlockState(pos.down())) && pos.getY() >= 0)
 		{
-			if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
+			if(world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
 			{
 				TileEntity te = world.getTileEntity(pos);
 

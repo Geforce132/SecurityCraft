@@ -56,7 +56,7 @@ public class SetExplosiveState{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 
-			if(BlockUtils.getBlock(player.world, message.x, message.y, message.z) != null && BlockUtils.getBlock(player.world, message.x, message.y, message.z) instanceof IExplosive)
+			if(BlockUtils.getBlock(player.world, message.x, message.y, message.z) instanceof IExplosive)
 				if(message.state.equalsIgnoreCase("activate"))
 					((IExplosive) BlockUtils.getBlock(player.world, message.x, message.y, message.z)).activateMine(player.world, BlockUtils.toPos(message.x, message.y, message.z));
 				else if(message.state.equalsIgnoreCase("defuse"))

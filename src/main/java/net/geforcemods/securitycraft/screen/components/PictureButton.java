@@ -28,7 +28,6 @@ public class PictureButton extends ClickButton{
 	private int v;
 	private int texWidth;
 	private int texHeight;
-	public int id;
 
 	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender) {
 		this(id, xPos, yPos, width, height, par7, itemToRender, null);
@@ -42,8 +41,6 @@ public class PictureButton extends ClickButton{
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
 		else
 			this.itemToRender = itemToRender.getItem();
-
-		this.id = id;
 	}
 
 	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<ClickButton> onClick)
@@ -56,7 +53,6 @@ public class PictureButton extends ClickButton{
 		v = textureY;
 		texWidth = textureWidth;
 		texHeight = textureHeight;
-		this.id = id;
 	}
 
 	/**

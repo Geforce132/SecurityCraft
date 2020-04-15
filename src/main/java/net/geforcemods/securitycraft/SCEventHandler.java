@@ -219,7 +219,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onBlockBroken(BreakEvent event){
 		if(event.getWorld() instanceof World && !event.getWorld().isRemote())
-			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableTileEntity){
+			if(event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableTileEntity){
 				CustomizableTileEntity te = (CustomizableTileEntity) event.getWorld().getTileEntity(event.getPos());
 
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
@@ -240,9 +240,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
-		if(event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget()))
-			((MobEntity)event.getEntity()).setAttackTarget(null);
-		else if(event.getTarget() instanceof SentryEntity)
+		if((event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget())) || event.getTarget() instanceof SentryEntity)
 			((MobEntity)event.getEntity()).setAttackTarget(null);
 	}
 
@@ -314,7 +312,7 @@ public class SCEventHandler {
 			World world = event.getPlayer().world;
 			TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
 
-			if(tileEntity != null && tileEntity instanceof IPasswordProtected)
+			if(tileEntity instanceof IPasswordProtected)
 			{
 				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
