@@ -53,7 +53,7 @@ public class PacketSSetPassword implements IMessage{
 				String password = message.password;
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
+				if(getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
 					((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
 					checkForAdjacentChest(pos, password, player);
 				}
@@ -63,14 +63,14 @@ public class PacketSSetPassword implements IMessage{
 		}
 
 		private void checkForAdjacentChest(BlockPos pos, String codeToSet, EntityPlayer player) {
-			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest)
-				if(getWorld(player).getTileEntity(pos.east()) != null && getWorld(player).getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
+			if(getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest)
+				if(getWorld(player).getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.east())).setPassword(codeToSet);
-				else if(getWorld(player).getTileEntity(pos.west()) != null && getWorld(player).getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
+				else if(getWorld(player).getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.west())).setPassword(codeToSet);
-				else if(getWorld(player).getTileEntity(pos.south()) != null && getWorld(player).getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
+				else if(getWorld(player).getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.south())).setPassword(codeToSet);
-				else if(getWorld(player).getTileEntity(pos.north()) != null && getWorld(player).getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
+				else if(getWorld(player).getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.north())).setPassword(codeToSet);
 		}
 	}

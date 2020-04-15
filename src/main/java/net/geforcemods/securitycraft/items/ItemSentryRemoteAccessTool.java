@@ -51,7 +51,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 			if(!sentries.isEmpty()) {
 				BlockPos pos2 = sentries.get(0).getPosition();
 
-				if(!isSentryAdded(stack, world, pos2)){
+				if(!isSentryAdded(stack, pos2)){
 					int availSlot = getNextAvailableSlot(stack);
 
 					if(availSlot == 0){
@@ -134,7 +134,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		return;
 	}
 
-	private boolean isSentryAdded(ItemStack stack, World world, BlockPos pos) {
+	private boolean isSentryAdded(ItemStack stack, BlockPos pos) {
 		if(stack.getTagCompound() == null)
 			return false;
 

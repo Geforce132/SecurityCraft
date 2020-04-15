@@ -61,9 +61,7 @@ public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvi
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.PLANKS
-		});
+		return Arrays.asList(Blocks.PLANKS);
 	}
 
 	@Override

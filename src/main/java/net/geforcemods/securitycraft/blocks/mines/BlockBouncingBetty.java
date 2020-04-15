@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -142,7 +141,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
+		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
 	@Override

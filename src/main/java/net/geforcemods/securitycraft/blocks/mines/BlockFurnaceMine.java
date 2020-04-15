@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -42,7 +41,7 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay,
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if(!player.capabilities.isCreativeMode && !world.isRemote)
+		if(!world.isRemote)
 			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
@@ -108,7 +107,7 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay,
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override

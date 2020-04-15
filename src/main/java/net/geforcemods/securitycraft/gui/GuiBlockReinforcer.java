@@ -42,7 +42,7 @@ public class GuiBlockReinforcer extends GuiContainer
 		if(!inv.get(0).isEmpty())
 		{
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 25, 4210752);
-			GuiUtils.drawItemStackToGui(mc, container.reinforcingSlot.getOutput(), 116, 20, false);
+			GuiUtils.drawItemStackToGui(container.reinforcingSlot.getOutput(), 116, 20, false);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
 				renderToolTip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
@@ -51,7 +51,7 @@ public class GuiBlockReinforcer extends GuiContainer
 		if(!inv.get(1).isEmpty())
 		{
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
-			GuiUtils.drawItemStackToGui(mc, container.unreinforcingSlot.getOutput(), 116, 46, false);
+			GuiUtils.drawItemStackToGui(container.unreinforcingSlot.getOutput(), 116, 46, false);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)
 				renderToolTip(container.unreinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);

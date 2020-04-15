@@ -307,8 +307,8 @@ public class RegistrationHandler
 		registerItem(event, SCContent.limitedUseKeycard, ConfigHandler.ableToCraftLUKeycard);
 		registerItem(event, SCContent.remoteAccessMine);
 		registerItem(event, SCContent.remoteAccessSentry);
-		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, new ItemStack[]{ ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
-		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, new ItemStack[]{ ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY});
+		registerItemWithCustomRecipe(event, SCContent.fWaterBucket, ItemStack.EMPTY, harmingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.WATER_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
+		registerItemWithCustomRecipe(event, SCContent.fLavaBucket, ItemStack.EMPTY, healingPotions[0], ItemStack.EMPTY, ItemStack.EMPTY, new ItemStack(Items.LAVA_BUCKET, 1), ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
 		registerItem(event, SCContent.universalBlockModifier);
 		registerItem(event, SCContent.redstoneModule);
 		registerItem(event, SCContent.whitelistModule);

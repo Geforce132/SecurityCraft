@@ -48,9 +48,7 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.GLASS
-		});
+		return Arrays.asList(Blocks.GLASS);
 	}
 
 	@Override

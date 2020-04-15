@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -254,7 +253,7 @@ public class BlockAlarm extends BlockOwnable {
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override

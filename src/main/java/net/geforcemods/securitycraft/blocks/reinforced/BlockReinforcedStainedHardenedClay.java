@@ -65,9 +65,7 @@ public class BlockReinforcedStainedHardenedClay extends BlockColored implements 
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.STAINED_HARDENED_CLAY
-		});
+		return Arrays.asList(Blocks.STAINED_HARDENED_CLAY);
 	}
 
 	@Override

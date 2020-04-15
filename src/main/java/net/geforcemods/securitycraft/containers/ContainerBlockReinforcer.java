@@ -191,19 +191,13 @@ public class ContainerBlockReinforcer extends Container
 
 			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch(reinforcedBlock -> {
 				if(reinforce)
-				{
-					return ((IReinforcedBlock)reinforcedBlock).getVanillaBlocks().stream().anyMatch(vanillaBlock -> {
-						return stack.getItem().equals(Item.getItemFromBlock(vanillaBlock));
-					});
-				}
+					return ((IReinforcedBlock)reinforcedBlock).getVanillaBlocks().stream().anyMatch(vanillaBlock -> stack.getItem().equals(Item.getItemFromBlock(vanillaBlock)));
 				else
 				{
 					NonNullList<ItemStack> subBlocks = NonNullList.create();
 
 					reinforcedBlock.getSubBlocks(SecurityCraft.tabSCDecoration, subBlocks);
-					return subBlocks.stream().anyMatch(subBlock -> {
-						return stack.getMetadata() == subBlock.getMetadata() && stack.getItem() == subBlock.getItem();
-					});
+					return subBlocks.stream().anyMatch(subBlock -> stack.getMetadata() == subBlock.getMetadata() && stack.getItem() == subBlock.getItem());
 				}
 			});
 

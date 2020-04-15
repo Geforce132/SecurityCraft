@@ -48,11 +48,12 @@ public class EntityIMSBomb extends EntityFireball {
 			return;
 		}
 
-		if(ticksFlying < launchHeight && launching){
+		if(ticksFlying < launchHeight){
 			motionY = 0.35F;
 			ticksFlying++;
 			move(MoverType.SELF, motionX, motionY, motionZ);
-		}else if(ticksFlying >= launchHeight && launching)
+		}
+		else
 			setTarget();
 	}
 

@@ -50,9 +50,7 @@ public class BlockReinforcedStoneBrick extends BlockStoneBrick implements ITileE
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.STONEBRICK
-		});
+		return Arrays.asList(Blocks.STONEBRICK);
 	}
 
 	@Override

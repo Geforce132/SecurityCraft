@@ -105,7 +105,7 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	{
 		TileEntity te = world.getTileEntity(pos);
 
-		return te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive() && ((TileEntityTrackMine)te).isActive();
+		return te instanceof TileEntityTrackMine && ((TileEntityTrackMine)te).isActive();
 	}
 
 	@Override
@@ -121,6 +121,6 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 }

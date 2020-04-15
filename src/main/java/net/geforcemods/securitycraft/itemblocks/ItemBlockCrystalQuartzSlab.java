@@ -45,7 +45,6 @@ public class ItemBlockCrystalQuartzSlab extends ItemBlock {
 		else if (!player.canPlayerEdit(pos.offset(side), side, stack))
 			return EnumActionResult.FAIL;
 		else{
-			Object type = singleSlab.getTypeForItem(stack);
 			IBlockState state = world.getBlockState(pos);
 
 			if(state.getBlock() instanceof BlockCrystalQuartzSlab){
@@ -79,7 +78,7 @@ public class ItemBlockCrystalQuartzSlab extends ItemBlock {
 				}
 			}
 
-			return tryPlace(stack, world, player, pos.offset(side), type) ? EnumActionResult.SUCCESS : super.onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ);
+			return tryPlace(stack, world, player, pos.offset(side)) ? EnumActionResult.SUCCESS : super.onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ);
 		}
 	}
 
@@ -101,7 +100,7 @@ public class ItemBlockCrystalQuartzSlab extends ItemBlock {
 		return updatedState.getBlock() == singleSlab ? true : super.canPlaceBlockOnSide(world, originalPos, side, player, stack);
 	}
 
-	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos, Object variantInStack){
+	private boolean tryPlace(ItemStack stack, World world, EntityPlayer player, BlockPos pos){
 		IBlockState state = world.getBlockState(pos);
 		Owner owner = null;
 

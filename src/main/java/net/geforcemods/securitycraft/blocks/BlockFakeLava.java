@@ -94,9 +94,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 			{
 				IBlockState stateBelow = world.getBlockState(pos.down());
 
-				if (stateBelow.getMaterial().isSolid())
-					nextLevel = 0;
-				else if (stateBelow.getMaterial() == this.material && stateBelow.getValue(LEVEL) == 0)
+				if (stateBelow.getMaterial().isSolid() || (stateBelow.getMaterial() == this.material && stateBelow.getValue(LEVEL) == 0))
 					nextLevel = 0;
 			}
 
@@ -139,7 +137,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 			else
 				tryFlowInto(world, pos.down(), stateBelow, level + 8);
 		}
-		else if (level >= 0 && (level == 0 || isBlocked(world, pos.down(), stateBelow)))
+		else if (level >= 0 && (level == 0 || isBlocked(world, pos.down())))
 		{
 			Set<?> flowDirections = getPossibleFlowDirections(world, pos);
 			levelAbove = level + levelToAdd;
@@ -188,9 +186,9 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 				BlockPos offsetPos = pos.offset(facing);
 				IBlockState offsetState = world.getBlockState(offsetPos);
 
-				if (!isBlocked(world, offsetPos, offsetState) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL) > 0))
+				if (!isBlocked(world, offsetPos) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL) > 0))
 				{
-					if (!isBlocked(world, offsetPos.down(), offsetState))
+					if (!isBlocked(world, offsetPos.down()))
 						return distance;
 
 					if (distance < 4)
@@ -219,11 +217,11 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState offsetState = world.getBlockState(offsetPos);
 
-			if (!isBlocked(world, offsetPos, offsetState) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL) > 0))
+			if (!isBlocked(world, offsetPos) && (offsetState.getMaterial() != this.material || offsetState.getValue(LEVEL) > 0))
 			{
 				int oppositeCost;
 
-				if (isBlocked(world, offsetPos.down(), world.getBlockState(offsetPos.down())))
+				if (isBlocked(world, offsetPos.down()))
 					oppositeCost = calculateFlowCost(world, offsetPos, 1, facing.getOpposite());
 				else
 					oppositeCost = 0;
@@ -242,7 +240,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 		return facings;
 	}
 
-	private boolean isBlocked(World world, BlockPos pos, IBlockState state)
+	private boolean isBlocked(World world, BlockPos pos)
 	{
 		Block block = world.getBlockState(pos).getBlock();
 		return !(block instanceof BlockDoor) && block != Blocks.STANDING_SIGN && block != Blocks.LADDER && block != Blocks.REEDS ? (world.getBlockState(pos).getMaterial() == Material.PORTAL ? true : world.getBlockState(pos).getMaterial().blocksMovement()) : true;
@@ -270,7 +268,7 @@ public class BlockFakeLava extends BlockDynamicLiquid implements ITileEntityProv
 	private boolean canFlowInto(World world, BlockPos pos, IBlockState state)
 	{
 		Material material = state.getMaterial();
-		return material != this.material && material != Material.LAVA && !isBlocked(world, pos, state);
+		return material != this.material && material != Material.LAVA && !isBlocked(world, pos);
 	}
 
 	@Override

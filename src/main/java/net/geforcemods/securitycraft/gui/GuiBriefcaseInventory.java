@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -14,8 +13,8 @@ public class GuiBriefcaseInventory extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/briefcase_inventory.png");
 	private String briefcaseName;
 
-	public GuiBriefcaseInventory(EntityPlayer player, InventoryPlayer inventory, ItemStack briefcase) {
-		super(new ContainerBriefcase(player, inventory, new BriefcaseInventory(player.inventory.getCurrentItem())));
+	public GuiBriefcaseInventory(InventoryPlayer inventory, ItemStack briefcase) {
+		super(new ContainerBriefcase(inventory, new BriefcaseInventory(inventory.getCurrentItem())));
 
 		this.briefcaseName = briefcase.getDisplayName();
 	}

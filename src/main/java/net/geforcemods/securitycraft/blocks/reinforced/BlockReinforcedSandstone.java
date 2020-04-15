@@ -44,9 +44,7 @@ public class BlockReinforcedSandstone extends BlockSandStone implements ITileEnt
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.SANDSTONE
-		});
+		return Arrays.asList(Blocks.SANDSTONE);
 	}
 
 	@Override

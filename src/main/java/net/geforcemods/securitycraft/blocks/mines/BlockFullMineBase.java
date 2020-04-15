@@ -98,7 +98,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if(!player.capabilities.isCreativeMode && !world.isRemote)
+		if(!world.isRemote)
 			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){

@@ -53,10 +53,10 @@ public class GuiUtils{
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.FACING)) == 0) && (((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE)))
 			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
 		else
-			drawItemToGui(mc, Items.REDSTONE, 10, 0, false);
+			drawItemToGui(Items.REDSTONE, 10, 0, false);
 	}
 
-	public static void drawItemStackToGui(Minecraft mc, ItemStack stack, int x, int y, boolean fixLighting)
+	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting)
 	{
 		if(fixLighting)
 			GlStateManager.enableLighting();
@@ -70,11 +70,11 @@ public class GuiUtils{
 		GlStateManager.disableRescaleNormal();
 	}
 
-	public static void drawItemToGui(Minecraft mc, Item item, int itemDamage, int x, int y, boolean fixLighting){
-		drawItemStackToGui(mc, new ItemStack(item, 1, itemDamage), x, y, fixLighting);
+	public static void drawItemToGui(Item item, int itemDamage, int x, int y, boolean fixLighting){
+		drawItemStackToGui(new ItemStack(item, 1, itemDamage), x, y, fixLighting);
 	}
 
-	public static void drawItemToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
-		drawItemToGui(mc, item, 0, x, y, fixLighting);
+	public static void drawItemToGui(Item item, int x, int y, boolean fixLighting){
+		drawItemToGui(item, 0, x, y, fixLighting);
 	}
 }

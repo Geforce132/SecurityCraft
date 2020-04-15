@@ -36,7 +36,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		return Arrays.asList(new ItemStack[] {new ItemStack(SCContent.reinforcedGlassPane)});
+		return Arrays.asList(new ItemStack(SCContent.reinforcedGlassPane));
 	}
 
 	@Override
@@ -48,9 +48,7 @@ public class BlockReinforcedGlassPane extends BlockPane implements ITileEntityPr
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.GLASS_PANE
-		});
+		return Arrays.asList(Blocks.GLASS_PANE);
 	}
 
 	@Override

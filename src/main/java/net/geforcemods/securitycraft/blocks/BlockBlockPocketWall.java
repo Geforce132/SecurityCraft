@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -131,7 +130,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {SEE_THROUGH, SOLID});
+		return new BlockStateContainer(this, SEE_THROUGH, SOLID);
 	}
 
 	@Override

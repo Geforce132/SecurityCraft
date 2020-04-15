@@ -197,7 +197,7 @@ public class GuiLogger extends GuiContainer{
 				}
 			}
 
-			if(slotIndex >= 0 && slotIndex < tileEntity.players.length && tileEntity.players[slotIndex] != "")
+			if(slotIndex >= 0 && slotIndex < tileEntity.players.length && !tileEntity.players[slotIndex].equals(""))
 				fontRenderer.drawString(tileEntity.players[slotIndex], width / 2 - fontRenderer.getStringWidth(tileEntity.players[slotIndex]) / 2, slotTop, 0xC6C6C6);
 		}
 

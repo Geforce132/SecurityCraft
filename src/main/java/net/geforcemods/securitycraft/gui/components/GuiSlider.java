@@ -73,7 +73,7 @@ public class GuiSlider extends GuiButtonExt
 		if (showDecimal)
 		{
 			val = Double.toString(getValue());
-			precision = Math.min(val.substring(val.indexOf(".") + 1).length(), 4);
+			precision = Math.min(val.substring(val.indexOf('.') + 1).length(), 4);
 		}
 		else
 		{
@@ -155,15 +155,15 @@ public class GuiSlider extends GuiButtonExt
 		{
 			val = Double.toString(getValue());
 
-			if (val.substring(val.indexOf(".") + 1).length() > precision)
+			if (val.substring(val.indexOf('.') + 1).length() > precision)
 			{
-				val = val.substring(0, val.indexOf(".") + precision + 1);
+				val = val.substring(0, val.indexOf('.') + precision + 1);
 
 				if (val.endsWith("."))
-					val = val.substring(0, val.indexOf(".") + precision);
+					val = val.substring(0, val.indexOf('.') + precision);
 			}
 			else
-				while (val.substring(val.indexOf(".") + 1).length() < precision)
+				while (val.substring(val.indexOf('.') + 1).length() < precision)
 					val = val + "0";
 		}
 		else

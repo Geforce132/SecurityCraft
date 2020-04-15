@@ -54,9 +54,7 @@ public class BlockReinforcedQuartz extends BlockQuartz implements ITileEntityPro
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.QUARTZ_BLOCK
-		});
+		return Arrays.asList(Blocks.QUARTZ_BLOCK);
 	}
 
 	@Override

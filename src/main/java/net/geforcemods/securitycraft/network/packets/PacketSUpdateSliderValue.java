@@ -50,7 +50,7 @@ public class PacketSUpdateSliderValue implements IMessage{
 				double value = message.value;
 				EntityPlayer player = context.getServerHandler().player;
 
-				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE) {
+				if(getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE) {
 					Option<?> o = ((CustomizableSCTE) player.world.getTileEntity(pos)).customOptions()[id];
 
 					if(o instanceof OptionDouble)

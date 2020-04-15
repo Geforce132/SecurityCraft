@@ -51,18 +51,17 @@ public class GuiIMS extends GuiContainer{
 
 	@Override
 	protected void actionPerformed(GuiButton button){
-		switch(button.id){
-			case 0:
-				targetingOptionIndex++;
+		if(button.id == 0){
+			targetingOptionIndex++;
 
-				if(targetingOptionIndex > (EnumIMSTargetingMode.values().length - 1))
-					targetingOptionIndex = 0;
+			if(targetingOptionIndex > (EnumIMSTargetingMode.values().length - 1))
+				targetingOptionIndex = 0;
 
-				tileEntity.setTargetingOption(EnumIMSTargetingMode.values()[targetingOptionIndex]);
+			tileEntity.setTargetingOption(EnumIMSTargetingMode.values()[targetingOptionIndex]);
 
-				ClientUtils.syncTileEntity(tileEntity);
+			ClientUtils.syncTileEntity(tileEntity);
 
-				updateButtonText();
+			updateButtonText();
 		}
 	}
 

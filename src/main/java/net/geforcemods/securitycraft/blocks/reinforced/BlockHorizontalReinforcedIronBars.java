@@ -102,7 +102,7 @@ public class BlockHorizontalReinforcedIronBars extends BlockContainer implements
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[0]);
+		return Arrays.asList();
 	}
 
 	@Override

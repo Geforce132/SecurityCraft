@@ -18,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -104,7 +103,7 @@ public class GuiMRAT extends GuiContainer{
 						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
-						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], mc.player);
+						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 						for (int j = 0; j < 4; j++) {
 							buttons[i][j].enabled = false;
 						}
@@ -192,7 +191,7 @@ public class GuiMRAT extends GuiContainer{
 				break;
 			case DETONATE:
 				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 				for(int i = 0; i < 4; i++)
 				{
@@ -201,7 +200,7 @@ public class GuiMRAT extends GuiContainer{
 
 				break;
 			case UNBIND:
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 				for(int i = 0; i < 4; i++)
 				{
@@ -223,7 +222,7 @@ public class GuiMRAT extends GuiContainer{
 			return new int[] {0,0,0};
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player)
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z)
 	{
 		if(stack.getTagCompound() == null)
 			return;

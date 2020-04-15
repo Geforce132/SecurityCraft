@@ -77,9 +77,6 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new ContainerGeneric(player.inventory, te);
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
-					return null;
-				return null;
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
@@ -87,7 +84,7 @@ public class GuiHandler implements IGuiHandler {
 			case BRIEFCASE_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
-				return new ContainerBriefcase(player, player.inventory, new BriefcaseInventory(player.inventory.getCurrentItem()));
+				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(player.inventory.getCurrentItem()));
 			case KEY_CHANGER_GUI_ID:
 				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
@@ -97,7 +94,7 @@ public class GuiHandler implements IGuiHandler {
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
-				return new ContainerDisguiseModule(player, player.inventory, new ModuleInventory(player.inventory.getCurrentItem()));
+				return new ContainerDisguiseModule(player.inventory, new ModuleInventory(player.inventory.getCurrentItem()));
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
 			case MODULES:
@@ -152,7 +149,7 @@ public class GuiHandler implements IGuiHandler {
 			case BRIEFCASE_GUI_ID:
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
-				return new GuiBriefcaseInventory(player, player.inventory, player.inventory.getCurrentItem());
+				return new GuiBriefcaseInventory(player.inventory, player.inventory.getCurrentItem());
 			case KEY_CHANGER_GUI_ID:
 				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
@@ -162,7 +159,7 @@ public class GuiHandler implements IGuiHandler {
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
-				return new GuiDisguiseModule(player, player.inventory);
+				return new GuiDisguiseModule(player.inventory);
 			case BLOCK_REINFORCER:
 				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
 			case MODULES:

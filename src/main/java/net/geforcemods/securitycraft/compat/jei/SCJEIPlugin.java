@@ -16,13 +16,13 @@ public class SCJEIPlugin implements IModPlugin
 	{
 		registry.addAdvancedGuiHandlers(new SlotMover());
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), ItemStack.class, "gui.securitycraft:scManual.recipe.adminTool");
-		IPasswordConvertible.BLOCKS.forEach((pc) ->  {
+		IPasswordConvertible.BLOCKS.forEach(pc -> {
 			registry.addIngredientInfo(new ItemStack(pc), ItemStack.class, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getPath());
 		});
-		IReinforcedBlock.BLOCKS.forEach((rb) -> {
+		IReinforcedBlock.BLOCKS.forEach(rb -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
-			reinforcedBlock.getVanillaBlocks().forEach((vanillaBlock) -> {
+			reinforcedBlock.getVanillaBlocks().forEach(vanillaBlock -> {
 				if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
 					registry.addIngredientInfo(new ItemStack(rb, 1, reinforcedBlock.getVanillaBlocks().indexOf(vanillaBlock)), ItemStack.class, "jei.securitycraft:reinforcedBlock.info", "", vanillaBlock.getTranslationKey() + ".name");
 				else

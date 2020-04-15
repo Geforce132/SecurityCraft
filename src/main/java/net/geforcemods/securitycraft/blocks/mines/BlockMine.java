@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -71,15 +70,12 @@ public class BlockMine extends BlockExplosive {
 	public boolean canPlaceBlockAt(World world, BlockPos pos){
 		Material mat = world.getBlockState(pos.down()).getMaterial();
 
-		if(mat == Material.GLASS || mat == Material.CACTUS || mat == Material.AIR || mat == Material.CAKE || mat == Material.PLANTS)
-			return false;
-		else
-			return true;
+		return !(mat == Material.GLASS || mat == Material.CACTUS || mat == Material.AIR || mat == Material.CAKE || mat == Material.PLANTS);
 	}
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if(!player.capabilities.isCreativeMode && !world.isRemote)
+		if(!world.isRemote)
 			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
 				return super.removedByPlayer(state, world, pos, player, willHarvest);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
@@ -169,7 +165,7 @@ public class BlockMine extends BlockExplosive {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
+		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
 	@Override

@@ -130,19 +130,18 @@ public class GuiSetPassword extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button){
-		switch(button.id){
-			case 0:
-				if(keycodeTextbox.getText().isEmpty()){
-					isInvalid  = true;
-					updateButtonText();
-					return;
-				}
+		if(button.id == 0){
+			if(keycodeTextbox.getText().isEmpty()){
+				isInvalid  = true;
+				updateButtonText();
+				return;
+			}
 
-				((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
-				SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
+			((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
+			SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 
-				ClientUtils.closePlayerScreen();
-				Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
+			ClientUtils.closePlayerScreen();
+			Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
 		}
 	}
 

@@ -70,7 +70,7 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 	@Override
 	public int getMetaFromState(IBlockState state){
 		byte b0 = 0;
-		int meta = b0 | 0;
+		int meta = b0;
 
 		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
 			meta |= 8;
@@ -80,7 +80,7 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {HALF});
+		return new BlockStateContainer(this, HALF);
 	}
 
 	@Override

@@ -14,12 +14,12 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -119,7 +119,7 @@ public class BlockSecurityCamera extends BlockContainer{
 		if(!world.isRemote && player.getRidingEntity() == null)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:securityCamera.name"), ClientUtils.localize("messages.securitycraft:securityCamera.mounted").replace("#w", KeyBinding.getDisplayString("key.forward").get().toUpperCase()).replace("#a", KeyBinding.getDisplayString("key.left").get().toUpperCase()).replace("#s", KeyBinding.getDisplayString("key.back").get().toUpperCase()).replace("#d", KeyBinding.getDisplayString("key.right").get().toUpperCase()).replace("#i", KeyBindings.cameraZoomIn.getDisplayName()).replace("#o", KeyBindings.cameraZoomOut.getDisplayName()), TextFormatting.GREEN);
 
-		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
+		if(player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 			player.startRiding(dummyEntity);
@@ -130,7 +130,7 @@ public class BlockSecurityCamera extends BlockContainer{
 		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
-		for(Object e : world.loadedEntityList)
+		for(Entity e : world.loadedEntityList)
 			if(e instanceof EntityLiving)
 				if(((EntityLiving)e).getAttackTarget() == player)
 					((EntityLiving)e).setAttackTarget(null);
@@ -194,7 +194,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	@Override

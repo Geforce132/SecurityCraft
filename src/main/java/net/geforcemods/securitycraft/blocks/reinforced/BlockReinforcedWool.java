@@ -62,9 +62,7 @@ public class BlockReinforcedWool extends BlockColored implements ITileEntityProv
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.WOOL
-		});
+		return Arrays.asList(Blocks.WOOL);
 	}
 
 	@Override

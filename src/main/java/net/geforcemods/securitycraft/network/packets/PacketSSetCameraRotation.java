@@ -40,7 +40,7 @@ public class PacketSSetCameraRotation implements IMessage {
 			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
+				if(player.getRidingEntity() instanceof EntitySecurityCamera){
 					player.getRidingEntity().rotationYaw = message.rotationYaw;
 					player.getRidingEntity().rotationPitch = message.rotationPitch;
 				}

@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,13 +58,13 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
+		if(world.getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.east())).getPassword());
-		else if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
+		else if(world.getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.west())).getPassword());
-		else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
+		else if(world.getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.south())).getPassword());
-		else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
+		else if(world.getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.north())).getPassword());
 	}
 
@@ -100,10 +99,8 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 
 	private static boolean isOcelotSittingOnChest(World world, BlockPos pos)
 	{
-		for (Entity entity : world.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
+		for (EntityOcelot ocelot : world.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
 		{
-			EntityOcelot ocelot = (EntityOcelot)entity;
-
 			if (ocelot.isSitting())
 				return true;
 		}

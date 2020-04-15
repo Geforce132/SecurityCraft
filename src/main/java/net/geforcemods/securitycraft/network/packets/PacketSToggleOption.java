@@ -51,7 +51,7 @@ public class PacketSToggleOption implements IMessage{
 				int id = packet.id;
 				EntityPlayer player = message.getServerHandler().player;
 
-				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE) {
+				if(getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE) {
 					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).customOptions()[id].toggle();
 					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(player).getTileEntity(pos)).customOptions()[id]);
 					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).sync();

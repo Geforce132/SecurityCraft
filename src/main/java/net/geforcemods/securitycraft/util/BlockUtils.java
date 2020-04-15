@@ -26,10 +26,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockUtils{
-	private static final List<Block> PRESSURE_PLATES = Arrays.asList(new Block[] {
-			SCContent.reinforcedStonePressurePlate,
-			SCContent.reinforcedWoodenPressurePlate
-	});
+	private static final List<Block> PRESSURE_PLATES = Arrays.asList(SCContent.reinforcedStonePressurePlate, SCContent.reinforcedWoodenPressurePlate);
 
 	/**
 	 * Updates a block and notify's neighboring blocks of a change.

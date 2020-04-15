@@ -108,7 +108,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+		return new BlockStateContainer(this, HALF, VARIANT);
 	}
 
 	@Override

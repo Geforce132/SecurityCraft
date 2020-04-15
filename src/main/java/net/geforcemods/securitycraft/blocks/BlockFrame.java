@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -65,7 +64,7 @@ public class BlockFrame extends BlockOwnable {
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 }

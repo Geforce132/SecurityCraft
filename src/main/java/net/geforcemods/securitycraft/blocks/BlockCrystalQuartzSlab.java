@@ -66,7 +66,7 @@ public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay
 	@Override
 	public int getMetaFromState(IBlockState state){
 		byte b0 = 0;
-		int meta = b0 | 0;
+		int meta = b0;
 
 		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
 			meta |= 8;
@@ -76,7 +76,7 @@ public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {HALF});
+		return new BlockStateContainer(this, HALF);
 	}
 
 	@Override

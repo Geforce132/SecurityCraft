@@ -43,7 +43,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 			{
 				boolean redstoneModule = hasModule(EnumCustomModules.REDSTONE);
 
-				if(!redstoneModule || (redstoneModule && world.getBlockState(pos).getValue(BlockPortableRadar.POWERED)))
+				if(!redstoneModule || world.getBlockState(pos).getValue(BlockPortableRadar.POWERED))
 				{
 					BlockPortableRadar.togglePowerOutput(world, pos, false);
 					return false;

@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -110,7 +109,7 @@ public class BlockPortableRadar extends BlockContainer {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {POWERED});
+		return new BlockStateContainer(this, POWERED);
 	}
 
 	@Override

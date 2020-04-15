@@ -90,7 +90,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	@Override
 	protected void initEntityAI()
 	{
-		tasks.addTask(1, new EntityAIAttackRangedIfEnabled(this, 0.0F, 5, 10.0F));
+		tasks.addTask(1, new EntityAIAttackRangedIfEnabled(this, 5, 10.0F));
 		targetTasks.addTask(1, new EntityAITargetNearestPlayerOrMob(this));
 	}
 
@@ -431,7 +431,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 			for(String s : players)
 			{
-				if(potentialTarget.getName().toLowerCase().equals(s))
+				if(potentialTarget.getName().equalsIgnoreCase(s))
 					return true;
 			}
 		}

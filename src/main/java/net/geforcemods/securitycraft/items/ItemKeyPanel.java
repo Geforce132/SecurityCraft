@@ -21,7 +21,7 @@ public class ItemKeyPanel extends Item {
 		if(!world.isRemote){
 			ItemStack stack = player.getHeldItem(hand);
 
-			IPasswordConvertible.BLOCKS.forEach((pc) -> {
+			IPasswordConvertible.BLOCKS.forEach(pc -> {
 				if(BlockUtils.getBlock(world, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
 				{
 					if(((IPasswordConvertible)pc).convert(player, world, pos))

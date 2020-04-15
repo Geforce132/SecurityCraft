@@ -140,14 +140,14 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 
 				// If this block has a disguise module added with a transparent block inserted.
 				if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
-					return checkForSideTransparency(world, pos, world.getBlockState(pos.offset(side)), pos.offset(side), side);
+					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side), side);
 			}
 		}
 
 		return true;
 	}
 
-	public boolean checkForSideTransparency(IBlockAccess world, BlockPos thisPos, IBlockState neighborState, BlockPos neighborPos, EnumFacing side)
+	public boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos, EnumFacing side)
 	{
 		Block neighborBlock = neighborState.getBlock();
 
@@ -157,10 +157,7 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 		// Slightly cheating here, checking if the block is an instance of BlockBreakable
 		// and a vanilla block instead of checking for specific blocks, since all vanilla
 		// BlockBreakable blocks are transparent.
-		if(neighborBlock instanceof BlockBreakable && neighborBlock.getRegistryName().getNamespace().equals("minecraft"))
-			return false;
-
-		return true;
+		return !(neighborBlock instanceof BlockBreakable && neighborBlock.getRegistryName().getNamespace().equals("minecraft"));
 	}
 
 	@Override

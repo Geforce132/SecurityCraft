@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -183,7 +182,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, DEACTIVATED});
+		return new BlockStateContainer(this, FACING, DEACTIVATED);
 	}
 
 	@Override

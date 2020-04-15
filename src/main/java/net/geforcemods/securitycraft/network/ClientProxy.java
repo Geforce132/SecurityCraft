@@ -36,7 +36,6 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -351,7 +350,7 @@ public class ClientProxy implements IProxy {
 							return noTint;
 					}, block);
 					//same thing for inventory
-					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> {
+					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
 						if(block == SCContent.reinforcedGrass)
 						{
 							if(tintIndex == 0)
@@ -376,9 +375,7 @@ public class ClientProxy implements IProxy {
 			}
 		}
 
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-			return world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1;
-		}, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
 	}
 
 	private int mixTints(int tint1, int tint2)

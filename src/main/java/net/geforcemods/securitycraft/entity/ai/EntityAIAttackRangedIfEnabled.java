@@ -17,7 +17,7 @@ public class EntityAIAttackRangedIfEnabled extends EntityAIBase
 	private final int maxRangedAttackTime;
 	private final float attackRadius;
 
-	public EntityAIAttackRangedIfEnabled(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistance)
+	public EntityAIAttackRangedIfEnabled(IRangedAttackMob attacker, int maxAttackTime, float maxAttackDistance)
 	{
 		sentry = (EntitySentry)attacker;
 		rangedAttackTime = -1;

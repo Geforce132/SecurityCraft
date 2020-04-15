@@ -25,7 +25,7 @@ public class ModuleInventory implements IInventory {
 	public ModuleInventory(ItemStack moduleItem) {
 		module = moduleItem;
 
-		if(moduleItem.getItem() == null || !(moduleItem.getItem() instanceof ItemModule)) return;
+		if(!(moduleItem.getItem() instanceof ItemModule)) return;
 
 		SIZE = ((ItemModule) moduleItem.getItem()).getNumberOfAddons();
 		maxNumberOfItems = ((ItemModule) moduleItem.getItem()).getNumberOfItemAddons();

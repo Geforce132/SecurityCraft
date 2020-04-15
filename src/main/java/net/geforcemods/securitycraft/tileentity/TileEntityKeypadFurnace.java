@@ -112,7 +112,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 		if (index == 0 && !areStacksEqual)
 		{
-			totalCookTime = getTotalCookTime(stack);
+			totalCookTime = getTotalCookTime();
 			cookTime = 0;
 			markDirty();
 		}
@@ -262,7 +262,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 					if (cookTime == totalCookTime)
 					{
 						cookTime = 0;
-						totalCookTime = getTotalCookTime(furnaceItemStacks.get(0));
+						totalCookTime = getTotalCookTime();
 						smeltItem();
 						shouldMarkDirty = true;
 					}
@@ -279,7 +279,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			markDirty();
 	}
 
-	public int getTotalCookTime(ItemStack stack)
+	public int getTotalCookTime()
 	{
 		return 200;
 	}
@@ -465,7 +465,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
+		return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName());
 	}
 
 	@Override

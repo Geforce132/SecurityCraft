@@ -189,7 +189,7 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(tileEntity != null && tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier)){
+				if(tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier)){
 					event.setCanceled(true);
 
 					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
@@ -391,7 +391,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
 		if(!event.getWorld().isRemote)
-			if(event.getWorld().getTileEntity(event.getPos()) != null && event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
+			if(event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
 				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
 
 				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
@@ -488,7 +488,7 @@ public class SCEventHandler {
 	@SideOnly(Side.CLIENT)
 	public void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(Minecraft.getMinecraft().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player)){
-			if(event.getType() == ElementType.EXPERIENCE && ((BlockUtils.getBlock(Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera)))
+			if(event.getType() == ElementType.EXPERIENCE && (BlockUtils.getBlock(Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ))) instanceof BlockSecurityCamera))
 				GuiUtils.drawCameraOverlay(Minecraft.getMinecraft(), Minecraft.getMinecraft().ingameGUI, event.getResolution(), Minecraft.getMinecraft().player, Minecraft.getMinecraft().world, BlockUtils.toPos((int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posX), (int)Minecraft.getMinecraft().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getMinecraft().player.getRidingEntity().posZ)));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
@@ -572,7 +572,7 @@ public class SCEventHandler {
 				String textureToUse = "item_not_bound";
 				Entity hitEntity = Minecraft.getMinecraft().pointedEntity;
 
-				if(hitEntity != null && hitEntity instanceof EntitySentry)
+				if(hitEntity instanceof EntitySentry)
 				{
 					NBTTagCompound sentries = stack.getTagCompound();
 
@@ -673,7 +673,7 @@ public class SCEventHandler {
 			World world = event.getEntityPlayer().world;
 			TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-			if(tileEntity != null && tileEntity instanceof IPasswordProtected)
+			if(tileEntity instanceof IPasswordProtected)
 			{
 				if(event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
 					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());

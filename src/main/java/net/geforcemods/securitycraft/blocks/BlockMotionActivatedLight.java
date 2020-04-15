@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -79,7 +78,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 		return world.getBlockState(pos).getValue(LIT) ? 15 : 0;
 	}
 
-	public static void toggleLight(World world, BlockPos pos, double searchRadius, Owner owner, boolean isLit) {
+	public static void toggleLight(World world, BlockPos pos, Owner owner, boolean isLit) {
 		if(!world.isRemote)
 		{
 			if(isLit)
@@ -155,7 +154,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, LIT});
+		return new BlockStateContainer(this, FACING, LIT);
 	}
 
 	@Override

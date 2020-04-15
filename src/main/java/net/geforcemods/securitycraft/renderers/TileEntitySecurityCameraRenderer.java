@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
@@ -64,7 +63,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = te.cameraRotation;
 
-		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();

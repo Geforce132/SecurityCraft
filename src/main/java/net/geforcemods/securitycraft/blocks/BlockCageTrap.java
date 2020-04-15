@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -175,7 +174,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
+		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
 	@Override

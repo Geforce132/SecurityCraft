@@ -55,7 +55,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		{
 			for(int i = 0; i < players.length; i++)
 			{
-				if(players[i] == "" || players[i] == null){
+				if(players[i].equals("") || players[i] == null){
 					players[i] = player.getName();
 					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;

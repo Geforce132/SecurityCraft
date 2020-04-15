@@ -22,7 +22,7 @@ public class ItemKeycardBase extends Item{
 		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
-	public int getKeycardLvl(ItemStack par1ItemStack){
+	public int getKeycardLvl(){
 		if(level == 0)
 			return 1;
 		else if(level == 1)

@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -129,7 +128,7 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	@Override

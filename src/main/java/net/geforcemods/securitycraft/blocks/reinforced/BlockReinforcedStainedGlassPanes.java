@@ -44,7 +44,7 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
 	{
-		return Arrays.asList(new ItemStack[] {new ItemStack(SCContent.reinforcedStainedGlassPanes, 1, state.getValue(COLOR).getMetadata())});
+		return Arrays.asList(new ItemStack(SCContent.reinforcedStainedGlassPanes, 1, state.getValue(COLOR).getMetadata()));
 	}
 
 	@Override
@@ -56,9 +56,7 @@ public class BlockReinforcedStainedGlassPanes extends BlockStainedGlassPane impl
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.STAINED_GLASS_PANE
-		});
+		return Arrays.asList(Blocks.STAINED_GLASS_PANE);
 	}
 
 	@Override

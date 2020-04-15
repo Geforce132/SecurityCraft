@@ -5,15 +5,14 @@ import net.geforcemods.securitycraft.containers.ModuleInventory;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiDisguiseModule extends GuiContainer {
 	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 
-	public GuiDisguiseModule(EntityPlayer player, InventoryPlayer inventory) {
-		super(new ContainerDisguiseModule(player, inventory, new ModuleInventory(player.inventory.getCurrentItem())));
+	public GuiDisguiseModule(InventoryPlayer inventory) {
+		super(new ContainerDisguiseModule(inventory, new ModuleInventory(inventory.getCurrentItem())));
 	}
 
 	@Override

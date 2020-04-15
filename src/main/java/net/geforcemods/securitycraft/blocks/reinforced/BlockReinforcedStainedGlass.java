@@ -58,9 +58,7 @@ public class BlockReinforcedStainedGlass extends BlockStainedGlass implements IT
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.STAINED_GLASS
-		});
+		return Arrays.asList(Blocks.STAINED_GLASS);
 	}
 
 	@Override

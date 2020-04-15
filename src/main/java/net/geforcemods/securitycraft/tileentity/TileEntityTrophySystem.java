@@ -22,6 +22,7 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 
 	public Entity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
+	private final Random random = new Random();
 
 	@Override
 	public void update() {
@@ -92,7 +93,6 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 		if(potentialTargets.size() <= 0) return null;
 
 		// Return a random entity to target from the list of all possible targets
-		Random random = new Random();
 		int target = random.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);

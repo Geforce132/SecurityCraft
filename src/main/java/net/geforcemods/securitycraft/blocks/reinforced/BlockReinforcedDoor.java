@@ -88,7 +88,7 @@ public class BlockReinforcedDoor extends BlockDoor implements ITileEntityProvide
 			{
 				boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos.up());
 
-				if (((hasActiveSCBlock || neighborBlock.canProvidePower(stateAbove))) && neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(POWERED))
+				if ((hasActiveSCBlock || neighborBlock.canProvidePower(stateAbove)) && neighborBlock != this && hasActiveSCBlock != stateAbove.getValue(POWERED))
 				{
 					world.setBlockState(blockAbove, stateAbove.withProperty(POWERED, hasActiveSCBlock), 2);
 

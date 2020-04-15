@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -78,7 +77,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 			return;
 
 		int requiredLevel = -1;
-		int cardLvl = ((ItemKeycardBase) stack.getItem()).getKeycardLvl(stack);
+		int cardLvl = ((ItemKeycardBase) stack.getItem()).getKeycardLvl();
 
 		if(((TileEntityKeycardReader)world.getTileEntity(pos)).getPassword() != null)
 			requiredLevel = Integer.parseInt(((TileEntityKeycardReader)world.getTileEntity(pos)).getPassword());
@@ -210,7 +209,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	@Override

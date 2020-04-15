@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -70,7 +69,7 @@ public class BlockBlockPocketManager extends BlockOwnable
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override

@@ -108,22 +108,21 @@ public class GuiBriefcaseSetup extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		switch(button.id){
-			case 0:
-				if(keycodeTextbox.getText().length() < 4) {
-					flag  = true;
-					updateButtonText();
-					return;
-				}
+		if(button.id == 0){
+			if(keycodeTextbox.getText().length() < 4) {
+				flag  = true;
+				updateButtonText();
+				return;
+			}
 
-				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-					if(Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound() == null)
-						Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
+				if(Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound() == null)
+					Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
 
-					Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
-					ClientUtils.syncItemNBT(Minecraft.getMinecraft().player.inventory.getCurrentItem());
-					Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
-				}
+				Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
+				ClientUtils.syncItemNBT(Minecraft.getMinecraft().player.inventory.getCurrentItem());
+				Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
+			}
 		}
 	}
 

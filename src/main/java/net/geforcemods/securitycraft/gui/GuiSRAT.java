@@ -114,7 +114,7 @@ public class GuiSRAT extends GuiContainer {
 						foundSentry = true;
 					}
 					else {
-						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], mc.player);
+						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 						for (int j = 0; j < 4; j++) {
 							buttons[i][j].enabled = false;
 						}
@@ -224,7 +224,7 @@ public class GuiSRAT extends GuiContainer {
 			}
 		}
 		if (mode == UNBIND) {
-			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2], Minecraft.getMinecraft().player);
+			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 			for (int i = 0; i < 4; i++) {
 				buttons[sentry][i].enabled = false;
 			}
@@ -284,7 +284,7 @@ public class GuiSRAT extends GuiContainer {
 			return new int[] { 0, 0, 0 };
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, EntityPlayer player) {
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z) {
 		if (stack.getTagCompound() == null)
 			return;
 

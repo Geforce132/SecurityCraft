@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockPlanks.EnumType;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -89,7 +88,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT, LOG_AXIS});
+		return new BlockStateContainer(this, VARIANT, LOG_AXIS);
 	}
 
 	/**
@@ -105,9 +104,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.LOG
-		});
+		return Arrays.asList(Blocks.LOG);
 	}
 
 	@Override

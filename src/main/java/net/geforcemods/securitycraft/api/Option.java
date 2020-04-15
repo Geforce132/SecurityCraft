@@ -182,7 +182,7 @@ public class Option<T> {
 
 		@Override
 		public Boolean getValue() {
-			return (boolean) value;
+			return value;
 		}
 
 		@Override
@@ -234,7 +234,7 @@ public class Option<T> {
 
 		@Override
 		public Integer getValue() {
-			return (int) value;
+			return value;
 		}
 
 		@Override
@@ -308,7 +308,7 @@ public class Option<T> {
 
 		@Override
 		public Double getValue() {
-			return (double) value;
+			return value;
 		}
 
 		@Override

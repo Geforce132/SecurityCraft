@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -136,7 +135,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
+		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
@@ -168,10 +167,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.PURPUR_BLOCK,
-				Blocks.PURPUR_PILLAR
-		});
+		return Arrays.asList(Blocks.PURPUR_BLOCK, Blocks.PURPUR_PILLAR);
 	}
 
 	@Override

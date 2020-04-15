@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -98,7 +97,7 @@ public class BlockIMS extends BlockOwnable {
 	 */
 	@SideOnly(Side.CLIENT)
 	public void randomDisplsayTick(IBlockState state, World world, BlockPos pos, Random random){
-		if(world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) world.getTileEntity(pos)).getBombsRemaining() == 0){
+		if(world.getTileEntity(pos) instanceof TileEntityIMS && ((TileEntityIMS) world.getTileEntity(pos)).getBombsRemaining() == 0){
 			double x = pos.getX() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
 			double y = pos.getY() + 0.4F + (random.nextFloat() - 0.5F) * 0.2D;
 			double z = pos.getZ() + 0.5F + (random.nextFloat() - 0.5F) * 0.2D;
@@ -149,7 +148,7 @@ public class BlockIMS extends BlockOwnable {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {MINES});
+		return new BlockStateContainer(this, MINES);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -58,6 +57,6 @@ public class BlockSecretSignStanding extends BlockSecretSign
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {ROTATION});
+		return new BlockStateContainer(this, ROTATION);
 	}
 }

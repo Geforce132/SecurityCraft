@@ -12,7 +12,7 @@ public class ContainerBriefcase extends Container {
 
 	private BriefcaseInventory inventory;
 
-	public ContainerBriefcase(EntityPlayer player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
+	public ContainerBriefcase(InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
 		inventory = briefcaseInventory;
 
 		for(int i = 0; i < 3; i++)

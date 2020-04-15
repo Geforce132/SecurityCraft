@@ -49,7 +49,7 @@ public class PacketSetExplosiveState implements IMessage{
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				EntityPlayer player = context.getServerHandler().player;
 
-				if(BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z) != null && BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z) instanceof IExplosive)
+				if(BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z) instanceof IExplosive)
 					if(message.state.equalsIgnoreCase("activate"))
 						((IExplosive) BlockUtils.getBlock(getWorld(player), message.x, message.y, message.z)).activateMine(getWorld(player), BlockUtils.toPos(message.x, message.y, message.z));
 					else if(message.state.equalsIgnoreCase("defuse"))

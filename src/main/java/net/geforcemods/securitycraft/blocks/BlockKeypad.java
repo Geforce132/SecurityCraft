@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -159,7 +158,7 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	/**
