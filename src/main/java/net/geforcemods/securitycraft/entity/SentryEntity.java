@@ -42,6 +42,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
@@ -136,6 +137,12 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	@Override
+	public ItemStack getPickedResult(RayTraceResult target)
+	{
+		return new ItemStack(SCContent.SENTRY.get());
+	}
+
+	@Override
 	public boolean processInteract(PlayerEntity player, Hand hand)
 	{
 		if(getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
@@ -196,7 +203,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			{
 				String newOwner = player.getHeldItemMainhand().getDisplayName().getFormattedText();
 
-				dataManager.set(OWNER, new Owner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner));
+				this.getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			}
 			else
@@ -236,13 +243,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		int mode = dataManager.get(MODE) + 1;
 
-		if(mode == 3)
+		if(mode >= 3) //bigger than three in case that players set the value manually with command
 			mode = 0;
 
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)) , TextFormatting.DARK_RED);
 		else
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
 	}
@@ -260,7 +267,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)) , TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
 	}

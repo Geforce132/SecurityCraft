@@ -7,9 +7,13 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.FlyingEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.ShulkerEntity;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
 
 /**
@@ -55,7 +59,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					break;
 				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
 					break;
-				else if(potentialTarget instanceof MonsterEntity && sentry.getMode() == SentryMode.AGGRESSIVE)
+				else if(sentry.getMode() == SentryMode.AGGRESSIVE && (potentialTarget instanceof MonsterEntity || potentialTarget instanceof FlyingEntity || potentialTarget instanceof SlimeEntity || potentialTarget instanceof ShulkerEntity || potentialTarget instanceof EnderDragonEntity) && potentialTarget.deathTime == 0)
 					break;
 			}
 

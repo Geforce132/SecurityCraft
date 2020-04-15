@@ -92,6 +92,12 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos)
+	{
+		return false;
+	}
+
+	@Override
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		if (this == SCContent.REINFORCED_COBWEB.get())
 		{
@@ -111,8 +117,13 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+		return this == SCContent.REINFORCED_GRASS_PATH.get() ? Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D) : VoxelShapes.fullCube();
+	}
+
+	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		return this == SCContent.REINFORCED_COBWEB.get() ? VoxelShapes.empty() : VoxelShapes.fullCube();
+		return this == SCContent.REINFORCED_COBWEB.get() ? VoxelShapes.empty() : this.getShape(state, world, pos, context);
 	}
 
 	@Override

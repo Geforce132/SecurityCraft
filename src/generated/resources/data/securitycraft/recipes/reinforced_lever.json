@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "C"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "C": {
+      "item": "securitycraft:reinforced_cobblestone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_lever"
+  }
+}
