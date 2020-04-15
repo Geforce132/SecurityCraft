@@ -63,7 +63,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 				font.drawString(ClientUtils.localize("gui.securitycraft:invScan.explanation.emitRedstone.4"), width / 2 - 83 - (hasStorageModule ? 28 : 0), height / 2 - 8, 4210752);
 			}
 		}
-		else if(tileEntity.getScanType() != null && tileEntity.getScanType() != ""){
+		else if(tileEntity.getScanType() != null && !tileEntity.getScanType().equals("")){
 			font.drawString(ClientUtils.localize("gui.securitycraft:invScan.setTo"), width / 2 - 83, height / 2 - 61, 4210752);
 			font.drawString((tileEntity.getScanType().equals("check") ? ClientUtils.localize("gui.securitycraft:invScan.checkInv") : ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")), width / 2 - 83, height / 2 - 51, 4210752);
 
@@ -80,16 +80,13 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	protected void actionPerformed(ClickButton button){
-		switch(button.id){
-			case 0:
-				if(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
-					button.setMessage(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone"));
-				else if(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
-					button.setMessage(ClientUtils.localize("gui.securitycraft:invScan.checkInv"));
+		if(button.id == 0){
+			if(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")))
+				button.setMessage(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone"));
+			else if(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.emitRedstone")))
+				button.setMessage(ClientUtils.localize("gui.securitycraft:invScan.checkInv"));
 
-				saveType(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
-
-				break;
+			saveType(button.getMessage().equals(ClientUtils.localize("gui.securitycraft:invScan.checkInv")) ? "check" : "redstone");
 		}
 
 	}
@@ -112,7 +109,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		if(hasStorageModule && tileEntity.getOwner().isOwner(minecraft.player))
 			font.drawString("Storage", 183, 6, 4210752);
 
-		font.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 93, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
 	}
 
 	@Override

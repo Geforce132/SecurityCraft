@@ -19,7 +19,7 @@ public class AttackRangedIfEnabledGoal extends Goal
 	private final int maxRangedAttackTime;
 	private final float attackRadius;
 
-	public AttackRangedIfEnabledGoal(IRangedAttackMob attacker, double movespeed, int maxAttackTime, float maxAttackDistance)
+	public AttackRangedIfEnabledGoal(IRangedAttackMob attacker, int maxAttackTime, float maxAttackDistance)
 	{
 		sentry = (SentryEntity)attacker;
 		rangedAttackTime = -1;

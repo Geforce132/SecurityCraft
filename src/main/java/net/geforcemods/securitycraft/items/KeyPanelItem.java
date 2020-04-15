@@ -29,7 +29,7 @@ public class KeyPanelItem extends Item {
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
-			IPasswordConvertible.BLOCKS.forEach((pc) -> {
+			IPasswordConvertible.BLOCKS.forEach(pc -> {
 				if(BlockUtils.getBlock(world, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
 				{
 					if(((IPasswordConvertible)pc).convert(player, world, pos))

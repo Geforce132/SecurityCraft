@@ -23,6 +23,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	public static final int COOLDOWN_TIME = 8;
 	public Entity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
+	private final Random random = new Random();
 
 	public TrophySystemTileEntity()
 	{
@@ -97,7 +98,6 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		if(potentialTargets.size() <= 0) return null;
 
 		// Return a random entity to target from the list of all possible targets
-		Random random = new Random();
 		int target = random.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);

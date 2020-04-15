@@ -72,7 +72,7 @@ public class CustomizeBlockContainer extends Container{
 				if (!mergeItemStack(slotStack, 0, 35, true))
 					return ItemStack.EMPTY;
 			}
-			else if (slotStack.getItem() != null && slotStack.getItem() instanceof ModuleItem && tileEntity.getAcceptedModules().contains(CustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))
+			else if (slotStack.getItem() instanceof ModuleItem && tileEntity.getAcceptedModules().contains(CustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))
 				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
@@ -108,10 +108,7 @@ public class CustomizeBlockContainer extends Container{
 		@Override
 		public boolean isItemValid(ItemStack stack)
 		{
-			if(!stack.isEmpty() && stack.getItem() instanceof ModuleItem && tileEntity.getAcceptedModules().contains(((ModuleItem) stack.getItem()).getModule()) && !tileEntity.hasModule(((ModuleItem) stack.getItem()).getModule()))
-				return true;
-			else
-				return false;
+			return !stack.isEmpty() && stack.getItem() instanceof ModuleItem && tileEntity.getAcceptedModules().contains(((ModuleItem) stack.getItem()).getModule()) && !tileEntity.hasModule(((ModuleItem) stack.getItem()).getModule());
 		}
 
 		@Override

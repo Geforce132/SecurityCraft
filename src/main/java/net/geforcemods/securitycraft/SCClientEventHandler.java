@@ -74,7 +74,7 @@ public class SCClientEventHandler {
 	@SubscribeEvent
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
-			if(((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof SecurityCameraBlock)))
+			if((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ))) instanceof SecurityCameraBlock))
 				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().mainWindow, Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posX), (int)Minecraft.getInstance().player.getRidingEntity().posY, (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().posZ)));
 		}
 		else if(event.getType() == ElementType.HOTBAR)
@@ -158,7 +158,7 @@ public class SCClientEventHandler {
 				String textureToUse = "item_not_bound";
 				Entity hitEntity = Minecraft.getInstance().pointedEntity;
 
-				if(hitEntity != null && hitEntity instanceof SentryEntity)
+				if(hitEntity instanceof SentryEntity)
 				{
 					CompoundNBT sentries = stack.getTag();
 
@@ -251,6 +251,6 @@ public class SCClientEventHandler {
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE)))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
-			GuiUtils.drawItemToGui(mc, Items.REDSTONE, 10, 0, false);
+			GuiUtils.drawItemToGui(Items.REDSTONE, 10, 0, false);
 	}
 }

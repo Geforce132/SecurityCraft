@@ -16,14 +16,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock
 {
-	public static boolean fallInstantly;
-
 	public FallingBlockMineBlock(Material material, SoundType soundType, Block disguisedBlock, float baseHardness)
 	{
 		super(material, soundType, disguisedBlock, baseHardness);
@@ -49,7 +48,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock
 		{
 			if((world.isAirBlock(pos.down()) || canFallThrough(world.getBlockState(pos.down()))) && pos.getY() >= 0)
 			{
-				if(!fallInstantly && world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
+				if(world.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32)))
 				{
 					TileEntity te = world.getTileEntity(pos);
 
@@ -76,10 +75,8 @@ public class FallingBlockMineBlock extends BaseFullMineBlock
 		}
 	}
 
-	/**
-	 * How many world ticks before ticking
-	 */
-	public int tickRate(World world)
+	@Override
+	public int tickRate(IWorldReader worldIn)
 	{
 		return 2;
 	}

@@ -8,11 +8,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class GuiUtils{
-	public static void drawItemToGui(Minecraft mc, Item item, int x, int y, boolean fixLighting){
-		drawItemStackToGui(mc, new ItemStack(item), x, y, fixLighting);
+	public static void drawItemToGui(Item item, int x, int y, boolean fixLighting){
+		drawItemStackToGui(new ItemStack(item), x, y, fixLighting);
 	}
 
-	public static void drawItemStackToGui(Minecraft mc, ItemStack stack, int x, int y, boolean fixLighting){
+	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting){
 		if(fixLighting)
 			GlStateManager.enableLighting();
 

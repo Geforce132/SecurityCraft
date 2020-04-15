@@ -97,6 +97,6 @@ public class PlayerUtils{
 	 * Is the entity mounted on to a security camera?
 	 */
 	public static boolean isPlayerMountedOnCamera(LivingEntity entity) {
-		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof SecurityCameraEntity;
+		return entity.getRidingEntity() instanceof SecurityCameraEntity;
 	}
 }

@@ -148,7 +148,7 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemToGui(minecraft, item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
+			GuiUtils.drawItemToGui(item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
 
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
@@ -183,9 +183,10 @@ public class SCManualScreen extends Screen {
 					}
 				}
 			}
+
 			for(IngredientDisplay display : displays)
 			{
-				display.render(minecraft, partialTicks);
+				display.render(partialTicks);
 			}
 
 			for(int i = 0; i < hoverCheckers.size(); i++)
@@ -299,40 +300,35 @@ public class SCManualScreen extends Screen {
 			return;
 		}
 
-		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
-			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
-		else
+		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 		{
-			for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
-			{
-				if(object instanceof ShapedRecipe){
-					ShapedRecipe recipe = (ShapedRecipe) object;
+			if(object instanceof ShapedRecipe){
+				ShapedRecipe recipe = (ShapedRecipe) object;
 
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
-						for(int i = 0; i < recipeItems.size(); i++)
-							recipeItems.set(i, recipe.getIngredients().get(i));
+					for(int i = 0; i < recipeItems.size(); i++)
+						recipeItems.set(i, recipe.getIngredients().get(i));
 
-						this.recipe = recipeItems;
-						break;
-					}
-				}else if(object instanceof ShapelessRecipe){
-					ShapelessRecipe recipe = (ShapelessRecipe) object;
-
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
-
-						for(int i = 0; i < recipeItems.size(); i++)
-							recipeItems.set(i, recipe.getIngredients().get(i));
-
-						this.recipe = recipeItems;
-						break;
-					}
+					this.recipe = recipeItems;
+					break;
 				}
+			}else if(object instanceof ShapelessRecipe){
+				ShapelessRecipe recipe = (ShapelessRecipe) object;
 
-				recipe = null;
+				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+
+					for(int i = 0; i < recipeItems.size(); i++)
+						recipeItems.set(i, recipe.getIngredients().get(i));
+
+					this.recipe = recipeItems;
+					break;
+				}
 			}
+
+			recipe = null;
 		}
 
 		boolean reinforcedPage = SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info");

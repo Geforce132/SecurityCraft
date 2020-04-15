@@ -125,7 +125,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	{
 		String s = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory", new Object[0]), 8, ySize - 96 + 2, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override

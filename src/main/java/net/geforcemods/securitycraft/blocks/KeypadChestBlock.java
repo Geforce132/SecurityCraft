@@ -72,13 +72,13 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 		if(entity instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
 
-		if(world.getTileEntity(pos.east()) != null && world.getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
+		if( world.getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.east())).getPassword());
-		else if(world.getTileEntity(pos.west()) != null && world.getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
+		else if(world.getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.west())).getPassword());
-		else if(world.getTileEntity(pos.south()) != null && world.getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
+		else if(world.getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.south())).getPassword());
-		else if(world.getTileEntity(pos.north()) != null && world.getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
+		else if(world.getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.north())).getPassword());
 	}
 

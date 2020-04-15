@@ -144,18 +144,17 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	protected void actionPerformed(ClickButton button){
-		switch(button.id){
-			case 0:
-				if(keycodeTextbox.getText().isEmpty()){
-					isInvalid  = true;
-					updateButtonText();
-					return;
-				}
+		if(button.id == 0){
+			if(keycodeTextbox.getText().isEmpty()){
+				isInvalid  = true;
+				updateButtonText();
+				return;
+			}
 
-				((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
-				SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
+			((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
+			SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 
-				ClientUtils.closePlayerScreen();
+			ClientUtils.closePlayerScreen();
 		}
 	}
 

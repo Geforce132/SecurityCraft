@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.model.ChestModel;
 import net.minecraft.client.renderer.tileentity.model.LargeChestModel;
 import net.minecraft.state.properties.ChestType;
-import net.minecraft.tileentity.IChestLid;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -104,7 +103,7 @@ public class KeypadChestTileEntityRenderer extends TileEntityRenderer<KeypadChes
 	}
 
 	private void rotateLid(KeypadChestTileEntity te, float partialTicks, ChestModel chestModel) {
-		float f = ((IChestLid) te).getLidAngle(partialTicks);
+		float f = te.getLidAngle(partialTicks);
 		f = 1.0F - f;
 		f = 1.0F - f * f * f;
 		chestModel.getLid().rotateAngleX = -(f * ((float)Math.PI / 2F));

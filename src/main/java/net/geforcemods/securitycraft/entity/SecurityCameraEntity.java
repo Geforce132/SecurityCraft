@@ -184,7 +184,7 @@ public class SecurityCameraEntity extends Entity{
 		}
 
 		if(!world.isRemote)
-			if(getPassengers().size() == 0 | BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.SECURITY_CAMERA.get()){
+			if(getPassengers().size() == 0 || BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.SECURITY_CAMERA.get()){
 				remove();
 				return;
 			}

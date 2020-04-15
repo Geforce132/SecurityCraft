@@ -48,7 +48,7 @@ public class ClientUtils{
 		int hours = hours24 % 12;
 		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
 
-		return String.format("%02d:%02d %s", new Object[]{Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM"});
+		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
 	}
 
 	/**

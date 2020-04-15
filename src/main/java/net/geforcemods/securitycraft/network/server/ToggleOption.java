@@ -57,7 +57,7 @@ public class ToggleOption {
 			int id = message.id;
 			PlayerEntity player = ctx.get().getSender();
 
-			if(player.world.getTileEntity(pos) != null && player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
+			if(player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
 				((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id].toggle();
 				((CustomizableTileEntity) player.world.getTileEntity(pos)).onOptionChanged(((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]);
 				((CustomizableTileEntity) player.world.getTileEntity(pos)).sync();

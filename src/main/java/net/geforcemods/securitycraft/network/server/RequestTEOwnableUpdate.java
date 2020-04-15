@@ -72,7 +72,7 @@ public class RequestTEOwnableUpdate
 		boolean customizable = te instanceof CustomizableTileEntity;
 		CompoundNBT tag = customizable ? ((CustomizableTileEntity)te).write(new CompoundNBT()) : null;
 
-		if(te != null && te instanceof IOwnable)
+		if(te instanceof IOwnable)
 			SecurityCraft.channel.reply(new UpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), customizable, tag), ctx.get());
 
 		ctx.get().setPacketHandled(true);

@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -109,7 +108,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
-						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], minecraft.player);
+						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 						for (int j = 0; j < 4; j++) {
 							guiButtons[i][j].active = false;
 						}
@@ -182,7 +181,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 				break;
 			case DETONATE:
 				SecurityCraft.channel.sendToServer(new SetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getInstance().player);
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 				for(int i = 0; i < 4; i++)
 				{
@@ -191,7 +190,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 
 				break;
 			case UNBIND:
-				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2], Minecraft.getInstance().player);
+				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 				for(int i = 0; i < 4; i++)
 				{
@@ -213,7 +212,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 			return new int[] {0,0,0};
 	}
 
-	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z, PlayerEntity player)
+	private void removeTagFromToolAndUpdate(ItemStack stack, int x, int y, int z)
 	{
 		if(stack.getTag() == null)
 			return;

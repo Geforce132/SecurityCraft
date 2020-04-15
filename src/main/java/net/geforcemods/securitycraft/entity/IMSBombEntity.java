@@ -49,11 +49,11 @@ public class IMSBombEntity extends AbstractFireballEntity {
 			return;
 		}
 
-		if(ticksFlying < launchHeight && launching){
+		if(ticksFlying < launchHeight){
 			setMotion(getMotion().x, 0.35F, getMotion().z);
 			ticksFlying++;
 			move(MoverType.SELF, getMotion());
-		}else if(ticksFlying >= launchHeight && launching)
+		}else
 			setTarget();
 	}
 

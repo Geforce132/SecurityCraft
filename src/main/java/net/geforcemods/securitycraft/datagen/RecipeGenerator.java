@@ -891,7 +891,7 @@ public class RecipeGenerator extends RecipeProvider
 		key.put('S', Ingredient.fromTag(specialIngredient));
 		recipe = new ShapedRecipeBuilder(Items.AIR, 0).new Result(id,
 				resultItem, 1, "securitycraft:keycards",
-				Arrays.asList(new String[] {"III", "SSS"}), key,
+				Arrays.asList("III", "SSS"), key,
 				Advancement.Builder.builder().withCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON)),
 				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getGroup().getPath() + "/" + id.getPath()));
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);

@@ -49,7 +49,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 			{
 				boolean redstoneModule = hasModule(CustomModules.REDSTONE);
 
-				if(!redstoneModule || (redstoneModule && world.getBlockState(pos).get(PortableRadarBlock.POWERED)))
+				if(!redstoneModule || world.getBlockState(pos).get(PortableRadarBlock.POWERED))
 				{
 					PortableRadarBlock.togglePowerOutput(world, pos, false);
 					return false;

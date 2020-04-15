@@ -96,12 +96,7 @@ public class DisguiseModuleContainer extends Container {
 					else
 						numberOfItems++;
 
-			if(isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks)
-				return true;
-			else if(!isStackBlock && numberOfItems < inventory.maxNumberOfItems)
-				return true;
-
-			return false;
+			return (isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks) || (!isStackBlock && numberOfItems < inventory.maxNumberOfItems);
 		}
 
 		@Override

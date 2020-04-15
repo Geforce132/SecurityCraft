@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft.compat.versionchecker;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.google.gson.Gson;
@@ -38,16 +36,7 @@ public class VersionUpdateChecker {
 			tag.putString("changelog", update.getChangelog());
 			tag.putString("newFileName", update.getFileName());
 			tag.putBoolean("isDirectLink", true);
-		}catch(JsonSyntaxException e){
-			e.printStackTrace();
-			return null;
-		}catch(FileNotFoundException e){
-			e.printStackTrace();
-			return null;
-		}catch(MalformedURLException e){
-			e.printStackTrace();
-			return null;
-		}catch(IOException e){
+		}catch(JsonSyntaxException | IOException e){
 			e.printStackTrace();
 			return null;
 		}

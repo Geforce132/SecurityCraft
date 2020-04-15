@@ -92,7 +92,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	@Override
 	protected void registerGoals()
 	{
-		goalSelector.addGoal(1, new AttackRangedIfEnabledGoal(this, 0.0F, 5, 10.0F));
+		goalSelector.addGoal(1, new AttackRangedIfEnabledGoal(this, 5, 10.0F));
 		targetSelector.addGoal(1, new TargetNearestPlayerOrMobGoal(this));
 	}
 
@@ -434,7 +434,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			for(String s : players)
 			{
-				if(potentialTarget.getName().getUnformattedComponentText().toLowerCase().equals(s))
+				if(potentialTarget.getName().getUnformattedComponentText().equalsIgnoreCase(s))
 					return true;
 			}
 		}

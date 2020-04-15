@@ -58,10 +58,7 @@ public class MineBlock extends ExplosiveBlock {
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
 		Material mat = world.getBlockState(pos.down()).getMaterial();
 
-		if(mat == Material.GLASS || mat == Material.CACTUS || mat == Material.AIR || mat == Material.CAKE || mat == Material.PLANTS)
-			return false;
-		else
-			return true;
+		return !(mat == Material.GLASS || mat == Material.CACTUS || mat == Material.AIR || mat == Material.CAKE || mat == Material.PLANTS);
 	}
 
 	@Override

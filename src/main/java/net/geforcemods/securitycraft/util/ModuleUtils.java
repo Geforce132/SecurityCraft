@@ -46,7 +46,7 @@ public class ModuleUtils{
 	public static boolean checkForModule(World world, BlockPos pos, PlayerEntity player, CustomModules module){
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te == null || !(te instanceof CustomizableTileEntity))
+		if(!(te instanceof CustomizableTileEntity))
 			return false;
 
 		if(te instanceof KeypadTileEntity){

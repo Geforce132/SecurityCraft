@@ -70,7 +70,7 @@ public class UpdateTEOwnable
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.pos);
 
-			if(te == null || !(te instanceof IOwnable))
+			if(!(te instanceof IOwnable))
 				return;
 
 			((IOwnable)te).setOwner(message.uuid, message.name);

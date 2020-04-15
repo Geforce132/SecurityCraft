@@ -127,22 +127,21 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	protected void actionPerformed(ClickButton button) {
-		switch(button.id){
-			case 0:
-				if(keycodeTextbox.getText().length() < 4) {
-					flag  = true;
-					updateButtonText();
-					return;
-				}
+		if(button.id == 0){
+			if(keycodeTextbox.getText().length() < 4) {
+				flag  = true;
+				updateButtonText();
+				return;
+			}
 
-				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE)) {
-					if(Minecraft.getInstance().player.inventory.getCurrentItem().getTag() == null)
-						Minecraft.getInstance().player.inventory.getCurrentItem().setTag(new CompoundNBT());
+			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE)) {
+				if(Minecraft.getInstance().player.inventory.getCurrentItem().getTag() == null)
+					Minecraft.getInstance().player.inventory.getCurrentItem().setTag(new CompoundNBT());
 
-					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
-					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
-					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition(), getTitle()));
-				}
+				Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
+				ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition(), getTitle()));
+			}
 		}
 	}
 

@@ -103,7 +103,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
 			TextFieldWidget focusedTextField = textboxNewPasscode.isFocused() ? textboxNewPasscode : (textboxConfirmPasscode.isFocused() ? textboxConfirmPasscode : null);
 
-			if(focusedTextField.getText().length() > 0)
+			if(focusedTextField != null && focusedTextField.getText().length() > 0)
 			{
 				Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 				focusedTextField.setText(Utils.removeLastChar(focusedTextField.getText()));
@@ -158,13 +158,12 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	protected void actionPerformed(ClickButton button){
-		switch(button.id){
-			case 0:
-				((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
-				SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
+		if(button.id == 0){
+			((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
+			SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
-				ClientUtils.closePlayerScreen();
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
+			ClientUtils.closePlayerScreen();
+			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN);
 		}
 	}
 
