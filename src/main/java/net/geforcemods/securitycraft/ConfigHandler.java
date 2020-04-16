@@ -137,4 +137,8 @@ public class ConfigHandler
 	@Name("Darker reinforced block textures?")
 	@LangKey("config.securitycraft:reinforcedBlockTint")
 	public static boolean reinforcedBlockTint = true;
+
+	@Name("Craftable mines?")
+	@LangKey("config.securitycraft:ableToCraftMines")
+	public static boolean ableToCraftMines = true;
 }

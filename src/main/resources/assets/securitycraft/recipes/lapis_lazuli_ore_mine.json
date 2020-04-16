@@ -8,15 +8,14 @@
   ],
   "ingredients": [
     {
-      "item": "minecraft:gravel",
-      "data": 0
+      "item": "minecraft:lapis_ore"
     },
     {
       "item": "securitycraft:mine"
     }
   ],
   "result": {
-    "item": "securitycraft:gravel_mine",
+    "item": "securitycraft:lapis_mine",
     "count": 1
   }
 }

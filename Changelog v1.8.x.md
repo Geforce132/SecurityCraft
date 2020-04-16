@@ -8,7 +8,7 @@
 - New: Reinforced Blocks: Observer, Grass Block, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Configuration option to turn off the darker textures of reinforced blocks
-- New: Korean translation (Thanks mindy15963!)
+- New: Config option to turn off the recipes of all SecurityCraft explosives
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: White-/Blacklist Modules can now hold up to 50 players

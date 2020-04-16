@@ -9,7 +9,7 @@ import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 
-public class KeycardConditionFactory implements IConditionFactory
+public class ConfigConditionFactory implements IConditionFactory
 {
 	@Override
 	public BooleanSupplier parse(JsonContext context, JsonObject json)
@@ -22,6 +22,7 @@ public class KeycardConditionFactory implements IConditionFactory
 		else if(type.equals("securitycraft_toggle_keycard_4")) return () -> ConfigHandler.ableToCraftKeycard4;
 		else if(type.equals("securitycraft_toggle_keycard_5")) return () -> ConfigHandler.ableToCraftKeycard5;
 		else if(type.equals("securitycraft_toggle_lu_keycard")) return () -> ConfigHandler.ableToCraftLUKeycard;
+		else if(type.equals("securitycraft_toggle_mines")) return () -> ConfigHandler.ableToCraftMines;
 		else return () -> true;
 	}
 }

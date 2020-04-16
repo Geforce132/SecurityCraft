@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
@@ -128,6 +129,7 @@ public class RegistrationHandler
 	private static List<Item> itemBlocks = new ArrayList<>();
 	private static List<Block> blockPages = new ArrayList<>();
 	private static Map<Block,String> blocksDesignedBy = new HashMap<>();
+	private static Map<Block,Boolean> blockConfigValues = new HashMap<>();
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event)
@@ -145,10 +147,10 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.bogusWaterFlowing, false);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
-		registerBlock(event, SCContent.bouncingBetty);
+		registerBlock(event, SCContent.bouncingBetty, () -> ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.trackMine);
+		registerBlock(event, SCContent.trackMine, () -> ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.cageTrap);
 		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
 		registerBlock(event, SCContent.portableRadar);
@@ -165,7 +167,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), false);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
-		registerBlock(event, SCContent.claymore);
+		registerBlock(event, SCContent.claymore, () -> ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.keypadFurnace);
 		registerBlock(event, SCContent.securityCamera);
 		registerBlock(event, SCContent.reinforcedStairsOak, false);
@@ -178,7 +180,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStairsDarkoak, false);
 		registerBlock(event, SCContent.reinforcedStairsStone);
 		registerBlock(event, SCContent.ironFence);
-		registerBlock(event, SCContent.ims);
+		registerBlock(event, SCContent.ims, () -> ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.reinforcedGlass, false);
 		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), true);
 		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), true);
@@ -255,7 +257,7 @@ public class RegistrationHandler
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
-		registerBlock(event, SCContent.dirtMine);
+		registerBlock(event, SCContent.dirtMine, () -> ConfigHandler.ableToCraftMines);
 		registerBlock(event, SCContent.cobblestoneMine, false);
 		registerBlock(event, SCContent.sandMine, false);
 		registerBlock(event, SCContent.gravelMine, false);
@@ -267,7 +269,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.redstoneOreMine, false);
 		registerBlock(event, SCContent.emeraldOreMine, false);
 		registerBlock(event, SCContent.quartzOreMine, false);
-		registerBlock(event, SCContent.furnaceMine);
+		registerBlock(event, SCContent.furnaceMine, () -> ConfigHandler.ableToCraftMines);
 	}
 
 	@SubscribeEvent
@@ -286,7 +288,7 @@ public class RegistrationHandler
 				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
 			else
 			{
-				SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info");
+				SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info", blockConfigValues.getOrDefault(block, true));
 
 				if(blocksDesignedBy.containsKey(block))
 					page.setDesignedBy(blocksDesignedBy.get(block));
@@ -814,6 +816,18 @@ public class RegistrationHandler
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block)
 	{
 		registerBlock(event, block, new ItemBlock(block), true);
+	}
+
+	/**
+	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item.
+	 * Additionally, a configuration value can be set to have this block's recipe show as disabled in the manual.
+	 * @param block The block to register
+	 * @param configValue The config value
+	 */
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, Supplier<Boolean> configValue)
+	{
+		registerBlock(event, block, new ItemBlock(block), true);
+		blockConfigValues.put(block, configValue.get());
 	}
 
 	/**
