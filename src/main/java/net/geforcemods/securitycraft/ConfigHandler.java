@@ -46,6 +46,7 @@ public class ConfigHandler {
 	public DoubleValue cameraSpeed;
 	public BooleanValue respectInvisibility;
 	public BooleanValue reinforcedBlockTint;
+	public BooleanValue ableToCraftMines;
 
 	ConfigHandler(ForgeConfigSpec.Builder builder)
 	{
@@ -202,5 +203,10 @@ public class ConfigHandler {
 				.translation("config.securitycraft:reinforcedBlockTint")
 				.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts?")
 				.define("reinforced_block_tint", true);
+
+		ableToCraftMines = builder
+				.translation("config.securitycraft:ableToCraftMines")
+				.comment("Are all mines craftable?")
+				.define("ableToCraftMines", true);
 	}
 }

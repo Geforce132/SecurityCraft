@@ -1,15 +1,27 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "group": "securitycraft:block_mines",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:diamond_ore"
-    },
-    {
-      "item": "securitycraft:mine"
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_mines"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "group": "securitycraft:block_mines",
+        "ingredients": [
+          {
+            "item": "minecraft:diamond_ore"
+          },
+          {
+            "item": "securitycraft:mine"
+          }
+        ],
+        "result": {
+          "item": "securitycraft:diamond_mine"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "securitycraft:diamond_mine"
-  }
+  ]
 }

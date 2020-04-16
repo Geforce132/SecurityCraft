@@ -1,19 +1,31 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " I ",
-    "IGI"
-  ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "G": {
-      "tag": "forge:gunpowder"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_mines"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          " I ",
+          "IGI"
+        ],
+        "key": {
+          "I": {
+            "tag": "forge:ingots/iron"
+          },
+          "G": {
+            "tag": "forge:gunpowder"
+          }
+        },
+        "result": {
+          "item": "securitycraft:mine",
+          "count": 3
+        }
+      }
     }
-  },
-  "result": {
-    "item": "securitycraft:mine",
-    "count": 3
-  }
+  ]
 }
