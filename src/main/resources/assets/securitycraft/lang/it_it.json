@@ -738,8 +738,8 @@
     "config.securitycraft:allowBlockClaim.tooltip": "Permettere di prendere il possesso di blocchi di proprietà di nessuno?",
 	"config.securitycraft:maxAlarmRange": "Raggio massimo dell'allarme",
 	"config.securitycraft:maxAlarmRange.tooltip": "Qual'è il valore massimo che può essere impostato in questa opzione? Nota che potrebbe essere ridotto dal caricamento dei chunk. Alti valori potrebbero non essere elaborati efficaciemente.",
-	"config.securitycraft:respectInvisibility": "Rispetta l'invisibilità?",
-	"config.securitycraft:respectInvisibility.tooltip": "La sentinella, lo scanner dell'inventario, il blocco laser, ecc. dovrebbero ignorare i giocatori e le entità invisibili?",
+	"config.securitycraft:respect_invisibility": "Rispetta l'invisibilità?",
+	"config.securitycraft:respect_invisibility.tooltip": "La sentinella, lo scanner dell'inventario, il blocco laser, ecc. dovrebbero ignorare i giocatori e le entità invisibili?",
 
     "option.securitycraft.portable_radar.searchRadius": "Range di ricerca: #",
     "option.securitycraft.portable_radar.searchRadius.description": "Il range in cui il radar ricerca.",
