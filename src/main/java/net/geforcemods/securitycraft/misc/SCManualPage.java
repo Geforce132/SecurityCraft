@@ -50,8 +50,10 @@ public class SCManualPage {
 			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard4.get();}
 		else if(item == SCContent.KEYCARD_LVL_5.get()) {
 			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard5.get();}
-		else if(EXPLOSIVES.contains(item)) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftMines.get();}
+		else if(item == SCContent.LIMITED_USE_KEYCARD.get()) {
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftLUKeycard.get();}
+		else if(EXPLOSIVES.contains(item))
+			configValue = () -> ConfigHandler.CONFIG.ableToCraftMines.get();
 	}
 
 	public Item getItem() {
