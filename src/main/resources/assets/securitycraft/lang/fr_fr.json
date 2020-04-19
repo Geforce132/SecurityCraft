@@ -531,6 +531,7 @@
 	"gui.securitycraft:keycardSetup.equalOrHigher": "égal ou supérieur à",
 	"gui.securitycraft:keycardSetup.save": "Sauvegarder & continuer",
 "gui.securitycraft:keycardSetup.explanation.1": "Configuration de la carte d'accès :",
+"gui.securitycraft:keycardSetup.explanation.2": "Sélectionnez le niveau de sécurité",
 "gui.securitycraft:keycardSetup.explanation.3": "voulu. Seuls les joueurs qui ont",
 "gui.securitycraft:keycardSetup.explanation.4": "une carte d'accès ayant le bon",
 "gui.securitycraft:keycardSetup.explanation.5": "niveau",
