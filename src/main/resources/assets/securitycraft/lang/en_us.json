@@ -1,4 +1,4 @@
-﻿{
+{
 	"block.securitycraft.laser_block": "Laser Block",
 	"block.securitycraft.laser.name": "Laser",
 	"block.securitycraft.laser_active": "Active Laser",
@@ -343,7 +343,7 @@
 	"block.securitycraft.redstone_mine": "Redstone Ore Mine",
 	"block.securitycraft.emerald_mine": "Emerald Ore Mine",
 	"block.securitycraft.quartz_mine": "Nether Quartz Ore Mine",
-    "block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
+	"block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -498,8 +498,8 @@
 	"gui.securitycraft:scManual.viewActivatedBlock": "View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.",
 	"gui.securitycraft:scManual.explosiveBlock": "Explosive: This block is able to be remotely detonated, and may be able to be activated/deactivated, using the Mine Remote Access Tool.",
 	"gui.securitycraft:scManual.customizableBlock": "Customizable: You may use the Universal Block Modifier and the various modules added by SecurityCraft to customize the functions of this block.",
-    "gui.securitycraft:scManual.options": "Available options:",
-    "gui.securitycraft:scManual.modules": "Available modules:",
+	"gui.securitycraft:scManual.options": "Available options:",
+	"gui.securitycraft:scManual.modules": "Available modules:",
 	"gui.securitycraft:scManual.recipe.keypad": "Place down a Frame and rightclick it with a Key Panel.",
 	"gui.securitycraft:scManual.recipe.keypad_chest": "Place down a Chest and rightclick it with a Key Panel.",
 	"gui.securitycraft:scManual.recipe.keypad_furnace": "Place down a Furnace and rightclick it with a Key Panel.",
@@ -647,7 +647,7 @@
 	"messages.securitycraft:universalKeyChanger.passcodeChanged": "The passcode has been changed.",
 	"messages.securitycraft:passwordProtected.notSetUp": "This block doesn't have a password yet. You cannot interact with it.",
 	"messages.securitycraft:sentry.needsBlockBelow": "You have to place the Sentry on top of a block!",
-	"messages.securitycraft:sentry.needsBlocksAround": "Make sure that your Sentry is surrounded with blocks on all four sides!", 
+	"messages.securitycraft:sentry.needsBlocksAround": "Make sure that your Sentry is surrounded with blocks on all four sides!",
 	"messages.securitycraft:sentry.mode1": "Current mode: Aggressive (Always active, attacks hostile mobs and players)",
 	"messages.securitycraft:sentry.mode2": "Current mode: Camouflage (Active when a player comes near, attacks players)",
 	"messages.securitycraft:sentry.mode3": "Current mode: Idle (Never active, doesn't attack anything)",
