@@ -44,20 +44,20 @@ public class ItemCameraMonitor extends Item {
 					return EnumActionResult.SUCCESS;
 				}
 
-				if(player.inventory.getCurrentItem().getTagCompound() == null)
-					player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+				if(stack.getTagCompound() == null)
+					stack.setTagCompound(new NBTTagCompound());
 
 				CameraView view = new CameraView(pos, player.dimension);
 
-				if(isCameraAdded(player.inventory.getCurrentItem().getTagCompound(), view)){
-					player.inventory.getCurrentItem().getTagCompound().removeTag(getTagNameFromPosition(player.inventory.getCurrentItem().getTagCompound(), view));
+				if(isCameraAdded(stack.getTagCompound(), view)){
+					stack.getTagCompound().removeTag(getTagNameFromPosition(stack.getTagCompound(), view));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
-					if (!player.inventory.getCurrentItem().getTagCompound().hasKey("Camera" + i)){
-						player.inventory.getCurrentItem().getTagCompound().setString("Camera" + i, view.toNBTString());
+					if (!stack.getTagCompound().hasKey("Camera" + i)){
+						stack.getTagCompound().setString("Camera" + i, view.toNBTString());
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
