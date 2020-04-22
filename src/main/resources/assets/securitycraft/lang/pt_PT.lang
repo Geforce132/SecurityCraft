@@ -138,9 +138,9 @@ item.securitycraft:universalBlockReinforcerLvL1.name=Reforçador de Blocos Unive
 item.securitycraft:universalBlockReinforcerLvL2.name=Reforçador de Blocos Universal(Nível 2)
 item.securitycraft:universalBlockReinforcerLvL3.name=Reforçador de Blocos Universal(Nível 3)
 
-death.attack.securitycraft.laser=%s foi cortado aos pedaços por um laser.
+death.attack.securitycraft.laser=%s foi cortado aos pedaços por um laser
 death.attack.securitycraft.fakeWater=%s caiu em água envenenada...?
-death.attack.securitycraft.electricity=%s foi electrocutado.
+death.attack.securitycraft.electricity=%s foi electrocutado
 
 key.categories.securitycraft=SecurityCraft
 key.securitycraft:cameraNext=Câmera Seguinte

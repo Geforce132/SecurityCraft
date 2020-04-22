@@ -298,8 +298,8 @@ entity.securitycraft:bullet.name=Balle
 
 death.attack.securitycraft.laser=%s a été découpé à mort par un laser
 death.attack.securitycraft.fakeWater=%s est tombé dans des eaux empoisonnées...?
-death.attack.securitycraft.electricity=%s a été electrocuté.
-death.attack.securitycraft.taser=%s tué avec un taser.
+death.attack.securitycraft.electricity=%s a été electrocuté
+death.attack.securitycraft.taser=%s tué avec un taser
 
 key.categories.securitycraft=SecurityCraft
 key.securitycraft.cameraActivateNightVision=Basculer en vision nocturne
