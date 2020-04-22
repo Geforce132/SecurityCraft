@@ -273,7 +273,7 @@
 
 	"death.attack.securitycraft.laser": "%s kuoli punaisen viivan takia",
 	"death.attack.securitycraft.fakeWater": "%s tutki onko tämä oikeaa vettä, ei ollut!",
-	"death.attack.securitycraft.electricity": "%s kuoli sähköön.",
+	"death.attack.securitycraft.electricity": "%s kuoli sähköön",
 
 	"key.categories.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "laita yönäkö päälle/pois:",

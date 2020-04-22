@@ -360,8 +360,8 @@
 
 	"death.attack.securitycraft.laser": "%s è stato tagliato a metà da un laser",
 	"death.attack.securitycraft.fakeWater": "%s è caduto nell'acqua avvelenata...?",
-	"death.attack.securitycraft.electricity": "%s è stato folgorato.",
-	"death.attack.securitycraft.taser": "%s è stato elettrizzato fino alla morte.",
+	"death.attack.securitycraft.electricity": "%s è stato folgorato",
+	"death.attack.securitycraft.taser": "%s è stato elettrizzato fino alla morte",
 
 	"key.categories.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Visione notturna",
