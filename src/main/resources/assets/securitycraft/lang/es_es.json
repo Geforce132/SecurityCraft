@@ -360,8 +360,8 @@
 
 	"death.attack.securitycraft.laser": "Un láser ha rebanado a %s",
 	"death.attack.securitycraft.fakeWater": "%s ha caído en... ¿agua venenosa?",
-	"death.attack.securitycraft.electricity": "%s se ha electrocutado.",
-	"death.attack.securitycraft.taser": "%s ha muerto por una descarga de táser.",
+	"death.attack.securitycraft.electricity": "%s se ha electrocutado",
+	"death.attack.securitycraft.taser": "%s ha muerto por una descarga de táser",
 
 	"key.categories.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Alternar visión nocturna",
