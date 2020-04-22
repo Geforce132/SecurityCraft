@@ -118,8 +118,7 @@ import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedButtonTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedPressurePlateTileEntity;
+import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -634,10 +633,8 @@ public class SCContent
 	public static TileEntityType<BlockPocketManagerTileEntity> teTypeBlockPocketManager;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
 	public static TileEntityType<BlockPocketTileEntity> teTypeBlockPocket;
-	@ObjectHolder(SecurityCraft.MODID + ":reinforced_button")
-	public static TileEntityType<ReinforcedButtonTileEntity> teTypeReinforcedButton;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
-	public static TileEntityType<ReinforcedPressurePlateTileEntity> teTypeReinforcedPressurePlate;
+	public static TileEntityType<WhitelistOnlyTileEntity> teTypeWhitelistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 

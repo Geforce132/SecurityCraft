@@ -5,11 +5,11 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.CustomModules;
 
-public class ReinforcedButtonTileEntity extends CustomizableTileEntity
+public class WhitelistOnlyTileEntity extends CustomizableTileEntity
 {
-	public ReinforcedButtonTileEntity()
+	public WhitelistOnlyTileEntity()
 	{
-		super(SCContent.teTypeReinforcedButton);
+		super(SCContent.teTypeWhitelistOnly);
 	}
 
 	@Override

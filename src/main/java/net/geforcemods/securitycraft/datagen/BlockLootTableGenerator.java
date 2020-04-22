@@ -51,8 +51,8 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.COAL_ORE_MINE);
 		putMineLootTable(SCContent.COBBLESTONE_MINE);
 		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ);
-		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_PILLAR);
+		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 		putMineLootTable(SCContent.DIAMOND_ORE_MINE);
 		putMineLootTable(SCContent.DIRT_MINE);
 		putMineLootTable(SCContent.EMERALD_ORE_MINE);

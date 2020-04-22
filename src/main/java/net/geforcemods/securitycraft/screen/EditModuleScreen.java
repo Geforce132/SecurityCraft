@@ -96,19 +96,23 @@ public class EditModuleScreen extends Screen
 				for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 				{
 					if(!inputField.getText().isEmpty() && module.getTag() != null)
-						if (module.getTag().getString("Player" + i).equals(inputField.getText().substring(0, inputField.getText().length()-1)))
-						{
-						addingButton.active = false;
-						removeButton.active = !(inputField.getText().length() <= 1);
-						break;
+					{
+						if(module.getTag().getString("Player" + i).equals(inputField.getText().substring(0, inputField.getText().length() - 1))){
+							addingButton.active = false;
+							removeButton.active = !(inputField.getText().length() <= 1);
+							break;
 						}
+					}
+
 					if (i == ModuleItem.MAX_PLAYERS) {
 						addingButton.active = !(inputField.getText().length() <= 1);
 						removeButton.active = false;
 					}
 				}
-				if (inputField.getText().isEmpty()) return false;
+				if (inputField.getText().isEmpty())
+					return false;
 			}
+
 			if(keyCode == Minecraft.getInstance().gameSettings.keyBindInventory.getKey().getKeyCode())
 				return false;
 			else
@@ -121,8 +125,10 @@ public class EditModuleScreen extends Screen
 	public boolean charTyped(char typedChar, int keyCode){
 		if(inputField.isFocused())
 		{
-			if (typedChar == '\u0020') return false;
+			if (typedChar == '\u0020')
+				return false;
 			inputField.charTyped(typedChar, keyCode);
+
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			{
 				if(module.getTag() != null && module.getTag().getString("Player" + i).equals(inputField.getText())) {
@@ -130,6 +136,7 @@ public class EditModuleScreen extends Screen
 					removeButton.active = !inputField.getText().isEmpty();
 					break;
 				}
+
 				if (i == ModuleItem.MAX_PLAYERS) {
 					addingButton.active = !inputField.getText().isEmpty();
 					removeButton.active = false;
@@ -160,13 +167,17 @@ public class EditModuleScreen extends Screen
 				{
 					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 					{
-							if (i == 9) addingButton.active = false;
+						if (i == 9)
+							addingButton.active = false;
 						return;
 					}
 				}
 
 				module.getTag().putString("Player" + getNextSlot(module.getTag()), inputField.getText());
-				if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS)) addingButton.active = false;
+
+				if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
+					addingButton.active = false;
+
 				inputField.setText("");
 				break;
 			case 1: //remove
@@ -181,6 +192,7 @@ public class EditModuleScreen extends Screen
 					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 						module.getTag().remove("Player" + i);
 				}
+
 				inputField.setText("");
 				break;
 			case 2: //copy

@@ -335,7 +335,7 @@ public class RecipeGenerator extends RecipeProvider
 		.patternLine("S")
 		.patternLine("C")
 		.key('S', Tags.Items.RODS_WOODEN)
-		.key('C', SCContent.REINFORCED_COBBLESTONE.get())
+		.key('C', SCTags.Items.REINFORCED_COBBLESTONE)
 		.addCriterion("has_cobble", hasItem(SCContent.REINFORCED_COBBLESTONE.get()))
 		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_OBSERVER.get())

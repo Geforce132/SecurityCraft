@@ -28,7 +28,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
@@ -125,13 +124,21 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						if (!sentry.getWhitelistModule().isEmpty()) probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.WHITELIST.getName());
-						if (!sentry.getDisguiseModule().isEmpty()) probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.DISGUISE.getName());
-					}
+						if (!sentry.getWhitelistModule().isEmpty())
+							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.WHITELIST.getName());
 
-					if (mode == SentryEntity.SentryMode.AGGRESSIVE) probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
-					else if (mode == SentryEntity.SentryMode.CAMOUFLAGE) probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
-					else probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
+						if (!sentry.getDisguiseModule().isEmpty())
+							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.DISGUISE.getName());
+
+					}
+					if (mode == SentryEntity.SentryMode.AGGRESSIVE)
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
+					else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
+
+					else
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
+
 				}
 			}
 		});

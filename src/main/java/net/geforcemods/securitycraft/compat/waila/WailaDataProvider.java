@@ -120,8 +120,12 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			{
 				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
-				if (!sentry.getWhitelistModule().isEmpty()) body.add(new StringTextComponent("- " + CustomModules.WHITELIST.getName()));
-				if (!sentry.getDisguiseModule().isEmpty()) body.add(new StringTextComponent("- " + CustomModules.DISGUISE.getName()));
+				if (!sentry.getWhitelistModule().isEmpty())
+					body.add(new StringTextComponent("- " + CustomModules.WHITELIST.getName()));
+
+				if (!sentry.getDisguiseModule().isEmpty())
+					body.add(new StringTextComponent("- " + CustomModules.DISGUISE.getName()));
+
 			}
 		}
 
@@ -130,9 +134,13 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			SentryEntity sentry = (SentryEntity)entity;
 			SentryEntity.SentryMode mode = sentry.getMode();
 
-			if (mode == SentryEntity.SentryMode.AGGRESSIVE) body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode1")));
-			else if (mode == SentryEntity.SentryMode.CAMOUFLAGE) body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode2")));
-			else body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode3")));
+			if (mode == SentryEntity.SentryMode.AGGRESSIVE)
+				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode1")));
+			else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
+				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode2")));
+			else
+				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode3")));
+
 		}
 	}
 }

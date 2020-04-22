@@ -46,7 +46,6 @@ public class BlockUtils{
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get()
 	});
-
 	private static final List<Block> BUTTONS = Arrays.asList(new Block[]{
 			SCContent.REINFORCED_STONE_BUTTON.get(),
 			SCContent.REINFORCED_OAK_BUTTON.get(),
@@ -215,6 +214,7 @@ public class BlockUtils{
 				if(extraCondition.apply(offsetState, offsetTe))
 					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
 			}
+
 			if (world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower()) {
 				for (Direction dirOffset : Direction.values())
 				{
