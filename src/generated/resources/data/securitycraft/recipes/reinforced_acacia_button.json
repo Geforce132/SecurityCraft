@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:reinforced_buttons",
+  "ingredients": [
+    {
+      "item": "securitycraft:reinforced_acacia_planks"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_acacia_button"
+  }
+}

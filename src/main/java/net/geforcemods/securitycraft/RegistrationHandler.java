@@ -77,7 +77,7 @@ import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedPressurePlateTileEntity;
+import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -182,7 +182,7 @@ public class RegistrationHandler
 		event.getRegistry().register(TileEntityType.Builder.create(TrophySystemTileEntity::new, SCContent.TROPHY_SYSTEM.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "trophy_system")));
 		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketManagerTileEntity::new, SCContent.BLOCK_POCKET_MANAGER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 		event.getRegistry().register(TileEntityType.Builder.create(BlockPocketTileEntity::new, SCContent.BLOCK_POCKET_WALL.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket")));
-		event.getRegistry().register(TileEntityType.Builder.create(ReinforcedPressurePlateTileEntity::new, SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(), SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_pressure_plate")));
+		event.getRegistry().register(TileEntityType.Builder.create(WhitelistOnlyTileEntity::new, SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(), SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(), SCContent.REINFORCED_STONE_BUTTON.get(), SCContent.REINFORCED_ACACIA_BUTTON.get(), SCContent.REINFORCED_BIRCH_BUTTON.get(), SCContent.REINFORCED_DARK_OAK_BUTTON.get(), SCContent.REINFORCED_JUNGLE_BUTTON.get(), SCContent.REINFORCED_OAK_BUTTON.get(), SCContent.REINFORCED_SPRUCE_BUTTON.get(), SCContent.REINFORCED_LEVER.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "reinforced_pressure_plate")));
 		event.getRegistry().register(TileEntityType.Builder.create(ProjectorTileEntity::new, SCContent.PROJECTOR.get()).build(null).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "projector")));
 	}
 

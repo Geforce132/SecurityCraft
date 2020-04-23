@@ -46,9 +46,13 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.ALARM);
 		putMineLootTable(SCContent.BOUNCING_BETTY);
 		putStandardBlockLootTable(SCContent.CAGE_TRAP);
+		putStandardBlockLootTable(SCContent.CHISELED_CRYSTAL_QUARTZ);
 		putMineLootTable(SCContent.CLAYMORE);
 		putMineLootTable(SCContent.COAL_ORE_MINE);
 		putMineLootTable(SCContent.COBBLESTONE_MINE);
+		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ);
+		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_PILLAR);
+		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 		putMineLootTable(SCContent.DIAMOND_ORE_MINE);
 		putMineLootTable(SCContent.DIRT_MINE);
 		putMineLootTable(SCContent.EMERALD_ORE_MINE);
@@ -91,6 +95,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
+		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
 		putMineLootTable(SCContent.STONE_MINE);
 		putMineLootTable(SCContent.TRACK_MINE);
 		putStandardBlockLootTable(SCContent.TROPHY_SYSTEM);

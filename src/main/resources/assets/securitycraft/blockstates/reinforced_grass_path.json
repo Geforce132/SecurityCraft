@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "securitycraft:block/reinforced_grass_path" },
+      { "model": "securitycraft:block/reinforced_grass_path", "y": 90 },
+      { "model": "securitycraft:block/reinforced_grass_path", "y": 180 },
+      { "model": "securitycraft:block/reinforced_grass_path", "y": 270 }
+    ]
+  }
+}

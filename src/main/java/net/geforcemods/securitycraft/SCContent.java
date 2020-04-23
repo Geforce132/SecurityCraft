@@ -42,12 +42,14 @@ import net.geforcemods.securitycraft.blocks.mines.RedstoneOreMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBars;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
@@ -116,7 +118,7 @@ import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
-import net.geforcemods.securitycraft.tileentity.ReinforcedPressurePlateTileEntity;
+import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -498,13 +500,8 @@ public class SCContent
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS_PANE = BLOCKS.register("reinforced_green_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS_PANE = BLOCKS.register("reinforced_red_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS_PANE = BLOCKS.register("reinforced_black_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE));
-	//misc
-	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(Material.ROCK, SCContent.CHISELED_CRYSTAL_QUARTZ));
-	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(Material.ROCK, SCContent.CRYSTAL_QUARTZ));
-	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(Material.ROCK, SCContent.CRYSTAL_QUARTZ_PILLAR));
-	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, SCContent.CRYSTAL_QUARTZ_SLAB));
-	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, SCContent.STAIRS_CRYSTAL_QUARTZ));
-	@HasManualPage @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(Material.IRON));
+	//ordered by vanilla redstone tab order
+	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.WOOD)));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, ReinforcedPressurePlateBlock.STONE_PROPERTIES, Blocks.STONE_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.OAK_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_SPRUCE_PRESSURE_PLATE = BLOCKS.register("reinforced_spruce_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.SPRUCE_PRESSURE_PLATE));
@@ -512,10 +509,26 @@ public class SCContent
 	@Reinforced public static final RegistryObject<Block> REINFORCED_JUNGLE_PRESSURE_PLATE = BLOCKS.register("reinforced_jungle_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.JUNGLE_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.ACACIA_PRESSURE_PLATE));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, ReinforcedPressurePlateBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_PRESSURE_PLATE));
-	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock());
-	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock());
-	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK));
+	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_BUTTON = BLOCKS.register("reinforced_stone_button", () -> new ReinforcedButtonBlock(false, ReinforcedButtonBlock.STONE_PROPERTIES, Blocks.STONE_BUTTON));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_LAMP = BLOCKS.register("reinforced_redstone_lamp", () -> new ReinforcedRedstoneLampBlock());
+	@Reinforced public static final RegistryObject<Block> REINFORCED_OAK_BUTTON = BLOCKS.register("reinforced_oak_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.OAK_BUTTON));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_SPRUCE_BUTTON = BLOCKS.register("reinforced_spruce_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.SPRUCE_BUTTON));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_BIRCH_BUTTON = BLOCKS.register("reinforced_birch_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.BIRCH_BUTTON));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_JUNGLE_BUTTON = BLOCKS.register("reinforced_jungle_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.JUNGLE_BUTTON));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_ACACIA_BUTTON = BLOCKS.register("reinforced_acacia_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.ACACIA_BUTTON));
+	@Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_BUTTON = BLOCKS.register("reinforced_dark_oak_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_BUTTON));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock());
+	@HasManualPage @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(Material.IRON));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock());
+	//misc
+	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(Material.ROCK, SCContent.CHISELED_CRYSTAL_QUARTZ));
+	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(Material.ROCK, SCContent.CRYSTAL_QUARTZ));
+	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(Material.ROCK, SCContent.CRYSTAL_QUARTZ_PILLAR));
+	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, SCContent.CRYSTAL_QUARTZ_SLAB));
+	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(SoundType.STONE, Material.ROCK, SCContent.STAIRS_CRYSTAL_QUARTZ));
+	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new BaseReinforcedBlock(SoundType.PLANT, Material.EARTH, Blocks.GRASS_PATH));
+
 
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());
@@ -621,7 +634,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
 	public static TileEntityType<BlockPocketTileEntity> teTypeBlockPocket;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
-	public static TileEntityType<ReinforcedPressurePlateTileEntity> teTypeReinforcedPressurePlate;
+	public static TileEntityType<WhitelistOnlyTileEntity> teTypeWhitelistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 

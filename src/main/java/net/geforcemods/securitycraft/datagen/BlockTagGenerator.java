@@ -30,6 +30,14 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_BIRCH_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_BIRCH_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_BIRCH_WOOD.get());
+		getBuilder(SCTags.Blocks.REINFORCED_BUTTONS).add(
+				SCContent.REINFORCED_STONE_BUTTON.get(),
+				SCContent.REINFORCED_OAK_BUTTON.get(),
+				SCContent.REINFORCED_SPRUCE_BUTTON.get(),
+				SCContent.REINFORCED_BIRCH_BUTTON.get(),
+				SCContent.REINFORCED_JUNGLE_BUTTON.get(),
+				SCContent.REINFORCED_ACACIA_BUTTON.get(),
+				SCContent.REINFORCED_DARK_OAK_BUTTON.get());
 		getBuilder(SCTags.Blocks.REINFORCED_CARPETS).add(
 				SCContent.REINFORCED_WHITE_CARPET.get(),
 				SCContent.REINFORCED_ORANGE_CARPET.get(),

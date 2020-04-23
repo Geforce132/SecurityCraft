@@ -5,7 +5,9 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeHitEntityData;
 import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
@@ -16,11 +18,13 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -98,6 +102,41 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					String name = ((INameable) te).getCustomSCName().toString();
 
 					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+				}
+			}
+		});
+		theOneProbe.registerEntityProvider(new IProbeInfoEntityProvider() {
+			@Override
+			public String getID() {
+				return SecurityCraft.MODID + ":" + SecurityCraft.MODID;
+			}
+
+			@Override
+			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, PlayerEntity player, World world, Entity entity, IProbeHitEntityData data) {
+				if (entity instanceof SentryEntity)
+				{
+					SentryEntity sentry = (SentryEntity)entity;
+					SentryEntity.SentryMode mode = sentry.getMode();
+
+					probeInfo.text(TextFormatting.GRAY + (ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
+
+					if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+					{
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
+
+						if (!sentry.getWhitelistModule().isEmpty())
+							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.WHITELIST.getName());
+
+						if (!sentry.getDisguiseModule().isEmpty())
+							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.DISGUISE.getName());
+					}
+
+					if (mode == SentryEntity.SentryMode.AGGRESSIVE)
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
+					else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
+					else
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
 				}
 			}
 		});

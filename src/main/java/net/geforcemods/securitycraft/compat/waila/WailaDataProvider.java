@@ -4,6 +4,8 @@ import java.util.List;
 
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
+import mcp.mobius.waila.api.IEntityAccessor;
+import mcp.mobius.waila.api.IEntityComponentProvider;
 import mcp.mobius.waila.api.IPluginConfig;
 import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;
@@ -16,18 +18,20 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
 @WailaPlugin(SecurityCraft.MODID)
-public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
+public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
 	public static final WailaDataProvider INSTANCE = new WailaDataProvider();
 	public static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
 	public static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
@@ -41,8 +45,9 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 		registrar.addConfig(SHOW_MODULES, true);
 		registrar.addConfig(SHOW_PASSWORDS, true);
 		registrar.addConfig(SHOW_CUSTOM_NAME, true);
-		registrar.registerComponentProvider(INSTANCE, TooltipPosition.BODY, IOwnable.class);
+		registrar.registerComponentProvider((IComponentProvider) INSTANCE, TooltipPosition.BODY, IOwnable.class);
 		registrar.registerStackProvider(INSTANCE, IOverlayDisplay.class);
+		registrar.registerComponentProvider((IEntityComponentProvider) INSTANCE, TooltipPosition.BODY, SentryEntity.class);
 	}
 
 	@Override
@@ -96,6 +101,44 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider {
 			String name = ((INameable) data.getTileEntity()).getCustomSCName().getFormattedText();
 
 			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
+		}
+	}
+
+	@Override
+	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
+		Entity entity = data.getEntity();
+
+		body.clear();
+		if(config.get(SHOW_OWNER) && data.getEntity() instanceof SentryEntity) {
+			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
+		}
+
+		if(config.get(SHOW_MODULES) && entity instanceof SentryEntity && ((SentryEntity) entity).getOwner().isOwner(data.getPlayer())){
+			SentryEntity sentry = (SentryEntity)entity;
+
+			if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+			{
+				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
+
+				if (!sentry.getWhitelistModule().isEmpty())
+					body.add(new StringTextComponent("- " + CustomModules.WHITELIST.getName()));
+
+				if (!sentry.getDisguiseModule().isEmpty())
+					body.add(new StringTextComponent("- " + CustomModules.DISGUISE.getName()));
+			}
+		}
+
+		if (entity instanceof SentryEntity)
+		{
+			SentryEntity sentry = (SentryEntity)entity;
+			SentryEntity.SentryMode mode = sentry.getMode();
+
+			if (mode == SentryEntity.SentryMode.AGGRESSIVE)
+				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode1")));
+			else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
+				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode2")));
+			else
+				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode3")));
 		}
 	}
 }

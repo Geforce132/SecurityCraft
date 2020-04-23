@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_button",
+  "textures": {
+    "texture": "block/birch_planks"
+  }
+}

@@ -14,6 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -21,11 +22,19 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nullable;
+
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
 {
 	public ReinforcedObserverBlock()
 	{
 		super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
+	}
+
+	@Override
+	public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, @Nullable Direction side)
+	{
+		return side == state.get(ObserverBlock.FACING);
 	}
 
 	@Override
