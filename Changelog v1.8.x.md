@@ -15,6 +15,7 @@
 - New: Pressing "Add", "Remove" or "Clear" in the Whitelist/Blacklist module screen clears the textbox (Thanks Redstone_Dubstep!)
 - New: The buttons in the Whitelist/Blacklist module screen activate and deactivate depending on the text field input and the amount of stored players (Thanks Redstone_Dubstep!)
 - New: HWYLA and TOP now show a Sentry's owner, its current mode, and the equipped modules (Thanks Redstone_Dubstep!)
+- New: Config option to turn off the recipes of all SecurityCraft explosives
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
@@ -59,6 +60,8 @@
 - Fix: Destroying an active SecurityCraft block while a reinforced door is open keeps the door open (Thanks Redstone_Dubstep!)
 - Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
 - Fix: The wooden reinforced pressure plates don't have a whitelist module description (Thanks Redstone_Dubstep!)
+- Fix: Camera Monitor crash
+- Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
 

@@ -31,6 +31,7 @@ import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard3Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard4Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard5Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleLimitedUseKeycardCondition;
+import net.geforcemods.securitycraft.misc.conditions.ToggleMinesCondition;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenSRATGui;
@@ -311,6 +312,7 @@ public class RegistrationHandler
 		CraftingHelper.register(ToggleKeycard4Condition.Serializer.INSTANCE);
 		CraftingHelper.register(ToggleKeycard5Condition.Serializer.INSTANCE);
 		CraftingHelper.register(ToggleLimitedUseKeycardCondition.Serializer.INSTANCE);
+		CraftingHelper.register(ToggleMinesCondition.Serializer.INSTANCE);
 	}
 
 	@SubscribeEvent

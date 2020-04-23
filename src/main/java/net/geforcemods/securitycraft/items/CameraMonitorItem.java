@@ -54,20 +54,20 @@ public class CameraMonitorItem extends Item {
 					return ActionResultType.SUCCESS;
 				}
 
-				if(player.inventory.getCurrentItem().getTag() == null)
-					player.inventory.getCurrentItem().setTag(new CompoundNBT());
+				if(stack.getTag() == null)
+					stack.setTag(new CompoundNBT());
 
 				CameraView view = new CameraView(pos, player.dimension.getId());
 
-				if(isCameraAdded(player.inventory.getCurrentItem().getTag(), view)){
-					player.inventory.getCurrentItem().getTag().remove(getTagNameFromPosition(player.inventory.getCurrentItem().getTag(), view));
+				if(isCameraAdded(stack.getTag(), view)){
+					stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 					return ActionResultType.SUCCESS;
 				}
 
 				for(int i = 1; i <= 30; i++)
-					if (!player.inventory.getCurrentItem().getTag().contains("Camera" + i)){
-						player.inventory.getCurrentItem().getTag().putString("Camera" + i, view.toNBTString());
+					if (!stack.getTag().contains("Camera" + i)){
+						stack.getTag().putString("Camera" + i, view.toNBTString());
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound").replace("#", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 						break;
 					}
@@ -82,7 +82,7 @@ public class CameraMonitorItem extends Item {
 				return ActionResultType.SUCCESS;
 			}
 
-			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTag());
+			SecurityCraft.proxy.displayCameraMonitorGui(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
 			return ActionResultType.SUCCESS;
 		}
 

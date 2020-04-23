@@ -1,15 +1,27 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "group": "securitycraft:block_mines",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:emerald_ore"
-    },
-    {
-      "item": "securitycraft:mine"
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_mines"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "group": "securitycraft:block_mines",
+        "ingredients": [
+          {
+            "item": "minecraft:emerald_ore"
+          },
+          {
+            "item": "securitycraft:mine"
+          }
+        ],
+        "result": {
+          "item": "securitycraft:emerald_mine"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "securitycraft:emerald_mine"
-  }
+  ]
 }

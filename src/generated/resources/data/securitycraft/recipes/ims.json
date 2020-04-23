@@ -1,22 +1,34 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "BPB",
-    " I ",
-    "B B"
-  ],
-  "key": {
-    "B": {
-      "item": "securitycraft:bouncing_betty"
-    },
-    "P": {
-      "item": "securitycraft:portable_radar"
-    },
-    "I": {
-      "item": "securitycraft:reinforced_iron_block"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_mines"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "pattern": [
+          "BPB",
+          " I ",
+          "B B"
+        ],
+        "key": {
+          "B": {
+            "item": "securitycraft:bouncing_betty"
+          },
+          "P": {
+            "item": "securitycraft:portable_radar"
+          },
+          "I": {
+            "item": "securitycraft:reinforced_iron_block"
+          }
+        },
+        "result": {
+          "item": "securitycraft:ims"
+        }
+      }
     }
-  },
-  "result": {
-    "item": "securitycraft:ims"
-  }
+  ]
 }

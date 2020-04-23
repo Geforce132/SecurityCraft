@@ -1,15 +1,27 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "group": "securitycraft:block_mines",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:gravel"
-    },
-    {
-      "item": "securitycraft:mine"
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_mines"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "group": "securitycraft:block_mines",
+        "ingredients": [
+          {
+            "item": "minecraft:gravel"
+          },
+          {
+            "item": "securitycraft:mine"
+          }
+        ],
+        "result": {
+          "item": "securitycraft:gravel_mine"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "securitycraft:gravel_mine"
-  }
+  ]
 }
