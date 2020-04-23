@@ -273,7 +273,7 @@ public class ClientProxy implements IProxy
 			if(world == null || pos == null)
 				return tint;
 
-			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !world.getBlockState(pos).get(ReinforcedSnowyDirtBlock.SNOWY))
+			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !state.get(ReinforcedSnowyDirtBlock.SNOWY))
 			{
 				if(tintIndex == 0)
 					return tintBlocks ? tint : noTint;
