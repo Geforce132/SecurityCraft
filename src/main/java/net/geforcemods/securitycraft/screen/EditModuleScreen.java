@@ -122,6 +122,8 @@ public class EditModuleScreen extends Screen
 
 			if(keyCode == Minecraft.getInstance().gameSettings.keyBindInventory.getKey().getKeyCode())
 				return false;
+			else if(keyCode == GLFW.GLFW_KEY_ESCAPE)
+				return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
 			else
 				return inputField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
 		}
