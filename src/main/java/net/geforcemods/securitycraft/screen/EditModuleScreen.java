@@ -56,10 +56,10 @@ public class EditModuleScreen extends Screen
 		addingButton.active = false;
 		removeButton.active = false;
 
-		if (module.getTag() == null || module.getTag().isEmpty() || module.getTag() == savedModule)
+		if (module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
 			copyButton.active = false;
 
-		if (savedModule == null || savedModule.isEmpty() || module.getTag() == savedModule)
+		if (savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
 			pasteButton.active = false;
 
 		if (module.getTag() == null || module.getTag().isEmpty())
@@ -224,8 +224,8 @@ public class EditModuleScreen extends Screen
 
 		addingButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getText().isEmpty();
 		removeButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getText().isEmpty());
-		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || module.getTag() == savedModule);
-		pasteButton.active = !(savedModule == null || savedModule.isEmpty() || module.getTag() == savedModule);
+		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
+		pasteButton.active = !(savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
 		clearButton.active = !(module.getTag() == null || module.getTag().isEmpty());
 	}
 
