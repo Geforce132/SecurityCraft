@@ -30,7 +30,6 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 		else if(entity instanceof LivingEntity && BlockUtils.getBlock(getWorld(), pos) == SCContent.MOTION_ACTIVATED_LIGHT.get())
 			MotionActivatedLightBlock.toggleLight(world, pos, getOwner(), !EntityUtils.isInvisible((LivingEntity)entity)); //also automatically switches on/off based on if the entity turns (in-)visible
 
-
 		return false;
 	}
 

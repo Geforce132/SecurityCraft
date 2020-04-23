@@ -5,11 +5,11 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.CustomModules;
 
-public class ReinforcedPressurePlateTileEntity extends CustomizableTileEntity
+public class WhitelistOnlyTileEntity extends CustomizableTileEntity
 {
-	public ReinforcedPressurePlateTileEntity()
+	public WhitelistOnlyTileEntity()
 	{
-		super(SCContent.teTypeReinforcedPressurePlate);
+		super(SCContent.teTypeWhitelistOnly);
 	}
 
 	@Override

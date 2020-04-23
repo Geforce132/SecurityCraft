@@ -324,6 +324,13 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', Tags.Items.FENCE_GATES_WOODEN)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_LEVER.get())
+		.patternLine("S")
+		.patternLine("C")
+		.key('S', Tags.Items.RODS_WOODEN)
+		.key('C', SCTags.Items.REINFORCED_COBBLESTONE)
+		.addCriterion("has_cobble", hasItem(SCContent.REINFORCED_COBBLESTONE.get()))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.REINFORCED_OBSERVER.get())
 		.patternLine("CCC")
 		.patternLine("RRQ")
@@ -574,6 +581,13 @@ public class RecipeGenerator extends RecipeProvider
 		addBlockMineRecipe(consumer, Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.SAND, SCContent.SAND_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.STONE, SCContent.STONE_MINE.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_BUTTON.get());
+		addButtonRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_BUTTON.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_BLACK_WOOL.get(), SCContent.REINFORCED_BLACK_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_BLUE_WOOL.get(), SCContent.REINFORCED_BLUE_CARPET.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_BROWN_WOOL.get(), SCContent.REINFORCED_BROWN_CARPET.get());
@@ -811,7 +825,21 @@ public class RecipeGenerator extends RecipeProvider
 
 	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
 	{
-		addShapelessConditionalRecipe(consumer, input, result, 1, "securitycraft:block_mines", Arrays.asList(Ingredient.fromItems(input), Ingredient.fromItems(SCContent.MINE.get())), hasItem(SCContent.MINE.get()), ToggleMinesCondition.INSTANCE);
+		ShapelessRecipeBuilder.shapelessRecipe(result)
+		.setGroup("securitycraft:block_mines")
+		.addIngredient(input)
+		.addIngredient(SCContent.MINE.get())
+		.addCriterion("has_mine", hasItem(SCContent.MINE.get()))
+		.build(consumer);
+	}
+
+	protected final void addButtonRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
+	{
+		ShapelessRecipeBuilder.shapelessRecipe(result)
+		.setGroup("securitycraft:reinforced_buttons")
+		.addIngredient(input)
+		.addCriterion("has_block", hasItem(input))
+		.build(consumer);
 	}
 
 	protected final void addCarpetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider wool, IItemProvider carpet)

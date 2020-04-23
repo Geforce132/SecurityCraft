@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_button_pressed",
+  "textures": {
+    "texture": "block/oak_planks"
+  }
+}

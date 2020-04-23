@@ -8,16 +8,21 @@
 - New: Reinforced Blue Ice (Thanks Redstone_Dubstep!)
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
 - New: Reinforced Blocks: Brick Wall, Prismarine Wall, Red Sandstone Wall, Mossy Stone Brick Wall, Granite Wall, Stone Brick Wall, Nether Brick Wall, Andesite Wall, Red Nether Brick Wall, Sandstone Wall, End Stone Brick Wall, Diorite Wall
-- New: Reinforced Blocks: Observer, Grass Block, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
+- New: Reinforced Blocks: Observer, Buttons, Lever, Grass Block, Grass Path, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Configuration option to turn off the darker textures of reinforced blocks
 - New: Korean translation (Thanks mindy15963!)
+- New: Pressing "Add", "Remove" or "Clear" in the Whitelist/Blacklist module screen clears the textbox (Thanks Redstone_Dubstep!)
+- New: The buttons in the Whitelist/Blacklist module screen activate and deactivate depending on the text field input and the amount of stored players (Thanks Redstone_Dubstep!)
+- New: HWYLA and TOP now show a Sentry's owner, its current mode, and the equipped modules (Thanks Redstone_Dubstep!)
 - New: Config option to turn off the recipes of all SecurityCraft explosives
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: Some reinforced block models are now randomly rotated (Thanks Redstone_Dubstep!)
 - Change: White-/Blacklist Modules can now hold up to 50 players
+- Change: Reinforced Doors, Fence gates and trapdoors have a greater range to detect nearby active reinforced blocks (Thanks Redstone_Dubstep!)
+- Change: Sentries now attack Phantoms, Ghasts, Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
 - Change: Crystal Quartz Texture (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
@@ -49,6 +54,12 @@
 - Fix: Config option "mineExplodesWhenInCreative" does not work for block mines
 - Fix: Backspace does not work in Briefcase setup screen
 - Fix: When inserting a password, adding more characters after the limit has been reached results in having to press backspace more times than needed
+- Fix: Pick Block on Sentry doesn't work (Thanks Redstone_Dubstep!)
+- Fix: Crystal Quartz Block and its variants don't drop themselves when mined (Thanks Redstone_Dubstep!)
+- Fix: Sentry Bullets can go through walls (Thanks Redstone_Dubstep!)
+- Fix: Destroying an active SecurityCraft block while a reinforced door is open keeps the door open (Thanks Redstone_Dubstep!)
+- Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
+- Fix: The wooden reinforced pressure plates don't have a whitelist module description (Thanks Redstone_Dubstep!)
 - Fix: Camera Monitor crash
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 

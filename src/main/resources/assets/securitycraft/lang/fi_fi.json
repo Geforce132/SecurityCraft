@@ -486,9 +486,12 @@
 	"messages.securitycraft:passwordProtected.notSetUp": "This block doesn't have a password yet. You cannot interact with it.",
 	"messages.securitycraft:sentry.needsBlockBelow": "You have to place the Sentry on top of a block!",
 	"messages.securitycraft:sentry.needsBlocksAround": "Make sure, that your Sentry is surrounded with blocks on all of its four sides!",
-	"messages.securitycraft:sentry.mode1": "Current mode: Aggressive (Always active, attacks hostile mobs and players)",
-	"messages.securitycraft:sentry.mode2": "Current mode: Camouflage (Active when a player comes near, attacks players)",
-	"messages.securitycraft:sentry.mode3": "Current mode: Idle (Never active, doesn't attack anything)",
+	"messages.securitycraft:sentry.mode1": "Current mode: Aggressive ",
+	"messages.securitycraft:sentry.mode2": "Current mode: Camouflage ",
+	"messages.securitycraft:sentry.mode3": "Current mode: Idle ",
+	"messages.securitycraft:sentry.descriptionMode1": "(Always active, attacks hostile mobs and players)",
+	"messages.securitycraft:sentry.descriptionMode2": "(Active when a player comes near, attacks players)",
+	"messages.securitycraft:sentry.descriptionMode3": "(Never active, doesn't attack anything)",
 
 	"jei.securitycraft:reinforcedBlock.info": "Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.",
 

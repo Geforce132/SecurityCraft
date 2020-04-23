@@ -13,6 +13,7 @@ public class SCTags
 	{
 		public static final Tag<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final Tag<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
+		public static final Tag<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final Tag<Block> REINFORCED_CARPETS = tag("reinforced/carpets");
 		public static final Tag<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final Tag<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
@@ -46,6 +47,7 @@ public class SCTags
 	{
 		public static final Tag<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final Tag<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
+		public static final Tag<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final Tag<Item> REINFORCED_CARPETS = tag("reinforced/carpets");
 		public static final Tag<Item> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final Tag<Item> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");

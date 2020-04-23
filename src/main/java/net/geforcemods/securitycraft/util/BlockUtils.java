@@ -13,6 +13,8 @@ import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
@@ -43,6 +45,15 @@ public class BlockUtils{
 			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get()
+	});
+	private static final List<Block> BUTTONS = Arrays.asList(new Block[]{
+			SCContent.REINFORCED_STONE_BUTTON.get(),
+			SCContent.REINFORCED_OAK_BUTTON.get(),
+			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
+			SCContent.REINFORCED_BIRCH_BUTTON.get(),
+			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
+			SCContent.REINFORCED_ACACIA_BUTTON.get(),
+			SCContent.REINFORCED_DARK_OAK_BUTTON.get()
 	});
 
 	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
@@ -184,7 +195,9 @@ public class BlockUtils{
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.KEYPAD.get(), true, (state, te) -> state.get(KeypadBlock.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.KEYCARD_READER.get(), true, (state, te) -> state.get(KeycardReaderBlock.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.INVENTORY_SCANNER.get(), true, (state, te) -> ((InventoryScannerTileEntity)te).getScanType().equals("redstone") && ((InventoryScannerTileEntity)te).shouldProvidePower()) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.get(ReinforcedPressurePlateBlock.POWERED));
+				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.get(ReinforcedPressurePlateBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> BUTTONS.contains(state.getBlock()) && state.get(ReinforcedButtonBlock.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.REINFORCED_LEVER.get(), true, (state, te) -> state.get(ReinforcedLeverBlock.POWERED));
 	}
 
 	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, Block block, boolean checkForBlock, BiFunction<BlockState,TileEntity,Boolean> extraCondition)
@@ -200,6 +213,22 @@ public class BlockUtils{
 
 				if(extraCondition.apply(offsetState, offsetTe))
 					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
+			}
+
+			if (world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower()) {
+				for (Direction dirOffset : Direction.values())
+				{
+					BlockPos offsetPos2 = offsetPos.offset(dirOffset);
+					BlockState offsetState2 = world.getBlockState(offsetPos2);
+
+					if (!checkForBlock || offsetState2.getBlock() == block)
+					{
+						TileEntity offsetTe2 = world.getTileEntity(offsetPos2);
+
+						if (extraCondition.apply(offsetState2, offsetTe2))
+							return ((IOwnable)offsetTe2).getOwner().owns((IOwnable) te);
+					}
+				}
 			}
 		}
 
