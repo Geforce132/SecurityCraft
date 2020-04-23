@@ -125,7 +125,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 				if (!sentry.getDisguiseModule().isEmpty())
 					body.add(new StringTextComponent("- " + CustomModules.DISGUISE.getName()));
-
 			}
 		}
 
@@ -140,7 +139,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode2")));
 			else
 				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode3")));
-
 		}
 	}
 }

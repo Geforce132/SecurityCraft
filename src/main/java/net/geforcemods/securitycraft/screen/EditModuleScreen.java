@@ -55,9 +55,15 @@ public class EditModuleScreen extends Screen
 
 		addingButton.active = false;
 		removeButton.active = false;
-		if (module.getTag() == null || module.getTag().isEmpty() || module.getTag() == savedModule) copyButton.active = false;
-		if (savedModule == null || savedModule.isEmpty() || module.getTag() == savedModule) pasteButton.active = false;
-		if (module.getTag() == null || module.getTag().isEmpty()) clearButton.active = false;
+
+		if (module.getTag() == null || module.getTag().isEmpty() || module.getTag() == savedModule)
+			copyButton.active = false;
+
+		if (savedModule == null || savedModule.isEmpty() || module.getTag() == savedModule)
+			pasteButton.active = false;
+
+		if (module.getTag() == null || module.getTag().isEmpty())
+			clearButton.active = false;
 
 		inputField.setTextColor(-1);
 		inputField.setDisabledTextColour(-1);
@@ -109,6 +115,7 @@ public class EditModuleScreen extends Screen
 						removeButton.active = false;
 					}
 				}
+
 				if (inputField.getText().isEmpty())
 					return false;
 			}
@@ -127,6 +134,7 @@ public class EditModuleScreen extends Screen
 		{
 			if (typedChar == '\u0020')
 				return false;
+
 			inputField.charTyped(typedChar, keyCode);
 
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)

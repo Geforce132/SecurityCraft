@@ -129,16 +129,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 						if (!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.DISGUISE.getName());
-
 					}
+
 					if (mode == SentryEntity.SentryMode.AGGRESSIVE)
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
 					else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
-
 					else
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
-
 				}
 			}
 		});
