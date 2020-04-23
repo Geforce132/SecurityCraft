@@ -46,15 +46,6 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getUnformattedComponentText().toLowerCase());
 	}
 
-	private static void addParticles(BlockState state, IWorld world, BlockPos pos, float alpha) {
-		Direction dir1 = ((Direction)state.get(HORIZONTAL_FACING)).getOpposite();
-		Direction dir2 = getFacing(state).getOpposite();
-		double newX = (double)pos.getX() + 0.5D + 0.1D * (double)dir1.getXOffset() + 0.2D * (double)dir2.getXOffset();
-		double newY = (double)pos.getY() + 0.5D + 0.1D * (double)dir1.getYOffset() + 0.2D * (double)dir2.getYOffset();
-		double newZ = (double)pos.getZ() + 0.5D + 0.1D * (double)dir1.getZOffset() + 0.2D * (double)dir2.getZOffset();
-		world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, alpha), newX, newY, newZ, 0.0D, 0.0D, 0.0D);
-	}
-
 	@Override
 	public Block getVanillaBlock()
 	{
