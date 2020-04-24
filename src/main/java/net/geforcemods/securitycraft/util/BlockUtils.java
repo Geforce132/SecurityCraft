@@ -215,18 +215,19 @@ public class BlockUtils{
 					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
 			}
 
-			if (world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower()) {
-				for (Direction dirOffset : Direction.values())
+			if(world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower())
+			{
+				for(Direction dirOffset : Direction.values())
 				{
-					BlockPos offsetPos2 = offsetPos.offset(dirOffset);
-					BlockState offsetState2 = world.getBlockState(offsetPos2);
+					offsetPos = offsetPos.offset(dirOffset);
+					offsetState = world.getBlockState(offsetPos);
 
-					if (!checkForBlock || offsetState2.getBlock() == block)
+					if(!checkForBlock || offsetState.getBlock() == block)
 					{
-						TileEntity offsetTe2 = world.getTileEntity(offsetPos2);
+						TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-						if (extraCondition.apply(offsetState2, offsetTe2))
-							return ((IOwnable)offsetTe2).getOwner().owns((IOwnable) te);
+						if(extraCondition.apply(offsetState, offsetTe))
+							return ((IOwnable)offsetTe).getOwner().owns((IOwnable) te);
 					}
 				}
 			}

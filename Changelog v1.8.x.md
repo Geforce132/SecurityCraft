@@ -2,7 +2,7 @@
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
-- New: Make all reinforced blocks immunte to the ender dragon and the wither by adding them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags
+- New: Make all reinforced blocks immune to the ender dragon and the wither by adding them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Reinforced Blue Ice (Thanks Redstone_Dubstep!)
@@ -22,7 +22,7 @@
 - Change: Some reinforced block models are now randomly rotated (Thanks Redstone_Dubstep!)
 - Change: White-/Blacklist Modules can now hold up to 50 players
 - Change: Reinforced Doors, Fence gates and trapdoors have a greater range to detect nearby active reinforced blocks (Thanks Redstone_Dubstep!)
-- Change: Sentries now attack Phantoms, Ghasts, Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
+- Change: Sentries now attack flying mobs (except bats), Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
 - Change: Crystal Quartz Texture (Thanks Redstone_Dubstep!)
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect

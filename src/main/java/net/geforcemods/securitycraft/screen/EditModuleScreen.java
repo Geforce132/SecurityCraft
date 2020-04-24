@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -16,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 public class EditModuleScreen extends Screen
@@ -25,7 +26,7 @@ public class EditModuleScreen extends Screen
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
 	private TextFieldWidget inputField;
-	private ClickButton addingButton, removeButton, copyButton, pasteButton, clearButton;
+	private ClickButton addButton, removeButton, copyButton, pasteButton, clearButton;
 	private int xSize = 176, ySize = 166;
 
 	public EditModuleScreen(ItemStack item)
@@ -42,18 +43,14 @@ public class EditModuleScreen extends Screen
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, "");
-		addingButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed);
-		addButton(addingButton);
-		removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed);
-		addButton(removeButton);
-		copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed);
-		addButton(copyButton);
-		pasteButton = new ClickButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed);
-		addButton(pasteButton);
-		clearButton	= new ClickButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed);
+		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
+		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
+		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
+		addButton(pasteButton = new ClickButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
+		addButton(clearButton = new ClickButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
 		addButton(clearButton);
 
-		addingButton.active = false;
+		addButton.active = false;
 		removeButton.active = false;
 
 		if (module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
@@ -104,14 +101,14 @@ public class EditModuleScreen extends Screen
 					if(!inputField.getText().isEmpty() && module.getTag() != null)
 					{
 						if(module.getTag().getString("Player" + i).equals(inputField.getText().substring(0, inputField.getText().length() - 1))){
-							addingButton.active = false;
+							addButton.active = false;
 							removeButton.active = !(inputField.getText().length() <= 1);
 							break;
 						}
 					}
 
 					if (i == ModuleItem.MAX_PLAYERS) {
-						addingButton.active = !(inputField.getText().length() <= 1);
+						addButton.active = !(inputField.getText().length() <= 1);
 						removeButton.active = false;
 					}
 				}
@@ -134,7 +131,7 @@ public class EditModuleScreen extends Screen
 	public boolean charTyped(char typedChar, int keyCode){
 		if(inputField.isFocused())
 		{
-			if (typedChar == '\u0020')
+			if (keyCode == GLFW.GLFW_KEY_SPACE)
 				return false;
 
 			inputField.charTyped(typedChar, keyCode);
@@ -142,13 +139,13 @@ public class EditModuleScreen extends Screen
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			{
 				if(module.getTag() != null && module.getTag().getString("Player" + i).equals(inputField.getText())) {
-					addingButton.active = false;
+					addButton.active = false;
 					removeButton.active = !inputField.getText().isEmpty();
 					break;
 				}
 
 				if (i == ModuleItem.MAX_PLAYERS) {
-					addingButton.active = !inputField.getText().isEmpty();
+					addButton.active = !inputField.getText().isEmpty();
 					removeButton.active = false;
 				}
 			}
@@ -178,7 +175,7 @@ public class EditModuleScreen extends Screen
 					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 					{
 						if (i == 9)
-							addingButton.active = false;
+							addButton.active = false;
 						return;
 					}
 				}
@@ -186,7 +183,7 @@ public class EditModuleScreen extends Screen
 				module.getTag().putString("Player" + getNextSlot(module.getTag()), inputField.getText());
 
 				if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
-					addingButton.active = false;
+					addButton.active = false;
 
 				inputField.setText("");
 				break;
@@ -222,7 +219,7 @@ public class EditModuleScreen extends Screen
 		if(module.getTag() != null)
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 
-		addingButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getText().isEmpty();
+		addButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getText().isEmpty();
 		removeButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getText().isEmpty());
 		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
 		pasteButton.active = !(savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));

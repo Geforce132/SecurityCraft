@@ -144,7 +144,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 			}
 		}
 
-		if (button.id == 10 && currentString.length() > 0)
+		if(button.id == 10 && currentString.length() > 0)
 		{
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
