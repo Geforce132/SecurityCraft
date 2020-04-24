@@ -59,7 +59,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					break;
 				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
 					break;
-				else if(sentry.getMode() == SentryMode.AGGRESSIVE && (potentialTarget instanceof MonsterEntity || potentialTarget instanceof FlyingEntity || potentialTarget instanceof SlimeEntity || potentialTarget instanceof ShulkerEntity || potentialTarget instanceof EnderDragonEntity) && potentialTarget.deathTime == 0)
+				else if(sentry.getMode() == SentryMode.AGGRESSIVE && isSupportedTarget(potentialTarget))
 					break;
 			}
 
@@ -80,12 +80,17 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	@Override
 	public boolean shouldContinueExecuting()
 	{
-		return (nearestTarget instanceof MonsterEntity || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(target) && super.shouldContinueExecuting();
+		return (isSupportedTarget(nearestTarget) || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(target) && super.shouldContinueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)
 	{
 		return entity != null && goalOwner.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
+	}
+
+	public boolean isSupportedTarget(LivingEntity potentialTarget)
+	{
+		return (potentialTarget instanceof MonsterEntity || potentialTarget instanceof FlyingEntity || potentialTarget instanceof SlimeEntity || potentialTarget instanceof ShulkerEntity || potentialTarget instanceof EnderDragonEntity) && potentialTarget.deathTime == 0;
 	}
 
 	@Override

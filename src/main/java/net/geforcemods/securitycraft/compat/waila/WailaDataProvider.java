@@ -108,7 +108,6 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
-		body.clear();
 		if(config.get(SHOW_OWNER) && data.getEntity() instanceof SentryEntity) {
 			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
 		}
