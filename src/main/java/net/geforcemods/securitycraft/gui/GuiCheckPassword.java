@@ -130,63 +130,16 @@ public class GuiCheckPassword extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button){
-		switch(button.id){
-			case 0:
-				currentString += "0";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 1:
-				currentString += "1";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 2:
-				currentString += "2";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 3:
-				currentString += "3";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 4:
-				currentString += "4";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 5:
-				currentString += "5";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 6:
-				currentString += "6";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 7:
-				currentString += "7";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 8:
-				currentString += "8";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-			case 9:
-				currentString += "9";
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-				break;
-
-			case 10:
-				currentString = Utils.removeLastChar(currentString);
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				break;
-
+		if(button.id >= 0 && button.id <= 9)
+		{
+			currentString += "" + button.id;
+			setTextboxCensoredText(keycodeTextbox, currentString);
+			checkCode(currentString);
+		}
+		else if(button.id == 10)
+		{
+			currentString = Utils.removeLastChar(currentString);
+			setTextboxCensoredText(keycodeTextbox, currentString);
 		}
 	}
 

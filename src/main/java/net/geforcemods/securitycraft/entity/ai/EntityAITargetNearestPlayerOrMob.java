@@ -7,9 +7,13 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityShulker;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -48,7 +52,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 					break;
 				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
 					break;
-				else if(potentialTarget instanceof EntityMob && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
+				else if(isSupportedTarget(potentialTarget) && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
 					break;
 			}
 
@@ -69,12 +73,17 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 	@Override
 	public boolean shouldContinueExecuting()
 	{
-		return (targetEntity instanceof EntityMob || targetEntity instanceof EntityPlayer) && isCloseEnough(targetEntity) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(targetEntity) && super.shouldContinueExecuting();
+		return (isSupportedTarget(targetEntity) || targetEntity instanceof EntityPlayer) && isCloseEnough(targetEntity) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(targetEntity) && super.shouldContinueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)
 	{
 		return entity != null && taskOwner.getDistanceSq(entity) <= getTargetDistance() * getTargetDistance();
+	}
+
+	public boolean isSupportedTarget(EntityLivingBase potentialTarget)
+	{
+		return (potentialTarget instanceof EntityMob || potentialTarget instanceof EntityFlying || potentialTarget instanceof EntitySlime || potentialTarget instanceof EntityShulker || potentialTarget instanceof EntityDragon) && potentialTarget.deathTime == 0;
 	}
 
 	@Override

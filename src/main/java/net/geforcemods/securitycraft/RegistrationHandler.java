@@ -79,13 +79,13 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
-import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.tileentity.TileEntityWhitelistOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -240,7 +240,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStairsCrystalQuartz, false);
 		registerBlock(event, SCContent.blockPocketWall);
 		registerBlock(event, SCContent.blockPocketManager, "Henzoid");
-		registerBlock(event, SCContent.reinforcedStonePressurePlate, true);
+		registerBlock(event, SCContent.reinforcedStonePressurePlate);
 		registerBlock(event, SCContent.reinforcedWoodenPressurePlate, false);
 		registerBlock(event, SCContent.reinforcedBookshelf, false);
 		registerBlock(event, SCContent.reinforcedWalls, new ItemBlockReinforcedWalls(SCContent.reinforcedWalls), false);
@@ -254,6 +254,10 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedMycelium, false);
 		registerBlock(event, SCContent.reinforcedClay, false);
 		registerBlock(event, SCContent.reinforcedNetherWartBlock, false);
+		registerBlock(event, SCContent.reinforcedGrassPath, false);
+		registerBlock(event, SCContent.reinforcedStoneButton);
+		registerBlock(event, SCContent.reinforcedWoodenButton, false);
+		registerBlock(event, SCContent.reinforcedLever);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -371,7 +375,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityTrophySystem.class, new ResourceLocation("securitycraft:trophy_system"));
 		GameRegistry.registerTileEntity(TileEntityBlockPocketManager.class, new ResourceLocation("securitycraft:block_pocket_manager"));
 		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, new ResourceLocation("securitycraft:block_pocket"));
-		GameRegistry.registerTileEntity(TileEntityReinforcedPressurePlate.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
+		GameRegistry.registerTileEntity(TileEntityWhitelistOnly.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
 	}
 
 	@SubscribeEvent
@@ -737,6 +741,10 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedMycelium), 0, new ModelResourceLocation("securitycraft:reinforced_mycelium", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedClay), 0, new ModelResourceLocation("securitycraft:reinforced_clay", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedNetherWartBlock), 0, new ModelResourceLocation("securitycraft:reinforced_nether_wart_block", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedGrassPath), 0, new ModelResourceLocation("securitycraft:reinforced_grass_path", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStoneButton), 0, new ModelResourceLocation("securitycraft:reinforced_stone_button", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWoodenButton), 0, new ModelResourceLocation("securitycraft:reinforced_wooden_button", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedLever), 0, new ModelResourceLocation("securitycraft:reinforced_lever", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

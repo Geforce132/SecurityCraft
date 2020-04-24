@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedPressurePlate;
+import net.geforcemods.securitycraft.tileentity.TileEntityWhitelistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
@@ -39,9 +39,9 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 		{
 			TileEntity tileEntity = world.getTileEntity(pos);
 
-			if(tileEntity instanceof TileEntityReinforcedPressurePlate)
+			if(tileEntity instanceof TileEntityWhitelistOnly)
 			{
-				if(isAllowedToPress(world, pos, (TileEntityReinforcedPressurePlate)tileEntity, (EntityPlayer)entity))
+				if(isAllowedToPress(world, pos, (TileEntityWhitelistOnly)tileEntity, (EntityPlayer)entity))
 					updateState(world, pos, state, redstoneStrength);
 			}
 		}
@@ -59,11 +59,11 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 		{
 			TileEntity tileEntity = world.getTileEntity(pos);
 
-			if(tileEntity instanceof TileEntityReinforcedPressurePlate)
+			if(tileEntity instanceof TileEntityWhitelistOnly)
 			{
 				for(Entity entity : list)
 				{
-					if(entity instanceof EntityPlayer && isAllowedToPress(world, pos, (TileEntityReinforcedPressurePlate)tileEntity, (EntityPlayer)entity))
+					if(entity instanceof EntityPlayer && isAllowedToPress(world, pos, (TileEntityWhitelistOnly)tileEntity, (EntityPlayer)entity))
 						return 15;
 				}
 			}
@@ -72,7 +72,7 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 		return 0;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityReinforcedPressurePlate te, EntityPlayer entity)
+	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityWhitelistOnly te, EntityPlayer entity)
 	{
 		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().toLowerCase());
 	}
@@ -98,6 +98,6 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
-		return new TileEntityReinforcedPressurePlate();
+		return new TileEntityWhitelistOnly();
 	}
 }

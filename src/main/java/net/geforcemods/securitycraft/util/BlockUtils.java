@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedButton;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedLever;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
@@ -27,6 +29,7 @@ import net.minecraft.world.World;
 
 public class BlockUtils{
 	private static final List<Block> PRESSURE_PLATES = Arrays.asList(SCContent.reinforcedStonePressurePlate, SCContent.reinforcedWoodenPressurePlate);
+	private static final List<Block> BUTTONS = Arrays.asList(SCContent.reinforcedStoneButton, SCContent.reinforcedWoodenButton);
 
 	/**
 	 * Updates a block and notify's neighboring blocks of a change.
@@ -110,7 +113,9 @@ public class BlockUtils{
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keypad, true, (state, te) -> state.getValue(BlockKeypad.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keycardReader, true, (state, te) -> state.getValue(BlockKeycardReader.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.inventoryScanner, true, (state, te) -> ((TileEntityInventoryScanner)te).getScanType().equals("redstone") && ((TileEntityInventoryScanner)te).shouldProvidePower()) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.getValue(BlockReinforcedPressurePlate.POWERED));
+				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.getValue(BlockReinforcedPressurePlate.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> BUTTONS.contains(state.getBlock()) && state.getValue(BlockReinforcedButton.POWERED)) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.reinforcedLever, true, (state, te) -> state.getValue(BlockReinforcedLever.POWERED));
 	}
 
 	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, Block block, boolean checkForBlock, BiFunction<IBlockState,TileEntity,Boolean> extraCondition)
@@ -126,6 +131,23 @@ public class BlockUtils{
 
 				if(extraCondition.apply(offsetState, offsetTe))
 					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
+			}
+
+			if(world.getRedstonePower(offsetPos, facing) == 15 && !offsetState.canProvidePower())
+			{
+				for(EnumFacing dirOffset : EnumFacing.values())
+				{
+					offsetPos = offsetPos.offset(dirOffset);
+					offsetState = world.getBlockState(offsetPos);
+
+					if(!checkForBlock || offsetState.getBlock() == block)
+					{
+						TileEntity offsetTe = world.getTileEntity(offsetPos);
+
+						if(extraCondition.apply(offsetState, offsetTe))
+							return ((IOwnable)offsetTe).getOwner().owns((IOwnable) te);
+					}
+				}
 			}
 		}
 

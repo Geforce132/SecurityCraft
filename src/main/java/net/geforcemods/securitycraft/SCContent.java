@@ -72,6 +72,7 @@ public class SCContent
 	public static Block reinforcedFencegate;
 	@Reinforced public static Block reinforcedGlass;
 	@Reinforced public static Block reinforcedGlassPane;
+	@Reinforced @Tinted public static Block reinforcedGrassPath;
 	@Reinforced @Tinted public static Block reinforcedGlowstone;
 	@Reinforced @Tinted public static Block reinforcedGrass;
 	@Reinforced @Tinted public static Block reinforcedGravel;
@@ -80,6 +81,7 @@ public class SCContent
 	public static Block horizontalReinforcedIronBars;
 	@Reinforced public static Block reinforcedIronBars;
 	@Reinforced public static Block reinforcedIronTrapdoor;
+	@Reinforced @Tinted public static Block reinforcedLever;
 	@Reinforced @Tinted public static Block reinforcedMetals;
 	@Reinforced @Tinted public static Block reinforcedMossyCobblestone;
 	@Reinforced @Tinted public static Block reinforcedMycelium;
@@ -122,10 +124,12 @@ public class SCContent
 	@Tinted public static Block reinforcedStairsStoneBrick;
 	@Reinforced @Tinted public static Block reinforcedStone;
 	@Reinforced @Tinted public static Block reinforcedStoneBrick;
+	@Reinforced @Tinted public static Block reinforcedStoneButton;
 	@Reinforced @Tinted public static Block reinforcedStonePressurePlate;
 	@Tinted public static Block reinforcedStoneSlabs;
 	@Tinted public static Block reinforcedStoneSlabs2;
 	@Reinforced @Tinted public static Block reinforcedWalls;
+	@Reinforced @Tinted public static Block reinforcedWoodenButton;
 	@Reinforced @Tinted public static Block reinforcedWoodenPressurePlate;
 	@Reinforced @Tinted public static Block reinforcedWoodPlanks;
 	@Tinted public static Block reinforcedWoodSlabs;

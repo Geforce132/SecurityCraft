@@ -45,6 +45,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockHorizontalReinforced
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBookshelf;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedButton;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCarpet;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCobweb;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCompressedBlocks;
@@ -58,8 +59,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrassPath;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedLever;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMycelium;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
@@ -232,6 +235,10 @@ public class SetupHandler
 		SCContent.reinforcedMycelium = new BlockReinforcedMycelium().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_mycelium").setTranslationKey("securitycraft:reinforced_mycelium");
 		SCContent.reinforcedClay = new BlockReinforcedBase(Material.GROUND, 1, Blocks.CLAY).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_clay").setTranslationKey("securitycraft:reinforced_clay");
 		SCContent.reinforcedNetherWartBlock = new BlockReinforcedBase(Material.GRASS, 1, SoundType.WOOD, Blocks.NETHER_WART_BLOCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_nether_wart_block").setTranslationKey("securitycraft:reinforced_nether_wart_block");
+		SCContent.reinforcedGrassPath = new BlockReinforcedGrassPath().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_grass_path").setTranslationKey("securitycraft:reinforced_grass_path");
+		SCContent.reinforcedStoneButton = new BlockReinforcedButton(false).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_button").setTranslationKey("securitycraft:reinforced_stone_button");
+		SCContent.reinforcedWoodenButton = new BlockReinforcedButton(true).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wooden_button").setTranslationKey("securitycraft:reinforced_wooden_button");
+		SCContent.reinforcedLever = new BlockReinforcedLever().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lever").setTranslationKey("securitycraft:reinforced_lever");
 	}
 
 	public static void setupMines()

@@ -5,7 +5,9 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeHitEntityData;
 import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
 import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
@@ -18,11 +20,14 @@ import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
 import net.geforcemods.securitycraft.blocks.BlockFakeWaterBase;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -130,6 +135,41 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					String name = ((INameable) te).getCustomName();
 
 					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+				}
+			}
+		});
+		theOneProbe.registerEntityProvider(new IProbeInfoEntityProvider() {
+			@Override
+			public String getID() {
+				return SecurityCraft.MODID + ":" + SecurityCraft.MODID;
+			}
+
+			@Override
+			public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo probeInfo, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data) {
+				if (entity instanceof EntitySentry)
+				{
+					EntitySentry sentry = (EntitySentry)entity;
+					EnumSentryMode mode = sentry.getMode();
+
+					probeInfo.text(TextFormatting.GRAY + (ClientUtils.localize("waila.securitycraft:owner") + " " + ((EntitySentry) entity).getOwner().getName()));
+
+					if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+					{
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
+
+						if (!sentry.getWhitelistModule().isEmpty())
+							probeInfo.text(TextFormatting.GRAY + "- " + EnumCustomModules.WHITELIST.getName());
+
+						if (!sentry.getDisguiseModule().isEmpty())
+							probeInfo.text(TextFormatting.GRAY + "- " + EnumCustomModules.DISGUISE.getName());
+					}
+
+					if (mode == EnumSentryMode.AGGRESSIVE)
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
+					else if (mode == EnumSentryMode.CAMOUFLAGE)
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
+					else
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
 				}
 			}
 		});

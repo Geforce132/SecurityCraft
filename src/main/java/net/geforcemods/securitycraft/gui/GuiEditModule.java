@@ -25,6 +25,7 @@ public class GuiEditModule extends GuiContainer
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private ItemStack module;
 	private GuiTextField inputField;
+	private GuiButton addButton, removeButton, copyButton, pasteButton, clearButton;
 
 	public GuiEditModule(InventoryPlayer inventory, ItemStack item, TileEntity te)
 	{
@@ -40,15 +41,29 @@ public class GuiEditModule extends GuiContainer
 
 		Keyboard.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 110, 15);
-		buttonList.add(new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
-		buttonList.add(new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
-		buttonList.add(new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
-		buttonList.add(new GuiButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste")));
-		buttonList.add(new GuiButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear")));
+		buttonList.add(addButton = new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
+		buttonList.add(removeButton = new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
+		buttonList.add(copyButton = new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
+		buttonList.add(pasteButton = new GuiButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste")));
+		buttonList.add(clearButton = new GuiButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear")));
+
+		addButton.enabled = false;
+		removeButton.enabled = false;
+
+		if (module.getTagCompound() == null || module.getTagCompound().isEmpty() || (module.getTagCompound() != null && module.getTagCompound().equals(savedModule)))
+			copyButton.enabled = false;
+
+		if (savedModule == null || savedModule.isEmpty() || (module.getTagCompound() != null && module.getTagCompound().equals(savedModule)))
+			pasteButton.enabled = false;
+
+		if (module.getTagCompound() == null || module.getTagCompound().isEmpty())
+			clearButton.enabled = false;
+
 		inputField.setTextColor(-1);
 		inputField.setDisabledTextColour(-1);
 		inputField.setEnableBackgroundDrawing(true);
 		inputField.setMaxStringLength(16);
+		inputField.setFocused(true);
 	}
 
 	@Override
@@ -88,7 +103,26 @@ public class GuiEditModule extends GuiContainer
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException{
 		if(inputField.isFocused())
+		{
+			if(keyCode == Keyboard.KEY_SPACE)
+				return;
+
 			inputField.textboxKeyTyped(typedChar, keyCode);
+
+			for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
+			{
+				if(module.getTagCompound() != null && module.getTagCompound().getString("Player" + i).equals(inputField.getText())) {
+					addButton.enabled = false;
+					removeButton.enabled = !inputField.getText().isEmpty();
+					break;
+				}
+
+				if (i == ItemModule.MAX_PLAYERS) {
+					addButton.enabled = !inputField.getText().isEmpty();
+					removeButton.enabled = false;
+				}
+			}
+		}
 		else
 			super.keyTyped(typedChar, keyCode);
 	}
@@ -112,10 +146,19 @@ public class GuiEditModule extends GuiContainer
 				for(int i = 1; i <= ItemModule.MAX_PLAYERS; i++)
 				{
 					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
+					{
+						if (i == 9)
+							addButton.enabled = false;
 						return;
+					}
 				}
 
 				module.getTagCompound().setString("Player" + getNextSlot(module.getTagCompound()), inputField.getText());
+
+				if(module.getTagCompound() != null && module.getTagCompound().hasKey("Player" + ItemModule.MAX_PLAYERS))
+					addButton.enabled = false;
+
+				inputField.setText("");
 				break;
 			case 1: //remove
 				if(inputField.getText().isEmpty())
@@ -129,21 +172,31 @@ public class GuiEditModule extends GuiContainer
 					if(module.getTagCompound().hasKey("Player" + i) && module.getTagCompound().getString("Player" + i).equals(inputField.getText()))
 						module.getTagCompound().removeTag("Player" + i);
 				}
+
+				inputField.setText("");
 				break;
 			case 2: //copy
 				savedModule = module.getTagCompound();
+				copyButton.enabled = false;
 				return;
 			case 3: //paste
 				module.setTagCompound(savedModule);
 				break;
 			case 4: //clear
 				module.setTagCompound(new NBTTagCompound());
+				inputField.setText("");
 				break;
 			default: return;
 		}
 
 		if(module.getTagCompound() != null)
 			SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
+
+		addButton.enabled = module.getTagCompound() != null && !module.getTagCompound().hasKey("Player" + ItemModule.MAX_PLAYERS) && !inputField.getText().isEmpty();
+		removeButton.enabled = !(module.getTagCompound() == null || module.getTagCompound().isEmpty() || inputField.getText().isEmpty());
+		copyButton.enabled = !(module.getTagCompound() == null || module.getTagCompound().isEmpty() || (module.getTagCompound() != null && module.getTagCompound().equals(savedModule)));
+		pasteButton.enabled = !(savedModule == null || savedModule.isEmpty() || (module.getTagCompound() != null && module.getTagCompound().equals(savedModule)));
+		clearButton.enabled = !(module.getTagCompound() == null || module.getTagCompound().isEmpty());
 	}
 
 	private int getNextSlot(NBTTagCompound tag) {

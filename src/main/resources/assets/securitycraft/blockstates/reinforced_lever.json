@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=down_z,powered=false": { "model": "securitycraft:reinforced_lever_off", "x": 180, "y": 180 },
+        "facing=down_x,powered=false": { "model": "securitycraft:reinforced_lever_off", "x": 180, "y": 90 },
+        "facing=up_z,powered=false": { "model": "securitycraft:reinforced_lever_off" },
+        "facing=up_x,powered=false": { "model": "securitycraft:reinforced_lever_off", "y": 270 },
+        "facing=east,powered=false": { "model": "securitycraft:reinforced_lever_off", "x": 90, "y": 90 },
+        "facing=west,powered=false": { "model": "securitycraft:reinforced_lever_off", "x": 90, "y": 270 },
+        "facing=south,powered=false" : { "model": "securitycraft:reinforced_lever_off", "x": 90, "y": 180 },
+        "facing=north,powered=false" : { "model": "securitycraft:reinforced_lever_off", "x": 90 },
+        "facing=down_z,powered=true" : { "model": "securitycraft:reinforced_lever", "x": 180, "y": 180 },
+        "facing=down_x,powered=true" : { "model": "securitycraft:reinforced_lever", "x": 180, "y": 90 },
+        "facing=up_z,powered=true": { "model": "securitycraft:reinforced_lever" },
+        "facing=up_x,powered=true": { "model": "securitycraft:reinforced_lever", "y": 270 },
+        "facing=east,powered=true": { "model": "securitycraft:reinforced_lever", "x": 90, "y": 90 },
+        "facing=west,powered=true": { "model": "securitycraft:reinforced_lever", "x": 90, "y": 270 },
+        "facing=south,powered=true": { "model": "securitycraft:reinforced_lever", "x": 90, "y": 180 },
+        "facing=north,powered=true": { "model": "securitycraft:reinforced_lever", "x": 90 }
+    }
+}

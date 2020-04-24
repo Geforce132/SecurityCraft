@@ -5,13 +5,18 @@
 - New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
-- New: Reinforced Blocks: Observer, Grass Block, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
+- New: Reinforced Blocks: Observer, Buttons, Lever, Grass Block, Grass Path, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Configuration option to turn off the darker textures of reinforced blocks
+- New: Pressing "Add", "Remove" or "Clear" in the Whitelist/Blacklist module screen clears the textbox (Thanks Redstone_Dubstep!)
+- New: The buttons in the Whitelist/Blacklist module screen activate and deactivate depending on the text field input and the amount of stored players (Thanks Redstone_Dubstep!)
+- New: HWYLA and TOP now show a Sentry's owner, its current mode, and the equipped modules (Thanks Redstone_Dubstep!)
 - New: Config option to turn off the recipes of all SecurityCraft explosives
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: White-/Blacklist Modules can now hold up to 50 players
+- Change: Reinforced Doors, Fence gates and trapdoors have a greater range to detect nearby active reinforced blocks (Thanks Redstone_Dubstep!)
+- Change: Sentries now attack flying mobs (except bats), Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -34,6 +39,10 @@
 - Fix: Occasional Retinal Scanner crash
 - Fix: Config option "mineExplodesWhenInCreative" does not work for block mines
 - Fix: When inserting a password, adding more characters after the limit has been reached results in having to press backspace more times than needed
+- Fix: Pick Block on Sentry doesn't work (Thanks Redstone_Dubstep!)
+- Fix: Destroying an active SecurityCraft block while a reinforced door is open keeps the door open (Thanks Redstone_Dubstep!)
+- Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
+- Fix: The wooden reinforced pressure plate doesn't have a whitelist module description (Thanks Redstone_Dubstep!)
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

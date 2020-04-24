@@ -37,6 +37,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -131,6 +132,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				}
 			}
 		}
+	}
+
+	@Override
+	public ItemStack getPickedResult(RayTraceResult target)
+	{
+		return new ItemStack(SCContent.sentry);
 	}
 
 	@Override
@@ -233,13 +240,13 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		int mode = dataManager.get(MODE) + 1;
 
-		if(mode == 3)
+		if(mode >= 3) //bigger than three in case that players set the value manually with command
 			mode = 0;
 
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
 		else
 			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, mode == 0));
 	}
@@ -258,7 +265,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
 			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, mode == 0));
 	}

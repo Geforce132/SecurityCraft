@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
 
-public class TileEntityReinforcedPressurePlate extends CustomizableSCTE
+public class TileEntityWhitelistOnly extends CustomizableSCTE
 {
 	@Override
 	public EnumCustomModules[] acceptedModules()
