@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
+import net.geforcemods.securitycraft.blocks.reinforced.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -16,12 +18,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
 
+	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private String passcode;
 	private Owner owner = new Owner();
 
@@ -97,6 +104,20 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public String getName()
 	{
 		return "Protected chest";
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN)
+		{
+			BlockPos offsetPos = pos.offset(facing);
+
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !getOwner().owns((TileEntityReinforcedHopper)world.getTileEntity(offsetPos)))
+				return (T) EMPTY_INVENTORY;
+		}
+
+		return super.getCapability(capability, facing);
 	}
 
 	@Override

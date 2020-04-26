@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
+import net.geforcemods.securitycraft.blocks.reinforced.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -28,16 +30,21 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable {
 
+	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private static final int[] slotsTop = new int[] {0};
 	private static final int[] slotsBottom = new int[] {2, 1};
 	private static final int[] slotsSides = new int[] {1};
@@ -461,6 +468,24 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	{
 		for (int i = 0; i < furnaceItemStacks.size(); ++i)
 			furnaceItemStacks.set(i, ItemStack.EMPTY);
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN)
+		{
+			BlockPos offsetPos = pos.offset(facing);
+
+			return world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !getOwner().owns((TileEntityReinforcedHopper)world.getTileEntity(offsetPos));
+		}
+		else return false;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		return (T) EMPTY_INVENTORY;
 	}
 
 	@Override

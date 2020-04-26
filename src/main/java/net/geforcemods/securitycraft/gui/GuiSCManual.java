@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.block.Block;
@@ -300,8 +301,10 @@ public class GuiSCManual extends GuiScreen {
 
 		hoverCheckers.clear();
 
-		if(SecurityCraft.instance.manualPages.get(currentPage).hasCustomRecipe())
-			recipe = SecurityCraft.instance.manualPages.get(currentPage).getRecipe();
+		SCManualPage page = SecurityCraft.instance.manualPages.get(currentPage);
+
+		if(page.hasCustomRecipe())
+			recipe = page.getRecipe();
 		else
 			for(int o = 0; o < CraftingManager.REGISTRY.getKeys().size(); o++)
 			{
@@ -310,7 +313,7 @@ public class GuiSCManual extends GuiScreen {
 				if(object instanceof ShapedRecipes){
 					ShapedRecipes recipe = (ShapedRecipes) object;
 
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
 
 						for(int i = 0; i < recipeItems.size(); i++)
@@ -322,7 +325,7 @@ public class GuiSCManual extends GuiScreen {
 				}else if(object instanceof ShapelessRecipes){
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 
-					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
 
 						for(int i = 0; i < recipeItems.size(); i++)
@@ -336,7 +339,8 @@ public class GuiSCManual extends GuiScreen {
 				recipe = null;
 			}
 
-		boolean reinforcedPage = SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info");
+		String helpInfo = page.getHelpInfo();
+		boolean reinforcedPage = helpInfo.equals("help.securitycraft:reinforced.info") || helpInfo.contains("reinforced_hopper");
 
 		if(recipe != null && !reinforcedPage)
 		{
@@ -352,7 +356,7 @@ public class GuiSCManual extends GuiScreen {
 				}
 			}
 		}
-		else if(SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(page.isRecipeDisabled())
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
 		else if(reinforcedPage)
 		{
@@ -361,12 +365,12 @@ public class GuiSCManual extends GuiScreen {
 		}
 		else
 		{
-			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getPath();
+			String name = page.getItem().getRegistryName().getPath();
 
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
 
-		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
+		Item item = page.getItem();
 		TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
 		Block block = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
 
@@ -426,8 +430,7 @@ public class GuiSCManual extends GuiScreen {
 		}
 
 		//set up subpages
-		String helpInfo = ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo());
-
+		helpInfo = ClientUtils.localize(page.getHelpInfo());
 		subpages.clear();
 
 		while(fontRenderer.getStringWidth(helpInfo) > subpageLength)

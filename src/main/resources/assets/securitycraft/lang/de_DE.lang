@@ -281,6 +281,7 @@ tile.securitycraft:reinforced_grass_path.name=Verstärkter Trampelpfad
 tile.securitycraft:reinforced_stone_button.name=Verstärkter Knopf
 tile.securitycraft:reinforced_wooden_button.name=Verstärkter Knopf
 tile.securitycraft:reinforced_lever.name=Verstärkter Hebel
+tile.securitycraft:reinforced_hopper.name=Verstärkter Trichter
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -390,6 +391,7 @@ help.securitycraft:blockPocketManager.info=Der Blocktaschenverwalter wird benutz
 help.securitycraft:reinforced_stone_pressure_plate.info=Die verstärkten Druckplatten können nur von ihrem Besitzer oder gewhitelisteten Spielern aktiviert werden.
 help.securitycraft:reinforced_stone_button.info=Die verstärkten Knöpfe können nur von ihrem Besitzer oder gewhitelisteten Spielern aktiviert werden.
 help.securitycraft:reinforced_lever.info=Der verstärkte Hebel kann nur von seinem Besitzer oder gewhitelisteten Spielern aktiviert werden.
+help.securitycraft:reinforced_hopper.info=Der verstärkte Trichter ist der einzige Block, der benutzt werden kann, um Items aus einer/einem Passwort-gesicherten Truhe/Ofen zu extrahieren. Sonst verhält er sich wie ein normaler Trichter.
 
 help.securitycraft:codebreaker.info=Der Codebrecher kann jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.securitycraft:doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt und durch Nummernschlösser, Inventarscanner, etc. geöffnet werden.

@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrassPath;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedLever;
@@ -239,6 +240,7 @@ public class SetupHandler
 		SCContent.reinforcedStoneButton = new BlockReinforcedButton(false).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_button").setTranslationKey("securitycraft:reinforced_stone_button");
 		SCContent.reinforcedWoodenButton = new BlockReinforcedButton(true).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wooden_button").setTranslationKey("securitycraft:reinforced_wooden_button");
 		SCContent.reinforcedLever = new BlockReinforcedLever().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lever").setTranslationKey("securitycraft:reinforced_lever");
+		SCContent.reinforcedHopper = new BlockReinforcedHopper().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hopper").setTranslationKey("securitycraft:reinforced_hopper");
 	}
 
 	public static void setupMines()

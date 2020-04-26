@@ -77,6 +77,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedGrass;
 	@Reinforced @Tinted public static Block reinforcedGravel;
 	@Reinforced @Tinted public static Block reinforcedHardenedClay;
+	@Reinforced @Tinted public static Block reinforcedHopper;
 	@Reinforced @Tinted public static Block reinforcedIce;
 	public static Block horizontalReinforcedIronBars;
 	@Reinforced public static Block reinforcedIronBars;

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.blocks.reinforced.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
@@ -258,6 +259,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedStoneButton);
 		registerBlock(event, SCContent.reinforcedWoodenButton, false);
 		registerBlock(event, SCContent.reinforcedLever);
+		registerBlock(event, SCContent.reinforcedHopper);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -376,6 +378,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityBlockPocketManager.class, new ResourceLocation("securitycraft:block_pocket_manager"));
 		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, new ResourceLocation("securitycraft:block_pocket"));
 		GameRegistry.registerTileEntity(TileEntityWhitelistOnly.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
+		GameRegistry.registerTileEntity(TileEntityReinforcedHopper.class, new ResourceLocation("securitycraft:reinforced_hopper"));
 	}
 
 	@SubscribeEvent
@@ -745,6 +748,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedStoneButton), 0, new ModelResourceLocation("securitycraft:reinforced_stone_button", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWoodenButton), 0, new ModelResourceLocation("securitycraft:reinforced_wooden_button", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedLever), 0, new ModelResourceLocation("securitycraft:reinforced_lever", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedHopper), 0, new ModelResourceLocation("securitycraft:reinforced_hopper", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

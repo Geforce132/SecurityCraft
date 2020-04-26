@@ -5,7 +5,7 @@
 - New: Trophy System now destroys shulker bullets (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Reinforced Cobblestone Wall, Reinforced Mossy Cobblestone Wall
-- New: Reinforced Blocks: Observer, Buttons, Lever, Grass Block, Grass Path, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
+- New: Reinforced Blocks: Hopper, Observer, Buttons, Lever, Grass Block, Grass Path, Coarse Dirt, Podzol, Ice, Snow Block, Clay, Mycelium, Packed Ice, Nether Wart Block, Cobweb (Thanks Redstone_Dubstep!)
 - New: Block mines for Coal Ore, Emerald Ore, Gold Ore, Iron Ore, Lapis Lazuli Ore, Nether Quartz Ore, and Redstone Ore
 - New: Configuration option to turn off the darker textures of reinforced blocks
 - New: Pressing "Add", "Remove" or "Clear" in the Whitelist/Blacklist module screen clears the textbox (Thanks Redstone_Dubstep!)
@@ -43,6 +43,7 @@
 - Fix: Destroying an active SecurityCraft block while a reinforced door is open keeps the door open (Thanks Redstone_Dubstep!)
 - Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
 - Fix: The wooden reinforced pressure plate doesn't have a whitelist module description (Thanks Redstone_Dubstep!)
+- Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

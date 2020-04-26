@@ -280,6 +280,7 @@ tile.securitycraft:reinforced_grass_path.name=Reinforced Grass Path
 tile.securitycraft:reinforced_stone_button.name=Reinforced Button
 tile.securitycraft:reinforced_wooden_button.name=Reinforced Button
 tile.securitycraft:reinforced_lever.name=Reinforced Lever
+tile.securitycraft:reinforced_hopper.name=Reinforced Hopper
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -389,7 +390,8 @@ help.securitycraft:blockPocketManager.info=The Block Pocket Manager is used to m
 help.securitycraft:reinforced_stone_pressure_plate.info=The Reinforced Pressure Plates can only be activated by their owner or whitelisted players.
 help.securitycraft:reinforced_stone_button.info=The Reinforced Buttons can only be activated by their owner or whitelisted players.
 help.securitycraft:reinforced_lever.info=The Reinforced Lever can only be activated by its owner or whitelisted players.
-	
+help.securitycraft:reinforced_hopper.info=The Reinforced Hopper is the only block that can be used to extract items out of a password protected chest/furnace if both are owned by the same player. It will otherwise act like a vanilla hopper.
+
 help.securitycraft:codebreaker.info=The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.
 help.securitycraft:scannerDoorItem.info=The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it, but has to be closed manually.
