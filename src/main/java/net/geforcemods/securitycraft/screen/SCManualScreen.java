@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
@@ -300,12 +301,14 @@ public class SCManualScreen extends Screen {
 			return;
 		}
 
+		SCManualPage page = SecurityCraft.instance.manualPages.get(currentPage);
+
 		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 		{
 			if(object instanceof ShapedRecipe){
 				ShapedRecipe recipe = (ShapedRecipe) object;
 
-				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 					for(int i = 0; i < recipeItems.size(); i++)
@@ -317,7 +320,7 @@ public class SCManualScreen extends Screen {
 			}else if(object instanceof ShapelessRecipe){
 				ShapelessRecipe recipe = (ShapelessRecipe) object;
 
-				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == SecurityCraft.instance.manualPages.get(currentPage).getItem()){
+				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 					for(int i = 0; i < recipeItems.size(); i++)
@@ -331,7 +334,8 @@ public class SCManualScreen extends Screen {
 			recipe = null;
 		}
 
-		boolean reinforcedPage = SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info");
+		String helpInfo = page.getHelpInfo();
+		boolean reinforcedPage = helpInfo.equals("help.securitycraft:reinforced.info") || helpInfo.contains("reinforced_hopper");
 
 		if(recipe != null && !reinforcedPage)
 		{
@@ -343,7 +347,7 @@ public class SCManualScreen extends Screen {
 				}
 			}
 		}
-		else if(SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(page.isRecipeDisabled())
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
 		else if(reinforcedPage)
 		{
@@ -352,12 +356,12 @@ public class SCManualScreen extends Screen {
 		}
 		else
 		{
-			String name = SecurityCraft.instance.manualPages.get(currentPage).getItem().getRegistryName().getPath();
+			String name = page.getItem().getRegistryName().getPath();
 
 			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
 
-		Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
+		Item item = page.getItem();
 
 		if(item instanceof BlockItem){
 			Block block = ((BlockItem) item).getBlock();
@@ -443,8 +447,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		String helpInfo = ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo());
-
+		helpInfo = ClientUtils.localize(page.getHelpInfo());
 		subpages.clear();
 
 		while(font.getStringWidth(helpInfo) > subpageLength)
