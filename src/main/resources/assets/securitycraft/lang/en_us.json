@@ -353,6 +353,7 @@
 	"block.securitycraft.emerald_mine": "Emerald Ore Mine",
 	"block.securitycraft.quartz_mine": "Nether Quartz Ore Mine",
 	"block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
+	"block.securitycraft.reinforced_hopper": "Reinforced Hopper",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -456,6 +457,7 @@
 	"help.securitycraft.reinforced_stone_pressure_plate.info": "The Reinforced Pressure Plates can only be activated by their owner or whitelisted players.",
 	"help.securitycraft.reinforced_stone_button.info": "The Reinforced Buttons can only be activated by their owner or whitelisted players.",
 	"help.securitycraft.reinforced_lever.info": "The Reinforced Lever can only be activated by its owner or whitelisted players.",
+	"help.securitycraft.reinforced_hopper.info": "The Reinforced Hopper is the only block that can be used to extract items out of a password protected chest if both are owned by the same player. It will otherwise act like a vanilla hopper.",
 
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",

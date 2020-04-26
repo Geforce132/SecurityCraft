@@ -48,6 +48,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
@@ -118,7 +119,7 @@ import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
-import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
+import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -126,6 +127,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
+import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
@@ -518,6 +520,7 @@ public class SCContent
 	@Reinforced public static final RegistryObject<Block> REINFORCED_ACACIA_BUTTON = BLOCKS.register("reinforced_acacia_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.ACACIA_BUTTON));
 	@Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_BUTTON = BLOCKS.register("reinforced_dark_oak_button", () -> new ReinforcedButtonBlock(true, ReinforcedButtonBlock.WOOD_PROPERTIES, Blocks.DARK_OAK_BUTTON));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock());
+	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock());
 	@HasManualPage @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(Material.IRON));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock());
 	//misc
@@ -635,6 +638,8 @@ public class SCContent
 	public static TileEntityType<BlockPocketTileEntity> teTypeBlockPocket;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
 	public static TileEntityType<WhitelistOnlyTileEntity> teTypeWhitelistOnly;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
+	public static TileEntityType<ReinforcedHopperTileEntity> teTypeReinforcedHopper;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 

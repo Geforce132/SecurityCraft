@@ -22,14 +22,22 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable {
 
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private String passcode;
 	private Owner owner = new Owner();
 
@@ -98,6 +106,20 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public ITextComponent getName()
 	{
 		return new StringTextComponent("Protected chest");
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+	{
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == Direction.DOWN)
+		{
+			BlockPos offsetPos = pos.offset(side);
+
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !getOwner().owns((ReinforcedHopperTileEntity)world.getTileEntity(offsetPos)))
+				return EMPTY_INVENTORY.cast();
+		}
+
+		return super.getCapability(cap, side);
 	}
 
 	@Override

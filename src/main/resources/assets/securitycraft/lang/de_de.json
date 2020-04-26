@@ -352,6 +352,7 @@
 	"block.securitycraft.emerald_mine": "Smaragderzmine",
 	"block.securitycraft.quartz_mine": "Netherquarzerzmine",
 	"block.securitycraft.reinforced_redstone_lamp": "Verstärkte Redstone-Lampe",
+	"block.securitycraft.reinforced_hopper": "Verstärkter Trichter",
 	
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
@@ -455,6 +456,7 @@
 	"help.securitycraft.reinforced_stone_pressure_plate.info": "Die verstärkten Druckplatten können nur von ihrem Besitzer oder gewhitelisteten Spielern aktiviert werden.",
 	"help.securitycraft.reinforced_stone_button.info": "Die verstärkten Knöpfe können nur von ihrem Besitzer oder gewhitelisteten Spielern aktiviert werden.",
 	"help.securitycraft.reinforced_lever.info": "Der verstärkte Hebel kann nur von seinem Besitzer oder gewhitelisteten Spielern aktiviert werden.",
+	"help.securitycraft.reinforced_hopper.info": "Der verstärkte Trichter ist der einzige Block, der benutzt werden kann, um Items aus einer Passwort-gesicherten Truhe zu extrahieren. Sonst verhält er sich wie ein normaler Trichter.",
 
 	"help.securitycraft.codebreaker.info": "Der Codebrecher kann jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)",
 	"help.securitycraft.door_indestructible_iron_item.info": "Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt und durch Nummernschlösser, Inventarscanner, etc. geöffnet werden.",
