@@ -28,6 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
@@ -99,7 +100,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				}
 
 				if(te instanceof INameable && ((INameable) te).canBeNamed()){
-					String name = ((INameable) te).getCustomSCName().toString();
+					ITextComponent text = ((INameable) te).getCustomSCName();
+					String name = text == null ? "" : text.getFormattedText();
 
 					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
 				}
