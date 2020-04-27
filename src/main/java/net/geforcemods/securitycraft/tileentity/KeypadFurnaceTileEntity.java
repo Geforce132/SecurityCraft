@@ -1,394 +1,143 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.INameable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.FurnaceFuelSlot;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.AbstractFurnaceTileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements ISidedInventory, IPasswordProtected, INamedContainerProvider {
-
-	private static final int[] slotsTop = new int[] {0};
-	private static final int[] slotsBottom = new int[] {2, 1};
-	private static final int[] slotsSides = new int[] {1};
-	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
-	public int furnaceBurnTime;
-	public int currentItemBurnTime;
-	public int cookTime;
-	public int totalCookTime;
-	private String furnaceCustomName;
+public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable
+{
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
+	private Owner owner = new Owner();
 	private String passcode;
+	private ITextComponent furnaceCustomName;
 
 	public KeypadFurnaceTileEntity()
 	{
-		super(SCContent.teTypeKeypadFurnace);
-	}
-
-	@Override
-	public int getSizeInventory()
-	{
-		return furnaceItemStacks.size();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int index)
-	{
-		return furnaceItemStacks.get(index);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int index, int count)
-	{
-		if (!furnaceItemStacks.get(index).isEmpty())
-		{
-			ItemStack stack;
-
-			if (furnaceItemStacks.get(index).getCount() <= count)
-			{
-				stack = furnaceItemStacks.get(index);
-				furnaceItemStacks.set(index, ItemStack.EMPTY);
-				return stack;
-			}
-			else
-			{
-				stack = furnaceItemStacks.get(index).split(count);
-
-				if (furnaceItemStacks.get(index).getCount() == 0)
-					furnaceItemStacks.set(index, ItemStack.EMPTY);
-
-				return stack;
-			}
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int index)
-	{
-		if (!furnaceItemStacks.get(index).isEmpty())
-		{
-			ItemStack stack = furnaceItemStacks.get(index);
-			furnaceItemStacks.set(index, ItemStack.EMPTY);
-			return stack;
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	@Override
-	public void setInventorySlotContents(int index, ItemStack stack)
-	{
-		boolean areStacksEqual = !stack.isEmpty() && stack.isItemEqual(furnaceItemStacks.get(index)) && ItemStack.areItemStackTagsEqual(stack, furnaceItemStacks.get(index));
-		furnaceItemStacks.set(index, stack);
-
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack.setCount(getInventoryStackLimit());
-
-		if (index == 0 && !areStacksEqual)
-		{
-			totalCookTime = getTotalCookTime();
-			cookTime = 0;
-			markDirty();
-		}
-	}
-
-	@Override
-	public boolean hasCustomSCName()
-	{
-		return furnaceCustomName != null && furnaceCustomName.length() > 0;
-	}
-
-	@Override
-	public void read(CompoundNBT tag)
-	{
-		super.read(tag);
-		ListNBT list = tag.getList("Items", 10);
-		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
-
-		for (int i = 0; i < list.size(); ++i)
-		{
-			CompoundNBT stackTag = list.getCompound(i);
-			byte slot = stackTag.getByte("Slot");
-
-			if (slot >= 0 && slot < furnaceItemStacks.size())
-				furnaceItemStacks.set(slot, ItemStack.read(stackTag));
-		}
-
-		furnaceBurnTime = tag.getShort("BurnTime");
-		cookTime = tag.getShort("CookTime");
-		totalCookTime = tag.getShort("CookTimeTotal");
-		currentItemBurnTime = getItemBurnTime(furnaceItemStacks.get(1));
-		passcode = tag.getString("passcode");
-
-		if (tag.contains("CustomName", 8))
-			furnaceCustomName = tag.getString("CustomName");
+		super(SCContent.teTypeKeypadFurnace, IRecipeType.SMELTING);
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
-		tag.putShort("BurnTime", (short)furnaceBurnTime);
-		tag.putShort("CookTime", (short)cookTime);
-		tag.putShort("CookTimeTotal", (short)totalCookTime);
-		ListNBT list = new ListNBT();
 
-		for (int i = 0; i < furnaceItemStacks.size(); ++i)
-			if (!furnaceItemStacks.get(i).isEmpty())
-			{
-				CompoundNBT stackTag = new CompoundNBT();
-				stackTag.putByte("Slot", (byte)i);
-				furnaceItemStacks.get(i).write(stackTag);
-				list.add(stackTag);
-			}
-
-		tag.put("Items", list);
+		if(owner != null)
+		{
+			tag.putString("owner", owner.getName());
+			tag.putString("ownerUUID", owner.getUUID());
+		}
 
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if (hasCustomSCName())
-			tag.putString("CustomName", furnaceCustomName);
+		if(tag.contains("CustomName", Constants.NBT.TAG_STRING))
+			furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
 
 		return tag;
 	}
 
 	@Override
-	public int getInventoryStackLimit()
+	public void read(CompoundNBT tag)
 	{
-		return 64;
-	}
+		super.read(tag);
 
-	/**
-	 * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-	 * cooked
-	 */
-	public int getCookProgressScaled(int scaleFactor)
-	{
-		return cookTime * scaleFactor / 200;
-	}
+		if(tag.contains("owner"))
+			owner.setOwnerName(tag.getString("owner"));
 
-	/**
-	 * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
-	 * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
-	 */
-	public int getBurnTimeRemainingScaled(int scaleFactor)
-	{
-		if (currentItemBurnTime == 0)
-			currentItemBurnTime = 200;
+		if(tag.contains("ownerUUID"))
+			owner.setOwnerUUID(tag.getString("ownerUUID"));
 
-		return furnaceBurnTime * scaleFactor / currentItemBurnTime;
-	}
+		if(tag.contains("passcode"))
+			passcode = tag.getString("passcode");
 
-	public boolean isBurning()
-	{
-		return furnaceBurnTime > 0;
+		if(hasCustomSCName())
+			tag.putString("CustomName", furnaceCustomName.getFormattedText());
 	}
 
 	@Override
-	public void tick()
+	public CompoundNBT getUpdateTag()
 	{
-		boolean isBurning = this.isBurning();
-		boolean shouldMarkDirty = false;
+		return write(new CompoundNBT());
+	}
 
-		if (this.isBurning())
-			--furnaceBurnTime;
+	@Override
+	public SUpdateTileEntityPacket getUpdatePacket()
+	{
+		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+	}
 
-		if (!world.isRemote)
+	@Override
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
+	{
+		read(packet.getNbtCompound());
+	}
+
+	@Override
+	public Owner getOwner()
+	{
+		return owner;
+	}
+
+	@Override
+	public void setOwner(String uuid, String name)
+	{
+		owner.set(uuid, name);
+	}
+
+	@Override
+	public void onLoad()
+	{
+		if(world.isRemote)
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos, world.dimension.getType().getId()));
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+	{
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == Direction.DOWN)
 		{
-			if (!this.isBurning() && (furnaceItemStacks.get(1).isEmpty() || furnaceItemStacks.get(0).isEmpty()))
-			{
-				if (!this.isBurning() && cookTime > 0)
-					cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
-			}
-			else
-			{
-				if (!this.isBurning() && canSmelt())
-				{
-					currentItemBurnTime = furnaceBurnTime = getItemBurnTime(furnaceItemStacks.get(1));
+			BlockPos offsetPos = pos.offset(side);
 
-					if (this.isBurning())
-					{
-						shouldMarkDirty = true;
-
-						if (!furnaceItemStacks.get(1).isEmpty())
-						{
-							furnaceItemStacks.get(1).shrink(1);
-
-							if (furnaceItemStacks.get(1).getCount() == 0)
-								furnaceItemStacks.set(1, furnaceItemStacks.get(1).getItem().getContainerItem(furnaceItemStacks.get(1)));
-						}
-					}
-				}
-
-				if (this.isBurning() && canSmelt())
-				{
-					++cookTime;
-
-					if (cookTime == totalCookTime)
-					{
-						cookTime = 0;
-						totalCookTime = getTotalCookTime();
-						smeltItem();
-						shouldMarkDirty = true;
-					}
-				}
-				else
-					cookTime = 0;
-			}
-
-			if (isBurning != this.isBurning())
-				shouldMarkDirty = true;
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !getOwner().owns((ReinforcedHopperTileEntity)world.getTileEntity(offsetPos)))
+				return EMPTY_INVENTORY.cast();
 		}
 
-		if (shouldMarkDirty)
-			markDirty();
-	}
-
-	public int getTotalCookTime()
-	{
-		return 200;
-	}
-
-	private boolean canSmelt()
-	{
-		if (furnaceItemStacks.get(0).isEmpty())
-			return false;
-		else
-		{
-			ItemStack smeltResult = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, world).get().getRecipeOutput();
-			if (smeltResult.isEmpty()) return false;
-			if (furnaceItemStacks.get(2).isEmpty()) return true;
-			if (!furnaceItemStacks.get(2).isItemEqual(smeltResult)) return false;
-			int result = furnaceItemStacks.get(2).getCount() + smeltResult.getCount();
-			return result <= getInventoryStackLimit() && result <= furnaceItemStacks.get(2).getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
-		}
-	}
-
-	public void smeltItem()
-	{
-		if (canSmelt())
-		{
-			ItemStack smeltResult = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, world).get().getRecipeOutput();
-
-			if (furnaceItemStacks.get(2).isEmpty())
-				furnaceItemStacks.set(2, smeltResult.copy());
-			else if (furnaceItemStacks.get(2).getItem() == smeltResult.getItem())
-				furnaceItemStacks.get(2).grow(smeltResult.getCount()); // Forge BugFix: Results may have multiple items
-
-			if (furnaceItemStacks.get(0).getItem() == Blocks.WET_SPONGE.asItem() && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
-				furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
-
-			furnaceItemStacks.get(0).shrink(1);
-
-			if (furnaceItemStacks.get(0).getCount() <= 0)
-				furnaceItemStacks.set(0, ItemStack.EMPTY);
-		}
-	}
-
-	public static int getItemBurnTime(ItemStack stack)
-	{
-		if (stack.isEmpty()) {
-			return 0;
-		} else {
-			Item item = stack.getItem();
-			int ret = stack.getBurnTime();
-			return net.minecraftforge.event.ForgeEventFactory.getItemBurnTime(stack, ret == -1 ? FurnaceTileEntity.getBurnTimes().getOrDefault(item, 0) : ret);
-		}
-	}
-
-	public static boolean isItemFuel(ItemStack stack)
-	{
-		return getItemBurnTime(stack) > 0;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(PlayerEntity player)
-	{
-		return world.getTileEntity(pos) != this ? false : player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
-	}
-
-	@Override
-	public void openInventory(PlayerEntity player) {}
-
-	@Override
-	public void closeInventory(PlayerEntity player) {}
-
-	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : furnaceItemStacks)
-			if(!stack.isEmpty())
-				return false;
-
-		return true;
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack)
-	{
-		return index == 2 ? false : (index != 1 ? true : isItemFuel(stack) || FurnaceFuelSlot.isBucket(stack));
-	}
-
-	@Override
-	public int[] getSlotsForFace(Direction side)
-	{
-		return side == Direction.DOWN ? slotsBottom : (side == Direction.UP ? slotsTop : slotsSides);
-	}
-
-	@Override
-	public boolean canInsertItem(int index, ItemStack stack, Direction direction)
-	{
-		return isItemValidForSlot(index, stack);
-	}
-
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack, Direction direction)
-	{
-		if (direction == Direction.DOWN && index == 1)
-		{
-			Item item = stack.getItem();
-
-			if (item != Items.WATER_BUCKET && item != Items.BUCKET)
-				return false;
-		}
-
-		return true;
-	}
-
-	@Override
-	public void clear()
-	{
-		for (int i = 0; i < furnaceItemStacks.size(); ++i)
-			furnaceItemStacks.set(i, ItemStack.EMPTY);
+		return super.getCapability(cap, side);
 	}
 
 	@Override
@@ -466,15 +215,56 @@ public class KeypadFurnaceTileEntity extends SecurityCraftTileEntity implements 
 		passcode = password;
 	}
 
+	public IIntArray getFurnaceData()
+	{
+		return furnaceData;
+	}
+
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new KeypadFurnaceContainer(windowId, world, pos, inv);
+		return new KeypadFurnaceContainer(windowId, world, pos, inv, this, furnaceData);
+	}
+
+	@Override
+	protected Container createMenu(int windowId, PlayerInventory inv)
+	{
+		return createMenu(windowId, inv, inv.player);
 	}
 
 	@Override
 	public ITextComponent getDisplayName()
 	{
+		return hasCustomSCName() ? getCustomSCName() : getDefaultName();
+	}
+
+	@Override
+	protected ITextComponent getDefaultName()
+	{
 		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
+	}
+
+	@Override
+	public ITextComponent getCustomSCName()
+	{
+		return furnaceCustomName;
+	}
+
+	@Override
+	public void setCustomSCName(ITextComponent customName)
+	{
+		furnaceCustomName = customName;
+	}
+
+	@Override
+	public boolean hasCustomSCName()
+	{
+		return furnaceCustomName != null && furnaceCustomName.getFormattedText() != null && !furnaceCustomName.getFormattedText().isEmpty();
+	}
+
+	@Override
+	public boolean canBeNamed()
+	{
+		return true;
 	}
 }

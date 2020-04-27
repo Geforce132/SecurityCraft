@@ -90,22 +90,12 @@ public class BlockUtils{
 	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value, boolean retainOldTileEntity) {
 		if(retainOldTileEntity){
 			NonNullList<ItemStack> modules = null;
-			NonNullList<ItemStack> inventory = null;
-			int[] times = new int[4];
 			String password = "";
 			Owner owner = null;
 			int cooldown = -1;
 
 			if(world.getTileEntity(pos) instanceof CustomizableTileEntity)
 				modules = ((CustomizableTileEntity) world.getTileEntity(pos)).modules;
-
-			if(world.getTileEntity(pos) instanceof KeypadFurnaceTileEntity){
-				inventory = ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).furnaceItemStacks;
-				times[0] = ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).furnaceBurnTime;
-				times[1] = ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).currentItemBurnTime;
-				times[2] = ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).cookTime;
-				times[3] = ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).totalCookTime;
-			}
 
 			if(world.getTileEntity(pos) instanceof OwnableTileEntity && ((OwnableTileEntity) world.getTileEntity(pos)).getOwner() != null)
 				owner = ((OwnableTileEntity) world.getTileEntity(pos)).getOwner();
@@ -128,14 +118,6 @@ public class BlockUtils{
 
 			if(modules != null)
 				((CustomizableTileEntity) world.getTileEntity(pos)).modules = modules;
-
-			if(inventory != null && world.getTileEntity(pos) instanceof KeypadFurnaceTileEntity){
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).furnaceItemStacks = inventory;
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).furnaceBurnTime = times[0];
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).currentItemBurnTime = times[1];
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).cookTime = times[2];
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).totalCookTime = times[3];
-			}
 
 			if(owner != null)
 				((OwnableTileEntity) world.getTileEntity(pos)).getOwner().set(owner);

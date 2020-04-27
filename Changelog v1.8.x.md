@@ -1,8 +1,10 @@
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
+DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!
+
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
-- New: Make all reinforced blocks immune to the ender dragon and the wither by adding them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags
+- New: All reinforced blocks are now immune to the ender dragon and the wither (added them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags)
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Reinforced Blue Ice (Thanks Redstone_Dubstep!)
@@ -61,7 +63,8 @@
 - Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
 - Fix: The wooden reinforced pressure plates don't have a whitelist module description (Thanks Redstone_Dubstep!)
 - Fix: Camera Monitor crash
-- Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest
+- Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
+- Fix: Password-protected Furnace does not work at all
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
