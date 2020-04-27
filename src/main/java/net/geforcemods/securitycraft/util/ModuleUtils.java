@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class ModuleUtils{
 	public static List<String> getPlayersFromModule(World world, BlockPos pos, CustomModules module) {
-		CustomizableTileEntity te = (CustomizableTileEntity) world.getTileEntity(pos);
+		IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 
 		if(te.hasModule(module))
 			return getPlayersFromModule(te.getModule(module));
@@ -46,35 +46,35 @@ public class ModuleUtils{
 	public static boolean checkForModule(World world, BlockPos pos, PlayerEntity player, CustomModules module){
 		TileEntity te = world.getTileEntity(pos);
 
-		if(!(te instanceof CustomizableTileEntity))
+		if(!(te instanceof IModuleInventory))
 			return false;
 
 		if(te instanceof KeypadTileEntity){
-			if(module == CustomModules.WHITELIST && ((CustomizableTileEntity) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
+			if(module == CustomModules.WHITELIST && ((IModuleInventory) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 				return true;
 			}
 
-			if(module == CustomModules.BLACKLIST && ((CustomizableTileEntity) te).hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
+			if(module == CustomModules.BLACKLIST && ((IModuleInventory) te).hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof KeycardReaderTileEntity){
-			if(module == CustomModules.WHITELIST && ((CustomizableTileEntity) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
+			if(module == CustomModules.WHITELIST && ((IModuleInventory) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
 				return true;
 			}
 
-			if(module == CustomModules.BLACKLIST && ((CustomizableTileEntity) te).hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
+			if(module == CustomModules.BLACKLIST && ((IModuleInventory) te).hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 				return true;
 			}
 		}else if(te instanceof RetinalScannerTileEntity){
-			if(module == CustomModules.WHITELIST && ((CustomizableTileEntity) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase()))
+			if(module == CustomModules.WHITELIST && ((IModuleInventory) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase()))
 				return true;
 		}else if(te instanceof InventoryScannerTileEntity)
-			if(module == CustomModules.WHITELIST && ((CustomizableTileEntity) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase()))
+			if(module == CustomModules.WHITELIST && ((IModuleInventory) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase()))
 				return true;
 
 		return false;

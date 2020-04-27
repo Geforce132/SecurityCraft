@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
-import net.geforcemods.securitycraft.containers.ModuleInventory;
+import net.geforcemods.securitycraft.containers.ModuleItemInventory;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
@@ -248,7 +248,7 @@ public class RegistrationHandler
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BriefcaseContainer(windowId, inv, new BriefcaseInventory(inv.getCurrentItem()))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_inventory")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "briefcase_setup")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new CustomizeBlockContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "customize_block")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new DisguiseModuleContainer(windowId, inv, new ModuleInventory(inv.getCurrentItem()))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(inv.getCurrentItem()))).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "disguise_module")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new InventoryScannerContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "inventory_scanner")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new KeypadFurnaceContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keypad_furnace")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "check_password")));

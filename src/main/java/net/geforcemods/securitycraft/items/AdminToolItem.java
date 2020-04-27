@@ -5,7 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.CustomModules;
@@ -51,8 +51,8 @@ public class AdminToolItem extends Item {
 					hasInfo = true;
 				}
 
-				if(te instanceof CustomizableTileEntity) {
-					List<CustomModules> modules = ((CustomizableTileEntity) te).getModules();
+				if(te instanceof IModuleInventory) {
+					List<CustomModules> modules = ((IModuleInventory) te).getInsertedModules();
 
 					if(!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);

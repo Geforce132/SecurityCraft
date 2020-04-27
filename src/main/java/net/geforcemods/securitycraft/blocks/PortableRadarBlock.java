@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -67,8 +67,8 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((CustomizableTileEntity) blockAccess.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
+	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
+		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;

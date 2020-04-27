@@ -66,7 +66,7 @@ public class UniversalBlockRemoverItem extends Item
 			{
 				CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(pos);
 
-				for(ItemStack module : te.modules)
+				for(ItemStack module : te.getInventory())
 				{
 					if(!module.isEmpty())
 						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModule()}, te);
@@ -105,7 +105,7 @@ public class UniversalBlockRemoverItem extends Item
 					InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 					if(te != null)
-						te.modules.clear();
+						te.getInventory().clear();
 				}
 
 				world.destroyBlock(pos, true);

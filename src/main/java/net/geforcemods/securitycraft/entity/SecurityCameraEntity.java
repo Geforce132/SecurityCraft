@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -334,7 +334,7 @@ public class SecurityCameraEntity extends Entity{
 	public void setRedstonePower() {
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()));
 
-		if(((CustomizableTileEntity) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
+		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
 			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.POWERED)));
 	}
 

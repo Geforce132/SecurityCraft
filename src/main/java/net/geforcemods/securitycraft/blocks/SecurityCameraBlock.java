@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -164,16 +164,16 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((CustomizableTileEntity) blockAccess.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
+	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
+		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((CustomizableTileEntity) blockAccess.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
+	public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
+		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
 			return 15;
 		else
 			return 0;

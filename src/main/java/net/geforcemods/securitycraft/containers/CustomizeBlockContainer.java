@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -17,26 +18,26 @@ import net.minecraft.world.World;
 
 public class CustomizeBlockContainer extends Container{
 
-	public CustomizableTileEntity tileEntity;
+	public IModuleInventory moduleInv;
 
 	public CustomizeBlockContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.cTypeCustomizeBlock, windowId);
-		this.tileEntity = (CustomizableTileEntity)world.getTileEntity(pos);
+		this.moduleInv = (IModuleInventory)world.getTileEntity(pos);
 
-		if(tileEntity.getNumberOfCustomizableOptions() == 1)
-			addSlot(new ModuleSlot(tileEntity, 0, 79, 20));
-		else if(tileEntity.getNumberOfCustomizableOptions() == 2){
-			addSlot(new ModuleSlot(tileEntity, 0, 70, 20));
-			addSlot(new ModuleSlot(tileEntity, 1, 88, 20));
-		}else if(tileEntity.getNumberOfCustomizableOptions() == 3){
-			addSlot(new ModuleSlot(tileEntity, 0, 61, 20));
-			addSlot(new ModuleSlot(tileEntity, 1, 79, 20));
-			addSlot(new ModuleSlot(tileEntity, 2, 97, 20));
-		}else if(tileEntity.getNumberOfCustomizableOptions() == 4){
-			addSlot(new ModuleSlot(tileEntity, 0, 52, 20));
-			addSlot(new ModuleSlot(tileEntity, 1, 70, 20));
-			addSlot(new ModuleSlot(tileEntity, 2, 88, 20));
-			addSlot(new ModuleSlot(tileEntity, 3, 106, 20));
+		if(moduleInv.getSizeInventory() == 1)
+			addSlot(new ModuleSlot(moduleInv, 0, 79, 20));
+		else if(moduleInv.getSizeInventory() == 2){
+			addSlot(new ModuleSlot(moduleInv, 0, 70, 20));
+			addSlot(new ModuleSlot(moduleInv, 1, 88, 20));
+		}else if(moduleInv.getSizeInventory() == 3){
+			addSlot(new ModuleSlot(moduleInv, 0, 61, 20));
+			addSlot(new ModuleSlot(moduleInv, 1, 79, 20));
+			addSlot(new ModuleSlot(moduleInv, 2, 97, 20));
+		}else if(moduleInv.getSizeInventory() == 4){
+			addSlot(new ModuleSlot(moduleInv, 0, 52, 20));
+			addSlot(new ModuleSlot(moduleInv, 1, 70, 20));
+			addSlot(new ModuleSlot(moduleInv, 2, 88, 20));
+			addSlot(new ModuleSlot(moduleInv, 3, 106, 20));
 		}
 
 		for(int i = 0; i < 3; i++)
@@ -61,18 +62,24 @@ public class CustomizeBlockContainer extends Container{
 				return ItemStack.EMPTY;
 
 			slotStackCopy = slotStack.copy();
-			tileEntity.onModuleRemoved(slotStack, CustomModules.getModuleFromStack(slotStack));
-			tileEntity.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ slotStack, CustomModules.getModuleFromStack(slotStack) }, tileEntity);
+			moduleInv.onModuleRemoved(slotStack, CustomModules.getModuleFromStack(slotStack));
 
-			if(tileEntity instanceof SecurityCameraTileEntity)
-				tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).get(SecurityCameraBlock.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock());
+			if(moduleInv instanceof CustomizableTileEntity)
+				((CustomizableTileEntity)moduleInv).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ slotStack, CustomModules.getModuleFromStack(slotStack) }, (CustomizableTileEntity)moduleInv);
 
-			if (index < tileEntity.getSizeInventory())
+			if(moduleInv instanceof SecurityCameraTileEntity)
+			{
+				SecurityCameraTileEntity cam = (SecurityCameraTileEntity)moduleInv;
+
+				cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).get(SecurityCameraBlock.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock());
+			}
+
+			if (index < moduleInv.getSizeInventory())
 			{
 				if (!mergeItemStack(slotStack, 0, 35, true))
 					return ItemStack.EMPTY;
 			}
-			else if (slotStack.getItem() instanceof ModuleItem && tileEntity.getAcceptedModules().contains(CustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))
+			else if (slotStack.getItem() instanceof ModuleItem && moduleInv.getAcceptedModules().contains(CustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, moduleInv.getSizeInventory(), false))
 				return ItemStack.EMPTY;
 
 			if (slotStack.getCount() == 0)
@@ -95,9 +102,9 @@ public class CustomizeBlockContainer extends Container{
 	}
 
 	public static class ModuleSlot extends Slot{
-		private CustomizableTileEntity tileEntity;
+		private IModuleInventory tileEntity;
 
-		public ModuleSlot(CustomizableTileEntity inventory, int index, int xPos, int yPos) {
+		public ModuleSlot(IModuleInventory inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
 			tileEntity = inventory;
 		}
@@ -113,13 +120,13 @@ public class CustomizeBlockContainer extends Container{
 
 		@Override
 		public ItemStack getStack(){
-			return tileEntity.modules.get(getSlotIndex());
+			return tileEntity.getInventory().get(getSlotIndex());
 		}
 
 		@Override
 		public void putStack(ItemStack stack)
 		{
-			tileEntity.safeSetInventorySlotContents(getSlotIndex(), stack);
+			tileEntity.setInventorySlotContents(getSlotIndex(), stack);
 			onSlotChanged();
 		}
 
@@ -130,7 +137,7 @@ public class CustomizeBlockContainer extends Container{
 		@Override
 		public ItemStack decrStackSize(int index)
 		{
-			return tileEntity.safeDecrStackSize(getSlotIndex(), index);
+			return tileEntity.decrStackSize(getSlotIndex(), index);
 		}
 
 		/**
