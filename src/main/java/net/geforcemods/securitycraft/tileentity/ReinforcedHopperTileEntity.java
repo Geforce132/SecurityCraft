@@ -32,6 +32,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableLootTileEntity;
@@ -586,46 +587,107 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	//code from Forge, as it is hardcoded to the vanilla hopper
 	private boolean insertHook()
 	{
-		return getItemHandler(this, Direction.UP)
-				.map(itemHandlerResult -> {
-					IItemHandler handler = itemHandlerResult.getKey();
-
-					for (int i = 0; i < handler.getSlots(); i++)
+		Direction hopperFacing = getBlockState().get(HopperBlock.FACING);
+		return getItemHandler(this, hopperFacing)
+				.map(destinationResult -> {
+					IItemHandler itemHandler = destinationResult.getKey();
+					Object destination = destinationResult.getValue();
+					if (isFull())
 					{
-						ItemStack extractItem = handler.extractItem(i, 1, true);
-						if (!extractItem.isEmpty())
+						return false;
+					}
+					else
+					{
+						for (int i = 0; i < getSizeInventory(); ++i)
 						{
-							for (int j = 0; j < getSizeInventory(); j++)
+							if (!getStackInSlot(i).isEmpty())
 							{
-								ItemStack destStack = getStackInSlot(j);
-								if (isItemValidForSlot(j, extractItem) && (destStack.isEmpty() || destStack.getCount() < destStack.getMaxStackSize() && destStack.getCount() < getInventoryStackLimit() && ItemHandlerHelper.canItemStacksStack(extractItem, destStack)))
+								ItemStack originalSlotContents = getStackInSlot(i).copy();
+								ItemStack insertStack = decrStackSize(i, 1);
+								ItemStack remainder = putStackInInventoryAllSlots(this, destination, itemHandler, insertStack);
+
+								if (remainder.isEmpty())
 								{
-									extractItem = handler.extractItem(i, 1, false);
-									if (destStack.isEmpty())
-										setInventorySlotContents(j, extractItem);
-									else
-									{
-										destStack.grow(1);
-										setInventorySlotContents(j, destStack);
-									}
-									markDirty();
 									return true;
 								}
+
+								setInventorySlotContents(i, originalSlotContents);
 							}
 						}
-					}
 
-					return false;
+						return false;
+					}
 				})
-				.orElse(null); // TODO bad null
+				.orElse(false);
 	}
 
-	//this is private in forge's code, so it's copied here
+	//these are private in forge's code, so it's copied here
 	private LazyOptional<Pair<IItemHandler, Object>> getItemHandler(IHopper hopper, Direction hopperFacing)
 	{
 		double x = hopper.getXPos() + hopperFacing.getXOffset();
 		double y = hopper.getYPos() + hopperFacing.getYOffset();
 		double z = hopper.getZPos() + hopperFacing.getZOffset();
 		return VanillaInventoryCodeHooks.getItemHandler(hopper.getWorld(), x, y, z, hopperFacing.getOpposite());
+	}
+
+	private static ItemStack putStackInInventoryAllSlots(TileEntity source, Object destination, IItemHandler destInventory, ItemStack stack)
+	{
+		for (int slot = 0; slot < destInventory.getSlots() && !stack.isEmpty(); slot++)
+		{
+			stack = insertStack(source, destination, destInventory, stack, slot);
+		}
+		return stack;
+	}
+
+	private static ItemStack insertStack(TileEntity source, Object destination, IItemHandler destInventory, ItemStack stack, int slot)
+	{
+		ItemStack itemstack = destInventory.getStackInSlot(slot);
+
+		if (destInventory.insertItem(slot, stack, true).isEmpty())
+		{
+			boolean insertedItem = false;
+			boolean inventoryWasEmpty = isEmpty(destInventory);
+
+			if (itemstack.isEmpty())
+			{
+				destInventory.insertItem(slot, stack, false);
+				stack = ItemStack.EMPTY;
+				insertedItem = true;
+			}
+			else if (ItemHandlerHelper.canItemStacksStack(itemstack, stack))
+			{
+				int originalSize = stack.getCount();
+				stack = destInventory.insertItem(slot, stack, false);
+				insertedItem = originalSize < stack.getCount();
+			}
+
+			if (insertedItem)
+			{
+				if (inventoryWasEmpty && destination instanceof HopperTileEntity)
+				{
+					HopperTileEntity destinationHopper = (HopperTileEntity)destination;
+
+					if (!destinationHopper.mayTransfer())
+					{
+						destinationHopper.setTransferCooldown(8);
+					}
+				}
+			}
+		}
+
+		return stack;
+	}
+
+	private static boolean isEmpty(IItemHandler itemHandler)
+	{
+		for (int slot = 0; slot < itemHandler.getSlots(); slot++)
+		{
+			ItemStack stackInSlot = itemHandler.getStackInSlot(slot);
+			if (stackInSlot.getCount() > 0)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }
