@@ -139,6 +139,17 @@ public interface IModuleInventory extends IInventory
 			return ItemStack.EMPTY;
 	}
 
+	/**
+	 * Used so tile entities with inventories don't interfere with this interface's implementation
+	 * @param index The index of the slot to remove the stack from
+	 * @param count The amount to remove from the stack
+	 * @return The removed stack
+	 */
+	public default ItemStack safeDecrStackSize(int index, int count)
+	{
+		return decrStackSize(index, count);
+	}
+
 	@Override
 	public default ItemStack removeStackFromSlot(int index)
 	{
@@ -156,9 +167,7 @@ public interface IModuleInventory extends IInventory
 	@Override
 	public default void setInventorySlotContents(int index, ItemStack stack)
 	{
-		NonNullList<ItemStack> modules = getInventory();
-
-		modules.set(index, stack);
+		getInventory().set(index, stack);
 
 		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
 			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
@@ -175,6 +184,16 @@ public interface IModuleInventory extends IInventory
 			if(getTileEntity() instanceof SecurityCameraTileEntity)
 				te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
 		}
+	}
+
+	/**
+	 * Used so tile entities with inventories don't interfere with this interface's implementation
+	 * @param index The index of the slot to set the stack in
+	 * @param stack The stack to set
+	 */
+	public default void safeSetInventorySlotContents(int index, ItemStack stack)
+	{
+		setInventorySlotContents(index, stack);
 	}
 
 	@Override

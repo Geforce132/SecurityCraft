@@ -2,6 +2,9 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -20,8 +23,8 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IModuleInventory {
-
+public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IModuleInventory
+{
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListNBT nbtTagStorage = null;
@@ -130,6 +133,65 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 
 			if(!linkedBlocks.contains(block))
 				link(this, block.asTileEntity(world));
+		}
+	}
+
+	@Override
+	public final ItemStack safeDecrStackSize(int index, int count)
+	{
+		NonNullList<ItemStack> modules = getInventory();
+
+		if(!modules.get(index).isEmpty())
+		{
+			ItemStack stack;
+
+			if(modules.get(index).getCount() <= count)
+			{
+				stack = modules.get(index);
+				modules.set(index, ItemStack.EMPTY);
+				onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
+				createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, this);
+
+				if(this instanceof SecurityCameraTileEntity)
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
+
+				return stack;
+			}
+			else
+			{
+				stack = modules.get(index).split(count);
+
+				if(modules.get(index).getCount() == 0)
+					modules.set(index, ItemStack.EMPTY);
+
+				onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
+				createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, this);
+
+				if(this instanceof SecurityCameraTileEntity)
+					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
+
+				return stack;
+			}
+		}
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public final void safeSetInventorySlotContents(int index, ItemStack stack)
+	{
+		getInventory().set(index, stack);
+
+		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
+			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
+
+		if(!stack.isEmpty())
+		{
+			onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModule());
+			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, this);
+
+			if(this instanceof SecurityCameraTileEntity)
+				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).get(SecurityCameraBlock.FACING), -1), world.getBlockState(pos).getBlock());
 		}
 	}
 

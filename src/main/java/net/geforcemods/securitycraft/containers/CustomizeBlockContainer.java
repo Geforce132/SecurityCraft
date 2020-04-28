@@ -126,7 +126,7 @@ public class CustomizeBlockContainer extends Container{
 		@Override
 		public void putStack(ItemStack stack)
 		{
-			tileEntity.setInventorySlotContents(getSlotIndex(), stack);
+			tileEntity.safeSetInventorySlotContents(getSlotIndex(), stack);
 			onSlotChanged();
 		}
 
@@ -137,7 +137,7 @@ public class CustomizeBlockContainer extends Container{
 		@Override
 		public ItemStack decrStackSize(int index)
 		{
-			return tileEntity.decrStackSize(getSlotIndex(), index);
+			return tileEntity.safeDecrStackSize(getSlotIndex(), index);
 		}
 
 		/**
