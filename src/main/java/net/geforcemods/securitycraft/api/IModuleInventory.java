@@ -37,6 +37,14 @@ public interface IModuleInventory extends IInventory
 	public TileEntity getTileEntity();
 
 	/**
+	 * @return The amount of modules that can be inserted
+	 */
+	public default int getMaxNumberOfModules()
+	{
+		return acceptedModules().length;
+	}
+
+	/**
 	 * Called whenever a module is inserted into a slot in the "Customize" GUI.
 	 *
 	 * @param stack The raw ItemStack being inserted.

@@ -24,16 +24,16 @@ public class CustomizeBlockContainer extends Container{
 		super(SCContent.cTypeCustomizeBlock, windowId);
 		this.moduleInv = (IModuleInventory)world.getTileEntity(pos);
 
-		if(moduleInv.getSizeInventory() == 1)
+		if(moduleInv.getMaxNumberOfModules() == 1)
 			addSlot(new ModuleSlot(moduleInv, 0, 79, 20));
-		else if(moduleInv.getSizeInventory() == 2){
+		else if(moduleInv.getMaxNumberOfModules() == 2){
 			addSlot(new ModuleSlot(moduleInv, 0, 70, 20));
 			addSlot(new ModuleSlot(moduleInv, 1, 88, 20));
-		}else if(moduleInv.getSizeInventory() == 3){
+		}else if(moduleInv.getMaxNumberOfModules() == 3){
 			addSlot(new ModuleSlot(moduleInv, 0, 61, 20));
 			addSlot(new ModuleSlot(moduleInv, 1, 79, 20));
 			addSlot(new ModuleSlot(moduleInv, 2, 97, 20));
-		}else if(moduleInv.getSizeInventory() == 4){
+		}else if(moduleInv.getMaxNumberOfModules() == 4){
 			addSlot(new ModuleSlot(moduleInv, 0, 52, 20));
 			addSlot(new ModuleSlot(moduleInv, 1, 70, 20));
 			addSlot(new ModuleSlot(moduleInv, 2, 88, 20));

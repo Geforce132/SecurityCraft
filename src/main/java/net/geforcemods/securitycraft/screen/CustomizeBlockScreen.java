@@ -62,7 +62,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 		final int numberOfColumns = 2;
 
-		for(int i = 0; i < moduleInv.getSizeInventory(); i++){
+		for(int i = 0; i < moduleInv.getMaxNumberOfModules(); i++){
 			int column = i % numberOfColumns;
 
 			descriptionButtons[i] = new PictureButton(i, guiLeft + 125 + column * 25, (guiTop + 18) + (Math.floorDiv(i, numberOfColumns) * 25), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
@@ -95,7 +95,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 				}
 
 				addButton(optionButtons[i]);
-				hoverCheckers[i + moduleInv.getSizeInventory()] = new HoverChecker(optionButtons[i], 20);
+				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i], 20);
 			}
 		}
 
@@ -117,7 +117,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
-				if(i < moduleInv.getSizeInventory())
+				if(i < moduleInv.getMaxNumberOfModules())
 					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, font);
 				else
 					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, font);
@@ -139,7 +139,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	{
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getSizeInventory()]);
+		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);

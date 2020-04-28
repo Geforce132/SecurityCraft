@@ -223,7 +223,7 @@ public class SCEventHandler {
 			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
 				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
 
-				for(int i = 0; i < te.getSizeInventory(); i++)
+				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
 					if(!te.getInventory().get(i).isEmpty()){
 						ItemStack stack = te.getInventory().get(i);
 						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
