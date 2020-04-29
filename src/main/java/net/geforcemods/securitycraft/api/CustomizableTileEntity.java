@@ -29,7 +29,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private ListNBT nbtTagStorage = null;
 
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	public CustomizableTileEntity(TileEntityType<?> type)
 	{

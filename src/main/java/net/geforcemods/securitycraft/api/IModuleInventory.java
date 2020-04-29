@@ -376,8 +376,8 @@ public interface IModuleInventory extends IInventory
 	 */
 	public default NonNullList<ItemStack> readModuleInventory(CompoundNBT tag)
 	{
-		ListNBT list = tag.getList("Modules", Constants.NBT.TAG_LIST);
-		NonNullList<ItemStack> modules = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
+		ListNBT list = tag.getList("Modules", Constants.NBT.TAG_COMPOUND);
+		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 		for(int i = 0; i < list.size(); ++i)
 		{
