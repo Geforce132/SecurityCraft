@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -44,9 +44,9 @@ public class UniversalBlockModifierItem extends Item
 		TileEntity te = world.getTileEntity(pos);
 		PlayerEntity player = ctx.getPlayer();
 
-		if(te instanceof CustomizableTileEntity)
+		if(te instanceof IModuleInventory)
 		{
-			if(!((IOwnable) te).getOwner().isOwner(player))
+			if(te instanceof IOwnable && !((IOwnable) te).getOwner().isOwner(player))
 			{
 				if(!(te instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) te).getOwner().getName()), TextFormatting.RED);
