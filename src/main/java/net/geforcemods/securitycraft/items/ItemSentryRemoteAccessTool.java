@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
@@ -49,7 +48,8 @@ public class ItemSentryRemoteAccessTool extends Item {
 			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
 
 			if(!sentries.isEmpty()) {
-				BlockPos pos2 = sentries.get(0).getPosition();
+				EntitySentry sentry = sentries.get(0);
+				BlockPos pos2 = sentry.getPosition();
 
 				if(!isSentryAdded(stack, pos2)){
 					int availSlot = getNextAvailableSlot(stack);
@@ -59,7 +59,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 						return EnumActionResult.FAIL;
 					}
 
-					if(world.getTileEntity(pos2) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos2)).getOwner().isOwner(player)){
+					if(!sentry.getOwner().isOwner(player)){
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 						return EnumActionResult.FAIL;
 					}
