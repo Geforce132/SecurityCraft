@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.network.client.OpenSRATGui;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
@@ -61,7 +60,8 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if(!world.isRemote){
 			if(!sentries.isEmpty()) {
-				BlockPos pos2 = sentries.get(0).getPosition();
+				SentryEntity sentry = sentries.get(0);
+				BlockPos pos2 = sentry.getPosition();
 
 				if(!isSentryAdded(stack, pos2)){
 					int availSlot = getNextAvaliableSlot(stack);
@@ -71,7 +71,7 @@ public class SentryRemoteAccessToolItem extends Item {
 						return ActionResultType.FAIL;
 					}
 
-					if(world.getTileEntity(pos2) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos2)).getOwner().isOwner(player)){
+					if(!sentry.getOwner().isOwner(player)){
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 						return ActionResultType.FAIL;
 					}
