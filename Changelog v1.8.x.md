@@ -44,6 +44,7 @@
 - Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
 - Fix: The wooden reinforced pressure plate doesn't have a whitelist module description (Thanks Redstone_Dubstep!)
 - Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
+- Fix: Lightning spawned by the Protecto does not show up
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
