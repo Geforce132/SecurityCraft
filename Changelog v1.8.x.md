@@ -26,6 +26,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Change: Reinforced Doors, Fence gates and trapdoors have a greater range to detect nearby active reinforced blocks (Thanks Redstone_Dubstep!)
 - Change: Sentries now attack flying mobs (except bats), Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
 - Change: Crystal Quartz Texture (Thanks Redstone_Dubstep!)
+- Change: The Protecto can now attack charged creepers and zombie pigmen
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
