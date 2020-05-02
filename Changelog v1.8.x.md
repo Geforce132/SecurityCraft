@@ -17,6 +17,7 @@
 - Change: White-/Blacklist Modules can now hold up to 50 players
 - Change: Reinforced Doors, Fence gates and trapdoors have a greater range to detect nearby active reinforced blocks (Thanks Redstone_Dubstep!)
 - Change: Sentries now attack flying mobs (except bats), Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
+- Change: The Protecto can now attack charged creepers and zombie pigmen
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -44,7 +45,6 @@
 - Fix: Sentries shoot at targets that are in their death animation (Thanks Redstone_Dubstep!)
 - Fix: The wooden reinforced pressure plate doesn't have a whitelist module description (Thanks Redstone_Dubstep!)
 - Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
-- Fix: Lightning spawned by the Protecto does not show up
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
