@@ -11,8 +11,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
@@ -26,9 +24,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof LivingEntity && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))) ||
-					entity instanceof ZombiePigmanEntity ||
-					(entity instanceof CreeperEntity && ((CreeperEntity) entity).isCharged()))
+			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))))
 				return false;
 
 			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false);
