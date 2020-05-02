@@ -745,6 +745,8 @@
 	"module.securitycraft.reinforced_lever.whitelist_module.description": "Adding a whitelist module to a Reinforced Lever will allow whitelisted players to activate it.",
 	"module.securitycraft.username_logger.disguise_module.description": "Adding a disguise module to a username logger will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.cage_trap.disguise_module.description": "Adding a disguise module to a cage trap will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
+	"module.securitycraft.keypad_chest.whitelist_module.description": "Adding a whitelist module to a Password-protected Chest will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by whitelisted players can extract items from the chest.",
+	"module.securitycraft.keypad_furnace.whitelist_module.description": "Adding a whitelist module to a Password-protected Furnace will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by whitelisted players can extract items from the furnace.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Is codebreaker allowed?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Can the codebreaker be used?",

@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -42,8 +44,10 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote) {
-			if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos))
+		if(!world.isRemote && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos)) {
+			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST))
+				activate(world, pos, player);
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

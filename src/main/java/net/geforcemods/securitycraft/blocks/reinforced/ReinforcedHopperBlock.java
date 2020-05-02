@@ -1,7 +1,11 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -101,5 +105,24 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState().with(ENABLED, vanillaState.get(ENABLED)).with(FACING, vanillaState.get(FACING));
+	}
+
+	public static boolean canExtract(IOwnable te, World world, BlockPos hopperPos)
+	{
+		ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getTileEntity(hopperPos);
+
+		if(!te.getOwner().owns(hopperTe))
+		{
+			if(te instanceof IModuleInventory)
+			{
+				IModuleInventory inv = (IModuleInventory)te;
+
+				if(inv.hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(CustomModules.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+					return true;
+			}
+
+			return false;
+		}
+		else return true;
 	}
 }
