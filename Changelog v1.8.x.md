@@ -67,6 +67,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
 - Fix: Password-protected Furnace does not work at all
 - Fix: Reinforced Glass under water doesn't look like vanilla glass under water
+- Fix: Lightning spawned by the Protecto does not show up
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

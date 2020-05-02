@@ -13,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.server.ServerWorld;
 
 public class ProtectoTileEntity extends CustomizableTileEntity {
 
@@ -27,9 +28,9 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))))
 				return false;
 
-			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false);
+			if(!world.isRemote)
+				((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false));
 
-			world.addEntity(lightning);
 			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);
 			return true;
 		}
