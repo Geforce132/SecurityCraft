@@ -50,24 +50,36 @@ public class ModuleUtils{
 			return false;
 
 		if(te instanceof KeypadTileEntity){
-			if(module == CustomModules.WHITELIST && ((CustomizableTileEntity) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+			KeypadTileEntity keypad = (KeypadTileEntity)te;
+
+			if(module == CustomModules.WHITELIST && keypad.hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
+				if(keypad.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+
 				return true;
 			}
 
-			if(module == CustomModules.BLACKLIST && ((CustomizableTileEntity) te).hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+			if(module == CustomModules.BLACKLIST && keypad.hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
+				if(keypad.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+
 				return true;
 			}
 		}else if(te instanceof KeycardReaderTileEntity){
-			if(module == CustomModules.WHITELIST && ((CustomizableTileEntity) te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+			KeycardReaderTileEntity reader = (KeycardReaderTileEntity)te;
+
+			if(module == CustomModules.WHITELIST && reader.hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
+				if(reader.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
 				return true;
 			}
 
-			if(module == CustomModules.BLACKLIST && ((CustomizableTileEntity) te).hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+			if(module == CustomModules.BLACKLIST && reader.hasModule(CustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
+				if(reader.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+
 				return true;
 			}
 		}else if(te instanceof RetinalScannerTileEntity){

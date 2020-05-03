@@ -829,6 +829,8 @@
 	"option.securitycraft.security_camera.shouldRotate.description": "Soll die Kamera rotieren?",
 	"option.securitycraft.keypad.isAlwaysActive": "Immer aktiv: #",
 	"option.securitycraft.keypad.isAlwaysActive.description": "Soll das Nummernschloss aktiv bleiben und immer offen sein?",
+	"option.securitycraft.keypad.sendMessage": "Nachricht: #",
+	"option.securitycraft.keypad.sendMessage.description": "Sendet dieses Nummernschloss eine Nachricht, wenn es aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
 	"option.securitycraft.laser_block.enabled": "Aktiviert: #",
 	"option.securitycraft.laser_block.enabled.description": "Soll der Laser aktiviert sein?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "NPC aktiviert: #",
@@ -843,6 +845,8 @@
 	"option.securitycraft.cage_trap.captureMobs.description": "Soll die Käfigfalle Mobs und Spieler einsperren oder nur Spieler?",
 	"option.securitycraft.motion_activated_light.searchRadius": "Suchradius: #",
 	"option.securitycraft.motion_activated_light.searchRadius.description": "Wie weit entfernt erkennt das Licht einen Mob/Spieler?",
+	"option.securitycraft.keycard_reader.sendMessage": "Nachricht: #",
+	"option.securitycraft.keycard_reader.sendMessage.description": "Sendet dieser Schlüsselkartenleser eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",

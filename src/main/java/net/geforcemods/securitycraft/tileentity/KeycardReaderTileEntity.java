@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.CustomModules;
@@ -25,6 +26,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeycardReaderTileEntity()
 	{
@@ -105,7 +107,12 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[]{ sendMessage };
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.asBoolean();
 	}
 
 	@Override
