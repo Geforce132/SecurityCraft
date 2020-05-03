@@ -831,6 +831,8 @@
 	"option.securitycraft.security_camera.customRotation.description": "Custom, static angle",
 	"option.securitycraft.keypad.isAlwaysActive": "Is always active: #",
 	"option.securitycraft.keypad.isAlwaysActive.description": "Should the keypad remain active and unlocked?",
+	"option.securitycraft.keypad.sendMessage": "Message: #",
+	"option.securitycraft.keypad.sendMessage.description": "Does this keypad send a message upon activation (when using whitelist/blacklist modules)?",
 	"option.securitycraft.laser_block.enabled": "Enabled: #",
 	"option.securitycraft.laser_block.enabled.description": "Should the laser be enabled?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "NPC-activated: #",
@@ -845,6 +847,8 @@
 	"option.securitycraft.cage_trap.captureMobs.description": "Should this cage trap capture hostile mobs and players, or only players?",
 	"option.securitycraft.motion_activated_light.searchRadius": "Search radius: #",
 	"option.securitycraft.motion_activated_light.searchRadius.description": "How far will the light detect an entity?",
+	"option.securitycraft.keycard_reader.sendMessage": "Message: #",
+	"option.securitycraft.keycard_reader.sendMessage.description": "Does this keycard reader send a message upon activation (when using whitelist/blacklist modules)?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

@@ -41,6 +41,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 			}
 		}
 	};
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadTileEntity()
 	{
@@ -159,6 +160,11 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive };
+		return new Option[]{ isAlwaysActive, sendMessage };
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.asBoolean();
 	}
 }
