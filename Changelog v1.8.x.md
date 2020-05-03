@@ -12,6 +12,7 @@
 - New: The buttons in the Whitelist/Blacklist module screen activate and deactivate depending on the text field input and the amount of stored players (Thanks Redstone_Dubstep!)
 - New: HWYLA and TOP now show a Sentry's owner, its current mode, and the equipped modules (Thanks Redstone_Dubstep!)
 - New: Config option to turn off the recipes of all SecurityCraft explosives
+- New: Option in the Universal Block Modifier GUI of the Keypad and Keycard Reader to turn off messages for whitelisted/blacklisted players
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: White-/Blacklist Modules can now hold up to 50 players

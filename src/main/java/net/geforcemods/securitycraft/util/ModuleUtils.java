@@ -49,24 +49,36 @@ public class ModuleUtils{
 			return false;
 
 		if(te instanceof TileEntityKeypad){
-			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+			TileEntityKeypad keypad = (TileEntityKeypad)te;
+
+			if(module == EnumCustomModules.WHITELIST && keypad.hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
+				if(keypad.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+
 				return true;
 			}
 
-			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+			if(module == EnumCustomModules.BLACKLIST && keypad.hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().toLowerCase())){
+				if(keypad.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+
 				return true;
 			}
 		}else if(te instanceof TileEntityKeycardReader){
-			if(module == EnumCustomModules.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+			TileEntityKeycardReader reader = (TileEntityKeycardReader)te;
+
+			if(module == EnumCustomModules.WHITELIST && reader.hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(player.getName().toLowerCase())){
+				if(reader.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
 				return true;
 			}
 
-			if(module == EnumCustomModules.BLACKLIST && ((CustomizableSCTE) te).hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().toLowerCase())){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+			if(module == EnumCustomModules.BLACKLIST && reader.hasModule(EnumCustomModules.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.BLACKLIST).contains(player.getName().toLowerCase())){
+				if(reader.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+
 				return true;
 			}
 		}else if(te instanceof TileEntityRetinalScanner){

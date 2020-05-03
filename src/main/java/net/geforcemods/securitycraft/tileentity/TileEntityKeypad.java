@@ -35,6 +35,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 			}
 		}
 	};
+	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
 	/**
 	 * Writes a tile entity to NBT.
@@ -114,6 +115,11 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive };
+		return new Option[]{ isAlwaysActive, sendMessage };
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.asBoolean();
 	}
 }

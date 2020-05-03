@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumCustomModules;
@@ -18,6 +19,7 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
+	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
 	/**
 	 * Writes a tile entity to NBT.
@@ -93,7 +95,11 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[]{ sendMessage };
 	}
 
+	public boolean sendsMessages()
+	{
+		return sendMessage.asBoolean();
+	}
 }
