@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -100,11 +101,28 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	{
 		slot = fixSlotId(slot);
 
-		ItemStack stack = getModuleInSlot(slot);
+		ItemStack stack = getModuleInSlot(slot).copy();
 
 		if(stack.isEmpty())
 			return ItemStack.EMPTY;
-		else return (simulate ? stack : getInventory().set(slot, ItemStack.EMPTY)).copy();
+		else
+		{
+			if(!simulate)
+			{
+				TileEntity te = getTileEntity();
+
+				if(stack.getItem() instanceof ModuleItem)
+				{
+					onModuleRemoved(stack, ((ModuleItem)stack.getItem()).getModule());
+
+					if(te instanceof CustomizableTileEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, (CustomizableTileEntity)te);
+				}
+
+				return getInventory().set(slot, ItemStack.EMPTY).copy();
+			}
+			else return stack.copy();
+		}
 	}
 
 	@Override
@@ -125,9 +143,18 @@ public interface IModuleInventory extends IItemHandlerModifiable
 			if(!simulate)
 			{
 				ItemStack copy = stack.copy();
+				TileEntity te = getTileEntity();
 
 				copy.setCount(1);
 				getInventory().set(slot, copy);
+
+				if(stack.getItem() instanceof ModuleItem)
+				{
+					onModuleInserted(stack, ((ModuleItem)stack.getItem()).getModule());
+
+					if(te instanceof CustomizableTileEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, copy, (CustomizableTileEntity)te);
+				}
 			}
 
 			if(returnSize != 0)
@@ -145,7 +172,26 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	public default void setStackInSlot(int slot, ItemStack stack)
 	{
 		slot = fixSlotId(slot);
+
+		TileEntity te = getTileEntity();
+		ItemStack previous = getModuleInSlot(slot);
+
+		//call the correct methods, should there have been a module in the slot previously
+		if(!previous.isEmpty())
+		{
+			onModuleRemoved(previous, ((ModuleItem)previous.getItem()).getModule());
+			ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, (CustomizableTileEntity)te);
+		}
+
 		getInventory().set(slot, stack);
+
+		if(stack.getItem() instanceof ModuleItem)
+		{
+			onModuleInserted(stack, ((ModuleItem)stack.getItem()).getModule());
+
+			if(te instanceof CustomizableTileEntity)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, (CustomizableTileEntity)te);
+		}
 	}
 
 	@Override
