@@ -2,24 +2,21 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
-import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
  * Let your TileEntity implement this to be able to add modules to it
  * @author bl4ckscor3
  */
-public interface IModuleInventory extends IInventory
+public interface IModuleInventory extends IItemHandlerModifiable
 {
 	/**
 	 * @return The list that holds the contents of this inventory
@@ -60,164 +57,108 @@ public interface IModuleInventory extends IInventory
 	 */
 	public default void onModuleRemoved(ItemStack stack, CustomModules module) {}
 
-	@Override
-	public default void clear()
+	/**
+	 * Used for enabling differentiation between module slots and slots that are handled by IInventory.
+	 * This is needed because of the duplicate getStackInSlot method.
+	 * @return true if the slot ids are not starting with 0, false otherwise
+	 */
+	public default boolean enableHack()
 	{
-		getInventory().clear();
+		return false;
+	}
+
+	/**
+	 * Only override if enableHack returns true and your ids don't start at 100. Used to convert the slot ids to inventory indices
+	 * @param id The slot id to convert
+	 * @return The inventory index corresponding to the slot id
+	 */
+	public default int fixSlotId(int id)
+	{
+		return id >= 100 ? id - 100 : id;
 	}
 
 	@Override
-	public default int getSizeInventory()
+	public default int getSlots()
 	{
 		return acceptedModules().length;
 	}
 
 	@Override
-	public default boolean isEmpty()
+	public default ItemStack getStackInSlot(int slot)
 	{
-		for(ItemStack stack : getInventory())
-		{
-			if(!stack.isEmpty())
-				return false;
-		}
+		return getModuleInSlot(slot);
+	}
 
-		return true;
+	public default ItemStack getModuleInSlot(int slot)
+	{
+		slot = fixSlotId(slot);
+		return slot < 0 || slot >= getSlots() ? ItemStack.EMPTY : getInventory().get(slot);
 	}
 
 	@Override
-	public default ItemStack getStackInSlot(int index)
+	public default ItemStack extractItem(int slot, int amount, boolean simulate)
 	{
-		return getInventory().get(index);
-	}
+		slot = fixSlotId(slot);
 
-	@Override
-	public default ItemStack decrStackSize(int index, int count)
-	{
-		NonNullList<ItemStack> modules = getInventory();
+		ItemStack stack = getModuleInSlot(slot);
 
-		if(!modules.get(index).isEmpty())
-		{
-			ItemStack stack;
-
-			if(modules.get(index).getCount() <= count)
-			{
-				stack = modules.get(index);
-				modules.set(index, ItemStack.EMPTY);
-				onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
-
-				TileEntity te = getTileEntity();
-
-				if(te instanceof CustomizableTileEntity)
-					((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, (CustomizableTileEntity)te);
-
-				if(te instanceof SecurityCameraTileEntity)
-					te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
-
-				return stack;
-			}
-			else
-			{
-				stack = modules.get(index).split(count);
-
-				if(modules.get(index).getCount() == 0)
-					modules.set(index, ItemStack.EMPTY);
-
-				onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
-
-				TileEntity te = getTileEntity();
-
-				if(te instanceof CustomizableTileEntity)
-					((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, (CustomizableTileEntity)te);
-
-				if(te instanceof SecurityCameraTileEntity)
-					te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
-
-				return stack;
-			}
-		}
-		else
+		if(stack.isEmpty())
 			return ItemStack.EMPTY;
-	}
-
-	/**
-	 * Used so tile entities with inventories don't interfere with this interface's implementation
-	 * @param index The index of the slot to remove the stack from
-	 * @param count The amount to remove from the stack
-	 * @return The removed stack
-	 */
-	public default ItemStack safeDecrStackSize(int index, int count)
-	{
-		return decrStackSize(index, count);
+		else return (simulate ? stack : getInventory().set(slot, ItemStack.EMPTY)).copy();
 	}
 
 	@Override
-	public default ItemStack removeStackFromSlot(int index)
+	public default ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
 	{
-		NonNullList<ItemStack> modules = getInventory();
+		slot = fixSlotId(slot);
 
-		if(!modules.get(index).isEmpty())
-		{
-			ItemStack stack = modules.get(index);
-			modules.set(index, ItemStack.EMPTY);
+		if(!getModuleInSlot(slot).isEmpty())
 			return stack;
-		}
-		else return ItemStack.EMPTY;
-	}
-
-	@Override
-	public default void setInventorySlotContents(int index, ItemStack stack)
-	{
-		getInventory().set(index, stack);
-
-		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
-
-		if(!stack.isEmpty())
+		else
 		{
-			onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModule());
+			int returnSize = 0;
 
-			TileEntity te = getTileEntity();
+			//the max stack size is one, so in order to provide the correct return value, the count after insertion is calculated here
+			if(stack.getCount() > 1)
+				returnSize = stack.getCount() - 1;
 
-			if(te instanceof CustomizableTileEntity)
-				((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_INSERTED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, (CustomizableTileEntity)te);
+			if(!simulate)
+			{
+				ItemStack copy = stack.copy();
 
-			if(getTileEntity() instanceof SecurityCameraTileEntity)
-				te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
+				copy.setCount(1);
+				getInventory().set(slot, copy);
+			}
+
+			if(returnSize != 0)
+			{
+				ItemStack toReturn = stack.copy();
+
+				toReturn.setCount(returnSize);
+				return toReturn;
+			}
+			else return ItemStack.EMPTY;
 		}
 	}
 
-	/**
-	 * Used so tile entities with inventories don't interfere with this interface's implementation
-	 * @param index The index of the slot to set the stack in
-	 * @param stack The stack to set
-	 */
-	public default void safeSetInventorySlotContents(int index, ItemStack stack)
+	@Override
+	public default void setStackInSlot(int slot, ItemStack stack)
 	{
-		setInventorySlotContents(index, stack);
+		slot = fixSlotId(slot);
+		getInventory().set(slot, stack);
 	}
 
 	@Override
-	public default void markDirty()
-	{
-		getTileEntity().markDirty();
-	}
-
-	@Override
-	public default boolean isUsableByPlayer(PlayerEntity player)
-	{
-		return true;
-	}
-
-	@Override
-	public default int getInventoryStackLimit()
+	public default int getSlotLimit(int slot)
 	{
 		return 1;
 	}
 
 	@Override
-	public default boolean isItemValidForSlot(int index, ItemStack stack)
+	public default boolean isItemValid(int slot, ItemStack stack)
 	{
-		return stack.getItem() instanceof ModuleItem;
+		slot = fixSlotId(slot);
+		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem && getAcceptedModules().contains(((ModuleItem) stack.getItem()).getModule()) && !hasModule(((ModuleItem) stack.getItem()).getModule());
 	}
 
 	/**

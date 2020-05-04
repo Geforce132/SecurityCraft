@@ -160,7 +160,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	private String getOptionDescription(int buttonID) {
-		String optionDescription = "option" + blockName + "." +  ((CustomizableTileEntity)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSizeInventory()].getName() + ".description";
+		String optionDescription = "option" + blockName + "." +  ((CustomizableTileEntity)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
 
 		return ClientUtils.localize(optionDescription);
 	}

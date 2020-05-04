@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
-import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -153,46 +152,15 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public final ItemStack safeDecrStackSize(int index, int count)
+	public boolean enableHack()
 	{
-		NonNullList<ItemStack> modules = getInventory();
-
-		if(!modules.get(index).isEmpty())
-		{
-			ItemStack stack;
-
-			if(modules.get(index).getCount() <= count)
-			{
-				stack = modules.get(index);
-				modules.set(index, ItemStack.EMPTY);
-				onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
-				return stack;
-			}
-			else
-			{
-				stack = modules.get(index).split(count);
-
-				if(modules.get(index).getCount() == 0)
-					modules.set(index, ItemStack.EMPTY);
-
-				onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
-				return stack;
-			}
-		}
-		else
-			return ItemStack.EMPTY;
+		return true;
 	}
 
 	@Override
-	public final void safeSetInventorySlotContents(int index, ItemStack stack)
+	public ItemStack getStackInSlot(int slot)
 	{
-		getInventory().set(index, stack);
-
-		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
-
-		if(!stack.isEmpty())
-			onModuleInserted(stack, ((ModuleItem) stack.getItem()).getModule());
+		return slot >= 100 ? getModuleInSlot(slot) : items.get(slot);
 	}
 
 	@Override

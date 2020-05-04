@@ -121,8 +121,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
-		return inventoryContents.get(index);
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : inventoryContents.get(slot);
 	}
 
 	/**
@@ -284,5 +291,23 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getTranslationKey());
+	}
+
+	@Override
+	public void clear()
+	{
+		inventoryContents.clear();
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		return inventoryContents.isEmpty();
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return inventoryContents.remove(index);
 	}
 }
