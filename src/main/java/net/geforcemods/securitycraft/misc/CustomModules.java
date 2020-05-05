@@ -15,22 +15,18 @@ import net.minecraft.item.ItemStack;
  */
 public enum CustomModules {
 
-	REDSTONE(SCContent.REDSTONE_MODULE, "redstone_module", "Redstone module"),
-	WHITELIST(SCContent.WHITELIST_MODULE, "whitelist_module", "Whitelist module"),
-	BLACKLIST(SCContent.BLACKLIST_MODULE, "blacklist_module", "Blacklist module"),
-	HARMING(SCContent.HARMING_MODULE, "harming_module", "Harming module"),
-	SMART(SCContent.SMART_MODULE, "smart_module", "Smart module"),
-	STORAGE(SCContent.STORAGE_MODULE, "storage_module", "Storage module"),
-	DISGUISE(SCContent.DISGUISE_MODULE, "disguise_module", "Disguise module");
+	REDSTONE(SCContent.REDSTONE_MODULE),
+	WHITELIST(SCContent.WHITELIST_MODULE),
+	BLACKLIST(SCContent.BLACKLIST_MODULE),
+	HARMING(SCContent.HARMING_MODULE),
+	SMART(SCContent.SMART_MODULE),
+	STORAGE(SCContent.STORAGE_MODULE),
+	DISGUISE(SCContent.DISGUISE_MODULE);
 
 	private Supplier<ModuleItem> module;
-	private String moduleUnlocalizedName;
-	private String moduleLocalizedName;
 
-	private CustomModules(Supplier<ModuleItem> moduleItem, String unlocalizedName, String localizedName){
+	private CustomModules(Supplier<ModuleItem> moduleItem){
 		module = moduleItem;
-		moduleUnlocalizedName = unlocalizedName;
-		moduleLocalizedName = localizedName;
 	}
 
 	public ModuleItem getItem() {
@@ -38,11 +34,7 @@ public enum CustomModules {
 	}
 
 	public String getTranslationKey() {
-		return moduleUnlocalizedName;
-	}
-
-	public String getName() {
-		return moduleLocalizedName;
+		return getItem().getTranslationKey();
 	}
 
 	public static CustomModules getModuleFromStack(ItemStack item) {

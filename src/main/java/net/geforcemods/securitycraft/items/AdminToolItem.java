@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class AdminToolItem extends Item {
@@ -58,7 +59,7 @@ public class AdminToolItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(CustomModules module : modules)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, "-" + module.getName(), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText(), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
