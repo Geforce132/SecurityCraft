@@ -12,7 +12,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -34,7 +34,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 	@Override
 	public void render(RetinalScannerTileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
 		Direction direction = tileEntityIn.getBlockState().get(RetinalScannerBlock.FACING);
-		if (!tileEntityIn.hasModule(CustomModules.DISGUISE))
+		if (!tileEntityIn.hasModule(ModuleType.DISGUISE))
 			this.render((float)x, (float)y, (float)z, direction, tileEntityIn.getPlayerProfile(), destroyStage);
 	}
 

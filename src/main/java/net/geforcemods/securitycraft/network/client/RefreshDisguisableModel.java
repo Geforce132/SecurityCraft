@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -71,7 +71,7 @@ public class RefreshDisguisableModel
 				if(message.insert)
 					te.insertModule(message.stack);
 				else
-					te.removeModule(CustomModules.DISGUISE);
+					te.removeModule(ModuleType.DISGUISE);
 
 				te.refreshModel();
 			}

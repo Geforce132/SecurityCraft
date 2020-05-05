@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.CameraView;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -49,7 +49,7 @@ public class CameraMonitorItem extends Item {
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
 			if(BlockUtils.getBlock(world, pos) == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)){
-				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((SecurityCameraTileEntity)world.getTileEntity(pos)).hasModule(CustomModules.SMART)){
+				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((SecurityCameraTileEntity)world.getTileEntity(pos)).hasModule(ModuleType.SMART)){
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 					return ActionResultType.SUCCESS;
 				}

@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -47,7 +47,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 			if(entities.isEmpty())
 			{
-				boolean redstoneModule = hasModule(CustomModules.REDSTONE);
+				boolean redstoneModule = hasModule(ModuleType.REDSTONE);
 
 				if(!redstoneModule || world.getBlockState(pos).get(PortableRadarBlock.POWERED))
 				{
@@ -58,7 +58,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
-			if(owner != null && hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(attacked.getName().getFormattedText().toLowerCase()))
+			if(owner != null && hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(attacked.getName().getFormattedText().toLowerCase()))
 				return false;
 
 
@@ -68,7 +68,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 				setSentMessage();
 			}
 
-			if(hasModule(CustomModules.REDSTONE))
+			if(hasModule(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(world, pos, true);
 
 			return true;
@@ -79,7 +79,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	@Override
 	public void attackFailed()
 	{
-		if(hasModule(CustomModules.REDSTONE))
+		if(hasModule(ModuleType.REDSTONE))
 			PortableRadarBlock.togglePowerOutput(world, pos, false);
 	}
 
@@ -139,8 +139,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.REDSTONE, CustomModules.WHITELIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.REDSTONE, ModuleType.WHITELIST};
 	}
 
 	@Override

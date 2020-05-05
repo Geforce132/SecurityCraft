@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -91,7 +91,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			if(!((CustomizableTileEntity) te).getModules().isEmpty())
 				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
-			for(CustomModules module : ((CustomizableTileEntity) te).getModules())
+			for(ModuleType module : ((CustomizableTileEntity) te).getModules())
 				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText()));
 		}
 
@@ -125,10 +125,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
 				if (!sentry.getWhitelistModule().isEmpty())
-					body.add(new StringTextComponent("- " + new TranslationTextComponent(CustomModules.WHITELIST.getTranslationKey()).getFormattedText()));
+					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText()));
 
 				if (!sentry.getDisguiseModule().isEmpty())
-					body.add(new StringTextComponent("- " + new TranslationTextComponent(CustomModules.DISGUISE.getTranslationKey()).getFormattedText()));
+					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
 			}
 		}
 

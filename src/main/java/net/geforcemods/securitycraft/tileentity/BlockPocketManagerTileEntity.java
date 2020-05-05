@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
@@ -197,7 +197,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				world.setBlockState(blockPos, world.getBlockState(blockPos).with(BlockPocketWallBlock.SOLID, true));
 			}
 
-			setWalls(!hasModule(CustomModules.DISGUISE));
+			setWalls(!hasModule(ModuleType.DISGUISE));
 			return new TranslationTextComponent("messages.securitycraft:blockpocket.activated");
 		}
 
@@ -232,7 +232,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 					world.setBlockState(pos, state.with(BlockPocketWallBlock.SOLID, false));
 			}
 
-			if(hasModule(CustomModules.DISGUISE))
+			if(hasModule(ModuleType.DISGUISE))
 				setWalls(true);
 
 			blocks.clear();
@@ -261,16 +261,16 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, CustomModules module)
+	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
-		if(enabled && module == CustomModules.DISGUISE)
+		if(enabled && module == ModuleType.DISGUISE)
 			setWalls(false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, CustomModules module)
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
-		if(enabled && module == CustomModules.DISGUISE)
+		if(enabled && module == ModuleType.DISGUISE)
 			setWalls(true);
 	}
 
@@ -329,11 +329,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public CustomModules[] acceptedModules()
+	public ModuleType[] acceptedModules()
 	{
-		return new CustomModules[] {
-				CustomModules.DISGUISE,
-				CustomModules.WHITELIST
+		return new ModuleType[] {
+				ModuleType.DISGUISE,
+				ModuleType.WHITELIST
 		};
 	}
 

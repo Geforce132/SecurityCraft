@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -365,7 +365,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	 * @param stack The raw ItemStack being inserted.
 	 * @param module The EnumCustomModules variant of stack.
 	 */
-	public void onModuleInserted(ItemStack stack, CustomModules module) {}
+	public void onModuleInserted(ItemStack stack, ModuleType module) {}
 
 	/**
 	 * Called whenever a module is removed from a slot in the "Customize" GUI.
@@ -373,13 +373,13 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	 * @param stack The raw ItemStack being removed.
 	 * @param module The EnumCustomModules variant of stack.
 	 */
-	public void onModuleRemoved(ItemStack stack, CustomModules module) {}
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {}
 
 	/**
 	 * @return An ArrayList of all EnumCustomModules currently inserted in the TileEntity.
 	 */
-	public ArrayList<CustomModules> getModules(){
-		ArrayList<CustomModules> modules = new ArrayList<>();
+	public ArrayList<ModuleType> getModules(){
+		ArrayList<ModuleType> modules = new ArrayList<>();
 
 		for(ItemStack stack : this.modules)
 			if(!stack.isEmpty() && stack.getItem() instanceof ModuleItem)
@@ -392,7 +392,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	 * @return The ItemStack for the given EnumCustomModules type.
 	 * If there is no ItemStack for that type, returns null.
 	 */
-	public ItemStack getModule(CustomModules module){
+	public ItemStack getModule(ModuleType module){
 		for(int i = 0; i < modules.size(); i++)
 			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem && ((ModuleItem) modules.get(i).getItem()).getModule() == module)
 				return modules.get(i);
@@ -403,7 +403,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	/**
 	 * Inserts a generic copy of the given module type into the Customization inventory.
 	 */
-	public void insertModule(CustomModules module){
+	public void insertModule(ModuleType module){
 		for(int i = 0; i < modules.size(); i++)
 			if(!modules.get(i).isEmpty())
 				if(modules.get(i).getItem() == module.getItem())
@@ -443,7 +443,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	/**
 	 * Removes the first item with the given module type from the inventory.
 	 */
-	public void removeModule(CustomModules module){
+	public void removeModule(ModuleType module){
 		for(int i = 0; i < modules.size(); i++)
 			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem && ((ModuleItem) modules.get(i).getItem()).getModule() == module)
 				modules.set(i, ItemStack.EMPTY);
@@ -452,7 +452,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	/**
 	 * Does this inventory contain a item with the given module type?
 	 */
-	public boolean hasModule(CustomModules module){
+	public boolean hasModule(ModuleType module){
 		if(module == null){
 			for(int i = 0; i < modules.size(); i++)
 				if(modules.get(i).isEmpty())
@@ -469,10 +469,10 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		return acceptedModules().length;
 	}
 
-	public ArrayList<CustomModules> getAcceptedModules(){
-		ArrayList<CustomModules> list = new ArrayList<>();
+	public ArrayList<ModuleType> getAcceptedModules(){
+		ArrayList<ModuleType> list = new ArrayList<>();
 
-		for(CustomModules module : acceptedModules())
+		for(ModuleType module : acceptedModules())
 			list.add(module);
 
 		return list;
@@ -615,10 +615,10 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableTileEntity> excludedTEs) {}
 
 	/**
-	 * @return An array of what {@link CustomModules} can be inserted
+	 * @return An array of what {@link ModuleType} can be inserted
 	 *         into this TileEntity.
 	 */
-	public abstract CustomModules[] acceptedModules();
+	public abstract ModuleType[] acceptedModules();
 
 	/**
 	 * @return An array of what custom {@link Option}s this
