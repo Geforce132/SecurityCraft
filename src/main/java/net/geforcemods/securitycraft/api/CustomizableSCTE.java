@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -387,7 +387,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	 * @param stack The raw ItemStack being inserted.
 	 * @param module The EnumCustomModules variant of stack.
 	 */
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {}
+	public void onModuleInserted(ItemStack stack, EnumModuleType module) {}
 
 	/**
 	 * Called whenever a module is removed from a slot in the "Customize" GUI.
@@ -395,13 +395,13 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	 * @param stack The raw ItemStack being removed.
 	 * @param module The EnumCustomModules variant of stack.
 	 */
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {}
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module) {}
 
 	/**
 	 * @return An ArrayList of all EnumCustomModules currently inserted in the TileEntity.
 	 */
-	public ArrayList<EnumCustomModules> getModules(){
-		ArrayList<EnumCustomModules> modules = new ArrayList<>();
+	public ArrayList<EnumModuleType> getModules(){
+		ArrayList<EnumModuleType> modules = new ArrayList<>();
 
 		for(ItemStack stack : this.modules)
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemModule)
@@ -414,7 +414,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	 * @return The ItemStack for the given EnumCustomModules type.
 	 * If there is no ItemStack for that type, returns null.
 	 */
-	public ItemStack getModule(EnumCustomModules module){
+	public ItemStack getModule(EnumModuleType module){
 		for(int i = 0; i < modules.size(); i++)
 			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
 				return modules.get(i);
@@ -425,7 +425,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	/**
 	 * Inserts a generic copy of the given module type into the Customization inventory.
 	 */
-	public void insertModule(EnumCustomModules module){
+	public void insertModule(EnumModuleType module){
 		for(int i = 0; i < modules.size(); i++)
 			if(!modules.get(i).isEmpty())
 				if(modules.get(i).getItem() == module.getItem())
@@ -465,7 +465,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	/**
 	 * Removes the first item with the given module type from the inventory.
 	 */
-	public void removeModule(EnumCustomModules module){
+	public void removeModule(EnumModuleType module){
 		for(int i = 0; i < modules.size(); i++)
 			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
 				modules.set(i, ItemStack.EMPTY);
@@ -474,7 +474,7 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	/**
 	 * Does this inventory contain a item with the given module type?
 	 */
-	public boolean hasModule(EnumCustomModules module){
+	public boolean hasModule(EnumModuleType module){
 		if(module == null){
 			for(int i = 0; i < modules.size(); i++)
 				if(modules.get(i).isEmpty())
@@ -492,10 +492,10 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 		return acceptedModules().length;
 	}
 
-	public ArrayList<EnumCustomModules> getAcceptedModules(){
-		ArrayList<EnumCustomModules> list = new ArrayList<>();
+	public ArrayList<EnumModuleType> getAcceptedModules(){
+		ArrayList<EnumModuleType> list = new ArrayList<>();
 
-		for(EnumCustomModules module : acceptedModules())
+		for(EnumModuleType module : acceptedModules())
 			list.add(module);
 
 		return list;
@@ -638,10 +638,10 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IInvent
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs) {}
 
 	/**
-	 * @return An array of what {@link EnumCustomModules} can be inserted
+	 * @return An array of what {@link EnumModuleType} can be inserted
 	 *         into this TileEntity.
 	 */
-	public abstract EnumCustomModules[] acceptedModules();
+	public abstract EnumModuleType[] acceptedModules();
 
 	/**
 	 * @return An array of what custom {@link Option}s this

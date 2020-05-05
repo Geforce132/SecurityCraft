@@ -4,7 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.packets.PacketSetISType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -30,7 +30,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		super(new ContainerInventoryScanner(inventory, te));
 		tileEntity = te;
 		playerObj = player;
-		hasStorageModule = te.getOwner().isOwner(player) && te.hasModule(EnumCustomModules.STORAGE);
+		hasStorageModule = te.getOwner().isOwner(player) && te.hasModule(EnumModuleType.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;

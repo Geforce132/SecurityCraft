@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -71,9 +71,9 @@ public class TileEntityBlockPocket extends CustomizableSCTE
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules()
+	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumCustomModules[] {};
+		return new EnumModuleType[] {};
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -417,7 +417,7 @@ public class GuiSCManual extends GuiScreen {
 					display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
 					display.add("---");
 
-					for(EnumCustomModules module : scte.acceptedModules())
+					for(EnumModuleType module : scte.acceptedModules())
 					{
 						display.add("- " + ClientUtils.localize("module." + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description"));
 						display.add("");

@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
@@ -461,7 +461,7 @@ public class SCEventHandler {
 			EntityPlayer player = (EntityPlayer)event.getEntityMounting();
 			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
 
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).hasModule(EnumCustomModules.SMART))
+			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART))
 			{
 				((TileEntitySecurityCamera)te).lastPitch = player.rotationPitch;
 				((TileEntitySecurityCamera)te).lastYaw = player.rotationYaw;

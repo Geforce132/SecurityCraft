@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ public class ContainerInventoryScanner extends Container {
 		for(int i = 0; i < 10; i++)
 			addSlotToContainer(new SlotOwnerRestricted(te, te, i, (4 + (i * 17)), 16, true));
 
-		if(te.getOwner().isOwner(inventory.player) && te.hasModule(EnumCustomModules.STORAGE))
+		if(te.getOwner().isOwner(inventory.player) && te.hasModule(EnumModuleType.STORAGE))
 			for(int i = 0; i < 9; i++)
 				for(int j = 0; j < 3; j++)
 					addSlotToContainer(new Slot(te, 10 + ((i * 3) + j), 177 + (j * 18), 17 + i * 18));

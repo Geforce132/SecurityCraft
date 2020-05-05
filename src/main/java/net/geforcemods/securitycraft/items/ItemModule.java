@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -24,22 +24,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemModule extends Item{
 
 	public static final int MAX_PLAYERS = 50;
-	private final EnumCustomModules module;
+	private final EnumModuleType module;
 	private final boolean nbtCanBeModified;
 	private boolean canBeCustomized;
 	private int guiToOpen;
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified){
+	public ItemModule(EnumModuleType module, boolean nbtCanBeModified){
 		this(module, nbtCanBeModified, false, -1, 0, 0);
 	}
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen){
+	public ItemModule(EnumModuleType module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen){
 		this(module, nbtCanBeModified, canBeCustomized, guiToOpen, 0, 0);
 	}
 
-	public ItemModule(EnumCustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
+	public ItemModule(EnumModuleType module, boolean nbtCanBeModified, boolean canBeCustomized, int guiToOpen, int itemAddons, int blockAddons){
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
 		this.canBeCustomized = canBeCustomized;
@@ -111,7 +111,7 @@ public class ItemModule extends Item{
 		}
 	}
 
-	public EnumCustomModules getModule() {
+	public EnumModuleType getModule() {
 		return module;
 	}
 

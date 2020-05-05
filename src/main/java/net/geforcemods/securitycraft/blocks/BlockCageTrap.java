@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -105,7 +105,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 
 	private void addCorrectShape(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState, TileEntityDisguisable disguisableTe)
 	{
-		ItemStack moduleStack = disguisableTe.getModule(EnumCustomModules.DISGUISE);
+		ItemStack moduleStack = disguisableTe.getModule(EnumModuleType.DISGUISE);
 
 		if(!moduleStack.isEmpty() && (((ItemModule)moduleStack.getItem()).getBlockAddons(moduleStack.getTagCompound()).size() > 0))
 			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);

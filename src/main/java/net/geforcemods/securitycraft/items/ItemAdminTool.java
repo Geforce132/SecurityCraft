@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -49,12 +49,12 @@ public class ItemAdminTool extends Item {
 				}
 
 				if(te instanceof CustomizableSCTE) {
-					List<EnumCustomModules> modules = ((CustomizableSCTE) te).getModules();
+					List<EnumModuleType> modules = ((CustomizableSCTE) te).getModules();
 
 					if(!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
-						for(EnumCustomModules module : modules)
+						for(EnumModuleType module : modules)
 							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), "- " + ClientUtils.localize(module.getTranslationKey()), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;

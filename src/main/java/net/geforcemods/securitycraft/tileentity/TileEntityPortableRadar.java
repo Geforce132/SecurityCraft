@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -41,7 +41,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 			if(entities.isEmpty())
 			{
-				boolean redstoneModule = hasModule(EnumCustomModules.REDSTONE);
+				boolean redstoneModule = hasModule(EnumModuleType.REDSTONE);
 
 				if(!redstoneModule || world.getBlockState(pos).getValue(BlockPortableRadar.POWERED))
 				{
@@ -52,7 +52,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
-			if(owner != null && hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(attacked.getName().toLowerCase()))
+			if(owner != null && hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(attacked.getName().toLowerCase()))
 				return false;
 
 
@@ -62,7 +62,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				setSentMessage();
 			}
 
-			if(hasModule(EnumCustomModules.REDSTONE))
+			if(hasModule(EnumModuleType.REDSTONE))
 				BlockPortableRadar.togglePowerOutput(world, pos, true);
 
 			return true;
@@ -73,7 +73,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public void attackFailed()
 	{
-		if(hasModule(EnumCustomModules.REDSTONE))
+		if(hasModule(EnumModuleType.REDSTONE))
 			BlockPortableRadar.togglePowerOutput(world, pos, false);
 	}
 
@@ -133,8 +133,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.REDSTONE, EnumCustomModules.WHITELIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.REDSTONE, EnumModuleType.WHITELIST};
 	}
 
 	@Override

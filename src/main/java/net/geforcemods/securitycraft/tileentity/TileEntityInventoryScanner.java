@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -237,7 +237,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
 		super.onModuleInserted(stack, module);
 
@@ -248,7 +248,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
 		super.onModuleRemoved(stack, module);
 
@@ -259,8 +259,8 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.SMART, EnumCustomModules.STORAGE, EnumCustomModules.DISGUISE};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.WHITELIST, EnumModuleType.SMART, EnumModuleType.STORAGE, EnumModuleType.DISGUISE};
 	}
 
 	@Override

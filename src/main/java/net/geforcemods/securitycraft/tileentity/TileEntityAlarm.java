@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -79,9 +79,9 @@ public class TileEntityAlarm extends CustomizableSCTE {
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules()
+	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumCustomModules[]{};
+		return new EnumModuleType[]{};
 	}
 
 	@Override

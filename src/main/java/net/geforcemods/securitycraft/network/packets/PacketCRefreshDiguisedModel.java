@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -58,7 +58,7 @@ public class PacketCRefreshDiguisedModel implements IMessage
 					if(message.insert)
 						te.insertModule(message.stack);
 					else
-						te.removeModule(EnumCustomModules.DISGUISE);
+						te.removeModule(EnumModuleType.DISGUISE);
 
 					Minecraft.getMinecraft().world.markBlockRangeForRenderUpdate(message.pos, message.pos);
 				}

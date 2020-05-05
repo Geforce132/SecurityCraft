@@ -5,7 +5,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.ITileEntityProvider;
@@ -61,7 +61,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 				if(te.getManager() == null)
 					return;
 
-				if(te.getManager().hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), EnumCustomModules.WHITELIST).contains(entity.getName().toLowerCase()))
+				if(te.getManager().hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase()))
 					return;
 				else if(!te.getOwner().isOwner((EntityPlayer)entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);

@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -151,7 +151,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -159,7 +159,7 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;

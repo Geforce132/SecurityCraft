@@ -11,7 +11,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -31,7 +31,7 @@ public class TileEntityRetinalScannerRenderer extends TileEntitySpecialRenderer<
 	@Override
 	public void render(TileEntityRetinalScanner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		EnumFacing direction = te.getWorld().getBlockState(te.getPos()).getValue(BlockRetinalScanner.FACING);
-		if (!te.hasModule(EnumCustomModules.DISGUISE))
+		if (!te.hasModule(EnumModuleType.DISGUISE))
 			this.render((float)x, (float)y, (float)z, direction, te.getPlayerProfile(), destroyStage);
 	}
 

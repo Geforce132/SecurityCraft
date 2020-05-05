@@ -5,7 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -41,10 +41,10 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 		if(world.isRemote)
 			return true;
 		else {
-			if(state.getValue(POWERED) || ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.BLACKLIST))
+			if(state.getValue(POWERED) || ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
 				return false;
 
-			if(ModuleUtils.checkForModule(world, pos, player, EnumCustomModules.WHITELIST)){
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
 				activate(world, pos);
 				return true;
 			}

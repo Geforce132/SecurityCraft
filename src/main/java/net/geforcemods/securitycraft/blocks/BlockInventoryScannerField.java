@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -102,7 +102,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 		if(entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityLivingBase)entity))
 		{
-			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumCustomModules.WHITELIST))
+			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumModuleType.WHITELIST))
 				return;
 
 			for(int i = 0; i < 10; i++)
@@ -123,8 +123,8 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	public static void checkInventory(EntityPlayer player, TileEntityInventoryScanner te, ItemStack stack)
 	{
-		boolean hasSmartModule = te.hasModule(EnumCustomModules.SMART);
-		boolean hasStorageModule = te.hasModule(EnumCustomModules.STORAGE);
+		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
+		boolean hasStorageModule = te.hasModule(EnumModuleType.STORAGE);
 
 		if(te.getScanType().equals("redstone"))
 		{
@@ -181,8 +181,8 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 	public static void checkEntityItem(EntityItem entity, TileEntityInventoryScanner te, ItemStack stack)
 	{
-		boolean hasSmartModule = te.hasModule(EnumCustomModules.SMART);
-		boolean hasStorageModule = te.hasModule(EnumCustomModules.STORAGE);
+		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
+		boolean hasStorageModule = te.hasModule(EnumModuleType.STORAGE);
 
 		if(te.getScanType().equals("redstone"))
 		{

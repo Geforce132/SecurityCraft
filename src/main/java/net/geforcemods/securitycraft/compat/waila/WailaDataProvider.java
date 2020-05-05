@@ -17,7 +17,7 @@ import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -78,7 +78,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty())
 					body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
-				for(EnumCustomModules module : ((CustomizableSCTE) data.getTileEntity()).getModules())
+				for(EnumModuleType module : ((CustomizableSCTE) data.getTileEntity()).getModules())
 					body.add("- " + ClientUtils.localize(module.getTranslationKey()));
 			}
 
@@ -113,10 +113,10 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 				if (!sentry.getWhitelistModule().isEmpty())
-					body.add("- " + ClientUtils.localize(EnumCustomModules.WHITELIST.getTranslationKey()));
+					body.add("- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()));
 
 				if (!sentry.getDisguiseModule().isEmpty())
-					body.add("- " + ClientUtils.localize(EnumCustomModules.DISGUISE.getTranslationKey()));
+					body.add("- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()));
 			}
 		}
 

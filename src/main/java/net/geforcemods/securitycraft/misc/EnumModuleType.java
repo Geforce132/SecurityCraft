@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
  *
  * @author Geforce
  */
-public enum EnumCustomModules {
+public enum EnumModuleType {
 
 	REDSTONE(SCContent.redstoneModule, "redstone_module"),
 	WHITELIST(SCContent.whitelistModule, "whitelist_module"),
@@ -27,7 +27,7 @@ public enum EnumCustomModules {
 	private ItemModule module;
 	private String registryPath;
 
-	private EnumCustomModules(ItemModule moduleItem, String registryPath){
+	private EnumModuleType(ItemModule moduleItem, String registryPath){
 		module = moduleItem;
 		this.registryPath = registryPath;
 	}
@@ -44,18 +44,14 @@ public enum EnumCustomModules {
 		return registryPath;
 	}
 
-	public static EnumCustomModules getModuleFromStack(ItemStack item) {
-		if(item.isEmpty() || item.getItem() == null) return null;
-
-		for(EnumCustomModules module : values())
-			if(module.getItem() == item.getItem())
-				return module;
-
-		return null;
+	public static EnumModuleType getModuleFromStack(ItemStack stack) {
+		if(stack.getItem() instanceof ItemModule)
+			return ((ItemModule)stack.getItem()).getModule();
+		else return null;
 	}
 
 	public static void refresh() {
-		for(EnumCustomModules module : values())
+		for(EnumModuleType module : values())
 			module.module = (ItemModule) ForgeRegistries.ITEMS.getValue(new ResourceLocation(SecurityCraft.MODID, module.getRegistryPath()));
 	}
 

@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
@@ -107,7 +107,7 @@ public class EntitySecurityCamera extends Entity{
 
 	private void setInitialPitchYaw(TileEntitySecurityCamera te)
 	{
-		if(te != null && te.hasModule(EnumCustomModules.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
+		if(te != null && te.hasModule(EnumModuleType.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
 		{
 			rotationPitch = te.lastPitch;
 			rotationYaw = te.lastYaw;
@@ -343,7 +343,7 @@ public class EntitySecurityCamera extends Entity{
 	public void setRedstonePower() {
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ));
 
-		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			if(BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
 				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
 			else if(!BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))

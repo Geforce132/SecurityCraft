@@ -22,7 +22,7 @@ import net.geforcemods.securitycraft.blocks.BlockFakeWaterBase;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -119,7 +119,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						for(EnumCustomModules module : ((CustomizableSCTE) te).getModules())
+						for(EnumModuleType module : ((CustomizableSCTE) te).getModules())
 							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(module.getTranslationKey()));
 					}
 				}
@@ -158,10 +158,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumCustomModules.WHITELIST.getTranslationKey()));
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()));
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumCustomModules.DISGUISE.getTranslationKey()));
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()));
 					}
 
 					if (mode == EnumSentryMode.AGGRESSIVE)

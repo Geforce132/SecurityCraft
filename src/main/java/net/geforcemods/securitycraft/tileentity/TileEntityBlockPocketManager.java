@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -185,7 +185,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 				world.setBlockState(blockPos, world.getBlockState(blockPos).withProperty(BlockBlockPocketWall.SOLID, true));
 			}
 
-			setWalls(!hasModule(EnumCustomModules.DISGUISE));
+			setWalls(!hasModule(EnumModuleType.DISGUISE));
 			return new TextComponentTranslation("messages.securitycraft:blockpocket.activated");
 		}
 
@@ -220,7 +220,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 					world.setBlockState(pos, state.withProperty(BlockBlockPocketWall.SOLID, false));
 			}
 
-			if(hasModule(EnumCustomModules.DISGUISE))
+			if(hasModule(EnumModuleType.DISGUISE))
 				setWalls(true);
 
 			blocks.clear();
@@ -249,16 +249,16 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
-		if(enabled && module == EnumCustomModules.DISGUISE)
+		if(enabled && module == EnumModuleType.DISGUISE)
 			setWalls(false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
-		if(enabled && module == EnumCustomModules.DISGUISE)
+		if(enabled && module == EnumModuleType.DISGUISE)
 			setWalls(true);
 	}
 
@@ -317,11 +317,11 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules()
+	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumCustomModules[] {
-				EnumCustomModules.DISGUISE,
-				EnumCustomModules.WHITELIST
+		return new EnumModuleType[] {
+				EnumModuleType.DISGUISE,
+				EnumModuleType.WHITELIST
 		};
 	}
 

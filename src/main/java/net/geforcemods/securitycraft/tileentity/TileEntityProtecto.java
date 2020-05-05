@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -19,7 +19,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof EntityLivingBase && !(entity instanceof EntitySentry) && !EntityUtils.isInvisible(((EntityLivingBase)entity))) {
-			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))))
+			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))))
 				return false;
 
 			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false);
@@ -56,8 +56,8 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.WHITELIST};
 	}
 
 	@Override
@@ -66,13 +66,13 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}

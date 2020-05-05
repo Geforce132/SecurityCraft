@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionFloat;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -61,20 +61,20 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module)
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module)
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, blockType, false);
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules(){
-		return new EnumCustomModules[] { EnumCustomModules.REDSTONE, EnumCustomModules.SMART };
+	public EnumModuleType[] acceptedModules(){
+		return new EnumModuleType[] { EnumModuleType.REDSTONE, EnumModuleType.SMART };
 	}
 
 	@Override

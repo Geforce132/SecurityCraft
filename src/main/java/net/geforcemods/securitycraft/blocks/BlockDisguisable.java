@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
@@ -109,9 +109,9 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 	{
 		TileEntity te = world.getTileEntity(pos);
 
-		if(te instanceof TileEntityDisguisable && ((TileEntityDisguisable)te).hasModule(EnumCustomModules.DISGUISE))
+		if(te instanceof TileEntityDisguisable && ((TileEntityDisguisable)te).hasModule(EnumModuleType.DISGUISE))
 		{
-			ItemStack module = ((TileEntityDisguisable)te).getModule(EnumCustomModules.DISGUISE);
+			ItemStack module = ((TileEntityDisguisable)te).getModule(EnumModuleType.DISGUISE);
 
 			if(((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty())
 				return BlockFaceShape.SOLID;
@@ -129,9 +129,9 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 
 		TileEntityDisguisable te = (TileEntityDisguisable) world.getTileEntity(pos);
 
-		if(te.hasModule(EnumCustomModules.DISGUISE))
+		if(te.hasModule(EnumModuleType.DISGUISE))
 		{
-			ItemStack disguiseModule = te.getModule(EnumCustomModules.DISGUISE);
+			ItemStack disguiseModule = te.getModule(EnumModuleType.DISGUISE);
 			List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
 
 			if(blocks.size() != 0)
@@ -177,7 +177,7 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 		if(world.getTileEntity(pos) instanceof TileEntityDisguisable)
 		{
 			TileEntityDisguisable te = (TileEntityDisguisable) world.getTileEntity(pos);
-			ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
+			ItemStack module = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty())
 			{
@@ -200,7 +200,7 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 		if(world.getTileEntity(pos) instanceof TileEntityDisguisable)
 		{
 			TileEntityDisguisable te = (TileEntityDisguisable) world.getTileEntity(pos);
-			ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
+			ItemStack stack = te.hasModule(EnumModuleType.DISGUISE) ? te.getModule(EnumModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if(!stack.isEmpty() && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty())
 			{

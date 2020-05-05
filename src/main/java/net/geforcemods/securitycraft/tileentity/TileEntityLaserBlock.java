@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
@@ -51,7 +51,7 @@ public class TileEntityLaserBlock extends TileEntityDisguisable {
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, parameters, excludedTEs);
 		}
 		else if(action == EnumLinkedAction.MODULE_REMOVED) {
-			EnumCustomModules module = (EnumCustomModules) parameters[1];
+			EnumModuleType module = (EnumModuleType) parameters[1];
 
 			removeModule(module);
 
@@ -61,8 +61,8 @@ public class TileEntityLaserBlock extends TileEntityDisguisable {
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST, EnumCustomModules.DISGUISE};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.HARMING, EnumModuleType.WHITELIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override
