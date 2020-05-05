@@ -55,7 +55,7 @@ public class ItemAdminTool extends Item {
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(EnumCustomModules module : modules)
-							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), "-" + module.getName(), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), "- " + ClientUtils.localize(module.getTranslationKey()), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}

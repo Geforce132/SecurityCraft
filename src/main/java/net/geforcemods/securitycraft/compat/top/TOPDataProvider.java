@@ -120,7 +120,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
 						for(EnumCustomModules module : ((CustomizableSCTE) te).getModules())
-							probeInfo.text(TextFormatting.GRAY + "- " + module.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(module.getTranslationKey()));
 					}
 				}
 
@@ -158,10 +158,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + EnumCustomModules.WHITELIST.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumCustomModules.WHITELIST.getTranslationKey()));
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + EnumCustomModules.DISGUISE.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumCustomModules.DISGUISE.getTranslationKey()));
 					}
 
 					if (mode == EnumSentryMode.AGGRESSIVE)

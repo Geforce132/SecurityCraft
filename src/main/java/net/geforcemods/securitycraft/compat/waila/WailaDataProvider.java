@@ -79,7 +79,7 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 					body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 				for(EnumCustomModules module : ((CustomizableSCTE) data.getTileEntity()).getModules())
-					body.add("- " + module.getName());
+					body.add("- " + ClientUtils.localize(module.getTranslationKey()));
 			}
 
 			if(config.getConfig(SHOW_PASSWORDS) && data.getTileEntity() instanceof IPasswordProtected && !(data.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
@@ -113,10 +113,10 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 				if (!sentry.getWhitelistModule().isEmpty())
-					body.add("- " + EnumCustomModules.WHITELIST.getName());
+					body.add("- " + ClientUtils.localize(EnumCustomModules.WHITELIST.getTranslationKey()));
 
 				if (!sentry.getDisguiseModule().isEmpty())
-					body.add("- " + EnumCustomModules.DISGUISE.getName());
+					body.add("- " + ClientUtils.localize(EnumCustomModules.DISGUISE.getTranslationKey()));
 			}
 		}
 

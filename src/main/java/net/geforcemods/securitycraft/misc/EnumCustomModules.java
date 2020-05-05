@@ -1,11 +1,12 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
  * Simple enum that is supposed to be used in conjunction with {@link CustomizableSCTE}.
@@ -15,22 +16,20 @@ import net.minecraft.util.ResourceLocation;
  */
 public enum EnumCustomModules {
 
-	REDSTONE(SCContent.redstoneModule, "redstone_module", "Redstone module"),
-	WHITELIST(SCContent.whitelistModule, "whitelist_module", "Whitelist module"),
-	BLACKLIST(SCContent.blacklistModule, "blacklist_module", "Blacklist module"),
-	HARMING(SCContent.harmingModule, "harming_module", "Harming module"),
-	SMART(SCContent.smartModule, "smart_module", "Smart module"),
-	STORAGE(SCContent.storageModule, "storage_module", "Storage module"),
-	DISGUISE(SCContent.disguiseModule, "disguise_module", "Disguise module");
+	REDSTONE(SCContent.redstoneModule, "redstone_module"),
+	WHITELIST(SCContent.whitelistModule, "whitelist_module"),
+	BLACKLIST(SCContent.blacklistModule, "blacklist_module"),
+	HARMING(SCContent.harmingModule, "harming_module"),
+	SMART(SCContent.smartModule, "smart_module"),
+	STORAGE(SCContent.storageModule, "storage_module"),
+	DISGUISE(SCContent.disguiseModule, "disguise_module");
 
 	private ItemModule module;
-	private String moduleUnlocalizedName;
-	private String moduleLocalizedName;
+	private String registryPath;
 
-	private EnumCustomModules(ItemModule moduleItem, String unlocalizedName, String localizedName){
+	private EnumCustomModules(ItemModule moduleItem, String registryPath){
 		module = moduleItem;
-		moduleUnlocalizedName = unlocalizedName;
-		moduleLocalizedName = localizedName;
+		this.registryPath = registryPath;
 	}
 
 	public ItemModule getItem() {
@@ -38,11 +37,11 @@ public enum EnumCustomModules {
 	}
 
 	public String getTranslationKey() {
-		return moduleUnlocalizedName;
+		return module.getTranslationKey();
 	}
 
-	public String getName() {
-		return moduleLocalizedName;
+	public String getRegistryPath() {
+		return registryPath;
 	}
 
 	public static EnumCustomModules getModuleFromStack(ItemStack item) {
@@ -57,7 +56,7 @@ public enum EnumCustomModules {
 
 	public static void refresh() {
 		for(EnumCustomModules module : values())
-			module.module = (ItemModule) Item.REGISTRY.getObject(new ResourceLocation("securitycraft" + ":" + module.getTranslationKey()));
+			module.module = (ItemModule) ForgeRegistries.ITEMS.getValue(new ResourceLocation(SecurityCraft.MODID, module.getRegistryPath()));
 	}
 
 }
