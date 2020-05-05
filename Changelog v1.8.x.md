@@ -70,6 +70,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: Lightning spawned by the Protecto does not show up
 - Fix: The Protecto can attack Sentries
 - Fix: Shift-clicking in customization gui does not work properly
+- Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

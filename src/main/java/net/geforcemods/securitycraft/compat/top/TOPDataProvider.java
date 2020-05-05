@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
 
@@ -88,7 +89,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
 						for(CustomModules module : ((CustomizableTileEntity) te).getModules())
-							probeInfo.text(TextFormatting.GRAY + "- " + module.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText());
 					}
 				}
 
@@ -127,10 +128,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.WHITELIST.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(CustomModules.WHITELIST.getTranslationKey()).getFormattedText());
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.DISGUISE.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(CustomModules.DISGUISE.getTranslationKey()).getFormattedText());
 					}
 
 					if (mode == SentryEntity.SentryMode.AGGRESSIVE)
