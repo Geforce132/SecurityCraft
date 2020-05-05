@@ -5,7 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.items.BaseKeycardItem;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -47,7 +47,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player) {
-		if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST) || ModuleUtils.checkForModule(world, pos, player, CustomModules.BLACKLIST))
+		if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST) || ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 			return;
 
 		int requiredLevel = -1;

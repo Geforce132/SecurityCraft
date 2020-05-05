@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
@@ -408,7 +408,7 @@ public class SCManualScreen extends Screen {
 						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
 						display.add("---");
 
-						for(CustomModules module : scte.acceptedModules())
+						for(ModuleType module : scte.acceptedModules())
 						{
 							display.add("- " + ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description"));
 							display.add("");

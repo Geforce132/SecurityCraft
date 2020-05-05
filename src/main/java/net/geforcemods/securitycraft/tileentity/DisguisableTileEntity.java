@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.client.Minecraft;
@@ -24,23 +24,23 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, CustomModules module)
+	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
-		if(!world.isRemote && module == CustomModules.DISGUISE)
+		if(!world.isRemote && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, CustomModules module)
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
-		if(!world.isRemote && module == CustomModules.DISGUISE)
+		if(!world.isRemote && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
 	}
 
 	@Override
-	public CustomModules[] acceptedModules()
+	public ModuleType[] acceptedModules()
 	{
-		return new CustomModules[]{CustomModules.DISGUISE};
+		return new ModuleType[]{ModuleType.DISGUISE};
 	}
 
 	@Override

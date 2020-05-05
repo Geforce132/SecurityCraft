@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -154,8 +154,8 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.BLACKLIST, CustomModules.DISGUISE};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST, ModuleType.DISGUISE};
 	}
 
 	@Override

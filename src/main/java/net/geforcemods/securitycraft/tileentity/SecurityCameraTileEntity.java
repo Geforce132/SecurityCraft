@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.FloatOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -73,20 +73,20 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, CustomModules module)
+	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, CustomModules module)
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}
 
 	@Override
-	public CustomModules[] acceptedModules(){
-		return new CustomModules[] { CustomModules.REDSTONE, CustomModules.SMART };
+	public ModuleType[] acceptedModules(){
+		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.SMART };
 	}
 
 	@Override

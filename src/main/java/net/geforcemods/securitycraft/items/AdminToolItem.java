@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -53,12 +53,12 @@ public class AdminToolItem extends Item {
 				}
 
 				if(te instanceof CustomizableTileEntity) {
-					List<CustomModules> modules = ((CustomizableTileEntity) te).getModules();
+					List<ModuleType> modules = ((CustomizableTileEntity) te).getModules();
 
 					if(!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
-						for(CustomModules module : modules)
+						for(ModuleType module : modules)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText(), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;

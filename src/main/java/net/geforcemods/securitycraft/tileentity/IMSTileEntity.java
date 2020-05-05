@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -83,7 +83,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
 
-				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 
 				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
@@ -106,7 +106,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				MonsterEntity entity = (MonsterEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
-				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
 					continue;
 
 				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
@@ -133,7 +133,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 					continue;
 				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()))
 					continue;
-				if(hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(entity.getName().getFormattedText()))
+				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getFormattedText()))
 					continue;
 
 				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
@@ -235,8 +235,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.WHITELIST};
 	}
 
 	@Override

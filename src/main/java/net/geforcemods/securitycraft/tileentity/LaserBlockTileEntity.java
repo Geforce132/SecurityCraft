@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
@@ -56,7 +56,7 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 			createLinkedBlockAction(LinkedAction.MODULE_INSERTED, parameters, excludedTEs);
 		}
 		else if(action == LinkedAction.MODULE_REMOVED) {
-			CustomModules module = (CustomModules) parameters[1];
+			ModuleType module = (ModuleType) parameters[1];
 
 			removeModule(module);
 
@@ -66,8 +66,8 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.HARMING, CustomModules.WHITELIST, CustomModules.DISGUISE};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.HARMING, ModuleType.WHITELIST, ModuleType.DISGUISE};
 	}
 
 	@Override

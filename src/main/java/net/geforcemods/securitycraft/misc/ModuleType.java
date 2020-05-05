@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
  *
  * @author Geforce
  */
-public enum CustomModules {
+public enum ModuleType {
 
 	REDSTONE(SCContent.REDSTONE_MODULE),
 	WHITELIST(SCContent.WHITELIST_MODULE),
@@ -25,7 +25,7 @@ public enum CustomModules {
 
 	private Supplier<ModuleItem> module;
 
-	private CustomModules(Supplier<ModuleItem> moduleItem){
+	private ModuleType(Supplier<ModuleItem> moduleItem){
 		module = moduleItem;
 	}
 
@@ -37,14 +37,10 @@ public enum CustomModules {
 		return getItem().getTranslationKey();
 	}
 
-	public static CustomModules getModuleFromStack(ItemStack item) {
-		if(item.isEmpty() || item.getItem() == null) return null;
-
-		for(CustomModules module : values())
-			if(module.getItem() == item.getItem())
-				return module;
-
-		return null;
+	public static ModuleType getModuleFromStack(ItemStack stack) {
+		if(stack.getItem() instanceof ModuleItem)
+			return ((ModuleItem)stack.getItem()).getModule();
+		else return null;
 	}
 
 }

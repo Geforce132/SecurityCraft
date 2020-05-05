@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SetScanType;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
@@ -27,7 +27,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		tileEntity = container.te;
-		hasStorageModule = tileEntity.getOwner().isOwner(inv.player) && tileEntity.hasModule(CustomModules.STORAGE);
+		hasStorageModule = tileEntity.getOwner().isOwner(inv.player) && tileEntity.hasModule(ModuleType.STORAGE);
 
 		if(hasStorageModule)
 			xSize = 236;

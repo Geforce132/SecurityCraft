@@ -11,7 +11,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -45,7 +45,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 	{
 		Direction direction = te.getBlockState().get(RetinalScannerBlock.FACING);
 
-		if(!te.hasModule(CustomModules.DISGUISE) && direction != null)
+		if(!te.hasModule(ModuleType.DISGUISE) && direction != null)
 		{
 			matrix.push();
 

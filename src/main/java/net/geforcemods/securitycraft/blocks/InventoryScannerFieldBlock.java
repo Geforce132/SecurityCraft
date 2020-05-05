@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -65,7 +65,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 		if(entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity))
 		{
-			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, CustomModules.WHITELIST))
+			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, ModuleType.WHITELIST))
 				return;
 
 			for(int i = 0; i < 10; i++)
@@ -86,8 +86,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	public static void checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack)
 	{
-		boolean hasSmartModule = te.hasModule(CustomModules.SMART);
-		boolean hasStorageModule = te.hasModule(CustomModules.STORAGE);
+		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
+		boolean hasStorageModule = te.hasModule(ModuleType.STORAGE);
 
 		if(te.getScanType().equals("redstone"))
 		{
@@ -144,8 +144,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	public static void checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack)
 	{
-		boolean hasSmartModule = te.hasModule(CustomModules.SMART);
-		boolean hasStorageModule = te.hasModule(CustomModules.STORAGE);
+		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
+		boolean hasStorageModule = te.hasModule(ModuleType.STORAGE);
 
 		if(te.getScanType().equals("redstone"))
 		{
