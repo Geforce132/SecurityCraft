@@ -47,6 +47,7 @@
 - Fix: The wooden reinforced pressure plate doesn't have a whitelist module description (Thanks Redstone_Dubstep!)
 - Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
 - Fix: The Protecto can attack Sentries
+- Fix: Shift-clicking in customization gui does not work properly
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
