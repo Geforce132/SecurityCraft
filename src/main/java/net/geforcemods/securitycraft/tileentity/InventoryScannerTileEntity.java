@@ -21,7 +21,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
-	private String scanType = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -56,13 +55,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 				inventoryContents.set(slot, ItemStack.read(stackTag));
 		}
 
-
 		if(tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
-
-		if(tag.contains("type"))
-			scanType = tag.getString("type");
-
 	}
 
 	@Override
@@ -82,7 +76,6 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
-		tag.putString("type", scanType);
 		return tag;
 	}
 
@@ -219,16 +212,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		return true;
 	}
 
-	public String getScanType(){
-		return scanType;
-	}
-
-	public void setScanType(String scanType){
-		this.scanType = scanType;
-	}
-
 	public boolean shouldProvidePower() {
-		return (scanType.equals("redstone") && isProvidingPower) ? true : false;
+		return hasModule(ModuleType.REDSTONE) && isProvidingPower;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
@@ -271,7 +256,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE};
+		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE};
 	}
 
 	@Override

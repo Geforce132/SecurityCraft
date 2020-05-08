@@ -23,7 +23,7 @@ public class Utils {
 		return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
 	}
 
-	public static void setISinTEAppropriately(World world, BlockPos pos, NonNullList<ItemStack> contents, String type)
+	public static void setISinTEAppropriately(World world, BlockPos pos, NonNullList<ItemStack> contents)
 	{
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
@@ -31,6 +31,5 @@ public class Utils {
 			return;
 
 		connectedScanner.setContents(contents);
-		connectedScanner.setScanType(type);
 	}
 }
