@@ -50,11 +50,11 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
-
 		font.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
 		font.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
+
+		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
+			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override
