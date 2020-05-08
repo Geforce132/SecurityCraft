@@ -74,7 +74,7 @@ public class ContainerInventoryScanner extends Container {
 	{
 		super.onContainerClosed(player);
 
-		Utils.setISinTEAppropriately(player.world, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(inventoryScannerTE.getPos())).getContents(), ((TileEntityInventoryScanner) player.world.getTileEntity(inventoryScannerTE.getPos())).getScanType());
+		Utils.setISinTEAppropriately(player.world, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(inventoryScannerTE.getPos())).getContents());
 	}
 
 	@Override

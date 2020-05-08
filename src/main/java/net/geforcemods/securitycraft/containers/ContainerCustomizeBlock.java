@@ -39,6 +39,12 @@ public class ContainerCustomizeBlock extends Container{
 			addSlotToContainer(new ModuleSlot(tileEntity, 1, 70, 20));
 			addSlotToContainer(new ModuleSlot(tileEntity, 2, 88, 20));
 			addSlotToContainer(new ModuleSlot(tileEntity, 3, 106, 20));
+		}else if(tileEntity.getNumberOfCustomizableOptions() == 5){
+			addSlotToContainer(new ModuleSlot(tileEntity, 0, 34, 20));
+			addSlotToContainer(new ModuleSlot(tileEntity, 1, 52, 20));
+			addSlotToContainer(new ModuleSlot(tileEntity, 2, 70, 20));
+			addSlotToContainer(new ModuleSlot(tileEntity, 3, 88, 20));
+			addSlotToContainer(new ModuleSlot(tileEntity, 3, 106, 20));
 		}
 
 		maxSlots = 36 + tileEntity.getNumberOfCustomizableOptions();

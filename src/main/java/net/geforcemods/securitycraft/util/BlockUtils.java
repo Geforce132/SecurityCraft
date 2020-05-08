@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedButton;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedLever;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -112,7 +113,7 @@ public class BlockUtils{
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.retinalScanner, true, (state, te) -> state.getValue(BlockRetinalScanner.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keypad, true, (state, te) -> state.getValue(BlockKeypad.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keycardReader, true, (state, te) -> state.getValue(BlockKeycardReader.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.inventoryScanner, true, (state, te) -> ((TileEntityInventoryScanner)te).getScanType().equals("redstone") && ((TileEntityInventoryScanner)te).shouldProvidePower()) ||
+				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.inventoryScanner, true, (state, te) -> ((TileEntityInventoryScanner)te).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner)te).shouldProvidePower()) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.getValue(BlockReinforcedPressurePlate.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> BUTTONS.contains(state.getBlock()) && state.getValue(BlockReinforcedButton.POWERED)) ||
 				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.reinforcedLever, true, (state, te) -> state.getValue(BlockReinforcedLever.POWERED));

@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -239,10 +240,10 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if(!(blockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner) || ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType() == null)
+		if(!(blockAccess.getTileEntity(pos) instanceof TileEntityInventoryScanner))
 			return 0 ;
 
-		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType().equals("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
+		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
 	}
 
 	/**
@@ -252,10 +253,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
 	{
-		if(((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType() == null)
-			return 0 ;
-
-		return (((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).getScanType().equals("redstone") && ((TileEntityInventoryScanner) blockAccess.getTileEntity(pos)).shouldProvidePower())? 15 : 0;
+		return getWeakPower(blockState, blockAccess, pos, side);
 	}
 
 	@Override

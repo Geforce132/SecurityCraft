@@ -15,7 +15,6 @@ import net.minecraft.util.NonNullList;
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
-	private String scanType = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -45,13 +44,8 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 				inventoryContents.set(slot, new ItemStack(stackTag));
 		}
 
-
 		if(tag.hasKey("cooldown"))
 			cooldown = tag.getInteger("cooldown");
-
-		if(tag.hasKey("type"))
-			scanType = tag.getString("type");
-
 	}
 
 	@Override
@@ -71,7 +65,6 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 		tag.setTag("Items", list);
 		tag.setInteger("cooldown", cooldown);
-		tag.setString("type", scanType);
 		return tag;
 	}
 
@@ -208,16 +201,8 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		return true;
 	}
 
-	public String getScanType(){
-		return scanType;
-	}
-
-	public void setScanType(String type){
-		this.scanType = type;
-	}
-
 	public boolean shouldProvidePower() {
-		return (scanType.equals("redstone") && isProvidingPower) ? true : false;
+		return hasModule(EnumModuleType.REDSTONE) && isProvidingPower;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
@@ -260,7 +245,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.WHITELIST, EnumModuleType.SMART, EnumModuleType.STORAGE, EnumModuleType.DISGUISE};
+		return new EnumModuleType[]{EnumModuleType.WHITELIST, EnumModuleType.SMART, EnumModuleType.STORAGE, EnumModuleType.DISGUISE, EnumModuleType.REDSTONE};
 	}
 
 	@Override

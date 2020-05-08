@@ -126,13 +126,14 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
 		boolean hasStorageModule = te.hasModule(EnumModuleType.STORAGE);
 
-		if(te.getScanType().equals("redstone"))
+		if(te.hasModule(EnumModuleType.REDSTONE))
 		{
 			redstoneLoop(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule);
 			redstoneLoop(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule);
 			redstoneLoop(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule);
 		}
-		else if(te.getScanType().equals("check") && !te.getOwner().isOwner(player))
+
+		if(hasStorageModule && !te.getOwner().isOwner(player))
 		{
 			checkLoop(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule);
 			checkLoop(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule);
@@ -184,7 +185,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		boolean hasSmartModule = te.hasModule(EnumModuleType.SMART);
 		boolean hasStorageModule = te.hasModule(EnumModuleType.STORAGE);
 
-		if(te.getScanType().equals("redstone"))
+		if(te.hasModule(EnumModuleType.REDSTONE))
 		{
 			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
 					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule))
@@ -192,7 +193,8 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				updateInventoryScannerPower(te);
 			}
 		}
-		else if(te.getScanType().equals("check"))
+
+		if(hasStorageModule)
 		{
 			checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule);
 
