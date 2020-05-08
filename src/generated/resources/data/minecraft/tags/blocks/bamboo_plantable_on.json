@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_gravel",
+    "securitycraft:reinforced_sand",
+    "securitycraft:reinforced_dirt",
+    "securitycraft:reinforced_grass_block",
+    "securitycraft:reinforced_podzol",
+    "securitycraft:reinforced_coarse_dirt",
+    "securitycraft:reinforced_mycelium"
+  ]
+}

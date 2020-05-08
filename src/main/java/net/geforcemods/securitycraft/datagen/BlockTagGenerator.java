@@ -226,6 +226,13 @@ public class BlockTagGenerator extends BlockTagsProvider
 		Builder<Block> dragonImmune = getBuilder(BlockTags.DRAGON_IMMUNE);
 		Builder<Block> witherImmune = getBuilder(BlockTags.WITHER_IMMUNE);
 
+		getBuilder(BlockTags.BAMBOO_PLANTABLE_ON).add(SCContent.REINFORCED_GRAVEL.get(),
+				SCContent.REINFORCED_SAND.get(),
+				SCContent.REINFORCED_DIRT.get(),
+				SCContent.REINFORCED_GRASS_BLOCK.get(),
+				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_COARSE_DIRT.get(),
+				SCContent.REINFORCED_MYCELIUM.get());
 		getBuilder(BlockTags.CARPETS).add(SCTags.Blocks.REINFORCED_CARPETS);
 		getBuilder(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		getBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
