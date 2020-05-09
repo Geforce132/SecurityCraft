@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:iron_door_reinforced",
+    "securitycraft:scanner_door"
+  ]
+}
