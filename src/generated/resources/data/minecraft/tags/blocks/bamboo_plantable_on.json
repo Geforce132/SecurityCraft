@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
+    "#securitycraft:reinforced/sand",
     "securitycraft:reinforced_gravel",
-    "securitycraft:reinforced_sand",
     "securitycraft:reinforced_dirt",
     "securitycraft:reinforced_grass_block",
     "securitycraft:reinforced_podzol",

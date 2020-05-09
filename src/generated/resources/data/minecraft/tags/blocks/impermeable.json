@@ -1,0 +1,22 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_glass",
+    "securitycraft:reinforced_white_stained_glass",
+    "securitycraft:reinforced_orange_stained_glass",
+    "securitycraft:reinforced_magenta_stained_glass",
+    "securitycraft:reinforced_light_blue_stained_glass",
+    "securitycraft:reinforced_yellow_stained_glass",
+    "securitycraft:reinforced_lime_stained_glass",
+    "securitycraft:reinforced_pink_stained_glass",
+    "securitycraft:reinforced_gray_stained_glass",
+    "securitycraft:reinforced_light_gray_stained_glass",
+    "securitycraft:reinforced_cyan_stained_glass",
+    "securitycraft:reinforced_purple_stained_glass",
+    "securitycraft:reinforced_blue_stained_glass",
+    "securitycraft:reinforced_brown_stained_glass",
+    "securitycraft:reinforced_green_stained_glass",
+    "securitycraft:reinforced_red_stained_glass",
+    "securitycraft:reinforced_black_stained_glass"
+  ]
+}

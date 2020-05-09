@@ -226,15 +226,33 @@ public class BlockTagGenerator extends BlockTagsProvider
 		Builder<Block> dragonImmune = getBuilder(BlockTags.DRAGON_IMMUNE);
 		Builder<Block> witherImmune = getBuilder(BlockTags.WITHER_IMMUNE);
 
-		getBuilder(BlockTags.BAMBOO_PLANTABLE_ON).add(SCContent.REINFORCED_GRAVEL.get(),
-				SCContent.REINFORCED_SAND.get(),
+		getBuilder(BlockTags.BAMBOO_PLANTABLE_ON).add(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
 		getBuilder(BlockTags.CARPETS).add(SCTags.Blocks.REINFORCED_CARPETS);
+		getBuilder(BlockTags.DOORS).add(SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		getBuilder(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
+		getBuilder(BlockTags.IMPERMEABLE).add(
+				SCContent.REINFORCED_GLASS.get(),
+				SCContent.REINFORCED_WHITE_STAINED_GLASS.get(),
+				SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(),
+				SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(),
+				SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(),
+				SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(),
+				SCContent.REINFORCED_LIME_STAINED_GLASS.get(),
+				SCContent.REINFORCED_PINK_STAINED_GLASS.get(),
+				SCContent.REINFORCED_GRAY_STAINED_GLASS.get(),
+				SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(),
+				SCContent.REINFORCED_CYAN_STAINED_GLASS.get(),
+				SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(),
+				SCContent.REINFORCED_BLUE_STAINED_GLASS.get(),
+				SCContent.REINFORCED_BROWN_STAINED_GLASS.get(),
+				SCContent.REINFORCED_GREEN_STAINED_GLASS.get(),
+				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
+				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
 		getBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		getBuilder(BlockTags.SLABS).add(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		getBuilder(BlockTags.STAIRS).add(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
