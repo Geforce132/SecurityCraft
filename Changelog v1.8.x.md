@@ -50,6 +50,7 @@
 - Fix: The Protecto can attack Sentries
 - Fix: Shift-clicking in customization gui does not work properly
 - Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
+- Fix: Auth server related issue due to Retinal Scanner requests
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
