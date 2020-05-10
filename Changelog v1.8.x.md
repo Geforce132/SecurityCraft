@@ -4,7 +4,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
-- New: All reinforced blocks are now immune to the ender dragon and the wither (added them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags)
+- New: All reinforced blocks are now immune to the ender dragon and the wither (added them to the dragon_immune and wither_immune block tags)
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Reinforced Blue Ice (Thanks Redstone_Dubstep!)
@@ -19,6 +19,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - New: HWYLA and TOP now show a Sentry's owner, its current mode, and the equipped modules (Thanks Redstone_Dubstep!)
 - New: Config option to turn off the recipes of all SecurityCraft explosives
 - New: Option in the Universal Block Modifier GUI of the Keypad and Keycard Reader to turn off messages for whitelisted/blacklisted players
+- New: Added relevant blocks to the bamboo_plantable_on, impermeable, and doors block tags
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
@@ -73,6 +74,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: The Protecto can attack Sentries
 - Fix: Shift-clicking in customization gui does not work properly
 - Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
+- Fix: Auth server related issue due to Retinal Scanner requests
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
