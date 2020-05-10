@@ -20,6 +20,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - New: Config option to turn off the recipes of all SecurityCraft explosives
 - New: Option in the Universal Block Modifier GUI of the Keypad and Keycard Reader to turn off messages for whitelisted/blacklisted players
 - New: Added relevant blocks to the bamboo_plantable_on, impermeable, and doors block tags
+- New: Configuration option to turn off showing the owner's face on a retinal scanner
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines

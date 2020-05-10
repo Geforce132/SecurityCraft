@@ -47,6 +47,7 @@ public class ConfigHandler {
 	public BooleanValue respectInvisibility;
 	public BooleanValue reinforcedBlockTint;
 	public BooleanValue ableToCraftMines;
+	public BooleanValue retinalScannerFace;
 
 	ConfigHandler(ForgeConfigSpec.Builder builder)
 	{
@@ -208,5 +209,10 @@ public class ConfigHandler {
 				.translation("config.securitycraft:ableToCraftMines")
 				.comment("Are all mines craftable?")
 				.define("ableToCraftMines", true);
+
+		retinalScannerFace = builder
+				.translation("config.securitycraft:retinalScannerFace")
+				.comment("Display owner face on retinal scanner?")
+				.define("retinalScannerFace", true);
 	}
 }
