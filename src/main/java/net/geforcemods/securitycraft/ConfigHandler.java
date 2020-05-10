@@ -141,4 +141,8 @@ public class ConfigHandler
 	@Name("Craftable mines?")
 	@LangKey("config.securitycraft:ableToCraftMines")
 	public static boolean ableToCraftMines = true;
+
+	@Name("Display owner face on retinal scanner?")
+	@LangKey("config.securitycraft:retinalScannerFace")
+	public static boolean retinalScannerFace = true;
 }
