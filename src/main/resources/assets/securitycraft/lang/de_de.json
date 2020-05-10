@@ -808,6 +808,8 @@
 	"config.securitycraft:reinforced_block_tint.tooltip": "Sollen die Texturen für verstärkte Blöcke dunkler als die ihres Vanilla-Gegenstücks sein?",
 	"config.securitycraft:ableToCraftMines": "Herstellbare Minen?",
 	"config.securitycraft:ableToCraftMines.tooltip": "Sind alle Minen (Springmine/Claymore/Erdmine/Steinmine/...) herstellbar?",
+	"config.securitycraft:retinalScannerFace": "Zeige Gesicht des Besitzers auf dem Augenscanner?",
+	"config.securitycraft:retinalScannerFace.tooltip": "Soll der Augenscanner das Gesicht seines Besitzers auf dem Block anzeigen? (Deaktiviere dies wenn du Probleme mit Mojangs Authentifizierungsservern hast)",
 
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",

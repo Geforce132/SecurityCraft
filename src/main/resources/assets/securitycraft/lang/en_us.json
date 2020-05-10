@@ -810,6 +810,8 @@
 	"config.securitycraft:reinforced_block_tint.tooltip": "Should reinforced blocks' textures be slightly darker than their vanilla counterparts?",
 	"config.securitycraft:ableToCraftMines": "Craftable mines?",
 	"config.securitycraft:ableToCraftMines.tooltip": "Are all mines (Bouncing Betty/Claymore/Dirt Mine/Stone Mine/...) craftable?",
+	"config.securitycraft:retinalScannerFace": "Display owner face on retinal scanner?",
+	"config.securitycraft:retinalScannerFace.tooltip": "Should the retinal scanner render the face of its owner on the block? (Disable this if you have problems with Mojang's auth servers)",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",

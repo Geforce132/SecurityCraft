@@ -10,6 +10,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
@@ -98,7 +99,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 
 	private static ResourceLocation getSkinTexture(@Nullable GameProfile profile)
 	{
-		if(profile != null)
+		if(ConfigHandler.CONFIG.retinalScannerFace.get() && profile != null)
 		{
 			Minecraft minecraft = Minecraft.getInstance();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
