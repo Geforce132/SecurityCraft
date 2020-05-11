@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.server.GivePotionEffect;
@@ -191,9 +191,6 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	private void checkKeysPressed() {
-		if (Minecraft.getInstance().gameSettings.keyBindSneak.isPressed())
-			stopRiding();
-
 		if(Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
 			moveViewUp();
 
