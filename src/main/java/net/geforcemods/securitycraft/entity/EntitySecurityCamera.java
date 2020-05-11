@@ -199,9 +199,6 @@ public class EntitySecurityCamera extends Entity{
 
 		if(te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player))
 		{
-			if (Minecraft.getMinecraft().gameSettings.keyBindSneak.isPressed())
-				dismountRidingEntity();
-
 			if(Minecraft.getMinecraft().gameSettings.keyBindForward.isKeyDown())
 				moveViewUp();
 
