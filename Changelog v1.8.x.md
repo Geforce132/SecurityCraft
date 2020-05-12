@@ -21,6 +21,7 @@
 - Change: Sentries now attack flying mobs (except bats), Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
 - Change: The Protecto can now attack charged creepers and zombie pigmen
 - Change: Overhauled the inventory scanner. You can now choose what it does by inserting a storage module, redstone module, or both
+- Change: The Smart Module now allows anyone to fully access a Security Camera
 - Fix: Password-protected chest looses content and owner when turning it by placing another chest next to it
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode

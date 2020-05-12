@@ -195,26 +195,21 @@ public class EntitySecurityCamera extends Entity{
 
 	@SideOnly(Side.CLIENT)
 	private void checkKeysPressed() {
-		TileEntity te = world.getTileEntity(getPosition());
+		if(Minecraft.getMinecraft().gameSettings.keyBindForward.isKeyDown())
+			moveViewUp();
 
-		if(te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player))
-		{
-			if(Minecraft.getMinecraft().gameSettings.keyBindForward.isKeyDown())
-				moveViewUp();
+		if(Minecraft.getMinecraft().gameSettings.keyBindBack.isKeyDown())
+			moveViewDown();
 
-			if(Minecraft.getMinecraft().gameSettings.keyBindBack.isKeyDown())
-				moveViewDown();
+		if(Minecraft.getMinecraft().gameSettings.keyBindLeft.isKeyDown())
+			moveViewLeft();
 
-			if(Minecraft.getMinecraft().gameSettings.keyBindLeft.isKeyDown())
-				moveViewLeft();
+		if(Minecraft.getMinecraft().gameSettings.keyBindRight.isKeyDown())
+			moveViewRight();
 
-			if(Minecraft.getMinecraft().gameSettings.keyBindRight.isKeyDown())
-				moveViewRight();
-
-			if(KeyBindings.cameraEmitRedstone.isPressed() && redstoneCooldown == 0){
-				setRedstonePower();
-				redstoneCooldown = 30;
-			}
+		if(KeyBindings.cameraEmitRedstone.isPressed() && redstoneCooldown == 0){
+			setRedstonePower();
+			redstoneCooldown = 30;
 		}
 
 		if(KeyBindings.cameraActivateNightVision.isPressed() && toggleNightVisionCooldown == 0)
