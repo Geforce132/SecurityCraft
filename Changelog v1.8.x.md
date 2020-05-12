@@ -76,6 +76,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: Shift-clicking in customization gui does not work properly
 - Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
 - Fix: Auth server related issue due to Retinal Scanner requests
+- Fix: The Taser can be enchanted
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
