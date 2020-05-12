@@ -114,4 +114,9 @@ public class ItemTaser extends Item {
 				par1ItemStack.setItemDamage(par1ItemStack.getItemDamage() - 1);
 	}
 
+	@Override
+	public boolean isEnchantable(ItemStack stack)
+	{
+		return false;
+	}
 }
