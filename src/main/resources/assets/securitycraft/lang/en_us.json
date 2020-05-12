@@ -720,7 +720,7 @@
 	"module.securitycraft.retinal_scanner.whitelist_module.description": "Adding the whitelist module to a retinal scanner will allow players to use the scanner even if they aren't the player who placed down the block.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "Adding a disguise module to a retinal scanner will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.security_camera.redstone_module.description": "Adding the redstone module to a camera lets the camera emit a 15-block redstone signal when enabled.",
-	"module.securitycraft.security_camera.smart_module.description": "Adding the smart module to a camera lets anyone access the camera. However, only the owner can control where the camera is looking. Any other player will look into the same direction as the owner when they last left the camera.",
+	"module.securitycraft.security_camera.smart_module.description": "Adding the smart module to a camera lets anyone access the camera.",
 	"module.securitycraft.protecto.whitelist_module.description": "Adding a whitelist module to a protecto will allow the whitelisted players to walk into the range of the protecto without being targeted.",
 	"module.securitycraft.block_pocket_manager.disguise_module.description": "Adding a disguise module to a Block Pocket Manager will make the Block Pocket's sides opaque.",
 	"module.securitycraft.block_pocket_manager.whitelist_module.description": "Adding a whitelist module to a Block Pocket Manager will allow whitelisted players to pass through the Block Pocket's sides.",

@@ -671,7 +671,7 @@
 	"module.securitycraft.retinal_scanner.whitelist_module.description": "Aggiungere un modulo lista bianca a uno scanner della retina permette ai giocatori di usare lo scanner anche non possedendolo.",
 	"module.securitycraft.retinal_scanner.disguise_module.description": "Aggiungere un modulo mascheramento a uno scanner della retina cambia il modello e la texture con quelli del blocco nel modulo mascheramento.",
 	"module.securitycraft.security_camera.redstone_module.description": "Aggiungere il modulo redstone a una telecamera le permette di emettere un segnale di redstone di 15 blocchi quando attivata.",
-	"module.securitycraft.security_camera.smart_module.description": "Aggiungere il modulo intelligente a una telecamera permette a chiunque di accedere alla telecamera. Tuttavia solo il proprietario può controllare la direzione della telecamera.",
+	"module.securitycraft.security_camera.smart_module.description": "Aggiungere il modulo intelligente a una telecamera permette a chiunque di accedere alla telecamera.",
 	"module.securitycraft.protecto.whitelist_module.description": "Aggiungere il modulo lista bianca a un protecto permette ai giocatori nella lista bianca di camminare entro il range del protecto senza essere bersagliati.",
 	"module.securitycraft.block_pocket_manager.disguise_module.description": "Aggiungere un modulo di mascheramento a un gestore di blocchi tascabili renderà opachi i lati del blocco tascabile.",
 	"module.securitycraft.block_pocket_manager.whitelist_module.description": "Aggiungere un modulo lista bianca a un gestore di blocchi tascabili permetterà ai giocatori nella lista di passare attraverso i lati del blocco tascabile.",
