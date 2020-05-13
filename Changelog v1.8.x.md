@@ -79,6 +79,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: Auth server related issue due to Retinal Scanner requests
 - Fix: The Taser can be enchanted
 - Fix: Message when changing a sentry's owner gets sent twice
+- Fix: Changing the owner of a sentry does not correctly set the owner/uuid
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
