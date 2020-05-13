@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -25,17 +26,12 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 		public void toggle() {
 			super.toggle();
 
-			if(getValue()) {
-				BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, true);
-				world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
-			}
-			else {
-				BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, false);
-				world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
-			}
+			BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, getValue());
+			world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
 		}
 	};
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private OptionInt signalLength = new OptionInt(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	/**
 	 * Writes a tile entity to NBT.
@@ -70,7 +66,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	@Override
 	public void activate(EntityPlayer player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad)
-			BlockKeypad.activate(world, pos);
+			BlockKeypad.activate(world, pos, signalLength.asInteger());
 	}
 
 	@Override
@@ -115,11 +111,16 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive, sendMessage };
+		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
 	}
 
 	public boolean sendsMessages()
 	{
 		return sendMessage.asBoolean();
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.asInteger();
 	}
 }

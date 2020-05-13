@@ -14,6 +14,7 @@
 - New: Config option to turn off the recipes of all SecurityCraft explosives
 - New: Option in the Universal Block Modifier GUI of the Keypad and Keycard Reader to turn off messages for whitelisted/blacklisted players
 - New: Configuration option to turn off showing the owner's face on a retinal scanner
+- New: Customization option to change how long the Keypad emits a redstone signal when the correct code has been inserted
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
 - Change: White-/Blacklist Modules can now hold up to 50 players

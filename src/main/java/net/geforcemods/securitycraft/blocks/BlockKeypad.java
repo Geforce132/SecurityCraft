@@ -45,7 +45,7 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 				return false;
 
 			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
-				activate(world, pos);
+				activate(world, pos, ((TileEntityKeypad)world.getTileEntity(pos)).getSignalLength());
 				return true;
 			}
 
@@ -56,10 +56,10 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 		}
 	}
 
-	public static void activate(World world, BlockPos pos){
+	public static void activate(World world, BlockPos pos, int signalLength){
 		BlockUtils.setBlockProperty(world, pos, POWERED, true);
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
-		world.scheduleUpdate(pos, SCContent.keypad, 60);
+		world.scheduleUpdate(pos, SCContent.keypad, signalLength);
 	}
 
 	@Override
