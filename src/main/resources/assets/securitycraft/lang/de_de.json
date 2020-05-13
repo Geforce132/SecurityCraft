@@ -829,6 +829,8 @@
 	"option.securitycraft.keypad.isAlwaysActive.description": "Soll das Nummernschloss aktiv bleiben und immer offen sein?",
 	"option.securitycraft.keypad.sendMessage": "Nachricht: #",
 	"option.securitycraft.keypad.sendMessage.description": "Sendet dieses Nummernschloss eine Nachricht, wenn es aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
+	"option.securitycraft.keypad.signalLength": "Signallänge: #",
+	"option.securitycraft.keypad.signalLength.description": "Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)",
 	"option.securitycraft.laser_block.enabled": "Aktiviert: #",
 	"option.securitycraft.laser_block.enabled.description": "Soll der Laser aktiviert sein?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "NPC aktiviert: #",

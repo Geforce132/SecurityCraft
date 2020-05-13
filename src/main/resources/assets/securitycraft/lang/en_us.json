@@ -832,6 +832,8 @@
 	"option.securitycraft.keypad.isAlwaysActive.description": "Should the keypad remain active and unlocked?",
 	"option.securitycraft.keypad.sendMessage": "Message: #",
 	"option.securitycraft.keypad.sendMessage.description": "Does this keypad send a message upon activation (when using whitelist/blacklist modules)?",
+	"option.securitycraft.keypad.signalLength": "Signal length: #",
+	"option.securitycraft.keypad.signalLength.description": "How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)",
 	"option.securitycraft.laser_block.enabled": "Enabled: #",
 	"option.securitycraft.laser_block.enabled.description": "Should the laser be enabled?",
 	"option.securitycraft.retinal_scanner.activatedByEntities": "NPC-activated: #",
