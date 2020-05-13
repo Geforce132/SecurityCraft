@@ -592,7 +592,7 @@
 	"gui.securitycraft:blockPocketManager.deactivate": "Deactivate",
 	"gui.securitycraft:blockPocketManager.size": "Size: %sx%sx%s",
 
-	"messages.securitycraft:bugReport": "You can report a crash or a bug using this GoogleDocs form",
+	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:securityCamera.mounted": "You are now mounted to a camera. Use the #w#a#s#d keys to move the camera's view, and the #i/#o buttons to zoom in and out.",
 	"messages.securitycraft:retinalScanner.hello": "Hello #.",
 	"messages.securitycraft:retinalScanner.notOwner": "I'm sorry, you cannot use this scanner. It is owned by #.",
@@ -668,6 +668,7 @@
 	"messages.securitycraft:blockpocket.unowned": "You do not own the block \"%2$s\" at position %1$s!",
 	"messages.securitycraft:blockpocket.activated": "Block Pocket activated!",
 	"messages.securitycraft:blockpocket.deactivated": "Block Pocket deactivated!",
+	"messages.securitycraft:sc_help": "%s: %s + %s",
 
 	"jei.securitycraft:reinforcedBlock.info": "Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.",
 
