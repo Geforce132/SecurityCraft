@@ -398,7 +398,7 @@
 	"death.attack.securitycraft.fakeWater": "%s est tombé(e) dans de l'eau empoisonnée…?",
 	"death.attack.securitycraft.fakeWater.player": "%1$s est tombé(e) dans de l'eau empoisonnée en combattant %2$s...?",
 	"death.attack.securitycraft.electricity": "%s a été électrocuté",
-	"death.attack.securitycraft.electricity.player": "%2$s a été électrocuté en combattant %2$s",
+	"death.attack.securitycraft.electricity.player": "%1$s a été électrocuté en combattant %2$s",
 	"death.attack.securitycraft.taser": "%s a été tué avec un taser",
 	"death.attack.securitycraft.taser.player": "%1$s a été tué avec un taser en combattant %2$s",
 
