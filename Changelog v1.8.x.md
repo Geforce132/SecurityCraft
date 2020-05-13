@@ -78,8 +78,9 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
 - Fix: Auth server related issue due to Retinal Scanner requests
 - Fix: The Taser can be enchanted
-- Fix: Message when changing a sentry's owner gets sent twice
-- Fix: Changing the owner of a sentry does not correctly set the owner/uuid
+- Fix: Message when changing a Sentry's owner gets sent twice
+- Fix: Changing the owner of a Sentry does not correctly set the owner/uuid
+- Fix: White-/Blacklist message of Keycard Reader getting sent twice
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
