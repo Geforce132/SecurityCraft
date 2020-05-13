@@ -204,6 +204,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				String newOwner = player.getHeldItemMainhand().getDisplayName().getFormattedText();
 
 				dataManager.set(OWNER, new Owner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner));
+				if(world.isRemote)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			}
 			else
