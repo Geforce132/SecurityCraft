@@ -49,7 +49,7 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 				return false;
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
-				activate(world, pos);
+				activate(world, pos, ((KeypadTileEntity)world.getTileEntity(pos)).getSignalLength());
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 
@@ -57,10 +57,10 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 		}
 	}
 
-	public static void activate(World world, BlockPos pos){
+	public static void activate(World world, BlockPos pos, int signalLength){
 		BlockUtils.setBlockProperty(world, pos, POWERED, true);
 		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), 60);
+		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), signalLength);
 	}
 
 	@Override
