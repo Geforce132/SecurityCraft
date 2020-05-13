@@ -57,6 +57,7 @@
 - Fix: The Taser can be enchanted
 - Fix: Message when changing a sentry's owner gets sent twice
 - Fix: Changing the owner of a Sentry does not correctly set the owner/uuid
+- Fix: White-/Blacklist message of Keycard Reader getting sent twice
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
