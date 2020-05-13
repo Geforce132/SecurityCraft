@@ -55,6 +55,7 @@
 - Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
 - Fix: Auth server related issue due to Retinal Scanner requests
 - Fix: The Taser can be enchanted
+- Fix: Message when changing a sentry's owner gets sent twice
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------
