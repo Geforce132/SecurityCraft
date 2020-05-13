@@ -593,7 +593,7 @@
 	"gui.securitycraft:blockPocketManager.deactivate": "Deaktivieren",
 	"gui.securitycraft:blockPocketManager.size": "Größe: %sx%sx%s",
 
-	"messages.securitycraft:bugReport": "Du kannst einen Crash oder Bug mit dieser GoogleDocs Formular melden",
+	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:securityCamera.mounted": "Du bist nun in einer Kamera. Nutze #w#a#s#d, um dich umzusehen, und die #i/#o Knöpfe, um heran- und herauszuzoomen.",
 	"messages.securitycraft:retinalScanner.hello": "Hallo #.",
 	"messages.securitycraft:retinalScanner.notOwner": "Entschuldigung, du kannst diesen Scanner nicht benutzen. Er gehört #.",

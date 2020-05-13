@@ -31,6 +31,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Change: Crystal Quartz Texture (Thanks Redstone_Dubstep!)
 - Change: The Protecto can now attack charged creepers and zombie pigmen
 - Change: Overhauled the inventory scanner. You can now choose what it does by inserting a storage module, redstone module, or both
+- Change: /sc help no longer gives a free SecurityCraft Manual
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
