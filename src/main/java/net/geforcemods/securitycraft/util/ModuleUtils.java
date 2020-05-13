@@ -72,7 +72,7 @@ public class ModuleUtils{
 			KeycardReaderTileEntity reader = (KeycardReaderTileEntity)te;
 
 			if(module == ModuleType.WHITELIST && reader.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
-				if(reader.sendsMessages())
+				if(reader.sendsMessages() && world.isRemote)
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
@@ -80,7 +80,7 @@ public class ModuleUtils{
 			}
 
 			if(module == ModuleType.BLACKLIST && reader.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
-				if(reader.sendsMessages())
+				if(reader.sendsMessages() && world.isRemote)
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
