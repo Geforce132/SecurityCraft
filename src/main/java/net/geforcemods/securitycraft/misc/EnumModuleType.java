@@ -37,7 +37,7 @@ public enum EnumModuleType {
 	}
 
 	public String getTranslationKey() {
-		return module.getTranslationKey();
+		return module.getTranslationKey() + ".name";
 	}
 
 	public String getRegistryPath() {
