@@ -470,6 +470,13 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public void onRightClickItem(PlayerInteractEvent.RightClickItem event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()) && event.getItemStack().getItem() != SCContent.cameraMonitor)
+			event.setCanceled(true);
+	}
+
+	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void onPlayerRendered(RenderPlayerEvent.Pre event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))

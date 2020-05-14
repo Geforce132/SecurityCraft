@@ -60,6 +60,7 @@
 - Fix: Changing the owner of a Sentry does not correctly set the owner/uuid
 - Fix: White-/Blacklist message of Keycard Reader getting sent twice
 - Fix: The Scanner Door and Reinforced Iron Door have no place sound
+- Fix: Can use other items than a Camera Monitor when mounted to a Security Camera
 - Fix: Placing a Scanner Door or Reinforced Iron Door plays no hand animation
 - Fix: Rightclicking an unowned block mine with a Universal Block Remover plays a hand animation
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
