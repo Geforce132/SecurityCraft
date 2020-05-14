@@ -61,6 +61,7 @@
 - Fix: White-/Blacklist message of Keycard Reader getting sent twice
 - Fix: The Scanner Door and Reinforced Iron Door have no place sound
 - Fix: Placing a Scanner Door or Reinforced Iron Door plays no hand animation
+- Fix: Rightclicking an unowned block mine with a Universal Block Remover plays a hand animation
 - Potential Fix: Sentry doesn't shoot when using Sponge Forge
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

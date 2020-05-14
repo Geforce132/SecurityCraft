@@ -40,9 +40,9 @@ public class ItemUniversalBlockRemover extends Item {
 		if(isOwnableBlock(block, tileEntity)) {
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player)) {
 				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)))
-
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-				return EnumActionResult.SUCCESS;
+
+				return EnumActionResult.FAIL;
 			}
 
 			if(block == SCContent.laserBlock) {
