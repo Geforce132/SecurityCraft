@@ -26,9 +26,6 @@ public class ItemScannerDoor extends Item
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(world.isRemote)
-			return EnumActionResult.FAIL;
-
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (facing != EnumFacing.UP)
