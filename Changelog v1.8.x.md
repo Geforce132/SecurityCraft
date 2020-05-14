@@ -83,6 +83,7 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: Changing the owner of a Sentry does not correctly set the owner/uuid
 - Fix: White-/Blacklist message of Keycard Reader getting sent twice
 - Fix: The Scanner Door and Reinforced Iron Door have no place sound
+- Fix: Can use other items than a Camera Monitor when mounted to a Security Camera
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

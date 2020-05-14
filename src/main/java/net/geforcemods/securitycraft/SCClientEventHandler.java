@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -37,7 +37,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.GuiScreenEvent.MouseClickedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
@@ -189,18 +188,6 @@ public class SCClientEventHandler
 	public static void renderHandEvent(RenderHandEvent event){
 		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player))
 			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void onMouseClicked(MouseClickedEvent.Pre event) {
-		if(Minecraft.getInstance().world != null)
-		{
-			if(event.getButton() != 1 && Minecraft.getInstance().player.openContainer == null) //anything other than rightclick and only if no gui is open)
-			{
-				if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.inventory.getCurrentItem().getItem() != SCContent.CAMERA_MONITOR.get())
-					event.setCanceled(true);
-			}
-		}
 	}
 
 	private static void drawCameraOverlay(Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {

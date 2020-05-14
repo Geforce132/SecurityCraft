@@ -283,6 +283,13 @@ public class SCEventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public static void onRightClickItem(PlayerInteractEvent.RightClickItem event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getItemStack().getItem() != SCContent.CAMERA_MONITOR.get())
+			event.setCanceled(true);
+	}
+
 	private static ItemStack fillBucket(World world, BlockPos pos){
 		Block block = world.getBlockState(pos).getBlock();
 
