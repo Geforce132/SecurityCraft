@@ -36,9 +36,6 @@ public class ScannerDoorItem extends Item
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, ItemUseContext ctx)
 	{
-		if(world.isRemote)
-			return ActionResultType.FAIL;
-
 		if (facing != Direction.UP)
 			return ActionResultType.FAIL;
 		else
