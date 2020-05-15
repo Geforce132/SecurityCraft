@@ -20,7 +20,7 @@ public class VersionUpdateChecker {
 		Gson gson = new GsonBuilder().create();
 
 		try{
-			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + SharedConstants.getVersion().getId() + ".json");
+			URL updateURL = new URL("https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/" + SharedConstants.getVersion().getName() + ".json");
 			BufferedReader in = new BufferedReader(new InputStreamReader(updateURL.openStream()));
 
 			Update update = gson.fromJson(in, Update.class);
