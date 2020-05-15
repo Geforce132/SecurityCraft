@@ -137,7 +137,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 
 	protected void actionPerformed(ClickButton button){
 		if (currentString.length() < MAX_CHARS) {
-			if(button.id >= 0 || button.id <= 9) {
+			if(button.id >= 0 && button.id <= 9) {
 				currentString += "" + button.id;
 				setTextboxCensoredText(keycodeTextbox, currentString);
 				checkCode(currentString);
