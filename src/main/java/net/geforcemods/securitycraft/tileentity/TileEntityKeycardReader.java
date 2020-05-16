@@ -100,6 +100,6 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 
 	public boolean sendsMessages()
 	{
-		return sendMessage.asBoolean();
+		return sendMessage.get();
 	}
 }

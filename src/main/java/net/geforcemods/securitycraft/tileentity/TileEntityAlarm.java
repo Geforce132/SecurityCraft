@@ -26,7 +26,7 @@ public class TileEntityAlarm extends CustomizableSCTE {
 		{
 			TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
 
-			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.asInteger(), 2)))
+			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 			{
 				world.playSound(player, player.getPosition(), SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.alarmSoundVolume, 1.0F);
 			}

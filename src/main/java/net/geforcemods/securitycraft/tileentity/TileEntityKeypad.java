@@ -26,7 +26,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 		public void toggle() {
 			super.toggle();
 
-			BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, getValue());
+			BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, get());
 			world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
 		}
 	};
@@ -66,7 +66,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	@Override
 	public void activate(EntityPlayer player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad)
-			BlockKeypad.activate(world, pos, signalLength.asInteger());
+			BlockKeypad.activate(world, pos, signalLength.get());
 	}
 
 	@Override
@@ -116,11 +116,11 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 
 	public boolean sendsMessages()
 	{
-		return sendMessage.asBoolean();
+		return sendMessage.get();
 	}
 
 	public int getSignalLength()
 	{
-		return signalLength.asInteger();
+		return signalLength.get();
 	}
 }

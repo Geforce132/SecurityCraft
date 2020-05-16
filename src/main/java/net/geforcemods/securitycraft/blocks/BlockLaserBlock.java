@@ -80,7 +80,7 @@ public class BlockLaserBlock extends BlockDisguisable {
 					{
 						CustomizableSCTE.link(thisTe, thatTe);
 
-						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((OptionBoolean)thisTe.getOptionByName("enabled")).getValue() && ((OptionBoolean)thatTe.getOptionByName("enabled")).getValue())
+						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((OptionBoolean)thisTe.getOptionByName("enabled")).get() && ((OptionBoolean)thatTe.getOptionByName("enabled")).get())
 						{
 							for(int j = 1; j < i; j++)
 							{

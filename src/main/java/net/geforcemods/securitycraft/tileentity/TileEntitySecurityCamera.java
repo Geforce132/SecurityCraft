@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
-import net.geforcemods.securitycraft.api.Option.OptionFloat;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.minecraft.item.ItemStack;
@@ -13,33 +12,33 @@ import net.minecraft.util.EnumFacing;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 
-	private final float CAMERA_SPEED = 0.0180F;
-	public float cameraRotation = 0.0F;
+	private final double CAMERA_SPEED = 0.0180D;
+	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
-	private OptionFloat rotationSpeedOption = new OptionFloat("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
+	private OptionDouble rotationSpeedOption = new OptionDouble("rotationSpeed", CAMERA_SPEED, 0.0100D, 0.0250D, 0.001D);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
-	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
+	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
 	@Override
 	public void update(){
 		super.update();
 
-		if(!shouldRotateOption.asBoolean())
+		if(!shouldRotateOption.get())
 		{
-			cameraRotation = (float)customRotationOption.asDouble();
+			cameraRotation = customRotationOption.get();
 			return;
 		}
 
 		if(addToRotation && cameraRotation <= 1.55F)
-			cameraRotation += rotationSpeedOption.asFloat();
+			cameraRotation += rotationSpeedOption.get();
 		else
 			addToRotation = false;
 
 		if(!addToRotation && cameraRotation >= -1.55F)
-			cameraRotation -= rotationSpeedOption.asFloat();
+			cameraRotation -= rotationSpeedOption.get();
 		else
 			addToRotation = true;
 	}

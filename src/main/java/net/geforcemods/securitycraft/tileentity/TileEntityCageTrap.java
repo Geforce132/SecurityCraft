@@ -8,13 +8,13 @@ public class TileEntityCageTrap extends TileEntityDisguisable {
 	private OptionBoolean shouldCaptureMobsOption = new OptionBoolean("captureMobs", false) {
 		@Override
 		public void toggle() {
-			setValue(!getValue());
+			setValue(!get());
 		}
 	};
 
 	public boolean capturesMobs()
 	{
-		return shouldCaptureMobsOption.asBoolean();
+		return shouldCaptureMobsOption.get();
 	}
 
 	@Override

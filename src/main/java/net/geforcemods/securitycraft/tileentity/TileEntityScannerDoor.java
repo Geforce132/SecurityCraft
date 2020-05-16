@@ -50,7 +50,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			world.markBlockRangeForRenderUpdate(pos.down(), pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
 
-			if(open && sendMessage.asBoolean())
+			if(open && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
 		}
 	}

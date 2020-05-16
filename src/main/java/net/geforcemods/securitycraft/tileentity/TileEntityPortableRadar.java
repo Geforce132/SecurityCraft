@@ -105,7 +105,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 			lastPlayerName = player.getName();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && enabledOption.get() && !player.getName().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {
@@ -124,12 +124,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 	@Override
 	public double getAttackRange() {
-		return searchRadiusOption.asDouble();
+		return searchRadiusOption.get();
 	}
 
 	@Override
 	public int getTicksBetweenAttacks() {
-		return searchDelayOption.asInteger() * 20;
+		return searchDelayOption.get() * 20;
 	}
 
 	@Override

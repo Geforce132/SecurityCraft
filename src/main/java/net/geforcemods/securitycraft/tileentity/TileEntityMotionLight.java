@@ -46,7 +46,7 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 
 	@Override
 	public double getAttackRange() {
-		return searchRadiusOption.asDouble();
+		return searchRadiusOption.get();
 	}
 
 	@Override

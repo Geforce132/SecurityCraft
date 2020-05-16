@@ -75,9 +75,9 @@ public class GuiCustomizeBlock extends GuiContainer{
 				if(option instanceof ISlider && option.isSlider())
 				{
 					if(option instanceof OptionDouble)
-						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).getValue(), true, true, (ISlider)option);
+						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).get(), true, true, (ISlider)option);
 					else if(option instanceof OptionInt)
-						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt)option).getMin(), ((OptionInt)option).getMax(), ((OptionInt)option).getValue(), true, true, (ISlider)option);
+						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt)option).getMin(), ((OptionInt)option).getMax(), ((OptionInt)option).get(), true, true, (ISlider)option);
 
 					optionButtons[i].packedFGColour = 14737632;
 				}
