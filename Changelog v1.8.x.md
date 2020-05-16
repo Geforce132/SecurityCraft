@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
+
+- Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
+
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
 DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!
