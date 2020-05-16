@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
-import net.geforcemods.securitycraft.api.Option.FloatOption;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.item.ItemStack;
@@ -14,15 +13,15 @@ import net.minecraft.util.Direction;
 
 public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
-	private final float CAMERA_SPEED = 0.0180F;
-	public float cameraRotation = 0.0F;
+	private final double CAMERA_SPEED = 0.0180D;
+	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
-	private FloatOption rotationSpeedOption = new FloatOption("rotationSpeed", CAMERA_SPEED, 0.0100F, 0.0250F, 0.001F);
+	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", CAMERA_SPEED, 0.0100D, 0.0250D, 0.001D);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption(this, "customRotation", (double)cameraRotation, 1.55D, -1.55D, (double)rotationSpeedOption.asFloat(), true);
+	private DoubleOption customRotationOption = new DoubleOption(this, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
 	public SecurityCameraTileEntity()
 	{
@@ -39,19 +38,19 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 			downSet = true;
 		}
 
-		if(!shouldRotateOption.asBoolean())
+		if(!shouldRotateOption.get())
 		{
-			cameraRotation = (float)customRotationOption.asDouble();
+			cameraRotation = customRotationOption.get();
 			return;
 		}
 
 		if(addToRotation && cameraRotation <= 1.55F)
-			cameraRotation += rotationSpeedOption.asFloat();
+			cameraRotation += rotationSpeedOption.get();
 		else
 			addToRotation = false;
 
 		if(!addToRotation && cameraRotation >= -1.55F)
-			cameraRotation -= rotationSpeedOption.asFloat();
+			cameraRotation -= rotationSpeedOption.get();
 		else
 			addToRotation = true;
 	}

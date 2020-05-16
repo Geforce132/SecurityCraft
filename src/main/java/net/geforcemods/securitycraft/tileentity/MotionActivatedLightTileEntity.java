@@ -51,7 +51,7 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public double getAttackRange() {
-		return searchRadiusOption.asDouble();
+		return searchRadiusOption.get();
 	}
 
 	@Override

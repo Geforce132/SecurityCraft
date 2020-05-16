@@ -65,7 +65,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 		GlStateManager.rotatef(180F, rotation, 0.0F, 1.0F);
 
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = te.cameraRotation;
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
 
 		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
