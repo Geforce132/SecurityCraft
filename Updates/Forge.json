@@ -19,18 +19,18 @@
     "1.12-recommended": "v1.8.8.1",
     "1.12.1-latest": "v1.8.8.1",
     "1.12.1-recommended": "v1.8.8.1",
-    "1.12.2-latest": "v1.8.17",
-    "1.12.2-recommended": "v1.8.17",
+    "1.12.2-latest": "v1.8.18",
+    "1.12.2-recommended": "v1.8.18",
     "1.13.2-latest": "v1.8.13",
     "1.13.2-recommended": "v1.8.13",
     "1.14.3-latest": "v1.8.12-beta2",
     "1.14.3-recommended": "v1.8.12-beta2",
-    "1.14.4-latest": "v1.8.17",
-    "1.14.4-recommended": "v1.8.17",
+    "1.14.4-latest": "v1.8.18",
+    "1.14.4-recommended": "v1.8.18",
     "1.15.1-latest": "v1.8.15-beta2",
     "1.15.1-recommended": "v1.8.15-beta2",
-    "1.15.2-latest": "v1.8.17",
-    "1.15.2-recommended": "v1.8.17"
+    "1.15.2-latest": "v1.8.18",
+    "1.15.2-recommended": "v1.8.18"
   },
   "1.7.10": {
     "v1.8.13": "Tons of new features and fixes"
@@ -60,7 +60,7 @@
     "v1.8.8.1": "Several new reinforced blocks, dozens of fixes and some small new features."
   },
   "1.12.2": {
-    "v1.8.17": "Numerous fixes and various new features!"
+    "v1.8.18": "Heaps of (QoL) fixes and features as well as tons of new reinforced blocks!"
   },
   "1.13.2": {
     "v1.8.13": "Tons of new features and fixes"
@@ -69,12 +69,12 @@
     "v1.8.12-beta2": "The One Probe integration!"
   },
   "1.14.4": {
-    "v1.8.17": "Numerous fixes and various new features!"
+    "v1.8.18": "Heaps of (QoL) fixes and features as well as tons of new reinforced blocks!"
   },
   "1.15.1": {
     "v1.8.15-beta2": "Sentry Remote Access Tool and a ton of QoL fixes and additions"
   },
   "1.15.2": {
-    "v1.8.17": "Numerous fixes and various new features!"
+    "v1.8.18": "Heaps of (QoL) fixes and features as well as tons of new reinforced blocks!"
   } 
 }
