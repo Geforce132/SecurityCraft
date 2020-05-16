@@ -19,7 +19,7 @@ import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
  *
  * @param <T> The Class of the type of value this option should use
  */
-public class Option<T> {
+public abstract class Option<T> {
 
 	private String name;
 	protected T value;
@@ -50,73 +50,27 @@ public class Option<T> {
 	 * NOTE: This gets called on the server side, not on the client!
 	 * Use TileEntitySCTE.sync() to update values on the client-side.
 	 */
-	public void toggle() {}
+	public abstract void toggle();
+
+	public abstract void readFromNBT(CompoundNBT tag);
+
+	public abstract void writeToNBT(CompoundNBT tag);
 
 	public void copy(Option<?> option) {
-		value = (T) option.getValue();
-	}
-
-	/**
-	 * @return This option, casted to a boolean.
-	 */
-	public boolean asBoolean() {
-		return (Boolean) value;
-	}
-
-	/**
-	 * @return This option, casted to a integer.
-	 */
-	public int asInteger() {
-		return (Integer) value;
-	}
-
-	/**
-	 * @return This option, casted to a double.
-	 */
-	public double asDouble() {
-		return (Double) value;
-	}
-
-	/**
-	 * @return This option, casted to a float.
-	 */
-	public float asFloat() {
-		return (Float) value;
-	}
-
-	public void readFromNBT(CompoundNBT tag) {
-		if(value instanceof Boolean)
-			value = (T) ((Boolean) tag.getBoolean(name));
-		else if(value instanceof Integer)
-			value = (T) ((Integer) tag.getInt(name));
-		else if(value instanceof Double)
-			value = (T) ((Double) tag.getDouble(name));
-		else if(value instanceof Float)
-			value = (T) ((Float) tag.getFloat(name));
-	}
-
-	public void writeToNBT(CompoundNBT tag) {
-		if(value instanceof Boolean)
-			tag.putBoolean(name, asBoolean());
-		else if(value instanceof Integer)
-			tag.putInt(name, asInteger());
-		else if(value instanceof Double)
-			tag.putDouble(name, asDouble());
-		else if(value instanceof Float)
-			tag.putFloat(name, asFloat());
+		value = (T) option.get();
 	}
 
 	/**
 	 * @return This option's name.
 	 */
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
 	/**
 	 * @return This option's value.
 	 */
-	public T getValue() {
+	public T get() {
 		return value;
 	}
 
@@ -177,12 +131,22 @@ public class Option<T> {
 
 		@Override
 		public void toggle() {
-			setValue(!getValue());
+			setValue(!get());
 		}
 
 		@Override
-		public Boolean getValue() {
-			return value;
+		public void readFromNBT(CompoundNBT tag)
+		{
+			if(tag.contains(getName()))
+				value = tag.getBoolean(getName());
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void writeToNBT(CompoundNBT tag)
+		{
+			tag.putBoolean(getName(), value);
 		}
 
 		@Override
@@ -217,22 +181,32 @@ public class Option<T> {
 			if(isSlider())
 				return;
 
-			if(getValue() >= getMax()) {
+			if(get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((getValue() + getIncrement()) >= getMax()) {
+			if((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
 
-			setValue(getValue() + getIncrement());
+			setValue(get() + getIncrement());
 		}
 
 		@Override
-		public Integer getValue() {
-			return value;
+		public void readFromNBT(CompoundNBT tag)
+		{
+			if(tag.contains(getName()))
+				value = tag.getInt(getName());
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void writeToNBT(CompoundNBT tag)
+		{
+			tag.putInt(getName(), value);
 		}
 
 		@Override
@@ -254,7 +228,7 @@ public class Option<T> {
 
 			setValue((int)slider.getValue());
 			slider.setMessage((ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, getValue()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, get()));
 		}
 	}
 
@@ -286,22 +260,32 @@ public class Option<T> {
 			if(isSlider())
 				return;
 
-			if(getValue() >= getMax()) {
+			if(get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((getValue() + getIncrement()) >= getMax()) {
+			if((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
 
-			setValue(getValue() + getIncrement());
+			setValue(get() + getIncrement());
 		}
 
 		@Override
-		public Double getValue() {
-			return value;
+		public void readFromNBT(CompoundNBT tag)
+		{
+			if(tag.contains(getName()))
+				value = tag.getDouble(getName());
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void writeToNBT(CompoundNBT tag)
+		{
+			tag.putDouble(getName(), value);
 		}
 
 		@Override
@@ -323,7 +307,7 @@ public class Option<T> {
 
 			setValue(slider.getValue());
 			slider.setMessage((ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()) + " ").replace("#", toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, getValue()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, get()));
 		}
 	}
 
@@ -342,22 +326,32 @@ public class Option<T> {
 
 		@Override
 		public void toggle() {
-			if(getValue() >= getMax()) {
+			if(get() >= getMax()) {
 				setValue(getMin());
 				return;
 			}
 
-			if((getValue() + getIncrement()) >= getMax()) {
+			if((get() + getIncrement()) >= getMax()) {
 				setValue(getMax());
 				return;
 			}
 
-			setValue(getValue() + getIncrement());
+			setValue(get() + getIncrement());
 		}
 
 		@Override
-		public Float getValue() {
-			return value;
+		public void readFromNBT(CompoundNBT tag)
+		{
+			if(tag.contains(getName()))
+				value = tag.getFloat(getName());
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void writeToNBT(CompoundNBT tag)
+		{
+			tag.putFloat(getName(), value);
 		}
 
 		@Override

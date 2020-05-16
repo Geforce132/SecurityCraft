@@ -72,7 +72,7 @@ public class LaserBlock extends DisguisableBlock {
 					{
 						CustomizableTileEntity.link(thisTe, thatTe);
 
-						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((BooleanOption)thisTe.getOptionByName("enabled")).getValue() && ((BooleanOption)thatTe.getOptionByName("enabled")).getValue())
+						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((BooleanOption)thisTe.getOptionByName("enabled")).get() && ((BooleanOption)thatTe.getOptionByName("enabled")).get())
 						{
 							for(int j = 1; j < i; j++)
 							{

@@ -9,7 +9,7 @@ public class CageTrapTileEntity extends DisguisableTileEntity {
 	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false) {
 		@Override
 		public void toggle() {
-			setValue(!getValue());
+			setValue(!get());
 		}
 	};
 
@@ -20,7 +20,7 @@ public class CageTrapTileEntity extends DisguisableTileEntity {
 
 	public boolean capturesMobs()
 	{
-		return shouldCaptureMobsOption.asBoolean();
+		return shouldCaptureMobsOption.get();
 	}
 
 	@Override

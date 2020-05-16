@@ -1,6 +1,8 @@
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
+- API: Option is now abstract and some methods have been changed around for cleaner code
 - Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
+- Fix: New customizable options don't correctly load for existing blocks
 
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 

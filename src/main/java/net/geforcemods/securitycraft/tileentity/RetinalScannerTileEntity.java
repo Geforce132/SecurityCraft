@@ -47,7 +47,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	@Override
 	public void entityViewed(LivingEntity entity){
 		if(!world.isRemote && !BlockUtils.getBlockProperty(world, pos, RetinalScannerBlock.POWERED) && !EntityUtils.isInvisible(entity)){
-			if(!(entity instanceof PlayerEntity) && !activatedByEntities.asBoolean())
+			if(!(entity instanceof PlayerEntity) && !activatedByEntities.get())
 				return;
 
 			if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -61,7 +61,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 			BlockUtils.setBlockProperty(world, pos, RetinalScannerBlock.POWERED, true);
 			world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), 60);
 
-			if(entity instanceof PlayerEntity && sendMessage.asBoolean())
+			if(entity instanceof PlayerEntity && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, ClientUtils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName().getFormattedText()), TextFormatting.GREEN);
 		}
 	}
@@ -73,7 +73,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 
 	@Override
 	public boolean activatedOnlyByPlayer() {
-		return !activatedByEntities.asBoolean();
+		return !activatedByEntities.get();
 	}
 
 	@Override

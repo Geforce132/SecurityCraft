@@ -111,7 +111,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 			lastPlayerName = player.getName().getFormattedText();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.asBoolean()) && enabledOption.asBoolean() && !player.getName().getFormattedText().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && enabledOption.get() && !player.getName().getFormattedText().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {
@@ -130,12 +130,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public double getAttackRange() {
-		return searchRadiusOption.asDouble();
+		return searchRadiusOption.get();
 	}
 
 	@Override
 	public int getTicksBetweenAttacks() {
-		return searchDelayOption.asInteger() * 20;
+		return searchDelayOption.get() * 20;
 	}
 
 	@Override

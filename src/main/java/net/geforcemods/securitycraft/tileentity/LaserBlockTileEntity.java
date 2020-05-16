@@ -17,7 +17,7 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 	private BooleanOption enabledOption = new BooleanOption("enabled", true) {
 		@Override
 		public void toggle() {
-			setValue(!getValue());
+			setValue(!get());
 
 			toggleLaser(this);
 		}
@@ -31,7 +31,7 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 	private void toggleLaser(BooleanOption option) {
 		if(BlockUtils.getBlock(world, pos) != SCContent.LASER_BLOCK.get()) return;
 
-		if(option.getValue())
+		if(option.get())
 			((LaserBlock) BlockUtils.getBlock(world, pos)).setLaser(world, pos);
 		else
 			LaserBlock.destroyAdjacentLasers(world, pos);

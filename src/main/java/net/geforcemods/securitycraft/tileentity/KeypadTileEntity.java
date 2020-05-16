@@ -32,7 +32,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		public void toggle() {
 			super.toggle();
 
-			BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, getValue());
+			BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, get());
 			world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 		}
 	};
@@ -77,7 +77,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeypadBlock)
-			KeypadBlock.activate(world, pos, signalLength.asInteger());
+			KeypadBlock.activate(world, pos, signalLength.get());
 	}
 
 	@Override
@@ -161,11 +161,11 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 	public boolean sendsMessages()
 	{
-		return sendMessage.asBoolean();
+		return sendMessage.get();
 	}
 
 	public int getSignalLength()
 	{
-		return signalLength.asInteger();
+		return signalLength.get();
 	}
 }

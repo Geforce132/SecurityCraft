@@ -112,7 +112,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 
 	public boolean sendsMessages()
 	{
-		return sendMessage.asBoolean();
+		return sendMessage.get();
 	}
 
 	@Override
