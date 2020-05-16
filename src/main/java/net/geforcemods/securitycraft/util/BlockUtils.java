@@ -138,12 +138,16 @@ public class BlockUtils{
 			{
 				for(EnumFacing dirOffset : EnumFacing.values())
 				{
-					offsetPos = offsetPos.offset(dirOffset);
-					offsetState = world.getBlockState(offsetPos);
+					if(dirOffset.getOpposite() == facing) //skip this, as it would just go back to the original position
+						continue;
+
+					BlockPos newOffsetPos = offsetPos.offset(dirOffset);
+
+					offsetState = world.getBlockState(newOffsetPos);
 
 					if(!checkForBlock || offsetState.getBlock() == block)
 					{
-						TileEntity offsetTe = world.getTileEntity(offsetPos);
+						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
 						if(extraCondition.apply(offsetState, offsetTe))
 							return ((IOwnable)offsetTe).getOwner().owns((IOwnable) te);
