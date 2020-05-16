@@ -58,7 +58,7 @@ public class BlockPortableRadar extends BlockContainer {
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
-		return world.getBlockState(pos).isSideSolid(world, pos, EnumFacing.UP);
+		return world.getBlockState(pos.down()).isSideSolid(world, pos, EnumFacing.UP);
 	}
 
 	@Override

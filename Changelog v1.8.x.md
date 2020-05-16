@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
 - Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
+- Fix: Portable Radar cannot be placed
 
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
