@@ -4,6 +4,9 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
@@ -33,6 +36,7 @@ import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class RetinalScannerTileEntity extends DisguisableTileEntity {
 
+	private static final Logger LOGGER = LogManager.getLogger();
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private GameProfile ownerProfile;
@@ -147,7 +151,15 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 				else {
 					Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), (Property)null);
 					if (property == null) {
-						gameprofile = sessionService.fillProfileProperties(gameprofile, true);
+						try {
+							gameprofile = sessionService.fillProfileProperties(gameprofile, true);
+						}
+						catch(IllegalArgumentException e) { //this seems to only happen on offline servers. log the exception nonetheless, just in case
+							LOGGER.warn("========= WARNING =========");
+							LOGGER.warn("The following error is likely caused by using an offline server. If you are not using an offline server (online-mode=true in the server.properties), please reach out to the SecurityCraft devs in their Discord #help channel: https://discord.gg/U8DvBAW");
+							LOGGER.warn("To mitigate this error, you can set the configuration option \"retinalScannerFace\" to false, in order to disable rendering the owner's face on retinal scanners.");
+							LOGGER.error("The exception's stacktrace is as follows:", e);
+						}
 					}
 					return gameprofile;
 				}
