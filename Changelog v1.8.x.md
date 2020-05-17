@@ -4,6 +4,7 @@
 - Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
 - Fix: Portable Radar cannot be placed
 - Fix: New customizable options don't correctly load for existing blocks
+- Fix: Retinal Scanner crash
 
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
