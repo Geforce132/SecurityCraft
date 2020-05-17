@@ -279,10 +279,6 @@ public class BlockTagGenerator extends BlockTagsProvider
 		{
 			Block block = ro.get();
 
-			//TODO: remove when projector is fully implemented
-			if(block == SCContent.PROJECTOR.get())
-				continue;
-
 			if(block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get())
 			{
 				dragonImmune.add(block);
