@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.blocks.LoggerBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
-import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -117,7 +116,6 @@ import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
-import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
@@ -211,7 +209,7 @@ public class SCContent
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(Material.MISCELLANEOUS, 1F));
 	public static final RegistryObject<Block> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock());
 	public static final RegistryObject<Block> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock());
-	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(Block.Properties.create(Material.IRON)));
+	//	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(Block.Properties.create(Material.IRON)));
 	//block mines
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> STONE_MINE = BLOCKS.register("stone_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.STONE, 1.5F));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> DIRT_MINE = BLOCKS.register("dirt_mine", () -> new BaseFullMineBlock(Material.EARTH, SoundType.GROUND, Blocks.DIRT, 0.5F));
@@ -639,8 +637,8 @@ public class SCContent
 	public static TileEntityType<WhitelistOnlyTileEntity> teTypeWhitelistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
 	public static TileEntityType<ReinforcedHopperTileEntity> teTypeReinforcedHopper;
-	@ObjectHolder(SecurityCraft.MODID + ":projector")
-	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
+	//	@ObjectHolder(SecurityCraft.MODID + ":projector")
+	//	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
