@@ -119,9 +119,9 @@ jar {
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3",
-                    "Specification-Version": "v1.8.18",
+                    "Specification-Version": "v1.8.18.1",
                     "Implementation-Title": "SecurityCraft",
-                    "Implementation-Version": "v1.8.18",
+                    "Implementation-Version": "v1.8.18.1",
                     "Implementation-Vendor" :"Geforce, bl4ckscor3",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }
