@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
+
+- Fix: Username Logger crash
+
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
 - API: Option is now abstract and some methods have been changed around for cleaner code
