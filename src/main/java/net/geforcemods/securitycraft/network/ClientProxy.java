@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
@@ -40,7 +39,6 @@ import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
-import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
@@ -224,7 +222,7 @@ public class ClientProxy implements IProxy
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
-		// 	ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
+		// ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -240,7 +238,7 @@ public class ClientProxy implements IProxy
 		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, KeycardReaderSetupScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
-		// 	ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
+		// ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
 		KeyBindings.init();
 	}
 

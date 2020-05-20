@@ -26,31 +26,35 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	@Override
 	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int arg5) 
 	{
-		stack.push();
+		for(int i = 0; i < te.getProjectionWidth(); i++) {
+			for(int j = 0; j < te.getProjectionWidth(); j++) {
+				stack.push();
 
-		translateProjection(stack, te.getBlockState().get(ProjectorBlock.FACING), te.getProjectionRange());
+				translateProjection(stack, te.getBlockState().get(ProjectorBlock.FACING), i, j, te.getProjectionRange(), te.getProjectionOffset());
 
-	    RenderSystem.disableCull();
-	    // Values of around 220 - 240 make the block appear, but lower values make the model progressively darker?
-		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(Blocks.DIAMOND_ORE.getDefaultState(), stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
-		RenderSystem.enableCull();
+				RenderSystem.disableCull();
+				// Values of around 220 - 240 make the block appear, but lower values make the model progressively darker?
+				Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(Blocks.STONE.getDefaultState(), stack, buffer, 230, OverlayTexture.NO_OVERLAY);
+				RenderSystem.enableCull();
 
-		stack.pop();
+				stack.pop();
+			}
+		}
 	}
 
-	private void translateProjection(MatrixStack stack, Direction direction, double distance) 
+	private void translateProjection(MatrixStack stack, Direction direction, int x, int y, double distance, double offset) 
 	{
 		if(direction == Direction.NORTH) {
-			stack.translate(0.0D, 0.0D, distance);
+			stack.translate(0.0D + x + offset, 0.0D + y, distance);
 		}
 		else if(direction == Direction.SOUTH) {
-			stack.translate(0.0D, 0.0D, -distance);
+			stack.translate(0.0D + x + offset, 0.0D + y, -distance);
 		}
 		else if(direction == Direction.WEST) {
-			stack.translate(distance, 0.0D, 0.0D);
+			stack.translate(distance, 0.0D + y, 0.0D + x + offset);
 		}
 		else if(direction == Direction.EAST) {
-			stack.translate(-distance, 0.0D, 0.0D);
+			stack.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
 		else {
 			stack.translate(0.0D, 0.0D, 0.0D);

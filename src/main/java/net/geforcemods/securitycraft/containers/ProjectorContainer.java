@@ -9,7 +9,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ProjectorContainer extends Container {
-	
+
+	public final int SIZE = 0;
+
 	public ProjectorTileEntity te;
 	
 	public ProjectorContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) 
