@@ -55,7 +55,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		{
 			for(int i = 0; i < players.length; i++)
 			{
-				if(players[i].equals("") || players[i] == null){
+				if(players[i] == null || players[i].equals("")){
 					players[i] = player.getName();
 					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;
@@ -81,12 +81,9 @@ public class TileEntityLogger extends TileEntityDisguisable {
 
 		for(int i = 0; i < players.length; i++)
 		{
-			if(players[i] != null)
-			{
-				tag.setString("player" + i, players[i] == null ? "" : players[i]);
-				tag.setString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
-				tag.setLong("timestamp" + i, timestamps[i]);
-			}
+			tag.setString("player" + i, players[i] == null ? "" : players[i]);
+			tag.setString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
+			tag.setLong("timestamp" + i, timestamps[i]);
 		}
 
 		return tag;
