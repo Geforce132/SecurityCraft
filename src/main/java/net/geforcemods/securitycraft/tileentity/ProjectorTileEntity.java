@@ -31,12 +31,6 @@ public class ProjectorTileEntity extends SecurityCraftTileEntity implements INam
 	}
 
 	@Override
-	public void tick() 
-	{
-		super.tick();
-	}
-
-	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return new AxisAlignedBB(getPos()).grow(100);
 	}

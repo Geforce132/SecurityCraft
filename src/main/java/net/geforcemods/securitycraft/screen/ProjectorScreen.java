@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
+import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -95,7 +97,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		else if(slider.id == 2)
 			tileEntity.setProjectionOffset(slider.getValueInt());
 		
-		tileEntity.sync();
+		SecurityCraft.channel.sendToServer(new SyncProjector(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), projectionWidth.getValueInt(), projectionRange.getValueInt(), projectionOffset.getValueInt()));
 	}
 
 }
