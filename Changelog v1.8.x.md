@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
+
+- Fix: Universal Block Remover sends two messages when the right-clicked block cannot be removed
+
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 
 - Fix: Username Logger crash
