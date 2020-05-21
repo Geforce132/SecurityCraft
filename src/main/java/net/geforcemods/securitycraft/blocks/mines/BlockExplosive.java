@@ -34,7 +34,7 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive,
 				return false;
 			}
 
-			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
+			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine) || PlayerUtils.isHoldingItem(player, SCContent.universalOwnerChanger))
 				return false;
 
 			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
