@@ -456,7 +456,7 @@
 	"help.securitycraft.reinforced_stone_pressure_plate.info": "Las placas de presión reforzadas solo pueden ser activadas por su propietario o por los jugadores de su lista blanca.",
 	"help.securitycraft.reinforced_stone_button.info": "Los botones reforzados solo pueden ser activados por su propietario o por los jugadores de su lista blanca.",
 	"help.securitycraft.reinforced_lever.info": "La palanca reforzada solo puede ser activada por su propietario o por los jugadores de su lista blanca.",
-	"help.securitycraft.reinforced_hopper.info": "La tolva reforzada es el único bloque que puede utilizarse para extraer objetos de un cofre con contraseña, si ambos tienen el mismo propietario. En cualquier otro caso es equivalente a un hopper normal.",
+	"help.securitycraft.reinforced_hopper.info": "La tolva reforzada es el único bloque que puede utilizarse para extraer objetos de un cofre con contraseña, si ambos tienen el mismo propietario. En cualquier otro caso es equivalente a una tolva normal.",
 
 	"help.securitycraft.codebreaker.info": "El descifrador de contraseñas puede eludir la seguridad de cualquier teclado y cofre u horno con contraseña haciendo clic derecho sobre ellos (límite de 5 usos y probabilidad de éxito del 66%).",
 	"help.securitycraft.door_indestructible_iron_item.info": "La puerta de hierro reforzada es igual que la de hierro normal, a diferencia de que es indestructible. Solo puede abrirse con teclados, escáneres de inventario, etc.. El propietario puede usar el eliminador de bloques universal para quitarla.",
