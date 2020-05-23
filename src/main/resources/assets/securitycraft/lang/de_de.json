@@ -592,6 +592,10 @@
 	"gui.securitycraft:blockPocketManager.activate": "Aktivieren",
 	"gui.securitycraft:blockPocketManager.deactivate": "Deaktivieren",
 	"gui.securitycraft:blockPocketManager.size": "Größe: %sx%sx%s",
+	"gui.securitycraft:blockPocketManager.assemble": "Auto-Aufbauen",
+	"gui.securitycraft:blockPocketManager.outline.show": "Umrandung zeigen",
+	"gui.securitycraft:blockPocketManager.outline.hide": "Umrandung verbergen",
+	"gui.securitycraft:blockPocketManager.youNeed": "Du brauchst:",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:securityCamera.mounted": "Du bist nun in einer Kamera. Nutze #w#a#s#d, um dich umzusehen, und die #i/#o Knöpfe, um heran- und herauszuzoomen.",
@@ -664,10 +668,15 @@
 	"messages.securitycraft:sentry.descriptionMode3": "(Nie aktiv, attackiert nichts)",
 	"messages.securitycraft:blockpocket.multipleManagers": "Es existiert mehr als ein Blocktaschenverwalter in der Struktur.",
 	"messages.securitycraft:blockpocket.invalidBlock": "Ungültiger Block \"%2$s\" an Position %1$s!",
-	"messages.securitycraft:blockpocket.invalidBlock.pillar": "Ungültiger Block \"%2$s\" an Position %1$s! (Achte auf die korrekte Rotation der Säule!)",
-	"messages.securitycraft:blockpocket.unowned": "Du besitzt nicht den Block \"%2$s\" an Position %1$s!",
+	"messages.securitycraft:blockpocket.invalidBlock.pillar": "Ungültiger Block \"%2$s\" an Position %1$s! (Erwartet: \"Verstärkte Kristallquarzsäule\")",
+	"messages.securitycraft:blockpocket.invalidBlock.pillar.rotation": "Ungültiger Block \"%2$s\" an Position %1$s! (Achte auf die korrekte Rotation der Säule!)",
+	"messages.securitycraft:blockpocket.invalidBlock.corner": "Ungültiger Block \"%2$s\" an Position %1$s! (Erwartet: \"Verstärkter gemeißelter Kristallquarzblock\")",
+	"messages.securitycraft:blockpocket.invalidBlock.wall": "Ungültiger Block \"%2$s\" an Position %1$s! (Erwartet: \"Blocktaschenwand\")",
+	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" blockiert den nötigen Platz an Position %1$s!",
+	"messages.securitycraft:blockpocket.unowned": "Du besitzt den Block \"%2$s\" an Position %1$s nicht!",
 	"messages.securitycraft:blockpocket.activated": "Blocktasche aktiviert!",
 	"messages.securitycraft:blockpocket.deactivated": "Blocktasche deaktiviert!",
+	"messages.securitycraft:blockpocket.assembled": "Blocktasche aufgebaut!",
 
 	"jei.securitycraft:reinforcedBlock.info": "Rechtsklicke einen Universellen Blockentferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Blockentferner abbauen.",
 
