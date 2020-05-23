@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
+
+- Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
+
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
 - API: Option is now abstract and some methods have been changed around for cleaner code
