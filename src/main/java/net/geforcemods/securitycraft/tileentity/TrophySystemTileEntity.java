@@ -8,9 +8,11 @@ import java.util.UUID;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.ShulkerBulletEntity;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
@@ -91,8 +93,9 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
-		potentialTargets.addAll(world.getEntitiesWithinAABB(ArrowEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(AbstractArrowEntity.class, area, e -> !(e instanceof TridentEntity))); //ignore tridents
 		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(ShulkerBulletEntity.class, area));
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
@@ -107,12 +110,10 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * Returns the UUID of the player who shot the given Entity
 	 */
 	public UUID getShooterUUID(Entity entity) {
-		if(entity instanceof ArrowEntity && ((ArrowEntity) entity).shootingEntity != null)
-			return ((ArrowEntity) entity).shootingEntity;
-
+		if(entity instanceof AbstractArrowEntity && ((AbstractArrowEntity) entity).shootingEntity != null)
+			return ((AbstractArrowEntity) entity).shootingEntity;
 		else if(entity instanceof FireballEntity && ((FireballEntity) entity).shootingEntity != null  && ((FireballEntity) entity).shootingEntity.getUniqueID() != null)
 			return ((FireballEntity) entity).shootingEntity.getUniqueID();
-
 		else
 			return null;
 	}
