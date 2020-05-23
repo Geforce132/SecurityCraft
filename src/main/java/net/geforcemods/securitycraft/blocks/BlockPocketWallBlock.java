@@ -35,7 +35,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	{
 		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
 
-		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, false).with(SOLID, false));
+		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
 	}
 
 	@Override
