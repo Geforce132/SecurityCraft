@@ -274,11 +274,6 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						BlockPos currentPos = pos.offset(right, xi);
 						BlockState currentState = world.getBlockState(currentPos);
 
-						if(!(currentState.getBlock() instanceof AirBlock) && !(currentState.getBlock() instanceof IBlockPocket) && !(currentState.getBlock() instanceof BlockPocketWallBlock))
-						{
-							return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
-						}
-
 						//checking the lowest and highest level of the cube
 						if((yi == lowest && !currentPos.equals(getPos())) || yi == highest) //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
 						{
