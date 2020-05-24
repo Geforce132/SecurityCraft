@@ -227,16 +227,13 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 	/**
 	 * Auto-assembles the Block Pocket for a player.
-	 * First it makes sure that the space isn't occupied, then
-	 * it places the blocks.
-	 * @param player The player that opened the screen, used to
-	 *               assign the owner to the placed blocks
+	 * First it makes sure that the space isn't occupied, then it checks the inventory of the player for the required items, then it places the blocks.
+	 * @param player The player that opened the screen, used to check if the player is in creative or not
 	 * @return The feedback message. null if none should be sent.
 	 */
-
-    public TranslationTextComponent autoAssembleMultiblock(PlayerEntity player)
-    {
-        if(!enabled) //multiblock assembling in three steps
+	public TranslationTextComponent autoAssembleMultiblock(PlayerEntity player)
+	{
+		if(!enabled) //multiblock assembling in three steps
 		{
 			if(world.isRemote)
 				SecurityCraft.channel.sendToServer(new AssembleBlockPocket(this, size));
@@ -646,8 +643,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			}
 			return new TranslationTextComponent("messages.securitycraft:blockpocket.assembled");
 		}
-        return null;
-    }
+		return null;
+	}
 
 	public void disableMultiblock()
 	{
