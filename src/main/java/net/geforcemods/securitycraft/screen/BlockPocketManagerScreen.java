@@ -70,19 +70,19 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
 
 			font.drawString((size - 2) * 12 - 1 + "", 94, 100, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 77, 96);
+			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
 			font.drawString("8", 147, 100, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 130, 96);
+			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 
 			if(mouseX >= guiLeft + 23 && mouseX < guiLeft + 48 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(new ItemStack(SCContent.BLOCK_POCKET_WALL.get()), mouseX - guiLeft, mouseY - guiTop);
+				renderTooltip(BLOCK_POCKET_WALL, mouseX - guiLeft, mouseY - guiTop);
 
 			if(mouseX >= guiLeft + 75 && mouseX < guiLeft + 100 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()), mouseX - guiLeft, mouseY - guiTop);
+				renderTooltip(REINFORCED_CRYSTAL_QUARTZ_PILLAR, mouseX - guiLeft, mouseY - guiTop);
 
 			if(mouseX >= guiLeft + 128 && mouseX < guiLeft + 153 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()), mouseX - guiLeft, mouseY - guiTop);
+				renderTooltip(REINFORCED_CHISELED_CRYSTAL_QUARTZ, mouseX - guiLeft, mouseY - guiTop);
 		}
 	}
 
