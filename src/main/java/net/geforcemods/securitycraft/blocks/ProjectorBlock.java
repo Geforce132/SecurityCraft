@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -41,6 +43,20 @@ public class ProjectorBlock extends OwnableBlock {
 		}
 
 		return ActionResultType.SUCCESS;
+	}
+
+	@Override
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	{
+		TileEntity tileentity = world.getTileEntity(pos);
+
+		if (tileentity instanceof ProjectorTileEntity)
+		{
+			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity) world.getTileEntity(pos)).getStackInSlot(9));
+			WorldUtils.addScheduledTask(world, () -> world.addEntity(item));
+		}
+
+		super.onReplaced(state, world, pos, newState, isMoving);
 	}
 
 	@Override
