@@ -43,13 +43,13 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	{
 		super.init();
 
-		projectionWidth = new NamedSlider((ClientUtils.localize("option.securitycraft.projector.width").replace("#", tileEntity.getProjectionWidth() + "")), blockName, 0, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 50, sliderWidth, 20, ClientUtils.localize("option.securitycraft.projector.width").replace("#", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased);
+		projectionWidth = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.width").replace("#", tileEntity.getProjectionWidth() + "")), blockName, 0, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 50, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.width").replace("#", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased);
 		projectionWidth.setFGColor(14737632);
 
-		projectionRange = new NamedSlider((ClientUtils.localize("option.securitycraft.projector.range").replace("#", tileEntity.getProjectionRange() + "")), blockName, 1, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 80, sliderWidth, 20, ClientUtils.localize("option.securitycraft.projector.range").replace("#", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, null, this::sliderReleased);
+		projectionRange = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.range").replace("#", tileEntity.getProjectionRange() + "")), blockName, 1, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 80, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.range").replace("#", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, null, this::sliderReleased);
 		projectionRange.setFGColor(14737632);
 
-		projectionOffset = new NamedSlider((ClientUtils.localize("option.securitycraft.projector.offset").replace("#", tileEntity.getProjectionOffset() + "")), blockName, 2, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 110, sliderWidth, 20, ClientUtils.localize("option.securitycraft.projector.offset").replace("#", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased);
+		projectionOffset = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.offset").replace("#", tileEntity.getProjectionOffset() + "")), blockName, 2, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 110, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.offset").replace("#", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased);
 		projectionOffset.setFGColor(14737632);
 
 		addButton(projectionWidth);

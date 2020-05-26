@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Random;
+
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -21,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ProjectorBlock extends OwnableBlock {
@@ -35,7 +38,7 @@ public class ProjectorBlock extends OwnableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
+		if (!world.isRemote)
 		{
 			TileEntity te = world.getTileEntity(pos);
 
@@ -57,6 +60,35 @@ public class ProjectorBlock extends OwnableBlock {
 		}
 
 		super.onReplaced(state, world, pos, newState, isMoving);
+	}
+	
+	@Override
+	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) 
+	{
+		if(!worldIn.isRemote)
+		{
+			if(worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone()) 
+			{
+				if (worldIn.isBlockPowered(pos)) {
+					((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(true);
+					((ProjectorTileEntity) worldIn.getTileEntity(pos)).sync();
+				}
+				else
+				{
+		            ((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(false);
+					((ProjectorTileEntity) worldIn.getTileEntity(pos)).sync();
+				}
+		    }
+		}
+	}
+	
+	@Override
+	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) 
+	{
+		if (!worldIn.isBlockPowered(pos) && worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone())
+		{
+			((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(false);
+		}
 	}
 
 	@Override

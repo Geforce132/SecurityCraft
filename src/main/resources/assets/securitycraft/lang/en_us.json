@@ -591,6 +591,9 @@
 	"gui.securitycraft:blockPocketManager.activate": "Activate",
 	"gui.securitycraft:blockPocketManager.deactivate": "Deactivate",
 	"gui.securitycraft:blockPocketManager.size": "Size: %sx%sx%s",
+	"gui.securitycraft:projector.width": "Projection width: #",
+    "gui.securitycraft:projector.range": "Projection range: #",
+    "gui.securitycraft:projector.offset": "Projection offset: #",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:securityCamera.mounted": "You are now mounted to a camera. Use the #w#a#s#d keys to move the camera's view, and the #i/#o buttons to zoom in and out.",
@@ -850,9 +853,6 @@
 	"option.securitycraft.motion_activated_light.searchRadius.description": "How far will the light detect an entity?",
 	"option.securitycraft.keycard_reader.sendMessage": "Message: #",
 	"option.securitycraft.keycard_reader.sendMessage.description": "Does this keycard reader send a message upon activation (when using whitelist/blacklist modules)?",
-	"option.securitycraft.projector.width": "Projection width: #",
-	"option.securitycraft.projector.range": "Projection range: #",
-	"option.securitycraft.projector.offset": "Projection offset: #",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

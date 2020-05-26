@@ -1,8 +1,9 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -16,7 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class ProjectorTileEntity extends SecurityCraftTileEntity implements IInventory, INamedContainerProvider {
+public class ProjectorTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider {
 
 	public static final int MIN_WIDTH = 1;
 	public static final int MAX_WIDTH = 10;
@@ -28,6 +29,8 @@ public class ProjectorTileEntity extends SecurityCraftTileEntity implements IInv
 	private int projectionWidth = 1;
 	private int projectionRange = 5;
 	private int projectionOffset = 0;
+	public boolean activatedByRedstone = false;
+	public boolean active = false;
 
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 
@@ -49,6 +52,8 @@ public class ProjectorTileEntity extends SecurityCraftTileEntity implements IInv
 		tag.putInt("width", projectionWidth);
 		tag.putInt("range", projectionRange);
 		tag.putInt("offset", projectionOffset);
+		activatedByRedstone = hasModule(ModuleType.REDSTONE);
+		tag.putBoolean("active", active);
 
 		if(!isEmpty()) 
 		{
@@ -73,6 +78,11 @@ public class ProjectorTileEntity extends SecurityCraftTileEntity implements IInv
 
 		if(tag.contains("offset"))
 			projectionOffset = tag.getInt("offset");
+		
+		activatedByRedstone = hasModule(ModuleType.REDSTONE);
+		
+		if(tag.contains("active"))
+			active = tag.getBoolean("active");
 
 		if(tag.contains("storedItem"))
 			projectedBlock = ItemStack.read(tag.getCompound("storedItem"));
@@ -107,9 +117,59 @@ public class ProjectorTileEntity extends SecurityCraftTileEntity implements IInv
 	{
 		projectionOffset = offset;
 	}
+	
+	public boolean isActivatedByRedstone() 
+	{
+		return activatedByRedstone;
+	}
+	
+	public void setActivatedByRedstone(boolean redstone)
+	{
+		activatedByRedstone = redstone;
+	}
+	
+	public boolean isActive()
+	{
+		return activatedByRedstone ? active : true;
+	}
+	
+	public void setActive(boolean isOn)
+	{
+		active = isOn;
+	}
 
 	public Block getProjectedBlock() {
 		return Block.getBlockFromItem(projectedBlock.getItem());
+	}
+	
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		super.onModuleInserted(stack, module);
+		
+		if(module == ModuleType.REDSTONE)
+			setActivatedByRedstone(true);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		super.onModuleRemoved(stack, module);
+		
+		if(module == ModuleType.REDSTONE)
+			setActivatedByRedstone(false);
+	}
+	
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[]{ModuleType.DISGUISE, ModuleType.REDSTONE};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return null;
 	}
 
 	@Override

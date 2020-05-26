@@ -28,6 +28,9 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	@Override
 	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int arg5) 
 	{
+		if(!te.isActive())
+			return;
+		
 		if(!te.isEmpty())
 		{
 			for(int i = 0; i < te.getProjectionWidth(); i++) {
