@@ -81,4 +81,8 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 		
 		return pos;
 	}
+	
+	public boolean isGlobalRenderer(ProjectorTileEntity te) {
+	      return true;
+	   }
 }

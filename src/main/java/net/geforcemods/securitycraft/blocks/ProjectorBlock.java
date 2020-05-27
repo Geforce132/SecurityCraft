@@ -55,6 +55,7 @@ public class ProjectorBlock extends OwnableBlock {
 
 		if (tileentity instanceof ProjectorTileEntity)
 		{
+			// Drop the block being projected
 			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity) world.getTileEntity(pos)).getStackInSlot(9));
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(item));
 		}

@@ -592,8 +592,8 @@
 	"gui.securitycraft:blockPocketManager.deactivate": "Deactivate",
 	"gui.securitycraft:blockPocketManager.size": "Size: %sx%sx%s",
 	"gui.securitycraft:projector.width": "Projection width: #",
-    "gui.securitycraft:projector.range": "Projection range: #",
-    "gui.securitycraft:projector.offset": "Projection offset: #",
+	"gui.securitycraft:projector.range": "Projection range: #",
+	"gui.securitycraft:projector.offset": "Projection offset: #",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:securityCamera.mounted": "You are now mounted to a camera. Use the #w#a#s#d keys to move the camera's view, and the #i/#o buttons to zoom in and out.",
