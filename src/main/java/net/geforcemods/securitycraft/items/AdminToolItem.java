@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class AdminToolItem extends Item {
@@ -52,13 +53,13 @@ public class AdminToolItem extends Item {
 				}
 
 				if(te instanceof IModuleInventory) {
-					List<CustomModules> modules = ((IModuleInventory) te).getInsertedModules();
+					List<ModuleType> modules = ((IModuleInventory) te).getInsertedModules();
 
 					if(!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
-						for(CustomModules module : modules)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, "-" + module.getName(), TextFormatting.DARK_PURPLE);
+						for(ModuleType module : modules)
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText(), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}

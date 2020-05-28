@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -66,14 +66,14 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase()))
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, ModuleType.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase()))
 							return;
 
 						BlockUtils.setBlockProperty(world, offsetPos, LaserBlock.POWERED, true, true);
 						world.notifyNeighborsOfStateChange(offsetPos, SCContent.LASER_BLOCK.get());
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 
-						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(CustomModules.HARMING))
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.HARMING))
 						{
 							if(!(entity instanceof PlayerEntity && ((IOwnable)te).getOwner().isOwner((PlayerEntity)entity)))
 								((LivingEntity) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);

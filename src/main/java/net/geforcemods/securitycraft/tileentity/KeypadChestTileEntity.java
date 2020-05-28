@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -276,8 +276,8 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
-	public CustomModules[] acceptedModules()
+	public ModuleType[] acceptedModules()
 	{
-		return new CustomModules[] {CustomModules.WHITELIST, CustomModules.BLACKLIST};
+		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
 	}
 }

@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.CameraView;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
@@ -106,7 +106,7 @@ public class CameraMonitorScreen extends Screen {
 
 				TileEntity te = Minecraft.getInstance().world.getTileEntity(view.getLocation());
 
-				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(CustomModules.SMART)))
+				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
 				{
 					button.active = false;
 					cameraTEs[button.id - 1] = null;

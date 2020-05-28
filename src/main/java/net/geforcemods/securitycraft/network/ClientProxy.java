@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.EmptyRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
-import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
@@ -99,13 +98,13 @@ public class ClientProxy implements IProxy
 			{
 				for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
 				{
-					registerDisgiusedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+					registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
 				}
 			}
 
 			for(ResourceLocation facingBlock : facingBlocks)
 			{
-				registerDisgiusedModel(event, facingBlock, "facing=" + facing);
+				registerDisguisedModel(event, facingBlock, "facing=" + facing);
 			}
 		}
 
@@ -113,17 +112,17 @@ public class ClientProxy implements IProxy
 		{
 			for(ResourceLocation poweredBlock : poweredBlocks)
 			{
-				registerDisgiusedModel(event, poweredBlock, "powered=" + bool);
+				registerDisguisedModel(event, poweredBlock, "powered=" + bool);
 			}
 		}
 
 		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
 
-		registerDisgiusedModel(event, cageTrapRl, "deactivated=true");
-		registerDisgiusedModel(event, cageTrapRl, "deactivated=false");
+		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
+		registerDisguisedModel(event, cageTrapRl, "deactivated=false");
 	}
 
-	private static void registerDisgiusedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
+	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
 	{
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
@@ -223,7 +222,7 @@ public class ClientProxy implements IProxy
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecurityCamera, SecurityCameraTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
+		//ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -239,6 +238,7 @@ public class ClientProxy implements IProxy
 		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, KeycardReaderSetupScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
+		// ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
 		KeyBindings.init();
 	}
 

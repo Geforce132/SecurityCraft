@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,9 +25,9 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	public NonNullList<ItemStack> getInventory();
 
 	/**
-	 * @return An array of what {@link CustomModules} can be inserted into this inventory
+	 * @return An array of what {@link ModuleType} can be inserted into this inventory
 	 */
-	public CustomModules[] acceptedModules();
+	public ModuleType[] acceptedModules();
 
 	/**
 	 * @return The TileEntity this inventory is for
@@ -46,17 +46,17 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * Called whenever a module is inserted into a slot in the "Customize" GUI.
 	 *
 	 * @param stack The raw ItemStack being inserted.
-	 * @param module The CustomModules variant of stack.
+	 * @param module The ModuleType variant of stack.
 	 */
-	public default void onModuleInserted(ItemStack stack, CustomModules module) {}
+	public default void onModuleInserted(ItemStack stack, ModuleType module) {}
 
 	/**
 	 * Called whenever a module is removed from a slot in the "Customize" GUI.
 	 *
 	 * @param stack The raw ItemStack being removed.
-	 * @param module The CustomModules variant of stack.
+	 * @param module The ModuleType variant of stack.
 	 */
-	public default void onModuleRemoved(ItemStack stack, CustomModules module) {}
+	public default void onModuleRemoved(ItemStack stack, ModuleType module) {}
 
 	/**
 	 * Used for enabling differentiation between module slots and slots that are handled by IInventory.
@@ -208,24 +208,24 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	}
 
 	/**
-	 * @return A list of all {@link CustomModules} that can be inserted into this inventory
+	 * @return A list of all {@link ModuleType} that can be inserted into this inventory
 	 */
-	public default ArrayList<CustomModules> getAcceptedModules()
+	public default ArrayList<ModuleType> getAcceptedModules()
 	{
-		ArrayList<CustomModules> list = new ArrayList<>();
+		ArrayList<ModuleType> list = new ArrayList<>();
 
-		for(CustomModules module : acceptedModules())
+		for(ModuleType module : acceptedModules())
 			list.add(module);
 
 		return list;
 	}
 
 	/**
-	 * @return A List of all CustomModules currently inserted in the TileEntity.
+	 * @return A List of all ModuleType currently inserted in the TileEntity.
 	 */
-	public default ArrayList<CustomModules> getInsertedModules()
+	public default ArrayList<ModuleType> getInsertedModules()
 	{
-		ArrayList<CustomModules> modules = new ArrayList<>();
+		ArrayList<ModuleType> modules = new ArrayList<>();
 
 		for(ItemStack stack : getInventory())
 		{
@@ -238,10 +238,10 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 	/**
 	 * @param The module type of the stack to get
-	 * @return The ItemStack for the given CustomModules type.
+	 * @return The ItemStack for the given ModuleType type.
 	 * If there is no ItemStack for that type, returns ItemStack.EMPTY.
 	 */
-	public default ItemStack getModule(CustomModules module)
+	public default ItemStack getModule(ModuleType module)
 	{
 		NonNullList<ItemStack> modules = getInventory();
 
@@ -258,7 +258,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * Inserts a generic copy of the given module type into the customization inventory.
 	 * @param module The module type to insert
 	 */
-	public default void insertModule(CustomModules module)
+	public default void insertModule(ModuleType module)
 	{
 		NonNullList<ItemStack> modules = getInventory();
 
@@ -317,7 +317,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * Removes the first item with the given module type from the inventory.
 	 * @param module The module type to remove
 	 */
-	public default void removeModule(CustomModules module)
+	public default void removeModule(ModuleType module)
 	{
 		NonNullList<ItemStack> modules = getInventory();
 
@@ -332,7 +332,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param module The type to check if it is present in this inventory
 	 * @return true if the given module type is present in this inventory, false otherwise
 	 */
-	public default boolean hasModule(CustomModules module)
+	public default boolean hasModule(ModuleType module)
 	{
 		NonNullList<ItemStack> modules = getInventory();
 

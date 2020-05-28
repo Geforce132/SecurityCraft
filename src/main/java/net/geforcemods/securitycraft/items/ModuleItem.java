@@ -6,7 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.containers.ModuleItemInventory;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -35,21 +35,21 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class ModuleItem extends Item{
 
 	public static final int MAX_PLAYERS = 50;
-	private final CustomModules module;
+	private final ModuleType module;
 	private final boolean nbtCanBeModified;
 	private boolean canBeCustomized;
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
-	public ModuleItem(CustomModules module, boolean nbtCanBeModified){
+	public ModuleItem(ModuleType module, boolean nbtCanBeModified){
 		this(module, nbtCanBeModified, false, 0, 0);
 	}
 
-	public ModuleItem(CustomModules module, boolean nbtCanBeModified, boolean canBeCustomized){
+	public ModuleItem(ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized){
 		this(module, nbtCanBeModified, canBeCustomized, 0, 0);
 	}
 
-	public ModuleItem(CustomModules module, boolean nbtCanBeModified, boolean canBeCustomized, int itemAddons, int blockAddons){
+	public ModuleItem(ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized, int itemAddons, int blockAddons){
 		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
@@ -65,9 +65,9 @@ public class ModuleItem extends Item{
 		{
 			if(canBeCustomized())
 			{
-				if(world.isRemote && (module == CustomModules.WHITELIST || module == CustomModules.BLACKLIST))
+				if(world.isRemote && (module == ModuleType.WHITELIST || module == ModuleType.BLACKLIST))
 					SecurityCraft.proxy.displayEditModuleGui(stack);
-				else if(!world.isRemote && module == CustomModules.DISGUISE)
+				else if(!world.isRemote && module == ModuleType.DISGUISE)
 				{
 					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 						@Override
@@ -129,7 +129,7 @@ public class ModuleItem extends Item{
 		}
 	}
 
-	public CustomModules getModule() {
+	public ModuleType getModule() {
 		return module;
 	}
 

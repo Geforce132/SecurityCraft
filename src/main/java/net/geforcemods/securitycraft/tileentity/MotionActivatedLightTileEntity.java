@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -51,12 +51,12 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public double getAttackRange() {
-		return searchRadiusOption.asDouble();
+		return searchRadiusOption.get();
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[] {};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {};
 	}
 
 	@Override

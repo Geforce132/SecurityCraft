@@ -4,9 +4,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -31,16 +32,12 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		public void toggle() {
 			super.toggle();
 
-			if(getValue()) {
-				BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, true);
-				world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
-			}
-			else {
-				BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, false);
-				world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
-			}
+			BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, get());
+			world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 		}
 	};
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private IntOption signalLength = new IntOption(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeypadTileEntity()
 	{
@@ -80,7 +77,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeypadBlock)
-			KeypadBlock.activate(world, pos);
+			KeypadBlock.activate(world, pos, signalLength.get());
 	}
 
 	@Override
@@ -153,12 +150,22 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.BLACKLIST, CustomModules.DISGUISE};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST, ModuleType.DISGUISE};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ isAlwaysActive };
+		return new Option[]{ isAlwaysActive, sendMessage, signalLength };
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.get();
 	}
 }

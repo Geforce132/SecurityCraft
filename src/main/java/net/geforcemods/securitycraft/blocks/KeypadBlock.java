@@ -5,7 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -47,11 +47,11 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	{
 		if(!world.isRemote)
 		{
-			if(state.get(POWERED) || ModuleUtils.checkForModule(world, pos, player, CustomModules.BLACKLIST))
+			if(state.get(POWERED) || ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 				return ActionResultType.FAIL;
 
-			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST))
-				activate(world, pos);
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
+				activate(world, pos, ((KeypadTileEntity)world.getTileEntity(pos)).getSignalLength());
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
@@ -59,10 +59,10 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 		return ActionResultType.SUCCESS;
 	}
 
-	public static void activate(World world, BlockPos pos){
+	public static void activate(World world, BlockPos pos, int signalLength){
 		BlockUtils.setBlockProperty(world, pos, POWERED, true);
 		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), 60);
+		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), signalLength);
 	}
 
 	@Override

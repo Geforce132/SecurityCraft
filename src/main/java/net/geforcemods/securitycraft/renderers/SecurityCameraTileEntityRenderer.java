@@ -58,7 +58,7 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 		}
 
 		matrix.rotate(POSITIVE_X_180);
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = te.cameraRotation;
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
 		modelSecurityCamera.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(cameraTexture)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

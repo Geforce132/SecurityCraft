@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -35,7 +35,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 			{
 				AlarmTileEntity te = (AlarmTileEntity) world.getTileEntity(pos);
 
-				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.asInteger(), 2)))
+				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 				{
 					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
 				}
@@ -89,9 +89,9 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public CustomModules[] acceptedModules()
+	public ModuleType[] acceptedModules()
 	{
-		return new CustomModules[]{};
+		return new ModuleType[]{};
 	}
 
 	@Override

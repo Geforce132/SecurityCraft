@@ -4,10 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.misc.CustomModules;
-import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -20,6 +18,7 @@ import net.minecraftforge.items.SlotItemHandler;
 public class CustomizeBlockContainer extends Container{
 
 	public IModuleInventory moduleInv;
+	private final int maxSlots;
 
 	public CustomizeBlockContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.cTypeCustomizeBlock, windowId);
@@ -44,62 +43,78 @@ public class CustomizeBlockContainer extends Container{
 			addSlot(new SlotItemHandler(moduleInv, slotId++, 70, 20));
 			addSlot(new SlotItemHandler(moduleInv, slotId++, 88, 20));
 			addSlot(new SlotItemHandler(moduleInv, slotId++, 106, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 5){
+			addSlot(new SlotItemHandler(moduleInv, slotId++, 34, 20));
+			addSlot(new SlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlot(new SlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlot(new SlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlot(new SlotItemHandler(moduleInv, slotId++, 106, 20));
 		}
 
-		for(int i = 0; i < 3; i++)
-			for(int j = 0; j < 9; ++j)
-				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-
-		for(int i = 0; i < 9; i++)
-			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+		maxSlots = 36 + moduleInv.getMaxNumberOfModules();
 	}
 
 	@Override
 	public ItemStack transferStackInSlot(PlayerEntity player, int index)
 	{
-		ItemStack slotStackCopy = ItemStack.EMPTY;
+		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack())
+		if(slot != null && slot.getHasStack())
 		{
 			ItemStack slotStack = slot.getStack();
+			boolean isModule = slotStack.getItem() instanceof ModuleItem;
 
-			if(!(slotStack.getItem() instanceof ModuleItem))
-				return ItemStack.EMPTY;
+			copy = slotStack.copy();
 
-			slotStackCopy = slotStack.copy();
-			moduleInv.onModuleRemoved(slotStack, CustomModules.getModuleFromStack(slotStack));
-
-			if(moduleInv instanceof CustomizableTileEntity)
-				((CustomizableTileEntity)moduleInv).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ slotStack, CustomModules.getModuleFromStack(slotStack) }, (CustomizableTileEntity)moduleInv);
-
-			if(moduleInv instanceof SecurityCameraTileEntity)
+			if(index >= 36 && index <= maxSlots) //module slots
 			{
-				SecurityCameraTileEntity cam = (SecurityCameraTileEntity)moduleInv;
+				if(!mergeItemStack(slotStack, 0, 36, false)) //main inventory + hotbar
+				{
+					moduleInv.onModuleRemoved(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
 
-				cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).get(SecurityCameraBlock.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock());
+					if(moduleInv instanceof CustomizableTileEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, slotStack, (CustomizableTileEntity)moduleInv);
+
+					return ItemStack.EMPTY;
+				}
 			}
-
-			if (index < moduleInv.getSlots())
+			else if(index >= 27 && index <= 35) //hotbar
 			{
-				if (!mergeItemStack(slotStack, 0, 35, true))
+				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
+				{
+					moduleInv.onModuleInserted(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
+
+					if(moduleInv instanceof CustomizableTileEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, slotStack, (CustomizableTileEntity)moduleInv);
+
+					return ItemStack.EMPTY;
+				}
+				else if(!mergeItemStack(slotStack, 0, 27, false)) //main inventory
 					return ItemStack.EMPTY;
 			}
-			else if (slotStack.getItem() instanceof ModuleItem && moduleInv.getAcceptedModules().contains(CustomModules.getModuleFromStack(slotStack)) && !mergeItemStack(slotStack, 0, moduleInv.getSlots(), false))
-				return ItemStack.EMPTY;
+			else if(index <= 26) //main inventory
+			{
+				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
+				{
+					moduleInv.onModuleInserted(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
 
-			if (slotStack.getCount() == 0)
+					if(moduleInv instanceof CustomizableTileEntity)
+						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, slotStack, (CustomizableTileEntity)moduleInv);
+
+					return ItemStack.EMPTY;
+				}
+				else if(!mergeItemStack(slotStack, 27, 36, false)) //hotbar
+					return ItemStack.EMPTY;
+			}
+
+			if(slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
-
-			if(slotStack.getCount() == slotStackCopy.getCount())
-				return ItemStack.EMPTY;
-
-			slot.onTake(player, slotStack);
 		}
 
-		return slotStackCopy;
+		return copy;
 	}
 
 	@Override

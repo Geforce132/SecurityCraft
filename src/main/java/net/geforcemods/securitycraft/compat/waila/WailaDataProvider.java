@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 @WailaPlugin(SecurityCraft.MODID)
 public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEntityComponentProvider {
@@ -91,8 +92,8 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			if(!((IModuleInventory) te).getInsertedModules().isEmpty())
 				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
-			for(CustomModules module : ((IModuleInventory) te).getInsertedModules())
-				body.add(new StringTextComponent("- " + module.getName()));
+			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
+				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText()));
 		}
 
 		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
@@ -125,10 +126,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
 				if (!sentry.getWhitelistModule().isEmpty())
-					body.add(new StringTextComponent("- " + CustomModules.WHITELIST.getName()));
+					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText()));
 
 				if (!sentry.getDisguiseModule().isEmpty())
-					body.add(new StringTextComponent("- " + CustomModules.DISGUISE.getName()));
+					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
 			}
 		}
 

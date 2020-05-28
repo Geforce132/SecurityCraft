@@ -5,15 +5,16 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.ForgeHooks;
 
 public class SCCommand {
@@ -37,7 +38,10 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> help()
 	{
 		return Commands.literal("help").executes(ctx -> {
-			ctx.getSource().asPlayer().addItemStackToInventory(new ItemStack(SCContent.SC_MANUAL.get()));
+			ctx.getSource().asPlayer().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
+					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getTranslationKey()),
+					new TranslationTextComponent(Items.BOOK.getTranslationKey()),
+					new TranslationTextComponent(Items.IRON_BARS.getTranslationKey())));
 			return 0;
 		});
 	}
@@ -45,7 +49,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> bug()
 	{
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "http://goo.gl/forms/kfRpvvQzfl", TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "https://discord.gg/U8DvBAW", TextFormatting.GOLD);
 			return 0;
 		});
 	}

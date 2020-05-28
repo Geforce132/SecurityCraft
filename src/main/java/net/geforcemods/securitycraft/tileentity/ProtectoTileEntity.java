@@ -4,17 +4,17 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.server.ServerWorld;
 
 public class ProtectoTileEntity extends CustomizableTileEntity {
 
@@ -25,15 +25,13 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean attackEntity(Entity entity){
-		if (entity instanceof LivingEntity && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, CustomModules.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))) ||
-					entity instanceof ZombiePigmanEntity ||
-					(entity instanceof CreeperEntity && ((CreeperEntity) entity).isCharged()))
+		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
+			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase())))))
 				return false;
 
-			LightningBoltEntity lightning = new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false);
+			if(!world.isRemote)
+				((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false));
 
-			world.addEntity(lightning);
 			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);
 			return true;
 		}
@@ -65,8 +63,8 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.WHITELIST};
 	}
 
 	@Override
@@ -75,13 +73,13 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, CustomModules module)
+	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, CustomModules module)
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
 		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}

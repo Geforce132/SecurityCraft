@@ -109,4 +109,9 @@ public class TaserItem extends Item {
 				par1ItemStack.setDamage(par1ItemStack.getDamage() - 1);
 	}
 
+	@Override
+	public boolean isEnchantable(ItemStack stack)
+	{
+		return false;
+	}
 }

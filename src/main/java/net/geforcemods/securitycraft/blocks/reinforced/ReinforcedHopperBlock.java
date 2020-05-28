@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -117,7 +117,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 			{
 				IModuleInventory inv = (IModuleInventory)te;
 
-				if(inv.hasModule(CustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(CustomModules.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+				if(inv.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
 					return true;
 			}
 

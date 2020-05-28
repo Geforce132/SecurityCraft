@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -30,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.ModList;
 
@@ -88,8 +89,8 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						for(CustomModules module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(TextFormatting.GRAY + "- " + module.getName());
+						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText());
 					}
 				}
 
@@ -128,10 +129,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.WHITELIST.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText());
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + CustomModules.DISGUISE.getName());
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 					}
 
 					if (mode == SentryEntity.SentryMode.AGGRESSIVE)

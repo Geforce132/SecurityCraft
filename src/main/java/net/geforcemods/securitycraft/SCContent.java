@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.blocks.LoggerBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
-import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -72,6 +71,7 @@ import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
@@ -101,7 +101,7 @@ import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.items.UniversalBlockRemoverItem;
 import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
@@ -211,7 +211,8 @@ public class SCContent
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(Material.MISCELLANEOUS, 1F));
 	public static final RegistryObject<Block> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock());
 	public static final RegistryObject<Block> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock());
-	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(Block.Properties.create(Material.IRON)));
+	// @HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(Block.Properties.create(Material.IRON).tickRandomly()));
+
 	//block mines
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> STONE_MINE = BLOCKS.register("stone_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.STONE, 1.5F));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> DIRT_MINE = BLOCKS.register("dirt_mine", () -> new BaseFullMineBlock(Material.EARTH, SoundType.GROUND, Blocks.DIRT, 0.5F));
@@ -532,7 +533,6 @@ public class SCContent
 	@OwnableTE public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(SoundType.METAL, Material.IRON, Blocks.IRON_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new BaseReinforcedBlock(SoundType.PLANT, Material.EARTH, Blocks.GRASS_PATH));
 
-
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());
 	public static final RegistryObject<FlowingFluid> FAKE_WATER = FLUIDS.register("fake_water", () -> new FakeWaterFluid.Source());
@@ -553,7 +553,7 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new BaseKeycardItem(4));
 	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new BaseKeycardItem(5));
 	@HasManualPage public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem());
-	@HasManualPage(specialInfoKey="help.securitycraft.keypad_chest.info") public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
+	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new BaseKeycardItem(3));
 	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem());
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem());
@@ -579,13 +579,13 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new Item(new Item.Properties().maxStackSize(1).defaultMaxDamage(476).group(SecurityCraft.groupSCTechnical)));
 
 	//modules
-	@HasManualPage public static final RegistryObject<ModuleItem> BLACKLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(CustomModules.BLACKLIST, true, true));
-	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(CustomModules.DISGUISE, false, true, 0, 1));
-	@HasManualPage public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(CustomModules.HARMING, false));
-	@HasManualPage public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(CustomModules.REDSTONE, false));
-	@HasManualPage public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(CustomModules.SMART, false));
-	@HasManualPage public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(CustomModules.STORAGE, false));
-	@HasManualPage public static final RegistryObject<ModuleItem> WHITELIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(CustomModules.WHITELIST, true, true));
+	@HasManualPage public static final RegistryObject<ModuleItem> BLACKLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(ModuleType.BLACKLIST, true, true));
+	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(ModuleType.DISGUISE, false, true, 0, 1));
+	@HasManualPage public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(ModuleType.HARMING, false));
+	@HasManualPage public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(ModuleType.REDSTONE, false));
+	@HasManualPage public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(ModuleType.SMART, false));
+	@HasManualPage public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(ModuleType.STORAGE, false));
+	@HasManualPage public static final RegistryObject<ModuleItem> WHITELIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(ModuleType.WHITELIST, true, true));
 
 	//tile entity types
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
@@ -674,6 +674,8 @@ public class SCContent
 	public static ContainerType<InventoryScannerContainer> cTypeInventoryScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
 	public static ContainerType<KeypadFurnaceContainer> cTypeKeypadFurnace;
+	@ObjectHolder(SecurityCraft.MODID + ":projector")
+	public static ContainerType<ProjectorContainer> cTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":check_password")
 	public static ContainerType<GenericTEContainer> cTypeCheckPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":set_password")

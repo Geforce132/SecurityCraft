@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,7 +21,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
 
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
-	private String scanType = "check";
 	private boolean isProvidingPower;
 	private int cooldown;
 
@@ -56,13 +55,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 				inventoryContents.set(slot, ItemStack.read(stackTag));
 		}
 
-
 		if(tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
-
-		if(tag.contains("type"))
-			scanType = tag.getString("type");
-
 	}
 
 	@Override
@@ -82,7 +76,6 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
-		tag.putString("type", scanType);
 		return tag;
 	}
 
@@ -226,16 +219,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		return true;
 	}
 
-	public String getScanType(){
-		return scanType;
-	}
-
-	public void setScanType(String scanType){
-		this.scanType = scanType;
-	}
-
 	public boolean shouldProvidePower() {
-		return (scanType.equals("redstone") && isProvidingPower) ? true : false;
+		return hasModule(ModuleType.REDSTONE) && isProvidingPower;
 	}
 
 	public void setShouldProvidePower(boolean isProvidingPower) {
@@ -255,7 +240,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, CustomModules module)
+	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
 		super.onModuleInserted(stack, module);
 
@@ -266,7 +251,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public void onModuleRemoved(ItemStack stack, CustomModules module)
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
 		super.onModuleRemoved(stack, module);
 
@@ -277,8 +262,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public CustomModules[] acceptedModules() {
-		return new CustomModules[]{CustomModules.WHITELIST, CustomModules.SMART, CustomModules.STORAGE, CustomModules.DISGUISE};
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE};
 	}
 
 	@Override

@@ -17,7 +17,7 @@ import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.CustomModules;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
@@ -282,12 +282,19 @@ public class SCEventHandler {
 			PlayerEntity player = (PlayerEntity)event.getEntityMounting();
 			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
 
-			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(CustomModules.SMART))
+			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
 			{
 				((SecurityCameraTileEntity)te).lastPitch = player.rotationPitch;
 				((SecurityCameraTileEntity)te).lastYaw = player.rotationYaw;
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onRightClickItem(PlayerInteractEvent.RightClickItem event)
+	{
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getItemStack().getItem() != SCContent.CAMERA_MONITOR.get())
+			event.setCanceled(true);
 	}
 
 	private static ItemStack fillBucket(World world, BlockPos pos){

@@ -40,7 +40,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
 			new ResourceLocation("securitycraft:textures/gui/container/customize3.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize4.png")
+			new ResourceLocation("securitycraft:textures/gui/container/customize4.png"),
+			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
@@ -65,7 +66,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for(int i = 0; i < moduleInv.getMaxNumberOfModules(); i++){
 			int column = i % numberOfColumns;
 
-			descriptionButtons[i] = new PictureButton(i, guiLeft + 125 + column * 25, (guiTop + 18) + (Math.floorDiv(i, numberOfColumns) * 25), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
+			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
 			addButton(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}
@@ -82,9 +83,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 				if(option instanceof ISlider && option.isSlider())
 				{
 					if(option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).getValue(), true, false, (ISlider)option);
+						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option);
 					else if(option instanceof IntOption)
-						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).getValue(), true, false, (ISlider)option);
+						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option);
 
 					optionButtons[i].setFGColor(14737632);
 				}

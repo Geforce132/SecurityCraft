@@ -1,10 +1,23 @@
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
+- Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
+- Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
+
+--------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
+
+- API: Option is now abstract and some methods have been changed around for cleaner code
+- Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
+- Fix: New customizable options don't correctly load for existing blocks
+- Fix: Retinal Scanner crash
+- Fix: Camera dis-/mounting doesn't work correctly
+
+--------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
+
 DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
-- New: All reinforced blocks are now immune to the ender dragon and the wither (added them to the DRAGON_IMMUNE and WITHER_IMMUNE block tags)
+- New: All reinforced blocks are now immune to the ender dragon and the wither (added them to the dragon_immune and wither_immune block tags)
 - New: Trophy System now destroys shulker bullets, dragon fireballs and wither skulls (Thanks Redstone_Dubstep!)
 - New: Reinforced Redstone Lamp
 - New: Reinforced Blue Ice (Thanks Redstone_Dubstep!)
@@ -18,6 +31,10 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - New: The buttons in the Whitelist/Blacklist module screen activate and deactivate depending on the text field input and the amount of stored players (Thanks Redstone_Dubstep!)
 - New: HWYLA and TOP now show a Sentry's owner, its current mode, and the equipped modules (Thanks Redstone_Dubstep!)
 - New: Config option to turn off the recipes of all SecurityCraft explosives
+- New: Option in the Universal Block Modifier GUI of the Keypad and Keycard Reader to turn off messages for whitelisted/blacklisted players
+- New: Added relevant blocks to the bamboo_plantable_on, impermeable, and doors block tags
+- New: Configuration option to turn off showing the owner's face on a retinal scanner
+- New: Customization option to change how long the Keypad emits a redstone signal when the correct code has been inserted
 - Change: Bouncing Betty now jumps as high as the player's head (Thanks Redstone_Dubstep!)
 - Change: Zooming when viewing a Security Camera is no longer restriced to only three zoom levels
 - Change: Creepers, Ocelots, and Endermen can now trigger Mines
@@ -26,6 +43,9 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Change: Reinforced Doors, Fence gates and trapdoors have a greater range to detect nearby active reinforced blocks (Thanks Redstone_Dubstep!)
 - Change: Sentries now attack flying mobs (except bats), Slimes, Magma Slimes, Shulkers and the Ender Dragon (Thanks Redstone_Dubstep!)
 - Change: Crystal Quartz Texture (Thanks Redstone_Dubstep!)
+- Change: The Protecto can now attack charged creepers and zombie pigmen
+- Change: Overhauled the inventory scanner. You can now choose what it does by inserting a storage module, redstone module, or both
+- Change: /sc help no longer gives a free SecurityCraft Manual
 - Fix: Crash when disguising a block with itself
 - Fix: Localization for camera keybindings is incorrect
 - Fix: Incorrect laser removal in creative mode
@@ -65,6 +85,18 @@ DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Pl
 - Fix: Camera Monitor crash
 - Fix: Hoppers/pipes/etc. can extract items out of a password-protected chest/furnace
 - Fix: Password-protected Furnace does not work at all
+- Fix: Reinforced Glass under water doesn't look like vanilla glass under water
+- Fix: Lightning spawned by the Protecto does not show up
+- Fix: The Protecto can attack Sentries
+- Fix: Shift-clicking in customization gui does not work properly
+- Fix: WAILA/TOP/Admin Tool show english module names instead of the translated counterpart
+- Fix: Auth server related issue due to Retinal Scanner requests
+- Fix: The Taser can be enchanted
+- Fix: Message when changing a Sentry's owner gets sent twice
+- Fix: Changing the owner of a Sentry does not correctly set the owner/uuid
+- Fix: White-/Blacklist message of Keycard Reader getting sent twice
+- Fix: The Scanner Door and Reinforced Iron Door have no place sound
+- Fix: Can use other items than a Camera Monitor when mounted to a Security Camera
 - Misc.: Several language file improvements, mainly French (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.17 of SecurityCraft--------------------------

@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.misc.CustomModules;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -121,7 +121,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
-		if(!world.isRemote && player.getRidingEntity() == null)
+		if(world.isRemote && player.getRidingEntity() == null)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted").replace("#w", KeyBinding.getDisplayString("key.forward").get().toUpperCase()).replace("#a", KeyBinding.getDisplayString("key.left").get().toUpperCase()).replace("#s", KeyBinding.getDisplayString("key.back").get().toUpperCase()).replace("#d", KeyBinding.getDisplayString("key.right").get().toUpperCase()).replace("#i", KeyBindings.cameraZoomIn.getLocalizedName()).replace("#o", KeyBindings.cameraZoomOut.getLocalizedName()), TextFormatting.GREEN);
 
 		if(player.getRidingEntity() instanceof SecurityCameraEntity){
@@ -165,7 +165,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
+		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
@@ -173,7 +173,7 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	@Override
 	public int getStrongPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(CustomModules.REDSTONE))
+		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
