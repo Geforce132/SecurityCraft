@@ -98,13 +98,13 @@ public class ClientProxy implements IProxy
 			{
 				for(ResourceLocation facingPoweredBlock : facingPoweredBlocks)
 				{
-					registerDisgiusedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
+					registerDisguisedModel(event, facingPoweredBlock, "facing=" + facing + ",powered=" + bool);
 				}
 			}
 
 			for(ResourceLocation facingBlock : facingBlocks)
 			{
-				registerDisgiusedModel(event, facingBlock, "facing=" + facing);
+				registerDisguisedModel(event, facingBlock, "facing=" + facing);
 			}
 		}
 
@@ -112,17 +112,17 @@ public class ClientProxy implements IProxy
 		{
 			for(ResourceLocation poweredBlock : poweredBlocks)
 			{
-				registerDisgiusedModel(event, poweredBlock, "powered=" + bool);
+				registerDisguisedModel(event, poweredBlock, "powered=" + bool);
 			}
 		}
 
 		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
 
-		registerDisgiusedModel(event, cageTrapRl, "deactivated=true");
-		registerDisgiusedModel(event, cageTrapRl, "deactivated=false");
+		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
+		registerDisguisedModel(event, cageTrapRl, "deactivated=false");
 	}
 
-	private static void registerDisgiusedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
+	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
 	{
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
