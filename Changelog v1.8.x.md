@@ -2,6 +2,7 @@
 
 - Fix: Universal Block Remover sends two messages when the right-clicked block cannot be removed
 - Fix: Mine explodes when trying to change its owner
+- Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 

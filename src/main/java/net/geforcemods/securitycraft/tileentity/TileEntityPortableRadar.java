@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
@@ -74,6 +75,13 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	public void attackFailed()
 	{
 		if(hasModule(EnumModuleType.REDSTONE))
+			BlockPortableRadar.togglePowerOutput(world, pos, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
+	{
+		if(module == EnumModuleType.REDSTONE)
 			BlockPortableRadar.togglePowerOutput(world, pos, false);
 	}
 
