@@ -120,7 +120,9 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	{
 		if(!world.isRemote)
 		{
-			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST))
+			if(ModuleUtils.checkForModule(world, pos, player, CustomModules.BLACKLIST))
+				return ActionResultType.FAIL;
+			else if(ModuleUtils.checkForModule(world, pos, player, CustomModules.WHITELIST))
 				activate(world, pos, player);
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
 				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);

@@ -306,6 +306,6 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public CustomModules[] acceptedModules()
 	{
-		return new CustomModules[] {CustomModules.WHITELIST};
+		return new CustomModules[] {CustomModules.WHITELIST, CustomModules.BLACKLIST};
 	}
 }

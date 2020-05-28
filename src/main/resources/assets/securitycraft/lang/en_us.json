@@ -446,7 +446,7 @@
 	"help.securitycraft.reinforced_glass_pane.info": "The reinforced glass pane is the same as a vanilla glass, except only the person who placed it down can destroy it using the universal block remover.",
 	"help.securitycraft.reinforced_iron_bars.info": "The reinforced iron bars are the same as a vanilla iron bars, except only the person who placed them down can destroy them using the universal block remover.",
 	"help.securitycraft.electrified_iron_fence.info": "The electrified iron fence acts the same as a vanilla fence, except it is unbreakable, and will hurt anyone but the owner when they get in contact with it.",
-	"help.securitycraft.ims.info": "The I.M.S, or Intelligent Munitions System, is a refillable mine holding up to 4 Bouncing Betties that will target players and/or hostile mobs which enter its firing radius. Once a mine is launched, it will track down the entity and explode. If mines are missing from the I.M.S., rightclick it with more Bouncing Betties to refill.",
+	"help.securitycraft.ims.info": "The I.M.S., or Intelligent Munitions System, is a refillable mine holding up to 4 Bouncing Betties that will target players and/or hostile mobs which enter its firing radius. Once a mine is launched, it will track down the entity and explode. If mines are missing from the I.M.S., rightclick it with more Bouncing Betties to refill.",
 	"help.securitycraft.protecto.info": "The protecto, inspired by the enemy from the game \"Megaman: Battle Network 2\" made by Capcom, will attack any mob in a 10-block radius with lightning bolts every 10 seconds while it's raining or snowing with a clear view of the sky.",
 	"help.securitycraft.motion_activated_light.info": "The motion-activated light will emit a light, similar to a redstone lamp, when a player is within a certain range of the block (configurable).",
 	"help.securitycraft.trophy_system.info": "The trophy system, inspired by the gadget first seen in \"Call of Duty: Modern Warfare 3\" published by Activision, targets enemy arrows and fireballs and will destroy them from range after a half-second charge time.",
@@ -705,7 +705,7 @@
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",
 	"itemGroup.securitycraft.technical": "SecurityCraft: Technical",
 
-	"module.securitycraft.ims.whitelist_module.description": "Adding a whitelist module to an I.M.S. will allow the whitelisted players to walk into the range of the I.M.S without being targeted.",
+	"module.securitycraft.ims.whitelist_module.description": "Adding a whitelist module to an I.M.S. will allow the whitelisted players to walk into the range of the I.M.S. without being targeted.",
 	"module.securitycraft.inventory_scanner.whitelist_module.description": "Adding a whitelist module to an inventory scanner will allow whitelisted players to walk through the scanning field without checking their inventory.",
 	"module.securitycraft.inventory_scanner.smart_module.description": "Adding a smart module to an inventory scanner will make the scanner check for enchantments and other metadata changes when scanning inventories.",
 	"module.securitycraft.inventory_scanner.storage_module.description": "Adding a storage module will allow the scannners to store the items it deletes in a built-in inventory.",
@@ -746,7 +746,9 @@
 	"module.securitycraft.username_logger.disguise_module.description": "Adding a disguise module to a username logger will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.cage_trap.disguise_module.description": "Adding a disguise module to a cage trap will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 	"module.securitycraft.keypad_chest.whitelist_module.description": "Adding a whitelist module to a Password-protected Chest will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by whitelisted players can extract items from the chest.",
+	"module.securitycraft.keypad_chest.blacklist_module.description": "Adding a blacklist module to a Password-protected Chest will ban players from interacting with the block.",
 	"module.securitycraft.keypad_furnace.whitelist_module.description": "Adding a whitelist module to a Password-protected Furnace will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by whitelisted players can extract items from the furnace.",
+	"module.securitycraft.keypad_furnace.blacklist_module.description": "Adding a blacklist module to a Password-protected Furnace will ban players from interacting with the block.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Is codebreaker allowed?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Can the codebreaker be used?",
