@@ -45,48 +45,51 @@ public class ItemUniversalBlockRemover extends Item {
 				return EnumActionResult.FAIL;
 			}
 
-			if(block == SCContent.laserBlock) {
-				CustomizableSCTE te = (CustomizableSCTE)world.getTileEntity(pos);
+			if(!world.isRemote)
+			{
+				if(block == SCContent.laserBlock) {
+					CustomizableSCTE te = (CustomizableSCTE)world.getTileEntity(pos);
 
-				for(ItemStack module : te.modules)
-				{
-					if(!module.isEmpty())
-						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {module, ((ItemModule)module.getItem()).getModule()}, te);
-				}
-
-				world.destroyBlock(pos, true);
-				BlockLaserBlock.destroyAdjacentLasers(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player);
-			} else if(block == SCContent.cageTrap && world.getBlockState(pos).getValue(BlockCageTrap.DEACTIVATED)) {
-				BlockPos originalPos = pos;
-				BlockPos middlePos = originalPos.up(4);
-
-				new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
-					TileEntity te = w.getTileEntity(p);
-
-					if(te instanceof IOwnable && ((IOwnable) te).getOwner().equals(o)) {
-						Block b = w.getBlockState(p).getBlock();
-
-						if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
-							w.destroyBlock(p, false);
+					for(ItemStack module : te.modules)
+					{
+						if(!module.isEmpty())
+							te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {module, ((ItemModule)module.getItem()).getModule()}, te);
 					}
-				});
 
-				world.destroyBlock(originalPos, false);
-			} else {
-				if(block == SCContent.inventoryScanner)
-				{
-					TileEntityInventoryScanner te = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+					world.destroyBlock(pos, true);
+					BlockLaserBlock.destroyAdjacentLasers(world, pos);
+					player.inventory.getCurrentItem().damageItem(1, player);
+				} else if(block == SCContent.cageTrap && world.getBlockState(pos).getValue(BlockCageTrap.DEACTIVATED)) {
+					BlockPos originalPos = pos;
+					BlockPos middlePos = originalPos.up(4);
 
-					if(te != null)
-						te.modules.clear();
+					new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
+						TileEntity te = w.getTileEntity(p);
+
+						if(te instanceof IOwnable && ((IOwnable) te).getOwner().equals(o)) {
+							Block b = w.getBlockState(p).getBlock();
+
+							if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+								w.destroyBlock(p, false);
+						}
+					});
+
+					world.destroyBlock(originalPos, false);
+				} else {
+					if(block == SCContent.inventoryScanner)
+					{
+						TileEntityInventoryScanner te = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+						if(te != null)
+							te.modules.clear();
+					}
+					else if(block instanceof IBlockWithNoDrops)
+						Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops)block).getUniversalBlockRemoverDrop());
+
+					world.destroyBlock(pos, true);
+					world.removeTileEntity(pos);
+					player.inventory.getCurrentItem().damageItem(1, player);
 				}
-				else if(block instanceof IBlockWithNoDrops)
-					Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops)block).getUniversalBlockRemoverDrop());
-
-				world.destroyBlock(pos, true);
-				world.removeTileEntity(pos);
-				player.inventory.getCurrentItem().damageItem(1, player);
 			}
 
 			return EnumActionResult.SUCCESS;
