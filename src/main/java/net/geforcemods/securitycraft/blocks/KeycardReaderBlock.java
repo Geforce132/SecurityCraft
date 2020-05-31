@@ -47,16 +47,17 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player) {
-		if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST) || ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+		if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 			return;
 
+		boolean whitelisted = ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST);
 		int requiredLevel = -1;
 		int cardLvl = ((BaseKeycardItem) stack.getItem()).getKeycardLvl();
 
 		if(((KeycardReaderTileEntity)world.getTileEntity(pos)).getPassword() != null)
 			requiredLevel = Integer.parseInt(((KeycardReaderTileEntity)world.getTileEntity(pos)).getPassword());
 
-		if((!((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel <= cardLvl || ((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel == cardLvl)){
+		if(whitelisted || (!((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel <= cardLvl || ((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard() && requiredLevel == cardLvl)){
 			if(cardLvl == 6 && stack.getTag() != null && !player.isCreative()){
 				stack.getTag().putInt("Uses", stack.getTag().getInt("Uses") - 1);
 
