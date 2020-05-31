@@ -66,9 +66,14 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	{
 		super.render(mouseX, mouseY, partialTicks);
 
-		for(int i = 0; i < hoverCheckers.length; i++)
-			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
-				this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth("test", 150), mouseX, mouseY, font);
+		if(hoverCheckers[0] != null && hoverCheckers[0].checkHover(mouseX, mouseY))
+			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.width.description"), 150), mouseX, mouseY, font);
+
+		if(hoverCheckers[1] != null && hoverCheckers[1].checkHover(mouseX, mouseY))
+			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY, font);
+
+		if(hoverCheckers[2] != null && hoverCheckers[2].checkHover(mouseX, mouseY))
+			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY, font);
 	}
 
 	@Override
