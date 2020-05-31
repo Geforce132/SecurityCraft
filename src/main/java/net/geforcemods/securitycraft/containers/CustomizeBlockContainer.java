@@ -26,6 +26,13 @@ public class CustomizeBlockContainer extends Container{
 
 		int slotId = 0;
 
+		for(int i = 0; i < 3; i++)
+			for(int j = 0; j < 9; ++j)
+				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+
+		for(int i = 0; i < 9; i++)
+			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+
 		if(moduleInv.enableHack())
 			slotId = 100;
 
@@ -69,7 +76,7 @@ public class CustomizeBlockContainer extends Container{
 
 			if(index >= 36 && index <= maxSlots) //module slots
 			{
-				if(!mergeItemStack(slotStack, 0, 36, false)) //main inventory + hotbar
+				if(!mergeItemStack(slotStack, 0, 36, true)) //main inventory + hotbar
 				{
 					moduleInv.onModuleRemoved(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
 
