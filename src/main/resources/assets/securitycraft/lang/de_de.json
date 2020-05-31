@@ -851,6 +851,10 @@
 	"option.securitycraft.motion_activated_light.searchRadius.description": "Wie weit entfernt erkennt das Licht einen Mob/Spieler?",
 	"option.securitycraft.keycard_reader.sendMessage": "Nachricht: #",
 	"option.securitycraft.keycard_reader.sendMessage.description": "Sendet dieser Schlüsselkartenleser eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
+	"option.securitycraft.keypad_chest.sendMessage": "Nachricht: #",
+	"option.securitycraft.keypad_chest.sendMessage.description": "Sendet diese Truhe eine Nachricht, wenn sie aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
+	"option.securitycraft.keypad_furnace.sendMessage": "Nachricht: #",
+	"option.securitycraft.keypad_furnace.sendMessage.description": "Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",
