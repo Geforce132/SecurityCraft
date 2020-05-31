@@ -741,6 +741,10 @@
 	"module.securitycraft.reinforced_lever.whitelist_module.description": "Ein Whitelist-Modul in einem Verstärkten Hebel erlaubt es gewhitelisteten Spielern, diesen zu aktivieren.",
 	"module.securitycraft.username_logger.disguise_module.description": "Wenn ein Tarnmodul zu einem Nutzernamen-Protokollierer hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
 	"module.securitycraft.cage_trap.disguise_module.description": "Wenn ein Tarnmodul zu einer Käfigfalle hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.",
+	"module.securitycraft.keypad_chest.whitelist_module.description": "Ein Whitelist-Modul in einer Passwort gesicherten Truhe erlaubt gewhitelisteten Spielern, sie zu öffnen, ohne den Code zu kennen. Zusätzlich kann ein verstärkter Trichter eines gewhitelisteten Spielers Items aus der Truhe ziehen.",
+	"module.securitycraft.keypad_chest.blacklist_module.description": "Ein Blacklist-Modul in einer Passwort gesicherten Truhe verhindert, dass geblacklistete Spieler mit dem Schloss interagieren können.",
+	"module.securitycraft.keypad_furnace.whitelist_module.description": "Ein Whitelist-Modul in einem Passwort gesicherten Ofen erlaubt gewhitelisteten Spielern, ihn zu öffnen, ohne den Code zu kennen. Zusätzlich kann ein verstärkter Trichter eines gewhitelisteten Spielers Items aus dem Ofen ziehen.",
+	"module.securitycraft.keypad_furnace.blacklist_module.description": "Ein Blacklist-Modul in einem Passwort gesicherten Ofen verhindert, dass geblacklistete Spieler mit dem Schloss interagieren können.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Ist der Codebrecher erlaubt?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Kann der Codebrecher benutzt werden?",

@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
-import net.geforcemods.securitycraft.containers.ModuleInventory;
+import net.geforcemods.securitycraft.containers.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
@@ -73,7 +73,7 @@ public class ModuleItem extends Item{
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 						{
-							return new DisguiseModuleContainer(windowId, inv, new ModuleInventory(player.getHeldItem(hand)));
+							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
 						}
 
 						@Override

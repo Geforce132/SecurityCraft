@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -23,6 +24,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.Rectangle2d;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -42,7 +44,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
 	};
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
-	private CustomizableTileEntity tileEntity;
+	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private Button[] optionButtons = new Button[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
@@ -51,8 +53,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	public CustomizeBlockScreen(CustomizeBlockContainer container, PlayerInventory inv, ITextComponent name)
 	{
 		super(container, inv, name);
-		tileEntity = container.tileEntity;
-		blockName = BlockUtils.getBlock(Minecraft.getInstance().world, tileEntity.getPos()).getTranslationKey().substring(5);
+		moduleInv = container.moduleInv;
+		blockName = BlockUtils.getBlock(Minecraft.getInstance().world, moduleInv.getTileEntity().getPos()).getTranslationKey().substring(5);
 	}
 
 	@Override
@@ -61,18 +63,22 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 		final int numberOfColumns = 2;
 
-		for(int i = 0; i < tileEntity.getNumberOfCustomizableOptions(); i++){
+		for(int i = 0; i < moduleInv.getMaxNumberOfModules(); i++){
 			int column = i % numberOfColumns;
 
-			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(tileEntity.acceptedModules()[i].getItem()));
+			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
 			addButton(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
 		}
 
-		if(tileEntity.customOptions() != null)
+		TileEntity te = moduleInv.getTileEntity();
+
+		if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).customOptions() != null)
 		{
-			for(int i = 0; i < tileEntity.customOptions().length; i++){
-				Option<?> option = tileEntity.customOptions()[i];
+			CustomizableTileEntity customizableTe = (CustomizableTileEntity)te;
+
+			for(int i = 0; i < customizableTe.customOptions().length; i++){
+				Option<?> option = customizableTe.customOptions()[i];
 
 				if(option instanceof ISlider && option.isSlider())
 				{
@@ -90,7 +96,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 				}
 
 				addButton(optionButtons[i]);
-				hoverCheckers[i + tileEntity.getNumberOfCustomizableOptions()] = new HoverChecker(optionButtons[i], 20);
+				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i], 20);
 			}
 		}
 
@@ -112,7 +118,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
-				if(i < tileEntity.getNumberOfCustomizableOptions())
+				if(i < moduleInv.getMaxNumberOfModules())
 					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, font);
 				else
 					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, font);
@@ -124,7 +130,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
 		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
@@ -134,18 +140,18 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	{
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURES[tileEntity.getNumberOfCustomizableOptions()]);
+		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	protected void actionPerformed(ClickButton button) {
-		Option<?> tempOption = tileEntity.customOptions()[button.id];
+		Option<?> tempOption = ((CustomizableTileEntity)moduleInv.getTileEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
 		tempOption.toggle();
 		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 		button.setMessage(getOptionButtonTitle(tempOption));
-		SecurityCraft.channel.sendToServer(new ToggleOption(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), button.id));
+		SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), button.id));
 	}
 
 	private String getModuleDescription(int buttonID) {
@@ -155,7 +161,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	private String getOptionDescription(int buttonID) {
-		String optionDescription = "option" + blockName + "." + tileEntity.customOptions()[buttonID - tileEntity.getNumberOfCustomizableOptions()].getName() + ".description";
+		String optionDescription = "option" + blockName + "." +  ((CustomizableTileEntity)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
 
 		return ClientUtils.localize(optionDescription);
 	}

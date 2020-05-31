@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.thread.EffectiveSide;
 
-public class ModuleInventory implements IInventory {
+public class ModuleItemInventory implements IInventory {
 
 	public int SIZE = 0;
 	private final ItemStack module;
@@ -22,7 +22,7 @@ public class ModuleInventory implements IInventory {
 	public int maxNumberOfItems;
 	public int maxNumberOfBlocks;
 
-	public ModuleInventory(ItemStack moduleItem) {
+	public ModuleItemInventory(ItemStack moduleItem) {
 		module = moduleItem;
 
 		if(!(moduleItem.getItem() instanceof ModuleItem)) return;
