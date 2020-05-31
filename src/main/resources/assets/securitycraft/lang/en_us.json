@@ -458,6 +458,7 @@
 	"help.securitycraft.reinforced_stone_button.info": "The Reinforced Buttons can only be activated by their owner or whitelisted players.",
 	"help.securitycraft.reinforced_lever.info": "The Reinforced Lever can only be activated by its owner or whitelisted players.",
 	"help.securitycraft.reinforced_hopper.info": "The Reinforced Hopper is the only block that can be used to extract items out of a password protected chest if both are owned by the same player. It will otherwise act like a vanilla hopper.",
+	"help.securitycraft.projector.info": "The Projector projects holographic versions of a block of your choice into the world, which can be used to hide buildings and other areas of interest from other players. The range and width of the blocks can be changed within the Projector's GUI.",
 
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
@@ -749,6 +750,8 @@
 	"module.securitycraft.keypad_chest.blacklist_module.description": "Adding a blacklist module to a Password-protected Chest will ban players from interacting with the block.",
 	"module.securitycraft.keypad_furnace.whitelist_module.description": "Adding a whitelist module to a Password-protected Furnace will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by whitelisted players can extract items from the furnace.",
 	"module.securitycraft.keypad_furnace.blacklist_module.description": "Adding a blacklist module to a Password-protected Furnace will ban players from interacting with the block.",
+	"module.securitycraft.projector.redstone_module.description": "Adding a redstone module to a Projector will allow you to manually toggle the Projector on and off using redstone power.",
+	"module.securitycraft.projector.disguise_module.description": "Adding a disguise module to a Projector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Is codebreaker allowed?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Can the codebreaker be used?",
