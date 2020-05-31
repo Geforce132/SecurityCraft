@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
@@ -24,13 +24,12 @@ import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -90,13 +89,13 @@ public class BlockUtils{
 
 	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value, boolean retainOldTileEntity) {
 		if(retainOldTileEntity){
-			NonNullList<ItemStack> modules = null;
+			CompoundNBT modules = null;
 			String password = "";
 			Owner owner = null;
 			int cooldown = -1;
 
-			if(world.getTileEntity(pos) instanceof CustomizableTileEntity)
-				modules = ((CustomizableTileEntity) world.getTileEntity(pos)).modules;
+			if(world.getTileEntity(pos) instanceof IModuleInventory)
+				modules = ((IModuleInventory) world.getTileEntity(pos)).writeModuleInventory(new CompoundNBT());
 
 			if(world.getTileEntity(pos) instanceof OwnableTileEntity && ((OwnableTileEntity) world.getTileEntity(pos)).getOwner() != null)
 				owner = ((OwnableTileEntity) world.getTileEntity(pos)).getOwner();
@@ -118,7 +117,7 @@ public class BlockUtils{
 			world.setTileEntity(pos, tileEntity);
 
 			if(modules != null)
-				((CustomizableTileEntity) world.getTileEntity(pos)).modules = modules;
+				((IModuleInventory) world.getTileEntity(pos)).readModuleInventory(modules);
 
 			if(owner != null)
 				((OwnableTileEntity) world.getTileEntity(pos)).getOwner().set(owner);

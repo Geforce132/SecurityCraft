@@ -12,7 +12,7 @@ import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -87,11 +87,12 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		if(disguised)
 			return;
 
-		if(config.get(SHOW_MODULES) && te instanceof CustomizableTileEntity && ((CustomizableTileEntity) te).getOwner().isOwner(data.getPlayer())){
-			if(!((CustomizableTileEntity) te).getModules().isEmpty())
+		//if the te is ownable, show modules only when it's owned, otherwise always show
+		if(config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
+			if(!((IModuleInventory) te).getInsertedModules().isEmpty())
 				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
 
-			for(ModuleType module : ((CustomizableTileEntity) te).getModules())
+			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
 				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText()));
 		}
 

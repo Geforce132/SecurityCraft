@@ -11,9 +11,9 @@ import net.minecraft.item.ItemStack;
 
 public class DisguiseModuleContainer extends Container {
 
-	private ModuleInventory inventory;
+	private ModuleItemInventory inventory;
 
-	public DisguiseModuleContainer(int windowId, PlayerInventory playerInventory, ModuleInventory moduleInventory) {
+	public DisguiseModuleContainer(int windowId, PlayerInventory playerInventory, ModuleItemInventory moduleInventory) {
 		super(SCContent.cTypeDisguiseModule, windowId);
 		inventory = moduleInventory;
 		addSlot(new AddonSlot(inventory, 0, 79, 20));
@@ -76,9 +76,9 @@ public class DisguiseModuleContainer extends Container {
 
 	public static class AddonSlot extends Slot {
 
-		private ModuleInventory inventory;
+		private ModuleItemInventory inventory;
 
-		public AddonSlot(ModuleInventory inventory, int index, int xPos, int yPos) {
+		public AddonSlot(ModuleItemInventory inventory, int index, int xPos, int yPos) {
 			super(inventory, index, xPos, yPos);
 			this.inventory = inventory;
 		}

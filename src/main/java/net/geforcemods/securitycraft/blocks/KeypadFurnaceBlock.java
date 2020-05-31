@@ -4,8 +4,10 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -116,7 +118,11 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		if(!world.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+				return false;
+			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
+				activate(world, pos, player);
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
 				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

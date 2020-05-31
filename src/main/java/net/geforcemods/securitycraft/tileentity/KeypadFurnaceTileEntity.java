@@ -2,13 +2,16 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -19,13 +22,16 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.AbstractFurnaceTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -39,12 +45,13 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable
+public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable, IModuleInventory
 {
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private Owner owner = new Owner();
 	private String passcode;
 	private ITextComponent furnaceCustomName;
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	public KeypadFurnaceTileEntity()
 	{
@@ -55,6 +62,8 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
+
+		writeModuleInventory(tag);
 
 		if(owner != null)
 		{
@@ -75,6 +84,8 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
+
+		modules = readModuleInventory(tag);
 
 		if(tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
@@ -133,11 +144,23 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		{
 			BlockPos offsetPos = pos.offset(side);
 
-			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !getOwner().owns((ReinforcedHopperTileEntity)world.getTileEntity(offsetPos)))
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !ReinforcedHopperBlock.canExtract(this, world, offsetPos))
 				return EMPTY_INVENTORY.cast();
 		}
 
 		return super.getCapability(cap, side);
+	}
+
+	@Override
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : items.get(slot);
 	}
 
 	@Override
@@ -266,5 +289,23 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	public boolean canBeNamed()
 	{
 		return true;
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getInventory()
+	{
+		return modules;
+	}
+
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
 	}
 }
