@@ -8,7 +8,6 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - API: New ICustomizable interface that adds the ability to have customization options to a TileEntity
 - Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
-- Fix: Vanilla Hopper can pull items out of a Password-protected Chest and Furnace
 - Fix: Whitelist Module does not work in the Keycard Reader
 - Fix: Placing a block on an active Keypad plays no sound
 
