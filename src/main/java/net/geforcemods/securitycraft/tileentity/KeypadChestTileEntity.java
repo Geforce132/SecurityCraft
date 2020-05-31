@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
@@ -41,12 +44,13 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable, IModuleInventory {
+public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private String passcode;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadChestTileEntity()
 	{
@@ -63,6 +67,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		super.write(tag);
 
 		writeModuleInventory(tag);
+		writeOptions(tag);
 
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -84,6 +89,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		super.read(tag);
 
 		modules = readModuleInventory(tag);
+		readOptions(tag);
 
 		if (tag.contains("passcode"))
 			if(tag.getInt("passcode") != 0)
@@ -279,5 +285,16 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public ModuleType[] acceptedModules()
 	{
 		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{sendMessage};
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
 	}
 }

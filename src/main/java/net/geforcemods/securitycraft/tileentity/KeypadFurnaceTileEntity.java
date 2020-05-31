@@ -2,10 +2,13 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
@@ -45,13 +48,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable, IModuleInventory
+public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable, IModuleInventory, ICustomizable
 {
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private Owner owner = new Owner();
 	private String passcode;
 	private ITextComponent furnaceCustomName;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadFurnaceTileEntity()
 	{
@@ -64,6 +68,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		super.write(tag);
 
 		writeModuleInventory(tag);
+		writeOptions(tag);
 
 		if(owner != null)
 		{
@@ -86,6 +91,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		super.read(tag);
 
 		modules = readModuleInventory(tag);
+		readOptions(tag);
 
 		if(tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
@@ -307,5 +313,16 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	public ModuleType[] acceptedModules()
 	{
 		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{sendMessage};
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
 	}
 }

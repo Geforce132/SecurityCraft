@@ -860,6 +860,10 @@
 	"option.securitycraft.motion_activated_light.searchRadius.description": "How far will the light detect an entity?",
 	"option.securitycraft.keycard_reader.sendMessage": "Message: #",
 	"option.securitycraft.keycard_reader.sendMessage.description": "Does this keycard reader send a message upon activation (when using whitelist/blacklist modules)?",
+	"option.securitycraft.keypad_chest.sendMessage": "Message: #",
+	"option.securitycraft.keypad_chest.sendMessage.description": "Does this chest send a message upon activation (when using whitelist/blacklist modules)?",
+	"option.securitycraft.keypad_furnace.sendMessage": "Message: #",
+	"option.securitycraft.keypad_furnace.sendMessage.description": "Does this furnace send a message upon activation (when using whitelist/blacklist modules)?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
