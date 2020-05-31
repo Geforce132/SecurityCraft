@@ -5,6 +5,7 @@
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
 - Fix: Universal Block Remover creates two breaking sounds
 - Fix: Whitelist Module does not work in the Keycard Reader
+- Fix: Placing a block on an active Keypad plays no sound
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 

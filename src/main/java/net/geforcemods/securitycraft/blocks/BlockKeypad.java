@@ -38,10 +38,10 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(world.isRemote)
-			return true;
-		else {
-			if(state.getValue(POWERED) || ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+		if(state.getValue(POWERED))
+			return false;
+		else if(!world.isRemote) {
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
 				return false;
 
 			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
@@ -51,9 +51,9 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
-
-			return true;
 		}
+
+		return true;
 	}
 
 	public static void activate(World world, BlockPos pos, int signalLength){
