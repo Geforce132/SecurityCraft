@@ -6,7 +6,7 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
@@ -73,9 +73,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 		TileEntity te = moduleInv.getTileEntity();
 
-		if(te instanceof CustomizableTileEntity && ((CustomizableTileEntity)te).customOptions() != null)
+		if(te instanceof ICustomizable && ((ICustomizable)te).customOptions() != null)
 		{
-			CustomizableTileEntity customizableTe = (CustomizableTileEntity)te;
+			ICustomizable customizableTe = (ICustomizable)te;
 
 			for(int i = 0; i < customizableTe.customOptions().length; i++){
 				Option<?> option = customizableTe.customOptions()[i];
@@ -147,7 +147,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	protected void actionPerformed(ClickButton button) {
-		Option<?> tempOption = ((CustomizableTileEntity)moduleInv.getTileEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
+		Option<?> tempOption = ((ICustomizable)moduleInv.getTileEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
 		tempOption.toggle();
 		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 		button.setMessage(getOptionButtonTitle(tempOption));
@@ -161,7 +161,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	private String getOptionDescription(int buttonID) {
-		String optionDescription = "option" + blockName + "." +  ((CustomizableTileEntity)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
+		String optionDescription = "option" + blockName + "." +  ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
 
 		return ClientUtils.localize(optionDescription);
 	}

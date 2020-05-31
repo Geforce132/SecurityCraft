@@ -381,7 +381,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	}
 
 	/**
-	 * Call this from your write method. Used for write the module inventory to a tag. Use in conjunction with readModuleInventory.
+	 * Call this from your write method. Used for writing the module inventory to a tag. Use in conjunction with readModuleInventory.
 	 * @param tag The tag to write the inventory to
 	 * @return The modified CompoundNBT
 	 */

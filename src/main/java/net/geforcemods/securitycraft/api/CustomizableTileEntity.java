@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IModuleInventory
+public abstract class CustomizableTileEntity extends SecurityCraftTileEntity implements IModuleInventory, ICustomizable
 {
 	private boolean linkable = false;
 	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
@@ -50,10 +50,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		super.read(tag);
 
 		modules = readModuleInventory(tag);
-
-		if(customOptions() != null)
-			for(Option<?> option : customOptions())
-				option.readFromNBT(tag);
+		readOptions(tag);
 
 		if (tag.contains("linkable"))
 			linkable = tag.getBoolean("linkable");
@@ -75,11 +72,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		super.write(tag);
 
 		writeModuleInventory(tag);
-
-		if(customOptions() != null)
-			for(Option<?> option : customOptions())
-				option.writeToNBT(tag);
-
+		writeOptions(tag);
 		tag.putBoolean("linkable", linkable);
 
 		if(linkable && hasWorld() && linkedBlocks.size() > 0) {
@@ -163,21 +156,6 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	/**
-	 * Checks to see if this TileEntity has an {@link Option}
-	 * with the given name, and if so, returns it.
-	 *
-	 * @param name Option name
-	 * @return The Option
-	 */
-	public Option<?> getOptionByName(String name) {
-		for(Option<?> option : customOptions())
-			if(option.getName().equals(name))
-				return option;
-
-		return null;
-	}
-
-	/**
 	 * Sets this TileEntity able to be "linked" with other blocks,
 	 * and being able to do things between them. Call CustomizableSCTE.link()
 	 * to link two blocks together.
@@ -237,11 +215,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		return tileEntity1.linkedBlocks.contains(new LinkedBlock(tileEntity2)) && tileEntity2.linkedBlocks.contains(new LinkedBlock(tileEntity1));
 	}
 
-	/**
-	 * Called whenever an {@link Option} in this TileEntity changes values.
-	 *
-	 * @param option The changed Option
-	 */
+	@Override
 	public void onOptionChanged(Option<?> option) {
 		createLinkedBlockAction(LinkedAction.OPTION_CHANGED, new Option[]{ option }, this);
 	}
@@ -297,10 +271,4 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	 *        always add your TileEntity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableTileEntity> excludedTEs) {}
-
-	/**
-	 * @return An array of what custom {@link Option}s this
-	 *         TileEntity has.
-	 */
-	public abstract Option<?>[] customOptions();
 }
