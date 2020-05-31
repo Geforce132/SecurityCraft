@@ -180,7 +180,9 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		if(!previous.isEmpty())
 		{
 			onModuleRemoved(previous, ((ModuleItem)previous.getItem()).getModule());
-			ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, (CustomizableTileEntity)te);
+
+			if(te instanceof CustomizableTileEntity)
+				ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, previous, (CustomizableTileEntity)te);
 		}
 
 		getInventory().set(slot, stack);
