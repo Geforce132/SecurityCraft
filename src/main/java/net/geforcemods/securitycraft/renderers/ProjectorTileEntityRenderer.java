@@ -30,7 +30,7 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	{
 		if(!te.isActive())
 			return;
-		
+
 		if(!te.isEmpty())
 		{
 			for(int i = 0; i < te.getProjectionWidth(); i++) {
@@ -54,7 +54,7 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	 * 
 	 * @return The BlockPos of the fake block to be drawn
 	 */
-	private BlockPos translateProjection(ProjectorTileEntity te, MatrixStack stack, Direction direction, int x, int y, double distance, double offset) 
+	private BlockPos translateProjection(ProjectorTileEntity te, MatrixStack stack, IRenderTypeBuffer buffer, Direction direction, int x, int y, double distance, double offset) 
 	{
 		BlockPos pos;
 
@@ -78,11 +78,12 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 			stack.translate(0.0D, 0.0D, 0.0D);
 			return te.getPos();
 		}
-		
+
 		return pos;
 	}
-	
-	public boolean isGlobalRenderer(ProjectorTileEntity te) {
-	      return true;
-	   }
+
+	public boolean isGlobalRenderer(ProjectorTileEntity te) 
+	{
+		return true;
+	}
 }

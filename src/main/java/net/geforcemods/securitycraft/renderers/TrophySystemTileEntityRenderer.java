@@ -37,4 +37,10 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		builder.pos(positionMatrix, (float)(te.entityBeingTargeted.getPosX() - pos.getX()), (float)(te.entityBeingTargeted.getPosY() - pos.getY()), (float)(te.entityBeingTargeted.getPosZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
 	}
 
+	@Override
+	public boolean isGlobalRenderer(TrophySystemTileEntity te) 
+	{
+		return true;
+	}
+
 }

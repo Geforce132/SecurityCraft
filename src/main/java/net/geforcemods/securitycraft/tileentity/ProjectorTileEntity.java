@@ -26,6 +26,8 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	public static final int MIN_OFFSET = -10;
 	public static final int MAX_OFFSET = 10;
 
+	public static final int RENDER_DISTANCE = 100;
+
 	private int projectionWidth = 1;
 	private int projectionRange = 5;
 	private int projectionOffset = 0;
@@ -41,7 +43,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getPos()).grow(100);
+		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
 	}
 
 	@Override
