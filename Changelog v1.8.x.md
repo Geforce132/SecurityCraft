@@ -1,7 +1,8 @@
---------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
 - Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
+- Fix: Whitelist Module does not work in the Keycard Reader
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
