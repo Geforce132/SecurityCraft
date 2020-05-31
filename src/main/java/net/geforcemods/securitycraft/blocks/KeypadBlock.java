@@ -42,19 +42,19 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
-		if(world.isRemote)
-			return true;
-		else {
-			if(state.get(POWERED) || ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+		if(state.get(POWERED))
+			return false;
+		else if(!world.isRemote) {
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 				return false;
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
 				activate(world, pos, ((KeypadTileEntity)world.getTileEntity(pos)).getSignalLength());
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
-
-			return true;
 		}
+
+		return true;
 	}
 
 	public static void activate(World world, BlockPos pos, int signalLength){
