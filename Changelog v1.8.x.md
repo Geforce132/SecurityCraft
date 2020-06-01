@@ -13,6 +13,8 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Potential crash when clicking the Clear List button in the Username Logger's GUI
 - Fix: Trophy System beam is not always visible
 - Fix: The customization GUI for Block Pocket blocks can be opened despite there being no functions
+- Fix: Modules drop twice when breaking a block containing modules in creative mode
+- Fix: Modules can duplicate when loading chunks
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 

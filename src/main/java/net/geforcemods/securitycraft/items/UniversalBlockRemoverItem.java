@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
@@ -60,6 +61,14 @@ public class UniversalBlockRemoverItem extends Item
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 				return ActionResultType.FAIL;
+			}
+
+			if(tileEntity instanceof IModuleInventory)
+			{
+				for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
+				{
+					Block.spawnAsEntity(world, pos, module);
+				}
 			}
 
 			if(block == SCContent.LASER_BLOCK.get())
