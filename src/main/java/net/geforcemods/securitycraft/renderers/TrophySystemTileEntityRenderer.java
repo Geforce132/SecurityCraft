@@ -42,4 +42,10 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		GlStateManager.popMatrix();
 	}
 
+	@Override
+	public boolean isGlobalRenderer(TrophySystemTileEntity te) 
+	{
+		return true;
+	}
+
 }
