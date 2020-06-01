@@ -7,6 +7,7 @@
 - Fix: Whitelist Module does not work in the Keycard Reader
 - Fix: Placing a block on an active Keypad plays no sound
 - Fix: Trophy System beam is not always visible
+- Fix: The customization GUI for Block Pocket blocks can be opened despite there being no functions
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 

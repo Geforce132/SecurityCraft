@@ -1,14 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
-import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityBlockPocket extends CustomizableSCTE
+public class TileEntityBlockPocket extends TileEntitySCTE
 {
 	private TileEntityBlockPocketManager manager;
 	private BlockPos managerPos;
@@ -68,17 +66,5 @@ public class TileEntityBlockPocket extends CustomizableSCTE
 
 		if(tag.hasKey("ManagerPos"))
 			managerPos = BlockPos.fromLong(tag.getLong("ManagerPos"));
-	}
-
-	@Override
-	public EnumModuleType[] acceptedModules()
-	{
-		return new EnumModuleType[] {};
-	}
-
-	@Override
-	public Option<?>[] customOptions()
-	{
-		return null;
 	}
 }
