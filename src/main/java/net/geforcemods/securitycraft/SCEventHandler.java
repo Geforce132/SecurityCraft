@@ -32,6 +32,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
@@ -246,8 +247,13 @@ public class SCEventHandler {
 
 					if(tileEntity instanceof IModuleInventory)
 					{
+						boolean isChest = tileEntity instanceof KeypadChestTileEntity;
+
 						for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
 						{
+							if(isChest)
+								((KeypadChestTileEntity)tileEntity).addOrRemoveModuleFromAttached(module, true);
+
 							Block.spawnAsEntity(world, event.getPos(), module);
 						}
 					}

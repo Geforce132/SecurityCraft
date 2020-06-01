@@ -234,8 +234,11 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 
-	private void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
 	{
+		if(module.isEmpty() || !(module.getItem() instanceof ModuleItem))
+			return;
+
 		BlockState state = getBlockState();
 		ChestType type = state.get(KeypadChestBlock.TYPE);
 
