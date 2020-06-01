@@ -617,7 +617,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 
 					return false;
 				})
-				.orElse(null); // TODO bad null
+				.orElse(false);
 	}
 
 	//this is private in forge's code, so it's copied here
