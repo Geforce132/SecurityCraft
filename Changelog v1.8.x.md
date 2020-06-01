@@ -10,6 +10,8 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
 - Fix: Whitelist Module does not work in the Keycard Reader
 - Fix: Placing a block on an active Keypad plays no sound
+- Fix: Potential crash when clicking the Clear List button in the Username Logger's GUI
+- Fix: Trophy System beam is not always visible
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
