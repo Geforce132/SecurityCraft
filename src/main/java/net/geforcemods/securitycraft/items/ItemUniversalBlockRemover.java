@@ -47,6 +47,15 @@ public class ItemUniversalBlockRemover extends Item {
 
 			if(!world.isRemote)
 			{
+
+				if(tileEntity instanceof CustomizableSCTE)
+				{
+					for(ItemStack module : ((CustomizableSCTE)tileEntity).modules)
+					{
+						Block.spawnAsEntity(world, pos, module);
+					}
+				}
+
 				if(block == SCContent.laserBlock) {
 					CustomizableSCTE te = (CustomizableSCTE)world.getTileEntity(pos);
 
