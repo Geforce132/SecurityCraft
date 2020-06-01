@@ -20,13 +20,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTileEntity> {
 
-	public ProjectorTileEntityRenderer(TileEntityRendererDispatcher terd) 
+	public ProjectorTileEntityRenderer(TileEntityRendererDispatcher terd)
 	{
 		super(terd);
 	}
 
 	@Override
-	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int arg5) 
+	public void render(ProjectorTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int packedLight, int arg5)
 	{
 		if(!te.isActive())
 			return;
@@ -51,10 +51,10 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 
 	/**
 	 * Shifts the projection depending on the offset and range set in the projector
-	 * 
+	 *
 	 * @return The BlockPos of the fake block to be drawn
 	 */
-	private BlockPos translateProjection(ProjectorTileEntity te, MatrixStack stack, IRenderTypeBuffer buffer, Direction direction, int x, int y, double distance, double offset) 
+	private BlockPos translateProjection(ProjectorTileEntity te, MatrixStack stack, Direction direction, int x, int y, double distance, double offset)
 	{
 		BlockPos pos;
 
@@ -82,7 +82,8 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 		return pos;
 	}
 
-	public boolean isGlobalRenderer(ProjectorTileEntity te) 
+	@Override
+	public boolean isGlobalRenderer(ProjectorTileEntity te)
 	{
 		return true;
 	}
