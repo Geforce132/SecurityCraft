@@ -6,6 +6,7 @@
 - Fix: Universal Block Remover creates two breaking sounds
 - Fix: Whitelist Module does not work in the Keycard Reader
 - Fix: Placing a block on an active Keypad plays no sound
+- Fix: Trophy System beam is not always visible
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 
@@ -16,7 +17,7 @@
 - API: Option is now abstract and some methods have been changed around for cleaner code
 - Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
 - Fix: Portable Radar cannot be placed
-- Fix: New customizable options don't correctly load for existing blocks
+- Fix: New customization options don't correctly load for existing blocks
 - Fix: Retinal Scanner crash
 - Fix: Camera dis-/mounting doesn't work correctly
 
