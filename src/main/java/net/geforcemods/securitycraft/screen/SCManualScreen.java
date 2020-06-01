@@ -10,7 +10,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -171,9 +171,9 @@ public class SCManualScreen extends Screen {
 					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 						this.blit(startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof CustomizableTileEntity)
-					{
-						CustomizableTileEntity scte = (CustomizableTileEntity)te;
+				if(te instanceof ICustomizable)
+				{
+					ICustomizable scte = (ICustomizable)te;
 
 						this.blit(startX + 213, 118, 72, 1, 16, 16);
 
@@ -384,9 +384,9 @@ public class SCManualScreen extends Screen {
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if(te instanceof CustomizableTileEntity)
+				if(te instanceof ICustomizable)
 				{
-					CustomizableTileEntity scte = (CustomizableTileEntity)te;
+					ICustomizable scte = (ICustomizable)te;
 
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
 

@@ -1,5 +1,11 @@
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
+DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.
+
+- New: The Reinforced Hopper is now the only block that can pull out of Password-protected Chests and Furnaces. The owner of both blocks needs to be the same, or the hopper needs to be owned by a whitelisted player
+- New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace
+- API: New IModuleInventory interface that adds the ability to have modules to a TileEntity
+- API: New ICustomizable interface that adds the ability to have customization options to a TileEntity
 - Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
 
@@ -7,7 +13,7 @@
 
 - API: Option is now abstract and some methods have been changed around for cleaner code
 - Fix: Reinforced Levers etc. don't reliably open Reinforced Iron Doors etc. when powering a block next to them
-- Fix: New customizable options don't correctly load for existing blocks
+- Fix: New customization options don't correctly load for existing blocks
 - Fix: Retinal Scanner crash
 - Fix: Camera dis-/mounting doesn't work correctly
 
