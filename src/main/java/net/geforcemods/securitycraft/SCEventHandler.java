@@ -244,6 +244,14 @@ public class SCEventHandler {
 						return;
 					}
 
+					if(tileEntity instanceof IModuleInventory)
+					{
+						for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
+						{
+							Block.spawnAsEntity(world, event.getPos(), module);
+						}
+					}
+
 					if(block == SCContent.LASER_BLOCK.get()){
 						CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
 

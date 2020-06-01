@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.api;
 import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -136,11 +135,6 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableTileEntity.unlink(block.asTileEntity(world), this);
-
-		for(ItemStack module : modules)
-		{
-			Block.spawnAsEntity(world, pos, module);
-		}
 	}
 
 	@Override

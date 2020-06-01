@@ -8,6 +8,8 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - API: New ICustomizable interface that adds the ability to have customization options to a TileEntity
 - Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output
+- Fix: Modules drop twice when breaking a block containing modules in creative mode
+- Fix: Modules can duplicate when loading chunks
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
