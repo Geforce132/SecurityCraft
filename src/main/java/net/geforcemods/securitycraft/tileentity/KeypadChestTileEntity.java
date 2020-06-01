@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -19,6 +20,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -28,6 +30,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -217,6 +220,48 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		addOrRemoveModuleFromAttached(stack, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		addOrRemoveModuleFromAttached(stack, true);
+	}
+
+	private void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
+	{
+		BlockState state = getBlockState();
+		ChestType type = state.get(KeypadChestBlock.TYPE);
+
+		if(type != ChestType.SINGLE)
+		{
+			BlockPos offsetPos = pos.offset(ChestBlock.getDirectionToAttached(state));
+			BlockState offsetState = world.getBlockState(offsetPos);
+
+			if(state.getBlock() == offsetState.getBlock())
+			{
+				ChestType offsetType = offsetState.get(KeypadChestBlock.TYPE);
+
+				if(offsetType != ChestType.SINGLE && type != offsetType && state.get(KeypadChestBlock.FACING) == offsetState.get(KeypadChestBlock.FACING))
+				{
+					TileEntity offsetTe = world.getTileEntity(offsetPos);
+
+					if(offsetTe instanceof KeypadChestTileEntity)
+					{
+						if(remove)
+							((KeypadChestTileEntity)offsetTe).removeModule(((ModuleItem)module.getItem()).getModule());
+						else
+							((KeypadChestTileEntity)offsetTe).insertModule(module);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
