@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -49,17 +51,20 @@ public class PacketSUpdateSliderValue implements IMessage{
 				int id = message.id;
 				double value = message.value;
 				EntityPlayer player = context.getServerHandler().player;
+				TileEntity te = getWorld(player).getTileEntity(pos);
 
-				if(getWorld(player).getTileEntity(pos) instanceof CustomizableSCTE) {
-					Option<?> o = ((CustomizableSCTE) player.world.getTileEntity(pos)).customOptions()[id];
+				if(te instanceof ICustomizable) {
+					Option<?> o = ((ICustomizable)te).customOptions()[id];
 
 					if(o instanceof OptionDouble)
 						((OptionDouble)o).setValue(value);
 					else if(o instanceof OptionInt)
 						((OptionInt)o).setValue((int)value);
 
-					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(player).getTileEntity(pos)).customOptions()[id]);
-					((CustomizableSCTE) getWorld(player).getTileEntity(pos)).sync();
+					((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+
+					if(te instanceof CustomizableSCTE)
+						((CustomizableSCTE)te).sync();
 				}
 			});
 

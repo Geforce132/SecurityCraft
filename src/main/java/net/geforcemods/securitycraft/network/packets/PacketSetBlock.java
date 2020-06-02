@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -71,14 +72,14 @@ public class PacketSetBlock implements IMessage{
 				EntityPlayer player = context.getServerHandler().player;
 				World world = getWorld(player);
 				TileEntity te = world.getTileEntity(pos);
-				NonNullList<ItemStack> modules = null;
+				NBTTagCompound modules = null;
 				NonNullList<ItemStack> inventory = null;
 				int[] times = new int[4];
 				String password = "";
 				Owner owner = null;
 
-				if(te instanceof CustomizableSCTE)
-					modules = ((CustomizableSCTE) te).modules;
+				if(te instanceof IModuleInventory)
+					modules = ((IModuleInventory)te).writeModuleInventory(new NBTTagCompound());
 
 				if(te instanceof TileEntityKeypadFurnace){
 					inventory = ((TileEntityKeypadFurnace) te).furnaceItemStacks;
@@ -98,7 +99,7 @@ public class PacketSetBlock implements IMessage{
 				world.setBlockState(pos, meta >= 0 ? block.getStateFromMeta(meta) : block.getStateFromMeta(0));
 
 				if(modules != null)
-					((CustomizableSCTE) te).modules = modules;
+					((IModuleInventory) te).readModuleInventory(modules);
 
 				if(inventory != null && te instanceof TileEntityKeypadFurnace){
 					((TileEntityKeypadFurnace) te).furnaceItemStacks = inventory;

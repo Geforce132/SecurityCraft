@@ -8,8 +8,9 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -160,16 +161,19 @@ public class GuiSCManual extends GuiScreen {
 					if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
 						this.drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
 
-					if(te instanceof CustomizableSCTE)
+					if(te instanceof ICustomizable)
 					{
-						CustomizableSCTE scte = (CustomizableSCTE)te;
+						ICustomizable scte = (ICustomizable)te;
 
 						this.drawTexturedModalRect(startX + 213, 118, 72, 1, 16, 16);
 
 						if(scte.customOptions() != null && scte.customOptions().length > 0)
 							this.drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
+					}
 
-						if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+					if(te instanceof IModuleInventory)
+					{
+						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
 							this.drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
 					}
 				}
@@ -387,9 +391,9 @@ public class GuiSCManual extends GuiScreen {
 			if(block instanceof IExplosive)
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
-			if(te instanceof CustomizableSCTE)
+			if(te instanceof ICustomizable)
 			{
-				CustomizableSCTE scte = (CustomizableSCTE)te;
+				ICustomizable scte = (ICustomizable)te;
 
 				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
 
@@ -409,15 +413,20 @@ public class GuiSCManual extends GuiScreen {
 					display.remove(display.size() - 1);
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, 20, display));
 				}
+			}
 
-				if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+			if(te instanceof IModuleInventory)
+			{
+				IModuleInventory moduleInv = (IModuleInventory)te;
+
+				if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 				{
 					List<String> display = new ArrayList<>();
 
 					display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
 					display.add("---");
 
-					for(EnumModuleType module : scte.acceptedModules())
+					for(EnumModuleType module : moduleInv.acceptedModules())
 					{
 						display.add("- " + ClientUtils.localize("module." + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description"));
 						display.add("");

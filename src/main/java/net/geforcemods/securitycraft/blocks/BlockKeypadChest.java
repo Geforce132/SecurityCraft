@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
@@ -36,12 +38,16 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	 */
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!world.isRemote) {
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
+		if(!world.isRemote && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
+		{
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+				return false;
+			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST))
+				activate(world, pos, player);
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
 				((TileEntityKeypadChest) world.getTileEntity(pos)).openPasswordGUI(player);
-
-			return true;
 		}
+
 
 		return true;
 	}

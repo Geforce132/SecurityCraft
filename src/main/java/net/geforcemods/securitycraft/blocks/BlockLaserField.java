@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -115,13 +115,13 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumModuleType.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumModuleType.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
 							return;
 
 						world.setBlockState(offsetPos, world.getBlockState(offsetPos).withProperty(BlockLaserBlock.POWERED, true));
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
-						if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).hasModule(EnumModuleType.HARMING))
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.HARMING))
 						{
 							if(!(entity instanceof EntityPlayer && ((IOwnable)te).getOwner().isOwner((EntityPlayer)entity)))
 								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);

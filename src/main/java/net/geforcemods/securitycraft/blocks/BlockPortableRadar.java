@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
 import net.minecraft.block.Block;
@@ -50,7 +50,7 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
 	}
@@ -87,8 +87,8 @@ public class BlockPortableRadar extends BlockContainer {
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED) && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
+		if(state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;

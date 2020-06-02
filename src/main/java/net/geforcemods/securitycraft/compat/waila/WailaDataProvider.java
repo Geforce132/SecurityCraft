@@ -9,7 +9,7 @@ import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -24,6 +24,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvider {
 
@@ -52,12 +55,15 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 	@Override
 	public List<String> getWailaBody(ItemStack stack, List<String> body, IWailaDataAccessor data, IWailaConfigHandler config) {
+		World world = data.getWorld();
+		BlockPos pos = data.getPosition();
+		IBlockState state = data.getBlockState();
 		Block block = data.getBlock();
 		boolean disguised = false;
 
 		if(block instanceof BlockDisguisable)
 		{
-			IBlockState disguisedBlockState = ((BlockDisguisable)block).getDisguisedBlockState(data.getWorld(), data.getPosition());
+			IBlockState disguisedBlockState = ((BlockDisguisable)block).getDisguisedBlockState(world, pos);
 
 			if(disguisedBlockState != null)
 			{
@@ -66,32 +72,36 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			}
 		}
 
-		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(data.getWorld(), data.getBlockState(), data.getPosition())) return body;
+		if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, state, pos))
+			return body;
+
+		TileEntity te = data.getTileEntity();
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
-		if(config.getConfig(SHOW_OWNER) && data.getTileEntity() instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) data.getTileEntity()).getOwner().getName());
+		if(config.getConfig(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
+			body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) te).getOwner().getName());
 
 		if(!disguised)
 		{
-			if(config.getConfig(SHOW_MODULES) && data.getTileEntity() instanceof CustomizableSCTE && ((CustomizableSCTE) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
-				if(!((CustomizableSCTE) data.getTileEntity()).getModules().isEmpty())
+			//if the te is ownable, show modules only when it's owned, otherwise always show
+			if(config.getConfig(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
+				if(!((IModuleInventory) te).getInsertedModules().isEmpty())
 					body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
-				for(EnumModuleType module : ((CustomizableSCTE) data.getTileEntity()).getModules())
+				for(EnumModuleType module : ((IModuleInventory) te).getInsertedModules())
 					body.add("- " + ClientUtils.localize(module.getTranslationKey()));
 			}
 
-			if(config.getConfig(SHOW_PASSWORDS) && data.getTileEntity() instanceof IPasswordProtected && !(data.getTileEntity() instanceof TileEntityKeycardReader) && ((IOwnable) data.getTileEntity()).getOwner().isOwner(data.getPlayer())){
-				String password = ((IPasswordProtected) data.getTileEntity()).getPassword();
+			if(config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
+				String password = ((IPasswordProtected) te).getPassword();
 
 				body.add(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
 			}
 
-			if(config.getConfig(SHOW_CUSTOM_NAME) && data.getTileEntity() instanceof INameable && ((INameable) data.getTileEntity()).canBeNamed()){
-				String name = ((INameable) data.getTileEntity()).getCustomName();
+			if(config.getConfig(SHOW_CUSTOM_NAME) && te instanceof INameable && ((INameable) te).canBeNamed()){
+				String name = ((INameable) te).getCustomName();
 
-				body.add(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) data.getTileEntity()).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+				body.add(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
 			}
 		}
 

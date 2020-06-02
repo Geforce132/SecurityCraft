@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
-import net.geforcemods.securitycraft.containers.ModuleInventory;
+import net.geforcemods.securitycraft.containers.ModuleItemInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
@@ -94,7 +94,7 @@ public class GuiHandler implements IGuiHandler {
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
-				return new ContainerDisguiseModule(player.inventory, new ModuleInventory(player.inventory.getCurrentItem()));
+				return new ContainerDisguiseModule(player.inventory, new ModuleItemInventory(player.inventory.getCurrentItem()));
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory);
 			case MODULES:

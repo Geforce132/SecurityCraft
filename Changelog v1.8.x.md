@@ -1,5 +1,11 @@
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
+DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.
+
+- New: The Reinforced Hopper is now the only block that can pull out of Password-protected Chests and Furnaces. The owner of both blocks needs to be the same, or the hopper needs to be owned by a whitelisted player
+- New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace (including customization options to turn off the messages)
+- API: New IModuleInventory interface that adds the ability to have modules in a TileEntity
+- API: New ICustomizable interface that adds the ability to have customization options in a TileEntity
 - Fix: Universal Block Remover sends two messages when the right-clicked block cannot be removed
 - Fix: Mine explodes when trying to change its owner
 - Fix: Removing a Redstone Module from an active Portable Radar does not update the redstone output

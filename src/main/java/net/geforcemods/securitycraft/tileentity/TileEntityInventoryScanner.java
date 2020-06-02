@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
@@ -103,8 +104,15 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
-		return inventoryContents.get(index);
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : inventoryContents.get(slot);
 	}
 
 	/**
@@ -253,4 +261,43 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		return null;
 	}
 
+	@Override
+	public void clear()
+	{
+		inventoryContents.clear();
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		return inventoryContents.isEmpty();
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return inventoryContents.remove(index);
+	}
+
+	@Override
+	public String getName()
+	{
+		return SCContent.inventoryScanner.getLocalizedName();
+	}
+
+	@Override
+	public int getField(int id)
+	{
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value)
+	{}
+
+	@Override
+	public int getFieldCount()
+	{
+		return 0;
+	}
 }

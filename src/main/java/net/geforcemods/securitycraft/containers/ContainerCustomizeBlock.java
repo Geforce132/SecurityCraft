@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,14 +10,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCustomizeBlock extends Container{
 
-	private CustomizableSCTE tileEntity;
+	private IModuleInventory moduleInv;
 	private final int maxSlots;
 
-	public ContainerCustomizeBlock(InventoryPlayer inventory, CustomizableSCTE tileEntity) {
-		this.tileEntity = tileEntity;
+	public ContainerCustomizeBlock(InventoryPlayer inventory, IModuleInventory tileEntity) {
+		this.moduleInv = tileEntity;
+
+		int slotId = 0;
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; ++j)
@@ -25,29 +29,32 @@ public class ContainerCustomizeBlock extends Container{
 		for(int i = 0; i < 9; i++)
 			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
 
-		if(tileEntity.getNumberOfCustomizableOptions() == 1)
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 79, 20));
-		else if(tileEntity.getNumberOfCustomizableOptions() == 2){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 70, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 88, 20));
-		}else if(tileEntity.getNumberOfCustomizableOptions() == 3){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 61, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 79, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 2, 97, 20));
-		}else if(tileEntity.getNumberOfCustomizableOptions() == 4){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 52, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 70, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 2, 88, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 3, 106, 20));
-		}else if(tileEntity.getNumberOfCustomizableOptions() == 5){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 34, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 52, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 2, 70, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 3, 88, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 3, 106, 20));
+		if(moduleInv.enableHack())
+			slotId = 100;
+
+		if(moduleInv.getMaxNumberOfModules() == 1)
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId, 79, 20));
+		else if(moduleInv.getMaxNumberOfModules() == 2){
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 88, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 3){
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 61, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 79, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 97, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 4){
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 106, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 5){
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 34, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlotToContainer(new SlotItemHandler(moduleInv, slotId++, 106, 20));
 		}
 
-		maxSlots = 36 + tileEntity.getNumberOfCustomizableOptions();
+		maxSlots = 36 + moduleInv.getMaxNumberOfModules();
 	}
 
 	@Override
@@ -65,10 +72,12 @@ public class ContainerCustomizeBlock extends Container{
 
 			if(index >= 36 && index <= maxSlots) //module slots
 			{
-				if(!mergeItemStack(slotStack, 0, 36, false)) //main inventory + hotbar
+				if(!mergeItemStack(slotStack, 0, 36, true)) //main inventory + hotbar
 				{
-					tileEntity.onModuleRemoved(slotStack, ((ItemModule)slotStack.getItem()).getModule());
-					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, slotStack, tileEntity);
+					moduleInv.onModuleRemoved(slotStack, ((ItemModule)slotStack.getItem()).getModule());
+
+					if(moduleInv instanceof CustomizableSCTE)
+						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, slotStack, (CustomizableSCTE)moduleInv);
 					return ItemStack.EMPTY;
 				}
 			}
@@ -76,8 +85,10 @@ public class ContainerCustomizeBlock extends Container{
 			{
 				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
 				{
-					tileEntity.onModuleInserted(slotStack, ((ItemModule)slotStack.getItem()).getModule());
-					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, slotStack, tileEntity);
+					moduleInv.onModuleInserted(slotStack, ((ItemModule)slotStack.getItem()).getModule());
+
+					if(moduleInv instanceof CustomizableSCTE)
+						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, slotStack, (CustomizableSCTE)moduleInv);
 					return ItemStack.EMPTY;
 				}
 				else if(!mergeItemStack(slotStack, 0, 27, false)) //main inventory
@@ -87,8 +98,10 @@ public class ContainerCustomizeBlock extends Container{
 			{
 				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
 				{
-					tileEntity.onModuleInserted(slotStack, ((ItemModule)slotStack.getItem()).getModule());
-					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, slotStack, tileEntity);
+					moduleInv.onModuleInserted(slotStack, ((ItemModule)slotStack.getItem()).getModule());
+
+					if(moduleInv instanceof CustomizableSCTE)
+						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, slotStack, (CustomizableSCTE)moduleInv);
 					return ItemStack.EMPTY;
 				}
 				else if(!mergeItemStack(slotStack, 27, 36, false)) //hotbar
@@ -108,55 +121,4 @@ public class ContainerCustomizeBlock extends Container{
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
-
-
-	public static class ModuleSlot extends Slot{
-		private CustomizableSCTE tileEntity;
-		public ModuleSlot(CustomizableSCTE inventory, int index, int xPos, int yPos) {
-			super(inventory, index, xPos, yPos);
-			tileEntity = inventory;
-		}
-
-		/**
-		 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-		 */
-		@Override
-		public boolean isItemValid(ItemStack stack)
-		{
-			return !stack.isEmpty() && stack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) stack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) stack.getItem()).getModule());
-		}
-
-		@Override
-		public ItemStack getStack(){
-			return tileEntity.modules.get(getSlotIndex());
-		}
-
-		@Override
-		public void putStack(ItemStack stack)
-		{
-			tileEntity.safeSetInventorySlotContents(getSlotIndex(), stack);
-			onSlotChanged();
-		}
-
-		/**
-		 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-		 * stack.
-		 */
-		@Override
-		public ItemStack decrStackSize(int index)
-		{
-			return tileEntity.safeDecrStackSize(getSlotIndex(), index);
-		}
-
-		/**
-		 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the
-		 * case of armor slots)
-		 */
-		@Override
-		public int getSlotStackLimit()
-		{
-			return 1;
-		}
-	}
-
 }
