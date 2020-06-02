@@ -11,9 +11,11 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -31,9 +33,15 @@ public class TileEntityRetinalScannerRenderer extends TileEntitySpecialRenderer<
 
 	@Override
 	public void render(TileEntityRetinalScanner te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		EnumFacing direction = te.getWorld().getBlockState(te.getPos()).getValue(BlockRetinalScanner.FACING);
-		if (!te.hasModule(EnumModuleType.DISGUISE))
-			this.render((float)x, (float)y, (float)z, direction, te.getPlayerProfile(), destroyStage);
+		IBlockState state = te.getWorld().getBlockState(te.getPos());
+
+		if(state.getBlock() == SCContent.retinalScanner)
+		{
+			EnumFacing direction = state.getValue(BlockRetinalScanner.FACING);
+
+			if (!te.hasModule(EnumModuleType.DISGUISE))
+				render((float)x, (float)y, (float)z, direction, te.getPlayerProfile(), destroyStage);
+		}
 	}
 
 	public void render(float x, float y, float z, @Nullable EnumFacing facing, @Nullable GameProfile playerProfile, int destroyStage) {
