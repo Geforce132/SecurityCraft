@@ -13,6 +13,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class CustomizeBlockContainer extends Container{
@@ -37,25 +38,25 @@ public class CustomizeBlockContainer extends Container{
 			slotId = 100;
 
 		if(moduleInv.getMaxNumberOfModules() == 1)
-			addSlot(new SlotItemHandler(moduleInv, slotId, 79, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId, 79, 20));
 		else if(moduleInv.getMaxNumberOfModules() == 2){
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
 		}else if(moduleInv.getMaxNumberOfModules() == 3){
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 61, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 79, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 97, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 61, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 79, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 97, 20));
 		}else if(moduleInv.getMaxNumberOfModules() == 4){
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 52, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 88, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 106, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
 		}else if(moduleInv.getMaxNumberOfModules() == 5){
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 34, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 52, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 88, 20));
-			addSlot(new SlotItemHandler(moduleInv, slotId++, 106, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 34, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
 		}
 
 		maxSlots = 36 + moduleInv.getMaxNumberOfModules();
@@ -115,6 +116,8 @@ public class CustomizeBlockContainer extends Container{
 					return ItemStack.EMPTY;
 			}
 
+			slot.onSlotChange(slotStack, copy);
+
 			if(slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);
 			else
@@ -127,5 +130,25 @@ public class CustomizeBlockContainer extends Container{
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
 		return true;
+	}
+
+	private class CustomSlotItemHandler extends SlotItemHandler
+	{
+		public CustomSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition)
+		{
+			super(itemHandler, index, xPosition, yPosition);
+		}
+
+		@Override
+		public void onSlotChange(ItemStack newStack, ItemStack oldStack)
+		{
+			if((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ModuleItem)
+			{
+				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModule());
+
+				if(moduleInv instanceof CustomizableTileEntity)
+					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, (CustomizableTileEntity)moduleInv);
+			}
+		}
 	}
 }
