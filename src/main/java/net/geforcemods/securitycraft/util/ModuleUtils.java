@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -60,14 +61,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && keypad.hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypad.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypad), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && keypad.hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypad.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypad), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -78,14 +79,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && ((IModuleInventory) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadChest.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadChest), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadChest.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadChest), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -96,14 +97,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && ((IModuleInventory) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadFurnace.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keypadFurnace.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -112,7 +113,7 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && reader.hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keycardReader.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
 				return true;
@@ -120,7 +121,7 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.BLACKLIST && reader.hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.keycardReader.getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -143,5 +144,10 @@ public class ModuleUtils{
 
 		if(te instanceof TileEntitySecurityCamera)
 			te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING), -1), te.getBlockType(), false);
+	}
+
+	private static String translate(Block block)
+	{
+		return ClientUtils.localize(block.getTranslationKey() + ".name");
 	}
 }
