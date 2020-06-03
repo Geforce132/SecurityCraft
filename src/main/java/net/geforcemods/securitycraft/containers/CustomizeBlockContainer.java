@@ -78,40 +78,19 @@ public class CustomizeBlockContainer extends Container{
 			if(index >= 36 && index <= maxSlots) //module slots
 			{
 				if(!mergeItemStack(slotStack, 0, 36, true)) //main inventory + hotbar
-				{
-					moduleInv.onModuleRemoved(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
-
-					if(moduleInv instanceof CustomizableTileEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, slotStack, (CustomizableTileEntity)moduleInv);
-
 					return ItemStack.EMPTY;
-				}
 			}
 			else if(index >= 27 && index <= 35) //hotbar
 			{
 				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
-				{
-					moduleInv.onModuleInserted(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
-
-					if(moduleInv instanceof CustomizableTileEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, slotStack, (CustomizableTileEntity)moduleInv);
-
 					return ItemStack.EMPTY;
-				}
 				else if(!mergeItemStack(slotStack, 0, 27, false)) //main inventory
 					return ItemStack.EMPTY;
 			}
 			else if(index <= 26) //main inventory
 			{
 				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
-				{
-					moduleInv.onModuleInserted(slotStack, ((ModuleItem)slotStack.getItem()).getModule());
-
-					if(moduleInv instanceof CustomizableTileEntity)
-						ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, slotStack, (CustomizableTileEntity)moduleInv);
-
 					return ItemStack.EMPTY;
-				}
 				else if(!mergeItemStack(slotStack, 27, 36, false)) //hotbar
 					return ItemStack.EMPTY;
 			}
