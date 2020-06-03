@@ -191,7 +191,7 @@ public class SCEventHandler {
 				}
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier)){
-					if(tileEntity instanceof CustomizableSCTE) {
+					if(tileEntity instanceof IModuleInventory) {
 						event.setCanceled(true);
 
 						if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){

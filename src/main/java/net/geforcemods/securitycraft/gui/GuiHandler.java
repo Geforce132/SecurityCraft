@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
@@ -90,7 +90,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new ContainerGeneric(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
-				return new ContainerCustomizeBlock(player.inventory, (CustomizableSCTE) te);
+				return new ContainerCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
@@ -155,7 +155,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new GuiKeyChanger(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
-				return new GuiCustomizeBlock(player.inventory, (CustomizableSCTE) te);
+				return new GuiCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
 				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
 					return null;
