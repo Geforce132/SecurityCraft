@@ -109,6 +109,8 @@ public class ContainerCustomizeBlock extends Container{
 					return ItemStack.EMPTY;
 			}
 
+			slot.onSlotChange(slotStack, copy);
+
 			if(slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);
 			else
