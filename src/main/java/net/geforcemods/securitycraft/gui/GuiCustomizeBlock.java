@@ -15,9 +15,7 @@ import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -45,14 +43,18 @@ public class GuiCustomizeBlock extends GuiContainer{
 	private GuiPictureButton[] descriptionButtons = new GuiPictureButton[5];
 	private GuiButton[] optionButtons = new GuiButton[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-
 	private final String blockName;
+	private final String title;
 
 	public GuiCustomizeBlock(InventoryPlayer inventory, IModuleInventory te)
 	{
 		super(new ContainerCustomizeBlock(inventory, te));
+
+		String tlKey = te.getTileEntity().getBlockType().getTranslationKey();
+
 		moduleInv = te;
-		blockName = BlockUtils.getBlock(Minecraft.getMinecraft().world, moduleInv.getTileEntity().getPos()).getTranslationKey().substring(5);
+		blockName = tlKey.substring(5);
+		title = ClientUtils.localize(tlKey + ".name");
 	}
 
 	@Override
@@ -128,9 +130,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = moduleInv.getTileEntity().getDisplayName().getFormattedText();
-
-		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
