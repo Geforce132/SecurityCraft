@@ -14,12 +14,18 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
 
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -191,6 +197,12 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		}
 
 		return stackToInsert;
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+	{
+		return EMPTY_INVENTORY.cast();
 	}
 
 	@Override
