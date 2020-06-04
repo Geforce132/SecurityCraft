@@ -15,6 +15,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: The customization GUI for Block Pocket blocks can be opened despite there being no functions
 - Fix: Modules drop twice when breaking a block containing modules in creative mode
 - Fix: Modules can duplicate when loading chunks
+- Fix: Hoppers etc. can insert/extract from the fake slots of an Inventory Scanner
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
