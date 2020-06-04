@@ -20,6 +20,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
@@ -202,7 +203,9 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		return EMPTY_INVENTORY.cast();
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return EMPTY_INVENTORY.cast();
+		else return super.getCapability(cap, side);
 	}
 
 	@Override
