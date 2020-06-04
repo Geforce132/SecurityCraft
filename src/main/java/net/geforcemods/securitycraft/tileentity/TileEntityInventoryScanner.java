@@ -10,10 +10,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
+	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -173,6 +178,20 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		}
 
 		return stackToInsert;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		return true;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) EMPTY_INVENTORY;
+		else return super.getCapability(capability, facing);
 	}
 
 	@Override

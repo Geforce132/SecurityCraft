@@ -11,6 +11,7 @@
 - Fix: Modules drop twice when breaking a block containing modules in creative mode
 - Fix: Modules can duplicate when loading chunks
 - Fix: Retinal Scanner crash
+- Fix: Hoppers etc. can extract from the fake slots of an Inventory Scanner
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 
