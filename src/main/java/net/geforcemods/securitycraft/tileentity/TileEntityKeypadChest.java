@@ -195,11 +195,33 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 
+	@Override
+	public void onOptionChanged(Option<?> option)
+	{
+		TileEntityKeypadChest offsetTe = findOther();
+
+		if(offsetTe != null)
+			offsetTe.setSendsMessages((boolean)option.get());
+	}
+
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
 	{
 		if(module.isEmpty() || !(module.getItem() instanceof ItemModule))
 			return;
 
+		TileEntityKeypadChest offsetTe = findOther();
+
+		if(offsetTe != null)
+		{
+			if(remove)
+				offsetTe.removeModule(((ItemModule)module.getItem()).getModule());
+			else
+				offsetTe.insertModule(module);
+		}
+	}
+
+	public TileEntityKeypadChest findOther()
+	{
 		IBlockState state = world.getBlockState(pos);
 
 		for(EnumFacing facing : EnumFacing.HORIZONTALS)
@@ -212,16 +234,11 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
 				if(offsetTe instanceof TileEntityKeypadChest)
-				{
-					if(remove)
-						((TileEntityKeypadChest)offsetTe).removeModule(((ItemModule)module.getItem()).getModule());
-					else
-						((TileEntityKeypadChest)offsetTe).insertModule(module);
-
-					return;
-				}
+					return (TileEntityKeypadChest)offsetTe;
 			}
 		}
+
+		return null;
 	}
 
 	@Override
@@ -294,5 +311,13 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public boolean sendsMessages()
 	{
 		return sendMessage.get();
+	}
+
+	public void setSendsMessages(boolean value)
+	{
+		IBlockState state = world.getBlockState(pos);
+
+		sendMessage.setValue(value);
+		world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
 	}
 }
