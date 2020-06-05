@@ -18,6 +18,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Modules can duplicate when loading chunks
 - Fix: Retinal Scanner crash
 - Fix: Hoppers etc. can extract from the fake slots of an Inventory Scanner
+- Fix: Capability related crash
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 

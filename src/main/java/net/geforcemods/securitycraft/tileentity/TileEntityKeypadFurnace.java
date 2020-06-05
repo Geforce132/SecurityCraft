@@ -487,13 +487,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
 	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN)
-		{
-			BlockPos offsetPos = pos.offset(facing);
-
-			return world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !BlockReinforcedHopper.canExtract(this, world, offsetPos);
-		}
-		else return false;
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
@@ -505,7 +499,15 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
-		return (T) EMPTY_INVENTORY;
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN)
+		{
+			BlockPos offsetPos = pos.offset(facing);
+
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !BlockReinforcedHopper.canExtract(this, world, offsetPos))
+				return (T) EMPTY_INVENTORY;
+		}
+
+		return super.getCapability(capability, facing);
 	}
 
 	@Override

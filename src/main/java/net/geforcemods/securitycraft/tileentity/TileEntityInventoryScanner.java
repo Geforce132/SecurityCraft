@@ -191,7 +191,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
 	{
-		return true;
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override
