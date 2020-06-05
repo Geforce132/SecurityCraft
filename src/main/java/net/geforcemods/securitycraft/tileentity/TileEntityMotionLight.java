@@ -58,10 +58,4 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {searchRadiusOption};
 	}
-
-	@Override
-	public String getName() {
-		return "Motion-Activated Light";
-	}
-
 }

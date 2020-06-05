@@ -12,7 +12,7 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -113,13 +113,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				if(te instanceof IOwnable)
 					probeInfo.vertical().text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) te).getOwner().getName());
 
-				if(te instanceof CustomizableSCTE && ((CustomizableSCTE)te).getOwner().isOwner(player))
+				//if the te is ownable, show modules only when it's owned, otherwise always show
+				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
 				{
-					if(!((CustomizableSCTE)te).getModules().isEmpty())
+					if(!((IModuleInventory)te).getInsertedModules().isEmpty())
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						for(EnumModuleType module : ((CustomizableSCTE) te).getModules())
+						for(EnumModuleType module : ((IModuleInventory) te).getInsertedModules())
 							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(module.getTranslationKey()));
 					}
 				}

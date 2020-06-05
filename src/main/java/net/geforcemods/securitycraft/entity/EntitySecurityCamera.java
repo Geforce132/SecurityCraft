@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -335,7 +335,7 @@ public class EntitySecurityCamera extends Entity{
 	public void setRedstonePower() {
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ));
 
-		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
+		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			if(BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
 				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
 			else if(!BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))

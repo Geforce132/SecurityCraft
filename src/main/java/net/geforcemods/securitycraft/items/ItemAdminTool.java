@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -48,8 +48,8 @@ public class ItemAdminTool extends Item {
 					hasInfo = true;
 				}
 
-				if(te instanceof CustomizableSCTE) {
-					List<EnumModuleType> modules = ((CustomizableSCTE) te).getModules();
+				if(te instanceof IModuleInventory) {
+					List<EnumModuleType> modules = ((IModuleInventory) te).getInsertedModules();
 
 					if(!modules.isEmpty()) {
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);

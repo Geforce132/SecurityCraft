@@ -7,6 +7,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -189,18 +190,20 @@ public class SCEventHandler {
 					return;
 				}
 
-				if(tileEntity instanceof CustomizableSCTE && PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier)){
-					event.setCanceled(true);
+				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier)){
+					if(tileEntity instanceof IModuleInventory) {
+						event.setCanceled(true);
 
-					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-						if(!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockModifier.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
+							if(!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
+								PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockModifier.name"), ClientUtils.localize("messages.securitycraft:notOwned").replace("#", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
+							return;
+						}
+
+						event.getEntityPlayer().openGui(SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
 						return;
 					}
-
-					event.getEntityPlayer().openGui(SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
-					return;
 				}
 
 				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG) && event.getEntityPlayer().inventory.getCurrentItem().hasDisplayName()){
@@ -391,20 +394,26 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
 		if(!event.getWorld().isRemote)
-			if(event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableSCTE){
-				CustomizableSCTE te = (CustomizableSCTE) event.getWorld().getTileEntity(event.getPos());
+			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
+				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
 
-				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
-					if(!te.modules.get(i).isEmpty()){
-						ItemStack stack = te.modules.get(i);
+				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
+					if(!te.getStackInSlot(i).isEmpty()){
+						ItemStack stack = te.getStackInSlot(i);
 						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
-						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, te);
+
+						if(te instanceof CustomizableSCTE)
+							((CustomizableSCTE)te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, (CustomizableSCTE)te);
 
 						if(te instanceof TileEntitySecurityCamera)
-							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock(), true);
+						{
+							TileEntitySecurityCamera cam = (TileEntitySecurityCamera)te;
+
+							cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).getValue(BlockSecurityCamera.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock(), true);
+						}
 					}
 			}
 	}

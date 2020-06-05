@@ -2,23 +2,32 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
-import net.geforcemods.securitycraft.blocks.reinforced.TileEntityReinforcedHopper;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -26,11 +35,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable {
+public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
 	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private String passcode;
 	private Owner owner = new Owner();
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
 	/**
 	 * Writes a tile entity to NBT.
@@ -40,6 +51,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
+
+		writeModuleInventory(tag);
+		writeOptions(tag);
 
 		if(passcode != null && !passcode.isEmpty())
 			tag.setString("passcode", passcode);
@@ -65,6 +79,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
+
+		modules = readModuleInventory(tag);
+		readOptions(tag);
 
 		if (tag.hasKey("passcode"))
 			if(tag.getInteger("passcode") != 0)
@@ -113,11 +130,23 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		{
 			BlockPos offsetPos = pos.offset(facing);
 
-			if(world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !getOwner().owns((TileEntityReinforcedHopper)world.getTileEntity(offsetPos)))
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !BlockReinforcedHopper.canExtract(this, world, offsetPos))
 				return (T) EMPTY_INVENTORY;
 		}
 
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
 	}
 
 	@Override
@@ -152,6 +181,64 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
+	{
+		addOrRemoveModuleFromAttached(stack, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
+	{
+		addOrRemoveModuleFromAttached(stack, true);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option)
+	{
+		TileEntityKeypadChest offsetTe = findOther();
+
+		if(offsetTe != null)
+			offsetTe.setSendsMessages((boolean)option.get());
+	}
+
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
+	{
+		if(module.isEmpty() || !(module.getItem() instanceof ItemModule))
+			return;
+
+		TileEntityKeypadChest offsetTe = findOther();
+
+		if(offsetTe != null)
+		{
+			if(remove)
+				offsetTe.removeModule(((ItemModule)module.getItem()).getModule());
+			else
+				offsetTe.insertModule(module);
+		}
+	}
+
+	public TileEntityKeypadChest findOther()
+	{
+		IBlockState state = world.getBlockState(pos);
+
+		for(EnumFacing facing : EnumFacing.HORIZONTALS)
+		{
+			BlockPos offsetPos = pos.offset(facing);
+			IBlockState offsetState = world.getBlockState(offsetPos);
+
+			if(state.getBlock() == offsetState.getBlock())
+			{
+				TileEntity offsetTe = world.getTileEntity(offsetPos);
+
+				if(offsetTe instanceof TileEntityKeypadChest)
+					return (TileEntityKeypadChest)offsetTe;
+			}
+		}
+
+		return null;
 	}
 
 	@Override
@@ -195,5 +282,42 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public boolean isSingleBlocked()
 	{
 		return BlockKeypadChest.isBlocked(getWorld(), getPos());
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getInventory()
+	{
+		return modules;
+	}
+
+	@Override
+	public EnumModuleType[] acceptedModules()
+	{
+		return new EnumModuleType[] {EnumModuleType.WHITELIST, EnumModuleType.BLACKLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{sendMessage};
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
+	}
+
+	public void setSendsMessages(boolean value)
+	{
+		IBlockState state = world.getBlockState(pos);
+
+		sendMessage.setValue(value);
+		world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
 	}
 }

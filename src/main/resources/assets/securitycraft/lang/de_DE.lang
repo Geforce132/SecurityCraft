@@ -659,6 +659,10 @@ module.securitycraft:reinforced_wooden_pressure_plate.whitelistModule.descriptio
 module.securitycraft:reinforced_stone_button.whitelistModule.description=Ein Whitelist-Modul in einem Verstärkten Knopf erlaubt es gewhitelisteten Spielern, diesen zu aktivieren.
 module.securitycraft:reinforced_wooden_button.whitelistModule.description=Ein Whitelist-Modul in einem Verstärkten Knopf erlaubt es gewhitelisteten Spielern, diesen zu aktivieren.
 module.securitycraft:reinforced_lever.whitelistModule.description=Ein Whitelist-Modul in einem Verstärkten Hebel erlaubt es gewhitelisteten Spielern, diesen zu aktivieren.
+module.securitycraft:keypadChest.whitelistModule.description=Ein Whitelist-Modul in einer Passwort gesicherten Truhe erlaubt gewhitelisteten Spielern, sie zu öffnen, ohne den Code zu kennen. Zusätzlich kann ein verstärkter Trichter eines gewhitelisteten Spielers Items aus der Truhe ziehen.
+module.securitycraft:keypadChest.blacklistModule.description=Ein Blacklist-Modul in einer Passwort gesicherten Truhe verhindert, dass geblacklistete Spieler mit dem Schloss interagieren können. 
+module.securitycraft:keypadFurnace.whitelistModule.description=Ein Whitelist-Modul in einem Passwort gesicherten Ofen erlaubt gewhitelisteten Spielern, ihn zu öffnen, ohne den Code zu kennen. Zusätzlich kann ein verstärkter Trichter eines gewhitelisteten Spielers Items aus dem Ofen ziehen. 
+module.securitycraft:keypadFurnace.blacklistModule.description=Ein Blacklist-Modul in einem Passwort gesicherten Ofen verhindert, dass geblacklistete Spieler mit dem Schloss interagieren können. 
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?
@@ -767,6 +771,10 @@ option.securitycraft:motionActivatedLight.searchRadius=Suchradius: #
 option.securitycraft:motionActivatedLight.searchRadius.description=Wie weit entfernt erkennt das Licht einen Mob/Spieler?
 option.securitycraft:keycardReader.sendMessage=Nachricht: #
 option.securitycraft:keycardReader.sendMessage.description=Sendet dieser Schlüsselkartenleser eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
+option.securitycraft:keypadChest.sendMessage=Nachricht: #
+option.securitycraft:keypadChest.sendMessage.description=Sendet diese Truhe eine Nachricht, wenn sie aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
+option.securitycraft:keypadFurnace.sendMessage=Nachricht: #
+option.securitycraft:keypadFurnace.sendMessage.description=Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag

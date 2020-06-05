@@ -4,8 +4,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -75,7 +77,11 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+				return false;
+			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST))
+				activate(world, pos, player);
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
 				((TileEntityKeypadFurnace) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

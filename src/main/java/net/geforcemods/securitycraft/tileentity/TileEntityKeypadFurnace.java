@@ -2,11 +2,16 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
-import net.geforcemods.securitycraft.blocks.reinforced.TileEntityReinforcedHopper;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -27,6 +32,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
@@ -42,7 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable {
+public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable {
 
 	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private static final int[] slotsTop = new int[] {0};
@@ -55,6 +61,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public int totalCookTime;
 	private String furnaceCustomName;
 	private String passcode;
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
 	@Override
 	public int getSizeInventory()
@@ -65,7 +73,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public ItemStack getStackInSlot(int index)
 	{
-		return furnaceItemStacks.get(index);
+		return index >= 100 ? getModuleInSlot(index) : furnaceItemStacks.get(index);
 	}
 
 	@Override
@@ -141,6 +149,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
+
+		modules = readModuleInventory(tag);
+		readOptions(tag);
 		NBTTagList list = tag.getTagList("Items", 10);
 		furnaceItemStacks = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
 
@@ -167,6 +178,9 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
+
+		writeModuleInventory(tag);
+		writeOptions(tag);
 		tag.setShort("BurnTime", (short)furnaceBurnTime);
 		tag.setShort("CookTime", (short)cookTime);
 		tag.setShort("CookTimeTotal", (short)totalCookTime);
@@ -477,9 +491,15 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		{
 			BlockPos offsetPos = pos.offset(facing);
 
-			return world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !getOwner().owns((TileEntityReinforcedHopper)world.getTileEntity(offsetPos));
+			return world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !BlockReinforcedHopper.canExtract(this, world, offsetPos);
 		}
 		else return false;
+	}
+
+	@Override
+	public boolean enableHack()
+	{
+		return true;
 	}
 
 	@Override
@@ -532,5 +552,34 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getInventory()
+	{
+		return modules;
+	}
+
+	@Override
+	public EnumModuleType[] acceptedModules()
+	{
+		return new EnumModuleType[] {EnumModuleType.WHITELIST, EnumModuleType.BLACKLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{sendMessage};
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
 	}
 }

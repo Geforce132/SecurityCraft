@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
@@ -12,6 +12,8 @@ import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
@@ -48,18 +50,23 @@ public class ItemUniversalBlockRemover extends Item {
 			if(!world.isRemote)
 			{
 
-				if(tileEntity instanceof CustomizableSCTE)
+				if(tileEntity instanceof IModuleInventory)
 				{
-					for(ItemStack module : ((CustomizableSCTE)tileEntity).modules)
+					boolean isChest = tileEntity instanceof TileEntityKeypadChest;
+
+					for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
 					{
+						if(isChest)
+							((TileEntityKeypadChest)tileEntity).addOrRemoveModuleFromAttached(module, true);
+
 						Block.spawnAsEntity(world, pos, module);
 					}
 				}
 
 				if(block == SCContent.laserBlock) {
-					CustomizableSCTE te = (CustomizableSCTE)world.getTileEntity(pos);
+					TileEntityLaserBlock te = (TileEntityLaserBlock)world.getTileEntity(pos);
 
-					for(ItemStack module : te.modules)
+					for(ItemStack module : te.getInventory())
 					{
 						if(!module.isEmpty())
 							te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {module, ((ItemModule)module.getItem()).getModule()}, te);
@@ -90,7 +97,7 @@ public class ItemUniversalBlockRemover extends Item {
 						TileEntityInventoryScanner te = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
 						if(te != null)
-							te.modules.clear();
+							te.getInventory().clear();
 					}
 					else if(block instanceof IBlockWithNoDrops)
 						Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops)block).getUniversalBlockRemoverDrop());
