@@ -234,11 +234,33 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 
+	@Override
+	public void onOptionChanged(Option<?> option)
+	{
+		KeypadChestTileEntity offsetTe = findOther();
+
+		if(offsetTe != null)
+			offsetTe.setSendsMessages((boolean)option.get());
+	}
+
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
 	{
 		if(module.isEmpty() || !(module.getItem() instanceof ModuleItem))
 			return;
 
+		KeypadChestTileEntity offsetTe = findOther();
+
+		if(offsetTe != null)
+		{
+			if(remove)
+				offsetTe.removeModule(((ModuleItem)module.getItem()).getModule());
+			else
+				offsetTe.insertModule(module);
+		}
+	}
+
+	public KeypadChestTileEntity findOther()
+	{
 		BlockState state = getBlockState();
 		ChestType type = state.get(KeypadChestBlock.TYPE);
 
@@ -256,15 +278,12 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 					TileEntity offsetTe = world.getTileEntity(offsetPos);
 
 					if(offsetTe instanceof KeypadChestTileEntity)
-					{
-						if(remove)
-							((KeypadChestTileEntity)offsetTe).removeModule(((ModuleItem)module.getItem()).getModule());
-						else
-							((KeypadChestTileEntity)offsetTe).insertModule(module);
-					}
+						return (KeypadChestTileEntity)offsetTe;
 				}
 			}
 		}
+
+		return null;
 	}
 
 	@Override
@@ -344,5 +363,11 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public boolean sendsMessages()
 	{
 		return sendMessage.get();
+	}
+
+	public void setSendsMessages(boolean value)
+	{
+		sendMessage.setValue(value);
+		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3); //sync option change to client
 	}
 }
