@@ -68,7 +68,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 		{
 			for(int i = 0; i < players.length; i++)
 			{
-				if(players[i].equals("") || players[i] == null){
+				if(players[i] == null || players[i].equals("")){
 					players[i] = player.getName().getFormattedText();
 					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;
