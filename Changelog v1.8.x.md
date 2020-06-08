@@ -16,6 +16,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Modules drop twice when breaking a block containing modules in creative mode
 - Fix: Modules can duplicate when loading chunks
 - Fix: Hoppers etc. can extract from the fake slots of an Inventory Scanner
+- Fix: Username Logger crash
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 
