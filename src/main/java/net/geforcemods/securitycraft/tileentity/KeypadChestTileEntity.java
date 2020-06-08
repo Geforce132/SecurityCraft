@@ -237,10 +237,13 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public void onOptionChanged(Option<?> option)
 	{
-		KeypadChestTileEntity offsetTe = findOther();
+		if(option instanceof BooleanOption)
+		{
+			KeypadChestTileEntity offsetTe = findOther();
 
-		if(offsetTe != null)
-			offsetTe.setSendsMessages((boolean)option.get());
+			if(offsetTe != null)
+				offsetTe.setSendsMessages(((BooleanOption)option).get());
+		}
 	}
 
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
