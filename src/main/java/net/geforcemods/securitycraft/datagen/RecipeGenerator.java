@@ -285,6 +285,16 @@ public class RecipeGenerator extends RecipeProvider
 		.key('R', Tags.Items.DUSTS_REDSTONE)
 		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.PROJECTOR.get())
+		.patternLine("III")
+		.patternLine("BLP")
+		.patternLine("I I")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('B', SCContent.REINFORCED_IRON_BLOCK.get())
+		.key('L', SCContent.REINFORCED_REDSTONE_LAMP.get())
+		.key('P', SCContent.REINFORCED_GLASS_PANE.get())
+		.addCriterion("has_redstone_lamp", hasItem(SCContent.REINFORCED_REDSTONE_LAMP.get()))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.PROTECTO.get())
 		.patternLine("ODO")
 		.patternLine("OEO")
