@@ -21,6 +21,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -29,10 +31,23 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class ProjectorBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	private static final VoxelShape SHAPE = Block.makeCuboidShape(0, 0, 0, 16, 10, 16);
 
 	public ProjectorBlock(Properties properties) {
-		super(SoundType.METAL, properties);
+		super(SoundType.METAL, properties.notSolid());
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+	}
+
+	@Override
+	public boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) 
+	{
+		return false;
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
+	{
+		return SHAPE;
 	}
 
 	@Override
