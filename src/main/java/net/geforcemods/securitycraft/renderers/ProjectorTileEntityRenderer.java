@@ -39,6 +39,12 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 
 					BlockPos pos = translateProjection(te, stack, te.getBlockState().get(ProjectorBlock.FACING), i, j, te.getProjectionRange(), te.getProjectionOffset());
 
+					if(pos != null && !te.getWorld().isAirBlock(pos))
+					{
+						stack.pop();
+						continue;
+					}
+
 					RenderSystem.disableCull();
 					Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(te.getProjectedBlock().getDefaultState(), stack, buffer, LightTexture.packLight(te.getWorld().getLightFor(LightType.BLOCK, pos), te.getWorld().getLightFor(LightType.SKY, pos)), OverlayTexture.NO_OVERLAY);
 					RenderSystem.enableCull();
