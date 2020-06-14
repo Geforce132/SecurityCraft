@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_red_nether_bricks"
+  },
+  "result": "securitycraft:reinforced_red_nether_brick_stairs",
+  "count": 1
+}

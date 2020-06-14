@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_nether_bricks"
+  },
+  "result": "securitycraft:reinforced_nether_brick_wall",
+  "count": 1
+}
