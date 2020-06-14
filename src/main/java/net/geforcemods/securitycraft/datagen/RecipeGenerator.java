@@ -922,7 +922,6 @@ public class RecipeGenerator extends RecipeProvider
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.REINFORCED_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), 1);
-
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_SLAB.get(), 2);
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.STAIRS_CRYSTAL_QUARTZ.get(), 1);
 		addStonecuttingRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get(), 1);
@@ -1212,8 +1211,9 @@ public class RecipeGenerator extends RecipeProvider
 	{
 		SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(ingredient), result, count)
 		.addCriterion("has_" + ingredient.asItem().getRegistryName().getPath(), hasItem(ingredient))
-		.build(consumer, result.asItem().getRegistryName()+"_from_"+ingredient.asItem().getRegistryName().getPath()+"_stonecutting");
+		.build(consumer, result.asItem().getRegistryName() + "_from_" + ingredient.asItem().getRegistryName().getPath() + "_stonecutting");
 	}
+
 	@Override
 	public String getName()
 	{
