@@ -4,6 +4,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 
 - New: The Reinforced Hopper is now the only block that can pull out of Password-protected Chests and Furnaces. The owner of both blocks needs to be the same, or the hopper needs to be owned by a whitelisted player
 - New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace (including customization options to turn off the messages)
+- New: Stonecutting recipes for numerous reinforced blocks (Thanks Redstone_Dubstep!)
 - API: New IModuleInventory interface that adds the ability to have modules in a TileEntity
 - API: New ICustomizable interface that adds the ability to have customization options in a TileEntity
 - Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows

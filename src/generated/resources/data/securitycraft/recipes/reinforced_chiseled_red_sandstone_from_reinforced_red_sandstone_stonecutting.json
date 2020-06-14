@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_red_sandstone"
+  },
+  "result": "securitycraft:reinforced_chiseled_red_sandstone",
+  "count": 1
+}

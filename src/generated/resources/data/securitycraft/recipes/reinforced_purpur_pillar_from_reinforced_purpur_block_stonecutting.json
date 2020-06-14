@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_purpur_block"
+  },
+  "result": "securitycraft:reinforced_purpur_pillar",
+  "count": 1
+}

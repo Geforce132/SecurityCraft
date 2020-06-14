@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_stone_stairs_from_reinforced_stone_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:reinforced_stone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:reinforced_stone_stairs_from_reinforced_stone_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_stone",
+      "has_the_recipe"
+    ]
+  ]
+}

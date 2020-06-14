@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_granite_wall_from_reinforced_granite_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_granite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:reinforced_granite"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:reinforced_granite_wall_from_reinforced_granite_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_granite",
+      "has_the_recipe"
+    ]
+  ]
+}

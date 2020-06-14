@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_prismarine"
+  },
+  "result": "securitycraft:reinforced_prismarine_wall",
+  "count": 1
+}
