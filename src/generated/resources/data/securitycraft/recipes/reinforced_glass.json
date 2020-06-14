@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "item": "securitycraft:reinforced_sand"
+    "tag": "securitycraft:reinforced/sand"
   },
   "result": "securitycraft:reinforced_glass",
   "experience": 0.1,

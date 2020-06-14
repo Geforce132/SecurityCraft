@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_cobblestone"
+  },
+  "result": "securitycraft:reinforced_cobblestone_slab",
+  "count": 2
+}
