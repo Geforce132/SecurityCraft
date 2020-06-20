@@ -200,7 +200,21 @@ public class SCEventHandler {
 		//don't let people break the disguise block
 		if(!sentries.isEmpty())
 		{
-			event.setCanceled(true);
+			BlockPos pos = event.getPos();
+
+			if (!sentries.get(0).getDisguiseModule().isEmpty())
+			{
+				ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+				List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+
+				if(blocks.size() > 0)
+				{
+					Block block = blocks.get(0);
+
+					if(block == event.getWorld().getBlockState(pos).getBlock())
+						event.setCanceled(true);
+				}
+			}
 			return;
 		}
 
