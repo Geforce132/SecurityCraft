@@ -416,8 +416,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			ItemStack disguiseStack = blocks.get(0);
 			BlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
 
-			if (world.getBlockState(getPosition()).isAir()) world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
-
+			if (world.getBlockState(getPosition()).isAir(world, getPosition()))
+				world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
 		}
 
 		dataManager.set(MODULE, module.write(new CompoundNBT()));
