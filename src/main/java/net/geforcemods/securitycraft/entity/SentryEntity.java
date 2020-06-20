@@ -6,6 +6,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.entity.ai.AttackRangedIfEnabledGoal;
 import net.geforcemods.securitycraft.entity.ai.TargetNearestPlayerOrMobGoal;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -213,6 +214,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			player.swingArm(Hand.MAIN_HAND);
 			return true;
+		}
+		else if(!getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
+		{
+			if(player.isCrouching() && player.isCreative())
+				remove();
 		}
 
 		return super.processInteract(player, hand);
