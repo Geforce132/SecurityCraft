@@ -169,14 +169,16 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
 				{
-					Block.spawnAsEntity(world, getPosition(), module);
+					Block.spawnAsEntity(world, pos, module);
 
-					List<ItemStack> blocks = ((ModuleItem)module.getItem()).getAddons(module.getTag());
+					List<Block> blocks = ((ModuleItem)module.getItem()).getBlockAddons(module.getTag());
+
 					if(blocks.size() > 0)
 					{
-						BlockState state = Block.getBlockFromItem(blocks.get(0).getItem()).getDefaultState();
-						if(state == world.getBlockState(pos))
-							world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
+						Block block = blocks.get(0);
+
+						if(block == world.getBlockState(pos).getBlock())
+							world.destroyBlock(pos, false);
 					}
 				}
 
@@ -199,7 +201,19 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			}
 			else if(item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 			{
-				world.destroyBlock(getPosition(), false);
+				if (!getDisguiseModule().isEmpty())
+				{
+					List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+
+					if(blocks.size() > 0)
+					{
+						Block block = blocks.get(0);
+
+						if(block == world.getBlockState(pos).getBlock())
+							world.destroyBlock(pos, false);
+					}
+				}
+
 				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
 				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
 				dataManager.set(MODULE, new CompoundNBT());
@@ -240,21 +254,21 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		BlockPos pos = getPosition();
 		if (!getDisguiseModule().isEmpty())
 		{
-			List<ItemStack> blocks = ((ModuleItem)getDisguiseModule().getItem()).getAddons(getDisguiseModule().getTag());
+			List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+
 			if(blocks.size() > 0)
 			{
-				BlockState state = Block.getBlockFromItem(blocks.get(0).getItem()).getDefaultState();
-				if(state != world.getBlockState(pos))
-					Block.spawnAsEntity(world, getPosition(), new ItemStack(world.getBlockState(pos).getBlock().asItem()));
+				Block block = blocks.get(0);
+
+				if(block == world.getBlockState(pos).getBlock())
+					world.destroyBlock(pos, false);
 			}
 		}
-		else Block.spawnAsEntity(world, pos, new ItemStack(world.getBlockState(pos).getBlock().asItem()));
 
 		super.remove();
 		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.SENTRY.get()));
 		Block.spawnAsEntity(world, getPosition(), getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, getPosition(), getWhitelistModule()); //if there is none, nothing will drop
-		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
 	}
 
 	@Override
@@ -402,7 +416,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			ItemStack disguiseStack = blocks.get(0);
 			BlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
 
-			if (world.getBlockState(getPosition()) == Blocks.AIR.getDefaultState()) world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
+			if (world.getBlockState(getPosition()).isAir()) world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
+
 		}
 
 		dataManager.set(MODULE, module.write(new CompoundNBT()));
