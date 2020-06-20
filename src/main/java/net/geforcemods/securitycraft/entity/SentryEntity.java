@@ -192,7 +192,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				ItemStack module = getWhitelistModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
-					Block.spawnAsEntity(world, getPosition(), module);
+					Block.spawnAsEntity(world, pos, module);
 
 				setWhitelistModule(player.getHeldItemMainhand());
 
@@ -214,13 +214,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 					}
 				}
 
-				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
-				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
+				Block.spawnAsEntity(world, pos, getDisguiseModule());
+				Block.spawnAsEntity(world, pos, getWhitelistModule());
 				dataManager.set(MODULE, new CompoundNBT());
 				dataManager.set(WHITELIST, new CompoundNBT());
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
-				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
+				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
 			else if(item == Items.NAME_TAG)
 			{
 				setCustomName(player.getHeldItemMainhand().getDisplayName());
@@ -246,7 +246,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	/**
-	 * Cleanly removes this sentry from the world, dropping the module and removing any block
+	 * Cleanly removes this sentry from the world, dropping the module and removing the block the sentry is disguised with
 	 */
 	@Override
 	public void remove()
