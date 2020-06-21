@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -249,7 +250,20 @@ public class SCEventHandler {
 		//don't let people break the disguise block
 		if(!sentries.isEmpty())
 		{
-			event.setCanceled(true);
+			BlockPos pos = event.getPos();
+
+			if (!sentries.get(0).getDisguiseModule().isEmpty())
+			{
+				ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+				List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
+
+				if(blocks.size() > 0)
+				{
+					if(blocks.get(0) == event.getWorld().getBlockState(pos).getBlock())
+						event.setCanceled(true);
+				}
+			}
+
 			return;
 		}
 
@@ -393,11 +407,11 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
-		if(!event.getWorld().isRemote)
+		if(!event.getWorld().isRemote) {
 			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
 				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
 
-				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
+				for(int i = 0; i < te.getMaxNumberOfModules(); i++) {
 					if(!te.getStackInSlot(i).isEmpty()){
 						ItemStack stack = te.getStackInSlot(i);
 						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
@@ -415,7 +429,29 @@ public class SCEventHandler {
 							cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).getValue(BlockSecurityCamera.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock(), true);
 						}
 					}
+				}
 			}
+
+			List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+			if(!sentries.isEmpty())
+			{
+				BlockPos pos = event.getPos();
+
+				if (!sentries.get(0).getDisguiseModule().isEmpty())
+				{
+					ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+					List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
+
+					if(blocks.size() > 0)
+					{
+						IBlockState state = blocks.get(0).getDefaultState();
+
+						event.getWorld().setBlockState(pos, state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
+					}
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent

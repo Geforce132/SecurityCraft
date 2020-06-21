@@ -36,6 +36,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
@@ -143,6 +144,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	@Override
 	public boolean processInteract(EntityPlayer player, EnumHand hand)
 	{
+		BlockPos pos = getPosition();
+
 		if(getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND)
 		{
 			Item item = player.getHeldItemMainhand().getItem();
@@ -163,7 +166,17 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				ItemStack module = getDisguiseModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
-					Block.spawnAsEntity(world, getPosition(), module);
+				{
+					Block.spawnAsEntity(world, pos, module);
+
+					List<Block> blocks = ((ItemModule)module.getItem()).getBlockAddons(module.getTagCompound());
+
+					if(blocks.size() > 0)
+					{
+						if(blocks.get(0) == world.getBlockState(pos).getBlock())
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					}
+				}
 
 				setDisguiseModule(player.getHeldItemMainhand());
 
@@ -175,7 +188,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				ItemStack module = getWhitelistModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
-					Block.spawnAsEntity(world, getPosition(), module);
+					Block.spawnAsEntity(world, pos, module);
 
 				setWhitelistModule(player.getHeldItemMainhand());
 
@@ -184,14 +197,24 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			}
 			else if(item == SCContent.universalBlockModifier)
 			{
-				world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
-				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
-				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
+				if (!getDisguiseModule().isEmpty())
+				{
+					List<Block> blocks = ((ItemModule)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTagCompound());
+
+					if(blocks.size() > 0)
+					{
+						if(blocks.get(0) == world.getBlockState(pos).getBlock())
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					}
+				}
+
+				Block.spawnAsEntity(world, pos, getDisguiseModule());
+				Block.spawnAsEntity(world, pos, getWhitelistModule());
 				dataManager.set(MODULE, new NBTTagCompound());
 				dataManager.set(WHITELIST, new NBTTagCompound());
 			}
 			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
-				item.onItemUse(player, world, getPosition(), hand, EnumFacing.NORTH, 0.0f, 0.0f, 0.0f);
+				item.onItemUse(player, world, pos, hand, EnumFacing.NORTH, 0.0F, 0.0F, 0.0F);
 			else if(item == Items.NAME_TAG)
 			{
 				setCustomNameTag(player.getHeldItemMainhand().getDisplayName());
@@ -222,14 +245,26 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	/**
-	 * Cleanly removes this sentry from the world, dropping the module and removing any block
+	 * Cleanly removes this sentry from the world, dropping the module and removing the block the sentry is disguised with
 	 */
 	public void remove()
 	{
-		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.sentry));
-		Block.spawnAsEntity(world, getPosition(), getDisguiseModule()); //if there is none, nothing will drop
-		Block.spawnAsEntity(world, getPosition(), getWhitelistModule()); //if there is none, nothing will drop
-		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
+		BlockPos pos = getPosition();
+
+		if (!getDisguiseModule().isEmpty())
+		{
+			List<Block> blocks = ((ItemModule)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTagCompound());
+
+			if(blocks.size() > 0)
+			{
+				if(blocks.get(0) == world.getBlockState(pos).getBlock())
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			}
+		}
+
+		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
+		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
+		Block.spawnAsEntity(world, pos, getWhitelistModule()); //if there is none, nothing will drop
 		setDead();
 	}
 
@@ -378,7 +413,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			ItemStack disguiseStack = blocks.get(0);
 			IBlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getStateFromMeta(disguiseStack.getHasSubtypes() ? disguiseStack.getItemDamage() : 0);
 
-			world.setBlockState(getPosition(), state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
+			if (world.isAirBlock(getPosition()))
+				world.setBlockState(getPosition(), state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
 		}
 
 		dataManager.set(MODULE, module.writeToNBT(new NBTTagCompound()));
