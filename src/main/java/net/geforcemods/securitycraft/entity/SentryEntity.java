@@ -40,6 +40,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -145,6 +146,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	@Override
 	public boolean processInteract(PlayerEntity player, Hand hand)
 	{
+		BlockPos pos = getPosition();
+
 		if(getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
 		{
 			Item item = player.getHeldItemMainhand().getItem();
@@ -165,7 +168,17 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				ItemStack module = getDisguiseModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
-					Block.spawnAsEntity(world, getPosition(), module);
+				{
+					Block.spawnAsEntity(world, pos, module);
+
+					List<Block> blocks = ((ModuleItem)module.getItem()).getBlockAddons(module.getTag());
+
+					if(blocks.size() > 0)
+					{
+						if(blocks.get(0) == world.getBlockState(pos).getBlock())
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					}
+				}
 
 				setDisguiseModule(player.getHeldItemMainhand());
 
@@ -177,7 +190,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				ItemStack module = getWhitelistModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
-					Block.spawnAsEntity(world, getPosition(), module);
+					Block.spawnAsEntity(world, pos, module);
 
 				setWhitelistModule(player.getHeldItemMainhand());
 
@@ -186,14 +199,24 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			}
 			else if(item == SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 			{
-				world.destroyBlock(getPosition(), false);
-				Block.spawnAsEntity(world, getPosition(), getDisguiseModule());
-				Block.spawnAsEntity(world, getPosition(), getWhitelistModule());
+				if (!getDisguiseModule().isEmpty())
+				{
+					List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+
+					if(blocks.size() > 0)
+					{
+						if(blocks.get(0) == world.getBlockState(pos).getBlock())
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					}
+				}
+
+				Block.spawnAsEntity(world, pos, getDisguiseModule());
+				Block.spawnAsEntity(world, pos, getWhitelistModule());
 				dataManager.set(MODULE, new CompoundNBT());
 				dataManager.set(WHITELIST, new CompoundNBT());
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
-				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, getPosition(), false)));
+				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
 			else if(item == Items.NAME_TAG)
 			{
 				setCustomName(player.getHeldItemMainhand().getDisplayName());
@@ -224,16 +247,28 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	/**
-	 * Cleanly removes this sentry from the world, dropping the module and removing any block
+	 * Cleanly removes this sentry from the world, dropping the module and removing the block the sentry is disguised with
 	 */
 	@Override
 	public void remove()
 	{
+		BlockPos pos = getPosition();
+
+		if (!getDisguiseModule().isEmpty())
+		{
+			List<Block> blocks = ((ModuleItem)getDisguiseModule().getItem()).getBlockAddons(getDisguiseModule().getTag());
+
+			if(blocks.size() > 0)
+			{
+				if(blocks.get(0) == world.getBlockState(pos).getBlock())
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			}
+		}
+
 		super.remove();
-		Block.spawnAsEntity(world, getPosition(), new ItemStack(SCContent.SENTRY.get()));
-		Block.spawnAsEntity(world, getPosition(), getDisguiseModule()); //if there is none, nothing will drop
-		Block.spawnAsEntity(world, getPosition(), getWhitelistModule()); //if there is none, nothing will drop
-		world.setBlockState(getPosition(), Blocks.AIR.getDefaultState());
+		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.SENTRY.get()));
+		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
+		Block.spawnAsEntity(world, pos, getWhitelistModule()); //if there is none, nothing will drop
 	}
 
 	@Override
@@ -381,7 +416,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			ItemStack disguiseStack = blocks.get(0);
 			BlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
 
-			world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
+			if (world.getBlockState(getPosition()).isAir(world, getPosition()))
+				world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
 		}
 
 		dataManager.set(MODULE, module.write(new CompoundNBT()));
