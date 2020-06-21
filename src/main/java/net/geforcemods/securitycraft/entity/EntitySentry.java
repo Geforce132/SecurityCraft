@@ -235,9 +235,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			player.swingArm(EnumHand.MAIN_HAND);
 			return true;
 		}
-		else if(!getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND)
+		else if(!getOwner().isOwner(player) && hand == EnumHand.MAIN_HAND && player.isCreative())
 		{
-			if(player.isSneaking() && player.isCreative())
+			if(player.isSneaking() || player.getHeldItemMainhand().getItem() == SCContent.universalBlockRemover)
 				remove();
 		}
 
