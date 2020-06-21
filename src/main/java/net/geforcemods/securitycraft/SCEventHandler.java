@@ -233,7 +233,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockBroken(BreakEvent event){
-		if(event.getWorld() instanceof World && !event.getWorld().isRemote())
+		if(event.getWorld() instanceof World && !event.getWorld().isRemote()) {
 			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
 				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
 
