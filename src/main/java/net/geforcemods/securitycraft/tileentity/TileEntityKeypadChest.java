@@ -198,10 +198,13 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public void onOptionChanged(Option<?> option)
 	{
-		TileEntityKeypadChest offsetTe = findOther();
+		if(option instanceof OptionBoolean)
+		{
+			TileEntityKeypadChest offsetTe = findOther();
 
-		if(offsetTe != null)
-			offsetTe.setSendsMessages((boolean)option.get());
+			if(offsetTe != null)
+				offsetTe.setSendsMessages(((OptionBoolean)option).get());
+		}
 	}
 
 	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
