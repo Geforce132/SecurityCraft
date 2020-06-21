@@ -215,6 +215,7 @@ public class SCEventHandler {
 						event.setCanceled(true);
 				}
 			}
+
 			return;
 		}
 
