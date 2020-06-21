@@ -237,9 +237,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			player.swingArm(Hand.MAIN_HAND);
 			return true;
 		}
-		else if(!getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
+		else if(!getOwner().isOwner(player) && hand == Hand.MAIN_HAND && player.isCreative())
 		{
-			if(player.isCrouching() && player.isCreative())
+			if(player.isCrouching() || player.getHeldItemMainhand().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get())
 				remove();
 		}
 
