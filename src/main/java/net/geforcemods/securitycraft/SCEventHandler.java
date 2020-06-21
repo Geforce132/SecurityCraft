@@ -41,6 +41,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -209,9 +210,7 @@ public class SCEventHandler {
 
 				if(blocks.size() > 0)
 				{
-					Block block = blocks.get(0);
-
-					if(block == event.getWorld().getBlockState(pos).getBlock())
+					if(blocks.get(0) == event.getWorld().getBlockState(pos).getBlock())
 						event.setCanceled(true);
 				}
 			}
@@ -257,6 +256,27 @@ public class SCEventHandler {
 						}
 					}
 			}
+
+			List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+
+			if(!sentries.isEmpty())
+			{
+				BlockPos pos = event.getPos();
+
+				if (!sentries.get(0).getDisguiseModule().isEmpty())
+				{
+					ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+					List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+
+					if(blocks.size() > 0)
+					{
+						BlockState state = blocks.get(0).getDefaultState();
+
+						((World)event.getWorld()).setBlockState(pos, state.getShape(event.getWorld(), pos) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
+					}
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent

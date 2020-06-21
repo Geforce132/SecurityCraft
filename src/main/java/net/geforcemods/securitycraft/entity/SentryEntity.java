@@ -176,7 +176,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 					if(blocks.size() > 0)
 					{
 						if(blocks.get(0) == world.getBlockState(pos).getBlock())
-							world.destroyBlock(pos, false);
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					}
 				}
 
@@ -206,7 +206,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 					if(blocks.size() > 0)
 					{
 						if(blocks.get(0) == world.getBlockState(pos).getBlock())
-							world.destroyBlock(pos, false);
+							world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					}
 				}
 
@@ -256,7 +256,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			if(blocks.size() > 0)
 			{
 				if(blocks.get(0) == world.getBlockState(pos).getBlock())
-					world.destroyBlock(pos, false);
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}
 		}
 
