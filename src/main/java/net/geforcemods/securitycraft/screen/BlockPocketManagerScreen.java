@@ -64,7 +64,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 		if (!te.enabled)
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed"), 7, 83, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed")) / 2, 83, 4210752);
 
 			font.drawString((size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
@@ -142,6 +142,6 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	public void outlineButtonClicked(ClickButton button)
 	{
 		te.toggleOutline();
-		Minecraft.getInstance().player.closeScreen();
+		outlineButton.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")));
 	}
 }
