@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -48,7 +49,18 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param stack The raw ItemStack being inserted.
 	 * @param module The EnumModuleType variant of stack.
 	 */
-	public default void onModuleInserted(ItemStack stack, EnumModuleType module) {}
+	public default void onModuleInserted(ItemStack stack, EnumModuleType module)
+	{
+		TileEntity te = getTileEntity();
+
+		if(!te.getWorld().isRemote)
+		{
+			IBlockState state = te.getWorld().getBlockState(te.getPos());
+
+			te.getWorld().notifyBlockUpdate(te.getPos(), state, state, 3);
+			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);
+		}
+	}
 
 	/**
 	 * Called whenever a module is removed from a slot in the "Customize" GUI.
@@ -56,7 +68,18 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param stack The raw ItemStack being removed.
 	 * @param module The EnumModuleType variant of stack.
 	 */
-	public default void onModuleRemoved(ItemStack stack, EnumModuleType module) {}
+	public default void onModuleRemoved(ItemStack stack, EnumModuleType module)
+	{
+		TileEntity te = getTileEntity();
+
+		if(!te.getWorld().isRemote)
+		{
+			IBlockState state = te.getWorld().getBlockState(te.getPos());
+
+			te.getWorld().notifyBlockUpdate(te.getPos(), state, state, 3);
+			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);
+		}
+	}
 
 	/**
 	 * Used for enabling differentiation between module slots and slots that are handled by IInventory.

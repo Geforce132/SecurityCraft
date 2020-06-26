@@ -186,12 +186,16 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
+		IModuleInventory.super.onModuleInserted(stack, module);
+
 		addOrRemoveModuleFromAttached(stack, false);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
+		IModuleInventory.super.onModuleRemoved(stack, module);
+
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 

@@ -81,6 +81,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		if(module == EnumModuleType.REDSTONE)
 			BlockPortableRadar.togglePowerOutput(world, pos, false);
 	}

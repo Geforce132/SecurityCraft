@@ -728,6 +728,8 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
+		super.onModuleInserted(stack, module);
+
 		if(enabled && module == EnumModuleType.DISGUISE)
 			setWalls(false);
 	}
@@ -735,6 +737,8 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		if(enabled && module == EnumModuleType.DISGUISE)
 			setWalls(true);
 	}

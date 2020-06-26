@@ -24,6 +24,8 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Hoppers etc. can extract from the fake slots of an Inventory Scanner
 - Fix: Capability related crash
 - Fix: Backslashes visible in German language file
+- Fix: Security Camera still powers blocks when removing the Redstone Module
+- Fix: Modules don't get synched correctly on servers
 
 --------------------------Changelog for v1.8.18.2 of SecurityCraft--------------------------
 

@@ -12,6 +12,8 @@ public class TileEntityDisguisable extends CustomizableSCTE
 	@Override
 	public void onModuleInserted(ItemStack stack, EnumModuleType module)
 	{
+		super.onModuleInserted(stack, module);
+
 		if(!world.isRemote && module == EnumModuleType.DISGUISE)
 			SecurityCraft.network.sendToAll(new PacketCRefreshDiguisedModel(pos, true, stack));
 	}
@@ -19,6 +21,8 @@ public class TileEntityDisguisable extends CustomizableSCTE
 	@Override
 	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		if(!world.isRemote && module == EnumModuleType.DISGUISE)
 			SecurityCraft.network.sendToAll(new PacketCRefreshDiguisedModel(pos, false, stack));
 	}
