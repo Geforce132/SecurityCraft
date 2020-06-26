@@ -44,6 +44,8 @@ public class BlockLootTableGenerator implements IDataProvider
 	private void addTables()
 	{
 		putStandardBlockLootTable(SCContent.ALARM);
+		putStandardBlockLootTable(SCContent.BLOCK_POCKET_MANAGER);
+		putStandardBlockLootTable(SCContent.BLOCK_POCKET_WALL);
 		putMineLootTable(SCContent.BOUNCING_BETTY);
 		putStandardBlockLootTable(SCContent.CAGE_TRAP);
 		putStandardBlockLootTable(SCContent.CHISELED_CRYSTAL_QUARTZ);
