@@ -17,11 +17,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySystemTileEntity> {
 
 	@Override
-	public void render(TrophySystemTileEntity tileEntityIn, double x, double y, double z, float partialTicks, int destroyStage) {
+	public void render(TrophySystemTileEntity te, double x, double y, double z, float partialTicks, int destroyStage) {
 		// The code below draws a line between the trophy system and the projectile that
 		// it's targeting.
 
-		if(tileEntityIn.entityBeingTargeted == null) return;
+		if(te.entityBeingTargeted == null) return;
 
 		Vec3d blockpos = new Vec3d(x + 0.5D, y + 0.75D, z + 0.5D);
 
@@ -34,7 +34,7 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 		BufferBuilder bb = Tessellator.getInstance().getBuffer();
 		bb.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		bb.pos(0, 0, 0).color(1, 0, 0, 1F).endVertex();
-		bb.pos(tileEntityIn.entityBeingTargeted.posX - tileEntityIn.getPos().getX() - 0.5D, tileEntityIn.entityBeingTargeted.posY - tileEntityIn.getPos().getY() - 0.75D, tileEntityIn.entityBeingTargeted.posZ - tileEntityIn.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
+		bb.pos(te.entityBeingTargeted.posX - te.getPos().getX() - 0.5D, te.entityBeingTargeted.posY - te.getPos().getY() - 0.75D, te.entityBeingTargeted.posZ - te.getPos().getZ() - 0.5D).color(1, 0, 0, 1F).endVertex();
 		Tessellator.getInstance().draw();
 
 		GlStateManager.enableLighting();
@@ -43,7 +43,7 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TrophySystemTileEntity te) 
+	public boolean isGlobalRenderer(TrophySystemTileEntity te)
 	{
 		return true;
 	}
