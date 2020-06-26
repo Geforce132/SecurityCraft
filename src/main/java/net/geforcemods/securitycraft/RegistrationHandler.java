@@ -47,6 +47,7 @@ import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAnd
 import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
+import net.geforcemods.securitycraft.network.packets.PacketSAssembleBlockPocket;
 import net.geforcemods.securitycraft.network.packets.PacketSCheckPassword;
 import net.geforcemods.securitycraft.network.packets.PacketSClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
@@ -446,6 +447,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSClearLogger.Handler.class, PacketSClearLogger.class, 27, Side.SERVER);
 		network.registerMessage(PacketCRefreshDiguisedModel.Handler.class, PacketCRefreshDiguisedModel.class, 28, Side.CLIENT);
 		network.registerMessage(PacketSetSentryMode.Handler.class, PacketSetSentryMode.class, 29, Side.SERVER);
+		network.registerMessage(PacketSAssembleBlockPocket.Handler.class, PacketSAssembleBlockPocket.class, 30, Side.SERVER);
 	}
 
 	@SubscribeEvent

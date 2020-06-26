@@ -517,6 +517,10 @@ gui.securitycraft:editModule.clear=Clear List
 gui.securitycraft:blockPocketManager.activate=Activate
 gui.securitycraft:blockPocketManager.deactivate=Deactivate
 gui.securitycraft:blockPocketManager.size=Size: %sx%sx%s
+gui.securitycraft:blockPocketManager.assemble=Auto-Assemble
+gui.securitycraft:blockPocketManager.outline.show=Show Outline
+gui.securitycraft:blockPocketManager.outline.hide=Hide Outline
+gui.securitycraft:blockPocketManager.youNeed=You need:
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 messages.securitycraft:securityCamera.mounted=You are now mounted to a camera. Use the #w#a#s#d keys to move the camera's view, and the #i/#o buttons to zoom in and out.
@@ -589,12 +593,16 @@ messages.securitycraft:sentry.descriptionMode1= (Always active, attacks hostile 
 messages.securitycraft:sentry.descriptionMode2= (Active when a player comes near, attacks players)
 messages.securitycraft:sentry.descriptionMode3= (Never active, doesn't attack anything)
 messages.securitycraft:blockpocket.multipleManagers=There is more than one Block Pocket Manager in the structure.
-messages.securitycraft:blockpocket.invalidBlock=Invalid block "%2$s" at position %1$s!
-messages.securitycraft:blockpocket.invalidBlock.pillar=Invalid block "%2$s" at position %1$s! (Make sure the pillar is rotated correctly!)
+messages.securitycraft:blockpocket.alreadyAssembled=The Block Pocket has already been assembled!
+messages.securitycraft:blockpocket.invalidBlock.rotation=The pillar at position %1$s! is rotated incorrectly!
+messages.securitycraft:blockpocket.invalidBlock=Invalid block "%2$s" at position %1$s! (Expected: "%3$s")
+messages.securitycraft:blockpocket.blockInWay="%2$s" is blocking the space at position %1$s!
 messages.securitycraft:blockpocket.unowned=You do not own the block "%2$s" at position %1$s!
+messages.securitycraft:blockpocket.notEnoughItems=You don't have enough items to assemble a Block Pocket of that size!
 messages.securitycraft:blockpocket.activated=Block Pocket activated!
 messages.securitycraft:blockpocket.deactivated=Block Pocket deactivated!
 messages.securitycraft:sc_help=%s: %s + %s
+messages.securitycraft:blockpocket.assembled=Block Pocket assembled!
 
 jei.securitycraft:reinforcedBlock.info=Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.
 

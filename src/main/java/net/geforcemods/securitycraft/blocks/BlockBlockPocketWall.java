@@ -38,7 +38,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	{
 		super(Material.ROCK);
 
-		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, false).withProperty(SOLID, false));
+		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, true).withProperty(SOLID, false));
 	}
 
 	@Override
