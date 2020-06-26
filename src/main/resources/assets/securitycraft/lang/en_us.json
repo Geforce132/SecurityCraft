@@ -675,7 +675,7 @@
 	"messages.securitycraft:sentry.descriptionMode3": "(Never active, doesn't attack anything)",
 	"messages.securitycraft:blockpocket.multipleManagers": "There is more than one Block Pocket Manager in the structure.",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "The Block Pocket has already been assembled!",
-	"messages.securitycraft:blockpocket.invalidBlock.rotation": "Invalid block \"%2$s\" at position %1$s! (Make sure the pillar is rotated correctly!)",
+	"messages.securitycraft:blockpocket.invalidBlock.rotation": "The pillar at position %1$s! is rotated incorrectly!",
 	"messages.securitycraft:blockpocket.invalidBlock": "Invalid block \"%2$s\" at position %1$s! (Expected: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" is blocking the space at position %1$s!",
 	"messages.securitycraft:blockpocket.unowned": "You do not own the block \"%2$s\" at position %1$s!",

@@ -6,7 +6,9 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace (including customization options to turn off the messages)
 - New: Stonecutting recipes for numerous reinforced blocks (Thanks Redstone_Dubstep!)
 - New: Players in creative can now remove any sentry and not just their own
+- New: The Block Pocket can now be built automatically from within the Block Pocket Manager's GUI (Thanks Redstone_Dubstep!)
 - Change: Disguising a sentry will now respect previously placed blocks at the sentry's position (Thanks Redstone_Dubstep!)
+- Change: Improved the Block Pocker Manager's GUI (Thanks Redstone_Dubstep!)
 - API: New IModuleInventory interface that adds the ability to have modules in a TileEntity
 - API: New ICustomizable interface that adds the ability to have customization options in a TileEntity
 - Fix: Trophy System does not attack shulker/sentry bullets and all kinds of arrows
@@ -20,6 +22,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Modules can duplicate when loading chunks
 - Fix: Hoppers etc. can extract from the fake slots of an Inventory Scanner
 - Fix: Username Logger crash
+- Fix: Block Pocket Managers and Block Pocket Walls do not drop (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 

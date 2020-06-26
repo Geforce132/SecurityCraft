@@ -23,11 +23,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -38,7 +39,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.Constants;
 
 public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider
 {
@@ -60,12 +60,6 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	 * Enables the block pocket
 	 * @return The feedback message. null if none should be sent.
 	 */
-
-	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
-	}
-
 	public TranslationTextComponent enableMultiblock()
 	{
 		if(!enabled) //multiblock detection
@@ -293,7 +287,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() && !(currentState.getMaterial().isReplaceable()))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable()) chiseledNeeded++;
+								if(currentState.getMaterial().isReplaceable())
+									chiseledNeeded++;
 							}
 							//checking the sides parallel to the block pocket manager
 							else if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
@@ -303,7 +298,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != typeToCheckFor))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable()) pillarsNeeded++;
+								if(currentState.getMaterial().isReplaceable())
+									pillarsNeeded++;
 							}
 							//checking the sides orthogonal to the block pocket manager
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
@@ -313,7 +309,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != typeToCheckFor))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable()) pillarsNeeded++;
+								if(currentState.getMaterial().isReplaceable())
+									pillarsNeeded++;
 							}
 							//checking the middle plane
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
@@ -321,7 +318,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !(currentState.getMaterial().isReplaceable()))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable()) wallsNeeded++;
+								if(currentState.getMaterial().isReplaceable())
+									wallsNeeded++;
 							}
 						}
 						//checking the corner edges
@@ -330,7 +328,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != Axis.Y))
 								return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-							if(currentState.getMaterial().isReplaceable()) pillarsNeeded++;
+							if(currentState.getMaterial().isReplaceable())
+								pillarsNeeded++;
 						}
 						//checking the walls
 						else if(yi > lowest && yi < highest)
@@ -341,7 +340,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !(currentState.getMaterial().isReplaceable()))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable()) wallsNeeded++;
+								if(currentState.getMaterial().isReplaceable())
+									wallsNeeded++;
 							}
 							//checking the walls orthogonal to the block pocket manager
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
@@ -349,7 +349,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !(currentState.getMaterial().isReplaceable()))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", currentPos, new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable()) wallsNeeded++;
+								if(currentState.getMaterial().isReplaceable())
+									wallsNeeded++;
 							}
 						}
 
@@ -376,187 +377,193 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
-			if(!player.isCreative()) //Step 2: if the player isn't in creative, it is checked if he has enough items to build the BP
+			else if(!player.isCreative()) //Step 2: if the player isn't in creative, it is checked if he has enough items to build the BP
 			{
-				int chiseledFound = 0, pillarsFound = 0, wallsFound = 0;
+				int chiseledFound = 0;
+				int pillarsFound = 0;
+				int wallsFound = 0;
 				NonNullList<ItemStack> inventory = player.inventory.mainInventory;
+
 				for(int i = 1; i <= inventory.size(); i++)
 				{
-					ItemStack itemStackChecking = inventory.get(i - 1);
+					ItemStack stackToCheck = inventory.get(i - 1);
 
-					if(!itemStackChecking.isEmpty())
+					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof BlockItem)
 					{
-						if (Block.getBlockFromItem(itemStackChecking.getItem()) instanceof ShulkerBoxBlock) //there has to be a check for shulker boxes, otherwise the huge BP's that take 4000 blocks to build couldn't be auto-assembled due to lack of inventory space
+						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
+
+						if(block instanceof ShulkerBoxBlock && stackToCheck.hasTag()) //there has to be a check for shulker boxes, otherwise the huge BP's that take 4000 blocks to build couldn't be auto-assembled due to lack of inventory space
 						{
-							ListNBT list = itemStackChecking.getTag().getCompound("BlockEntityTag").getList("Items", Constants.NBT.TAG_COMPOUND);
+							NonNullList<ItemStack> contents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
 
-							for(int j = 0; j < list.size(); j++) {
-								ItemStack itemInChest = ItemStack.read(list.getCompound(j));
-								if(itemInChest.getItem() == new ItemStack(SCContent.BLOCK_POCKET_WALL.get()).getItem())
-								{
-									wallsFound+=itemInChest.getCount();
-								}
-								else if(itemInChest.getItem() == new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()).getItem())
-								{
-									chiseledFound+=itemInChest.getCount();
+							ItemStackHelper.loadAllItems(stackToCheck.getTag().getCompound("BlockEntityTag"), contents);
 
-								}
-								else if(itemInChest.getItem() == new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).getItem())
-								{
-									pillarsFound+=itemInChest.getCount();
+							for(ItemStack boxStack : contents)
+							{
+								if(!(boxStack.getItem() instanceof BlockItem))
+									continue;
 
-								}
+								block = ((BlockItem)boxStack.getItem()).getBlock();
+
+								if(block == SCContent.BLOCK_POCKET_WALL.get())
+									wallsFound += boxStack.getCount();
+								else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
+									chiseledFound += boxStack.getCount();
+								else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
+									pillarsFound += boxStack.getCount();
 							}
 						}
-
-						if(itemStackChecking.getItem() == new ItemStack(SCContent.BLOCK_POCKET_WALL.get()).getItem())
-						{
-							wallsFound+=itemStackChecking.getCount();
-						}
-						else if(itemStackChecking.getItem() == new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()).getItem())
-						{
-							chiseledFound+=itemStackChecking.getCount();
-						}
-						else if(itemStackChecking.getItem() == new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).getItem())
-						{
-							pillarsFound+=itemStackChecking.getCount();
-						}
+						else if(stackToCheck.getItem() == new ItemStack(SCContent.BLOCK_POCKET_WALL.get()).getItem())
+							wallsFound += stackToCheck.getCount();
+						else if(stackToCheck.getItem() == new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()).getItem())
+							chiseledFound += stackToCheck.getCount();
+						else if(stackToCheck.getItem() == new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).getItem())
+							pillarsFound += stackToCheck.getCount();
 					}
 				}
-				if (chiseledNeeded > chiseledFound || pillarsNeeded > pillarsFound || wallsNeeded > wallsFound)
+
+				if(chiseledNeeded > chiseledFound || pillarsNeeded > pillarsFound || wallsNeeded > wallsFound)
 					return new TranslationTextComponent("messages.securitycraft:blockpocket.notEnoughItems");
 
 				for(int i = 1; i <= inventory.size(); i++) //actually take the items out that are used for completing the BP
 				{
-					ItemStack itemStackChecking = inventory.get(i - 1);
+					ItemStack stackToCheck = inventory.get(i - 1);
 
-					if(!itemStackChecking.isEmpty())
+					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof BlockItem)
 					{
-						if (Block.getBlockFromItem(itemStackChecking.getItem()) instanceof ShulkerBoxBlock)
+						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
+						int count = stackToCheck.getCount();
+
+						if(block instanceof ShulkerBoxBlock && stackToCheck.hasTag())
 						{
-							ListNBT list = itemStackChecking.getTag().getCompound("BlockEntityTag").getList("Items", Constants.NBT.TAG_COMPOUND);
+							CompoundNBT stackTag = stackToCheck.getTag();
+							CompoundNBT blockEntityTag = stackTag.getCompound("BlockEntityTag");
+							NonNullList<ItemStack> contents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
 
-							for(int j = 0; j < list.size(); j++) {
-								CompoundNBT compound = list.getCompound(j);
-								ItemStack itemInChest = ItemStack.read(compound);
-								int count = itemInChest.getCount();
+							ItemStackHelper.loadAllItems(blockEntityTag, contents);
 
-								if(itemInChest.getItem() == new ItemStack(SCContent.BLOCK_POCKET_WALL.get()).getItem())
+							for(int j = 0; j < contents.size(); j++)
+							{
+								ItemStack boxStack = contents.get(j);
+
+								if(!(boxStack.getItem() instanceof BlockItem))
+									continue;
+
+								block = ((BlockItem)boxStack.getItem()).getBlock();
+								count = boxStack.getCount();
+
+								if(block == SCContent.BLOCK_POCKET_WALL.get())
 								{
-									if (count <= wallsNeeded)
+									if(count <= wallsNeeded)
 									{
-										list.remove(j);
-										wallsNeeded-=count;
+										contents.set(j, ItemStack.EMPTY);
+										wallsNeeded -= count;
 									}
 									else
 									{
-										while (wallsNeeded != 0)
+										while(wallsNeeded != 0)
 										{
-											count = itemInChest.getCount(); //update count
-											itemInChest.setCount(count-1);
+											boxStack.shrink(1);
 											wallsNeeded--;
 										}
-										compound.putInt("Count", count-1);
 									}
 								}
-								else if(itemInChest.getItem() == new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()).getItem())
+								else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
 								{
-									if (count <= chiseledNeeded)
+									if(count <= chiseledNeeded)
 									{
-										list.remove(j);
-										chiseledNeeded-=count;
+										contents.set(j, ItemStack.EMPTY);
+										chiseledNeeded -= count;
 									}
 									else
 									{
-										while (chiseledNeeded != 0)
+										while(chiseledNeeded != 0)
 										{
-											count = itemInChest.getCount(); //update count
-											itemInChest.setCount(count-1);
+											boxStack.shrink(1);
 											chiseledNeeded--;
 										}
-										compound.putInt("Count", count-1);
 									}
 								}
-								else if(itemInChest.getItem() == new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).getItem())
+								else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 								{
-									if (count <= pillarsNeeded)
+									if(count <= pillarsNeeded)
 									{
-										list.remove(j);
-										pillarsNeeded-=count;
+										contents.set(j, ItemStack.EMPTY);
+										pillarsNeeded -= count;
 									}
 									else
 									{
-										while (pillarsNeeded != 0)
+										while(pillarsNeeded != 0)
 										{
-											count = itemInChest.getCount(); //update count
-											itemInChest.setCount(count-1);
+											boxStack.shrink(1);
 											pillarsNeeded--;
 										}
-										compound.putInt("Count", count-1);
 									}
 								}
 							}
-						}
 
-						int count = itemStackChecking.getCount();
-
-						if(itemStackChecking.getItem() == new ItemStack(SCContent.BLOCK_POCKET_WALL.get()).getItem())
+							ItemStackHelper.saveAllItems(blockEntityTag, contents);
+							stackTag.put("BlockEntityTag", blockEntityTag);
+							stackToCheck.setTag(stackTag);
+						} //shulker box end
+						else if(block == SCContent.BLOCK_POCKET_WALL.get())
 						{
-							if (count <= wallsNeeded)
+							if(count <= wallsNeeded)
 							{
 								inventory.set(i - 1, ItemStack.EMPTY);
-								wallsNeeded-=count;
+								wallsNeeded -= count;
 							}
 							else
 							{
-								while (wallsNeeded != 0)
+								while(wallsNeeded != 0)
 								{
-									count = itemStackChecking.getCount();
-									itemStackChecking.setCount(count-1);
+									stackToCheck.shrink(1);
 									wallsNeeded--;
 								}
-								inventory.set(i - 1, itemStackChecking);
+
+								inventory.set(i - 1, stackToCheck);
 							}
 						}
-						else if(itemStackChecking.getItem() == new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()).getItem())
+						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
 						{
-							if (count <= chiseledNeeded)
+							if(count <= chiseledNeeded)
 							{
 								inventory.set(i - 1, ItemStack.EMPTY);
-								chiseledNeeded-=count;
+								chiseledNeeded -= count;
 							}
 							else
 							{
-								while (chiseledNeeded != 0)
+								while(chiseledNeeded != 0)
 								{
-									count = itemStackChecking.getCount();
-									itemStackChecking.setCount(count-1);
+									stackToCheck.shrink(1);
 									chiseledNeeded--;
 								}
-								inventory.set(i - 1, itemStackChecking);
+
+								inventory.set(i - 1, stackToCheck);
 							}
 						}
-						else if(itemStackChecking.getItem() == new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).getItem())
+						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 						{
-							if (count <= pillarsNeeded)
+							if(count <= pillarsNeeded)
 							{
 								inventory.set(i - 1, ItemStack.EMPTY);
-								pillarsNeeded-=count;
+								pillarsNeeded -= count;
 							}
 							else
 							{
-								while (pillarsNeeded != 0)
+								while(pillarsNeeded != 0)
 								{
-									count = itemStackChecking.getCount();
-									itemStackChecking.setCount(count-1);
+									stackToCheck.shrink(1);
 									pillarsNeeded--;
 								}
-								inventory.set(i - 1, itemStackChecking);
+
+								inventory.set(i - 1, stackToCheck);
 							}
 						}
 					}
 				}
 			}
+
 			pos = getPos().toImmutable().offset(right, -half);
 			xi = lowest;
 			yi = lowest;
@@ -574,10 +581,13 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							xi++;
 							continue;
 						}
+
 						BlockPos currentPos = pos.offset(right, xi);
 						BlockState currentState = world.getBlockState(currentPos);
+
 						if(currentState.getBlock() instanceof BlockPocketManagerBlock && !currentPos.equals(getPos()))
 							return new TranslationTextComponent("messages.securitycraft:blockpocket.multipleManagers");
+
 						//placing the lowest and highest level of the cube
 						if((yi == lowest && !currentPos.equals(getPos())) || yi == highest) //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
 						{
@@ -591,6 +601,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							else if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
 								Axis typeToPlace = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.X : Axis.Z;
+
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 									world.setBlockState(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, typeToPlace));
 							}
@@ -598,6 +609,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
 								Axis typeToPlace = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.Z : Axis.X;
+
 								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 									world.setBlockState(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, typeToPlace));
 							}
@@ -630,24 +642,30 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 									world.setBlockState(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState());
 							}
 						}
+
 						//assigning the owner
 						if(world.getTileEntity(currentPos) instanceof OwnableTileEntity)
 						{
 							OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(currentPos);
 							te.getOwner().set(getOwner());
 						}
+
 						xi++;
 					}
+
 					xi = 0;
 					zi++;
 					pos = startingPos.up(yi).offset(back, zi);
 				}
+
 				zi = 0;
 				yi++;
 				pos = startingPos.up(yi);
 			}
+
 			return new TranslationTextComponent("messages.securitycraft:blockpocket.assembled");
 		}
+
 		return null;
 	}
 
@@ -809,5 +827,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox()
+	{
+		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
 	}
 }

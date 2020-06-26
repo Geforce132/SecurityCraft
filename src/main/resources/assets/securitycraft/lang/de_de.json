@@ -676,7 +676,7 @@
 	"messages.securitycraft:sentry.descriptionMode3": "(Nie aktiv, attackiert nichts)",
 	"messages.securitycraft:blockpocket.multipleManagers": "Es existiert mehr als ein Blocktaschenverwalter in der Struktur.",
 	"messages.securitycraft:blockpocket.alreadyAssembled": "Die Blocktasche wurde bereits aufgebaut!",
-	"messages.securitycraft:blockpocket.invalidBlock.rotation": "Ungültiger Block \"%2$s\" an Position %1$s! (Achte auf die korrekte Rotation der Säule!)",
+	"messages.securitycraft:blockpocket.invalidBlock.rotation": "Die Säule an Position %1$s ist falsch rotiert!",
 	"messages.securitycraft:blockpocket.invalidBlock": "Ungültiger Block \"%2$s\" an Position %1$s! (Erwartet: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" blockiert den nötigen Platz an Position %1$s!",
 	"messages.securitycraft:blockpocket.unowned": "Du besitzt den Block \"%2$s\" an Position %1$s nicht!",
