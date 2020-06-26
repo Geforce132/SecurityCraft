@@ -86,6 +86,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	{
 		super.onModuleRemoved(stack, module);
 
-		world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.POWERED, false));
+		if(module == ModuleType.REDSTONE)
+			world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.POWERED, false));
 	}
 }
