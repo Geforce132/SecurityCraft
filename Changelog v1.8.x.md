@@ -24,6 +24,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - Fix: Username Logger crash
 - Fix: Block Pocket Managers and Block Pocket Walls do not drop (Thanks Redstone_Dubstep!)
 - Fix: Security Camera still powers blocks when removing the Redstone Module
+- Fix: Modules don't get synched correctly on servers
 
 --------------------------Changelog for v1.8.18.1 of SecurityCraft--------------------------
 

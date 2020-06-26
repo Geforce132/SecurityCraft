@@ -296,11 +296,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 									pillarsFound += boxStack.getCount();
 							}
 						}
-						else if(stackToCheck.getItem() == new ItemStack(SCContent.BLOCK_POCKET_WALL.get()).getItem())
+						else if(block == SCContent.BLOCK_POCKET_WALL.get())
 							wallsFound += stackToCheck.getCount();
-						else if(stackToCheck.getItem() == new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()).getItem())
+						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
 							chiseledFound += stackToCheck.getCount();
-						else if(stackToCheck.getItem() == new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).getItem())
+						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 							pillarsFound += stackToCheck.getCount();
 					}
 				}
@@ -625,7 +625,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						//placing the corner edges
 						else if(yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 						{
-							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() || currentState.get(BlockStateProperties.AXIS) != Axis.Y)
+							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 								world.setBlockState(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, Axis.Y));
 						}
 						//placing the walls
