@@ -72,18 +72,6 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
-		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
-		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
-	}
-
-	@Override
 	public ModuleType[] acceptedModules(){
 		return new ModuleType[] { ModuleType.REDSTONE, ModuleType.SMART };
 	}
@@ -91,5 +79,13 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{ rotationSpeedOption, shouldRotateOption, customRotationOption };
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		super.onModuleRemoved(stack, module);
+
+		world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.POWERED, false));
 	}
 }

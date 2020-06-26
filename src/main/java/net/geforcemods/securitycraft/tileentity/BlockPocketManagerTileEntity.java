@@ -736,6 +736,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
+		super.onModuleInserted(stack, module);
+
 		if(enabled && module == ModuleType.DISGUISE)
 			setWalls(false);
 	}
@@ -743,6 +745,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		if(enabled && module == ModuleType.DISGUISE)
 			setWalls(true);
 	}

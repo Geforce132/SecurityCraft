@@ -225,12 +225,16 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
+		IModuleInventory.super.onModuleInserted(stack, module);
+
 		addOrRemoveModuleFromAttached(stack, false);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
+		IModuleInventory.super.onModuleRemoved(stack, module);
+
 		addOrRemoveModuleFromAttached(stack, true);
 	}
 

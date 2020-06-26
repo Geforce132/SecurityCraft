@@ -47,7 +47,7 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 			leftX = frontZ;
 			rightX = backZ;
 			frontZ = -half;
-			backZ = half+1;
+			backZ = half + 1;
 		}
 
 		//bottom lines
