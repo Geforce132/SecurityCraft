@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -40,6 +41,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -199,7 +201,20 @@ public class SCEventHandler {
 		//don't let people break the disguise block
 		if(!sentries.isEmpty())
 		{
-			event.setCanceled(true);
+			BlockPos pos = event.getPos();
+
+			if (!sentries.get(0).getDisguiseModule().isEmpty())
+			{
+				ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+				List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+
+				if(blocks.size() > 0)
+				{
+					if(blocks.get(0) == event.getWorld().getBlockState(pos).getBlock())
+						event.setCanceled(true);
+				}
+			}
+
 			return;
 		}
 
@@ -218,23 +233,50 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockBroken(BreakEvent event){
-		if(event.getWorld() instanceof World && !event.getWorld().isRemote())
-			if(event.getWorld().getTileEntity(event.getPos()) instanceof CustomizableTileEntity){
-				CustomizableTileEntity te = (CustomizableTileEntity) event.getWorld().getTileEntity(event.getPos());
+		if(event.getWorld() instanceof World && !event.getWorld().isRemote()) {
+			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
+				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
 
-				for(int i = 0; i < te.getNumberOfCustomizableOptions(); i++)
-					if(!te.modules.get(i).isEmpty()){
-						ItemStack stack = te.modules.get(i);
+				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
+					if(!te.getInventory().get(i).isEmpty()){
+						ItemStack stack = te.getInventory().get(i);
 						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addEntity(item));
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
-						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, te);
+
+						if(te instanceof CustomizableTileEntity)
+							((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, (CustomizableTileEntity)te);
 
 						if(te instanceof SecurityCameraTileEntity)
-							te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING), -1), te.getWorld().getBlockState(te.getPos()).getBlock());
+						{
+							SecurityCameraTileEntity cam = (SecurityCameraTileEntity)te;
+
+							cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).get(SecurityCameraBlock.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock());
+						}
 					}
 			}
+
+			List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+
+			if(!sentries.isEmpty())
+			{
+				BlockPos pos = event.getPos();
+
+				if (!sentries.get(0).getDisguiseModule().isEmpty())
+				{
+					ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+					List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+
+					if(blocks.size() > 0)
+					{
+						BlockState state = blocks.get(0).getDefaultState();
+
+						((World)event.getWorld()).setBlockState(pos, state.getShape(event.getWorld(), pos) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
+					}
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent

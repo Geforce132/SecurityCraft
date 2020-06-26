@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:crystal_quartz_stairs_from_crystal_quartz_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_crystal_quartz": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:crystal_quartz"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:crystal_quartz_stairs_from_crystal_quartz_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_crystal_quartz",
+      "has_the_recipe"
+    ]
+  ]
+}

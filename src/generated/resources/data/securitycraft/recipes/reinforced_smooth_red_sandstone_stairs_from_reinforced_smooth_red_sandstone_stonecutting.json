@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_smooth_red_sandstone"
+  },
+  "result": "securitycraft:reinforced_smooth_red_sandstone_stairs",
+  "count": 1
+}

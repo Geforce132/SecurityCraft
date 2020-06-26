@@ -75,4 +75,8 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 		return new Option[]{ enabledOption };
 	}
 
+	public boolean isEnabled()
+	{
+		return enabledOption.get();
+	}
 }

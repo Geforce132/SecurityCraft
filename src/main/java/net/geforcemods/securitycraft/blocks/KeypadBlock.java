@@ -45,9 +45,11 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
+		if(state.get(POWERED))
+			return ActionResultType.PASS;
+		else if(!world.isRemote)
 		{
-			if(state.get(POWERED) || ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 				return ActionResultType.FAIL;
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))

@@ -16,8 +16,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class InventoryScannerScreen extends ContainerScreen<InventoryScannerContainer> {
-	private static final ResourceLocation regularInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
-	private static final ResourceLocation exhancedInventory = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
+	private static final ResourceLocation REGULAR_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_gui.png");
+	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
 	private InventoryScannerTileEntity tileEntity;
 	private boolean owns = false;
 	private boolean hasStorageModule = false;
@@ -83,9 +83,9 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule && owns)
-			minecraft.getTextureManager().bindTexture(exhancedInventory);
+			minecraft.getTextureManager().bindTexture(ENHANCED_INVENTORY);
 		else
-			minecraft.getTextureManager().bindTexture(regularInventory);
+			minecraft.getTextureManager().bindTexture(REGULAR_INVENTORY);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize + 30);

@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
@@ -80,6 +81,13 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	public void attackFailed()
 	{
 		if(hasModule(ModuleType.REDSTONE))
+			PortableRadarBlock.togglePowerOutput(world, pos, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		if(module == ModuleType.REDSTONE)
 			PortableRadarBlock.togglePowerOutput(world, pos, false);
 	}
 

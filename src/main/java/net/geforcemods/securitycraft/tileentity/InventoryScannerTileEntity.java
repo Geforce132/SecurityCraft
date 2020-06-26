@@ -14,12 +14,19 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
 
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
 	private int cooldown;
@@ -114,8 +121,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
-		return inventoryContents.get(index);
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : inventoryContents.get(slot);
 	}
 
 	/**
@@ -184,6 +198,14 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		}
 
 		return stackToInsert;
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+	{
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return EMPTY_INVENTORY.cast();
+		else return super.getCapability(cap, side);
 	}
 
 	@Override
@@ -269,5 +291,23 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getTranslationKey());
+	}
+
+	@Override
+	public void clear()
+	{
+		inventoryContents.clear();
+	}
+
+	@Override
+	public boolean isEmpty()
+	{
+		return inventoryContents.isEmpty();
+	}
+
+	@Override
+	public ItemStack removeStackFromSlot(int index)
+	{
+		return inventoryContents.remove(index);
 	}
 }

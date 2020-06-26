@@ -4,11 +4,13 @@ import java.util.function.Supplier;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -58,17 +60,20 @@ public class UpdateSliderValue {
 			int id = message.id;
 			double value = message.value;
 			PlayerEntity player = ctx.get().getSender();
+			TileEntity te = player.world.getTileEntity(pos);
 
-			if(player.world.getTileEntity(pos) instanceof CustomizableTileEntity) {
-				Option<?> o = ((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id];
+			if(te instanceof ICustomizable) {
+				Option<?> o = ((ICustomizable)te).customOptions()[id];
 
 				if(o instanceof DoubleOption)
 					((DoubleOption)o).setValue(value);
 				else if(o instanceof IntOption)
 					((IntOption)o).setValue((int)value);
 
-				((CustomizableTileEntity) player.world.getTileEntity(pos)).onOptionChanged(((CustomizableTileEntity) player.world.getTileEntity(pos)).customOptions()[id]);
-				((CustomizableTileEntity) player.world.getTileEntity(pos)).sync();
+				((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+
+				if(te instanceof CustomizableTileEntity)
+					((CustomizableTileEntity)te).sync();
 			}
 		});
 

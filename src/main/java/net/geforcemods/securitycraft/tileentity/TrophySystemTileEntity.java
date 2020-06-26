@@ -21,8 +21,14 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
+
 	/* Number of ticks that the trophy takes to "charge" */
 	public static final int COOLDOWN_TIME = 8;
+
+	/* The number of blocks away from the trophy system you can be for
+	 * the laser beam between itself and the projectile to be rendered */
+	public static final int RENDER_DISTANCE = 50;
+
 	public Entity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
 	private final Random random = new Random();
@@ -61,6 +67,11 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		}
 
 		destroyTarget();
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
 	}
 
 	/**

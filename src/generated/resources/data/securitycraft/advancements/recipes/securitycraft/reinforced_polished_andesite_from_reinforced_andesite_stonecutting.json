@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_polished_andesite_from_reinforced_andesite_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_andesite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:reinforced_andesite"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:reinforced_polished_andesite_from_reinforced_andesite_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_andesite",
+      "has_the_recipe"
+    ]
+  ]
+}

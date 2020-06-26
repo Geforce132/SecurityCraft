@@ -2,27 +2,39 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -35,11 +47,13 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable {
+public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private String passcode;
 	private Owner owner = new Owner();
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 
 	public KeypadChestTileEntity()
 	{
@@ -54,6 +68,9 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
+
+		writeModuleInventory(tag);
+		writeOptions(tag);
 
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
@@ -73,6 +90,9 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public void read(CompoundNBT tag)
 	{
 		super.read(tag);
+
+		modules = readModuleInventory(tag);
+		readOptions(tag);
 
 		if (tag.contains("passcode"))
 			if(tag.getInt("passcode") != 0)
@@ -115,11 +135,23 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		{
 			BlockPos offsetPos = pos.offset(side);
 
-			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !getOwner().owns((ReinforcedHopperTileEntity)world.getTileEntity(offsetPos)))
+			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !ReinforcedHopperBlock.canExtract(this, world, offsetPos))
 				return EMPTY_INVENTORY.cast();
 		}
 
 		return super.getCapability(cap, side);
+	}
+
+	@Override
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
 	}
 
 	@Override
@@ -191,6 +223,73 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		addOrRemoveModuleFromAttached(stack, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		addOrRemoveModuleFromAttached(stack, true);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option)
+	{
+		if(option instanceof BooleanOption)
+		{
+			KeypadChestTileEntity offsetTe = findOther();
+
+			if(offsetTe != null)
+				offsetTe.setSendsMessages(((BooleanOption)option).get());
+		}
+	}
+
+	public void addOrRemoveModuleFromAttached(ItemStack module, boolean remove)
+	{
+		if(module.isEmpty() || !(module.getItem() instanceof ModuleItem))
+			return;
+
+		KeypadChestTileEntity offsetTe = findOther();
+
+		if(offsetTe != null)
+		{
+			if(remove)
+				offsetTe.removeModule(((ModuleItem)module.getItem()).getModule());
+			else
+				offsetTe.insertModule(module);
+		}
+	}
+
+	public KeypadChestTileEntity findOther()
+	{
+		BlockState state = getBlockState();
+		ChestType type = state.get(KeypadChestBlock.TYPE);
+
+		if(type != ChestType.SINGLE)
+		{
+			BlockPos offsetPos = pos.offset(ChestBlock.getDirectionToAttached(state));
+			BlockState offsetState = world.getBlockState(offsetPos);
+
+			if(state.getBlock() == offsetState.getBlock())
+			{
+				ChestType offsetType = offsetState.get(KeypadChestBlock.TYPE);
+
+				if(offsetType != ChestType.SINGLE && type != offsetType && state.get(KeypadChestBlock.FACING) == offsetState.get(KeypadChestBlock.FACING))
+				{
+					TileEntity offsetTe = world.getTileEntity(offsetPos);
+
+					if(offsetTe instanceof KeypadChestTileEntity)
+						return (KeypadChestTileEntity)offsetTe;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	@Override
 	public String getPassword() {
 		return (passcode != null && !passcode.isEmpty()) ? passcode : null;
 	}
@@ -238,5 +337,40 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	{
 		if(world.isRemote)
 			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos, world.getDimension().getType().getId()));
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
+	}
+
+	@Override
+	public NonNullList<ItemStack> getInventory()
+	{
+		return modules;
+	}
+
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{sendMessage};
+	}
+
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
+	}
+
+	public void setSendsMessages(boolean value)
+	{
+		sendMessage.setValue(value);
+		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3); //sync option change to client
 	}
 }

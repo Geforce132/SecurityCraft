@@ -10,8 +10,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
@@ -169,16 +170,19 @@ public class SCManualScreen extends Screen {
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 					this.blit(startX + 81, 118, 36, 1, 17, 16);
 
-				if(te instanceof CustomizableTileEntity)
+				if(te instanceof ICustomizable)
 				{
-					CustomizableTileEntity scte = (CustomizableTileEntity)te;
+					ICustomizable scte = (ICustomizable)te;
 
 					this.blit(startX + 213, 118, 72, 1, 16, 16);
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 						this.blit(startX + 136, 118, 88, 1, 16, 16);
+				}
 
-					if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+				if(te instanceof IModuleInventory)
+				{
+					if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
 						this.blit(startX + 163, 118, 105, 1, 16, 16);
 				}
 			}
@@ -378,9 +382,9 @@ public class SCManualScreen extends Screen {
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if(te instanceof CustomizableTileEntity)
+				if(te instanceof ICustomizable)
 				{
-					CustomizableTileEntity scte = (CustomizableTileEntity)te;
+					ICustomizable scte = (ICustomizable)te;
 
 					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
 
@@ -400,15 +404,20 @@ public class SCManualScreen extends Screen {
 						display.remove(display.size() - 1);
 						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, 20, display));
 					}
+				}
 
-					if(scte.acceptedModules() != null && scte.acceptedModules().length > 0)
+				if(te instanceof IModuleInventory)
+				{
+					IModuleInventory moduleInv = (IModuleInventory)te;
+
+					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 					{
 						List<String> display = new ArrayList<>();
 
 						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
 						display.add("---");
 
-						for(ModuleType module : scte.acceptedModules())
+						for(ModuleType module : moduleInv.acceptedModules())
 						{
 							display.add("- " + ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description"));
 							display.add("");

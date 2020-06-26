@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_prismarine_slab_from_reinforced_prismarine_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_prismarine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:reinforced_prismarine"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:reinforced_prismarine_slab_from_reinforced_prismarine_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_prismarine",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
@@ -14,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -62,11 +64,24 @@ public class UniversalBlockRemoverItem extends Item
 				return ActionResultType.FAIL;
 			}
 
+			if(tileEntity instanceof IModuleInventory)
+			{
+				boolean isChest = tileEntity instanceof KeypadChestTileEntity;
+
+				for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
+				{
+					if(isChest)
+						((KeypadChestTileEntity)tileEntity).addOrRemoveModuleFromAttached(module, true);
+
+					Block.spawnAsEntity(world, pos, module);
+				}
+			}
+
 			if(block == SCContent.LASER_BLOCK.get())
 			{
 				CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(pos);
 
-				for(ItemStack module : te.modules)
+				for(ItemStack module : te.getInventory())
 				{
 					if(!module.isEmpty())
 						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModule()}, te);
@@ -105,7 +120,7 @@ public class UniversalBlockRemoverItem extends Item
 					InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
 					if(te != null)
-						te.modules.clear();
+						te.getInventory().clear();
 				}
 
 				world.destroyBlock(pos, true);

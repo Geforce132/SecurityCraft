@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -58,21 +57,21 @@ public class LaserBlock extends DisguisableBlock {
 			inner: for(int i = 1; i <= ConfigHandler.CONFIG.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
-				BlockState state = world.getBlockState(offsetPos);
-				Block id = world.getBlockState(offsetPos).getBlock();
+				BlockState offsetState = world.getBlockState(offsetPos);
+				Block offsetBlock = offsetState.getBlock();
 
-				if(!state.isAir(world, offsetPos) && id != SCContent.LASER_BLOCK.get())
+				if(!offsetState.isAir(world, offsetPos) && offsetBlock != SCContent.LASER_BLOCK.get())
 					break inner;
-				else if(id == SCContent.LASER_BLOCK.get())
+				else if(offsetBlock == SCContent.LASER_BLOCK.get())
 				{
-					CustomizableTileEntity thisTe = (CustomizableTileEntity)world.getTileEntity(pos);
-					CustomizableTileEntity thatTe = (CustomizableTileEntity)world.getTileEntity(offsetPos);
+					LaserBlockTileEntity thisTe = (LaserBlockTileEntity)world.getTileEntity(pos);
+					LaserBlockTileEntity thatTe = (LaserBlockTileEntity)world.getTileEntity(offsetPos);
 
 					if(thisTe.getOwner().equals(thatTe.getOwner()))
 					{
 						CustomizableTileEntity.link(thisTe, thatTe);
 
-						if (thisTe.getOptionByName("enabled") != null && thatTe.getOptionByName("enabled") != null && ((BooleanOption)thisTe.getOptionByName("enabled")).get() && ((BooleanOption)thatTe.getOptionByName("enabled")).get())
+						if (thisTe.isEnabled() && thatTe.isEnabled())
 						{
 							for(int j = 1; j < i; j++)
 							{
