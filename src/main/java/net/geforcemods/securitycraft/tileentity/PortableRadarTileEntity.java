@@ -87,6 +87,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		if(module == ModuleType.REDSTONE)
 			PortableRadarBlock.togglePowerOutput(world, pos, false);
 	}

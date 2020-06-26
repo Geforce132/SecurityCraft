@@ -48,7 +48,13 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param stack The raw ItemStack being inserted.
 	 * @param module The ModuleType variant of stack.
 	 */
-	public default void onModuleInserted(ItemStack stack, ModuleType module) {}
+	public default void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		TileEntity te = getTileEntity();
+
+		if(!te.getWorld().isRemote)
+			te.getWorld().notifyBlockUpdate(te.getPos(), te.getBlockState(), te.getBlockState(), 3);
+	}
 
 	/**
 	 * Called whenever a module is removed from a slot in the "Customize" GUI.
@@ -56,7 +62,13 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	 * @param stack The raw ItemStack being removed.
 	 * @param module The ModuleType variant of stack.
 	 */
-	public default void onModuleRemoved(ItemStack stack, ModuleType module) {}
+	public default void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		TileEntity te = getTileEntity();
+
+		if(!te.getWorld().isRemote)
+			te.getWorld().notifyBlockUpdate(te.getPos(), te.getBlockState(), te.getBlockState(), 3);
+	}
 
 	/**
 	 * Used for enabling differentiation between module slots and slots that are handled by IInventory.

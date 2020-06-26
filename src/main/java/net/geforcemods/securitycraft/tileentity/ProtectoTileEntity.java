@@ -13,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.server.ServerWorld;
 
 public class ProtectoTileEntity extends CustomizableTileEntity {
@@ -70,17 +69,5 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
-	}
-
-	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
-		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
-		world.notifyNeighborsOfStateChange(pos, getBlockState().getBlock());
 	}
 }

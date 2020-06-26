@@ -26,6 +26,8 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module)
 	{
+		super.onModuleInserted(stack, module);
+
 		if(!world.isRemote && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
 	}
@@ -33,6 +35,8 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module)
 	{
+		super.onModuleRemoved(stack, module);
+
 		if(!world.isRemote && module == ModuleType.DISGUISE)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
 	}
