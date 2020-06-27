@@ -10,7 +10,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -247,9 +246,6 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	{
 		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
 			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
-
-		if(!(stack.getItem() instanceof BlockItem))
-			return;
 
 		projectedBlock = stack;
 	}
