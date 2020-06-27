@@ -24,11 +24,15 @@ public class ProjectorContainer extends Container {
 		if(world.getTileEntity(pos) instanceof ProjectorTileEntity)
 			te = (ProjectorTileEntity) world.getTileEntity(pos);
 
-		for(int i = 0; i < 9; i++)
-			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+		for(int y = 0; y < 3; y++)
+			for(int x = 0; x < 9; ++x)
+				addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 59));
+
+		for(int x = 0; x < 9; x++)
+			addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 59));
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
-		addSlot(new Slot(te, 9, 79, 20)
+		addSlot(new Slot(te, 9, 79, 23)
 		{
 			@Override
 			public boolean isItemValid(ItemStack stack)

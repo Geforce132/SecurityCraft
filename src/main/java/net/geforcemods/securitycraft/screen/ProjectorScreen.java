@@ -31,11 +31,12 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 
 	private int sliderWidth = 120;
 
-	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name) 
+	public ProjectorScreen(ProjectorContainer container, PlayerInventory inv, ITextComponent name)
 	{
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		ySize = 225;
 	}
 
 	@Override
