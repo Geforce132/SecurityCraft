@@ -17,10 +17,7 @@ public class ProjectorContainer extends Container {
 
 	public ProjectorTileEntity te;
 
-	// A custom slot that prevents non-Block items from being inserted into the projector
-	private Slot projectedItemSlot;
-
-	public ProjectorContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) 
+	public ProjectorContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory)
 	{
 		super(SCContent.cTypeProjector, windowId);
 
@@ -30,20 +27,19 @@ public class ProjectorContainer extends Container {
 		for(int i = 0; i < 9; i++)
 			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
 
-		projectedItemSlot = new Slot(te, 9, 79, 20) 
+		// A custom slot that prevents non-Block items from being inserted into the projector
+		addSlot(new Slot(te, 9, 79, 20)
 		{
 			@Override
-			public boolean isItemValid(ItemStack stack) 
+			public boolean isItemValid(ItemStack stack)
 			{
-				return stack.getItem() != null && stack.getItem() instanceof BlockItem;
+				return stack.getItem() instanceof BlockItem;
 			}
-		};
-
-		addSlot(new Slot(te, 9, 79, 20));
+		});
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) 
+	public boolean canInteractWith(PlayerEntity playerIn)
 	{
 		return true;
 	}
