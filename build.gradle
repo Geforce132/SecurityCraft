@@ -86,7 +86,7 @@ minecraft {
 
 repositories {  
     maven { // HWYLA
-		url "http://tehnut.info/maven"
+		url "http://maven.tehnut.info"
 	}
 	maven { // TOP
 		name 'tterrag maven'
