@@ -218,7 +218,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	@Override
 	public ItemStack getStackInSlot(int slot)
 	{
-		return slot >= 100 ? getModuleInSlot(slot) : (slot == 9 ? projectedBlock : ItemStack.EMPTY);
+		return slot >= 100 ? getModuleInSlot(slot) : (slot == 36 ? projectedBlock : ItemStack.EMPTY);
 	}
 
 	@Override

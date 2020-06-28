@@ -32,7 +32,7 @@ public class ProjectorContainer extends Container {
 			addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 59));
 
 		// A custom slot that prevents non-Block items from being inserted into the projector
-		addSlot(new Slot(te, 9, 79, 23)
+		addSlot(new Slot(te, 36, 79, 23)
 		{
 			@Override
 			public boolean isItemValid(ItemStack stack)
@@ -40,6 +40,39 @@ public class ProjectorContainer extends Container {
 				return stack.getItem() instanceof BlockItem;
 			}
 		});
+	}
+
+	@Override
+	public ItemStack transferStackInSlot(PlayerEntity player, int index)
+	{
+		ItemStack slotStackCopy = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(index);
+
+		if(slot != null && slot.getHasStack()) {
+			ItemStack slotStack = slot.getStack();
+			slotStackCopy = slotStack.copy();
+
+			if(index == 36) {
+				if(!mergeItemStack(slotStack, 0, 36, false))
+					return ItemStack.EMPTY;
+			}
+			else {
+				if(!mergeItemStack(slotStack, 36, 37, false))
+					return ItemStack.EMPTY;
+			}
+
+			if(slotStack.getCount() == 0)
+				slot.putStack(ItemStack.EMPTY);
+			else
+				slot.onSlotChanged();
+
+			if(slotStack.getCount() == slotStack.getCount())
+				return ItemStack.EMPTY;
+
+			slot.onTake(player, slotStack);
+		}
+
+		return slotStackCopy;
 	}
 
 	@Override
