@@ -9,3 +9,4 @@
 *.launch
 /run
 /src/generated/resources/.cache/*
+/.idea
