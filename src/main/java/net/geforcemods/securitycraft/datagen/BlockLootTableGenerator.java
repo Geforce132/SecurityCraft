@@ -102,6 +102,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.TRACK_MINE);
 		putStandardBlockLootTable(SCContent.TROPHY_SYSTEM);
 		putStandardBlockLootTable(SCContent.USERNAME_LOGGER);
+		putStandardBlockLootTable(SCContent.PROJECTOR);
 	}
 
 	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)
