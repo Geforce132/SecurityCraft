@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 import java.util.stream.Stream;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
@@ -71,14 +72,17 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if (!world.isRemote)
-		{
-			TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 
+		if(!(te instanceof ProjectorTileEntity))
+			return ActionResultType.FAIL;
+
+		boolean isOwner = ((IOwnable)te).getOwner().isOwner(player);
+
+		if(!world.isRemote && isOwner)
 			NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider) te, pos);
-		}
 
-		return ActionResultType.SUCCESS;
+		return isOwner ? ActionResultType.SUCCESS : ActionResultType.FAIL;
 	}
 
 	@Override
