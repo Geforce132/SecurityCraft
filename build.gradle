@@ -45,7 +45,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200515-1.15.1'
+    mappings channel: 'snapshot', version: '20200514-1.16.1'
 	
     runs {
         client {
@@ -103,14 +103,14 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.0'
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.26'
     
-	compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2:api")
-	runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2")
-    implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.15:1.15-2.0.0-3")
-    compileOnly fg.deobf("curse.maven:cyclic:2883170")
-	compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4:api")
-	runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
+//  compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2:api")
+//  runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2")
+//  implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.15:1.15-2.0.0-3")
+//  compileOnly fg.deobf("curse.maven:cyclic:2883170")
+    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.2")
 }
 
 jar {
