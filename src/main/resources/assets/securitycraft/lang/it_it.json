@@ -597,7 +597,7 @@
 	"gui.securitycraft:blockPocketManager.outline.show": "Mostra contorno",
 	"gui.securitycraft:blockPocketManager.outline.hide": "Nascondi contorno",
 	"gui.securitycraft:blockPocketManager.youNeed": "Hai bisogno di:",
-	"gui.securitycraft:projector.width": "Larghezza proiezione: #",
+	"gui.securitycraft:projector.width": "Larg. proiezione: #",
 	"gui.securitycraft:projector.width.description": "L'altezza e la larghezza della proiezione.",
 	"gui.securitycraft:projector.range": "Raggio proiezione: #",
 	"gui.securitycraft:projector.range.description": "La distanza tra il proiettore e l'oggetto proiettato.",
