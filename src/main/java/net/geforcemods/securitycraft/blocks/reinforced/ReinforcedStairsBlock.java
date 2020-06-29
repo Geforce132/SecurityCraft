@@ -14,8 +14,8 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
@@ -192,7 +192,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	{
 		Direction dir = ctx.getFace();
 		BlockPos pos = ctx.getPos();
-		IFluidState fluidState = ctx.getWorld().getFluidState(pos);
+		FluidState fluidState = ctx.getWorld().getFluidState(pos);
 		BlockState state = this.getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getHitVec().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 
 		return state.with(SHAPE, getShapeProperty(state, ctx.getWorld(), pos));
@@ -317,7 +317,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState state) {
+	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 

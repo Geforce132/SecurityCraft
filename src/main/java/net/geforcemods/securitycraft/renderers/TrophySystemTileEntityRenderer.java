@@ -5,11 +5,11 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -38,7 +38,7 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TrophySystemTileEntity te) 
+	public boolean isGlobalRenderer(TrophySystemTileEntity te)
 	{
 		return true;
 	}

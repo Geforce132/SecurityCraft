@@ -16,19 +16,19 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.item.Item;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootContext.EntityTarget;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTableManager;
+import net.minecraft.loot.conditions.BlockStateProperty;
+import net.minecraft.loot.conditions.EntityHasProperty;
+import net.minecraft.loot.conditions.Inverted;
+import net.minecraft.loot.conditions.SurvivesExplosion;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.ConstantRange;
-import net.minecraft.world.storage.loot.ItemLootEntry;
-import net.minecraft.world.storage.loot.LootContext.EntityTarget;
-import net.minecraft.world.storage.loot.LootParameterSets;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
-import net.minecraft.world.storage.loot.LootTableManager;
-import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
-import net.minecraft.world.storage.loot.conditions.EntityHasProperty;
-import net.minecraft.world.storage.loot.conditions.Inverted;
-import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
 
 public class BlockLootTableGenerator implements IDataProvider
 {

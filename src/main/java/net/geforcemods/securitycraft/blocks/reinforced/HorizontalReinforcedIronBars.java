@@ -14,8 +14,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
@@ -30,7 +30,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements IBucketPickupHandler, ILiquidContainer
 {
@@ -80,7 +79,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState state)
+	public FluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
@@ -92,7 +91,7 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	}
 
 	@Override
-	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
+	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState)
 	{
 		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
 		{

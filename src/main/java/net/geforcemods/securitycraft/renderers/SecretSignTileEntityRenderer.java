@@ -13,13 +13,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
-import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,7 +38,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
 	{
 		BlockState state = te.getBlockState();
-		Material material = SignTileEntityRenderer.getMaterial(state.getBlock());
+		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderDispatcher.getFontRenderer();
 		IVertexBuilder builder;
 

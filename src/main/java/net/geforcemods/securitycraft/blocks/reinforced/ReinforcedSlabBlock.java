@@ -14,8 +14,8 @@ import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
@@ -36,7 +36,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
 
 public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLoggable
 {
@@ -107,7 +106,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 		}
 		else
 		{
-			IFluidState fluidState = ctx.getWorld().getFluidState(pos);
+			FluidState fluidState = ctx.getWorld().getFluidState(pos);
 			BlockState stateToSet = getDefaultState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 			Direction dir = ctx.getFace();
 
@@ -141,13 +140,13 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState state)
+	public FluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
+	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState)
 	{
 		return state.get(TYPE) != SlabType.DOUBLE ? IWaterLoggable.super.receiveFluid(world, pos, state, fluidState) : false;
 	}

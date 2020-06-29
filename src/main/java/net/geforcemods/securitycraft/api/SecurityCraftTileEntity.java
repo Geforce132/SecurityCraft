@@ -18,7 +18,7 @@ import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -92,9 +92,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 				entity = (LivingEntity)iterator.next();
 				double eyeHeight = entity.getEyeHeight();
 				boolean isPlayer = (entity instanceof PlayerEntity);
-				Vec3d lookVec = new Vec3d((entity.getPosX() + (entity.getLookVec().x * 5)), ((eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5)), (entity.getPosZ() + (entity.getLookVec().z * 5)));
+				Vector3d lookVec = new Vector3d((entity.getPosX() + (entity.getLookVec().x * 5)), ((eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5)), (entity.getPosZ() + (entity.getLookVec().z * 5)));
 
-				RayTraceResult mop = getWorld().rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				RayTraceResult mop = getWorld().rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 				if(mop != null && mop.getType() == Type.BLOCK)
 					if(((BlockRayTraceResult)mop).getPos().getX() == getPos().getX() && ((BlockRayTraceResult)mop).getPos().getY() == getPos().getY() && ((BlockRayTraceResult)mop).getPos().getZ() == getPos().getZ())
 						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {

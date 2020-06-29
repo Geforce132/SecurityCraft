@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ILightReader;
+import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
@@ -75,7 +75,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 
 	@Override
 	@Nonnull
-	public IModelData getModelData(ILightReader world, BlockPos pos, BlockState state, IModelData tileData)
+	public IModelData getModelData(IBlockDisplayReader world, BlockPos pos, BlockState state, IModelData tileData)
 	{
 		TileEntity te = world.getTileEntity(pos);
 

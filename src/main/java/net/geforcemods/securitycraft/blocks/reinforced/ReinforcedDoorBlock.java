@@ -32,9 +32,9 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -170,7 +170,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			if ((!flag1 || flag) && i >= 0) {
 				int j = direction.getXOffset();
 				int k = direction.getZOffset();
-				Vec3d vec3d = p_208073_1_.getHitVec();
+				Vector3d vec3d = p_208073_1_.getHitVec();
 				double d0 = vec3d.x - blockpos.getX();
 				double d1 = vec3d.z - blockpos.getZ();
 				return (j >= 0 || !(d1 < 0.5D)) && (j <= 0 || !(d1 > 0.5D)) && (k >= 0 || !(d0 > 0.5D)) && (k <= 0 || !(d0 < 0.5D)) ? DoorHingeSide.LEFT : DoorHingeSide.RIGHT;

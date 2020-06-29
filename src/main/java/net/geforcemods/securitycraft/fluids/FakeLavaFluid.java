@@ -10,7 +10,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -62,7 +62,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(World world, BlockPos pos, IFluidState state, Random random)
+	public void animateTick(World world, BlockPos pos, FluidState state, Random random)
 	{
 		BlockPos blockpos = pos.up();
 
@@ -85,7 +85,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public void randomTick(World world, BlockPos pos, IFluidState state, Random random)
+	public void randomTick(World world, BlockPos pos, FluidState state, Random random)
 	{
 		if (world.getGameRules().getBoolean(GameRules.DO_FIRE_TICK))
 		{
@@ -169,7 +169,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public BlockState getBlockState(IFluidState state)
+	public BlockState getBlockState(FluidState state)
 	{
 		return SCContent.FAKE_LAVA_BLOCK.get().getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
 	}
@@ -187,7 +187,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public boolean canDisplace(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
+	public boolean canDisplace(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
 	{
 		return fluidState.getActualHeight(world, pos) >= 0.44444445F && fluid.isIn(FluidTags.WATER);
 	}
@@ -199,7 +199,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	public int func_215667_a(World world, BlockPos pos, IFluidState fluidState1, IFluidState fluidState2)
+	public int func_215667_a(World world, BlockPos pos, FluidState fluidState1, FluidState fluidState2)
 	{
 		int i = getTickRate(world);
 
@@ -221,11 +221,11 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	}
 
 	@Override
-	protected void flowInto(IWorld world, BlockPos pos, BlockState blockState, Direction direction, IFluidState fluidState)
+	protected void flowInto(IWorld world, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState)
 	{
 		if(direction == Direction.DOWN)
 		{
-			IFluidState ifluidstate = world.getFluidState(pos);
+			FluidState ifluidstate = world.getFluidState(pos);
 
 			if(isIn(FluidTags.LAVA) && ifluidstate.isTagged(FluidTags.WATER))
 			{
@@ -255,20 +255,20 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	public static class Flowing extends FakeLavaFluid
 	{
 		@Override
-		protected void fillStateContainer(StateContainer.Builder<Fluid, IFluidState> builder)
+		protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder)
 		{
 			super.fillStateContainer(builder);
 			builder.add(LEVEL_1_8);
 		}
 
 		@Override
-		public int getLevel(IFluidState state)
+		public int getLevel(FluidState state)
 		{
 			return state.get(LEVEL_1_8);
 		}
 
 		@Override
-		public boolean isSource(IFluidState state)
+		public boolean isSource(FluidState state)
 		{
 			return false;
 		}
@@ -277,13 +277,13 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	public static class Source extends FakeLavaFluid
 	{
 		@Override
-		public int getLevel(IFluidState state)
+		public int getLevel(FluidState state)
 		{
 			return 8;
 		}
 
 		@Override
-		public boolean isSource(IFluidState state)
+		public boolean isSource(FluidState state)
 		{
 			return true;
 		}

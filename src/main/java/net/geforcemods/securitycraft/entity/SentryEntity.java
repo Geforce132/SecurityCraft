@@ -44,8 +44,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -216,7 +216,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				dataManager.set(WHITELIST, new CompoundNBT());
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
-				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
+				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vector3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
 			else if(item == Items.NAME_TAG)
 			{
 				setCustomName(player.getHeldItemMainhand().getDisplayName());
@@ -547,7 +547,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	public void onCollideWithPlayer(PlayerEntity entity) {}
 
 	@Override
-	public void move(MoverType type, Vec3d vec) {} //no moving sentries!
+	public void move(MoverType type, Vector3d vec) {} //no moving sentries!
 
 	@Override
 	protected void collideWithEntity(Entity entity) {}

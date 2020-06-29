@@ -17,10 +17,7 @@ import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.Matrix3f;
-import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -29,7 +26,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.LightType;
 
 public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<RetinalScannerTileEntity>
@@ -76,7 +76,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 			IVertexBuilder vertexBuilder = buffer.getBuffer(RenderType.getEntityCutout(getSkinTexture(te.getPlayerProfile())));
 			Matrix4f positionMatrix = matrix.getLast().getMatrix();
 			Matrix3f normalMatrix = matrix.getLast().getNormal();
-			Vec3i normalVector = direction.getDirectionVec();
+			Vector3i normalVector = direction.getDirectionVec();
 			BlockPos offsetPos = te.getPos().offset(direction);
 
 			combinedLight = LightTexture.packLight(te.getWorld().getLightFor(LightType.BLOCK, offsetPos), te.getWorld().getLightFor(LightType.SKY, offsetPos));

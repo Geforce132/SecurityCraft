@@ -12,7 +12,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
@@ -88,7 +88,7 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);

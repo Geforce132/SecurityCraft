@@ -10,7 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
@@ -63,7 +63,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void animateTick(World world, BlockPos pos, IFluidState state, Random random)
+	public void animateTick(World world, BlockPos pos, FluidState state, Random random)
 	{
 		if(!state.isSource() && !state.get(FALLING))
 		{
@@ -103,7 +103,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	}
 
 	@Override
-	public BlockState getBlockState(IFluidState state)
+	public BlockState getBlockState(FluidState state)
 	{
 		return SCContent.FAKE_WATER_BLOCK.get().getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
 	}
@@ -127,7 +127,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	}
 
 	@Override
-	public boolean canDisplace(IFluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
+	public boolean canDisplace(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
 	{
 		return dir == Direction.DOWN && !fluid.isIn(FluidTags.WATER);
 	}
@@ -141,20 +141,20 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	public static class Flowing extends FakeWaterFluid
 	{
 		@Override
-		protected void fillStateContainer(StateContainer.Builder<Fluid, IFluidState> builder)
+		protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder)
 		{
 			super.fillStateContainer(builder);
 			builder.add(LEVEL_1_8);
 		}
 
 		@Override
-		public int getLevel(IFluidState p_207192_1_)
+		public int getLevel(FluidState p_207192_1_)
 		{
 			return p_207192_1_.get(LEVEL_1_8);
 		}
 
 		@Override
-		public boolean isSource(IFluidState state)
+		public boolean isSource(FluidState state)
 		{
 			return false;
 		}
@@ -163,13 +163,13 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	public static class Source extends FakeWaterFluid
 	{
 		@Override
-		public int getLevel(IFluidState p_207192_1_)
+		public int getLevel(FluidState p_207192_1_)
 		{
 			return 8;
 		}
 
 		@Override
-		public boolean isSource(IFluidState state)
+		public boolean isSource(FluidState state)
 		{
 			return true;
 		}

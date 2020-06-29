@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
@@ -11,6 +13,7 @@ import net.minecraft.block.LeverBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -19,10 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.List;
 
 public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock {
 

@@ -11,8 +11,8 @@ import net.minecraft.block.SixWayBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
@@ -86,7 +86,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 	}
 
 	@Override
-	public IFluidState getFluidState(BlockState state)
+	public FluidState getFluidState(BlockState state)
 	{
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
@@ -98,7 +98,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 	}
 
 	@Override
-	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, IFluidState fluidState)
+	public boolean receiveFluid(IWorld world, BlockPos pos, BlockState state, FluidState fluidState)
 	{
 		if(!state.get(WATERLOGGED) && fluidState.getFluid() == Fluids.WATER)
 		{
@@ -192,7 +192,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 
 	public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
 	{
-		IFluidState fluidState = world.getFluidState(pos);
+		FluidState fluidState = world.getFluidState(pos);
 		BlockPos northPos = pos.north();
 		BlockPos southPos = pos.south();
 		BlockPos westPos = pos.west();

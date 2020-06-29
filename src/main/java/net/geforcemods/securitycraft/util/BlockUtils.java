@@ -26,8 +26,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IProperty;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.Property;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -142,7 +142,7 @@ public class BlockUtils{
 		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
 	}
 
-	public static <T extends Comparable<T>> T getBlockProperty(World world, BlockPos pos, IProperty<T> property){
+	public static <T extends Comparable<T>> T getBlockProperty(World world, BlockPos pos, Property<T> property){
 		return world.getBlockState(pos).get(property);
 	}
 

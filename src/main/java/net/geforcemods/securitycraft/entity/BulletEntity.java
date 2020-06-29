@@ -12,7 +12,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -39,7 +39,7 @@ public class BulletEntity extends AbstractArrowEntity
 		else if(raytraceResult.getType() == Type.BLOCK)
 		{
 			BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceResult;
-			Vec3d vec3d = blockraytraceresult.getHitVec().subtract(this.getPosX(), this.getPosY(), this.getPosZ());
+			Vector3d vec3d = blockraytraceresult.getHitVec().subtract(this.getPosX(), this.getPosY(), this.getPosZ());
 			this.inGround = true;
 			this.setMotion(vec3d);
 		}
