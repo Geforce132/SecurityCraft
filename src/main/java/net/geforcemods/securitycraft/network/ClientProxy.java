@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestTileEntityRenderer;
+import net.geforcemods.securitycraft.renderers.ProjectorTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraTileEntityRenderer;
@@ -43,12 +44,14 @@ import net.geforcemods.securitycraft.screen.KeyChangerScreen;
 import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
+import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
@@ -90,6 +93,7 @@ public class ClientProxy implements IProxy {
 		};
 		ResourceLocation[] facingBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "inventory_scanner"),
+				new ResourceLocation(SecurityCraft.MODID, "projector"),
 				new ResourceLocation(SecurityCraft.MODID, "username_logger")
 		};
 		ResourceLocation[] poweredBlocks = {
@@ -146,6 +150,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(SecretSignTileEntity.class, new SecretSignTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TrophySystemTileEntity.class, new TrophySystemTileEntityRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(BlockPocketManagerTileEntity.class, new BlockPocketManagerTileEntityRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(ProjectorTileEntity.class, new ProjectorTileEntityRenderer());
 		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
@@ -161,6 +166,7 @@ public class ClientProxy implements IProxy {
 		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, KeycardReaderSetupScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
 		KeyBindings.init();
 	}
 
@@ -247,7 +253,7 @@ public class ClientProxy implements IProxy {
 			}
 
 			return noTint;
-		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
+		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.PROJECTOR.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
 	}
 
 	private int mixTints(int tint1, int tint2)

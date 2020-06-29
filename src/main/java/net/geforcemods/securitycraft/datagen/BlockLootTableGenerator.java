@@ -75,6 +75,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.MOTION_ACTIVATED_LIGHT);
 		putStandardBlockLootTable(SCContent.PANIC_BUTTON);
 		putStandardBlockLootTable(SCContent.PORTABLE_RADAR);
+		putStandardBlockLootTable(SCContent.PROJECTOR);
 		putStandardBlockLootTable(SCContent.PROTECTO);
 		putMineLootTable(SCContent.QUARTZ_ORE_MINE);
 		putMineLootTable(SCContent.REDSTONE_ORE_MINE);

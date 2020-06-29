@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.blocks.LoggerBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
+import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
@@ -71,6 +72,7 @@ import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
+import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
@@ -114,6 +116,7 @@ import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
+import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
@@ -181,6 +184,7 @@ public class SCContent
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> MOTION_ACTIVATED_LIGHT = BLOCKS.register("motion_activated_light", () -> new MotionActivatedLightBlock(Material.GLASS));
 	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock());
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(Material.MISCELLANEOUS));
+	@HasManualPage @OwnableTE @RegisterItemBlock public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(Block.Properties.create(Material.IRON).tickRandomly()));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> PROTECTO = BLOCKS.register("protecto", () -> new ProtectoBlock(Material.IRON));
 	@OwnableTE public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(Material.IRON));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> REINFORCED_FENCEGATE = BLOCKS.register("reinforced_fence_gate", () -> new ReinforcedFenceGateBlock());
@@ -633,6 +637,8 @@ public class SCContent
 	public static TileEntityType<WhitelistOnlyTileEntity> teTypeWhitelistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
 	public static TileEntityType<ReinforcedHopperTileEntity> teTypeReinforcedHopper;
+	@ObjectHolder(SecurityCraft.MODID + ":projector")
+	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
@@ -665,6 +671,8 @@ public class SCContent
 	public static ContainerType<InventoryScannerContainer> cTypeInventoryScanner;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_furnace")
 	public static ContainerType<KeypadFurnaceContainer> cTypeKeypadFurnace;
+	@ObjectHolder(SecurityCraft.MODID + ":projector")
+	public static ContainerType<ProjectorContainer> cTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":check_password")
 	public static ContainerType<GenericTEContainer> cTypeCheckPassword;
 	@ObjectHolder(SecurityCraft.MODID + ":set_password")
