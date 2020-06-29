@@ -89,6 +89,7 @@ public class ClientProxy implements IProxy
 		};
 		ResourceLocation[] facingBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "inventory_scanner"),
+				new ResourceLocation(SecurityCraft.MODID, "projector"),
 				new ResourceLocation(SecurityCraft.MODID, "username_logger")
 		};
 		ResourceLocation[] poweredBlocks = {

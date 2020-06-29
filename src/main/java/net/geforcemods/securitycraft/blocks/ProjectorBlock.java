@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class ProjectorBlock extends OwnableBlock {
+public class ProjectorBlock extends DisguisableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final VoxelShape NORTH = Stream.of(Block.makeCuboidShape(3, 5, 0.9, 6, 8, 1.9), Block.makeCuboidShape(0, 3, 1, 16, 10, 16), Block.makeCuboidShape(2, 8, 0.5, 7, 9, 1), Block.makeCuboidShape(2, 4, 0.5, 7, 5, 1), Block.makeCuboidShape(6, 5, 0.5, 7, 8, 1), Block.makeCuboidShape(2, 5, 0.5, 3, 8, 1), Block.makeCuboidShape(0, 0, 1, 2, 3, 3), Block.makeCuboidShape(14, 0, 1, 16, 3, 3), Block.makeCuboidShape(14, 0, 14, 16, 3, 16), Block.makeCuboidShape(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
@@ -47,17 +47,24 @@ public class ProjectorBlock extends OwnableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		switch(state.get(FACING))
+		BlockState extendedState = getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != this)
+			return extendedState.getShape(world, pos, ctx);
+		else
 		{
-			case NORTH:
-				return SOUTH;
-			case EAST:
-				return WEST;
-			case SOUTH:
-				return NORTH;
-			case WEST:
-				return EAST;
-			default: return VoxelShapes.fullCube();
+			switch(state.get(FACING))
+			{
+				case NORTH:
+					return SOUTH;
+				case EAST:
+					return WEST;
+				case SOUTH:
+					return NORTH;
+				case WEST:
+					return EAST;
+				default: return VoxelShapes.fullCube();
+			}
 		}
 	}
 
@@ -88,13 +95,13 @@ public class ProjectorBlock extends OwnableBlock {
 
 		super.onReplaced(state, world, pos, newState, isMoving);
 	}
-	
+
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) 
+	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
 	{
 		if(!worldIn.isRemote)
 		{
-			if(worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone()) 
+			if(worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone())
 			{
 				if (worldIn.isBlockPowered(pos)) {
 					((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(true);
@@ -102,15 +109,15 @@ public class ProjectorBlock extends OwnableBlock {
 				}
 				else
 				{
-		            ((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(false);
+					((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(false);
 					((ProjectorTileEntity) worldIn.getTileEntity(pos)).sync();
 				}
-		    }
+			}
 		}
 	}
-	
+
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) 
+	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
 	{
 		if (!worldIn.isBlockPowered(pos) && worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone())
 		{
