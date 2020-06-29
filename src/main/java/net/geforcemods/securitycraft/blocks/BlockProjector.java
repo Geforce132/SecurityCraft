@@ -49,6 +49,17 @@ public class BlockProjector extends BlockDisguisable {
 	}
 
 	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if(actualState != null && actualState.getBlock() != this)
+			return actualState.getCollisionBoundingBox(world, pos);
+		else
+			return getBoundingBox(state, world, pos);
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		TileEntity te = world.getTileEntity(pos);

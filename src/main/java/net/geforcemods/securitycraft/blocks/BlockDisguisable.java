@@ -94,7 +94,7 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 		if(actualState != null && actualState.getBlock() != this)
 			actualState.addCollisionBoxToList(world, pos, entityBox, collidingBoxes, entity, true);
 		else
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, getCollisionBoundingBox(state, world, pos));
 	}
 
 	@Override
@@ -121,8 +121,9 @@ public class BlockDisguisable extends BlockContainer implements IOverlayDisplay
 		return BlockFaceShape.SOLID;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldsSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
 		if(!(world.getTileEntity(pos) instanceof TileEntityDisguisable))
 			return true;
