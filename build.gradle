@@ -44,7 +44,7 @@ minecraft {
 repositories {
   maven { //HWYLA
     name = "TehNut Maven"
-    url = "http://tehnut.info/maven"
+    url = "http://maven.tehnut.info"
   }
   maven { //main jei maven
     name = "Progwml6 maven"
