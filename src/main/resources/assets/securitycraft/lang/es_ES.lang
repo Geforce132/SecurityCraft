@@ -280,6 +280,7 @@ tile.securitycraft:reinforced_stone_button.name=Botón de piedra reforzado
 tile.securitycraft:reinforced_wooden_button.name=Botón de roble reforzado
 tile.securitycraft:reinforced_lever.name=Palanca reforzada
 tile.securitycraft:reinforced_hopper.name=Tolva reforzada
+tile.securitycraft:projector.name=Proyector
 
 item.securitycraft:codebreaker.name=Descifrador de contraseñas
 item.securitycraft:doorIndestructibleIronItem.name=Puerta de hierro reforzada
@@ -390,6 +391,7 @@ help.securitycraft:reinforced_stone_pressure_plate.info=Las placas de presión r
 help.securitycraft:reinforced_stone_button.info=Los botones reforzados solo pueden ser activados por su propietario o por los jugadores de su lista blanca.
 help.securitycraft:reinforced_lever.info=La palanca reforzada solo puede ser activada por su propietario o por los jugadores de su lista blanca.
 help.securitycraft:reinforced_hopper.info=La tolva reforzada es el único bloque que puede utilizarse para extraer objetos de un cofre/horno con contraseña, si ambos tienen el mismo propietario. En cualquier otro caso es equivalente a una tolva normal.
+help.securitycraft:projector.info=El proyector proyecta en el mundo versiones holográficas del bloque que se elija, las cuales pueden usarse para esconder construcciones y otras áreas de interés. El rango y ancho de los bloques proyectados pueden ser configurados en la interfaz del proyector.
 
 help.securitycraft:codebreaker.info=El descifrador de contraseñas puede eludir la seguridad de cualquier teclado y cofre u horno con contraseña haciendo clic derecho sobre ellos (límite de 5 usos y probabilidad de éxito de 2/3).
 help.securitycraft:doorIndestructibleIronItem.info=La puerta de hierro reforzada es igual que la de hierro normal, a diferencia de que es indestructible. Solo puede abrirse con teclados, escáneres de inventario, etc.. El propietario puede usar el eliminador de bloques universal para quitarla.
@@ -518,6 +520,16 @@ gui.securitycraft:editModule.clear=Borrar lista
 gui.securitycraft:blockPocketManager.activate=Activar
 gui.securitycraft:blockPocketManager.deactivate=Desactivar
 gui.securitycraft:blockPocketManager.size=Tamaño: %sx%sx%s
+gui.securitycraft:blockPocketManager.assemble=Auto-ensamblar
+gui.securitycraft:blockPocketManager.outline.show=Mostrar contorno
+gui.securitycraft:blockPocketManager.outline.hide=Ocultar contorno
+gui.securitycraft:blockPocketManager.youNeed=Necesitas:
+gui.securitycraft:projector.width=Ancho: #
+gui.securitycraft:projector.width.description=La anchura y altura de la proyección.
+gui.securitycraft:projector.range=Rango: #
+gui.securitycraft:projector.range.description=Cómo de lejos de sí mismo el proyector proyectará los bloques.
+gui.securitycraft:projector.offset=Desplazamiento: #
+gui.securitycraft:projector.offset.description=El desplazamiento horizontal de la proyección.
 
 messages.securitycraft:bugReport=Por favor, reporta bugs en el canal #bugreport de nuestro server de Discord. Lee las normas antes, por favor
 messages.securitycraft:securityCamera.mounted=Ahora estás en una cámara. Usa las teclas #w#a#s#d para mover la cámara. Aumenta o aleja con #i y #o.
@@ -590,11 +602,15 @@ messages.securitycraft:sentry.descriptionMode1=(siempre activa, ataca a criatura
 messages.securitycraft:sentry.descriptionMode2=(activa cuando un jugador se acerca, ataca jugadores)
 messages.securitycraft:sentry.descriptionMode3=(no se activa, no ataca)
 messages.securitycraft:blockpocket.multipleManagers=Hay más de un gestor de bolsillo de bloques en la estructura.
-messages.securitycraft:blockpocket.invalidBlock=¡Bloque "%2$s" no válido en %1$s!
-messages.securitycraft:blockpocket.invalidBlock.pillar=¡Bloque "%2$s" no válido en %1$s! (¡asegúrate de que el pilar esté rotado correctamente!)
+messages.securitycraft:blockpocket.alreadyAssembled=¡El bolsillo de bloques ya ha sido ensamblado!
+messages.securitycraft:blockpocket.invalidBlock.rotation=¡El pilar en la posición %1$s! está rotado incorrectamente!
+messages.securitycraft:blockpocket.invalidBlock=¡Bloque inválido \"%2$s\" en la posición %1$s! (Esperado: "%3$s")
+messages.securitycraft:blockpocket.blockInWay="%2$s" está bloqueando el espacio en la posición %1$s!
 messages.securitycraft:blockpocket.unowned=¡No eres propietario del bloque "%2$s" en %1$s!
+messages.securitycraft:blockpocket.notEnoughItems=¡No tienes suficientes bloques para ensamblar un bolsillo de bloques de ese tamaño!
 messages.securitycraft:blockpocket.activated=¡Bolsillo de bloques activado!
 messages.securitycraft:blockpocket.deactivated=¡Bolsillo de bloques desactivado!
+messages.securitycraft:blockpocket.assembled=¡Bolsillo de bloques ensamblado!
 
 jei.securitycraft:reinforcedBlock.info=Haz clic derecho con un reforzador de bloques universal y coloca el siguiente bloque en el hueco. Si lo deseas, también puedes colocar el bloque y romperlo con el reforzador de bloques universal.
 
@@ -657,6 +673,12 @@ module.securitycraft:reinforced_wooden_pressure_plate.whitelistModule.descriptio
 module.securitycraft:reinforced_stone_button.whitelistModule.description=Añadir un módulo de lista blanca a una placa de presión de piedra reforzada permitirá a los jugadores de dicha lista activarla.
 module.securitycraft:reinforced_wooden_button.whitelistModule.description=Añadir un módulo de lista blanca a un botón de roble reforzado permitirá a los jugadores de dicha lista activarlo.
 module.securitycraft:reinforced_lever.whitelistModule.description=Añadir un módulo de lista blanca a una palanca reforzada permitirá a los jugadores de dicha lista activarla.
+module.securitycraft:keypadChest.whitelistModule.description=Añadir un módulo de lista blanca a un cofre con contraseña permitirá a los jugadores de dicha lista abrir el cofre sin conocer el código. Adicionalmente, las tolvas reforzadas de los jugadores en la lista blanca pueden extraer objetos del cofre.
+module.securitycraft:keypadChest.blacklistModule.description=Añadir un módulo de lista negra a un cofre con contraseña hará que los jugadores de dicha lista no puedan interactuar con el bloque.
+module.securitycraft:keypadFurnace.whitelistModule.description=Añadir un módulo de lista blanca a un horno con contraseña permitirá a los jugadores de dicha lista abrir el horno sin conocer el código. Adicionalmente, las tolvas reforzadas de los jugadores en la lista blanca pueden extraer objetos del horno.
+module.securitycraft:keypadFurnace.blacklistModule.description=Añadir un módulo de lista negra a un horno con contraseña hará que los jugadores de dicha lista no puedan interactuar con el bloque.
+module.securitycraft:projector.redstoneModule.description=Añadir un módulo de redstone a un proyector te permitirá encender y apagar manualmente el proyector usando energía de redstone.
+module.securitycraft:projector.disguiseModule.description=Añadir un módulo de disfraz a un proyector hará que este cambie su modelo y textura al modelo y textura del bloque añadido en el módulo de disfraz.
 
 config.securitycraft:isCodebreakerAllowed=¿El descifrador de contraseñas está permitido?
 config.securitycraft:isCodebreakerAllowed.tooltip=¿Se puede usar el descifrador de contraseñas?
@@ -763,8 +785,12 @@ option.securitycraft:cageTrap.captureMobs=Capturar criaturas: #
 option.securitycraft:cageTrap.captureMobs.description=¿Debería esta jaula trampa capturar criaturas hostiles y jugadores o solo jugadores?
 option.securitycraft:motionActivatedLight.searchRadius=Radio de búsqueda: #
 option.securitycraft:motionActivatedLight.searchRadius.description=¿A cuánta distancia detecta la luz a una entidad?
-option.securitycraft.keycardReader.sendMessage=Mensaje: #
-option.securitycraft.keycardReader.sendMessage.description=¿Este lector de tarjetas envía un mensaje al activarse (cuando se usan módulos de lista blanca/negra)?
+option.securitycraft:keycardReader.sendMessage=Mensaje: #
+option.securitycraft:keycardReader.sendMessage.description=¿Este lector de tarjetas envía un mensaje al activarse (cuando se usan módulos de lista blanca/negra)?
+option.securitycraft:keypadChest.sendMessage=Mensaje: #
+option.securitycraft:keypadChest.sendMessage.description=¿Este cofre envía un mensaje al ser activado (cuando se usa un módulo de lista blanca/negra)?
+option.securitycraft:keypadFurnace.sendMessage=Mensaje: #
+option.securitycraft:keypadFurnace.sendMessage.description=¿Este horno envía un mensaje al ser activado (cuando se usa un módulo de lista blanca/negra)?
 
 securitycraft.subtitle.alarm=Alarma suena
 securitycraft.subtitle.electrified=Entidad se electrocuta
