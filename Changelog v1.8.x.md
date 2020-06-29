@@ -7,6 +7,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 - New: Stonecutting recipes for numerous reinforced blocks (Thanks Redstone_Dubstep!)
 - New: Players in creative can now remove any sentry and not just their own
 - New: The Block Pocket can now be built automatically from within the Block Pocket Manager's GUI (Thanks Redstone_Dubstep!)
+- New: Projector (Projects a fake wall of a block of your choice into the world)
 - Change: Disguising a sentry will now respect previously placed blocks at the sentry's position (Thanks Redstone_Dubstep!)
 - Change: Improved the Block Pocker Manager's GUI (Thanks Redstone_Dubstep!)
 - API: New IModuleInventory interface that adds the ability to have modules in a TileEntity
