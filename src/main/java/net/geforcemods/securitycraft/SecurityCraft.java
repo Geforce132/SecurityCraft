@@ -47,7 +47,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	//********************************* This is v1.8.19 for MC 1.15.2!
+	//********************************* This is v1.8.19 for MC 1.16.1!
 	protected static final String VERSION = "v1.8.19";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
