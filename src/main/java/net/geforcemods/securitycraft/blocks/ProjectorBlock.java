@@ -97,31 +97,24 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
 	{
-		if(!worldIn.isRemote)
+		if(!world.isRemote)
 		{
-			if(worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone())
+			if(world.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) world.getTileEntity(pos)).isActivatedByRedstone())
 			{
-				if (worldIn.isBlockPowered(pos)) {
-					((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(true);
-					((ProjectorTileEntity) worldIn.getTileEntity(pos)).sync();
-				}
-				else
-				{
-					((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(false);
-					((ProjectorTileEntity) worldIn.getTileEntity(pos)).sync();
-				}
+				((ProjectorTileEntity) world.getTileEntity(pos)).setActive(world.isBlockPowered(pos));
+				((ProjectorTileEntity) world.getTileEntity(pos)).sync();
 			}
 		}
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand)
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
-		if (!worldIn.isBlockPowered(pos) && worldIn.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) worldIn.getTileEntity(pos)).isActivatedByRedstone())
+		if (!world.isBlockPowered(pos) && world.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) world.getTileEntity(pos)).isActivatedByRedstone())
 		{
-			((ProjectorTileEntity) worldIn.getTileEntity(pos)).setActive(false);
+			((ProjectorTileEntity) world.getTileEntity(pos)).setActive(false);
 		}
 	}
 

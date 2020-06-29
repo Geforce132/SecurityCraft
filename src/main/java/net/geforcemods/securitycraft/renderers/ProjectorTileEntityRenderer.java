@@ -81,7 +81,6 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 			stack.translate(-distance, 0.0D + y, 0.0D + x + offset);
 		}
 		else {
-			stack.translate(0.0D, 0.0D, 0.0D);
 			return te.getPos();
 		}
 
