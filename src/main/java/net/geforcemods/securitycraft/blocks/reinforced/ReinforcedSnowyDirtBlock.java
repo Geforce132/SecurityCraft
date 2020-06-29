@@ -80,18 +80,18 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	{
 		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
-		switch(type)
+		if(type == PlantType.CAVE)
+			return Block.hasSolidSide(state, world, pos, Direction.UP);
+		else if(type == PlantType.PLAINS)
+			return true;
+		else if(type == PlantType.BEACH)
 		{
-			case Cave: return Block.hasSolidSide(state, world, pos, Direction.UP);
-			case Plains: return true;
-			case Beach:
-				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
-				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-				return isBeach && hasWater;
-			default: break;
+			boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
+					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
+					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
+					world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+			return isBeach && hasWater;
 		}
 
 		return false;

@@ -137,21 +137,23 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		BlockState plant = plantable.getPlant(world, pos.offset(facing));
 		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
-		if (plant.getBlock() == Blocks.CACTUS)
+		if(plant.getBlock() == Blocks.CACTUS)
 			return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
 
-		switch (type) {
-			case Desert: return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
-			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);
-			case Plains: return SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock());
-			case Beach:
-				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock()) || this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
-				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
-						world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-				return isBeach && hasWater;
-			default: break;
+		if(type == PlantType.DESERT)
+			return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
+		else if(type == PlantType.CAVE)
+			return Block.hasSolidSide(state, world, pos, Direction.UP);
+		else if(type == PlantType.PLAINS)
+			return SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock());
+		else if(type == PlantType.BEACH)
+		{
+			boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock()) || this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
+			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
+					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
+					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
+					world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+			return isBeach && hasWater;
 		}
 		return false;
 	}
