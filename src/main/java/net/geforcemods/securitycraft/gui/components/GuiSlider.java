@@ -47,6 +47,7 @@ public class GuiSlider extends GuiButtonExt
 	public ISlider parent = null;
 	public boolean drawString = true;
 	private String blockName;
+	public String prefix;
 
 	public GuiSlider(int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr)
 	{
@@ -69,6 +70,7 @@ public class GuiSlider extends GuiButtonExt
 		blockName = bN;
 		String val;
 		sliderValue = (currentVal - minVal) / (maxVal - minVal);
+		this.prefix = prefix;
 
 		if (showDecimal)
 		{

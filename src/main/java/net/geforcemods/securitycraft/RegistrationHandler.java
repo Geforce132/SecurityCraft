@@ -55,6 +55,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
+import net.geforcemods.securitycraft.network.packets.PacketSSyncProjector;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
@@ -79,6 +80,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
+import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityScannerDoor;
@@ -260,6 +262,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedWoodenButton, false);
 		registerBlock(event, SCContent.reinforcedLever);
 		registerBlock(event, SCContent.reinforcedHopper);
+		registerBlock(event, SCContent.projector);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -379,6 +382,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityBlockPocket.class, new ResourceLocation("securitycraft:block_pocket"));
 		GameRegistry.registerTileEntity(TileEntityWhitelistOnly.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedHopper.class, new ResourceLocation("securitycraft:reinforced_hopper"));
+		GameRegistry.registerTileEntity(TileEntityProjector.class, new ResourceLocation("securitycraft:projector"));
 	}
 
 	@SubscribeEvent
@@ -448,6 +452,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketCRefreshDiguisedModel.Handler.class, PacketCRefreshDiguisedModel.class, 28, Side.CLIENT);
 		network.registerMessage(PacketSetSentryMode.Handler.class, PacketSetSentryMode.class, 29, Side.SERVER);
 		network.registerMessage(PacketSAssembleBlockPocket.Handler.class, PacketSAssembleBlockPocket.class, 30, Side.SERVER);
+		network.registerMessage(PacketSSyncProjector.Handler.class, PacketSSyncProjector.class, 31, Side.SERVER);
 	}
 
 	@SubscribeEvent
@@ -749,6 +754,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedWoodenButton), 0, new ModelResourceLocation("securitycraft:reinforced_wooden_button", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedLever), 0, new ModelResourceLocation("securitycraft:reinforced_lever", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedHopper), 0, new ModelResourceLocation("securitycraft:reinforced_hopper", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.projector), 0, new ModelResourceLocation("securitycraft:projector", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));

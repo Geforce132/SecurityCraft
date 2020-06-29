@@ -47,6 +47,7 @@ public class SCContent
 	public static Block motionActivatedLight;
 	public static Block panicButton;
 	public static Block portableRadar;
+	public static Block projector;
 	public static Block protecto;
 	public static Block quartzOreMine;
 	public static Block redstoneOreMine;

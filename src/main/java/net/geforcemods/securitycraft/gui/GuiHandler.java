@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
+import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.containers.ModuleItemInventory;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -19,6 +20,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
+import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,6 +49,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BLOCK_REINFORCER = 103;
 	public static final int MODULES = 104;
 	public static final int BLOCK_POCKET_MANAGER = 105;
+	public static final int PROJECTOR = 106;
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
@@ -101,6 +104,10 @@ public class GuiHandler implements IGuiHandler {
 				return new ContainerGeneric(player.inventory, te);
 			case BLOCK_POCKET_MANAGER:
 				return new ContainerGeneric(player.inventory, te);
+			case PROJECTOR:
+				if(te instanceof TileEntityProjector)
+					return new ContainerProjector(player.inventory, (TileEntityProjector)te);
+				return null;
 			default:
 				return null;
 		}
@@ -169,6 +176,10 @@ public class GuiHandler implements IGuiHandler {
 			case BLOCK_POCKET_MANAGER:
 				if(te instanceof TileEntityBlockPocketManager)
 					return new GuiBlockPocketManager((TileEntityBlockPocketManager)te);
+				return null;
+			case PROJECTOR:
+				if(te instanceof TileEntityProjector)
+					return new GuiProjector(player.inventory, (TileEntityProjector)te);
 				return null;
 			default:
 				return null;

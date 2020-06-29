@@ -280,6 +280,7 @@ tile.securitycraft:reinforced_stone_button.name=Reinforced Button
 tile.securitycraft:reinforced_wooden_button.name=Reinforced Button
 tile.securitycraft:reinforced_lever.name=Reinforced Lever
 tile.securitycraft:reinforced_hopper.name=Reinforced Hopper
+tile.securitycraft:projector.name=Projector
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -390,6 +391,7 @@ help.securitycraft:reinforced_stone_pressure_plate.info=The Reinforced Pressure 
 help.securitycraft:reinforced_stone_button.info=The Reinforced Buttons can only be activated by their owner or whitelisted players.
 help.securitycraft:reinforced_lever.info=The Reinforced Lever can only be activated by its owner or whitelisted players.
 help.securitycraft:reinforced_hopper.info=The Reinforced Hopper is the only block that can be used to extract items out of a password protected chest/furnace if both are owned by the same player. It will otherwise act like a vanilla hopper.
+help.securitycraft:projector.info=The Projector projects holographic versions of a block of your choice into the world, which can be used to hide buildings and other areas of interest from other players. The range and width of the projection can be changed within the Projector's GUI.
 
 help.securitycraft:codebreaker.info=The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)
 help.securitycraft:doorIndestructibleIronItem.info=The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.
@@ -521,6 +523,12 @@ gui.securitycraft:blockPocketManager.assemble=Auto-Assemble
 gui.securitycraft:blockPocketManager.outline.show=Show Outline
 gui.securitycraft:blockPocketManager.outline.hide=Hide Outline
 gui.securitycraft:blockPocketManager.youNeed=You need:
+gui.securitycraft:projector.width=Projection width: #
+gui.securitycraft:projector.width.description=The width and height of the projection.
+gui.securitycraft:projector.range=Projection range: #
+gui.securitycraft:projector.range.description=How far the Projector will project the blocks away from itself.
+gui.securitycraft:projector.offset=Projection offset: #
+gui.securitycraft:projector.offset.description=The horizontal offset of the projection.
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 messages.securitycraft:securityCamera.mounted=You are now mounted to a camera. Use the #w#a#s#d keys to move the camera's view, and the #i/#o buttons to zoom in and out.
@@ -669,6 +677,8 @@ module.securitycraft:keypadChest.whitelistModule.description=Adding a whitelist 
 module.securitycraft:keypadChest.blacklistModule.description=Adding a blacklist module to a Password-protected Chest will ban players from interacting with the block.
 module.securitycraft:keypadFurnace.whitelistModule.description=Adding a whitelist module to a Password-protected Furnace will allow players to open it without knowing the code. Additionally, Reinforced Hoppers owned by whitelisted players can extract items from the furnace.
 module.securitycraft:keypadFurnace.blacklistModule.description=Adding a blacklist module to a Password-protected Furnace will ban players from interacting with the block.
+module.securitycraft:projector.redstoneModule.description=Adding a redstone module to a Projector will allow you to manually toggle the Projector on and off using redstone power.
+module.securitycraft:projector.disguiseModule.description=Adding a disguise module to a Projector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?

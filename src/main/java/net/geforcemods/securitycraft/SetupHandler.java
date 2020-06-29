@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.blocks.BlockLogger;
 import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.blocks.BlockPanicButton;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
+import net.geforcemods.securitycraft.blocks.BlockProjector;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
@@ -241,6 +242,7 @@ public class SetupHandler
 		SCContent.reinforcedWoodenButton = new BlockReinforcedButton(true).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wooden_button").setTranslationKey("securitycraft:reinforced_wooden_button");
 		SCContent.reinforcedLever = new BlockReinforcedLever().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lever").setTranslationKey("securitycraft:reinforced_lever");
 		SCContent.reinforcedHopper = new BlockReinforcedHopper().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hopper").setTranslationKey("securitycraft:reinforced_hopper");
+		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 	}
 
 	public static void setupMines()
