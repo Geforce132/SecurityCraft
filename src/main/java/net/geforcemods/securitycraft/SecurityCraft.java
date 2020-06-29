@@ -49,7 +49,7 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	//********************************* This is v1.8.19 for MC 1.16.1!
 	protected static final String VERSION = "v1.8.19";
-	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
+	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
