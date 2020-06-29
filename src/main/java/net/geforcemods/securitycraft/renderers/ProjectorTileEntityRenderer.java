@@ -25,15 +25,17 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 
 		if(!te.isEmpty())
 		{
+			Direction direction = te.getBlockState().get(ProjectorBlock.FACING);
+
 			GlStateManager.pushMatrix();
-			GlStateManager.translated(x, y, z);
+			GlStateManager.translated(x, y, z + 1); //everything's offset by one on z, no idea why
 			Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
 			for(int i = 0; i < te.getProjectionWidth(); i++) {
 				for(int j = 0; j < te.getProjectionWidth(); j++) {
 					GlStateManager.pushMatrix();
 
-					BlockPos pos = translateProjection(te, te.getBlockState().get(ProjectorBlock.FACING), i, j, te.getProjectionRange(), te.getProjectionOffset());
+					BlockPos pos = translateProjection(te, direction, i, j, te.getProjectionRange(), te.getProjectionOffset());
 
 					if(pos != null && !te.getWorld().isAirBlock(pos))
 					{
