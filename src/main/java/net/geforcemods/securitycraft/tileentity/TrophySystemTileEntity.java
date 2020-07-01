@@ -121,10 +121,10 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * Returns the UUID of the player who shot the given Entity
 	 */
 	public UUID getShooterUUID(Entity entity) {
-		if(entity instanceof AbstractArrowEntity && ((AbstractArrowEntity) entity).shootingEntity != null)
-			return ((AbstractArrowEntity) entity).shootingEntity;
-		else if(entity instanceof FireballEntity && ((FireballEntity) entity).shootingEntity != null  && ((FireballEntity) entity).shootingEntity.getUniqueID() != null)
-			return ((FireballEntity) entity).shootingEntity.getUniqueID();
+		if(entity instanceof AbstractArrowEntity && ((AbstractArrowEntity) entity).func_234616_v_() != null) //getShooter
+			return ((AbstractArrowEntity) entity).func_234616_v_().getUniqueID(); //getShooter
+		else if(entity instanceof FireballEntity && ((FireballEntity) entity).func_234616_v_() != null) //getShooter
+			return ((FireballEntity) entity).func_234616_v_().getUniqueID(); //getShooter
 		else
 			return null;
 	}

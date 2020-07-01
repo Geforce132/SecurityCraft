@@ -24,6 +24,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -34,6 +35,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
 
+	public static final Style GRAY_STYLE = Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean nbtCanBeModified;
@@ -94,13 +96,13 @@ public class ModuleItem extends Item{
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.modifiable").getFormattedText()));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:module.modifiable").func_230530_a_(GRAY_STYLE));
 		else
-			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").getFormattedText()));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").func_230530_a_(GRAY_STYLE));
 
 		if(nbtCanBeModified) {
 			list.add(new StringTextComponent(" "));
-			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").func_230530_a_(GRAY_STYLE).func_230529_a_(new StringTextComponent(":")));
 
 			if(stack.getTag() != null)
 				for(int i = 1; i <= MAX_PLAYERS; i++)
@@ -121,7 +123,7 @@ public class ModuleItem extends Item{
 			if(getNumberOfAddons() > 0) {
 				list.add(new StringTextComponent(" "));
 
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":"));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").func_230530_a_(GRAY_STYLE).func_230529_a_(new StringTextComponent(":")));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
 					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + ClientUtils.localize(addon.getTranslationKey())));

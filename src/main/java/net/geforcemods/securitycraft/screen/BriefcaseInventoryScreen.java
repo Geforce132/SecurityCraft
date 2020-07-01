@@ -19,7 +19,7 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 	public BriefcaseInventoryScreen(BriefcaseContainer container, PlayerInventory inventory, ITextComponent name) {
 		super(container, inventory, name);
 
-		formattedTitle = name.getFormattedText();
+		formattedTitle = name.getString();
 	}
 
 	@Override

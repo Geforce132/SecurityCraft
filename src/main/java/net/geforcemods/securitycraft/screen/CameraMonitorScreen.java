@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import mezz.jei.gui.HoverChecker;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
@@ -27,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.gui.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
 public class CameraMonitorScreen extends Screen {
@@ -158,7 +158,7 @@ public class CameraMonitorScreen extends Screen {
 					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, font);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
+					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getString()), 150), mouseX, mouseY, font);
 			}
 	}
 

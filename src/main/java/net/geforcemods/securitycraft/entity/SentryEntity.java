@@ -73,7 +73,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 	public void setupSentry(PlayerEntity owner)
 	{
-		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
+		dataManager.set(OWNER, new Owner(owner.getName().getString(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
 		dataManager.set(MODULE, new CompoundNBT());
 		dataManager.set(WHITELIST, new CompoundNBT());
 		dataManager.set(MODE, SentryMode.CAMOUFLAGE.ordinal());
@@ -224,7 +224,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			}
 			else if(item == SCContent.UNIVERSAL_OWNER_CHANGER.get())
 			{
-				String newOwner = player.getHeldItemMainhand().getDisplayName().getFormattedText();
+				String newOwner = player.getHeldItemMainhand().getDisplayName().getString();
 
 				dataManager.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID"));
 

@@ -201,7 +201,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
 		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
-		tag.putString("customName", customName.getFormattedText());
+		tag.putString("customName", customName.getString());
 		return tag;
 	}
 
@@ -405,7 +405,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 	@Override
 	public boolean hasCustomSCName() {
-		return (customName != null && !customName.getFormattedText().equals("name"));
+		return (customName != null && !customName.getString().equals("name"));
 	}
 
 	@Override

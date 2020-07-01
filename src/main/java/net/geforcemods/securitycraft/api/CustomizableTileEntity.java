@@ -128,7 +128,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 
 	@Override
 	public boolean hasCustomSCName() {
-		return (getCustomSCName() != null && !getCustomSCName().getFormattedText().equals("name"));
+		return (getCustomSCName() != null && !getCustomSCName().getString().equals("name"));
 	}
 
 	@Override

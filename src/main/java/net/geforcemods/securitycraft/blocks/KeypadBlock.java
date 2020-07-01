@@ -151,7 +151,7 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	public boolean convert(PlayerEntity player, World world, BlockPos pos)
 	{
 		world.setBlockState(pos, SCContent.KEYPAD.get().getDefaultState().with(KeypadBlock.FACING, world.getBlockState(pos).get(FrameBlock.FACING)).with(KeypadBlock.POWERED, false));
-		((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());
+		((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getString());
 		return true;
 	}
 }

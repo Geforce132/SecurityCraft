@@ -32,7 +32,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 
 	public IMSBombEntity(World world, PlayerEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
 		super(SCContent.eTypeImsBomb, x, y, z, targetX, targetY, targetZ, world);
-		playerName = targetEntity.getName().getFormattedText();
+		playerName = targetEntity.getName().getString();
 		launchHeight = height;
 	}
 

@@ -54,7 +54,7 @@ public class Owner {
 	public boolean isOwner(PlayerEntity player) {
 		if(player == null) return false;
 		String uuid = player.getGameProfile().getId().toString();
-		String owner = player.getName().getFormattedText();
+		String owner = player.getName().getString();
 
 		if(uuid != null && uuid.equals(playerUUID))
 			return true;
@@ -74,7 +74,7 @@ public class Owner {
 	 * Set the UUID and name of a new owner using strings.
 	 */
 	public void set(String uuid, ITextComponent name) {
-		playerName = name.getFormattedText();
+		playerName = name.getString();
 		playerUUID = uuid;
 	}
 

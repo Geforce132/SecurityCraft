@@ -103,7 +103,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 			passcode = tag.getString("passcode");
 
 		if(hasCustomSCName())
-			tag.putString("CustomName", furnaceCustomName.getFormattedText());
+			tag.putString("CustomName", furnaceCustomName.getString());
 	}
 
 	@Override
@@ -218,7 +218,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 				}
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
 	}
 
@@ -288,7 +288,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public boolean hasCustomSCName()
 	{
-		return furnaceCustomName != null && furnaceCustomName.getFormattedText() != null && !furnaceCustomName.getFormattedText().isEmpty();
+		return furnaceCustomName != null && furnaceCustomName.getString() != null && !furnaceCustomName.getString().isEmpty();
 	}
 
 	@Override

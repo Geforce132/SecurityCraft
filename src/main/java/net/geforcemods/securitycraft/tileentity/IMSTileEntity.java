@@ -83,7 +83,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
 
-				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getString().toLowerCase()))
 					continue;
 
 				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
@@ -106,7 +106,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				MonsterEntity entity = (MonsterEntity) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
-				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getString().toLowerCase()))
 					continue;
 
 				double targetX = entity.getPosX() - (pos.getX() + 0.5D);
@@ -133,7 +133,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 					continue;
 				if(WorldUtils.isPathObstructed(entity, world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()))
 					continue;
-				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getFormattedText()))
+				if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getString()))
 					continue;
 
 				double targetX = entity.getPosX() - (pos.getX() + 0.5D);

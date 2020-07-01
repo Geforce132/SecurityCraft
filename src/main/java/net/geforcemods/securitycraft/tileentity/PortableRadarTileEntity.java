@@ -60,13 +60,13 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 
-			if(owner != null && hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(attacked.getName().getFormattedText().toLowerCase()))
+			if(owner != null && hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(attacked.getName().getString().toLowerCase()))
 				return false;
 
 
 			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((PlayerEntity)attacked))
 			{
-				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomSCName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomSCName().getFormattedText() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getFormattedText() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomSCName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getString() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomSCName().getString() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getString() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
 				setSentMessage();
 			}
 
@@ -117,12 +117,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	}
 
 	public boolean shouldSendMessage(PlayerEntity player) {
-		if(!player.getName().getFormattedText().equals(lastPlayerName)) {
+		if(!player.getName().getString().equals(lastPlayerName)) {
 			shouldSendNewMessage = true;
-			lastPlayerName = player.getName().getFormattedText();
+			lastPlayerName = player.getName().getString();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && enabledOption.get() && !player.getName().getFormattedText().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && enabledOption.get() && !player.getName().getString().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {

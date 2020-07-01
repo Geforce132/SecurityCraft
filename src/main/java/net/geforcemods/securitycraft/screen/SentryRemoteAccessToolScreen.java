@@ -168,7 +168,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:srat.notBound");
 			else if(names[i] != null)
-				line = names[i].getFormattedText();
+				line = names[i].getString();
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 

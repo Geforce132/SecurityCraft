@@ -44,7 +44,7 @@ public class UniversalOwnerChangerItem extends Item
 	{
 		Block block = world.getBlockState(pos).getBlock();
 		TileEntity te = world.getTileEntity(pos);
-		String newOwner = stack.getDisplayName().getFormattedText();
+		String newOwner = stack.getDisplayName().getString();
 
 		if(!world.isRemote)
 		{
@@ -74,7 +74,7 @@ public class UniversalOwnerChangerItem extends Item
 			if(isDefault)
 			{
 				if(ConfigHandler.CONFIG.allowBlockClaim.get())
-					newOwner = player.getName().getFormattedText();
+					newOwner = player.getName().getString();
 				else
 				{
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);

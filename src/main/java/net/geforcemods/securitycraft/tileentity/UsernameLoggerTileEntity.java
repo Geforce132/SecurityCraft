@@ -65,12 +65,12 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	private void addPlayer(PlayerEntity player) {
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName().getFormattedText(), timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName().getString(), timestamp))
 		{
 			for(int i = 0; i < players.length; i++)
 			{
 				if(players[i] == null || players[i].equals("")){
-					players[i] = player.getName().getFormattedText();
+					players[i] = player.getName().getString();
 					uuids[i] = player.getGameProfile().getId().toString();
 					timestamps[i] = timestamp;
 					break;

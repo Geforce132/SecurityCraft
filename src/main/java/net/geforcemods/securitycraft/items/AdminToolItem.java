@@ -19,6 +19,8 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -35,7 +37,7 @@ public class AdminToolItem extends Item {
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
 		if(!world.isRemote && ConfigHandler.CONFIG.allowAdminTool.get()) {
-			String adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
+			IFormattableTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
 
 			if(world.getTileEntity(pos) != null) {
 				TileEntity te = world.getTileEntity(pos);
@@ -59,7 +61,7 @@ public class AdminToolItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(ModuleType module : modules)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText(), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
@@ -67,11 +69,11 @@ public class AdminToolItem extends Item {
 
 				if(te instanceof SecretSignTileEntity)
 				{
-					PlayerUtils.sendMessageToPlayer(player, adminToolName, "", TextFormatting.DARK_PURPLE);
+					PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent(""), TextFormatting.DARK_PURPLE); //EMPTY
 
 					for(int i = 0; i < 4; i++)
 					{
-						PlayerUtils.sendMessageToPlayer(player, adminToolName, ((SecretSignTileEntity)te).signText[i].getUnformattedComponentText(), TextFormatting.DARK_PURPLE);
+						PlayerUtils.sendMessageToPlayer(player, adminToolName, ((SecretSignTileEntity)te).signText[i].func_230532_e_(), TextFormatting.DARK_PURPLE); //TODO: is this signText conversion correct?
 					}
 
 					hasInfo = true;

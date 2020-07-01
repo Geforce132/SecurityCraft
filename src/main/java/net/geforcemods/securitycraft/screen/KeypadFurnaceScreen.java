@@ -42,9 +42,9 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getFormattedText() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getString() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6.0F, 4210752);
-		font.drawString(playerInventory.getDisplayName().getFormattedText(), 8.0F, ySize - 96 + 2, 4210752);
+		font.drawString(playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
 	}
 
 	@Override

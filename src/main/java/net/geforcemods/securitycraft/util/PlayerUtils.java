@@ -11,7 +11,10 @@ import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.LogicalSide;
@@ -30,7 +33,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
-				if(tempPlayer.getName().getFormattedText().equals(name))
+				if(tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
 
@@ -41,7 +44,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
-				if(tempPlayer.getName().getFormattedText().equals(name))
+				if(tempPlayer.getName().getString().equals(name))
 					return tempPlayer;
 			}
 
@@ -55,7 +58,7 @@ public class PlayerUtils{
 	public static boolean isPlayerOnline(String name) {
 		if(EffectiveSide.get() == LogicalSide.CLIENT){
 			for(AbstractClientPlayerEntity player : Minecraft.getInstance().world.getPlayers()){
-				if(player != null && player.getName().getFormattedText().equals(name))
+				if(player != null && player.getName().getString().equals(name))
 					return true;
 			}
 
@@ -65,15 +68,24 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	public static void sendMessageToPlayer(PlayerEntity player, String prefix, String text, TextFormatting color){
-		player.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text));
+	//TODO: test correctness of the next two methods. basically just guessing if this is correct for now
+	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
+		player.sendMessage(new StringTextComponent("[")
+				.func_230529_a_(prefix.func_230530_a_(Style.field_240709_b_.func_240712_a_(color)))
+				.func_230529_a_(new StringTextComponent("] ")).func_230530_a_(Style.field_240709_b_.func_240712_a_(TextFormatting.WHITE))
+				.func_230529_a_(text), Util.field_240973_b_); //appendSibling
 	}
 
 	/**
 	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p>
 	 */
-	public static void sendMessageEndingWithLink(ICommandSource sender, String prefix, String text, String link, TextFormatting color){
-		sender.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
+	public static void sendMessageEndingWithLink(ICommandSource sender, IFormattableTextComponent prefix, IFormattableTextComponent text, String link, TextFormatting color){
+		sender.sendMessage(new StringTextComponent("[")
+				.func_230529_a_(prefix.func_230530_a_(Style.field_240709_b_.func_240712_a_(color)))
+				.func_230529_a_(new StringTextComponent("] ")).func_230530_a_(Style.field_240709_b_.func_240712_a_(TextFormatting.WHITE))
+				.func_230529_a_(text)
+				.func_230529_a_(new StringTextComponent(": "))
+				.func_230529_a_(ForgeHooks.newChatWithLinks(link)), Util.field_240973_b_); //appendSibling
 	}
 
 	/**

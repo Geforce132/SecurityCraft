@@ -66,7 +66,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, ModuleType.WHITELIST).contains(((LivingEntity) entity).getName().getFormattedText().toLowerCase()))
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, ModuleType.WHITELIST).contains(((LivingEntity) entity).getName().getString().toLowerCase()))
 							return;
 
 						BlockUtils.setBlockProperty(world, offsetPos, LaserBlock.POWERED, true, true);

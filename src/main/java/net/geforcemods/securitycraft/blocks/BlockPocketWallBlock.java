@@ -62,7 +62,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 					if(te.getManager() == null)
 						return VoxelShapes.empty();
 
-					if(te.getManager().hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), ModuleType.WHITELIST).contains(entity.getName().getFormattedText().toLowerCase()))
+					if(te.getManager().hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), ModuleType.WHITELIST).contains(entity.getName().getString().toLowerCase()))
 						return VoxelShapes.empty();
 					else if(!te.getOwner().isOwner((PlayerEntity)entity))
 						return VoxelShapes.fullCube();

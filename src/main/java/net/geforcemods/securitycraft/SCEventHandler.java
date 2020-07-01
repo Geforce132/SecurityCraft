@@ -85,7 +85,7 @@ public class SCEventHandler {
 		ITextComponent message;
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").func_230529_a_(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
 		else
 			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
@@ -163,13 +163,13 @@ public class SCEventHandler {
 					event.setCanceled(true);
 
 					for(String character : new String[]{"(", ")"})
-						if(event.getPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText()).replace("#c", character), TextFormatting.RED);
+						if(event.getPlayer().inventory.getCurrentItem().getDisplayName().getString().contains(character)) {
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getPlayer().inventory.getCurrentItem().getDisplayName().getString()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomSCName().equals(event.getPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomSCName().getFormattedText()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomSCName().getString()), TextFormatting.RED);
 						return;
 					}
 
@@ -348,7 +348,7 @@ public class SCEventHandler {
 
 	private static void handleOwnableTEs(OwnershipEvent event) {
 		if(event.getWorld().getTileEntity(event.getPos()) instanceof IOwnable) {
-			String name = event.getPlayer().getName().getFormattedText();
+			String name = event.getPlayer().getName().getString();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
 			((IOwnable) event.getWorld().getTileEntity(event.getPos())).getOwner().set(uuid, name);

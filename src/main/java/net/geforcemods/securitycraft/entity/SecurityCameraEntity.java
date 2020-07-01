@@ -71,7 +71,7 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseYaw = player.rotationYaw;
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
-		playerViewingName = player.getName().getFormattedText();
+		playerViewingName = player.getName().getString();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
 		TileEntity te = world.getTileEntity(getPosition());
