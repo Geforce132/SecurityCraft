@@ -165,7 +165,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public int getSlopeFindDistance(IWorldReader world)
 	{
-		return world.getDimension().doesWaterVaporize() ? 4 : 2;
+		return world.func_230315_m_().func_236040_e_() ? 4 : 2; //getDimension, doesWaterVaporize
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public int getLevelDecreasePerBlock(IWorldReader world)
 	{
-		return world.getDimension().doesWaterVaporize() ? 1 : 2;
+		return world.func_230315_m_().func_236040_e_() ? 1 : 2;
 	}
 
 	@Override
@@ -195,7 +195,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public int getTickRate(IWorldReader world)
 	{
-		return world.getDimension().isNether() ? 10 : 30;
+		return world.func_230315_m_().func_236040_e_() ? 10 : 30; //isNether
 	}
 
 	@Override
