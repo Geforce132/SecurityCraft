@@ -250,7 +250,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewLeft() {
-		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).has(SecurityCameraBlock.FACING)) {
+		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).func_235901_b_(SecurityCameraBlock.FACING)) { //has
 			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
@@ -282,7 +282,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewRight(){
-		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).has(SecurityCameraBlock.FACING)) {
+		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).func_235901_b_(SecurityCameraBlock.FACING)) { //has
 			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)

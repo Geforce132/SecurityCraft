@@ -20,6 +20,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
+//field_235612_b_ = EAST
+//field_235613_c_ = NORTH
+//field_235614_d_ = SOUTH
+//field_235615_e_ = WEST
+//field_235616_f_ = WATERLOGGED
 public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock
 {
 	private final Supplier<Block> vanillaBlockSupplier;
@@ -45,7 +50,7 @@ public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return getDefaultState().with(UP, vanillaState.get(UP)).with(NORTH, vanillaState.get(NORTH)).with(EAST, vanillaState.get(EAST)).with(SOUTH, vanillaState.get(SOUTH)).with(WEST, vanillaState.get(WEST)).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
+		return getDefaultState().with(UP, vanillaState.get(UP)).with(field_235613_c_, vanillaState.get(field_235613_c_)).with(field_235612_b_, vanillaState.get(field_235612_b_)).with(field_235614_d_, vanillaState.get(field_235614_d_)).with(field_235615_e_, vanillaState.get(field_235615_e_)).with(field_235616_f_, vanillaState.get(field_235616_f_));
 	}
 
 	@Override

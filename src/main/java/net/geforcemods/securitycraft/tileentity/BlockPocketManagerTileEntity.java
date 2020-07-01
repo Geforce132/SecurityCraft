@@ -696,7 +696,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			{
 				BlockState state = world.getBlockState(pos);
 
-				if(state.has(BlockPocketWallBlock.SOLID))
+				if(state.func_235901_b_(BlockPocketWallBlock.SOLID)) //has
 					world.setBlockState(pos, state.with(BlockPocketWallBlock.SOLID, false));
 			}
 

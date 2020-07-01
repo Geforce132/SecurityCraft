@@ -103,7 +103,7 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	@Override
 	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!world.isRemote && world.getBlockState(pos).has(ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
+		if (!world.isRemote && world.getBlockState(pos).func_235901_b_(ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED)) //has
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;

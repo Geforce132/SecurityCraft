@@ -156,7 +156,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 
 				tempPos = tempPos.add(rand.nextInt(3) - 1, (rand.nextInt(3) - 1) * rand.nextInt(3) / 2, rand.nextInt(3) - 1);
 
-				if(world.getBlockState(tempPos.down()).getBlock() != this || world.getBlockState(tempPos).isCollisionShapeOpaque(world, tempPos))
+				if(world.getBlockState(tempPos.down()).getBlock() != this || world.getBlockState(tempPos).func_235785_r_(world, tempPos)) //isCollisionShapeOpaque
 					break;
 
 				++j;

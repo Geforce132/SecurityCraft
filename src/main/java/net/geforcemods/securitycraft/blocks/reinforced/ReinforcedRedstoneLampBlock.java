@@ -46,7 +46,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 				if(isLit)
 					world.getPendingBlockTicks().scheduleTick(pos, this, 4);
 				else
-					world.setBlockState(pos, state.cycle(LIT), 2);
+					world.setBlockState(pos, state.func_235896_a_(LIT), 2); //cycle
 			}
 
 		}
@@ -56,7 +56,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
 		if(state.get(LIT) && !world.isBlockPowered(pos))
-			world.setBlockState(pos, state.cycle(LIT), 2);
+			world.setBlockState(pos, state.func_235896_a_(LIT), 2); //cycle
 	}
 
 	@Override
