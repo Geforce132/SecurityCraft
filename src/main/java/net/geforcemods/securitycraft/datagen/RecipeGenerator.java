@@ -33,8 +33,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Potions;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
@@ -978,7 +978,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
+	protected final void addColoredWoolRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.setGroup("securitycraft:reinforced_wool")
@@ -999,7 +999,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
+	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> specialIngredient, IItemProvider result, ICondition condition)
 	{
 		addShapedConditionalRecipe(consumer, Arrays.asList("III", "SSS"),
 				LinkedMapBuilder.create()
@@ -1022,7 +1022,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result)
+	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> specialIngredient, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result)
 		.setGroup("securitycraft:modules")
@@ -1036,7 +1036,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> block, IItemProvider result)
+	protected final void addMossyRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> block, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result)
 		.addIngredient(block)
@@ -1064,7 +1064,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> log, IItemProvider result)
+	protected final void addPlanksRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> log, IItemProvider result)
 	{
 		ShapelessRecipeBuilder.shapelessRecipe(result, 4)
 		.setGroup("securitycraft:reinforced_planks")
@@ -1149,7 +1149,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addStainedGlassRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
+	protected final void addStainedGlassRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_glass")
@@ -1162,7 +1162,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addStainedGlassPaneRecipes(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider stainedGlass, IItemProvider result)
+	protected final void addStainedGlassPaneRecipes(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider stainedGlass, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_glass_panes")
@@ -1182,7 +1182,7 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer, new ResourceLocation(SecurityCraft.MODID, result.asItem().getRegistryName().getPath() + "_from_glass"));
 	}
 
-	protected final void addStainedTerracottaRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> dye, IItemProvider result)
+	protected final void addStainedTerracottaRecipe(Consumer<IFinishedRecipe> consumer, ITag<Item> dye, IItemProvider result)
 	{
 		ShapedRecipeBuilder.shapedRecipe(result, 8)
 		.setGroup("securitycraft:reinforced_terracotta")
@@ -1252,7 +1252,7 @@ public class RecipeGenerator extends RecipeProvider
 			return this;
 		}
 
-		public LinkedMapBuilder put(Character key, Tag<Item> value)
+		public LinkedMapBuilder put(Character key, ITag<Item> value)
 		{
 			map.put(key, Ingredient.fromTag(value));
 			return this;

@@ -86,7 +86,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 			return true;
 		else if(type == PlantType.BEACH)
 		{
-			boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+			boolean isBeach = isIn(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
 					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
 					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
