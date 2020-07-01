@@ -63,9 +63,9 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		if (tag.contains("passcode"))
 			if(tag.getInt("passcode") != 0)

@@ -152,7 +152,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 
 		chest.clear();
 		world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
-		((ChestTileEntity)world.getTileEntity(pos)).read(tag);
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getString());
+		((ChestTileEntity)world.getTileEntity(pos)).func_230337_a_(world.getBlockState(pos), tag);
 	}
 }

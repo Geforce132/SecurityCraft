@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -104,9 +105,9 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		if (tag.contains("shouldSendNewMessage"))
 			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");

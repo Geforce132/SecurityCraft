@@ -60,7 +60,7 @@ public class SyncTENBTTag {
 			PlayerEntity player = ctx.get().getSender();
 
 			if(player.world.getTileEntity(pos) != null)
-				player.world.getTileEntity(pos).read(tag);
+				player.world.getTileEntity(pos).func_230337_a_(player.world.getBlockState(pos), tag);
 		});
 
 		ctx.get().setPacketHandled(true);

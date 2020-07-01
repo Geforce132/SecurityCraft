@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -103,8 +104,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public void read(CompoundNBT tag){
-		super.read(tag);
+	public void func_230337_a_(BlockState state, CompoundNBT tag){
+		super.func_230337_a_(state, tag);
 
 		for(int i = 0; i < players.length; i++)
 		{

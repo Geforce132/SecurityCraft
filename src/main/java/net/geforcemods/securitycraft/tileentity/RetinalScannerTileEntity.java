@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -116,8 +117,8 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	@Override
-	public void read(CompoundNBT tag) {
-		super.read(tag);
+	public void func_230337_a_(BlockState state, CompoundNBT tag) {
+		super.func_230337_a_(state, tag);
 		if(tag.contains("ownerProfile", Constants.NBT.TAG_COMPOUND))
 			ownerProfile = NBTUtil.readGameProfile(tag.getCompound("ownerProfile"));
 	}

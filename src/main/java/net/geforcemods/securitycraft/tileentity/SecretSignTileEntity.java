@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
+import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -42,9 +43,9 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		if (tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
@@ -62,7 +63,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(packet.getNbtCompound());
+		func_230337_a_(getBlockState(), packet.getNbtCompound());
 	}
 
 	@Override

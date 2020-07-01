@@ -66,9 +66,9 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		inventory = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
 
@@ -562,7 +562,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
 	{
-		read(packet.getNbtCompound());
+		func_230337_a_(getBlockState(), packet.getNbtCompound());
 	}
 
 	@Override

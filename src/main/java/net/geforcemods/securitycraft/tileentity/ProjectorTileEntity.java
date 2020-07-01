@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -67,9 +68,9 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		if(tag.contains("width"))
 			projectionWidth = tag.getInt("width");

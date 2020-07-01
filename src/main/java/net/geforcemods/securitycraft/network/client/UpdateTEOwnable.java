@@ -76,7 +76,7 @@ public class UpdateTEOwnable
 			((IOwnable)te).setOwner(message.uuid, message.name);
 
 			if(message.customizable)
-				((CustomizableTileEntity)te).read(message.tag);
+				((CustomizableTileEntity)te).func_230337_a_(Minecraft.getInstance().world.getBlockState(message.pos), message.tag);
 		});
 
 		ctx.get().setPacketHandled(true);

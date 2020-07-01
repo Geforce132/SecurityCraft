@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -47,8 +48,8 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public void read(CompoundNBT tag){
-		super.read(tag);
+	public void func_230337_a_(BlockState state, CompoundNBT tag){
+		super.func_230337_a_(state, tag);
 
 		ListNBT list = tag.getList("Items", 10);
 		inventoryContents = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);

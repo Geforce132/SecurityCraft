@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
@@ -64,9 +65,9 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		if (tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");

@@ -204,8 +204,8 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 
 		furnace.clear();
 		world.setBlockState(pos, SCContent.KEYPAD_FURNACE.get().getDefaultState().with(FACING, facing).with(OPEN, false).with(LIT, lit));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
-		((KeypadFurnaceTileEntity)world.getTileEntity(pos)).read(tag);
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getString());
+		((KeypadFurnaceTileEntity)world.getTileEntity(pos)).func_230337_a_(world.getBlockState(pos), tag);
 		return true;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -208,9 +209,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(CompoundNBT tag)
+	public void func_230337_a_(BlockState state, CompoundNBT tag)
 	{
-		super.read(tag);
+		super.func_230337_a_(state, tag);
 
 		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
