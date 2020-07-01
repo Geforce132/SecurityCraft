@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
@@ -76,16 +77,23 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		vanillaBlockSupplier = () -> vB;
 	}
 
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, int lightValue)
+	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, ToIntFunction<BlockState> lightValue)
 	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(lightValue));
+		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).func_235838_a_(lightValue)); //lightValue
 
 		vanillaBlockSupplier = () -> vB;
 	}
 
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB, int lightValue)
+	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB)
 	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(lightValue));
+		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F));
+
+		vanillaBlockSupplier = vB;
+	}
+
+	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB, ToIntFunction<BlockState> lightValue)
+	{
+		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).func_235838_a_(lightValue)); //lightValue
 
 		vanillaBlockSupplier = vB;
 	}

@@ -16,7 +16,7 @@ public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocke
 {
 	public BlockPocketBlock(Material mat, Supplier<Block> vB)
 	{
-		super(SoundType.STONE, mat, vB, 0);
+		super(SoundType.STONE, mat, vB);
 	}
 
 	@Override

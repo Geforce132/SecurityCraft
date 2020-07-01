@@ -54,10 +54,10 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 		return ActionResultType.PASS;
 	}
 
-	@Override
-	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
+	@Override //TODO: should be the same as getBlockHardness (which seems to no longer exist), but might have a different effect
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos)
 	{
-		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
 	@Override

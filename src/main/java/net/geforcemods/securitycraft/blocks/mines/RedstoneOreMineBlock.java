@@ -28,15 +28,9 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 
 	public RedstoneOreMineBlock()
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 6000000.0F).tickRandomly().lightValue(9), Blocks.REDSTONE_ORE);
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 6000000.0F).tickRandomly().func_235838_a_(state -> state.get(LIT) ? 9 : 0), Blocks.REDSTONE_ORE);
 
 		setDefaultState(getDefaultState().with(LIT, false));
-	}
-
-	@Override
-	public int getLightValue(BlockState state)
-	{
-		return state.get(LIT) ? super.getLightValue(state) : 0;
 	}
 
 	@Override

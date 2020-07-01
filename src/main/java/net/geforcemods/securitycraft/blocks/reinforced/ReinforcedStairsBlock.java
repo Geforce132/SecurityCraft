@@ -38,7 +38,6 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -73,7 +72,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 
 	public ReinforcedStairsBlock(SoundType soundType, Material mat, Supplier<Block> vB)
 	{
-		super(soundType, mat, vB, 0);
+		super(soundType, mat, vB);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
 		modelBlock = getVanillaBlock();
@@ -138,12 +137,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
 	{
 		modelBlock.onPlayerDestroy(worldIn, pos, state);
-	}
-
-	@Override
-	public int tickRate(IWorldReader world)
-	{
-		return modelBlock.tickRate(world);
 	}
 
 	@Override

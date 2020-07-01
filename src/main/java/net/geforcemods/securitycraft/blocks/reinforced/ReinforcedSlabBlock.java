@@ -51,7 +51,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 
 	public ReinforcedSlabBlock(SoundType soundType, Material mat, Supplier<Block> vB)
 	{
-		super(soundType, mat, vB, 0);
+		super(soundType, mat, vB);
 		setDefaultState(stateContainer.getBaseState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, false));
 	}
 

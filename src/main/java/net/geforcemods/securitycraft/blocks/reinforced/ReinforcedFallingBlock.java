@@ -14,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -28,13 +27,13 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean flag)
 	{
-		world.getPendingBlockTicks().scheduleTick(pos, this, tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, 2);
 	}
 
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		world.getPendingBlockTicks().scheduleTick(currentPos, this, tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(currentPos, this, 2);
 		return super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
@@ -79,12 +78,6 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock
 					world.setBlockState(blockpos.up(), state); //Forge: Fix loss of state information during world gen.
 			}
 		}
-	}
-
-	@Override
-	public int tickRate(IWorldReader world)
-	{
-		return 2;
 	}
 
 	public static boolean canFallThrough(BlockState state)

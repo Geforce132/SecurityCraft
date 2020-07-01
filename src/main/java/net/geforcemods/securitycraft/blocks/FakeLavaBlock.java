@@ -18,7 +18,7 @@ public class FakeLavaBlock extends FlowingFluidBlock
 
 	public FakeLavaBlock()
 	{
-		super(SCContent.FAKE_LAVA, Block.Properties.create(Material.LAVA).doesNotBlockMovement().tickRandomly().hardnessAndResistance(-1.0F, 6000000.0F).lightValue(15));
+		super(SCContent.FAKE_LAVA, Block.Properties.create(Material.LAVA).doesNotBlockMovement().tickRandomly().hardnessAndResistance(-1.0F, 6000000.0F).func_235838_a_(stat -> 15)); //lightValue
 	}
 
 	@Override

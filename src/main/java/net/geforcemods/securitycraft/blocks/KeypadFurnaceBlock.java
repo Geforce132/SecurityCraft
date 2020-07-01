@@ -59,7 +59,7 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 	private static final VoxelShape WEST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(3, 0, 0, 16, 16, 16), Block.makeCuboidShape(2, 1, 1, 3, 15, 15)), VoxelShapes.combine(Block.makeCuboidShape(0, 14, 4, 2, 15, 12), Block.makeCuboidShape(1, 14, 5, 2, 15, 11), IBooleanFunction.ONLY_FIRST));
 
 	public KeypadFurnaceBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).func_235838_a_(state -> state.get(OPEN) && state.get(LIT) ? 13 : 0)); //lightValue
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(OPEN, false).with(LIT, false));
 	}
 
@@ -90,12 +90,6 @@ public class KeypadFurnaceBlock extends OwnableBlock implements IPasswordConvert
 					return WEST_CLOSED;
 			default: return VoxelShapes.fullCube();
 		}
-	}
-
-	@Override
-	public int getLightValue(BlockState state)
-	{
-		return state.get(OPEN) && state.get(LIT) ? 13 : 0;
 	}
 
 	@Override

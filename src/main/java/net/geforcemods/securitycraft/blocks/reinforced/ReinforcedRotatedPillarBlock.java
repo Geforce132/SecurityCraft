@@ -30,7 +30,7 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock
 
 	public ReinforcedRotatedPillarBlock(SoundType soundType, Material mat, Supplier<Block> vB)
 	{
-		super(soundType, mat, vB, 0);
+		super(soundType, mat, vB);
 
 		setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));
 	}
