@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
@@ -32,5 +34,19 @@ public class WorldUtils{
 	 */
 	public static boolean isPathObstructed(Entity entity, World world, double x1, double y1, double z1, double x2, double y2, double z2) {
 		return world.rayTraceBlocks(new RayTraceContext(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2), BlockMode.OUTLINE, FluidMode.NONE, entity)) != null;
+	}
+
+	public static void spawnLightning(World world, Vector3d pos, boolean effectOnly)
+	{
+		world.addEntity(createLightning(world, pos, effectOnly));
+	}
+
+	public static LightningBoltEntity createLightning(World world, Vector3d pos, boolean effectOnly)
+	{
+		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
+
+		lightning.func_233576_c_(pos);
+		lightning.func_233623_a_(effectOnly);
+		return lightning;
 	}
 }

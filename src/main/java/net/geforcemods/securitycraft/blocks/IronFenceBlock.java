@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
@@ -35,6 +36,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -218,7 +220,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		else if(entity instanceof CreeperEntity)
 		{
 			CreeperEntity creeper = (CreeperEntity)entity;
-			LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), true);
+			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.func_237492_c_(pos), true);
 
 			creeper.onStruckByLightning(lightning);
 			creeper.extinguish();

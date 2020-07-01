@@ -9,11 +9,10 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.server.ServerWorld;
 
 public class ProtectoTileEntity extends CustomizableTileEntity {
 
@@ -29,7 +28,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 				return false;
 
 			if(!world.isRemote)
-				((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false));
+				WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
 
 			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);
 			return true;
