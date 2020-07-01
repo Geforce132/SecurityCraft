@@ -138,14 +138,14 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
 		if (plant.getBlock() == Blocks.CACTUS)
-			return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
+			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
 		switch (type) {
-			case Desert: return this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
+			case Desert: return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 			case Cave:   return Block.hasSolidSide(state, world, pos, Direction.UP);
-			case Plains: return SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock());
+			case Plains: return SCTags.Blocks.REINFORCED_DIRT.contains(this);
 			case Beach:
-				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this.getBlock()) || this.getBlock() == SCContent.REINFORCED_SAND.get() || this.getBlock() == SCContent.REINFORCED_RED_SAND.get();
+				boolean isBeach = SCTags.Blocks.REINFORCED_DIRT.contains(this) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 				boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
 						world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
