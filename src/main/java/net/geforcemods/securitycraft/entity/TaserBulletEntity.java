@@ -28,7 +28,7 @@ public class TaserBulletEntity extends ThrowableEntity {
 	public TaserBulletEntity(World world, LivingEntity shooter, boolean isPowered){
 		super(SCContent.eTypeTaserBullet, shooter, world);
 		powered = isPowered;
-		this.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
+		this.func_234612_a_(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class TaserBulletEntity extends ThrowableEntity {
 
 				if(result.getEntity() instanceof PlayerEntity)
 				{
-					if(((PlayerEntity)result.getEntity()).abilities.isCreativeMode || (LivingEntity)result.getEntity() == getThrower() || !ServerLifecycleHooks.getCurrentServer().isPVPEnabled())
+					if(((PlayerEntity)result.getEntity()).abilities.isCreativeMode || (LivingEntity)result.getEntity() == func_234616_v_() || !ServerLifecycleHooks.getCurrentServer().isPVPEnabled())
 						return;
 				}
 

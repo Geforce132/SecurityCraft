@@ -10,8 +10,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -29,20 +27,21 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	protected void onHit(RayTraceResult raytraceResult)
+	protected void onEntityHit(EntityRayTraceResult raytraceResult)
 	{
-		if(raytraceResult.getType() == Type.ENTITY && !(((EntityRayTraceResult)raytraceResult).getEntity() instanceof SentryEntity))
+		if(!(raytraceResult.getEntity() instanceof SentryEntity))
 		{
-			((EntityRayTraceResult)raytraceResult).getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
+			raytraceResult.getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, func_234616_v_()), MathHelper.ceil(getMotion().length()));
 			remove();
 		}
-		else if(raytraceResult.getType() == Type.BLOCK)
-		{
-			BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceResult;
-			Vector3d vec3d = blockraytraceresult.getHitVec().subtract(this.getPosX(), this.getPosY(), this.getPosZ());
-			this.inGround = true;
-			this.setMotion(vec3d);
-		}
+	}
+
+	@Override
+	protected void func_230299_a_(BlockRayTraceResult raytraceResult) //onBlockHit
+	{
+		Vector3d vec3d = raytraceResult.getHitVec().subtract(this.getPosX(), this.getPosY(), this.getPosZ());
+		this.inGround = true;
+		this.setMotion(vec3d);
 	}
 
 	@Override

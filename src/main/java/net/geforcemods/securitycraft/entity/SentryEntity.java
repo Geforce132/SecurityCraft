@@ -36,6 +36,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -144,9 +145,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	@Override
-	public boolean processInteract(PlayerEntity player, Hand hand)
+	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand)
 	{
-		BlockPos pos = getPosition();
+		BlockPos pos = func_233580_cy_();
 
 		if(getOwner().isOwner(player) && hand == Hand.MAIN_HAND)
 		{
@@ -235,7 +236,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				toggleMode(player);
 
 			player.swingArm(Hand.MAIN_HAND);
-			return true;
+			return ActionResultType.SUCCESS;
 		}
 		else if(!getOwner().isOwner(player) && hand == Hand.MAIN_HAND && player.isCreative())
 		{
@@ -243,7 +244,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				remove();
 		}
 
-		return super.processInteract(player, hand);
+		return super.func_230254_b_(player, hand);
 	}
 
 	/**
@@ -252,7 +253,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	@Override
 	public void remove()
 	{
-		BlockPos pos = getPosition();
+		BlockPos pos = func_233580_cy_();
 
 		if (!getDisguiseModule().isEmpty())
 		{
@@ -293,7 +294,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		if(player.world.isRemote)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
 		else
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(func_233580_cy_(), true, mode == 0));
 	}
 
 	/**
@@ -311,7 +312,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		if(player.world.isRemote && sendMessage)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(func_233580_cy_(), true, mode == 0));
 	}
 
 	@Override
@@ -321,7 +322,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		{
 			animateUpwards = getMode() == SentryMode.CAMOUFLAGE && target != null;
 			animate = true;
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), animate, animateUpwards));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(func_233580_cy_(), animate, animateUpwards));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getEntityId();
@@ -416,8 +417,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			ItemStack disguiseStack = blocks.get(0);
 			BlockState state = Block.getBlockFromItem(disguiseStack.getItem()).getDefaultState();
 
-			if (world.getBlockState(getPosition()).isAir(world, getPosition()))
-				world.setBlockState(getPosition(), state.getShape(world, getPosition()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
+			if (world.getBlockState(func_233580_cy_()).isAir(world, func_233580_cy_()))
+				world.setBlockState(func_233580_cy_(), state.getShape(world, func_233580_cy_()) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
 		}
 
 		dataManager.set(MODULE, module.write(new CompoundNBT()));

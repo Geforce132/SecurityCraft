@@ -315,7 +315,7 @@ public class SCEventHandler {
 		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity && event.getEntityMounting() instanceof PlayerEntity)
 		{
 			PlayerEntity player = (PlayerEntity)event.getEntityMounting();
-			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
+			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().func_233580_cy_());
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
 			{

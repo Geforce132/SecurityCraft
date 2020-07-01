@@ -61,7 +61,7 @@ public class SCClientEventHandler
 	@SubscribeEvent
 	public static void onDrawBlockHighlight(DrawHighlightEvent.HighlightBlock event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().getPosition().equals(event.getTarget().getPos()))
+		if(PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().player.getRidingEntity().func_233580_cy_().equals(event.getTarget().getPos()))
 			event.setCanceled(true);
 	}
 
@@ -162,7 +162,7 @@ public class SCClientEventHandler
 							if(stack.getTag().getIntArray("sentry" + i).length > 0)
 							{
 								int[] coords = sentries.getIntArray("sentry" + i);
-								if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+								if(coords[0] == hitEntity.func_233580_cy_().getX() && coords[1] == hitEntity.func_233580_cy_().getY() && coords[2] == hitEntity.func_233580_cy_().getZ())
 								{
 									textureToUse = "item_bound";
 									break;
