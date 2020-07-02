@@ -37,9 +37,9 @@ public class BriefcaseItem extends Item {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), world.getDimension().getType().getId(), player.func_233580_cy_(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getDisplayName()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.func_233580_cy_(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getDisplayName()));
 		}
 
 		return ActionResultType.FAIL;
@@ -56,9 +56,9 @@ public class BriefcaseItem extends Item {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), world.getDimension().getType().getId(), player.func_233580_cy_(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getDisplayName()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.func_233580_cy_(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getDisplayName()));
 		}
 
 		return ActionResult.resultPass(stack);
