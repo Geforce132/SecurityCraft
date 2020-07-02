@@ -206,7 +206,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 				}
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
 	}
 

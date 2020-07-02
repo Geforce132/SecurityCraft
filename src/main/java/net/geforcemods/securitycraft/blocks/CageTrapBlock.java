@@ -31,6 +31,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -121,7 +122,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
-					PlayerUtils.getPlayerFromName(ownerName).sendMessage(new TranslationTextComponent("["+ TextFormatting.BLACK + ClientUtils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()) + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((PlayerEntity) entity).getName().getString()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					PlayerUtils.getPlayerFromName(ownerName).sendMessage(new TranslationTextComponent("["+ TextFormatting.BLACK + ClientUtils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()) + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((PlayerEntity) entity).getName().getString()).replace("#location", Utils.getFormattedCoordinates(pos))), Util.field_240973_b_);
 			}
 		}
 	}
