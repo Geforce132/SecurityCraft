@@ -20,8 +20,9 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
-import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
+import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -37,10 +38,11 @@ import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.gui.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -198,8 +200,8 @@ public class SCManualScreen extends Screen {
 
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
-					if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-						renderTooltip(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
+					if(chc instanceof TextHoverChecker && ((TextHoverChecker)chc).getName() != null)
+						renderTooltip(((TextHoverChecker)chc).getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
 						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
 				}
@@ -345,22 +347,22 @@ public class SCManualScreen extends Screen {
 			{
 				for(int j = 0; j < 3; j++)
 				{
-					hoverCheckers.add(new HoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16, 20));
+					hoverCheckers.add(new HoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16));
 				}
 			}
 		}
 		else if(page.isRecipeDisabled())
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
+			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
 		else if(reinforcedPage)
 		{
 			recipe = null;
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced")));
+			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced")));
 		}
 		else
 		{
 			String name = page.getItem().getRegistryName().getPath();
 
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
+			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
 		}
 
 		Item item = page.getItem();
@@ -370,39 +372,40 @@ public class SCManualScreen extends Screen {
 			TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
 			if(block instanceof IExplosive)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if(te != null){
 				if(te instanceof IOwnable)
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock")));
 
 				if(te instanceof IPasswordProtected)
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock")));
 
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
 				if(te instanceof ICustomizable)
 				{
 					ICustomizable scte = (ICustomizable)te;
 
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, 20, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock")));
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
-						List<String> display = new ArrayList<>();
+						List<ITextProperties> display = new ArrayList<>();
 
 						display.add(ClientUtils.localize("gui.securitycraft:scManual.options"));
-						display.add("---");
+						display.add(new StringTextComponent("---"));
 
 						for(Option<?> option : scte.customOptions())
 						{
-							display.add("- " + ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description"));
-							display.add("");
+							//TODO: guessing, check if correct
+							display.add(new StringTextComponent("- ").func_230529_a_(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
+							display.add(StringTextComponent.field_240750_d_);
 						}
 
 						display.remove(display.size() - 1);
-						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, 20, display));
+						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
 					}
 				}
 
@@ -412,19 +415,20 @@ public class SCManualScreen extends Screen {
 
 					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 					{
-						List<String> display = new ArrayList<>();
+						List<ITextProperties> display = new ArrayList<>();
 
 						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
-						display.add("---");
+						display.add(new StringTextComponent("---"));
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							display.add("- " + ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description"));
-							display.add("");
+							//TODO: guessing, check if correct
+							display.add(new StringTextComponent("- ").func_230529_a_(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
+							display.add(StringTextComponent.field_240750_d_);
 						}
 
 						display.remove(display.size() - 1);
-						hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, 20, display));
+						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 					}
 				}
 			}

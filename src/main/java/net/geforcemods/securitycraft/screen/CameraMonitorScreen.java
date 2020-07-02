@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import mezz.jei.gui.HoverChecker;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
@@ -15,6 +14,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -100,7 +100,7 @@ public class CameraMonitorScreen extends Screen {
 
 			if((view = views.get(camID - 1)) != null) {
 				if(view.dimension != Minecraft.getInstance().player.dimension.getId()) {
-					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
+					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
@@ -114,7 +114,7 @@ public class CameraMonitorScreen extends Screen {
 				}
 
 				cameraTEs[button.id - 1] = (SecurityCraftTileEntity) Minecraft.getInstance().world.getTileEntity(view.getLocation());
-				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
+				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
 			{
