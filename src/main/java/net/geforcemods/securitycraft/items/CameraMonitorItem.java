@@ -28,6 +28,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,6 +36,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class CameraMonitorItem extends Item {
+
+	private static final Style GRAY_STYLE = Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY);
 
 	public CameraMonitorItem() {
 		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
@@ -112,7 +115,7 @@ public class CameraMonitorItem extends Item {
 		if(stack.getTag() == null)
 			return;
 
-		tooltip.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:cameraMonitor") + " " + getNumberOfCamerasBound(stack.getTag()) + "/30"));
+		tooltip.add(ClientUtils.localize("tooltip.securitycraft:cameraMonitor").func_230529_a_(new StringTextComponent(" " + getNumberOfCamerasBound(stack.getTag()) + "/30")).func_230530_a_(GRAY_STYLE));
 	}
 
 	public static String getTagNameFromPosition(CompoundNBT tag, CameraView view) {

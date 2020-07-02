@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,6 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BaseKeycardItem extends Item{
 
+	private static final Style GRAY_STYLE = Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY);
 	private final int level;
 
 	public BaseKeycardItem(int level) {
@@ -50,7 +52,7 @@ public class BaseKeycardItem extends Item{
 				stack.getTag().putInt("Uses", 5);
 			}
 
-			list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
+			list.add(ClientUtils.localize("tooltip.securitycraft:keycard.uses").func_230529_a_(new StringTextComponent(" " + stack.getTag().getInt("Uses"))).func_230530_a_(GRAY_STYLE));
 
 		}
 	}
