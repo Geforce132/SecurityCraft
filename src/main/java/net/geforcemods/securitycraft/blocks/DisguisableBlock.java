@@ -22,11 +22,29 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 {
 	public DisguisableBlock(Block.Properties properties)
 	{
-		super(properties.notSolid());
+		super(properties.notSolid().func_235828_a_(DisguisableBlock::isNormalCube).func_235842_b_(DisguisableBlock::causesSuffocation));
 	}
 
 	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
-		super(soundType, properties.notSolid());
+		super(soundType, properties.notSolid().func_235828_a_(DisguisableBlock::isNormalCube).func_235842_b_(DisguisableBlock::causesSuffocation));
+	}
+
+	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		BlockState extendedState = state.getBlock().getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != state.getBlock())
+			return extendedState.isNormalCube(world, pos);
+		else return state.getMaterial().isOpaque() && state.func_235785_r_(world, pos);
+	}
+
+	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		BlockState extendedState = state.getBlock().getExtendedState(state, world, pos);
+
+		if(extendedState.getBlock() != state.getBlock())
+			return extendedState.causesSuffocation(world, pos);
+		return state.getMaterial().blocksMovement() && state.func_235785_r_(world, pos);
 	}
 
 	@Override
@@ -67,26 +85,6 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		if(extendedState.getBlock() != this)
 			return extendedState.getRenderShape(world, pos);
 		else return super.getRenderShape(state, world, pos);
-	}
-
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		BlockState extendedState = getExtendedState(state, world, pos);
-
-		if(extendedState.getBlock() != this)
-			return extendedState.isNormalCube(world, pos);
-		else return super.isNormalCube(state, world, pos);
-	}
-
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		BlockState extendedState = getExtendedState(state, world, pos);
-
-		if(extendedState.getBlock() != this)
-			return extendedState.causesSuffocation(world, pos);
-		else return super.causesSuffocation(state, world, pos);
 	}
 
 	@Override

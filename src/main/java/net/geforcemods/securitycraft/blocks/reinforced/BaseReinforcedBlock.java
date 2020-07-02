@@ -18,6 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -128,7 +129,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side)
+	public boolean isFireSource(BlockState state, IWorldReader world, BlockPos pos, Direction side)
 	{
 		return this == SCContent.REINFORCED_NETHERRACK.get() && side == Direction.UP;
 	}

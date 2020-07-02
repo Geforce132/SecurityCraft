@@ -33,15 +33,19 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 
 	public BlockPocketWallBlock()
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement().func_235828_a_(BlockPocketWallBlock::isNormalCube).func_235842_b_(BlockPocketWallBlock::causesSuffocation));
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
 	}
 
-	@Override
-	public boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
+	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return false;
+	}
+
+	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		return state.get(SOLID);
 	}
 
 	@Override
@@ -80,12 +84,6 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
 	{
 		return state.get(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
-	}
-
-	@Override
-	public boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		return state.get(SOLID);
 	}
 
 	@Override
