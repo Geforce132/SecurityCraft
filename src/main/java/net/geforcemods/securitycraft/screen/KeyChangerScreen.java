@@ -65,8 +65,8 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
+	public void func_231175_as__(){
+		super.func_231175_as__();
 		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
@@ -101,7 +101,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	public boolean func_231046_a_(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
-			TextFieldWidget focusedTextField = textboxNewPasscode.isFocused() ? textboxNewPasscode : (textboxConfirmPasscode.isFocused() ? textboxConfirmPasscode : null);
+			TextFieldWidget focusedTextField = textboxNewPasscode.func_230999_j_() ? textboxNewPasscode : (textboxConfirmPasscode.func_230999_j_() ? textboxConfirmPasscode : null);
 
 			if(focusedTextField != null && focusedTextField.getText().length() > 0)
 			{
@@ -119,9 +119,9 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		if(!isValidChar(typedChar))
 			return false;
 
-		if(textboxNewPasscode.isFocused())
+		if(textboxNewPasscode.func_230999_j_())
 			textboxNewPasscode.func_231042_a_(typedChar, keyCode);
-		else if(textboxConfirmPasscode.isFocused())
+		else if(textboxConfirmPasscode.func_230999_j_())
 			textboxConfirmPasscode.func_231042_a_(typedChar, keyCode);
 		else
 			return super.func_231042_a_(typedChar, keyCode);

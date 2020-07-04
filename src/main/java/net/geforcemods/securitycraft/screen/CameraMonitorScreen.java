@@ -192,7 +192,7 @@ public class CameraMonitorScreen extends Screen {
 	}
 
 	@Override
-	public boolean isPauseScreen() {
+	public boolean func_231177_au__(){
 		return false;
 	}
 

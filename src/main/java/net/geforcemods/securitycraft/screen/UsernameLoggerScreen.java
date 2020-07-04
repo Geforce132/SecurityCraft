@@ -45,7 +45,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		func_230480_a_(new ClickButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
-		})).active = tileEntity.getOwner().isOwner(field_230706_i_.player);
+		})).field_230693_o_ = tileEntity.getOwner().isOwner(field_230706_i_.player);
 		field_230705_e_.add(playerList = new PlayerList(field_230706_i_, xSize - 24, ySize - 40, guiTop + 20, guiLeft + 12));
 	}
 

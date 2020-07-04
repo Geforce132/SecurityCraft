@@ -308,14 +308,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public boolean isPauseScreen() {
+	public boolean func_231177_au__(){
 		return false;
 	}
 
 	@Override
 	public boolean func_231046_a_(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
 		if (field_230706_i_.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.onClose();
+			this.func_231175_as__();
 			return true;
 		}
 		return super.func_231046_a_(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);

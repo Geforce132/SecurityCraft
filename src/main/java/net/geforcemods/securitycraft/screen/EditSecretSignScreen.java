@@ -91,7 +91,7 @@ public class EditSecretSignScreen extends Screen
 	}
 
 	@Override
-	public void onClose()
+	public void func_231175_as__()
 	{
 		close();
 	}

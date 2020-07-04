@@ -70,8 +70,8 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
+	public void func_231175_as__(){
+		super.func_231175_as__();
 		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
@@ -92,7 +92,7 @@ public class EditModuleScreen extends Screen
 	@Override
 	public boolean func_231046_a_(int keyCode, int scanCode, int p_keyPressed_3_)
 	{
-		if(inputField.isFocused())
+		if(inputField.func_230999_j_())
 		{
 			if (keyCode == GLFW.GLFW_KEY_BACKSPACE)
 			{
@@ -129,7 +129,7 @@ public class EditModuleScreen extends Screen
 
 	@Override
 	public boolean func_231042_a_(char typedChar, int keyCode){
-		if(inputField.isFocused())
+		if(inputField.func_230999_j_())
 		{
 			if (keyCode == GLFW.GLFW_KEY_SPACE)
 				return false;

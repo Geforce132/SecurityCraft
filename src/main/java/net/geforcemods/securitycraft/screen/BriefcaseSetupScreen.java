@@ -66,8 +66,8 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void onClose() {
-		super.onClose();
+	public void func_231175_as__() {
+		super.func_231175_as__();
 		flag = false;
 		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
@@ -97,7 +97,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	public boolean func_231042_a_(char typedChar, int keyCode) {
-		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
+		if(keycodeTextbox.func_230999_j_() && isValidChar(typedChar))
 		{
 			keycodeTextbox.func_231042_a_(typedChar, keyCode);
 			return true;

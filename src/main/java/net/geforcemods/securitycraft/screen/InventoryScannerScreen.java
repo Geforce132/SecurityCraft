@@ -58,8 +58,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
+	public void func_231175_as__(){
+		super.func_231175_as__();
 		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 

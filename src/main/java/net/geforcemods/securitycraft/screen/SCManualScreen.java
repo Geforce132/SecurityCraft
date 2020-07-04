@@ -210,8 +210,8 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
+	public void func_231175_as__(){
+		super.func_231175_as__();
 		lastPage = currentPage;
 		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
@@ -489,7 +489,7 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void render(int mouseX, int mouseY, float partialTicks){
 			if(field_230694_p_){
-				boolean isHovering = mouseX >= field_230690_l_ && mouseY >= field_230691_m_ && mouseX < field_230690_l_ + field_230708_k_ && mouseY < field_230691_m_ + field_230689_k_;
+				boolean isHovering = mouseX >= field_230690_l_ && mouseY >= field_230691_m_ && mouseX < field_230690_l_ + field_230688_j_ && mouseY < field_230691_m_ + field_230689_k_;
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
 				int textureX = 0;
