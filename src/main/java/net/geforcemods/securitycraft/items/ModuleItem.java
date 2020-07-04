@@ -98,14 +98,13 @@ public class ModuleItem extends Item{
 		else
 			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").getFormattedText()));
 
-		if(nbtCanBeModified && stack.getTag() != null) {
+		if(nbtCanBeModified && stack.getTag() != null && !stack.getTag().isEmpty()) {
 			list.add(new StringTextComponent(" "));
 			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":"));
 
-			if(stack.getTag() != null)
-				for(int i = 1; i <= MAX_PLAYERS; i++)
-					if(!stack.getTag().getString("Player" + i).isEmpty())
-						list.add(new StringTextComponent(TextFormatting.GRAY + stack.getTag().getString("Player" + i)));
+			for(int i = 1; i <= MAX_PLAYERS; i++)
+				if(!stack.getTag().getString("Player" + i).isEmpty())
+					list.add(new StringTextComponent(TextFormatting.GRAY + stack.getTag().getString("Player" + i)));
 		}
 
 		if(canBeCustomized()) {
@@ -118,7 +117,7 @@ public class ModuleItem extends Item{
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
 				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + "")));
 
-			if(getNumberOfAddons() > 0 && (!getBlockAddons(stack.getTag()).isEmpty()) || !getAddons(stack.getTag()).isEmpty()) {
+			if(getNumberOfAddons() > 0 && !getAddons(stack.getTag()).isEmpty()) {
 				list.add(new StringTextComponent(" "));
 
 				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":"));
