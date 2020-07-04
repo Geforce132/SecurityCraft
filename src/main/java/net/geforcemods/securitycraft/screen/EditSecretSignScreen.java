@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StandingSignBlock;
 import net.minecraft.client.gui.RenderComponentsUtil;
@@ -24,7 +25,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.CUpdateSignPacket;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
@@ -52,7 +52,7 @@ public class EditSecretSignScreen extends Screen
 	protected void func_231160_c_()
 	{
 		field_230706_i_.keyboardListener.enableRepeatEvents(true);
-		func_230480_a_(new Button(field_230708_k_ / 2 - 100, field_230709_l_ / 4 + 120, 200, 20, I18n.format("gui.done"), button -> close()));
+		func_230480_a_(new Button(field_230708_k_ / 2 - 100, field_230709_l_ / 4 + 120, 200, 20, ClientUtils.localize("gui.done"), button -> close()));
 		te.setEditable(false);
 		textInputUtil = new TextInputUtil(field_230706_i_, () -> te.getText(editLine).getString(), s -> te.setText(editLine, new StringTextComponent(s)), 90);
 	}
