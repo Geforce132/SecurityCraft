@@ -39,12 +39,12 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void init(){
-		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
+	public void func_231160_c_(){
+		super.func_231160_c_();
+		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+		func_230480_a_(saveAndContinueButton = new ClickButton(0, field_230708_k_ / 2 - 48, field_230709_l_ / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 37, field_230709_l_ / 2 - 47, 77, 12, "");
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -59,7 +59,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public void onClose(){
 		super.onClose();
 		isInvalid = false;
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.render(mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		keycodeTextbox.render(mouseX, mouseY, partialTicks);
-		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(field_230712_o_, "CODE:", field_230708_k_ / 2 - 67, field_230709_l_ / 2 - 47 + 2, 4210752);
 	}
 
 	/**
@@ -78,12 +78,12 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		String setup = ClientUtils.localize("gui.securitycraft:password.setup");
 		String combined = blockName + " " + setup;
 
-		if(font.getStringWidth(combined) < xSize - 10)
-			font.drawString(combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
+		if(field_230712_o_.getStringWidth(combined) < xSize - 10)
+			field_230712_o_.drawString(combined, xSize / 2 - field_230712_o_.getStringWidth(combined) / 2, 6, 4210752);
 		else
 		{
-			font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
-			font.drawString(setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
+			field_230712_o_.drawString(blockName, xSize / 2 - field_230712_o_.getStringWidth(blockName) / 2, 6, 4210752);
+			field_230712_o_.drawString(setup, xSize / 2 - field_230712_o_.getStringWidth(setup) / 2, 16, 4210752);
 		}
 	}
 
@@ -92,16 +92,16 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+	public boolean func_231046_a_(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getText().length() > 0){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
@@ -109,18 +109,18 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.func_231046_a_(keyCode, scanCode, modifiers);
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode){
+	public boolean func_231042_a_(char typedChar, int keyCode){
 		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
 		{
-			keycodeTextbox.charTyped(typedChar, keyCode);
+			keycodeTextbox.func_231042_a_(typedChar, keyCode);
 			return true;
 		}
 		else
-			return super.charTyped(typedChar, keyCode);
+			return super.func_231042_a_(typedChar, keyCode);
 	}
 
 	private boolean isValidChar(char c) {

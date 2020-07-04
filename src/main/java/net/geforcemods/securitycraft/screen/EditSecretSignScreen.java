@@ -49,21 +49,21 @@ public class EditSecretSignScreen extends Screen
 	}
 
 	@Override
-	protected void init()
+	protected void func_231160_c_()
 	{
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, I18n.format("gui.done"), button -> close()));
+		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+		func_230480_a_(new Button(field_230708_k_ / 2 - 100, field_230709_l_ / 4 + 120, 200, 20, I18n.format("gui.done"), button -> close()));
 		te.setEditable(false);
-		textInputUtil = new TextInputUtil(minecraft, () -> te.getText(editLine).getString(), s -> te.setText(editLine, new StringTextComponent(s)), 90);
+		textInputUtil = new TextInputUtil(field_230706_i_, () -> te.getText(editLine).getString(), s -> te.setText(editLine, new StringTextComponent(s)), 90);
 	}
 
 	@Override
 	public void removed()
 	{
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 
-		if(minecraft.getConnection() != null)
-			minecraft.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
+		if(field_230706_i_.getConnection() != null)
+			field_230706_i_.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
 
 		te.setEditable(true);
 	}
@@ -80,11 +80,11 @@ public class EditSecretSignScreen extends Screen
 	private void close()
 	{
 		te.markDirty();
-		minecraft.displayGuiScreen((Screen)null);
+		field_230706_i_.displayGuiScreen((Screen)null);
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode)
+	public boolean func_231042_a_(char typedChar, int keyCode)
 	{
 		textInputUtil.func_216894_a(typedChar);
 		return true;
@@ -97,7 +97,7 @@ public class EditSecretSignScreen extends Screen
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int p_keyPressed_2_, int p_keyPressed_3_)
+	public boolean func_231046_a_(int keyCode, int p_keyPressed_2_, int p_keyPressed_3_)
 	{
 		if(keyCode == 265)
 		{
@@ -106,7 +106,7 @@ public class EditSecretSignScreen extends Screen
 			return true;
 		}
 		else if(keyCode != 264 && keyCode != 257 && keyCode != 335)
-			return textInputUtil.func_216897_a(keyCode) ? true : super.keyPressed(keyCode, p_keyPressed_2_, p_keyPressed_3_);
+			return textInputUtil.func_216897_a(keyCode) ? true : super.func_231046_a_(keyCode, p_keyPressed_2_, p_keyPressed_3_);
 		else
 		{
 			editLine = editLine + 1 & 3;
@@ -127,17 +127,17 @@ public class EditSecretSignScreen extends Screen
 		String[] text = new String[4];
 		int k = textInputUtil.func_216896_c();
 		int l = textInputUtil.func_216898_d();
-		int i1 = minecraft.fontRenderer.getBidiFlag() ? -1 : 1;
+		int i1 = field_230706_i_.fontRenderer.getBidiFlag() ? -1 : 1;
 		int j1 = editLine * 10 - te.signText.length * 5;
 		IRenderTypeBuffer.Impl buffer;
 		IVertexBuilder builder;
 		Matrix4f positionMatrix;
 
 		RenderHelper.setupGuiFlatDiffuseLighting();
-		renderBackground();
-		drawCenteredString(font, title.getFormattedText(), width / 2, 40, 16777215);
+		func_230446_a_();
+		drawCenteredString(field_230712_o_, title.getFormattedText(), field_230708_k_ / 2, 40, 16777215);
 		stack.push();
-		stack.translate(width / 2, 0.0D, 50.0D);
+		stack.translate(field_230708_k_ / 2, 0.0D, 50.0D);
 		stack.scale(93.75F, -93.75F, 93.75F);
 		stack.translate(0.0D, -1.3125D, 0.0D);
 
@@ -146,7 +146,7 @@ public class EditSecretSignScreen extends Screen
 
 		stack.push();
 		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
-		buffer = minecraft.getRenderTypeBuffers().getBufferSource();
+		buffer = field_230706_i_.getRenderTypeBuffers().getBufferSource();
 		builder = material.getBuffer(buffer, signModel::getRenderType);
 		signModel.signBoard.render(stack, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
@@ -160,7 +160,7 @@ public class EditSecretSignScreen extends Screen
 		for(int j = 0; j < text.length; ++j)
 		{
 			text[j] = te.getRenderText(j, textComponent -> {
-				List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, minecraft.fontRenderer, false, true);
+				List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, field_230706_i_.fontRenderer, false, true);
 
 				return list.isEmpty() ? "" : list.get(0).getFormattedText();
 			});
@@ -174,17 +174,17 @@ public class EditSecretSignScreen extends Screen
 
 			if(s != null)
 			{
-				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
+				float f3 = -this.field_230706_i_.fontRenderer.getStringWidth(s) / 2;
 
-				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - te.signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
+				field_230706_i_.fontRenderer.renderString(s, f3, k1 * 10 - te.signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 
 				if(k1 == this.editLine && k >= 0 && update)
 				{
-					int l1 = minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
-					int i2 = (l1 - minecraft.fontRenderer.getStringWidth(s) / 2) * i1;
+					int l1 = field_230706_i_.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
+					int i2 = (l1 - field_230706_i_.fontRenderer.getStringWidth(s) / 2) * i1;
 
 					if(k >= s.length())
-						minecraft.fontRenderer.renderString("_", i2, j1, textColor, false, positionMatrix, buffer, false, 0, 15728880);
+						field_230706_i_.fontRenderer.renderString("_", i2, j1, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 				}
 			}
 		}
@@ -197,8 +197,8 @@ public class EditSecretSignScreen extends Screen
 
 			if(s1 != null && k3 == editLine && k >= 0)
 			{
-				int l3 = minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(k, s1.length()), 0)));
-				int i4 = (l3 - minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
+				int l3 = field_230706_i_.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(k, s1.length()), 0)));
+				int i4 = (l3 - field_230706_i_.fontRenderer.getStringWidth(s1) / 2) * i1;
 
 				if(update && k < s1.length())
 					fill(positionMatrix, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
@@ -207,8 +207,8 @@ public class EditSecretSignScreen extends Screen
 				{
 					int j4 = Math.min(k, l);
 					int j2 = Math.max(k, l);
-					int k2 = (this.minecraft.fontRenderer.getStringWidth(s1.substring(0, j4)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
-					int l2 = (this.minecraft.fontRenderer.getStringWidth(s1.substring(0, j2)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
+					int k2 = (this.field_230706_i_.fontRenderer.getStringWidth(s1.substring(0, j4)) - this.field_230706_i_.fontRenderer.getStringWidth(s1) / 2) * i1;
+					int l2 = (this.field_230706_i_.fontRenderer.getStringWidth(s1.substring(0, j2)) - this.field_230706_i_.fontRenderer.getStringWidth(s1) / 2) * i1;
 					int i3 = Math.min(k2, l2);
 					int j3 = Math.max(k2, l2);
 					BufferBuilder buf = Tessellator.getInstance().getBuffer();

@@ -39,14 +39,14 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 		NonNullList<ItemStack> inv = container.getInventory();
 		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
 
-		font.drawString(ubr, (xSize - font.getStringWidth(ubr)) / 2, 5, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		field_230712_o_.drawString(ubr, (xSize - field_230712_o_.getStringWidth(ubr)) / 2, 5, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(0).isEmpty())
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 25, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
-			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
+			field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 25, 4210752);
+			field_230706_i_.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
+			field_230706_i_.getItemRenderer().renderItemOverlayIntoGUI(field_230706_i_.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
 				renderTooltip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
@@ -54,9 +54,9 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 
 		if(!inv.get(1).isEmpty())
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
-			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
+			field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
+			field_230706_i_.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
+			field_230706_i_.getItemRenderer().renderItemOverlayIntoGUI(field_230706_i_.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)
 				renderTooltip(container.unreinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
@@ -66,9 +66,9 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 }

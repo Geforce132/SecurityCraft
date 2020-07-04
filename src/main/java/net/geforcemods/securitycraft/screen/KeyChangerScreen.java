@@ -41,13 +41,13 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void init(){
-		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(confirmButton = new ClickButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
-		confirmButton.active = false;
+	public void func_231160_c_(){
+		super.func_231160_c_();
+		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+		func_230480_a_(confirmButton = new ClickButton(0, field_230708_k_ / 2 - 52, field_230709_l_ / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
+		confirmButton.field_230693_o_ = false;
 
-		textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, "");
+		textboxNewPasscode = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 57, field_230709_l_ / 2 - 47, 110, 12, "");
 
 		textboxNewPasscode.setTextColor(-1);
 		textboxNewPasscode.setDisabledTextColour(-1);
@@ -55,7 +55,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		textboxNewPasscode.setMaxStringLength(20);
 		textboxNewPasscode.setFocused2(true);
 
-		textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, "");
+		textboxConfirmPasscode = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 57, field_230709_l_ / 2 - 7, 110, 12, "");
 
 		textboxConfirmPasscode.setTextColor(-1);
 		textboxConfirmPasscode.setDisabledTextColour(-1);
@@ -67,7 +67,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	@Override
 	public void onClose(){
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
@@ -82,23 +82,23 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
 		String ukcName = ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey());
 
-		font.drawString(ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		field_230712_o_.drawString(ukcName, xSize / 2 - field_230712_o_.getStringWidth(ukcName) / 2, 6, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+	public boolean func_231046_a_(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE){
 			TextFieldWidget focusedTextField = textboxNewPasscode.isFocused() ? textboxNewPasscode : (textboxConfirmPasscode.isFocused() ? textboxConfirmPasscode : null);
@@ -111,20 +111,20 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 			}
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.func_231046_a_(keyCode, scanCode, modifiers);
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode) {
+	public boolean func_231042_a_(char typedChar, int keyCode) {
 		if(!isValidChar(typedChar))
 			return false;
 
 		if(textboxNewPasscode.isFocused())
-			textboxNewPasscode.charTyped(typedChar, keyCode);
+			textboxNewPasscode.func_231042_a_(typedChar, keyCode);
 		else if(textboxConfirmPasscode.isFocused())
-			textboxConfirmPasscode.charTyped(typedChar, keyCode);
+			textboxConfirmPasscode.func_231042_a_(typedChar, keyCode);
 		else
-			return super.charTyped(typedChar, keyCode);
+			return super.func_231042_a_(typedChar, keyCode);
 
 		checkToEnableSaveButton();
 		return true;
@@ -147,7 +147,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		if(newPasscode == null || confirmedPasscode == null) return;
 		if(!newPasscode.equals(confirmedPasscode)) return;
 
-		confirmButton.active = true;
+		confirmButton.field_230693_o_ = true;
 	}
 
 	@Override

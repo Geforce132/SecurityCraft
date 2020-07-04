@@ -40,11 +40,11 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	public void init()
+	public void func_231160_c_()
 	{
-		super.init();
+		super.func_231160_c_();
 
-		projectionWidth = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.width").replace("#", tileEntity.getProjectionWidth() + "")), blockName, 0, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 50, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.width").replace("#", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased);
+		projectionWidth = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.field_230708_k_").replace("#", tileEntity.getProjectionWidth() + "")), blockName, 0, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 50, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.field_230708_k_").replace("#", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased);
 		projectionWidth.setFGColor(14737632);
 
 		projectionRange = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.range").replace("#", tileEntity.getProjectionRange() + "")), blockName, 1, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 80, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.range").replace("#", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, null, this::sliderReleased);
@@ -53,9 +53,9 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		projectionOffset = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.offset").replace("#", tileEntity.getProjectionOffset() + "")), blockName, 2, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 110, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.offset").replace("#", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased);
 		projectionOffset.setFGColor(14737632);
 
-		addButton(projectionWidth);
-		addButton(projectionRange);
-		addButton(projectionOffset);
+		func_230480_a_(projectionWidth);
+		func_230480_a_(projectionRange);
+		func_230480_a_(projectionOffset);
 
 		hoverCheckers[0] = new HoverChecker(projectionWidth);
 		hoverCheckers[1] = new HoverChecker(projectionRange);
@@ -70,29 +70,29 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		renderHoveredToolTip(mouseX, mouseY);
 
 		if(hoverCheckers[0] != null && hoverCheckers[0].checkHover(mouseX, mouseY))
-			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.width.description"), 150), mouseX, mouseY, font);
+			renderTooltip(field_230706_i_.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.field_230708_k_.description"), 150), mouseX, mouseY, field_230712_o_);
 
 		if(hoverCheckers[1] != null && hoverCheckers[1].checkHover(mouseX, mouseY))
-			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY, font);
+			renderTooltip(field_230706_i_.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY, field_230712_o_);
 
 		if(hoverCheckers[2] != null && hoverCheckers[2].checkHover(mouseX, mouseY))
-			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY, font);
+			renderTooltip(field_230706_i_.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY, field_230712_o_);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+		field_230712_o_.drawString(blockName, xSize / 2 - field_230712_o_.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 

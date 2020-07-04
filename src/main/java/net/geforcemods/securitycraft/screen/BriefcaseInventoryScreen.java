@@ -33,16 +33,16 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(formattedTitle, xSize / 2 - font.getStringWidth(formattedTitle) / 2, 6, 4210752);
+		field_230712_o_.drawString(formattedTitle, xSize / 2 - field_230712_o_.getStringWidth(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 

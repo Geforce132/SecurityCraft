@@ -58,16 +58,16 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	@Override
-	public void init(){
-		super.init();
+	public void func_231160_c_(){
+		super.func_231160_c_();
 
 		final int numberOfColumns = 2;
 
 		for(int i = 0; i < moduleInv.getMaxNumberOfModules(); i++){
 			int column = i % numberOfColumns;
 
-			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
-			addButton(descriptionButtons[i]);
+			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, field_230707_j_, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
+			func_230480_a_(descriptionButtons[i]);
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
@@ -95,7 +95,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 					optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 				}
 
-				addButton(optionButtons[i]);
+				func_230480_a_(optionButtons[i]);
 				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}
@@ -105,7 +105,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			if(button == null)
 				continue;
 
-			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+			extraAreas.add(new Rectangle2d(button.field_230690_l_, button.field_230691_m_, button.getWidth(), button.getHeight()));
 		}
 	}
 
@@ -119,9 +119,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < moduleInv.getMaxNumberOfModules())
-					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, font);
+					this.renderTooltip(field_230706_i_.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, field_230712_o_);
 				else
-					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, font);
+					this.renderTooltip(field_230706_i_.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, field_230712_o_);
 	}
 
 	/**
@@ -131,18 +131,18 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
-		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		field_230712_o_.drawString(s, xSize / 2 - field_230712_o_.getStringWidth(s) / 2, 6, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 

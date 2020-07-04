@@ -31,10 +31,10 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	public void init(){
-		super.init();
+	public void func_231160_c_(){
+		super.func_231160_c_();
 
-		addButton(targetButton = new ClickButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == IMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
+		func_230480_a_(targetButton = new ClickButton(0, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 58, 120, 20, tileEntity.getTargetingOption() == IMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
 		updateButtonText();
 	}
 
@@ -45,17 +45,17 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
 		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
 
-		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
+		field_230712_o_.drawString(imsName, xSize / 2 - field_230712_o_.getStringWidth(imsName) / 2, 6, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 

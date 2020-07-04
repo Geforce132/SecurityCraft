@@ -43,16 +43,16 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getString() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
-		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6.0F, 4210752);
-		font.drawString(playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
+		field_230712_o_.drawString(s, xSize / 2 - field_230712_o_.getStringWidth(s) / 2, 6.0F, 4210752);
+		field_230712_o_.drawString(playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
+		field_230706_i_.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
 		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if(((AbstractFurnaceContainer)container).isBurning())

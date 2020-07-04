@@ -37,30 +37,30 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public void init()
+	public void func_231160_c_()
 	{
-		super.init();
+		super.func_231160_c_();
 
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, "");
-		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
-		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
-		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
-		addButton(pasteButton = new ClickButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
-		addButton(clearButton = new ClickButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
-		addButton(clearButton);
+		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+		inputField = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 55, field_230709_l_ / 2 - 65, 110, 15, "");
+		func_230480_a_(addButton = new ClickButton(0, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
+		func_230480_a_(removeButton = new ClickButton(1, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
+		func_230480_a_(copyButton = new ClickButton(2, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
+		func_230480_a_(pasteButton = new ClickButton(3, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
+		func_230480_a_(clearButton = new ClickButton(4, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
+		func_230480_a_(clearButton);
 
-		addButton.active = false;
-		removeButton.active = false;
+		addButton.field_230693_o_ = false;
+		removeButton.field_230693_o_ = false;
 
 		if (module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
-			copyButton.active = false;
+			copyButton.field_230693_o_ = false;
 
 		if (savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)))
-			pasteButton.active = false;
+			pasteButton.field_230693_o_ = false;
 
 		if (module.getTag() == null || module.getTag().isEmpty())
-			clearButton.active = false;
+			clearButton.field_230693_o_ = false;
 
 		inputField.setTextColor(-1);
 		inputField.setDisabledTextColour(-1);
@@ -72,25 +72,25 @@ public class EditModuleScreen extends Screen
 	@Override
 	public void onClose(){
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		inputField.render(mouseX, mouseY, partialTicks);
-		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, width, 4210752);
+		field_230712_o_.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, field_230708_k_, 4210752);
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_)
+	public boolean func_231046_a_(int keyCode, int scanCode, int p_keyPressed_3_)
 	{
 		if(inputField.isFocused())
 		{
@@ -101,15 +101,15 @@ public class EditModuleScreen extends Screen
 					if(!inputField.getText().isEmpty() && module.getTag() != null)
 					{
 						if(module.getTag().getString("Player" + i).equals(inputField.getText().substring(0, inputField.getText().length() - 1))){
-							addButton.active = false;
-							removeButton.active = !(inputField.getText().length() <= 1);
+							addButton.field_230693_o_ = false;
+							removeButton.field_230693_o_ = !(inputField.getText().length() <= 1);
 							break;
 						}
 					}
 
 					if (i == ModuleItem.MAX_PLAYERS) {
-						addButton.active = !(inputField.getText().length() <= 1);
-						removeButton.active = false;
+						addButton.field_230693_o_ = !(inputField.getText().length() <= 1);
+						removeButton.field_230693_o_ = false;
 					}
 				}
 
@@ -120,39 +120,39 @@ public class EditModuleScreen extends Screen
 			if(keyCode == Minecraft.getInstance().gameSettings.keyBindInventory.getKey().getKeyCode())
 				return false;
 			else if(keyCode == GLFW.GLFW_KEY_ESCAPE)
-				return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+				return super.func_231046_a_(keyCode, scanCode, p_keyPressed_3_);
 			else
-				return inputField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+				return inputField.func_231046_a_(keyCode, scanCode, p_keyPressed_3_);
 		}
-		else return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+		else return super.func_231046_a_(keyCode, scanCode, p_keyPressed_3_);
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode){
+	public boolean func_231042_a_(char typedChar, int keyCode){
 		if(inputField.isFocused())
 		{
 			if (keyCode == GLFW.GLFW_KEY_SPACE)
 				return false;
 
-			inputField.charTyped(typedChar, keyCode);
+			inputField.func_231042_a_(typedChar, keyCode);
 
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			{
 				if(module.getTag() != null && module.getTag().getString("Player" + i).equals(inputField.getText())) {
-					addButton.active = false;
-					removeButton.active = !inputField.getText().isEmpty();
+					addButton.field_230693_o_ = false;
+					removeButton.field_230693_o_ = !inputField.getText().isEmpty();
 					break;
 				}
 
 				if (i == ModuleItem.MAX_PLAYERS) {
-					addButton.active = !inputField.getText().isEmpty();
-					removeButton.active = false;
+					addButton.field_230693_o_ = !inputField.getText().isEmpty();
+					removeButton.field_230693_o_ = false;
 				}
 			}
 			return true;
 		}
 		else
-			return super.charTyped(typedChar, keyCode);
+			return super.func_231042_a_(typedChar, keyCode);
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class EditModuleScreen extends Screen
 					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
 					{
 						if (i == 9)
-							addButton.active = false;
+							addButton.field_230693_o_ = false;
 						return;
 					}
 				}
@@ -183,7 +183,7 @@ public class EditModuleScreen extends Screen
 				module.getTag().putString("Player" + getNextSlot(module.getTag()), inputField.getText());
 
 				if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
-					addButton.active = false;
+					addButton.field_230693_o_ = false;
 
 				inputField.setText("");
 				break;
@@ -204,7 +204,7 @@ public class EditModuleScreen extends Screen
 				break;
 			case 2: //copy
 				savedModule = module.getTag();
-				copyButton.active = false;
+				copyButton.field_230693_o_ = false;
 				return;
 			case 3: //paste
 				module.setTag(savedModule);
@@ -219,11 +219,11 @@ public class EditModuleScreen extends Screen
 		if(module.getTag() != null)
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 
-		addButton.active = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getText().isEmpty();
-		removeButton.active = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getText().isEmpty());
-		copyButton.active = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
-		pasteButton.active = !(savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
-		clearButton.active = !(module.getTag() == null || module.getTag().isEmpty());
+		addButton.field_230693_o_ = module.getTag() != null && !module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS) && !inputField.getText().isEmpty();
+		removeButton.field_230693_o_ = !(module.getTag() == null || module.getTag().isEmpty() || inputField.getText().isEmpty());
+		copyButton.field_230693_o_ = !(module.getTag() == null || module.getTag().isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
+		pasteButton.field_230693_o_ = !(savedModule == null || savedModule.isEmpty() || (module.getTag() != null && module.getTag().equals(savedModule)));
+		clearButton.field_230693_o_ = !(module.getTag() == null || module.getTag().isEmpty());
 	}
 
 	private int getNextSlot(CompoundNBT tag) {

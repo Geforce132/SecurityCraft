@@ -40,9 +40,9 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	@Override
-	public void init(){
-		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
+	public void func_231160_c_(){
+		super.func_231160_c_();
+		field_230706_i_.keyboardListener.enableRepeatEvents(true);
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		font.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
-		font.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
+		field_230712_o_.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
+		field_230712_o_.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
@@ -60,7 +60,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	public void onClose(){
 		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
 	/**
@@ -69,25 +69,25 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		font.drawString("Prohibited Items", 8, 6, 4210752);
-		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
+		field_230712_o_.drawString("Prohibited Items", 8, 6, 4210752);
+		field_230712_o_.drawString(tileEntity.getOwner().isOwner(field_230706_i_.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.drawString("Storage", 183, 6, 4210752);
+			field_230712_o_.drawString("Storage", 183, 6, 4210752);
 
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule && owns)
-			minecraft.getTextureManager().bindTexture(ENHANCED_INVENTORY);
+			field_230706_i_.getTextureManager().bindTexture(ENHANCED_INVENTORY);
 		else
-			minecraft.getTextureManager().bindTexture(REGULAR_INVENTORY);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+			field_230706_i_.getTextureManager().bindTexture(REGULAR_INVENTORY);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize + 30);
 	}
 }

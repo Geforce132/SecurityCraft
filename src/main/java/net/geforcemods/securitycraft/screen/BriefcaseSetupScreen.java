@@ -37,12 +37,12 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void init() {
-		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
+	public void func_231160_c_() {
+		super.func_231160_c_();
+		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+		func_230480_a_(saveAndContinueButton = new ClickButton(0, field_230708_k_ / 2 - 48, field_230709_l_ / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 37, field_230709_l_ / 2 - 47, 77, 12, "");
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -54,7 +54,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+	public boolean func_231046_a_(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getText().length() > 0){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
@@ -62,14 +62,14 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.func_231046_a_(keyCode, scanCode, modifiers);
 	}
 
 	@Override
 	public void onClose() {
 		super.onClose();
 		flag = false;
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		field_230706_i_.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
@@ -77,33 +77,33 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		super.render(mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		keycodeTextbox.render(mouseX, mouseY, partialTicks);
-		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(field_230712_o_, "CODE:", field_230708_k_ / 2 - 67, field_230709_l_ / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle")) / 2, 6, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle")) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode) {
+	public boolean func_231042_a_(char typedChar, int keyCode) {
 		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
 		{
-			keycodeTextbox.charTyped(typedChar, keyCode);
+			keycodeTextbox.func_231042_a_(typedChar, keyCode);
 			return true;
 		}
 		else
-			return super.charTyped(typedChar, keyCode);
+			return super.func_231042_a_(typedChar, keyCode);
 	}
 
 	private boolean isValidChar(char c) {
@@ -141,7 +141,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
 					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
-					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition(), getTitle()));
+					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), field_230706_i_.world.getDimension().getType().getId(), field_230706_i_.player.getPosition(), getTitle()));
 				}
 		}
 	}

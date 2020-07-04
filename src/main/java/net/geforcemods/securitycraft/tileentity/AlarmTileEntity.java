@@ -46,6 +46,8 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 				world.setTileEntity(pos, te);
 			}
 		}
+
+		requestModelDataUpdate();
 	}
 
 	/**

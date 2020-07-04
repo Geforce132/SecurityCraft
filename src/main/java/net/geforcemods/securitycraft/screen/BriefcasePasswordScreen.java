@@ -36,24 +36,24 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void init() {
-		super.init();
+	public void func_231160_c_() {
+		super.func_231160_c_();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			keycodeTopButtons[i] = new ClickButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
-			addButton(keycodeTopButtons[i]);
+			keycodeTopButtons[i] = new ClickButton(i, field_230708_k_ / 2 - 40 + (i * 20), field_230709_l_ / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
+			func_230480_a_(keycodeTopButtons[i]);
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			keycodeBottomButtons[i] = new ClickButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
-			addButton(keycodeBottomButtons[i]);
+			keycodeBottomButtons[i] = new ClickButton(4 + i, field_230708_k_ / 2 - 40 + (i * 20), field_230709_l_ / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
+			func_230480_a_(keycodeBottomButtons[i]);
 		}
 
-		continueButton = new ClickButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed);
-		addButton(continueButton);
+		continueButton = new ClickButton(8, (field_230708_k_ / 2 + 42), field_230709_l_ / 2 - 26, 20, 20, ">", this::actionPerformed);
+		func_230480_a_(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
-			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, "");
+			keycodeTextboxes[i] = new TextFieldWidget(field_230712_o_, (field_230708_k_ / 2 - 37) + (i * 20), field_230709_l_ / 2 - 22, 14, 12, "");
 
 			keycodeTextboxes[i].setTextColor(-1);
 			keycodeTextboxes[i].setDisabledTextColour(-1);
@@ -74,16 +74,16 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
+		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		renderBackground();
+		func_230446_a_();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		int startX = (field_230708_k_ - xSize) / 2;
+		int startY = (field_230709_l_ - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
@@ -145,7 +145,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))
-						SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition(), getTitle()));
+						SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), field_230706_i_.world.getDimension().getType().getId(), field_230706_i_.player.getPosition(), getTitle()));
 				}
 
 				break;
