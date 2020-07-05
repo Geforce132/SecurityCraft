@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -59,7 +60,7 @@ public class PictureButton extends ClickButton{
 	 * Draws this button to the screen.
 	 */
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		Minecraft mc = Minecraft.getInstance();
 
@@ -93,7 +94,7 @@ public class PictureButton extends ClickButton{
 				blit(field_230690_l_, field_230691_m_ + 1, u, v, texWidth, texHeight);
 			}
 
-			onDrag(mouseX, mouseY, 0, 0);
+			func_230983_a_(mouseX, mouseY, 0, 0);
 
 			int color = 14737632;
 

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -71,17 +72,17 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		super.render(mouseX, mouseY, partialTicks);
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
-		keycodeTextbox.render(mouseX, mouseY, partialTicks);
+		keycodeTextbox.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
 		field_230712_o_.drawString(blockName, xSize / 2 - field_230712_o_.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
@@ -89,8 +90,8 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 * Draw the background layer for the GuiContainer (everything behind the items)
 	 */
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		func_230446_a_();
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;

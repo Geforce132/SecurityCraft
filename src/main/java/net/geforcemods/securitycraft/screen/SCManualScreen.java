@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -100,8 +101,8 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		func_230446_a_();
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(update)
@@ -140,7 +141,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		for(int i = 0; i < field_230710_m_.size(); i++)
-			field_230710_m_.get(i).render(mouseX, mouseY, partialTicks);
+			field_230710_m_.get(i).func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 
 		if(currentPage != -1)
 		{
@@ -201,9 +202,9 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof TextHoverChecker && ((TextHoverChecker)chc).getName() != null)
-						renderTooltip(((TextHoverChecker)chc).getLines(), mouseX, mouseY);
+						func_238654_b_(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
-						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
+						func_230457_a_(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
 		}
@@ -242,9 +243,9 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseScrolled(double aDouble, double p_mouseScrolled_3_, double p_mouseScrolled_5_)
+	public boolean func_231043_a_(double aDouble, double p_mouseScrolled_3_, double p_mouseScrolled_5_)
 	{
-		super.mouseScrolled(aDouble, p_mouseScrolled_3_, p_mouseScrolled_5_);
+		super.func_231043_a_(aDouble, p_mouseScrolled_3_, p_mouseScrolled_5_);
 
 		switch((int)Math.signum(p_mouseScrolled_5_))
 		{
@@ -487,7 +488,7 @@ public class SCManualScreen extends Screen {
 		 * Draws this button to the screen.
 		 */
 		@Override
-		public void render(int mouseX, int mouseY, float partialTicks){
+		public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
 			if(field_230694_p_){
 				boolean isHovering = mouseX >= field_230690_l_ && mouseY >= field_230691_m_ && mouseX < field_230690_l_ + field_230688_j_ && mouseY < field_230691_m_ + field_230689_k_;
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -46,7 +47,7 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1")) / 2, 6, 4210752);
 		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
@@ -58,8 +59,8 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_();
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;
@@ -70,10 +71,10 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	private void updateButtonText(){
 		lvlOfSecurity++;
 		if(lvlOfSecurity <= 5)
-			lvlOfSecurityButton.setMessage(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity);
+			lvlOfSecurityButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity);
 		else{
 			lvlOfSecurity = 1;
-			lvlOfSecurityButton.setMessage(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity);
+			lvlOfSecurityButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity);
 
 		}
 	}
@@ -86,7 +87,7 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 
 			case 1:
 				requiresExactCard = !requiresExactCard;
-				requiresExactCardButton.setMessage(requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher"));
+				requiresExactCardButton.func_238482_a_(requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher"));
 				break;
 
 			case 2:

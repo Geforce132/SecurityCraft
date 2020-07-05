@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -76,16 +77,16 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		func_230446_a_();
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;
 		int startY = (field_230709_l_ - ySize) / 2;
 		blit(startX, startY, 0, 0, xSize, ySize);
-		super.render(mouseX, mouseY, partialTicks);
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
-		inputField.render(mouseX, mouseY, partialTicks);
+		inputField.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 		field_230712_o_.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, field_230708_k_, 4210752);
 	}
 
@@ -156,9 +157,9 @@ public class EditModuleScreen extends Screen
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton){
-		inputField.mouseClicked(mouseX, mouseY, mouseButton);
-		return super.mouseClicked(mouseX, mouseY, mouseButton);
+	public boolean func_231044_a_(double mouseX, double mouseY, int mouseButton){
+		inputField.func_231044_a_(mouseX, mouseY, mouseButton);
+		return super.func_231044_a_(mouseX, mouseY, mouseButton);
 	}
 
 	protected void actionPerformed(ClickButton button){

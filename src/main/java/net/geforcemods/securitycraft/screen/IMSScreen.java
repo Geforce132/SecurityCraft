@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -42,7 +43,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
 		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
 
 		field_230712_o_.drawString(imsName, xSize / 2 - field_230712_o_.getStringWidth(imsName) / 2, 6, 4210752);
@@ -50,8 +51,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_();
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;
@@ -76,11 +77,11 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private void updateButtonText() {
 		if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.PLAYERS)
-			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
+			targetButton.func_238482_a_(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
 		else if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
+			targetButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
 		else if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile"));
+			targetButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:ims.hostile"));
 	}
 
 }

@@ -25,7 +25,7 @@ public class ClickButton extends ExtendedButton
 	}
 
 	@Override
-	public void onClick(double mouseX, double mouseY)
+	public void func_230982_a_(double mouseX, double mouseY)
 	{
 		if(onClick != null)
 			onClick.accept(this);

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -105,16 +106,16 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			if(button == null)
 				continue;
 
-			extraAreas.add(new Rectangle2d(button.field_230690_l_, button.field_230691_m_, button.getWidth(), button.getHeight()));
+			extraAreas.add(new Rectangle2d(button.field_230690_l_, button.field_230691_m_, button.func_230998_h_(), button.getHeight()));
 		}
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		super.render(mouseX, mouseY, partialTicks);
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+			func_230457_a_(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
@@ -128,7 +129,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
 		field_230712_o_.drawString(s, xSize / 2 - field_230712_o_.getStringWidth(s) / 2, 6, 4210752);
@@ -136,9 +137,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
-		func_230446_a_();
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
 		int startX = (field_230708_k_ - xSize) / 2;
@@ -150,7 +151,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		Option<?> tempOption = ((ICustomizable)moduleInv.getTileEntity()).customOptions()[button.id]; //safe cast, as this method is only called when it can be casted
 		tempOption.toggle();
 		button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
-		button.setMessage(getOptionButtonTitle(tempOption));
+		button.func_238482_a_(getOptionButtonTitle(tempOption));
 		SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), button.id));
 	}
 

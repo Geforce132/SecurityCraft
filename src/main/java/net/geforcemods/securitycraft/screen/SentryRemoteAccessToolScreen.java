@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -148,17 +149,17 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		int startX = (field_230708_k_ - xSize) / 2;
 		int startY = (field_230709_l_ - ySize) / 2;
 		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
 
-		func_230446_a_();
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		blit(startX, startY, 0, 0, xSize, ySize, 512, 256);
-		super.render(mouseX, mouseY, partialTicks);
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 		field_230712_o_.drawString(ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
@@ -179,7 +180,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for(TextHoverChecker chc : hoverCheckers)
 		{
 			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				renderTooltip(chc.getLines(), mouseX, mouseY);
+				func_238654_b_(matrix, chc.getLines(), mouseX, mouseY);
 		}
 	}
 

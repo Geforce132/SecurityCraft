@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -71,15 +72,15 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		super.render(mouseX, mouseY, partialTicks);
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
-		textboxNewPasscode.render(mouseX, mouseY, partialTicks);
-		textboxConfirmPasscode.render(mouseX, mouseY, partialTicks);
+		textboxNewPasscode.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		textboxConfirmPasscode.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
 		String ukcName = ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey());
 
 		field_230712_o_.drawString(ukcName, xSize / 2 - field_230712_o_.getStringWidth(ukcName) / 2, 6, 4210752);
@@ -88,8 +89,8 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
-		func_230446_a_();
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;
@@ -151,10 +152,10 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-		textboxNewPasscode.mouseClicked(mouseX, mouseY, mouseButton);
-		textboxConfirmPasscode.mouseClicked(mouseX, mouseY, mouseButton);
-		return super.mouseClicked(mouseX, mouseY, mouseButton);
+	public boolean func_231044_a_(double mouseX, double mouseY, int mouseButton) {
+		textboxNewPasscode.func_231044_a_(mouseX, mouseY, mouseButton);
+		textboxConfirmPasscode.func_231044_a_(mouseX, mouseY, mouseButton);
+		return super.func_231044_a_(mouseX, mouseY, mouseButton);
 	}
 
 	protected void actionPerformed(ClickButton button){

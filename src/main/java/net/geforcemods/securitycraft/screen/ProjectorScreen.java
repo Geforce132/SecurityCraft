@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -63,11 +64,11 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(mouseX, mouseY, partialTicks);
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 
-		renderHoveredToolTip(mouseX, mouseY);
+		func_230459_a_(matrix, mouseX, mouseY);
 
 		if(hoverCheckers[0] != null && hoverCheckers[0].checkHover(mouseX, mouseY))
 			renderTooltip(field_230706_i_.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.field_230708_k_.description"), 150), mouseX, mouseY, field_230712_o_);
@@ -80,15 +81,15 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		field_230712_o_.drawString(blockName, xSize / 2 - field_230712_o_.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
-		func_230446_a_();
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;

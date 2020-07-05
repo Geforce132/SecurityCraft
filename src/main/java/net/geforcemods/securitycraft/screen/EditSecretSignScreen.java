@@ -116,7 +116,7 @@ public class EditSecretSignScreen extends Screen
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		MatrixStack stack = new MatrixStack();
 		BlockState state = this.te.getBlockState();
@@ -134,7 +134,7 @@ public class EditSecretSignScreen extends Screen
 		Matrix4f positionMatrix;
 
 		RenderHelper.setupGuiFlatDiffuseLighting();
-		func_230446_a_();
+		func_230446_a_(matrix);
 		drawCenteredString(field_230712_o_, title.getFormattedText(), field_230708_k_ / 2, 40, 16777215);
 		stack.push();
 		stack.translate(field_230708_k_ / 2, 0.0D, 50.0D);
@@ -231,6 +231,6 @@ public class EditSecretSignScreen extends Screen
 
 		stack.pop();
 		RenderHelper.setupGui3DDiffuseLighting();
-		super.render(mouseX, mouseY, partialTicks);
+		super.func_230430_a_(stack, mouseX, mouseY, partialTicks);
 	}
 }

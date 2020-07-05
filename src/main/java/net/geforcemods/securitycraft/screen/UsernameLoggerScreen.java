@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -24,6 +25,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
 public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
@@ -53,28 +55,28 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String localized = ClientUtils.localize("gui.securitycraft:logger.logged");
 
 		field_230712_o_.drawString(localized, xSize / 2 - field_230712_o_.getStringWidth(localized) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
-			renderTooltip(ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
+			func_238652_a_(matrix, ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(mouseX, mouseY, partialTicks);
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 
 		if(playerList != null)
-			playerList.render(mouseX, mouseY, partialTicks);
+			playerList.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_();
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;
@@ -83,39 +85,39 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
+	public boolean func_231043_a_(double mouseX, double mouseY, double scroll)
 	{
 		if(playerList != null)
-			playerList.mouseScrolled(mouseX, mouseY, scroll);
+			playerList.func_231043_a_(mouseX, mouseY, scroll);
 
-		return super.mouseScrolled(mouseX, mouseY, scroll);
+		return super.func_231043_a_(mouseX, mouseY, scroll);
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button)
+	public boolean func_231044_a_(double mouseX, double mouseY, int button)
 	{
 		if(playerList != null)
-			playerList.mouseClicked(mouseX, mouseY, button);
+			playerList.func_231044_a_(mouseX, mouseY, button);
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.func_231044_a_(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button)
+	public boolean func_231048_c_(double mouseX, double mouseY, int button)
 	{
 		if(playerList != null)
-			playerList.mouseReleased(mouseX, mouseY, button);
+			playerList.func_231048_c_(mouseX, mouseY, button);
 
-		return super.mouseReleased(mouseX, mouseY, button);
+		return super.func_231048_c_(mouseX, mouseY, button);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
+	public boolean func_231045_a_(double mouseX, double mouseY, int button, double deltaX, double deltaY)
 	{
 		if(playerList != null)
-			playerList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+			playerList.func_231045_a_(mouseX, mouseY, button, deltaX, deltaY);
 
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+		return super.func_231045_a_(mouseX, mouseY, button, deltaX, deltaY);
 	}
 
 	class PlayerList extends ScrollPanel
@@ -140,7 +142,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		}
 
 		@Override
-		public boolean mouseClicked(double mouseX, double mouseY, int button)
+		public boolean func_231044_a_(double mouseX, double mouseY, int button)
 		{
 			if(tileEntity.getOwner().isOwner(field_230706_i_.player))
 			{
@@ -154,13 +156,13 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				}
 			}
 
-			return super.mouseClicked(mouseX, mouseY, button);
+			return super.func_231044_a_(mouseX, mouseY, button);
 		}
 
 		@Override
-		public void render(int mouseX, int mouseY, float partialTicks)
+		public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 		{
-			super.render(mouseX, mouseY, partialTicks);
+			super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 
 			if(tileEntity.getOwner().isOwner(field_230706_i_.player))
 			{
@@ -174,7 +176,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
-							renderTooltip(tileEntity.uuids[slotIndex], mouseX, mouseY);
+							func_238652_a_(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
 						field_230712_o_.drawString(localized, guiLeft + (xSize / 2 - field_230712_o_.getStringWidth(localized) / 2), bottom + 5, 4210752);
 					}

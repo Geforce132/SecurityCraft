@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -56,7 +57,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
 
@@ -76,20 +77,20 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			field_230706_i_.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 
 			if(mouseX >= guiLeft + 23 && mouseX < guiLeft + 48 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(BLOCK_POCKET_WALL, mouseX - guiLeft, mouseY - guiTop);
+				func_230457_a_(matrix, BLOCK_POCKET_WALL, mouseX - guiLeft, mouseY - guiTop);
 
 			if(mouseX >= guiLeft + 75 && mouseX < guiLeft + 100 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(REINFORCED_CRYSTAL_QUARTZ_PILLAR, mouseX - guiLeft, mouseY - guiTop);
+				func_230457_a_(matrix, REINFORCED_CRYSTAL_QUARTZ_PILLAR, mouseX - guiLeft, mouseY - guiTop);
 
 			if(mouseX >= guiLeft + 128 && mouseX < guiLeft + 153 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(REINFORCED_CHISELED_CRYSTAL_QUARTZ, mouseX - guiLeft, mouseY - guiTop);
+				func_230457_a_(matrix, REINFORCED_CHISELED_CRYSTAL_QUARTZ, mouseX - guiLeft, mouseY - guiTop);
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
-		func_230446_a_();
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		int startX = (field_230708_k_ - xSize) / 2;
@@ -123,7 +124,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			size = 5;
 
 		te.size = size;
-		button.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size));
+		button.func_238482_a_(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size));
 	}
 
 	public void assembleButtonClicked(ClickButton button)
@@ -142,6 +143,6 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	public void outlineButtonClicked(ClickButton button)
 	{
 		te.toggleOutline();
-		outlineButton.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")));
+		outlineButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")));
 	}
 }

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
@@ -46,15 +47,15 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		super.render(mouseX, mouseY, partialTicks);
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
 		field_230712_o_.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
 		field_230712_o_.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+			func_230457_a_(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		field_230712_o_.drawString("Prohibited Items", 8, 6, 4210752);
 		field_230712_o_.drawString(tileEntity.getOwner().isOwner(field_230706_i_.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
@@ -79,8 +80,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_();
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule && owns)
 			field_230706_i_.getTextureManager().bindTexture(ENHANCED_INVENTORY);

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -25,16 +26,16 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(mouseX, mouseY, partialTicks);
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
+			func_230457_a_(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
 		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
@@ -49,7 +50,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 			field_230706_i_.getItemRenderer().renderItemOverlayIntoGUI(field_230706_i_.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
-				renderTooltip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
+				func_230457_a_(matrix, container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
 		}
 
 		if(!inv.get(1).isEmpty())
@@ -59,14 +60,14 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 			field_230706_i_.getItemRenderer().renderItemOverlayIntoGUI(field_230706_i_.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)
-				renderTooltip(container.unreinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
+				func_230457_a_(matrix, container.unreinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
-		func_230446_a_();
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
 		blit(guiLeft, guiTop, 0, 0, xSize, ySize);

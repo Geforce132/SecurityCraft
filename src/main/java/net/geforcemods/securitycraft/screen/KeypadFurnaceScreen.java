@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.Random;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
@@ -33,14 +34,14 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks)
+	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		super.render(mouseX, mouseY, partialTicks);
-		renderHoveredToolTip(mouseX, mouseY);
+		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		func_230459_a_(matrix, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
+	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getString() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
 		field_230712_o_.drawString(s, xSize / 2 - field_230712_o_.getStringWidth(s) / 2, 6.0F, 4210752);
@@ -48,9 +49,9 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
+	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
-		func_230446_a_();
+		func_230446_a_(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		field_230706_i_.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
 		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
