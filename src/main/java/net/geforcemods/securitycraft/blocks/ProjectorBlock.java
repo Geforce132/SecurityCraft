@@ -48,10 +48,10 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		BlockState extendedState = getExtendedState(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != this)
-			return extendedState.getShape(world, pos, ctx);
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
 		else
 		{
 			switch(state.get(FACING))

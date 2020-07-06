@@ -31,74 +31,81 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		BlockState extendedState = state.getBlock().getExtendedState(state, world, pos);
+		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
+		{
+			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != state.getBlock())
-			return extendedState.isNormalCube(world, pos);
-		else return state.getMaterial().isOpaque() && state.func_235785_r_(world, pos);
+			if(disguisedState.getBlock() != state.getBlock())
+				return disguisedState.isNormalCube(world, pos);
+		}
+
+		return state.getMaterial().isOpaque() && state.func_235785_r_(world, pos);
 	}
 
 	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		BlockState extendedState = state.getBlock().getExtendedState(state, world, pos);
+		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
+		{
+			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != state.getBlock())
-			return extendedState.causesSuffocation(world, pos);
+			if(disguisedState.getBlock() != state.getBlock())
+				return disguisedState.causesSuffocation(world, pos);
+		}
+
 		return state.getMaterial().blocksMovement() && state.func_235785_r_(world, pos);
 	}
 
 	@Override
 	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity)
 	{
-		BlockState extendedState = getExtendedState(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != this)
-			return extendedState.getSoundType(world, pos, entity);
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getSoundType(world, pos, entity);
 		else return super.getSoundType(state, world, pos, entity);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		BlockState extendedState = getExtendedState(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != this)
-			return extendedState.getShape(world, pos, ctx);
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getShape(world, pos, ctx);
 		else return super.getShape(state, world, pos, ctx);
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		BlockState extendedState = getExtendedState(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != this)
-			return extendedState.getCollisionShape(world, pos, ctx);
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getCollisionShape(world, pos, ctx);
 		else return super.getCollisionShape(state, world, pos, ctx);
 	}
 
 	@Override
 	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		BlockState extendedState = getExtendedState(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != this)
-			return extendedState.getRenderShape(world, pos);
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getRenderShape(world, pos);
 		else return super.getRenderShape(state, world, pos);
 	}
 
 	@Override
 	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		BlockState extendedState = getExtendedState(state, world, pos);
+		BlockState disguisedState = getDisguisedStateOrDefault(state, world, pos);
 
-		if(extendedState.getBlock() != this)
-			return extendedState.getAmbientOcclusionLightValue(world, pos);
+		if(disguisedState.getBlock() != this)
+			return disguisedState.getAmbientOcclusionLightValue(world, pos);
 		else return super.getAmbientOcclusionLightValue(state, world, pos);
 	}
 
-	@Override
-	public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
+	public final BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		BlockState disguisedState = getDisguisedBlockState(world, pos);
 
