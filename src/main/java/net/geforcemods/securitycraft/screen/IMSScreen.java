@@ -46,8 +46,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
 		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
 
-		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
+		font.drawString(matrix, imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	protected void actionPerformed(ClickButton button){

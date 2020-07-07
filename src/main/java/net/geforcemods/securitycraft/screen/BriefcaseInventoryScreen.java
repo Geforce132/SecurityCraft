@@ -34,7 +34,7 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawString(formattedTitle, xSize / 2 - font.getStringWidth(formattedTitle) / 2, 6, 4210752);
+		font.drawString(matrix, formattedTitle, xSize / 2 - font.getStringWidth(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 }

@@ -147,7 +147,7 @@ public class CameraMonitorScreen extends Screen {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 

@@ -201,7 +201,7 @@ public class EditSecretSignScreen extends Screen
 				int i4 = (l3 - minecraft.fontRenderer.getStringWidth(s1) / 2) * i1;
 
 				if(update && k < s1.length())
-					fill(positionMatrix, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
+					fill(matrix, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
 
 				if(l != k)
 				{

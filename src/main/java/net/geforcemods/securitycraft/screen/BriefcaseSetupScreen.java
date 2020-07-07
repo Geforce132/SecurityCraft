@@ -78,7 +78,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		keycodeTextbox.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

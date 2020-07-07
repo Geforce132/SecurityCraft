@@ -49,13 +49,13 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1")) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.5"), xSize / 2 + 45, 66 - 5, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1")) / 2, 6, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.5"), xSize / 2 + 45, 66 - 5, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	private void updateButtonText(){

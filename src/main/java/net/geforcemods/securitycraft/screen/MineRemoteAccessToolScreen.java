@@ -133,10 +133,10 @@ public class MineRemoteAccessToolScreen extends Screen{
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		String mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
-		font.drawString(mratName, startX + xSize / 2 - font.getStringWidth(mratName), startY + -25 + 13, 0xFF0000);
+		font.drawString(matrix, mratName, startX + xSize / 2 - font.getStringWidth(mratName), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -148,7 +148,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 			else
 				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			font.drawString(line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
+			font.drawString(matrix, line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)

@@ -61,19 +61,19 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	{
 		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
 
-		font.drawString(translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
+		font.drawString(matrix, translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
 
 		if (!te.enabled)
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed")) / 2, 83, 4210752);
+			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed")) / 2, 83, 4210752);
 
-			font.drawString((size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
+			font.drawString(matrix, (size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
 
-			font.drawString((size - 2) * 12 - 1 + "", 94, 100, 4210752);
+			font.drawString(matrix, (size - 2) * 12 - 1 + "", 94, 100, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
-			font.drawString("8", 147, 100, 4210752);
+			font.drawString(matrix, "8", 147, 100, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 
 			if(mouseX >= guiLeft + 23 && mouseX < guiLeft + 48 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
@@ -95,7 +95,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	public void toggleButtonClicked(ClickButton button)

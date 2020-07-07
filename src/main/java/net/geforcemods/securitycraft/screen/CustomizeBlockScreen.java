@@ -132,8 +132,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
-		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawString(matrix, s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
+		font.drawString(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		minecraft.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	protected void actionPerformed(ClickButton button) {

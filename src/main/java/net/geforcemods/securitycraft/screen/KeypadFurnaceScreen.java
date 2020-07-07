@@ -44,8 +44,8 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getString() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
-		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6.0F, 4210752);
-		font.drawString(playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
+		font.drawString(matrix, s, xSize / 2 - font.getStringWidth(s) / 2, 6.0F, 4210752);
+		font.drawString(matrix, playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -54,15 +54,15 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
-		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
+		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if(((AbstractFurnaceContainer)container).isBurning())
 		{
 			int burnLeftScaled = ((AbstractFurnaceContainer)container).getBurnLeftScaled();
 
-			blit(guiLeft + 56, guiTop + 36 + 12 - burnLeftScaled, 176, 12 - burnLeftScaled, 14, burnLeftScaled + 1);
+			blit(matrix, guiLeft + 56, guiTop + 36 + 12 - burnLeftScaled, 176, 12 - burnLeftScaled, 14, burnLeftScaled + 1);
 		}
 
-		blit(guiLeft + 79, guiTop + 34, 176, 14, ((AbstractFurnaceContainer)container).getCookProgressionScaled() + 1, 16);
+		blit(matrix, guiLeft + 79, guiTop + 34, 176, 14, ((AbstractFurnaceContainer)container).getCookProgressionScaled() + 1, 16);
 	}
 }

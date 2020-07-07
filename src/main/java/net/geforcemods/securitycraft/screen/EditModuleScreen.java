@@ -83,11 +83,11 @@ public class EditModuleScreen extends Screen
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		blit(startX, startY, 0, 0, xSize, ySize);
+		blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		inputField.render(matrix, mouseX, mouseY, partialTicks);
-		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, width, 4210752);
+		font.drawSplitString(matrix, ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override

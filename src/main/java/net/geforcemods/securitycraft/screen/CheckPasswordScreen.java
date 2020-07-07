@@ -83,7 +83,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
-		font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+		font.drawString(matrix, blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

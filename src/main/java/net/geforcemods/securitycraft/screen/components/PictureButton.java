@@ -74,8 +74,8 @@ public class PictureButton extends ClickButton{
 			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(770, 771, 1, 0);
 			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			this.blit(x, y, 0, 46 + hoverState * 20, width / 2, height);
-			this.blit(x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
+			this.blit(matrix, x, y, 0, 46 + hoverState * 20, width / 2, height);
+			this.blit(matrix, x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
 
 			if(blockToRender != null){
 				RenderSystem.enableRescaleNormal(); //(this.width / 2) - 8
@@ -91,7 +91,7 @@ public class PictureButton extends ClickButton{
 			{
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(textureLocation);
-				blit(x, y + 1, u, v, texWidth, texHeight);
+				blit(matrix, x, y + 1, u, v, texWidth, texHeight);
 			}
 
 			onDrag(mouseX, mouseY, 0, 0);

@@ -118,26 +118,26 @@ public class SCManualScreen extends Screen {
 		else
 			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
 
-		this.blit(startX, 5, 0, 0, 256, 250);
+		this.blit(matrix, startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
-				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.drawString(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
-			font.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			font.drawSplitString(matrix, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
 			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
-				font.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
+				font.drawSplitString(matrix, ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			font.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
+			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+				font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
@@ -146,9 +146,9 @@ public class SCManualScreen extends Screen {
 		if(currentPage != -1)
 		{
 			if(subpages.size() > 1)
-				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			font.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+			font.drawString(matrix, (currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
@@ -162,31 +162,31 @@ public class SCManualScreen extends Screen {
 				TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
 				if(block instanceof IExplosive)
-					this.blit(startX + 107, 117, 54, 1, 18, 18);
+					this.blit(matrix, startX + 107, 117, 54, 1, 18, 18);
 
 				if(te instanceof IOwnable)
-					this.blit(startX + 29, 118, 1, 1, 16, 16);
+					this.blit(matrix, startX + 29, 118, 1, 1, 16, 16);
 
 				if(te instanceof IPasswordProtected)
-					this.blit(startX + 55, 118, 18, 1, 17, 16);
+					this.blit(matrix, startX + 55, 118, 18, 1, 17, 16);
 
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-					this.blit(startX + 81, 118, 36, 1, 17, 16);
+					this.blit(matrix, startX + 81, 118, 36, 1, 17, 16);
 
 				if(te instanceof ICustomizable)
 				{
 					ICustomizable scte = (ICustomizable)te;
 
-					this.blit(startX + 213, 118, 72, 1, 16, 16);
+					this.blit(matrix, startX + 213, 118, 72, 1, 16, 16);
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
-						this.blit(startX + 136, 118, 88, 1, 16, 16);
+						this.blit(matrix, startX + 136, 118, 88, 1, 16, 16);
 				}
 
 				if(te instanceof IModuleInventory)
 				{
 					if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-						this.blit(startX + 163, 118, 105, 1, 16, 16);
+						this.blit(matrix, startX + 163, 118, 105, 1, 16, 16);
 				}
 			}
 
@@ -502,7 +502,7 @@ public class SCManualScreen extends Screen {
 				if(!isForward)
 					textureY += 13;
 
-				this.blit(x, y, textureX, textureY, 23, 13);
+				this.blit(matrix, x, y, textureX, textureY, 23, 13);
 			}
 		}
 	}

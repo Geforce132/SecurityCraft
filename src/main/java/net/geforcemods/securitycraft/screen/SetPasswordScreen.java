@@ -68,7 +68,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		keycodeTextbox.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(matrix, matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	/**
@@ -80,11 +80,11 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		String combined = blockName + " " + setup;
 
 		if(font.getStringWidth(combined) < xSize - 10)
-			font.drawString(combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
+			font.drawString(matrix, combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
 		else
 		{
-			font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
-			font.drawString(setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
+			font.drawString(matrix, blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+			font.drawString(matrix, setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

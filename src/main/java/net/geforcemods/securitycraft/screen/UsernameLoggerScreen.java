@@ -59,7 +59,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	{
 		String localized = ClientUtils.localize("gui.securitycraft:logger.logged");
 
-		font.drawString(localized, xSize / 2 - font.getStringWidth(localized) / 2, 6, 4210752);
+		font.drawString(matrix, localized, xSize / 2 - font.getStringWidth(localized) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
 			renderTooltip(matrix, ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
@@ -81,7 +81,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
@@ -178,14 +178,14 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
-						font.drawString(localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
+						font.drawString(matrix, localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}
 		}
 
 		@Override
-		protected void drawPanel(int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
+		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
 			int slotBuffer = slotHeight - 3;
@@ -225,7 +225,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			for(int i = 0; i < tileEntity.players.length; i++)
 			{
 				if(tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.drawString(tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (10 * i), 0xC6C6C6);
+					font.drawString(matrix, tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (10 * i), 0xC6C6C6);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -69,7 +70,7 @@ public class SCClientEventHandler
 	public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
 		if(event.getType() == ElementType.EXPERIENCE && Minecraft.getInstance().player != null && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player)){
 			if((BlockUtils.getBlock(Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ()))) instanceof SecurityCameraBlock))
-				drawCameraOverlay(Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ())));
+				drawCameraOverlay(event.getMatrixStack(), Minecraft.getInstance(), Minecraft.getInstance().ingameGUI, Minecraft.getInstance().getMainWindow(), Minecraft.getInstance().player, Minecraft.getInstance().world, BlockUtils.toPos((int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosX()), (int)Minecraft.getInstance().player.getRidingEntity().getPosY(), (int)Math.floor(Minecraft.getInstance().player.getRidingEntity().getPosZ())));
 		}
 		else if(event.getType() == ElementType.ALL)
 		{
@@ -111,7 +112,7 @@ public class SCClientEventHandler
 
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					RenderSystem.disableAlphaTest();
 				}
 			}
@@ -143,7 +144,7 @@ public class SCClientEventHandler
 
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					RenderSystem.disableAlphaTest();
 				}
 			}
@@ -172,7 +173,7 @@ public class SCClientEventHandler
 
 					RenderSystem.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					AbstractGui.blit(Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					AbstractGui.blit(event.getMatrixStack(), Minecraft.getInstance().getMainWindow().getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().getMainWindow().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					RenderSystem.disableAlphaTest();
 				}
 			}
@@ -203,7 +204,7 @@ public class SCClientEventHandler
 		}
 	}
 
-	private static void drawCameraOverlay(Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
+	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit"), resolution.getScaledWidth() - 98 - Minecraft.getInstance().fontRenderer.getStringWidth(Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit")) / 2, resolution.getScaledHeight() - 70, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + KeyBindings.cameraZoomOut.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom"), resolution.getScaledWidth() - 80 - Minecraft.getInstance().fontRenderer.getStringWidth(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + ClientUtils.localize(KeyBindings.cameraZoomOut.getTranslationKey()) + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom")) / 2, resolution.getScaledHeight() - 60, 16777215);
@@ -213,21 +214,21 @@ public class SCClientEventHandler
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.blit(5, 0, 0, 0, 90, 20);
-		gui.blit(resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
+		gui.blit(matrix, 5, 0, 0, 0, 90, 20);
+		gui.blit(matrix, resolution.getScaledWidth() - 55, 5, 205, 0, 50, 30);
 
 		if(!player.isPotionActive(Effects.NIGHT_VISION))
-			gui.blit(28, 4, 90, 12, 16, 11);
+			gui.blit(matrix, 28, 4, 90, 12, 16, 11);
 		else{
 			mc.getTextureManager().bindTexture(NIGHT_VISION);
-			AbstractGui.blit(27, -1, 0, 0, 18, 18, 18, 18);
+			AbstractGui.blit(matrix, 27, -1, 0, 0, 18, 18, 18, 18);
 			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		}
 
 		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (!((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE)))
-			gui.blit(12, 2, 104, 0, 12, 12);
+			gui.blit(matrix, 12, 2, 104, 0, 12, 12);
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE)))
-			gui.blit(12, 3, 90, 0, 12, 11);
+			gui.blit(matrix, 12, 3, 90, 0, 12, 11);
 		else
 			Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(REDSTONE, 10, 0);
 	}

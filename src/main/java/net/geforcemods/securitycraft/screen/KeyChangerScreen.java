@@ -83,9 +83,9 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
 		String ukcName = ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey());
 
-		font.drawString(ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		font.drawString(matrix, ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
+		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override

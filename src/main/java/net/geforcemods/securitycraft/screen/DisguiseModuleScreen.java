@@ -33,7 +33,7 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
 		String disguiseModuleName = ClientUtils.localize(SCContent.DISGUISE_MODULE.get().getTranslationKey());
-		font.drawString(disguiseModuleName, xSize / 2 - font.getStringWidth(disguiseModuleName) / 2, 6, 4210752);
+		font.drawString(matrix, disguiseModuleName, xSize / 2 - font.getStringWidth(disguiseModuleName) / 2, 6, 4210752);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
 }
