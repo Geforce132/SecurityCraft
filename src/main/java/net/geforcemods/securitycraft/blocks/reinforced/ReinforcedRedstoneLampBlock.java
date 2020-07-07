@@ -23,7 +23,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 
 	public ReinforcedRedstoneLampBlock()
 	{
-		super(Block.Properties.create(Material.REDSTONE_LIGHT).func_235838_a_(state -> state.get(LIT) ? 15 : 0).hardnessAndResistance(-1.0F, 600000.0F), SoundType.GLASS, Blocks.REDSTONE_LAMP);
+		super(Block.Properties.create(Material.REDSTONE_LIGHT).setLightLevel(state -> state.get(LIT) ? 15 : 0).hardnessAndResistance(-1.0F, 600000.0F), SoundType.GLASS, Blocks.REDSTONE_LAMP);
 
 		setDefaultState(getDefaultState().with(LIT, false));
 	}

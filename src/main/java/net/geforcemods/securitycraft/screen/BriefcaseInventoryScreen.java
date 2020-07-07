@@ -24,26 +24,26 @@ public class BriefcaseInventoryScreen extends ContainerScreen<BriefcaseContainer
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		super.render(matrix, mouseX, mouseY, partialTicks);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			func_230457_a_(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
+			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-		field_230712_o_.drawString(formattedTitle, xSize / 2 - field_230712_o_.getStringWidth(formattedTitle) / 2, 6, 4210752);
+		font.drawString(formattedTitle, xSize / 2 - font.getStringWidth(formattedTitle) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 

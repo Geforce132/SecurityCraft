@@ -34,9 +34,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private ItemStack srat;
-	private ClickButton[][] guifield_230710_m_ = new ClickButton[12][4]; // 12 field_230710_m_, 4 modes (aggressive, camouflage, idle, unbind)
+	private ClickButton[][] guibuttons = new ClickButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
 	private ITextComponent[] names = new ITextComponent[12];
-	private ClickButton[][] guifield_230710_m_Global = new ClickButton[1][3];
+	private ClickButton[][] guibuttonsGlobal = new ClickButton[1][3];
 	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
 	private int xSize = 440, ySize = 215;
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
@@ -51,11 +51,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public void func_231160_c_() {
-		super.func_231160_c_();
+	public void init() {
+		super.init();
 
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		int paddingX = 22;
 		int paddingY = 25;
 		int[] coords = null;
@@ -74,29 +74,29 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 				switch (j) {
 					case AGGRESSIVE:
-						guifield_230710_m_[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
-						guifield_230710_m_[i][j].field_230693_o_ = false;
+						guibuttons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
+						guibuttons[i][j].active = false;
 						break;
 					case CAMOUFLAGE:
-						guifield_230710_m_[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
-						guifield_230710_m_[i][j].field_230693_o_ = false;
+						guibuttons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
+						guibuttons[i][j].active = false;
 						break;
 					case IDLE:
-						guifield_230710_m_[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
-						guifield_230710_m_[i][j].field_230693_o_ = false;
+						guibuttons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+						guibuttons[i][j].active = false;
 						break;
 					case UNBIND:
-						guifield_230710_m_[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
-						guifield_230710_m_[i][j].field_230693_o_ = false;
+						guibuttons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
+						guibuttons[i][j].active = false;
 						break;
 				}
 
-				func_230480_a_(guifield_230710_m_[i][j]);
+				addButton(guibuttons[i][j]);
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
-				guifield_230710_m_[i][UNBIND].field_230693_o_ = true;
+				guibuttons[i][UNBIND].active = true;
 				if (Minecraft.getInstance().player.world.isBlockPresent(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
 					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
@@ -109,58 +109,58 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						if(sentry.hasCustomName())
 							names[i] = sentry.getCustomName();
 
-						guifield_230710_m_[i][AGGRESSIVE].field_230693_o_ = !aggressiveMode;
-						guifield_230710_m_[i][CAMOUFLAGE].field_230693_o_ = !camouflageMode;
-						guifield_230710_m_[i][IDLE].field_230693_o_ = !idleMode;
-						hoverCheckers.add(new TextHoverChecker(guifield_230710_m_[i][AGGRESSIVE], ClientUtils.localize("gui.securitycraft:srat.mode1")));
-						hoverCheckers.add(new TextHoverChecker(guifield_230710_m_[i][CAMOUFLAGE], ClientUtils.localize("gui.securitycraft:srat.mode2")));
-						hoverCheckers.add(new TextHoverChecker(guifield_230710_m_[i][IDLE], ClientUtils.localize("gui.securitycraft:srat.mode3")));
-						hoverCheckers.add(new TextHoverChecker(guifield_230710_m_[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
+						guibuttons[i][AGGRESSIVE].active = !aggressiveMode;
+						guibuttons[i][CAMOUFLAGE].active = !camouflageMode;
+						guibuttons[i][IDLE].active = !idleMode;
+						hoverCheckers.add(new TextHoverChecker(guibuttons[i][AGGRESSIVE], ClientUtils.localize("gui.securitycraft:srat.mode1")));
+						hoverCheckers.add(new TextHoverChecker(guibuttons[i][CAMOUFLAGE], ClientUtils.localize("gui.securitycraft:srat.mode2")));
+						hoverCheckers.add(new TextHoverChecker(guibuttons[i][IDLE], ClientUtils.localize("gui.securitycraft:srat.mode3")));
+						hoverCheckers.add(new TextHoverChecker(guibuttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
 					else {
 						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 						for (int j = 0; j < 4; j++) {
-							guifield_230710_m_[i][j].field_230693_o_ = false;
+							guibuttons[i][j].active = false;
 						}
 					}
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new TextHoverChecker(guifield_230710_m_[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
+						hoverCheckers.add(new TextHoverChecker(guibuttons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
-					hoverCheckers.add(new TextHoverChecker(guifield_230710_m_[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
+					hoverCheckers.add(new TextHoverChecker(guibuttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
 		}
 
-		//Add field_230710_m_ for global operation (all sentries), large id
-		guifield_230710_m_Global[0][0] = new PictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
-		guifield_230710_m_Global[0][1] = new PictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
-		guifield_230710_m_Global[0][2] = new PictureButton(1002, startX + 44 + 260, startY + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+		//Add buttons for global operation (all sentries), large id
+		guibuttonsGlobal[0][0] = new PictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
+		guibuttonsGlobal[0][1] = new PictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
+		guibuttonsGlobal[0][2] = new PictureButton(1002, startX + 44 + 260, startY + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
 
 		for (int j = 0; j < 3; j++) {
-			guifield_230710_m_Global[0][j].field_230693_o_ = foundSentry;
-			func_230480_a_(guifield_230710_m_Global[0][j]);
-			hoverCheckers.add(new TextHoverChecker(guifield_230710_m_Global[0][AGGRESSIVE], ClientUtils.localize("gui.securitycraft:srat.mode1")));
-			hoverCheckers.add(new TextHoverChecker(guifield_230710_m_Global[0][CAMOUFLAGE], ClientUtils.localize("gui.securitycraft:srat.mode2")));
-			hoverCheckers.add(new TextHoverChecker(guifield_230710_m_Global[0][IDLE], ClientUtils.localize("gui.securitycraft:srat.mode3")));
+			guibuttonsGlobal[0][j].active = foundSentry;
+			addButton(guibuttonsGlobal[0][j]);
+			hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[0][AGGRESSIVE], ClientUtils.localize("gui.securitycraft:srat.mode1")));
+			hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[0][CAMOUFLAGE], ClientUtils.localize("gui.securitycraft:srat.mode2")));
+			hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[0][IDLE], ClientUtils.localize("gui.securitycraft:srat.mode3")));
 		}
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
 
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
 		blit(startX, startY, 0, 0, xSize, ySize, 512, 256);
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
-		field_230712_o_.drawString(ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		super.render(matrix, mouseX, mouseY, partialTicks);
+		font.drawString(ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -173,19 +173,19 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			field_230712_o_.drawString(line, startX + xSize / 4 - field_230712_o_.getStringWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
-			field_230712_o_.drawString(modifyAll, startX + xSize / 2 - field_230712_o_.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
+			font.drawString(line, startX + xSize / 4 - font.getStringWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.drawString(modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)
 		{
 			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				func_238654_b_(matrix, chc.getLines(), mouseX, mouseY);
+				renderTooltip(matrix, chc.getLines(), mouseX, mouseY);
 		}
 	}
 
 	/**
-	 * Change the sentry mode, and update GUI field_230710_m_ state
+	 * Change the sentry mode, and update GUI buttons state
 	 */
 	protected void performSingleAction(int sentry, int mode, boolean sendMessage){
 		int[] coords = getSentryCoordinates(sentry);
@@ -196,23 +196,23 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				case AGGRESSIVE:
 					sentries.get(0).toggleMode(Minecraft.getInstance().player, AGGRESSIVE, sendMessage);
 					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).func_233580_cy_(), mode, sendMessage));
-					guifield_230710_m_[sentry][AGGRESSIVE].field_230693_o_ = false;
-					guifield_230710_m_[sentry][CAMOUFLAGE].field_230693_o_ = true;
-					guifield_230710_m_[sentry][IDLE].field_230693_o_ = true;
+					guibuttons[sentry][AGGRESSIVE].active = false;
+					guibuttons[sentry][CAMOUFLAGE].active = true;
+					guibuttons[sentry][IDLE].active = true;
 					break;
 				case CAMOUFLAGE:
 					sentries.get(0).toggleMode(Minecraft.getInstance().player, CAMOUFLAGE, sendMessage);
 					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).func_233580_cy_(), mode, sendMessage));
-					guifield_230710_m_[sentry][AGGRESSIVE].field_230693_o_ = true;
-					guifield_230710_m_[sentry][CAMOUFLAGE].field_230693_o_ = false;
-					guifield_230710_m_[sentry][IDLE].field_230693_o_ = true;
+					guibuttons[sentry][AGGRESSIVE].active = true;
+					guibuttons[sentry][CAMOUFLAGE].active = false;
+					guibuttons[sentry][IDLE].active = true;
 					break;
 				case IDLE:
 					sentries.get(0).toggleMode(Minecraft.getInstance().player, IDLE, sendMessage);
 					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).func_233580_cy_(), mode, sendMessage));
-					guifield_230710_m_[sentry][AGGRESSIVE].field_230693_o_ = true;
-					guifield_230710_m_[sentry][CAMOUFLAGE].field_230693_o_ = true;
-					guifield_230710_m_[sentry][IDLE].field_230693_o_ = false;
+					guibuttons[sentry][AGGRESSIVE].active = true;
+					guibuttons[sentry][CAMOUFLAGE].active = true;
+					guibuttons[sentry][IDLE].active = false;
 					break;
 			}
 		}
@@ -220,17 +220,17 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
 
 			for(int i = 0; i < 4; i++) {
-				guifield_230710_m_[sentry][i].field_230693_o_ = false;
+				guibuttons[sentry][i].active = false;
 			}
 
-			for(int i = 0; i < guifield_230710_m_.length; i++)
+			for(int i = 0; i < guibuttons.length; i++)
 			{
-				if(guifield_230710_m_[i][UNBIND].field_230693_o_)
+				if(guibuttons[i][UNBIND].active)
 					return;
 			}
 
 			for (int i = 0; i < 3; i++) {
-				guifield_230710_m_Global[0][i].field_230693_o_ = false;
+				guibuttonsGlobal[0][i].active = false;
 			}
 		}
 	}
@@ -251,15 +251,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int mode = button.id % 4;
 		boolean messageSent = false;
 
-		if (sentry > 100) { //clicked on global field_230710_m_
-			for (int i = 0; i < field_230710_m_.size() / 4; i++) {
-				Widget widget = field_230710_m_.get(i * 4);
+		if (sentry > 100) { //clicked on global buttons
+			for (int i = 0; i < buttons.size() / 4; i++) {
+				Widget widget = buttons.get(i * 4);
 
 				if(widget instanceof ClickButton)
 				{
 					if(getSentryCoordinates(i)[1] != 0)
 					{
-						forceMode((ClickButton)field_230710_m_.get(i * 4), mode, !messageSent);
+						forceMode((ClickButton)buttons.get(i * 4), mode, !messageSent);
 						messageSent = true;
 					}
 				}
@@ -309,16 +309,16 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	@Override
-	public boolean func_231177_au__(){
+	public boolean isPauseScreen(){
 		return false;
 	}
 
 	@Override
-	public boolean func_231046_a_(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (field_230706_i_.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.func_231175_as__();
+	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
+		if (minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(p_keyPressed_1_, p_keyPressed_2_))) {
+			this.onClose();
 			return true;
 		}
-		return super.func_231046_a_(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
+		return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);
 	}
 }

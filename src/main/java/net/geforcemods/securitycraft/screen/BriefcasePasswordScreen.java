@@ -37,24 +37,24 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void func_231160_c_() {
-		super.func_231160_c_();
+	public void init() {
+		super.init();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			keycodeTopButtons[i] = new ClickButton(i, field_230708_k_ / 2 - 40 + (i * 20), field_230709_l_ / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
-			func_230480_a_(keycodeTopButtons[i]);
+			keycodeTopButtons[i] = new ClickButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
+			addButton(keycodeTopButtons[i]);
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			keycodeBottomButtons[i] = new ClickButton(4 + i, field_230708_k_ / 2 - 40 + (i * 20), field_230709_l_ / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
-			func_230480_a_(keycodeBottomButtons[i]);
+			keycodeBottomButtons[i] = new ClickButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
+			addButton(keycodeBottomButtons[i]);
 		}
 
-		continueButton = new ClickButton(8, (field_230708_k_ / 2 + 42), field_230709_l_ / 2 - 26, 20, 20, ">", this::actionPerformed);
-		func_230480_a_(continueButton);
+		continueButton = new ClickButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed);
+		addButton(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
-			keycodeTextboxes[i] = new TextFieldWidget(field_230712_o_, (field_230708_k_ / 2 - 37) + (i * 20), field_230709_l_ / 2 - 22, 14, 12, "");
+			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, "");
 
 			keycodeTextboxes[i].setTextColor(-1);
 			keycodeTextboxes[i].setDisabledTextColour(-1);
@@ -65,26 +65,26 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
 		for(TextFieldWidget textfield : keycodeTextboxes)
-			textfield.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+			textfield.render(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
@@ -146,7 +146,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
 					if(nbt.getString("passcode").equals(code))
-						SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), field_230706_i_.world.getDimension().getType().getId(), field_230706_i_.player.getPosition(), func_231171_q_()));
+						SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition(), getTitle()));
 				}
 
 				break;

@@ -41,27 +41,27 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	@Override
-	public void func_231160_c_(){
-		super.func_231160_c_();
-		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+	public void init(){
+		super.init();
+		minecraft.keyboardListener.enableRepeatEvents(true);
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		field_230712_o_.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
-		field_230712_o_.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
+		font.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
+		font.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			func_230457_a_(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
+			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
 	}
 
 	@Override
-	public void func_231175_as__(){
-		super.func_231175_as__();
-		field_230706_i_.keyboardListener.enableRepeatEvents(false);
+	public void onClose(){
+		super.onClose();
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	/**
@@ -70,25 +70,25 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		field_230712_o_.drawString("Prohibited Items", 8, 6, 4210752);
-		field_230712_o_.drawString(tileEntity.getOwner().isOwner(field_230706_i_.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
+		font.drawString("Prohibited Items", 8, 6, 4210752);
+		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			field_230712_o_.drawString("Storage", 183, 6, 4210752);
+			font.drawString("Storage", 183, 6, 4210752);
 
-		field_230712_o_.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
 	}
 
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule && owns)
-			field_230706_i_.getTextureManager().bindTexture(ENHANCED_INVENTORY);
+			minecraft.getTextureManager().bindTexture(ENHANCED_INVENTORY);
 		else
-			field_230706_i_.getTextureManager().bindTexture(REGULAR_INVENTORY);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+			minecraft.getTextureManager().bindTexture(REGULAR_INVENTORY);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize + 30);
 	}
 }

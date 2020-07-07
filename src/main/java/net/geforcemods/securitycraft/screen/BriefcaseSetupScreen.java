@@ -38,12 +38,12 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public void func_231160_c_() {
-		super.func_231160_c_();
-		field_230706_i_.keyboardListener.enableRepeatEvents(true);
-		func_230480_a_(saveAndContinueButton = new ClickButton(0, field_230708_k_ / 2 - 48, field_230709_l_ / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
+	public void init() {
+		super.init();
+		minecraft.keyboardListener.enableRepeatEvents(true);
+		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 37, field_230709_l_ / 2 - 47, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -55,7 +55,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public boolean func_231046_a_(int keyCode, int scanCode, int modifiers)
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getText().length() > 0){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
@@ -63,48 +63,48 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			return true;
 		}
 
-		return super.func_231046_a_(keyCode, scanCode, modifiers);
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
-	public void func_231175_as__() {
-		super.func_231175_as__();
+	public void onClose() {
+		super.onClose();
 		flag = false;
-		field_230706_i_.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
-		keycodeTextbox.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
-		drawString(field_230712_o_, "CODE:", field_230708_k_ / 2 - 67, field_230709_l_ / 2 - 47 + 2, 4210752);
+		keycodeTextbox.render(matrix, mouseX, mouseY, partialTicks);
+		drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle"), xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle")) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle")) / 2, 6, 4210752);
 	}
 
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	public boolean func_231042_a_(char typedChar, int keyCode) {
-		if(keycodeTextbox.func_230999_j_() && isValidChar(typedChar))
+	public boolean charTyped(char typedChar, int keyCode) {
+		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
 		{
-			keycodeTextbox.func_231042_a_(typedChar, keyCode);
+			keycodeTextbox.charTyped(typedChar, keyCode);
 			return true;
 		}
 		else
-			return super.func_231042_a_(typedChar, keyCode);
+			return super.charTyped(typedChar, keyCode);
 	}
 
 	private boolean isValidChar(char c) {
@@ -118,13 +118,13 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	@Override
-	public boolean func_231044_a_(double mouseX, double mouseY, int mouseButton) {
-		keycodeTextbox.func_231044_a_(mouseX, mouseY, mouseButton);
-		return super.func_231044_a_(mouseX, mouseY, mouseButton);
+	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+		keycodeTextbox.mouseClicked(mouseX, mouseY, mouseButton);
+		return super.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	private void updateButtonText() {
-		saveAndContinueButton.func_238482_a_(!flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"));
+		saveAndContinueButton.setMessage(!flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"));
 	}
 
 	protected void actionPerformed(ClickButton button) {
@@ -142,7 +142,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
 					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
-					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), field_230706_i_.world.getDimension().getType().getId(), field_230706_i_.player.getPosition(), func_231171_q_()));
+					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), minecraft.world.getDimension().getType().getId(), minecraft.player.getPosition(), getTitle()));
 				}
 		}
 	}

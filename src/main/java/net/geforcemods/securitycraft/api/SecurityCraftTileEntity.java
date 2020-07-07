@@ -209,9 +209,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void func_230337_a_(BlockState state, CompoundNBT tag)
+	public void read(BlockState state, CompoundNBT tag)
 	{
-		super.func_230337_a_(state, tag);
+		super.read(state, tag);
 
 		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");

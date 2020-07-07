@@ -40,23 +40,23 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void func_231160_c_(){
-		super.func_231160_c_();
-		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+	public void init(){
+		super.init();
+		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		func_230480_a_(new ClickButton(0, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
-		func_230480_a_(new ClickButton(1, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
-		func_230480_a_(new ClickButton(2, field_230708_k_ / 2 - 8, field_230709_l_ / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
-		func_230480_a_(new ClickButton(3, field_230708_k_ / 2 + 22, field_230709_l_ / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
-		func_230480_a_(new ClickButton(4, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
-		func_230480_a_(new ClickButton(5, field_230708_k_ / 2 - 8, field_230709_l_ / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
-		func_230480_a_(new ClickButton(6, field_230708_k_ / 2 + 22, field_230709_l_ / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
-		func_230480_a_(new ClickButton(7, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 10, 20, 20, "7", this::actionPerformed));
-		func_230480_a_(new ClickButton(8, field_230708_k_ / 2 - 8, field_230709_l_ / 2 + 10, 20, 20, "8", this::actionPerformed));
-		func_230480_a_(new ClickButton(9, field_230708_k_ / 2 + 22, field_230709_l_ / 2 + 10, 20, 20, "9", this::actionPerformed));
-		func_230480_a_(new ClickButton(10, field_230708_k_ / 2 + 48, field_230709_l_ / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
+		addButton(new ClickButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
+		addButton(new ClickButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
+		addButton(new ClickButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "2", this::actionPerformed));
+		addButton(new ClickButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "3", this::actionPerformed));
+		addButton(new ClickButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "4", this::actionPerformed));
+		addButton(new ClickButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "5", this::actionPerformed));
+		addButton(new ClickButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "6", this::actionPerformed));
+		addButton(new ClickButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "7", this::actionPerformed));
+		addButton(new ClickButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "8", this::actionPerformed));
+		addButton(new ClickButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
+		addButton(new ClickButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(field_230712_o_, field_230708_k_ / 2 - 37, field_230709_l_ / 2 - 67, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, "");
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -66,16 +66,16 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void func_231175_as__(){
-		super.func_231175_as__();
-		field_230706_i_.keyboardListener.enableRepeatEvents(false);
+	public void onClose(){
+		super.onClose();
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
-		keycodeTextbox.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		keycodeTextbox.render(matrix, mouseX, mouseY, partialTicks);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
-		field_230712_o_.drawString(blockName, xSize / 2 - field_230712_o_.getStringWidth(blockName) / 2, 6, 4210752);
+		font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
 	/**
@@ -91,16 +91,16 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
 	@Override
-	public boolean func_231046_a_(int keyCode, int scanCode, int modifiers)
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
@@ -110,11 +110,11 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 			return true;
 		}
 
-		return super.func_231046_a_(keyCode, scanCode, modifiers);
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
-	public boolean func_231042_a_(char typedChar, int keyCode) {
+	public boolean charTyped(char typedChar, int keyCode) {
 		if(isValidChar(typedChar) && currentString.length() < MAX_CHARS){
 			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 			currentString += typedChar;
@@ -122,7 +122,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 			checkCode(currentString);
 		}
 		else
-			return super.func_231042_a_(typedChar, keyCode);
+			return super.charTyped(typedChar, keyCode);
 		return true;
 	}
 

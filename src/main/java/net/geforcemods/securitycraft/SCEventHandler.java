@@ -91,7 +91,7 @@ public class SCEventHandler {
 		else
 			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
-		event.getPlayer().sendMessage(message, Util.field_240973_b_);
+		event.getPlayer().sendMessage(message, Util.DUMMY_UUID);
 	}
 
 	@SubscribeEvent

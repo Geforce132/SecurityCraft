@@ -60,35 +60,35 @@ public class CameraMonitorScreen extends Screen {
 	}
 
 	@Override
-	public void func_231160_c_(){
-		super.func_231160_c_();
+	public void init(){
+		super.init();
 
-		prevPageButton = new ClickButton(-1, field_230708_k_ / 2 - 68, field_230709_l_ / 2 + 40, 20, 20, "<", this::actionPerformed);
-		nextPageButton = new ClickButton(0, field_230708_k_ / 2 + 52, field_230709_l_ / 2 + 40, 20, 20, ">", this::actionPerformed);
-		func_230480_a_(prevPageButton);
-		func_230480_a_(nextPageButton);
+		prevPageButton = new ClickButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed);
+		nextPageButton = new ClickButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed);
+		addButton(prevPageButton);
+		addButton(nextPageButton);
 
-		cameraButtons[0] = new ClickButton(1, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[1] = new ClickButton(2, field_230708_k_ / 2 - 8, field_230709_l_ / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[2] = new ClickButton(3, field_230708_k_ / 2 + 22, field_230709_l_ / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[3] = new ClickButton(4, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[4] = new ClickButton(5, field_230708_k_ / 2 - 8, field_230709_l_ / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[5] = new ClickButton(6, field_230708_k_ / 2 + 22, field_230709_l_ / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[6] = new ClickButton(7, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[7] = new ClickButton(8, field_230708_k_ / 2 - 8, field_230709_l_ / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[8] = new ClickButton(9, field_230708_k_ / 2 + 22, field_230709_l_ / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[9] = new ClickButton(10, field_230708_k_ / 2 - 38, field_230709_l_ / 2 + 40, 80, 20, "", this::actionPerformed);
+		cameraButtons[0] = new ClickButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[1] = new ClickButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[2] = new ClickButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[3] = new ClickButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[4] = new ClickButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[5] = new ClickButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[6] = new ClickButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[7] = new ClickButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[8] = new ClickButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[9] = new ClickButton(10, width / 2 - 38, height / 2 + 40, 80, 20, "", this::actionPerformed);
 
-		unbindButtons[0] = new ClickButton(11, field_230708_k_ / 2 - 19, field_230709_l_ / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[1] = new ClickButton(12, field_230708_k_ / 2 + 11, field_230709_l_ / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[2] = new ClickButton(13, field_230708_k_ / 2 + 41, field_230709_l_ / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[3] = new ClickButton(14, field_230708_k_ / 2 - 19, field_230709_l_ / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[4] = new ClickButton(15, field_230708_k_ / 2 + 11, field_230709_l_ / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[5] = new ClickButton(16, field_230708_k_ / 2 + 41, field_230709_l_ / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[6] = new ClickButton(17, field_230708_k_ / 2 - 19, field_230709_l_ / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[7] = new ClickButton(18, field_230708_k_ / 2 + 11, field_230709_l_ / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[8] = new ClickButton(19, field_230708_k_ / 2 + 41, field_230709_l_ / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[9] = new ClickButton(20, field_230708_k_ / 2 + 41, field_230709_l_ / 2 + 32, 8, 8, "x", this::actionPerformed);
+		unbindButtons[0] = new ClickButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[1] = new ClickButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[2] = new ClickButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[3] = new ClickButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[4] = new ClickButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[5] = new ClickButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[6] = new ClickButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[7] = new ClickButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[8] = new ClickButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[9] = new ClickButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x", this::actionPerformed);
 
 		for(int i = 0; i < 10; i++) {
 			ClickButton button = cameraButtons[i];
@@ -97,7 +97,7 @@ public class CameraMonitorScreen extends Screen {
 			CameraView view;
 
 			button.setMessage(button.getMessage() + camID);
-			func_230480_a_(button);
+			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
 				if(view.dimension != Minecraft.getInstance().player.dimension.getId()) {
@@ -109,7 +109,7 @@ public class CameraMonitorScreen extends Screen {
 
 				if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
 				{
-					button.field_230693_o_ = false;
+					button.active = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
@@ -119,55 +119,55 @@ public class CameraMonitorScreen extends Screen {
 			}
 			else
 			{
-				button.field_230693_o_ = false;
-				unbindButtons[button.id - 1].field_230693_o_ = false;
+				button.active = false;
+				unbindButtons[button.id - 1].active = false;
 				cameraTEs[button.id - 1] = null;
 				continue;
 			}
 		}
 
 		for(int i = 0; i < 10; i++)
-			func_230480_a_(unbindButtons[i]);
+			addButton(unbindButtons[i]);
 
 		if(page == 1)
-			prevPageButton.field_230693_o_ = false;
+			prevPageButton.active = false;
 
 		if(page == 3 || cameraMonitor.getCameraPositions(nbtTag).size() < (page * 10) + 1)
-			nextPageButton.field_230693_o_ = false;
+			nextPageButton.active = false;
 
 		for(int i = cameraMonitor.getCameraPositions(nbtTag).size() + 1; i <= (page * 10); i++)
-			cameraButtons[(i - 1) - ((page - 1) * 10)].field_230693_o_ = false;
+			cameraButtons[(i - 1) - ((page - 1) * 10)].active = false;
 
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
-		func_230446_a_(matrix);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), startX + xSize / 2 - field_230712_o_.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, startY + 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.renderTooltip(field_230712_o_.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, field_230712_o_);
+					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, font);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					this.renderTooltip(field_230712_o_.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getString()), 150), mouseX, mouseY, field_230712_o_);
+					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getString()), 150), mouseX, mouseY, font);
 			}
 	}
 
 	protected void actionPerformed(ClickButton button) {
 		if(button.id == -1)
-			field_230706_i_.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
+			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
 		else if(button.id == 0)
-			field_230706_i_.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
+			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
 
@@ -179,7 +179,7 @@ public class CameraMonitorScreen extends Screen {
 				Minecraft.getInstance().player.closeScreen();
 			}
 			else
-				button.field_230693_o_ = false;
+				button.active = false;
 		}
 		else
 		{
@@ -187,13 +187,13 @@ public class CameraMonitorScreen extends Screen {
 
 			SecurityCraft.channel.sendToServer(new RemoveCameraTag(playerInventory.getCurrentItem(), camID));
 			nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
-			button.field_230693_o_ = false;
-			cameraButtons[(camID - 1) % 10].field_230693_o_ = false;
+			button.active = false;
+			cameraButtons[(camID - 1) % 10].active = false;
 		}
 	}
 
 	@Override
-	public boolean func_231177_au__(){
+	public boolean isPauseScreen(){
 		return false;
 	}
 

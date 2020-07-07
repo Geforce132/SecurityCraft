@@ -69,19 +69,19 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void func_231160_c_(){
+	public void init(){
 		byte startY = 2;
 
-		if((field_230708_k_ - 256) / 2 != startX && startX != -1)
+		if((width - 256) / 2 != startX && startX != -1)
 			update = true;
 
-		startX = (field_230708_k_ - 256) / 2;
-		field_230706_i_.keyboardListener.enableRepeatEvents(true);
+		startX = (width - 256) / 2;
+		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		func_230480_a_(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
-		func_230480_a_(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
-		func_230480_a_(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
-		func_230480_a_(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
+		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
+		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
+		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
+		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
 
 		for(int i = 0; i < 3; i++)
 		{
@@ -101,8 +101,8 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
-		func_230446_a_(matrix);
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(update)
@@ -112,50 +112,50 @@ public class SCManualScreen extends Screen {
 		}
 
 		if(currentPage == -1)
-			field_230706_i_.getTextureManager().bindTexture(infoBookTitlePage);
+			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
 		else if(recipe != null || SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
-			field_230706_i_.getTextureManager().bindTexture(infoBookTexture);
+			minecraft.getTextureManager().bindTexture(infoBookTexture);
 		else
-			field_230706_i_.getTextureManager().bindTexture(infoBookTextureSpecial);
+			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
 
 		this.blit(startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
-				field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				field_230712_o_.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
-			field_230712_o_.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			font.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
 			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
-				field_230712_o_.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
+				font.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
+			font.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
 		}
 
-		for(int i = 0; i < field_230710_m_.size(); i++)
-			field_230710_m_.get(i).func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		for(int i = 0; i < buttons.size(); i++)
+			buttons.get(i).render(matrix, mouseX, mouseY, partialTicks);
 
 		if(currentPage != -1)
 		{
 			if(subpages.size() > 1)
-				field_230712_o_.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			field_230712_o_.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+			font.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
 			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
 
-			field_230706_i_.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
-			field_230706_i_.getTextureManager().bindTexture(infoBookIcons);
+			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
+			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
 			if(item instanceof BlockItem){
 				Block block = ((BlockItem) item).getBlock();
@@ -192,7 +192,7 @@ public class SCManualScreen extends Screen {
 
 			for(IngredientDisplay display : displays)
 			{
-				display.render(field_230706_i_, partialTicks);
+				display.render(minecraft, partialTicks);
 			}
 
 			for(int i = 0; i < hoverCheckers.size(); i++)
@@ -202,29 +202,29 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof TextHoverChecker && ((TextHoverChecker)chc).getName() != null)
-						func_238654_b_(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY);
+						renderTooltip(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
-						func_230457_a_(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
+						renderTooltip(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void func_231175_as__(){
-		super.func_231175_as__();
+	public void onClose(){
+		super.onClose();
 		lastPage = currentPage;
-		field_230706_i_.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
 	@Override
-	public boolean func_231042_a_(char typedChar, int keyCode){
+	public boolean charTyped(char typedChar, int keyCode){
 		if(keyCode == GLFW.GLFW_KEY_LEFT)
 			previousSubpage();
 		else if(keyCode == GLFW.GLFW_KEY_RIGHT)
 			nextSubpage();
 
-		return super.func_231042_a_(typedChar, keyCode);
+		return super.charTyped(typedChar, keyCode);
 	}
 
 	protected void actionPerformed(ClickButton button){
@@ -237,15 +237,15 @@ public class SCManualScreen extends Screen {
 		else if(button.id == 4)
 			previousSubpage();
 
-		//hide subpage field_230710_m_ on main page
-		field_230710_m_.get(2).field_230694_p_ = currentPage != -1 && subpages.size() > 1;
-		field_230710_m_.get(3).field_230694_p_ = currentPage != -1 && subpages.size() > 1;
+		//hide subpage buttons on main page
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	@Override
-	public boolean func_231043_a_(double aDouble, double p_mouseScrolled_3_, double p_mouseScrolled_5_)
+	public boolean mouseScrolled(double aDouble, double p_mouseScrolled_3_, double p_mouseScrolled_5_)
 	{
-		super.func_231043_a_(aDouble, p_mouseScrolled_3_, p_mouseScrolled_5_);
+		super.mouseScrolled(aDouble, p_mouseScrolled_3_, p_mouseScrolled_5_);
 
 		switch((int)Math.signum(p_mouseScrolled_5_))
 		{
@@ -253,9 +253,9 @@ public class SCManualScreen extends Screen {
 			case 1: previousPage(); break;
 		}
 
-		//hide subpage field_230710_m_ on main page
-		field_230710_m_.get(2).field_230694_p_ = currentPage != -1 && subpages.size() > 1;
-		field_230710_m_.get(3).field_230694_p_ = currentPage != -1 && subpages.size() > 1;
+		//hide subpage buttons on main page
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 		return true;
 	}
 
@@ -301,8 +301,8 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage < 0){
 			recipe = null;
-			field_230710_m_.get(2).field_230694_p_ = false;
-			field_230710_m_.get(3).field_230694_p_ = false;
+			buttons.get(2).visible = false;
+			buttons.get(3).visible = false;
 			return;
 		}
 
@@ -402,7 +402,7 @@ public class SCManualScreen extends Screen {
 						{
 							//TODO: guessing, check if correct
 							display.add(new StringTextComponent("- ").func_230529_a_(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
-							display.add(StringTextComponent.field_240750_d_);
+							display.add(StringTextComponent.EMPTY);
 						}
 
 						display.remove(display.size() - 1);
@@ -425,7 +425,7 @@ public class SCManualScreen extends Screen {
 						{
 							//TODO: guessing, check if correct
 							display.add(new StringTextComponent("- ").func_230529_a_(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
-							display.add(StringTextComponent.field_240750_d_);
+							display.add(StringTextComponent.EMPTY);
 						}
 
 						display.remove(display.size() - 1);
@@ -462,9 +462,9 @@ public class SCManualScreen extends Screen {
 		helpInfo = ClientUtils.localize(page.getHelpInfo());
 		subpages.clear();
 
-		while(field_230712_o_.getStringWidth(helpInfo) > subpageLength)
+		while(font.getStringWidth(helpInfo) > subpageLength)
 		{
-			String trimmed = field_230712_o_.trimStringToWidth(helpInfo, 1285);
+			String trimmed = font.trimStringToWidth(helpInfo, 1285);
 
 			trimmed = trimmed.trim().substring(0, trimmed.lastIndexOf(' ')).trim(); //remove last word to remove the possibility to break it up onto multiple pages
 			subpages.add(trimmed);
@@ -472,8 +472,8 @@ public class SCManualScreen extends Screen {
 		}
 
 		subpages.add(helpInfo);
-		field_230710_m_.get(2).field_230694_p_ = currentPage != -1 && subpages.size() > 1;
-		field_230710_m_.get(3).field_230694_p_ = currentPage != -1 && subpages.size() > 1;
+		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
+		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
 	static class ChangePageButton extends ClickButton {
@@ -488,9 +488,9 @@ public class SCManualScreen extends Screen {
 		 * Draws this button to the screen.
 		 */
 		@Override
-		public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
-			if(field_230694_p_){
-				boolean isHovering = mouseX >= field_230690_l_ && mouseY >= field_230691_m_ && mouseX < field_230690_l_ + field_230688_j_ && mouseY < field_230691_m_ + field_230689_k_;
+		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks){
+			if(visible){
+				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
 				int textureX = 0;
@@ -502,7 +502,7 @@ public class SCManualScreen extends Screen {
 				if(!isForward)
 					textureY += 13;
 
-				this.blit(field_230690_l_, field_230691_m_, textureX, textureY, 23, 13);
+				this.blit(x, y, textureX, textureY, 23, 13);
 			}
 		}
 	}

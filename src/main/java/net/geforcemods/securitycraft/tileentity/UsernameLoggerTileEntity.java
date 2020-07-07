@@ -104,8 +104,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public void func_230337_a_(BlockState state, CompoundNBT tag){
-		super.func_230337_a_(state, tag);
+	public void read(BlockState state, CompoundNBT tag){
+		super.read(state, tag);
 
 		for(int i = 0; i < players.length; i++)
 		{

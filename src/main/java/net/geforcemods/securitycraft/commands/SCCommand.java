@@ -31,7 +31,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> connect()
 	{
 		return Commands.literal("connect").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").func_230529_a_(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))), Util.field_240973_b_); //appendSibling
+			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").func_230529_a_(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))), Util.DUMMY_UUID); //appendSibling
 			return 0;
 		});
 	}
@@ -42,7 +42,7 @@ public class SCCommand {
 			ctx.getSource().asPlayer().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
 					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getTranslationKey()),
 					new TranslationTextComponent(Items.BOOK.getTranslationKey()),
-					new TranslationTextComponent(Items.IRON_BARS.getTranslationKey())), Util.field_240973_b_);
+					new TranslationTextComponent(Items.IRON_BARS.getTranslationKey())), Util.DUMMY_UUID);
 			return 0;
 		});
 	}

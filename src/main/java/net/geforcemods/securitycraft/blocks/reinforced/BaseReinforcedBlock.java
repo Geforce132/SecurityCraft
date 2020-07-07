@@ -80,7 +80,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, ToIntFunction<BlockState> lightValue)
 	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).func_235838_a_(lightValue)); //lightValue
+		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).setLightLevel(lightValue));
 
 		vanillaBlockSupplier = () -> vB;
 	}
@@ -94,7 +94,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB, ToIntFunction<BlockState> lightValue)
 	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).func_235838_a_(lightValue)); //lightValue
+		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).setLightLevel(lightValue));
 
 		vanillaBlockSupplier = vB;
 	}

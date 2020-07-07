@@ -50,8 +50,8 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void func_230337_a_(BlockState state, CompoundNBT tag){
-		super.func_230337_a_(state, tag);
+	public void read(BlockState state, CompoundNBT tag){
+		super.read(state, tag);
 
 		if (tag.contains("passLV"))
 			passLV = tag.getInt("passLV");

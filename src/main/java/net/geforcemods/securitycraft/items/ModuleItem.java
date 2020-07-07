@@ -35,7 +35,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
 
-	public static final Style GRAY_STYLE = Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY);
+	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean nbtCanBeModified;

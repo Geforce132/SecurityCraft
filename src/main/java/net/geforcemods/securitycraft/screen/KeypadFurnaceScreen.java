@@ -34,9 +34,9 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	}
 
 	@Override
-	public void func_230430_a_(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		super.func_230430_a_(matrix, mouseX, mouseY, partialTicks);
+		super.render(matrix, mouseX, mouseY, partialTicks);
 		func_230459_a_(matrix, mouseX, mouseY);
 	}
 
@@ -44,16 +44,16 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getString() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
-		field_230712_o_.drawString(s, xSize / 2 - field_230712_o_.getStringWidth(s) / 2, 6.0F, 4210752);
-		field_230712_o_.drawString(playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
+		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6.0F, 4210752);
+		font.drawString(playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
+		minecraft.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
 		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if(((AbstractFurnaceContainer)container).isBurning())

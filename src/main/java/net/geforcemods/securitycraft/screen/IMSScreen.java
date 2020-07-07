@@ -32,10 +32,10 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	public void func_231160_c_(){
-		super.func_231160_c_();
+	public void init(){
+		super.init();
 
-		func_230480_a_(targetButton = new ClickButton(0, field_230708_k_ / 2 - 38, field_230709_l_ / 2 - 58, 120, 20, tileEntity.getTargetingOption() == IMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
+		addButton(targetButton = new ClickButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == IMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players"), this::actionPerformed));
 		updateButtonText();
 	}
 
@@ -46,17 +46,17 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
 		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
 
-		field_230712_o_.drawString(imsName, xSize / 2 - field_230712_o_.getStringWidth(imsName) / 2, 6, 4210752);
-		field_230712_o_.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
+		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
 	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		func_230446_a_(matrix);
+		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		field_230706_i_.getTextureManager().bindTexture(TEXTURE);
-		int startX = (field_230708_k_ - xSize) / 2;
-		int startY = (field_230709_l_ - ySize) / 2;
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
@@ -77,11 +77,11 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private void updateButtonText() {
 		if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.PLAYERS)
-			targetButton.func_238482_a_(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
+			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
 		else if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
 		else if(IMSTargetingMode.values()[targetingOptionIndex] == IMSTargetingMode.MOBS)
-			targetButton.func_238482_a_(ClientUtils.localize("gui.securitycraft:ims.hostile"));
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile"));
 	}
 
 }

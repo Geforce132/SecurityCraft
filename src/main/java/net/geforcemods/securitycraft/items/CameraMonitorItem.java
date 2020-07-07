@@ -37,7 +37,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class CameraMonitorItem extends Item {
 
-	private static final Style GRAY_STYLE = Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY);
+	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 
 	public CameraMonitorItem() {
 		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));

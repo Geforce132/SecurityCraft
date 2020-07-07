@@ -39,7 +39,7 @@ public class AlarmBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(4, 8, 4, 12, 16, 12);
 
 	public AlarmBlock() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().func_235838_a_(state -> state.get(LIT) ? 15 : 0));
+		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().setLightLevel(state -> state.get(LIT) ? 15 : 0));
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP).with(LIT, false));
 	}

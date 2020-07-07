@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BaseKeycardItem extends Item{
 
-	private static final Style GRAY_STYLE = Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY);
+	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 	private final int level;
 
 	public BaseKeycardItem(int level) {

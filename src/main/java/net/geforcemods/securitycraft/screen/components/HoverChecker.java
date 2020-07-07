@@ -20,14 +20,14 @@ public class HoverChecker
 
 	public HoverChecker(Widget widget)
 	{
-		this(widget.field_230690_l_, widget.field_230690_l_ + widget.getHeight(), widget.field_230691_m_, widget.field_230691_m_ + widget.func_230998_h_()); //x, y, getWidth
+		this(widget.x, widget.x + widget.getHeight(), widget.y, widget.y + widget.getWidth()); //x, y, getWidth
 
 		this.widget = widget;
 	}
 
 	public boolean checkHover(int mouseX, int mouseY)
 	{
-		if(widget != null && !widget.field_230694_p_) //visible
+		if(widget != null && !widget.visible) //visible
 			return false;
 
 		return mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;

@@ -33,7 +33,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 
 	public BlockPocketWallBlock()
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement().func_235828_a_(BlockPocketWallBlock::isNormalCube).func_235842_b_(BlockPocketWallBlock::causesSuffocation));
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement().setOpaque(BlockPocketWallBlock::isNormalCube).setSuffocates(BlockPocketWallBlock::causesSuffocation));
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
 	}

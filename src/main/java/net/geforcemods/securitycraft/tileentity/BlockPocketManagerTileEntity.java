@@ -777,11 +777,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
-	public void func_230337_a_(BlockState state, CompoundNBT tag)
+	public void read(BlockState state, CompoundNBT tag)
 	{
 		int i = 0;
 
-		super.func_230337_a_(state, tag);
+		super.read(state, tag);
 		enabled = tag.getBoolean("BlockPocketEnabled");
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInt("Size");

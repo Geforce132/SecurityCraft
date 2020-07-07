@@ -17,7 +17,7 @@ public class NamedSlider extends Slider
 	{
 		super(xPos, yPos, width, height, new StringTextComponent(prefix), new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
-		func_238482_a_(new StringTextComponent(initialString));
+		setMessage(new StringTextComponent(initialString));
 		blockName = bN;
 		this.id = id;
 	}
@@ -26,7 +26,7 @@ public class NamedSlider extends Slider
 	{
 		super(xPos, yPos, width, height, new StringTextComponent(prefix), new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
-		func_238482_a_(new StringTextComponent(initialString));
+		setMessage(new StringTextComponent(initialString));
 		blockName = bN;
 		this.id = id;
 	}
@@ -35,16 +35,16 @@ public class NamedSlider extends Slider
 	{
 		super(xPos, yPos, width, height, new StringTextComponent(prefix), new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
-		func_238482_a_(new StringTextComponent(initialString));
+		setMessage(new StringTextComponent(initialString));
 		blockName = bN;
 		this.id = id;
 		consumer = method;
 	}
 
 	@Override
-	public void func_231000_a__(double mouseX, double mouseY)
+	public void onRelease(double mouseX, double mouseY)
 	{
-		super.func_231000_a__(mouseX, mouseY);
+		super.onRelease(mouseX, mouseY);
 
 		if(consumer != null)
 			consumer.accept(this);

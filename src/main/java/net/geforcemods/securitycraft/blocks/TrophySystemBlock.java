@@ -34,7 +34,7 @@ public class TrophySystemBlock extends OwnableBlock {
 			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 
 	public TrophySystemBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).func_235828_a_(TrophySystemBlock::isNormalCube));
+		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).setOpaque(TrophySystemBlock::isNormalCube));
 	}
 
 	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
