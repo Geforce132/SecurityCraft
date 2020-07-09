@@ -469,12 +469,13 @@ public class SCEventHandler {
 	}
 
 	private static ItemStack fillBucket(World world, BlockPos pos){
-		Block block = world.getBlockState(pos).getBlock();
+		BlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
 
-		if(block == SCContent.FAKE_WATER_BLOCK.get()){
+		if(block == SCContent.FAKE_WATER_BLOCK.get() && state.getFluidState().getFluid() == SCContent.FAKE_WATER.get()){
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return new ItemStack(SCContent.FAKE_WATER_BUCKET.get(), 1);
-		}else if(block == SCContent.FAKE_LAVA_BLOCK.get()){
+		}else if(block == SCContent.FAKE_LAVA_BLOCK.get() && state.getFluidState().getFluid() == SCContent.FAKE_LAVA.get()){
 			world.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return new ItemStack(SCContent.FAKE_LAVA_BUCKET.get(), 1);
 		}

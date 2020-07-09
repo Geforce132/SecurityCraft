@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
+
+- Fix: Fake liquids can sometimes be picked up when they shouldn't
+
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
 DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.
