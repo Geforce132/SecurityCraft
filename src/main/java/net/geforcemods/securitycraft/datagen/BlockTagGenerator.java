@@ -234,6 +234,11 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
+		func_240522_a_(BlockTags.BEACON_BASE_BLOCKS).func_240534_a_(
+				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
+				SCContent.REINFORCED_EMERALD_BLOCK.get(),
+				SCContent.REINFORCED_GOLD_BLOCK.get(),
+				SCContent.REINFORCED_IRON_BLOCK.get());
 		func_240522_a_(BlockTags.CARPETS).func_240531_a_(SCTags.Blocks.REINFORCED_CARPETS);
 		func_240522_a_(BlockTags.DOORS).func_240534_a_(SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		func_240522_a_(BlockTags.FENCES).func_240534_a_(SCContent.IRON_FENCE.get());
@@ -262,7 +267,8 @@ public class BlockTagGenerator extends BlockTagsProvider
 		func_240522_a_(BlockTags.STANDING_SIGNS).func_240531_a_(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		func_240522_a_(BlockTags.TRAPDOORS).func_240534_a_(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		func_240522_a_(BlockTags.WALL_SIGNS).func_240531_a_(SCTags.Blocks.SECRET_WALL_SIGNS);
-		func_240522_a_(BlockTags.WALLS).func_240534_a_(SCContent.REINFORCED_COBBLESTONE_WALL.get(),
+		func_240522_a_(BlockTags.WALLS).func_240534_a_(
+				SCContent.REINFORCED_COBBLESTONE_WALL.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(),
 				SCContent.REINFORCED_BRICK_WALL.get(),
 				SCContent.REINFORCED_PRISMARINE_WALL.get(),
