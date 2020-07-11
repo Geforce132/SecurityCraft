@@ -33,6 +33,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
+	private final TranslationTextComponent mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
 	private ItemStack mrat;
 	private ClickButton[][] guiButtons = new ClickButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
@@ -135,20 +136,19 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		String mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
-		font.drawString(matrix, mratName, startX + xSize / 2 - font.getStringWidth(mratName), startY + -25 + 13, 0xFF0000);
+		font.func_238407_a_(matrix, mratName, startX + xSize / 2 - font.func_238414_a_(mratName), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
 			int[] coords = getMineCoordinates(i);
-			String line;
+			TranslationTextComponent line;
 
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:mrat.notBound");
 			else
 				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			font.drawString(matrix, line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
+			font.func_238407_a_(matrix, line, startX + xSize / 2 - font.func_238414_a_(line) + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)

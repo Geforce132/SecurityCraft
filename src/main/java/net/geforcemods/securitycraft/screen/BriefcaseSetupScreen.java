@@ -20,6 +20,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,6 +30,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent setupTitle = ClientUtils.localize("gui.securitycraft:briefcase.setupTitle");
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9'};
 	private TextFieldWidget keycodeTextbox;
 	private boolean flag = false;
@@ -43,7 +46,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY);
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -83,7 +86,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle")) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, setupTitle, xSize / 2 - font.func_238414_a_(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override

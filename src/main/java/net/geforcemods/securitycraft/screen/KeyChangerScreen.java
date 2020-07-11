@@ -21,7 +21,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,6 +32,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent ukcName = ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey());
+	private final TranslationTextComponent enterPasscode = ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
+	private final TranslationTextComponent confirmPasscode = ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
@@ -48,7 +53,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(confirmButton = new ClickButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
 		confirmButton.active = false;
 
-		textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, "");
+		textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, StringTextComponent.EMPTY);
 
 		textboxNewPasscode.setTextColor(-1);
 		textboxNewPasscode.setDisabledTextColour(-1);
@@ -56,7 +61,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		textboxNewPasscode.setMaxStringLength(20);
 		textboxNewPasscode.setFocused2(true);
 
-		textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, "");
+		textboxConfirmPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 7, 110, 12, StringTextComponent.EMPTY);
 
 		textboxConfirmPasscode.setTextColor(-1);
 		textboxConfirmPasscode.setDisabledTextColour(-1);
@@ -81,11 +86,9 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
-		String ukcName = ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey());
-
-		font.drawString(matrix, ukcName, xSize / 2 - font.getStringWidth(ukcName) / 2, 6, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		font.func_238407_a_(matrix, ukcName, xSize / 2 - font.func_238414_a_(ukcName) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, enterPasscode, xSize / 2 - font.func_238414_a_(enterPasscode) / 2, 25, 4210752);
+		font.func_238407_a_(matrix, confirmPasscode, xSize / 2 - font.func_238414_a_(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override

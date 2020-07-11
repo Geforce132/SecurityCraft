@@ -16,6 +16,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,6 +26,7 @@ public class EditModuleScreen extends Screen
 {
 	private static CompoundNBT savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent editModule = ClientUtils.localize("gui.securitycraft:editModule");
 	private ItemStack module;
 	private TextFieldWidget inputField;
 	private ClickButton addButton, removeButton, copyButton, pasteButton, clearButton;
@@ -43,7 +45,7 @@ public class EditModuleScreen extends Screen
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, "");
+		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, StringTextComponent.EMPTY);
 		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
 		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
 		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
@@ -87,7 +89,7 @@ public class EditModuleScreen extends Screen
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		inputField.render(matrix, mouseX, mouseY, partialTicks);
-		font.drawSplitString(matrix, ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, width, 4210752);
+		font.drawSplitString(matrix, editModule, startX + xSize / 2 - font.func_238414_a_(editModule) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override

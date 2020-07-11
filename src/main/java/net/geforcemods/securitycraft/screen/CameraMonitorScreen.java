@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CameraMonitorScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent selectCameras = ClientUtils.localize("gui.securitycraft:monitor.selectCameras");
 	private PlayerInventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundNBT nbtTag;
@@ -151,7 +152,7 @@ public class CameraMonitorScreen extends Screen {
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras")) / 2, startY + 6, 4210752);
+		font.func_238407_a_(selectCameras, startX + xSize / 2 - font.func_238414_a_(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){

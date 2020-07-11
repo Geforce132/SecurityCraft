@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,7 +23,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
 	private ProjectorTileEntity tileEntity;
-	private String blockName;
+	private TranslationTextComponent blockName;
 
 	private HoverChecker[] hoverCheckers = new HoverChecker[3];
 
@@ -83,7 +84,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawString(matrix, blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, blockName, xSize / 2 - font.func_238414_a_(blockName) / 2, 6, 4210752);
 	}
 
 	@Override

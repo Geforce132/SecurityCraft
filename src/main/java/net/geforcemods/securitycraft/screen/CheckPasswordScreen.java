@@ -18,6 +18,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,7 +30,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
-	private String blockName;
+	private TranslationTextComponent blockName;
 	private TextFieldWidget keycodeTextbox;
 	private String currentString = "";
 	private static final int MAX_CHARS = 11;
@@ -56,7 +58,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(new ClickButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
 		addButton(new ClickButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, StringTextComponent.EMPTY);
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -83,7 +85,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
-		font.drawString(matrix, blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, blockName, xSize / 2 - font.func_238414_a_(blockName) / 2, 6, 4210752);
 	}
 
 	/**

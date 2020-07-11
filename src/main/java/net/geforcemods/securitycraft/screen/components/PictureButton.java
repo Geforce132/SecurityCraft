@@ -103,7 +103,7 @@ public class PictureButton extends ClickButton{
 			else if (isHovered)
 				color = 16777120;
 
-			drawCenteredString(font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
+			drawCenteredString(matrix, font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
 
 		}
 	}

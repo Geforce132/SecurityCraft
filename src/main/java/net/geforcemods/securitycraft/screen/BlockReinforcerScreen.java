@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -19,6 +20,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContainer>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
+	private final TranslationTextComponent ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
+	private final TranslationTextComponent output = ClientUtils.localize("gui.securitycraft:blockReinforcer.output");
 
 	public BlockReinforcerScreen(BlockReinforcerContainer container, PlayerInventory inv, ITextComponent name)
 	{
@@ -38,14 +41,13 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
-		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
 
-		font.drawString(matrix, ubr, (xSize - font.getStringWidth(ubr)) / 2, 5, 4210752);
-		font.drawString(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.func_238407_a_(matrix, ubr, (xSize - font.func_238414_a_(ubr)) / 2, 5, 4210752);
+		font.func_238407_a_(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(0).isEmpty())
 		{
-			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 25, 4210752);
+			font.func_238407_a_(matrix, output, 50, 25, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
 			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
 
@@ -55,7 +57,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 
 		if(!inv.get(1).isEmpty())
 		{
-			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
+			font.func_238407_a_(matrix, output, 50, 50, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
 			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
 

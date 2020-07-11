@@ -92,12 +92,13 @@ public class SCManualScreen extends Screen {
 		}
 
 		updateRecipeAndIcons();
-		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
-			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey());
-			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey());
-
-			return key1.compareTo(key2);
-		});
+		//TODO: entry sorting
+		//		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+		//			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey());
+		//			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey());
+		//
+		//			return key1.compareTo(key2);
+		//		});
 	}
 
 	@Override
@@ -122,9 +123,9 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
-				font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.drawString(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.func_238407_a_(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
 			font.drawSplitString(matrix, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
@@ -133,11 +134,11 @@ public class SCManualScreen extends Screen {
 			if(designedBy != null && !designedBy.isEmpty())
 				font.drawSplitString(matrix, ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
+			font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				font.drawString(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+				font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)

@@ -22,6 +22,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent blockPocketManager = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
+	private final TranslationTextComponent youNeed = ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed");
 	public BlockPocketManagerTileEntity te;
 	private int size = 5;
 	private Button toggleButton;
@@ -59,13 +61,12 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
-
-		font.drawString(matrix, translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, blockPocketManager, xSize / 2 - font.func_238414_a_(blockPocketManager) / 2, 6, 4210752);
 
 		if (!te.enabled)
 		{
-			font.drawString(matrix, ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed")) / 2, 83, 4210752);
+
+			font.func_238407_a_(matrix, youNeed, xSize / 2 - font.func_238414_a_(youNeed) / 2, 83, 4210752);
 
 			font.drawString(matrix, (size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);

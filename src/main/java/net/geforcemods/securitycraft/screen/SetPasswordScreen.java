@@ -17,7 +17,10 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,7 +31,9 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9'};
-	private String blockName;
+	private TranslationTextComponent blockName;
+	private TranslationTextComponent setup;
+	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
 	private boolean isInvalid = false;
 	private ClickButton saveAndContinueButton;
@@ -37,6 +42,8 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super(container, inv, name);
 		this.tileEntity = container.te;
 		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		setup = ClientUtils.localize("gui.securitycraft:password.setup");
+		combined = blockName.copyRaw().func_230529_a_(new StringTextComponent(" ")).func_230529_a_(setup);
 	}
 
 	@Override
@@ -45,7 +52,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
+		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY);
 
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
@@ -68,7 +75,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		keycodeTextbox.render(matrix, mouseX, mouseY, partialTicks);
-		drawString(matrix, matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		drawString(matrix, font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
 	}
 
 	/**
@@ -76,15 +83,12 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
-		String setup = ClientUtils.localize("gui.securitycraft:password.setup");
-		String combined = blockName + " " + setup;
-
-		if(font.getStringWidth(combined) < xSize - 10)
-			font.drawString(matrix, combined, xSize / 2 - font.getStringWidth(combined) / 2, 6, 4210752);
+		if(font.func_238414_a_(combined) < xSize - 10)
+			font.func_238407_a_(matrix, combined, xSize / 2 - font.func_238414_a_(combined) / 2, 6, 4210752);
 		else
 		{
-			font.drawString(matrix, blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
-			font.drawString(matrix, setup, xSize / 2 - font.getStringWidth(setup) / 2, 16, 4210752);
+			font.func_238407_a_(matrix, blockName, xSize / 2 - font.func_238414_a_(blockName) / 2, 6.0F, 4210752);
+			font.func_238407_a_(matrix, setup, xSize / 2 - font.func_238414_a_(setup) / 2, 16, 4210752);
 		}
 	}
 

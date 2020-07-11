@@ -27,12 +27,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
+	private final TranslationTextComponent modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private ClickButton[][] guibuttons = new ClickButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
 	private ITextComponent[] names = new ITextComponent[12];
@@ -153,28 +155,27 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.drawString(matrix, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.func_238407_a_(matrix, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
-			String line;
+			ITextComponent line;
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:srat.notBound");
 			else if(names[i] != null)
-				line = names[i].getString();
+				line = new StringTextComponent(names[i].getString());
 			else
-				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+				line = new StringTextComponent(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			font.drawString(matrix, line, startX + xSize / 4 - font.getStringWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
-			font.drawString(matrix, modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
+			font.func_238407_a_(matrix, line, startX + xSize / 4 - font.func_238414_a_(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.func_238407_a_(matrix, modifyAll, startX + xSize / 2 - font.func_238414_a_(modifyAll) + 25, startY + 194, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)

@@ -26,11 +26,14 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
 
 public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent logged = ClientUtils.localize("gui.securitycraft:logger.logged");
+	private final TranslationTextComponent clear = ClientUtils.localize("gui.securitycraft:editModule.clear");
 	private UsernameLoggerTileEntity tileEntity;
 	private PlayerList playerList;
 
@@ -57,12 +60,10 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		String localized = ClientUtils.localize("gui.securitycraft:logger.logged");
-
-		font.drawString(matrix, localized, xSize / 2 - font.getStringWidth(localized) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, logged, xSize / 2 - font.func_238414_a_(logged) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
-			renderTooltip(matrix, ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
+			renderTooltip(matrix, clear, mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override
@@ -173,12 +174,12 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
-						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+						TranslationTextComponent localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
-						font.drawString(matrix, localized, guiLeft + (xSize / 2 - font.getStringWidth(localized) / 2), bottom + 5, 4210752);
+						font.func_238407_a_(matrix, localized, guiLeft + (xSize / 2 - font.func_238414_a_(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}

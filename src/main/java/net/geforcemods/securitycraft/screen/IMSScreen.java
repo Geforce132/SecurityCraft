@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -20,6 +21,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
+	private final TranslationTextComponent target = ClientUtils.localize("gui.securitycraft:ims.target");
 
 	private IMSTileEntity tileEntity;
 	private ClickButton targetButton;
@@ -44,10 +47,9 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	 */
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY){
-		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
 
-		font.drawString(matrix, imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
+		font.func_238407_a_(matrix, imsName, xSize / 2 - font.func_238414_a_(imsName) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, target, xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override

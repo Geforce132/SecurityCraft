@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -21,6 +22,13 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent explanation1 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1");
+	private final TranslationTextComponent explanation2 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2");
+	private final TranslationTextComponent explanation3 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3");
+	private final TranslationTextComponent explanation4 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4");
+	private final TranslationTextComponent explanation5 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.5");
+	private final TranslationTextComponent explanation6 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6");
+	private final TranslationTextComponent explanation7 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7");
 	private KeycardReaderTileEntity te;
 	private ClickButton lvlOfSecurityButton;
 	private ClickButton requiresExactCardButton;
@@ -49,13 +57,13 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1")) / 2, 6, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2")) / 2 - 2, 30 - 10, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3")) / 2 - 11, 42 - 10, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4")) / 2 - 10, 54 - 10, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.5"), xSize / 2 + 45, 66 - 5, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6")) / 2 - 6, 78 - 1, 4210752);
-		font.drawString(matrix, ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7")) / 2 - 20, 90 - 1, 4210752);
+		font.func_238407_a_(matrix, explanation1, xSize / 2 - font.func_238414_a_(explanation1) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, explanation2, xSize / 2 - font.func_238414_a_(explanation2) / 2 - 2, 30 - 10, 4210752);
+		font.func_238407_a_(matrix, explanation3, xSize / 2 - font.func_238414_a_(explanation3) / 2 - 11, 42 - 10, 4210752);
+		font.func_238407_a_(matrix, explanation4, xSize / 2 - font.func_238414_a_(explanation4) / 2 - 10, 54 - 10, 4210752);
+		font.func_238407_a_(matrix, explanation5, xSize / 2 + 45, 66 - 5, 4210752);
+		font.func_238407_a_(matrix, explanation6, xSize / 2 - font.func_238414_a_(explanation6) / 2 - 6, 78 - 1, 4210752);
+		font.func_238407_a_(matrix, explanation7, xSize / 2 - font.func_238414_a_(explanation7) / 2 - 20, 90 - 1, 4210752);
 	}
 
 	@Override

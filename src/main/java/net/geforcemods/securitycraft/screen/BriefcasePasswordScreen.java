@@ -18,6 +18,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -27,6 +29,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	public static final String UP_ARROW  = "\u2191";
 	public static final String DOWN_ARROW  = "\u2193";
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final TranslationTextComponent enterPasscode = ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode");
 	private Button[] keycodeTopButtons = new Button[4];
 	private Button[] keycodeBottomButtons = new Button[4];
 	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
@@ -54,7 +57,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		addButton(continueButton);
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
-			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, "");
+			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, StringTextComponent.EMPTY);
 
 			keycodeTextboxes[i].setTextColor(-1);
 			keycodeTextboxes[i].setDisabledTextColour(-1);
@@ -75,7 +78,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, enterPasscode, xSize / 2 - font.func_238414_a_(enterPasscode) / 2, 6, 4210752);
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
@@ -131,9 +132,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
-		font.drawString(matrix, s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
-		font.drawString(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		TranslationTextComponent s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
+		font.func_238407_a_(matrix, s, xSize / 2 - font.func_238414_a_(s) / 2, 6, 4210752);
+		font.func_238407_a_(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -158,10 +159,11 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	private String getModuleDescription(int buttonID) {
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
+		//TODO: fix
 		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey()) + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
 	}
 
-	private String getOptionDescription(int buttonID) {
+	private TranslationTextComponent getOptionDescription(int buttonID) {
 		String optionDescription = "option" + blockName + "." +  ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
 
 		return ClientUtils.localize(optionDescription);
