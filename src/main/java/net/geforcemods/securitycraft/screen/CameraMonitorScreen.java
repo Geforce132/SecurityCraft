@@ -26,6 +26,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -97,7 +98,7 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
 
-			button.setMessage(button.getMessage() + camID);
+			button.setMessage(button.getMessage().copyRaw().func_230529_a_(new StringTextComponent("" + camID)));
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
@@ -157,10 +158,10 @@ public class CameraMonitorScreen extends Screen {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, font);
+					this.renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY, font);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").replace("#", cameraTEs[i].getCustomSCName().getString()), 150), mouseX, mouseY, font);
+					this.renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY, font);
 			}
 	}
 

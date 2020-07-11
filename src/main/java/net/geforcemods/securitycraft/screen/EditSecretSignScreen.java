@@ -135,7 +135,7 @@ public class EditSecretSignScreen extends Screen
 
 		RenderHelper.setupGuiFlatDiffuseLighting();
 		renderBackground(matrix);
-		drawCenteredString(font, title.getFormattedText(), width / 2, 40, 16777215);
+		drawCenteredString(matrix, font, title, width / 2, 40, 16777215);
 		stack.push();
 		stack.translate(width / 2, 0.0D, 50.0D);
 		stack.scale(93.75F, -93.75F, 93.75F);

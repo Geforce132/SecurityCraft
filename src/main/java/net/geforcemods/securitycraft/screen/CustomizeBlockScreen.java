@@ -121,9 +121,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < moduleInv.getMaxNumberOfModules())
-					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, font);
+					this.renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(getModuleDescription(i), 150), mouseX, mouseY, font);
 				else
-					this.renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, font);
+					this.renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(getOptionDescription(i), 150), mouseX, mouseY, font);
 	}
 
 	/**
@@ -169,8 +169,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		return ClientUtils.localize(optionDescription);
 	}
 
-	private String getOptionButtonTitle(Option<?> option) {
-		return (ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString());
+	private ITextComponent getOptionButtonTitle(Option<?> option) {
+		return ClientUtils.localize("option" + blockName + "." + option.getName(), option.toString());
 	}
 
 	public List<Rectangle2d> getGuiExtraAreas()

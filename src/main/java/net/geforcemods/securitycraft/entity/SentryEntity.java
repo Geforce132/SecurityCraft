@@ -230,7 +230,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				dataManager.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID"));
 
 				if(world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 			}
 			else
 				toggleMode(player);
@@ -292,7 +292,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)).func_230529_a_(ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1))), TextFormatting.DARK_RED);
 		else
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(func_233580_cy_(), true, mode == 0));
 	}
@@ -310,7 +310,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)).func_230529_a_(ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1))), TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(func_233580_cy_(), true, mode == 0));
 	}

@@ -79,7 +79,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				TileEntity te = world.getTileEntity(data.getPos());
 
 				if(te instanceof IOwnable)
-					probeInfo.vertical().text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) te).getOwner().getName());
+					probeInfo.vertical().text(ClientUtils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).func_240699_a_(TextFormatting.GRAY));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
@@ -89,7 +89,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(ClientUtils.localize("waila.securitycraft:equipped").func_240699_a_(TextFormatting.GRAY));
 
 						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText());
+							probeInfo.text(new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(module.getTranslationKey())).func_240699_a_(TextFormatting.GRAY));
 					}
 				}
 
@@ -97,14 +97,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
+					probeInfo.text(ClientUtils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))).func_240699_a_(TextFormatting.GRAY));
 				}
 
 				if(te instanceof INameable && ((INameable) te).canBeNamed()){
 					ITextComponent text = ((INameable) te).getCustomSCName();
-					String name = text == null ? "" : text.getFormattedText();
+					ITextComponent name = text == null ? StringTextComponent.EMPTY : text;
 
-					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+					probeInfo.text(ClientUtils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))).func_240699_a_(TextFormatting.GRAY));
 				}
 			}
 		});
@@ -121,17 +121,17 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					SentryEntity sentry = (SentryEntity)entity;
 					SentryEntity.SentryMode mode = sentry.getMode();
 
-					probeInfo.text(TextFormatting.GRAY + (ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
+					probeInfo.text((ClientUtils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName())).func_240699_a_(TextFormatting.GRAY));
 
 					if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 					{
 						probeInfo.text(ClientUtils.localize("waila.securitycraft:equipped").func_240699_a_(TextFormatting.GRAY));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText());
+							probeInfo.text(new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())).func_240699_a_(TextFormatting.GRAY));
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+							probeInfo.text(new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())).func_240699_a_(TextFormatting.GRAY));
 					}
 
 					if (mode == SentryEntity.SentryMode.AGGRESSIVE)

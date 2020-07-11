@@ -166,12 +166,12 @@ public class SCEventHandler {
 
 					for(String character : new String[]{"(", ")"})
 						if(event.getPlayer().inventory.getCurrentItem().getDisplayName().getString().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getPlayer().inventory.getCurrentItem().getDisplayName().getString()).replace("#c", character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), new StringTextComponent("Naming"), ClientUtils.localize("messages.securitycraft:naming.error", event.getPlayer().inventory.getCurrentItem().getDisplayName(), character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomSCName().equals(event.getPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomSCName().getString()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getPlayer(), new StringTextComponent("Naming"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
 						return;
 					}
 

@@ -68,7 +68,19 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	//TODO: test correctness of the next two methods. basically just guessing if this is correct for now
+	//TODO: test correctness of the next three methods. basically just guessing if this is correct for now
+	public static void sendMessageToPlayer(String playerName, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
+		PlayerEntity player = getPlayerFromName(playerName);
+
+		if(player != null)
+		{
+			player.sendMessage(new StringTextComponent("[")
+					.func_230529_a_(prefix.func_230530_a_(Style.EMPTY.setFormatting(color)))
+					.func_230529_a_(new StringTextComponent("] ")).func_230530_a_(Style.EMPTY.setFormatting(TextFormatting.WHITE))
+					.func_230529_a_(text), Util.DUMMY_UUID); //appendSibling
+		}
+	}
+
 	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
 		player.sendMessage(new StringTextComponent("[")
 				.func_230529_a_(prefix.func_230530_a_(Style.EMPTY.setFormatting(color)))

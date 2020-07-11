@@ -46,13 +46,13 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	{
 		super.init();
 
-		projectionWidth = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.width").replace("#", tileEntity.getProjectionWidth() + "")), blockName, 0, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 50, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.width").replace("#", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased);
+		projectionWidth = new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.width", tileEntity.getProjectionWidth()), blockName, 0, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 50, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.width", ""), "", ProjectorTileEntity.MIN_WIDTH, ProjectorTileEntity.MAX_WIDTH, tileEntity.getProjectionWidth(), false, true, null, this::sliderReleased);
 		projectionWidth.setFGColor(14737632);
 
-		projectionRange = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.range").replace("#", tileEntity.getProjectionRange() + "")), blockName, 1, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 80, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.range").replace("#", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, null, this::sliderReleased);
+		projectionRange = new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.range", tileEntity.getProjectionRange()), blockName, 1, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 80, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.range", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, null, this::sliderReleased);
 		projectionRange.setFGColor(14737632);
 
-		projectionOffset = new NamedSlider((ClientUtils.localize("gui.securitycraft:projector.offset").replace("#", tileEntity.getProjectionOffset() + "")), blockName, 2, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 110, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.offset").replace("#", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased);
+		projectionOffset = new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.offset", tileEntity.getProjectionOffset()), blockName, 2, guiLeft + ((xSize - sliderWidth) / 2), guiTop + 110, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.offset", ""), "", ProjectorTileEntity.MIN_OFFSET, ProjectorTileEntity.MAX_OFFSET, tileEntity.getProjectionOffset(), false, true, null, this::sliderReleased);
 		projectionOffset.setFGColor(14737632);
 
 		addButton(projectionWidth);
@@ -72,13 +72,13 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		func_230459_a_(matrix, mouseX, mouseY);
 
 		if(hoverCheckers[0] != null && hoverCheckers[0].checkHover(mouseX, mouseY))
-			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.width.description"), 150), mouseX, mouseY, font);
+			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.width.description"), 150), mouseX, mouseY, font);
 
 		if(hoverCheckers[1] != null && hoverCheckers[1].checkHover(mouseX, mouseY))
-			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY, font);
+			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY, font);
 
 		if(hoverCheckers[2] != null && hoverCheckers[2].checkHover(mouseX, mouseY))
-			renderTooltip(minecraft.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY, font);
+			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY, font);
 	}
 
 	@Override

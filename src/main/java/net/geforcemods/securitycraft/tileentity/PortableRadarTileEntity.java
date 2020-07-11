@@ -23,6 +23,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity {
@@ -66,7 +67,15 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((PlayerEntity)attacked))
 			{
-				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomSCName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName().getString() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomSCName().getString() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName().getString() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+				IFormattableTextComponent attackedName = attacked.getName().copyRaw().func_240699_a_(TextFormatting.ITALIC);
+				IFormattableTextComponent text;
+
+				if(hasCustomSCName())
+					text = ClientUtils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().func_240699_a_(TextFormatting.ITALIC));
+				else
+					text = ClientUtils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
+
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), text, TextFormatting.BLUE);
 				setSentMessage();
 			}
 
