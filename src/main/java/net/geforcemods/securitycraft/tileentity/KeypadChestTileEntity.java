@@ -340,7 +340,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos, world.getDimension().getType().getId()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
 	}
 
 	@Override

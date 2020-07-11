@@ -17,7 +17,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class RequestTEOwnableUpdate
 {
 	private BlockPos pos;
-	private int dimension;
 
 	public RequestTEOwnableUpdate() {}
 
@@ -27,30 +26,26 @@ public class RequestTEOwnableUpdate
 	 */
 	public RequestTEOwnableUpdate(OwnableTileEntity te)
 	{
-		this(te.getPos(), te.getWorld().dimension.getType().getId());
+		this(te.getPos());
 	}
 
 	/**
 	 * Initializes this packet
 	 * @param p The position of the tile entity
-	 * @param dim The dimension it is in
 	 */
-	public RequestTEOwnableUpdate(BlockPos p, int dim)
+	public RequestTEOwnableUpdate(BlockPos p)
 	{
 		pos = p;
-		dimension = dim;
 	}
 
 	public void toBytes(ByteBuf buf)
 	{
 		buf.writeLong(pos.toLong());
-		buf.writeInt(dimension);
 	}
 
 	public void fromBytes(ByteBuf buf)
 	{
 		pos = BlockPos.fromLong(buf.readLong());
-		dimension = buf.readInt();
 	}
 
 	public static void encode(RequestTEOwnableUpdate message, PacketBuffer packet)

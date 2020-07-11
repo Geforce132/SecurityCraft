@@ -140,7 +140,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos, world.dimension.getType().getId()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
 	}
 
 	@Override

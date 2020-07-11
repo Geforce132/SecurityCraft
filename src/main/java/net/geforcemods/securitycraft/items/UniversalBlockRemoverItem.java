@@ -96,7 +96,7 @@ public class UniversalBlockRemoverItem extends Item
 				BlockPos originalPos = pos;
 				BlockPos middlePos = originalPos.up(4);
 
-				new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+				new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable().setPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
 					TileEntity te = w.getTileEntity(p);
 
 					if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))

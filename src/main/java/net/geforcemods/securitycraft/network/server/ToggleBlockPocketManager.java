@@ -7,9 +7,7 @@ import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DimensionType;
 import net.minecraftforge.fml.network.NetworkEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class ToggleBlockPocketManager
 {
@@ -22,7 +20,6 @@ public class ToggleBlockPocketManager
 	public ToggleBlockPocketManager(BlockPocketManagerTileEntity te, boolean enabling, int size)
 	{
 		pos = te.getPos();
-		dimension = te.getWorld().getDimension().getType().getId();
 		this.enabling = enabling;
 		this.size = size;
 	}
@@ -59,7 +56,7 @@ public class ToggleBlockPocketManager
 	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = ServerLifecycleHooks.getCurrentServer().getWorld(DimensionType.getById(message.dimension)).getTileEntity(message.pos);
+			TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
 
 			if(te instanceof BlockPocketManagerTileEntity)
 			{

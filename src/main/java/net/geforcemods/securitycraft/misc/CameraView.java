@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * Simple wrapper class for LookingGlass camera views
@@ -8,29 +11,42 @@ import net.minecraft.util.math.BlockPos;
  * view's coordinates and a formatted string for storage
  * in HashMaps, as well as a few helpful methods.
  *
- * @version 1.0.0
+ * @version 1.1.0
  *
  * @author Geforce
  */
-public class CameraView {
+public class CameraView { //TODO: is this still needed? could switch to net.minecraft.util.math.GlobalPos
 
 	public int x = 0;
 	public int y = 0;
 	public int z = 0;
-	public int dimension = 0;
+	public ResourceLocation dimension = World.field_234918_g_.func_240901_a_();
 
-	public CameraView(int x, int y, int z, int dim) {
+	public CameraView(int x, int y, int z, RegistryKey<World> dim) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		dimension = dim;
+
+		if(dim != null)
+			dimension = dim.func_240901_a_();
 	}
 
-	public CameraView(BlockPos pos, int dim) {
+	public CameraView(int x, int y, int z, ResourceLocation dim) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+
+		if(dim != null)
+			dimension = dim;
+	}
+
+	public CameraView(BlockPos pos, RegistryKey<World> dim) {
 		x = pos.getX();
 		y = pos.getY();
 		z = pos.getZ();
-		dimension = dim;
+
+		if(dim != null)
+			dimension = dim.func_240901_a_();
 	}
 
 
@@ -52,9 +68,9 @@ public class CameraView {
 		int xPos = Integer.parseInt(coordinates[0]);
 		int yPos = Integer.parseInt(coordinates[1]);
 		int zPos = Integer.parseInt(coordinates[2]);
-		int dim = (coordinates.length == 4 ? Integer.parseInt(coordinates[3]) : 0);
+		ResourceLocation dim = new ResourceLocation(coordinates.length == 4 ? coordinates[3] : "");
 
-		return (x == xPos && y == yPos && z == zPos && dimension == dim);
+		return (x == xPos && y == yPos && z == zPos && dimension.equals(dim));
 	}
 
 	/**

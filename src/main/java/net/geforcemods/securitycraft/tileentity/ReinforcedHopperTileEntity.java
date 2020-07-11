@@ -581,7 +581,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos(), getWorld().dimension.getType().getId()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos()));
 	}
 
 	//code from Forge, as it is hardcoded to the vanilla hopper

@@ -44,7 +44,7 @@ public class CameraMonitorScreen extends Screen {
 	private ClickButton[] unbindButtons = new ClickButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private SecurityCraftTileEntity[] cameraTEs = new SecurityCraftTileEntity[10];
-	private int[] cameraViewDim = new int[10];
+	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private int xSize = 176, ySize = 166;
 	private int page = 1;
 
@@ -101,7 +101,7 @@ public class CameraMonitorScreen extends Screen {
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
-				if(view.dimension != Minecraft.getInstance().player.dimension.getId()) {
+				if(!view.dimension.equals(Minecraft.getInstance().player.world.func_234923_W_().func_240901_a_())) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
@@ -152,7 +152,7 @@ public class CameraMonitorScreen extends Screen {
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.func_238407_a_(selectCameras, startX + xSize / 2 - font.func_238414_a_(selectCameras) / 2, startY + 6, 4210752);
+		font.func_238407_a_(matrix, selectCameras, startX + xSize / 2 - font.func_238414_a_(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){

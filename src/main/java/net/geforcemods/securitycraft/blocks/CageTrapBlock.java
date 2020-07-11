@@ -101,7 +101,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				BlockPos topMiddle = pos.up(4);
 				String ownerName = ((IOwnable)world.getTileEntity(pos)).getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable(pos), tileEntity.getOwner());
+				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable().setPos(pos), tileEntity.getOwner());
 
 				placer.loop((w, p, o) -> {
 					if(w.isAirBlock(p))

@@ -198,7 +198,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		{
 			if (world.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(world, pos))
 			{
-				if (world.dimension.doesWaterVaporize()) {
+				if (world.func_230315_m_().func_236040_e_()) { //getDimensionType, doesWaterVaporize
 					world.removeBlock(pos, false);
 				}
 				else {

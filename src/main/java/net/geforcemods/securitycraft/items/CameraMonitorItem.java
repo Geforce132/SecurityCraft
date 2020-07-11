@@ -25,6 +25,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -60,7 +61,7 @@ public class CameraMonitorItem extends Item {
 				if(stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				CameraView view = new CameraView(pos, player.dimension.getId());
+				CameraView view = new CameraView(pos, player.world.func_234923_W_());
 
 				if(isCameraAdded(stack.getTag(), view)){
 					stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
@@ -159,7 +160,7 @@ public class CameraMonitorItem extends Item {
 			if(tag != null && tag.contains("Camera" + i)){
 				String[] coords = tag.getString("Camera" + i).split(" ");
 
-				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)));
+				list.add(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? new ResourceLocation(coords[3]) : null)));
 			}
 			else
 				list.add(null);
