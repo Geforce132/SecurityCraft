@@ -46,9 +46,7 @@ public class EditSecretSignScreen extends Screen
 	private int updateCounter;
 	private int editLine;
 	private TextInputUtil textInputUtil;
-	private final String[] signText = Util.make(new String[4], (i) -> {
-		Arrays.fill(i, "");
-	});
+	private final String[] signText = Util.make(new String[4], i -> Arrays.fill(i, ""));
 
 	public EditSecretSignScreen(SecretSignTileEntity te)
 	{
@@ -174,9 +172,9 @@ public class EditSecretSignScreen extends Screen
 
 			if(s != null)
 			{
-				if (this.font.getBidiFlag()) {
+				if (this.font.getBidiFlag())
 					s = this.font.bidiReorder(s);
-					
+
 				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
 
 				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);

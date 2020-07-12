@@ -86,7 +86,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 				if(text != null)
 				{
-					font.func_238416_a_(text, -font.func_238414_a_(text) / 2, (float)(line * 10 - 20), i1, false, stack.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
+					font.func_238416_a_(text, -font.func_238414_a_(text) / 2, line * 10 - 20, i1, false, stack.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
 				}
 			}
 		}
