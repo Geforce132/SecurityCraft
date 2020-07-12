@@ -9,6 +9,9 @@ import net.minecraft.block.RedstoneTorchBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -48,18 +51,16 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTraceResult)
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
+		ItemStack stack = player.getHeldItem(hand);
+
 		if(world.isRemote)
-		{
 			spawnParticles(world, pos);
-			return ActionResultType.SUCCESS;
-		}
 		else
-		{
 			activate(state, world, pos);
-			return ActionResultType.PASS;
-		}
+
+		return stack.getItem() instanceof BlockItem && (new BlockItemUseContext(player, hand, stack, hit)).canPlace() ? ActionResultType.PASS : ActionResultType.SUCCESS;
 	}
 
 	private static void activate(BlockState state, World world, BlockPos pos)
@@ -68,10 +69,15 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 
 		if(!state.get(LIT))
 			world.setBlockState(pos, state.with(LIT, true), 3);
+	}
+	@Override
+	public boolean ticksRandomly(BlockState state)
+	{
+		return state.get(LIT);
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
 		if(state.get(LIT))
 			world.setBlockState(pos, state.with(LIT, false), 3);

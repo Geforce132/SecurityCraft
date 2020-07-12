@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.mines.RedstoneOreMineBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.WallBlock;
@@ -53,12 +52,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
 		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
 		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
-		getVariantBuilder(SCContent.REDSTONE_ORE_MINE.get()).forAllStates(state -> {
-			if(state.get(RedstoneOreMineBlock.LIT))
-				return new ConfiguredModel[] {new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore_on")))};
-			else
-				return new ConfiguredModel[] {new ConfiguredModel(models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/redstone_ore")))};
-		});
+		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
 		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());
 		blockMine(Blocks.STONE, SCContent.STONE_MINE.get());
 	}

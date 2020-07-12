@@ -4,7 +4,7 @@
       "model": "minecraft:block/redstone_ore"
     },
     "lit=true": {
-      "model": "minecraft:block/redstone_ore_on"
+      "model": "minecraft:block/redstone_ore"
     }
   }
 }
