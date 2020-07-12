@@ -9,11 +9,12 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class SCManualPage {
 
 	private Item item;
-	private String helpInfo;
+	private TranslationTextComponent helpInfo;
 	private BooleanSupplier configValue = () -> true;
 	private String designedBy = "";
 	private static final List<Item> EXPLOSIVES = Arrays.asList(SCContent.BOUNCING_BETTY.get(),
@@ -36,7 +37,7 @@ public class SCManualPage {
 			SCContent.LAPIS_ORE_MINE.get(),
 			SCContent.GOLD_ORE_MINE.get()).stream().map(Block::asItem).collect(Collectors.toList());
 
-	public SCManualPage(Item item, String helpInfo){
+	public SCManualPage(Item item, TranslationTextComponent helpInfo){
 		this.item = item;
 		this.helpInfo = helpInfo;
 
@@ -60,7 +61,7 @@ public class SCManualPage {
 		return item;
 	}
 
-	public String getHelpInfo() {
+	public TranslationTextComponent getHelpInfo() {
 		return helpInfo;
 	}
 

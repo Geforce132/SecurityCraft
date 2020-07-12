@@ -1,9 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.Arrays;
-import java.util.List;
-
-import javax.xml.soap.Text;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -14,7 +11,6 @@ import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StandingSignBlock;
-import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.gui.fonts.TextInputUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -31,8 +27,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.network.play.client.CUpdateSignPacket;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -172,14 +166,14 @@ public class EditSecretSignScreen extends Screen
 
 			if(s != null)
 			{
-				if (this.font.getBidiFlag())
-					s = this.font.bidiReorder(s);
+				if (font.getBidiFlag())
+					s = font.bidiReorder(s);
 
-				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
+				float f3 = -minecraft.fontRenderer.getStringWidth(s) / 2;
 
 				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 
-				if(k1 == this.editLine && k >= 0 && update)
+				if(k1 == editLine && k >= 0 && update)
 				{
 					int l1 = minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
 					int i2 = l1 - minecraft.fontRenderer.getStringWidth(s) / 2;
@@ -208,8 +202,8 @@ public class EditSecretSignScreen extends Screen
 				{
 					int j4 = Math.min(k, l);
 					int j2 = Math.max(k, l);
-					int k2 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, j4)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
-					int l2 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, j2)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
+					int k2 = minecraft.fontRenderer.getStringWidth(s1.substring(0, j4)) - minecraft.fontRenderer.getStringWidth(s1) / 2;
+					int l2 = minecraft.fontRenderer.getStringWidth(s1.substring(0, j2)) - minecraft.fontRenderer.getStringWidth(s1) / 2;
 					int i3 = Math.min(k2, l2);
 					int j3 = Math.max(k2, l2);
 					BufferBuilder buf = Tessellator.getInstance().getBuffer();

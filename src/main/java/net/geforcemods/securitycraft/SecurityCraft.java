@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -129,7 +130,7 @@ public class SecurityCraft {
 					else
 						key = hmp.specialInfoKey();
 
-					SCManualPage page = new SCManualPage(item, key);
+					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key));
 
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());

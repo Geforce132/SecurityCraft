@@ -44,7 +44,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -84,12 +84,17 @@ public class SCEventHandler {
 			return;
 
 		String tipKey = getRandomTip();
-		ITextComponent message;
+		//TODO: is the formatting correct? just guessing
+		IFormattableTextComponent message = new StringTextComponent("[").func_240699_a_(TextFormatting.GOLD)
+				.func_230529_a_(new StringTextComponent("SecurityCraft")).func_240699_a_(TextFormatting.WHITE)
+				.func_230529_a_(new StringTextComponent("] "))
+				.func_230529_a_(ClientUtils.localize("messages.securitycraft:thanks",
+						SecurityCraft.getVersion(),
+						ClientUtils.localize("messages.securitycraft:tip"),
+						ClientUtils.localize(tipKey)));
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").func_230529_a_(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
-		else
-			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
+			message = message.func_230529_a_(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
 
 		event.getPlayer().sendMessage(message, Util.DUMMY_UUID);
 	}

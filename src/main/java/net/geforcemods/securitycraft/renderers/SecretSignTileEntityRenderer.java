@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.RenderComponentsUtil;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.NativeImage;
@@ -20,7 +19,6 @@ import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.Style;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,7 +35,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225616_5_, int p_225616_6_)
+	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
 	{
 		BlockState state = te.getBlockState();
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
@@ -63,8 +61,8 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		stack.push();
 		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		builder = material.getBuffer(buffer, model::getRenderType);
-		model.signBoard.render(stack, builder, p_225616_5_, p_225616_6_);
-		model.signStick.render(stack, builder, p_225616_5_, p_225616_6_);
+		model.signBoard.render(stack, builder, combinedLight, combinedOverlay);
+		model.signStick.render(stack, builder, combinedLight, combinedOverlay);
 		stack.pop();
 		stack.translate(0.0D, 0.33333334F, 0.046666667F);
 		stack.scale(0.010416667F, -0.010416667F, 0.010416667F);
@@ -72,10 +70,10 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		if(te.getOwner().isOwner(Minecraft.getInstance().player))
 		{
 			int textColor = te.getTextColor().getTextColor();
-			int j = (int)(NativeImage.getRed(textColor) * 0.4D);
-			int k = (int)(NativeImage.getGreen(textColor) * 0.4D);
-			int l = (int)(NativeImage.getBlue(textColor) * 0.4D);
-			int i1 = NativeImage.getCombined(0, l, k, j);
+			int r = (int)(NativeImage.getRed(textColor) * 0.4D);
+			int g = (int)(NativeImage.getGreen(textColor) * 0.4D);
+			int b = (int)(NativeImage.getBlue(textColor) * 0.4D);
+			int argb = NativeImage.getCombined(0, b, g, r);
 
 			for(int line = 0; line < 4; ++line)
 			{
@@ -85,9 +83,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 				});
 
 				if(text != null)
-				{
-					font.func_238416_a_(text, -font.func_238414_a_(text) / 2, line * 10 - 20, i1, false, stack.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
-				}
+					font.func_238416_a_(text, -font.func_238414_a_(text) / 2, line * 10 - 20, argb, false, stack.getLast().getMatrix(), buffer, false, 0, combinedLight);
 			}
 		}
 

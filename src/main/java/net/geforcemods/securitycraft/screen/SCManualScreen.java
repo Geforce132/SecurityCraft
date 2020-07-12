@@ -41,6 +41,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,7 +61,7 @@ public class SCManualScreen extends Screen {
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
 	private boolean update = false;
-	private List<String> subpages = new ArrayList<>();
+	private List<ITextProperties> subpages = new ArrayList<>();
 	private int currentSubpage = 0;
 	private final int subpageLength = 1285;
 
@@ -92,13 +93,12 @@ public class SCManualScreen extends Screen {
 		}
 
 		updateRecipeAndIcons();
-		//TODO: entry sorting
-		//		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
-		//			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey());
-		//			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey());
-		//
-		//			return key1.compareTo(key2);
-		//		});
+		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey()).getString();
+			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey()).getString();
+
+			return key1.compareTo(key2);
+		});
 	}
 
 	@Override
@@ -122,17 +122,17 @@ public class SCManualScreen extends Screen {
 		this.blit(matrix, startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
 				font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
 				font.func_238407_a_(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
-			font.drawSplitString(matrix, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0); //TODO: is this drawSplitString?
 
 			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
-				font.drawSplitString(matrix, ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
+				font.func_238418_a_(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
 			font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
 			font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
@@ -340,8 +340,8 @@ public class SCManualScreen extends Screen {
 			recipe = null;
 		}
 
-		String helpInfo = page.getHelpInfo();
-		boolean reinforcedPage = helpInfo.equals("help.securitycraft:reinforced.info") || helpInfo.contains("reinforced_hopper");
+		TranslationTextComponent helpInfo = page.getHelpInfo();
+		boolean reinforcedPage = helpInfo.getKey().equals("help.securitycraft:reinforced.info") || helpInfo.getKey().contains("reinforced_hopper");
 
 		if(recipe != null && !reinforcedPage)
 		{
@@ -460,19 +460,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		helpInfo = ClientUtils.localize(page.getHelpInfo());
-		subpages.clear();
-
-		while(font.getStringWidth(helpInfo) > subpageLength)
-		{
-			String trimmed = font.trimStringToWidth(helpInfo, 1285);
-
-			trimmed = trimmed.trim().substring(0, trimmed.lastIndexOf(' ')).trim(); //remove last word to remove the possibility to break it up onto multiple pages
-			subpages.add(trimmed);
-			helpInfo = helpInfo.replace(trimmed, "").trim();
-		}
-
-		subpages.add(helpInfo);
+		subpages = font.func_238420_b_().func_238362_b_(helpInfo, subpageLength, Style.EMPTY);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}

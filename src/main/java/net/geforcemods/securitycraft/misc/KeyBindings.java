@@ -28,5 +28,4 @@ public class KeyBindings {
 		ClientRegistry.registerKeyBinding(cameraEmitRedstone);
 		ClientRegistry.registerKeyBinding(cameraActivateNightVision);
 	}
-
 }

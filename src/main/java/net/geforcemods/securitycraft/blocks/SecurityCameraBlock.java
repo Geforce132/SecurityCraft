@@ -122,7 +122,15 @@ public class SecurityCameraBlock extends OwnableBlock{
 
 	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
 		if(world.isRemote && player.getRidingEntity() == null)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted").replace("#w", KeyBinding.getDisplayString("key.forward").get().toUpperCase()).replace("#a", KeyBinding.getDisplayString("key.left").get().toUpperCase()).replace("#s", KeyBinding.getDisplayString("key.back").get().toUpperCase()).replace("#d", KeyBinding.getDisplayString("key.right").get().toUpperCase()).replace("#i", KeyBindings.cameraZoomIn.getLocalizedName()).replace("#o", KeyBindings.cameraZoomOut.getLocalizedName()), TextFormatting.GREEN);
+		{
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted",
+					KeyBinding.getDisplayString("key.forward").get(),
+					KeyBinding.getDisplayString("key.left").get(),
+					KeyBinding.getDisplayString("key.back").get(),
+					KeyBinding.getDisplayString("key.right").get(),
+					KeyBinding.getDisplayString(KeyBindings.cameraZoomIn.getKeyDescription()).get(),
+					KeyBinding.getDisplayString(KeyBindings.cameraZoomOut.getKeyDescription())), TextFormatting.GREEN);
+		}
 
 		if(player.getRidingEntity() instanceof SecurityCameraEntity){
 			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, (SecurityCameraEntity) player.getRidingEntity());

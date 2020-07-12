@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -156,11 +157,15 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getTileEntity().getPos().getX(), moduleInv.getTileEntity().getPos().getY(), moduleInv.getTileEntity().getPos().getZ(), button.id));
 	}
 
-	private String getModuleDescription(int buttonID) {
+	private ITextComponent getModuleDescription(int buttonID) {
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
-		//TODO: fix
-		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey()) + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
+		//TODO: is this correct?
+		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey())
+				.func_230529_a_(new StringTextComponent(":"))
+				.func_240699_a_(TextFormatting.RESET)
+				.func_230529_a_(new StringTextComponent("\n\n"))
+				.func_230529_a_(ClientUtils.localize(moduleDescription));
 	}
 
 	private TranslationTextComponent getOptionDescription(int buttonID) {
