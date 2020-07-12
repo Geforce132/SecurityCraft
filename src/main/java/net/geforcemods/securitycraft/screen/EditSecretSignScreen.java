@@ -166,15 +166,6 @@ public class EditSecretSignScreen extends Screen
 		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
 		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		for(int j = 0; j < text.length; ++j)
-		{
-			text[j] = te.func_235677_a_(j, textComponent -> {
-				List<ITextProperties> list = RenderComponentsUtil.func_238505_a_(textComponent, 90, minecraft.fontRenderer);
-
-				return list.isEmpty() ? StringTextComponent.EMPTY : list.get(0);
-			}).getString();
-		}
-
 		positionMatrix = matrix.getLast().getMatrix();
 
 		for(int k1 = 0; k1 < text.length; ++k1)
