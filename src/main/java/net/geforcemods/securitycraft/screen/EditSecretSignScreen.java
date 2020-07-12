@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.xml.soap.Text;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -26,8 +29,10 @@ import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.network.play.client.CUpdateSignPacket;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,6 +46,9 @@ public class EditSecretSignScreen extends Screen
 	private int updateCounter;
 	private int editLine;
 	private TextInputUtil textInputUtil;
+	private final String[] signText = Util.make(new String[4], (i) -> {
+		Arrays.fill(i, "");
+	});
 
 	public EditSecretSignScreen(SecretSignTileEntity te)
 	{
@@ -54,7 +62,13 @@ public class EditSecretSignScreen extends Screen
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, ClientUtils.localize("gui.done"), button -> close()));
 		te.setEditable(false);
-		textInputUtil = new TextInputUtil(minecraft, () -> te.getText(editLine).getString(), s -> te.setText(editLine, new StringTextComponent(s)), 90);
+		textInputUtil = new TextInputUtil(() -> signText[editLine], (s) -> {
+			signText[editLine] = s;
+			te.setText(editLine, new StringTextComponent(s));
+		}, TextInputUtil.func_238570_a_(minecraft), TextInputUtil.func_238582_c_(minecraft), (t) -> {
+			return minecraft.fontRenderer.getStringWidth(t) <= 90;
+		});
+		System.out.println(editLine);
 	}
 
 	@Override
@@ -63,7 +77,7 @@ public class EditSecretSignScreen extends Screen
 		minecraft.keyboardListener.enableRepeatEvents(false);
 
 		if(minecraft.getConnection() != null)
-			minecraft.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), te.getText(0), te.getText(1), te.getText(2), te.getText(3)));
+			minecraft.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), signText[0], signText[1], signText[2], signText[3]));
 
 		te.setEditable(true);
 	}
@@ -102,7 +116,7 @@ public class EditSecretSignScreen extends Screen
 		if(keyCode == 265)
 		{
 			editLine = editLine - 1 & 3;
-			textInputUtil.func_216899_b();
+			textInputUtil.func_238588_f_();
 			return true;
 		}
 		else if(keyCode != 264 && keyCode != 257 && keyCode != 335)
@@ -110,7 +124,7 @@ public class EditSecretSignScreen extends Screen
 		else
 		{
 			editLine = editLine + 1 & 3;
-			textInputUtil.func_216899_b();
+			textInputUtil.func_238588_f_();
 			return true;
 		}
 	}
@@ -128,7 +142,7 @@ public class EditSecretSignScreen extends Screen
 		int k = textInputUtil.func_216896_c();
 		int l = textInputUtil.func_216898_d();
 		int i1 = minecraft.fontRenderer.getBidiFlag() ? -1 : 1;
-		int j1 = editLine * 10 - te.signText.length * 5;
+		int j1 = editLine * 10 - signText.length * 5;
 		IRenderTypeBuffer.Impl buffer;
 		IVertexBuilder builder;
 		Matrix4f positionMatrix;
@@ -159,11 +173,11 @@ public class EditSecretSignScreen extends Screen
 
 		for(int j = 0; j < text.length; ++j)
 		{
-			text[j] = te.getRenderText(j, textComponent -> {
-				List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, minecraft.fontRenderer, false, true);
+			text[j] = te.func_235677_a_(j, textComponent -> {
+				List<ITextProperties> list = RenderComponentsUtil.func_238505_a_(textComponent, 90, minecraft.fontRenderer);
 
-				return list.isEmpty() ? "" : list.get(0).getFormattedText();
-			});
+				return list.isEmpty() ? StringTextComponent.EMPTY : list.get(0);
+			}).getString();
 		}
 
 		positionMatrix = stack.getLast().getMatrix();
@@ -176,7 +190,7 @@ public class EditSecretSignScreen extends Screen
 			{
 				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
 
-				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - te.signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
+				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 
 				if(k1 == this.editLine && k >= 0 && update)
 				{

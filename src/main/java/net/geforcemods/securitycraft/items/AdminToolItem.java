@@ -20,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -73,7 +74,10 @@ public class AdminToolItem extends Item {
 
 					for(int i = 0; i < 4; i++)
 					{
-						PlayerUtils.sendMessageToPlayer(player, adminToolName, ((SecretSignTileEntity)te).signText[i].func_230532_e_(), TextFormatting.DARK_PURPLE); //TODO: is this signText conversion correct?
+						ITextProperties text = ((SecretSignTileEntity)te).func_235677_a_(i, tc -> tc);
+
+						if(text instanceof IFormattableTextComponent)
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, (IFormattableTextComponent)text, TextFormatting.DARK_PURPLE);
 					}
 
 					hasInfo = true;
