@@ -129,7 +129,6 @@ public class EditSecretSignScreen extends Screen
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		MatrixStack stack = new MatrixStack();
 		BlockState state = this.te.getBlockState();
 		boolean isStanding = state.getBlock() instanceof StandingSignBlock;
 		boolean update = updateCounter / 6 % 2 == 0;
@@ -146,26 +145,26 @@ public class EditSecretSignScreen extends Screen
 		RenderHelper.setupGuiFlatDiffuseLighting();
 		renderBackground(matrix);
 		drawCenteredString(matrix, font, title, width / 2, 40, 16777215);
-		stack.push();
-		stack.translate(width / 2, 0.0D, 50.0D);
-		stack.scale(93.75F, -93.75F, 93.75F);
-		stack.translate(0.0D, -1.3125D, 0.0D);
+		matrix.push();
+		matrix.translate(width / 2, 0.0D, 50.0D);
+		matrix.scale(93.75F, -93.75F, 93.75F);
+		matrix.translate(0.0D, -1.3125D, 0.0D);
 
 		if(!isStanding)
-			stack.translate(0.0D, -0.3125D, 0.0D);
+			matrix.translate(0.0D, -0.3125D, 0.0D);
 
-		stack.push();
-		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
+		matrix.push();
+		matrix.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		buffer = minecraft.getRenderTypeBuffers().getBufferSource();
 		builder = material.getBuffer(buffer, signModel::getRenderType);
-		signModel.signBoard.render(stack, builder, 15728880, OverlayTexture.NO_OVERLAY);
+		signModel.signBoard.render(matrix, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
 		if(isStanding)
-			signModel.signStick.render(stack, builder, 15728880, OverlayTexture.NO_OVERLAY);
+			signModel.signStick.render(matrix, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
-		stack.pop();
-		stack.translate(0.0D, 0.33333334F, 0.046666667F);
-		stack.scale(0.010416667F, -0.010416667F, 0.010416667F);
+		matrix.pop();
+		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
+		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
 		for(int j = 0; j < text.length; ++j)
 		{
@@ -176,7 +175,7 @@ public class EditSecretSignScreen extends Screen
 			}).getString();
 		}
 
-		positionMatrix = stack.getLast().getMatrix();
+		positionMatrix = matrix.getLast().getMatrix();
 
 		for(int k1 = 0; k1 < text.length; ++k1)
 		{
@@ -239,8 +238,8 @@ public class EditSecretSignScreen extends Screen
 			}
 		}
 
-		stack.pop();
+		matrix.pop();
 		RenderHelper.setupGui3DDiffuseLighting();
-		super.render(stack, mouseX, mouseY, partialTicks);
+		super.render(matrix, mouseX, mouseY, partialTicks);
 	}
 }
