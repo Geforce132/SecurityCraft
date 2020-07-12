@@ -62,10 +62,10 @@ public class EditSecretSignScreen extends Screen
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, ClientUtils.localize("gui.done"), button -> close()));
 		te.setEditable(false);
-		textInputUtil = new TextInputUtil(() -> signText[editLine], (s) -> {
+		textInputUtil = new TextInputUtil(() -> signText[editLine], s -> {
 			signText[editLine] = s;
 			te.setText(editLine, new StringTextComponent(s));
-		}, TextInputUtil.func_238570_a_(minecraft), TextInputUtil.func_238582_c_(minecraft), (t) -> {
+		}, TextInputUtil.func_238570_a_(minecraft), TextInputUtil.func_238582_c_(minecraft), t -> {
 			return minecraft.fontRenderer.getStringWidth(t) <= 90;
 		});
 		System.out.println(editLine);
