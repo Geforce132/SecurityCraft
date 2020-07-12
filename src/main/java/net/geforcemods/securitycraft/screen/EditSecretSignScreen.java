@@ -174,6 +174,9 @@ public class EditSecretSignScreen extends Screen
 
 			if(s != null)
 			{
+				if (this.font.getBidiFlag()) {
+					s = this.font.bidiReorder(s);
+					
 				float f3 = -this.minecraft.fontRenderer.getStringWidth(s) / 2;
 
 				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
