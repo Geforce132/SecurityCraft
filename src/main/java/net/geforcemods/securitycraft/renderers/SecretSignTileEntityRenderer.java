@@ -21,6 +21,8 @@ import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.Style;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -77,15 +79,14 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 			for(int line = 0; line < 4; ++line)
 			{
-				String text = te.getRenderText(line, textComponent -> {
-					List<ITextComponent> list = RenderComponentsUtil.splitText(textComponent, 90, font, false, true);
-
-					return list.isEmpty() ? "" : list.get(0).getFormattedText();
+				ITextProperties text = te.func_235677_a_(line, textComponent -> {
+					List<ITextProperties> list = font.func_238420_b_().func_238362_b_(textComponent, 90, Style.EMPTY);
+					return list.isEmpty() ? ITextProperties.field_240651_c_ : list.get(0);
 				});
 
 				if(text != null)
 				{
-					font.renderString(text, -font.getStringWidth(text) / 2, line * 10 - te.signText.length * 5, i1, false, stack.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
+					font.func_238416_a_(text, -font.func_238414_a_(text) / 2, line * 10 - 20, i1, false, stack.getLast().getMatrix(), buffer, false, 0, p_225616_5_);
 				}
 			}
 		}
