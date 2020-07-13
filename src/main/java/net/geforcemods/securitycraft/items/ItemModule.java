@@ -80,14 +80,13 @@ public class ItemModule extends Item{
 		else
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable"));
 
-		if(nbtCanBeModified) {
+		if(nbtCanBeModified && stack.getTagCompound() != null && !stack.getTagCompound().isEmpty()) {
 			list.add(" ");
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
 
-			if(stack.getTagCompound() != null)
-				for(int i = 1; i <= MAX_PLAYERS; i++)
-					if(!stack.getTagCompound().getString("Player" + i).isEmpty())
-						list.add(stack.getTagCompound().getString("Player" + i));
+			for(int i = 1; i <= MAX_PLAYERS; i++)
+				if(!stack.getTagCompound().getString("Player" + i).isEmpty())
+					list.add(stack.getTagCompound().getString("Player" + i));
 		}
 
 		if(canBeCustomized()) {
@@ -100,7 +99,7 @@ public class ItemModule extends Item{
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
 				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
 
-			if(getNumberOfAddons() > 0) {
+			if(getNumberOfAddons() > 0 && !getAddons(stack.getTagCompound()).isEmpty()) {
 				list.add(" ");
 
 				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
