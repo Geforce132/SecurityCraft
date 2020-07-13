@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
 
+- Fix: Tooltips of modules show a header even if no blocks/items/players have been added (Thanks Redstone_Dubstep!)
 - Fix: Fake liquids can sometimes be picked up when they shouldn't
 - Fix: Projector doesn't sync on servers
 
