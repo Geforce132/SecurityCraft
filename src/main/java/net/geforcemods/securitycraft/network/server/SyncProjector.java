@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -65,11 +66,14 @@ public class SyncProjector {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			World world = ctx.get().getSender().world;
 
-			if(world.isBlockLoaded(pos) && world.getTileEntity(pos) instanceof ProjectorTileEntity) 
+			if(world.isBlockLoaded(pos) && world.getTileEntity(pos) instanceof ProjectorTileEntity)
 			{
+				BlockState state = world.getBlockState(pos);
+
 				((ProjectorTileEntity) world.getTileEntity(pos)).setProjectionWidth(message.width);
 				((ProjectorTileEntity) world.getTileEntity(pos)).setProjectionRange(message.range);
 				((ProjectorTileEntity) world.getTileEntity(pos)).setProjectionOffset(message.offset);
+				world.notifyBlockUpdate(pos, state, state, 2);
 			}
 		});
 
