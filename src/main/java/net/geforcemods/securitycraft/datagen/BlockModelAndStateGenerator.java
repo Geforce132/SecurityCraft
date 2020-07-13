@@ -1,11 +1,20 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.Arrays;
+import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.WallBlock;
+import net.minecraft.block.WallHeight;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -18,6 +27,12 @@ import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 
 public class BlockModelAndStateGenerator extends BlockStateProvider
 {
+	private static final Map<Direction,EnumProperty<WallHeight>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(
+			Direction.EAST, BlockStateProperties.WALL_HEIGHT_EAST,
+			Direction.NORTH, BlockStateProperties.WALL_HEIGHT_NORTH,
+			Direction.SOUTH, BlockStateProperties.WALL_HEIGHT_SOUTH,
+			Direction.WEST, BlockStateProperties.WALL_HEIGHT_WEST);
+
 	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper)
 	{
 		super(gen, SecurityCraft.MODID, exFileHelper);
@@ -62,6 +77,14 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))});
 	}
 
+	public void fourWayWallHeight(MultiPartBlockStateBuilder builder, ModelFile model, WallHeight height)
+	{
+		Arrays.stream(Direction.values()).filter(dir -> dir.getAxis().isHorizontal()).forEach(dir -> {
+			builder.part().modelFile(model).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).addModel()
+			.condition(DIR_TO_WALL_HEIGHT.get(dir), height);
+		});
+	}
+
 	public void furnaceMine(Block vanillaBlock, Block block)
 	{
 		String baseName = block.getRegistryName().toString();
@@ -80,12 +103,14 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		ResourceLocation texture = new ResourceLocation("block/" + textureName);
 		String baseName = block.getRegistryName().toString();
 		ModelFile post = reinforcedWallPost(baseName + "_post", texture);
-		ModelFile side = reinforcedWallSide(baseName + "_side", texture);
+		ModelFile side = reinforcedWallSide(baseName + "_side", texture, false);
+		ModelFile sideTall = reinforcedWallSide(baseName + "_side_tall", texture, true);
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block)
 				.part().modelFile(post).addModel()
 				.condition(WallBlock.UP, true).end();
 
-		fourWayMultipart(builder, side);
+		fourWayWallHeight(builder, side, WallHeight.LOW);
+		fourWayWallHeight(builder, sideTall, WallHeight.TALL);
 		reinforcedWallInventory(baseName + "_inventory", texture);
 	}
 
@@ -94,9 +119,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_post"), "wall", wall);
 	}
 
-	public BlockModelBuilder reinforcedWallSide(String name, ResourceLocation wall)
+	public BlockModelBuilder reinforcedWallSide(String name, ResourceLocation wall, boolean tall)
 	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_side"), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_side" + (tall ? "_tall" : "")), "wall", wall);
 	}
 
 	public BlockModelBuilder reinforcedWallInventory(String name, ResourceLocation wall)
