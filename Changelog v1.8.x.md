@@ -1,6 +1,7 @@
---------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
 
 - Fix: Fake liquids can sometimes be picked up when they shouldn't
+- Fix: Projector doesn't sync on servers
 
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
