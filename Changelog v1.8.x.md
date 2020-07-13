@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
+
+- Fix: Tooltips of modules show a header even if no blocks/items/players have been added (Thanks Redstone_Dubstep!)
+- Fix: Projector doesn't sync on servers
+
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
 DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.
