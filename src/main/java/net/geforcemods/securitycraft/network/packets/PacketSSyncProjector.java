@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -59,9 +60,12 @@ public class PacketSSyncProjector implements IMessage
 
 				if(world.isBlockLoaded(pos) && world.getTileEntity(pos) instanceof TileEntityProjector)
 				{
+					IBlockState state = world.getBlockState(pos);
+
 					((TileEntityProjector) world.getTileEntity(pos)).setProjectionWidth(message.width);
 					((TileEntityProjector) world.getTileEntity(pos)).setProjectionRange(message.range);
 					((TileEntityProjector) world.getTileEntity(pos)).setProjectionOffset(message.offset);
+					world.notifyBlockUpdate(pos, state, state, 2);
 				}
 			});
 
