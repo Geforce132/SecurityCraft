@@ -80,13 +80,13 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!event.getPlayer().getEntityWorld().isRemote || !ConfigHandler.CONFIG.sayThanksMessage.get())
+		if(!ConfigHandler.CONFIG.sayThanksMessage.get())
 			return;
 
 		String tipKey = getRandomTip();
 		//TODO: is the formatting correct? just guessing
-		IFormattableTextComponent message = new StringTextComponent("[").func_240699_a_(TextFormatting.GOLD)
-				.func_230529_a_(new StringTextComponent("SecurityCraft")).func_240699_a_(TextFormatting.WHITE)
+		IFormattableTextComponent message = new StringTextComponent("[")
+				.func_230529_a_(new StringTextComponent("SecurityCraft").func_240699_a_(TextFormatting.GOLD))
 				.func_230529_a_(new StringTextComponent("] "))
 				.func_230529_a_(ClientUtils.localize("messages.securitycraft:thanks",
 						SecurityCraft.getVersion(),
@@ -384,11 +384,11 @@ public class SCEventHandler {
 
 	private static String getRandomTip(){
 		String[] tips = {
-				"messages.tip.scHelp",
-				"messages.tip.trello",
-				"messages.tip.patreon",
-				"messages.tip.discord",
-				"messages.tip.scserver"
+				"messages.securitycraft:tip.scHelp",
+				"messages.securitycraft:tip.trello",
+				"messages.securitycraft:tip.patreon",
+				"messages.securitycraft:tip.discord",
+				"messages.securitycraft:tip.scserver"
 		};
 
 		return tips[new Random().nextInt(tips.length)];
