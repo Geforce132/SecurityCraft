@@ -84,7 +84,6 @@ public class SCEventHandler {
 			return;
 
 		String tipKey = getRandomTip();
-		//TODO: is the formatting correct? just guessing
 		IFormattableTextComponent message = new StringTextComponent("[")
 				.func_230529_a_(new StringTextComponent("SecurityCraft").func_240699_a_(TextFormatting.GOLD))
 				.func_230529_a_(new StringTextComponent("] "))

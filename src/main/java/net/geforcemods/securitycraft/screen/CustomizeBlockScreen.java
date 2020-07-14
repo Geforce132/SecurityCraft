@@ -160,7 +160,6 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	private ITextComponent getModuleDescription(int buttonID) {
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
-		//TODO: is this correct?
 		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey())
 				.func_230529_a_(new StringTextComponent(":"))
 				.func_240699_a_(TextFormatting.RESET)

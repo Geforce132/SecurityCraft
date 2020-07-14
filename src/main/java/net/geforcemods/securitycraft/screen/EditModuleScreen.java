@@ -89,7 +89,7 @@ public class EditModuleScreen extends Screen
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		inputField.render(matrix, mouseX, mouseY, partialTicks);
-		font.func_238418_a_(editModule, startX + xSize / 2 - font.func_238414_a_(editModule) / 2, startY + 6, width, 4210752); //TODO: is this really drawSplitString?
+		font.func_238418_a_(editModule, startX + xSize / 2 - font.func_238414_a_(editModule) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override

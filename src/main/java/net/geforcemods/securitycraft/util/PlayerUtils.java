@@ -68,7 +68,6 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	//TODO: test correctness of the next three methods. basically just guessing if this is correct for now
 	public static void sendMessageToPlayer(String playerName, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
 		PlayerEntity player = getPlayerFromName(playerName);
 
