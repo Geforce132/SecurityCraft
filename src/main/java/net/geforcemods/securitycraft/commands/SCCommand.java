@@ -31,7 +31,12 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> connect()
 	{
 		return Commands.literal("connect").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").func_230529_a_(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))), Util.DUMMY_UUID); //appendSibling
+			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[")
+					.func_230529_a_(new StringTextComponent("IRC").func_240699_a_(TextFormatting.GREEN))
+					.func_230529_a_(new StringTextComponent("] "))
+					.func_230529_a_(ClientUtils.localize("messages.securitycraft:irc.connected"))
+					.func_230529_a_(new StringTextComponent(" "))
+					.func_230529_a_(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))), Util.DUMMY_UUID); //appendSibling
 			return 0;
 		});
 	}
@@ -50,7 +55,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> bug()
 	{
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:bugReport"), "https://discord.gg/U8DvBAW", TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:bugReport"), SCEventHandler.tipsWithLink.get("discord"), TextFormatting.GOLD);
 			return 0;
 		});
 	}
