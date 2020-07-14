@@ -57,13 +57,13 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_238407_a_(matrix, explanation1, xSize / 2 - font.func_238414_a_(explanation1) / 2, 6, 4210752);
-		font.func_238407_a_(matrix, explanation2, xSize / 2 - font.func_238414_a_(explanation2) / 2 - 2, 30 - 10, 4210752);
-		font.func_238407_a_(matrix, explanation3, xSize / 2 - font.func_238414_a_(explanation3) / 2 - 11, 42 - 10, 4210752);
-		font.func_238407_a_(matrix, explanation4, xSize / 2 - font.func_238414_a_(explanation4) / 2 - 10, 54 - 10, 4210752);
-		font.func_238407_a_(matrix, explanation5, xSize / 2 + 45, 66 - 5, 4210752);
-		font.func_238407_a_(matrix, explanation6, xSize / 2 - font.func_238414_a_(explanation6) / 2 - 6, 78 - 1, 4210752);
-		font.func_238407_a_(matrix, explanation7, xSize / 2 - font.func_238414_a_(explanation7) / 2 - 20, 90 - 1, 4210752);
+		font.func_238422_b_(matrix, explanation1, xSize / 2 - font.func_238414_a_(explanation1) / 2, 6, 4210752);
+		font.func_238422_b_(matrix, explanation2, xSize / 2 - font.func_238414_a_(explanation2) / 2 - 2, 30 - 10, 4210752);
+		font.func_238422_b_(matrix, explanation3, xSize / 2 - font.func_238414_a_(explanation3) / 2 - 11, 42 - 10, 4210752);
+		font.func_238422_b_(matrix, explanation4, xSize / 2 - font.func_238414_a_(explanation4) / 2 - 10, 54 - 10, 4210752);
+		font.func_238422_b_(matrix, explanation5, xSize / 2 + 45, 66 - 5, 4210752);
+		font.func_238422_b_(matrix, explanation6, xSize / 2 - font.func_238414_a_(explanation6) / 2 - 6, 78 - 1, 4210752);
+		font.func_238422_b_(matrix, explanation7, xSize / 2 - font.func_238414_a_(explanation7) / 2 - 20, 90 - 1, 4210752);
 	}
 
 	@Override

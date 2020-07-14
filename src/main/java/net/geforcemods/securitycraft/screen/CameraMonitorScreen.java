@@ -153,7 +153,7 @@ public class CameraMonitorScreen extends Screen {
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.func_238407_a_(matrix, selectCameras, startX + xSize / 2 - font.func_238414_a_(selectCameras) / 2, startY + 6, 4210752);
+		font.func_238422_b_(matrix, selectCameras, startX + xSize / 2 - font.func_238414_a_(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){

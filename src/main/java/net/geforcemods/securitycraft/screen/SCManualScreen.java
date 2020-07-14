@@ -123,22 +123,22 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-				font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.func_238407_a_(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.func_238422_b_(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
-			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0); //TODO: is this drawSplitString?
+			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
 			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
 				font.func_238418_a_(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
+			font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				font.func_238407_a_(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+				font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
@@ -401,7 +401,6 @@ public class SCManualScreen extends Screen {
 
 						for(Option<?> option : scte.customOptions())
 						{
-							//TODO: guessing, check if correct
 							display.add(new StringTextComponent("- ").func_230529_a_(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
@@ -424,7 +423,6 @@ public class SCManualScreen extends Screen {
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							//TODO: guessing, check if correct
 							display.add(new StringTextComponent("- ").func_230529_a_(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}

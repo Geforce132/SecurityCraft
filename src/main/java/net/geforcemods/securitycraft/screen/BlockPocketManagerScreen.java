@@ -61,12 +61,12 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_238407_a_(matrix, blockPocketManager, xSize / 2 - font.func_238414_a_(blockPocketManager) / 2, 6, 4210752);
+		font.func_238422_b_(matrix, blockPocketManager, xSize / 2 - font.func_238414_a_(blockPocketManager) / 2, 6, 4210752);
 
 		if (!te.enabled)
 		{
 
-			font.func_238407_a_(matrix, youNeed, xSize / 2 - font.func_238414_a_(youNeed) / 2, 83, 4210752);
+			font.func_238422_b_(matrix, youNeed, xSize / 2 - font.func_238414_a_(youNeed) / 2, 83, 4210752);
 
 			font.drawString(matrix, (size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);

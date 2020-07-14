@@ -135,7 +135,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.func_238407_a_(matrix, mratName, startX + xSize / 2 - font.func_238414_a_(mratName), startY + -25 + 13, 0xFF0000);
+		font.func_238422_b_(matrix, mratName, startX + xSize / 2 - font.func_238414_a_(mratName), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -147,7 +147,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 			else
 				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.func_238407_a_(matrix, line, startX + xSize / 2 - font.func_238414_a_(line) + 25, startY + i * 30 + 13, 4210752);
+			font.func_238422_b_(matrix, line, startX + xSize / 2 - font.func_238414_a_(line) + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)
