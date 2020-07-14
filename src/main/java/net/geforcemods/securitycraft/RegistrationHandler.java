@@ -93,6 +93,8 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -192,6 +194,15 @@ public class RegistrationHandler
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityType<?>> event)
 	{
+		EntityType<SentryEntity> sentry = (EntityType<SentryEntity>)EntityType.Builder.<SentryEntity>create(SentryEntity::new, EntityClassification.MISC)
+				.size(1.0F, 2.0F)
+				.setTrackingRange(256)
+				.setUpdateInterval(1)
+				.setShouldReceiveVelocityUpdates(true)
+				.setCustomClientFactory((spawnEntity, world) -> new SentryEntity(SCContent.eTypeSentry, world))
+				.build(SecurityCraft.MODID + ":sentry")
+				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry"));
+
 		event.getRegistry().register(EntityType.Builder.<BouncingBettyEntity>create(BouncingBettyEntity::new, EntityClassification.MISC)
 				.size(0.5F, 0.2F)
 				.setTrackingRange(128)
@@ -224,14 +235,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new SecurityCameraEntity(SCContent.eTypeSecurityCamera, world))
 				.build(SecurityCraft.MODID + ":securitycamera")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "securitycamera")));
-		event.getRegistry().register(EntityType.Builder.<SentryEntity>create(SentryEntity::new, EntityClassification.MISC)
-				.size(1.0F, 2.0F)
-				.setTrackingRange(256)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new SentryEntity(SCContent.eTypeSentry, world))
-				.build(SecurityCraft.MODID + ":sentry")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "sentry")));
+		event.getRegistry().register(sentry);
 		event.getRegistry().register(EntityType.Builder.<BulletEntity>create(BulletEntity::new, EntityClassification.MISC)
 				.size(0.15F, 0.1F)
 				.setTrackingRange(256)
@@ -240,6 +244,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new BulletEntity(SCContent.eTypeBullet, world))
 				.build(SecurityCraft.MODID + ":bullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
+		GlobalEntityTypeAttributes.put(sentry, MobEntity.func_233666_p_().func_233813_a_());
 	}
 
 	@SubscribeEvent
