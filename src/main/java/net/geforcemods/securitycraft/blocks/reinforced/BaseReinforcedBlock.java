@@ -46,12 +46,12 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	public BaseReinforcedBlock(Material mat, Block vB, int lightValue)
 	{
-		this(SoundType.STONE, mat, vB, lightValue);
+		this(SoundType.STONE, mat, vB, state -> lightValue);
 	}
 
 	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB)
 	{
-		this(soundType, mat, vB, 0);
+		this(soundType, mat, vB, state -> 0);
 	}
 
 	public BaseReinforcedBlock(Block.Properties properties, Block vB)

@@ -44,7 +44,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 
 	public ReinforcedPaneBlock(SoundType soundType, Material mat, Block vB)
 	{
-		super(soundType, mat, vB, 0);
+		super(soundType, mat, vB);
 		field_196410_A = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		field_196412_B = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(WATERLOGGED, false));
