@@ -72,13 +72,13 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		func_230459_a_(matrix, mouseX, mouseY);
 
 		if(hoverCheckers[0] != null && hoverCheckers[0].checkHover(mouseX, mouseY))
-			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.width.description"), 150), mouseX, mouseY, font);
+			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.width.description"), 150), mouseX, mouseY);
 
 		if(hoverCheckers[1] != null && hoverCheckers[1].checkHover(mouseX, mouseY))
-			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY, font);
+			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.range.description"), 150), mouseX, mouseY);
 
 		if(hoverCheckers[2] != null && hoverCheckers[2].checkHover(mouseX, mouseY))
-			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY, font);
+			renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(ClientUtils.localize("gui.securitycraft:projector.offset.description"), 150), mouseX, mouseY);
 	}
 
 	@Override

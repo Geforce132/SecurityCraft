@@ -122,9 +122,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
 				if(i < moduleInv.getMaxNumberOfModules())
-					this.renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(getModuleDescription(i), 150), mouseX, mouseY, font);
+					renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(getModuleDescription(i), 150), mouseX, mouseY);
 				else
-					this.renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(getOptionDescription(i), 150), mouseX, mouseY, font);
+					renderTooltip(matrix, minecraft.fontRenderer.func_238425_b_(getOptionDescription(i), 150), mouseX, mouseY);
 	}
 
 	/**

@@ -158,10 +158,10 @@ public class CameraMonitorScreen extends Screen {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY, font);
+					renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					this.renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY, font);
+					renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
 			}
 	}
 
