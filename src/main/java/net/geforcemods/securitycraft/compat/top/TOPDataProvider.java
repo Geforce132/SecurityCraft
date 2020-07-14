@@ -55,7 +55,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				.item(disguisedAs)
 				.vertical()
 				.itemLabel(disguisedAs)
-				.text(new StringTextComponent(ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()).func_240701_a_(TextFormatting.BLUE, TextFormatting.ITALIC));
+				.text(new StringTextComponent("" + TextFormatting.BLUE + TextFormatting.ITALIC + ModList.get().getModContainerById(disguisedAs.getItem().getRegistryName().getNamespace()).get().getModInfo().getDisplayName()));
 				return true;
 			}
 
@@ -79,17 +79,17 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				TileEntity te = world.getTileEntity(data.getPos());
 
 				if(te instanceof IOwnable)
-					probeInfo.vertical().text(ClientUtils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).func_240699_a_(TextFormatting.GRAY));
+					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
 				{
 					if(!((IModuleInventory)te).getInsertedModules().isEmpty())
 					{
-						probeInfo.text(ClientUtils.localize("waila.securitycraft:equipped").func_240699_a_(TextFormatting.GRAY));
+						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getString()));
 
 						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(module.getTranslationKey())).func_240699_a_(TextFormatting.GRAY));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").func_230529_a_(new TranslationTextComponent(module.getTranslationKey())));
 					}
 				}
 
@@ -97,14 +97,14 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(ClientUtils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))).func_240699_a_(TextFormatting.GRAY));
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))).getString()));
 				}
 
 				if(te instanceof INameable && ((INameable) te).canBeNamed()){
 					ITextComponent text = ((INameable) te).getCustomSCName();
 					ITextComponent name = text == null ? StringTextComponent.EMPTY : text;
 
-					probeInfo.text(ClientUtils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))).func_240699_a_(TextFormatting.GRAY));
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))).getString()));
 				}
 			}
 		});
@@ -121,25 +121,25 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					SentryEntity sentry = (SentryEntity)entity;
 					SentryEntity.SentryMode mode = sentry.getMode();
 
-					probeInfo.text((ClientUtils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName())).func_240699_a_(TextFormatting.GRAY));
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName()).getString()));
 
 					if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 					{
-						probeInfo.text(ClientUtils.localize("waila.securitycraft:equipped").func_240699_a_(TextFormatting.GRAY));
+						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getString()));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())).func_240699_a_(TextFormatting.GRAY));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").func_230529_a_(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(new StringTextComponent("- ").func_230529_a_(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())).func_240699_a_(TextFormatting.GRAY));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").func_230529_a_(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 					}
 
 					if (mode == SentryEntity.SentryMode.AGGRESSIVE)
-						probeInfo.text(ClientUtils.localize("messages.securitycraft:sentry.mode1").func_240699_a_(TextFormatting.GRAY));
+						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1").getString()));
 					else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
-						probeInfo.text(ClientUtils.localize("messages.securitycraft:sentry.mode2").func_240699_a_(TextFormatting.GRAY));
+						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2").getString()));
 					else
-						probeInfo.text(ClientUtils.localize("messages.securitycraft:sentry.mode3").func_240699_a_(TextFormatting.GRAY));
+						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3").getString()));
 				}
 			}
 		});
