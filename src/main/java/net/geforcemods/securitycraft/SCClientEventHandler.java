@@ -20,7 +20,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +36,6 @@ import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -213,10 +211,10 @@ public class SCClientEventHandler
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
 		GameSettings settings = Minecraft.getInstance().gameSettings;
 		boolean hasRedstoneModule = ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE);
-		ITextComponent exit = ClientUtils.localize("gui.securitycraft:camera.exit", getKeyDescription(settings.keyBindSneak));
-		ITextComponent zoom = ClientUtils.localize("gui.securitycraft:camera.zoom", getKeyDescription(KeyBindings.cameraZoomIn), getKeyDescription(KeyBindings.cameraZoomOut));
-		ITextComponent nightVision = ClientUtils.localize("gui.securitycraft:camera.activateNightVision", getKeyDescription(KeyBindings.cameraActivateNightVision));
-		ITextComponent redstone = ClientUtils.localize("gui.securitycraft:camera.toggleRedstone", getKeyDescription(KeyBindings.cameraEmitRedstone));
+		ITextComponent exit = ClientUtils.localize("gui.securitycraft:camera.exit", settings.keyBindSneak.func_238171_j_());
+		ITextComponent zoom = ClientUtils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.func_238171_j_(), KeyBindings.cameraZoomOut.func_238171_j_());
+		ITextComponent nightVision = ClientUtils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
+		ITextComponent redstone = ClientUtils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.func_238171_j_());
 		ITextComponent redstoneNote = ClientUtils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 
 		font.drawStringWithShadow(matrix, ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - font.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
@@ -246,10 +244,5 @@ public class SCClientEventHandler
 			gui.blit(matrix, 12, 3, 90, 0, 12, 11);
 		else
 			Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(REDSTONE, 10, 0);
-	}
-
-	private static IFormattableTextComponent getKeyDescription(KeyBinding keyBinding)
-	{
-		return ClientUtils.localize(keyBinding.getKeyDescription());
 	}
 }

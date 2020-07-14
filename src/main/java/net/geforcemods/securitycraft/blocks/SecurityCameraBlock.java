@@ -18,7 +18,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -123,13 +124,15 @@ public class SecurityCameraBlock extends OwnableBlock{
 	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
 		if(world.isRemote && player.getRidingEntity() == null)
 		{
+			GameSettings settings = Minecraft.getInstance().gameSettings;
+
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted",
-					KeyBinding.getDisplayString("key.forward").get(),
-					KeyBinding.getDisplayString("key.left").get(),
-					KeyBinding.getDisplayString("key.back").get(),
-					KeyBinding.getDisplayString("key.right").get(),
-					KeyBinding.getDisplayString(KeyBindings.cameraZoomIn.getKeyDescription()).get(),
-					KeyBinding.getDisplayString(KeyBindings.cameraZoomOut.getKeyDescription())), TextFormatting.GREEN);
+					settings.keyBindForward.func_238171_j_(),
+					settings.keyBindLeft.func_238171_j_(),
+					settings.keyBindBack.func_238171_j_(),
+					settings.keyBindRight.func_238171_j_(),
+					KeyBindings.cameraZoomIn.func_238171_j_(),
+					KeyBindings.cameraZoomOut.func_238171_j_()), TextFormatting.GREEN);
 		}
 
 		if(player.getRidingEntity() instanceof SecurityCameraEntity){
