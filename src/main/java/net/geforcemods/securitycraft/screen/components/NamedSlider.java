@@ -36,12 +36,21 @@ public class NamedSlider extends Slider
 	{
 		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
 
-		setMessage(initialString);
+		setMessage(new StringTextComponent(initialString.getString()));
 		blockName = bN.getString();
 		this.id = id;
 		consumer = method;
 	}
 
+	public NamedSlider(ITextComponent initialString, ITextComponent bN, int id, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method)
+	{
+		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
+
+		setMessage(new StringTextComponent(initialString.getString()));
+		blockName = bN.getString();
+		this.id = id;
+		consumer = method;
+	}
 
 	@Override
 	public void onRelease(double mouseX, double mouseY)

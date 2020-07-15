@@ -29,7 +29,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(baseHardness, 6000000.0F));
 	}
 
-	@Override //TODO: should be the same as getBlockHardness (which seems to no longer exist), but might have a different effect
+	@Override
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos)
 	{
 		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getPlayerRelativeBlockHardness(state, player, world, pos);

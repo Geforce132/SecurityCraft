@@ -8,7 +8,7 @@ authors="Geforce132, bl4ckscor3"
 
 [[mods]] #mandatory
 modId="securitycraft" #mandatory
-version="v1.8.19.1" #mandatory
+version="v1.8.19.1-beta1" #mandatory
 displayName="SecurityCraft" #mandatory
 updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 description='''

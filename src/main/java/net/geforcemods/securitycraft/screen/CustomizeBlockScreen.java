@@ -85,10 +85,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 				if(option instanceof ISlider && option.isSlider())
 				{
+					TranslationTextComponent translatedBlockName = ClientUtils.localize(blockName);
+
 					if(option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option);
+						optionButtons[i] = new NamedSlider(ClientUtils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option, null);
 					else if(option instanceof IntOption)
-						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option);
+						optionButtons[i] = new NamedSlider(ClientUtils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option, null);
 
 					optionButtons[i].setFGColor(14737632);
 				}
