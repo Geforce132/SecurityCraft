@@ -8,9 +8,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StandingSignBlock;
+import net.minecraft.client.gui.DialogTexts;
 import net.minecraft.client.gui.fonts.TextInputUtil;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -52,7 +52,7 @@ public class EditSecretSignScreen extends Screen
 	protected void init()
 	{
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, ClientUtils.localize("gui.done"), button -> close()));
+		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, DialogTexts.field_240632_c_, button -> close()));
 		te.setEditable(false);
 		textInputUtil = new TextInputUtil(() -> signText[editLine], s -> {
 			signText[editLine] = s;
@@ -126,7 +126,6 @@ public class EditSecretSignScreen extends Screen
 		boolean update = updateCounter / 6 % 2 == 0;
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		int textColor = te.getTextColor().getTextColor();
-		String[] text = new String[4];
 		int k = textInputUtil.func_216896_c();
 		int l = textInputUtil.func_216898_d();
 		int j1 = editLine * 10 - signText.length * 5;
@@ -160,9 +159,9 @@ public class EditSecretSignScreen extends Screen
 
 		positionMatrix = matrix.getLast().getMatrix();
 
-		for(int k1 = 0; k1 < text.length; ++k1)
+		for(int k1 = 0; k1 < signText.length; ++k1)
 		{
-			String s = text[k1];
+			String s = signText[k1];
 
 			if(s != null)
 			{
@@ -186,9 +185,9 @@ public class EditSecretSignScreen extends Screen
 
 		buffer.finish();
 
-		for(int k3 = 0; k3 < text.length; ++k3)
+		for(int k3 = 0; k3 < signText.length; ++k3)
 		{
-			String s1 = text[k3];
+			String s1 = signText[k3];
 
 			if(s1 != null && k3 == editLine && k >= 0)
 			{
