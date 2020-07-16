@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -39,7 +40,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -64,7 +64,7 @@ public class SecurityCraft {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 		instance = this;
-		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
+		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
@@ -145,8 +145,8 @@ public class SecurityCraft {
 		}
 	}
 
-	public void serverStarting(FMLServerStartingEvent event){
-		SCCommand.register(event.getCommandDispatcher());
+	public void registerCommands(RegisterCommandsEvent event){
+		SCCommand.register(event.getDispatcher());
 	}
 
 	public static String getVersion() {

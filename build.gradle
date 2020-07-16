@@ -103,7 +103,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.66'
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.67'
     
 //  compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2:api")
 //  runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2")
