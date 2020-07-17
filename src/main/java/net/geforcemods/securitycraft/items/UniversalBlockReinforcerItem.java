@@ -51,12 +51,10 @@ public class UniversalBlockReinforcerItem extends Item
 	}
 
 	@Override
-	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player)
+	public boolean canPlayerBreakBlockWhileHolding(BlockState vanillaState, World world, BlockPos pos, PlayerEntity player) //gets rid of the stuttering experienced with onBlockStartBreak
 	{
-		if(!player.isCreative())
+		if(!player.isCreative() && player.getHeldItemMainhand().getItem() == this)
 		{
-			World world = player.getEntityWorld();
-			BlockState vanillaState = world.getBlockState(pos);
 			Block block = vanillaState.getBlock();
 			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
 
@@ -64,8 +62,7 @@ public class UniversalBlockReinforcerItem extends Item
 			{
 				world.setBlockState(pos, ((IReinforcedBlock)rb).getConvertedState(vanillaState));
 				((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-				stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
-				return true;
+				player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
 			}
 		}
 
