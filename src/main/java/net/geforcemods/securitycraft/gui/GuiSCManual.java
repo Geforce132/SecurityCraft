@@ -445,9 +445,9 @@ public class GuiSCManual extends GuiScreen {
 		while(fontRenderer.getStringWidth(helpInfo) > subpageLength)
 		{
 			String trimmed = fontRenderer.trimStringToWidth(helpInfo, 1285);
-
-			if(trimmed.lastIndexOf(' ') > 0)
-				trimmed = trimmed.trim().substring(0, trimmed.lastIndexOf(' ')); //remove last word to remove the possibility to break it up onto multiple pages
+			int temp = trimmed.lastIndexOf(' ');
+			if(temp > 0)
+				trimmed = trimmed.trim().substring(0, temp); //remove last word to remove the possibility to break it up onto multiple pages
 			trimmed = trimmed.trim();
 			subpages.add(trimmed);
 			helpInfo = helpInfo.replace(trimmed, "").trim();
