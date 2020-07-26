@@ -244,7 +244,7 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new BulletEntity(SCContent.eTypeBullet, world))
 				.build(SecurityCraft.MODID + ":bullet")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bullet")));
-		GlobalEntityTypeAttributes.put(sentry, MobEntity.func_233666_p_().func_233813_a_());
+		GlobalEntityTypeAttributes.put(sentry, MobEntity.func_233666_p_().create());
 	}
 
 	@SubscribeEvent

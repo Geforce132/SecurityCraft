@@ -45,8 +45,8 @@ public class WorldUtils{
 	{
 		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
 
-		lightning.func_233576_c_(pos);
-		lightning.func_233623_a_(effectOnly);
+		lightning.moveForced(pos);
+		lightning.setEffectOnly(effectOnly);
 		return lightning;
 	}
 }

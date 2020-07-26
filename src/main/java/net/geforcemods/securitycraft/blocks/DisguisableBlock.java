@@ -39,7 +39,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 				return disguisedState.isNormalCube(world, pos);
 		}
 
-		return state.getMaterial().isOpaque() && state.func_235785_r_(world, pos);
+		return state.getMaterial().isOpaque() && state.hasOpaqueCollisionShape(world, pos);
 	}
 
 	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
@@ -52,7 +52,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 				return disguisedState.causesSuffocation(world, pos);
 		}
 
-		return state.getMaterial().blocksMovement() && state.func_235785_r_(world, pos);
+		return state.getMaterial().blocksMovement() && state.hasOpaqueCollisionShape(world, pos);
 	}
 
 	@Override

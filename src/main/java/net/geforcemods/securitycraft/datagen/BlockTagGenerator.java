@@ -8,9 +8,9 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.fml.RegistryObject;
 
-//func_240522_a_ = func_240522_a_
-//func_240531_a_ = add
-//func_240534_a_ = add
+//getOrCreateBuilder = getOrCreateBuilder
+//addTag = add
+//add = add
 public class BlockTagGenerator extends BlockTagsProvider
 {
 	protected BlockTagGenerator(DataGenerator dataGenerator)
@@ -22,17 +22,17 @@ public class BlockTagGenerator extends BlockTagsProvider
 	protected void registerTags()
 	{
 		//securitycraft tags
-		func_240522_a_(SCTags.Blocks.REINFORCED_ACACIA_LOGS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_ACACIA_LOGS).add(
 				SCContent.REINFORCED_ACACIA_LOG.get(),
 				SCContent.REINFORCED_ACACIA_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_ACACIA_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_ACACIA_WOOD.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_BIRCH_LOGS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_BIRCH_LOGS).add(
 				SCContent.REINFORCED_BIRCH_LOG.get(),
 				SCContent.REINFORCED_BIRCH_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_BIRCH_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_BIRCH_WOOD.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_BUTTONS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_BUTTONS).add(
 				SCContent.REINFORCED_STONE_BUTTON.get(),
 				SCContent.REINFORCED_OAK_BUTTON.get(),
 				SCContent.REINFORCED_SPRUCE_BUTTON.get(),
@@ -40,7 +40,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_JUNGLE_BUTTON.get(),
 				SCContent.REINFORCED_ACACIA_BUTTON.get(),
 				SCContent.REINFORCED_DARK_OAK_BUTTON.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_CARPETS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_CARPETS).add(
 				SCContent.REINFORCED_WHITE_CARPET.get(),
 				SCContent.REINFORCED_ORANGE_CARPET.get(),
 				SCContent.REINFORCED_MAGENTA_CARPET.get(),
@@ -57,54 +57,54 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_GREEN_CARPET.get(),
 				SCContent.REINFORCED_RED_CARPET.get(),
 				SCContent.REINFORCED_BLACK_CARPET.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_COBBLESTONE).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_COBBLESTONE).add(
 				SCContent.REINFORCED_COBBLESTONE.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS).add(
 				SCContent.REINFORCED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_DARK_OAK_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_DIRT).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_DIRT).add(
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_END_STONES).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_END_STONES).add(
 				SCContent.REINFORCED_END_STONE.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_ICE).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_ICE).add(
 				SCContent.REINFORCED_ICE.get(),
 				SCContent.REINFORCED_PACKED_ICE.get(),
 				SCContent.REINFORCED_BLUE_ICE.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_JUNGLE_LOGS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_JUNGLE_LOGS).add(
 				SCContent.REINFORCED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_JUNGLE_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_LOGS)
-		.func_240531_a_(SCTags.Blocks.REINFORCED_ACACIA_LOGS)
-		.func_240531_a_(SCTags.Blocks.REINFORCED_BIRCH_LOGS)
-		.func_240531_a_(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS)
-		.func_240531_a_(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
-		.func_240531_a_(SCTags.Blocks.REINFORCED_OAK_LOGS)
-		.func_240531_a_(SCTags.Blocks.REINFORCED_SPRUCE_LOGS);
-		func_240522_a_(SCTags.Blocks.REINFORCED_OAK_LOGS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_ACACIA_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_BIRCH_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
+		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS);
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_OAK_LOGS).add(
 				SCContent.REINFORCED_OAK_LOG.get(),
 				SCContent.REINFORCED_OAK_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_OAK_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_PLANKS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_PLANKS).add(
 				SCContent.REINFORCED_ACACIA_PLANKS.get(),
 				SCContent.REINFORCED_BIRCH_PLANKS.get(),
 				SCContent.REINFORCED_DARK_OAK_PLANKS.get(),
 				SCContent.REINFORCED_JUNGLE_PLANKS.get(),
 				SCContent.REINFORCED_OAK_PLANKS.get(),
 				SCContent.REINFORCED_SPRUCE_PLANKS.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_SAND).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_SAND).add(
 				SCContent.REINFORCED_RED_SAND.get(),
 				SCContent.REINFORCED_SAND.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_SLABS).func_240531_a_(SCTags.Blocks.REINFORCED_WOODEN_SLABS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_SLABS).addTag(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(
 				SCContent.REINFORCED_NORMAL_STONE_SLAB.get(),
 				SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(),
 				SCContent.REINFORCED_SANDSTONE_SLAB.get(),
@@ -132,12 +132,12 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get(),
 				SCContent.REINFORCED_DIORITE_SLAB.get(),
 				SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_SPRUCE_LOGS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_SPRUCE_LOGS).add(
 				SCContent.REINFORCED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_SPRUCE_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_STAIRS).func_240531_a_(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_STAIRS).addTag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
 				SCContent.REINFORCED_PURPUR_STAIRS.get(),
 				SCContent.REINFORCED_COBBLESTONE_STAIRS.get(),
 				SCContent.REINFORCED_BRICK_STAIRS.get(),
@@ -164,26 +164,26 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_ANDESITE_STAIRS.get(),
 				SCContent.REINFORCED_DIORITE_STAIRS.get(),
 				SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_STONE_BRICKS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_STONE_BRICKS).add(
 				SCContent.REINFORCED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_WOODEN_SLABS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(
 				SCContent.REINFORCED_OAK_SLAB.get(),
 				SCContent.REINFORCED_SPRUCE_SLAB.get(),
 				SCContent.REINFORCED_BIRCH_SLAB.get(),
 				SCContent.REINFORCED_JUNGLE_SLAB.get(),
 				SCContent.REINFORCED_ACACIA_SLAB.get(),
 				SCContent.REINFORCED_DARK_OAK_SLAB.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(
 				SCContent.REINFORCED_OAK_STAIRS.get(),
 				SCContent.REINFORCED_SPRUCE_STAIRS.get(),
 				SCContent.REINFORCED_BIRCH_STAIRS.get(),
 				SCContent.REINFORCED_JUNGLE_STAIRS.get(),
 				SCContent.REINFORCED_ACACIA_STAIRS.get(),
 				SCContent.REINFORCED_DARK_OAK_STAIRS.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_WOOL).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_WOOL).add(
 				SCContent.REINFORCED_WHITE_WOOL.get(),
 				SCContent.REINFORCED_ORANGE_WOOL.get(),
 				SCContent.REINFORCED_MAGENTA_WOOL.get(),
@@ -200,22 +200,22 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_GREEN_WOOL.get(),
 				SCContent.REINFORCED_RED_WOOL.get(),
 				SCContent.REINFORCED_BLACK_WOOL.get());
-		func_240522_a_(SCTags.Blocks.SECRET_SIGNS).func_240531_a_(SCTags.Blocks.SECRET_STANDING_SIGNS).func_240531_a_(SCTags.Blocks.SECRET_WALL_SIGNS);
-		func_240522_a_(SCTags.Blocks.SECRET_STANDING_SIGNS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.SECRET_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
+		getOrCreateBuilder(SCTags.Blocks.SECRET_STANDING_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN.get(),
 				SCContent.SECRET_BIRCH_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_SIGN.get(),
 				SCContent.SECRET_JUNGLE_SIGN.get(),
 				SCContent.SECRET_OAK_SIGN.get(),
 				SCContent.SECRET_SPRUCE_SIGN.get());
-		func_240522_a_(SCTags.Blocks.SECRET_WALL_SIGNS).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.SECRET_WALL_SIGNS).add(
 				SCContent.SECRET_ACACIA_WALL_SIGN.get(),
 				SCContent.SECRET_BIRCH_WALL_SIGN.get(),
 				SCContent.SECRET_DARK_OAK_WALL_SIGN.get(),
 				SCContent.SECRET_JUNGLE_WALL_SIGN.get(),
 				SCContent.SECRET_OAK_WALL_SIGN.get(),
 				SCContent.SECRET_SPRUCE_WALL_SIGN.get());
-		func_240522_a_(SCTags.Blocks.REINFORCED_STONE).func_240534_a_(
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_STONE).add(
 				SCContent.REINFORCED_ANDESITE.get(),
 				SCContent.REINFORCED_DIORITE.get(),
 				SCContent.REINFORCED_GRANITE.get(),
@@ -225,24 +225,24 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_POLISHED_GRANITE.get());
 
 		//minecraft tags
-		Builder<Block> dragonImmune = func_240522_a_(BlockTags.DRAGON_IMMUNE);
-		Builder<Block> witherImmune = func_240522_a_(BlockTags.WITHER_IMMUNE);
+		Builder<Block> dragonImmune = getOrCreateBuilder(BlockTags.DRAGON_IMMUNE);
+		Builder<Block> witherImmune = getOrCreateBuilder(BlockTags.WITHER_IMMUNE);
 
-		func_240522_a_(BlockTags.BAMBOO_PLANTABLE_ON).func_240531_a_(SCTags.Blocks.REINFORCED_SAND).func_240534_a_(SCContent.REINFORCED_GRAVEL.get(),
+		getOrCreateBuilder(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).add(SCContent.REINFORCED_GRAVEL.get(),
 				SCContent.REINFORCED_DIRT.get(),
 				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
-		func_240522_a_(BlockTags.BEACON_BASE_BLOCKS).func_240534_a_(
+		getOrCreateBuilder(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
 				SCContent.REINFORCED_EMERALD_BLOCK.get(),
 				SCContent.REINFORCED_GOLD_BLOCK.get(),
 				SCContent.REINFORCED_IRON_BLOCK.get());
-		func_240522_a_(BlockTags.CARPETS).func_240531_a_(SCTags.Blocks.REINFORCED_CARPETS);
-		func_240522_a_(BlockTags.DOORS).func_240534_a_(SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
-		func_240522_a_(BlockTags.FENCES).func_240534_a_(SCContent.IRON_FENCE.get());
-		func_240522_a_(BlockTags.IMPERMEABLE).func_240534_a_(
+		getOrCreateBuilder(BlockTags.CARPETS).addTag(SCTags.Blocks.REINFORCED_CARPETS);
+		getOrCreateBuilder(BlockTags.DOORS).add(SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
+		getOrCreateBuilder(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
+		getOrCreateBuilder(BlockTags.IMPERMEABLE).add(
 				SCContent.REINFORCED_GLASS.get(),
 				SCContent.REINFORCED_WHITE_STAINED_GLASS.get(),
 				SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(),
@@ -260,14 +260,14 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_GREEN_STAINED_GLASS.get(),
 				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
-		func_240522_a_(BlockTags.RAILS).func_240534_a_(SCContent.TRACK_MINE.get());
-		func_240522_a_(BlockTags.SLABS).func_240531_a_(SCTags.Blocks.REINFORCED_SLABS).func_240534_a_(SCContent.CRYSTAL_QUARTZ_SLAB.get());
-		func_240522_a_(BlockTags.STAIRS).func_240531_a_(SCTags.Blocks.REINFORCED_STAIRS).func_240534_a_(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
-		func_240522_a_(BlockTags.SIGNS).func_240531_a_(SCTags.Blocks.SECRET_SIGNS);
-		func_240522_a_(BlockTags.STANDING_SIGNS).func_240531_a_(SCTags.Blocks.SECRET_STANDING_SIGNS);
-		func_240522_a_(BlockTags.TRAPDOORS).func_240534_a_(SCContent.REINFORCED_IRON_TRAPDOOR.get());
-		func_240522_a_(BlockTags.WALL_SIGNS).func_240531_a_(SCTags.Blocks.SECRET_WALL_SIGNS);
-		func_240522_a_(BlockTags.WALLS).func_240534_a_(
+		getOrCreateBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
+		getOrCreateBuilder(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
+		getOrCreateBuilder(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
+		getOrCreateBuilder(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
+		getOrCreateBuilder(BlockTags.STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS);
+		getOrCreateBuilder(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
+		getOrCreateBuilder(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
+		getOrCreateBuilder(BlockTags.WALLS).add(
 				SCContent.REINFORCED_COBBLESTONE_WALL.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(),
 				SCContent.REINFORCED_BRICK_WALL.get(),
@@ -289,8 +289,8 @@ public class BlockTagGenerator extends BlockTagsProvider
 
 			if(block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.STAIRS_CRYSTAL_QUARTZ.get())
 			{
-				dragonImmune.func_240534_a_(block);
-				witherImmune.func_240534_a_(block);
+				dragonImmune.add(block);
+				witherImmune.add(block);
 			}
 		}
 	}

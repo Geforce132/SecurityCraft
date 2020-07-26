@@ -133,7 +133,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		TranslationTextComponent s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
 		font.func_238422_b_(matrix, s, xSize / 2 - font.func_238414_a_(s) / 2, 6, 4210752);
@@ -141,7 +141,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	@Override
-	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -163,10 +163,10 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
 		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey())
-				.func_230529_a_(new StringTextComponent(":"))
-				.func_240699_a_(TextFormatting.RESET)
-				.func_230529_a_(new StringTextComponent("\n\n"))
-				.func_230529_a_(ClientUtils.localize(moduleDescription));
+				.append(new StringTextComponent(":"))
+				.mergeStyle(TextFormatting.RESET)
+				.append(new StringTextComponent("\n\n"))
+				.append(ClientUtils.localize(moduleDescription));
 	}
 
 	private TranslationTextComponent getOptionDescription(int buttonID) {

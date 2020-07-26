@@ -61,7 +61,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		if(!world.isRemote){
 			if(!sentries.isEmpty()) {
 				SentryEntity sentry = sentries.get(0);
-				BlockPos pos2 = sentry.func_233580_cy_();
+				BlockPos pos2 = sentry.getPosition();
 
 				if(!isSentryAdded(stack, pos2)){
 					int availSlot = getNextAvaliableSlot(stack);

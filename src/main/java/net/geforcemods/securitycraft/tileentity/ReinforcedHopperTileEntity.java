@@ -455,7 +455,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 				inv = (IInventory)te;
 
 				if(inv instanceof ChestTileEntity && block instanceof ChestBlock)
-					inv = ChestBlock.func_226916_a_((ChestBlock)block, state, world, pos, true);
+					inv = ChestBlock.getChestInventory((ChestBlock)block, state, world, pos, true);
 			}
 		}
 

@@ -163,7 +163,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockState blockstate2 = iblockreader.getBlockState(blockpos4);
 		BlockPos blockpos5 = blockpos1.offset(direction2);
 		BlockState blockstate3 = iblockreader.getBlockState(blockpos5);
-		int i = (blockstate.func_235785_r_(iblockreader, blockpos2) ? -1 : 0) + (blockstate1.func_235785_r_(iblockreader, blockpos3) ? -1 : 0) + (blockstate2.func_235785_r_(iblockreader, blockpos4) ? 1 : 0) + (blockstate3.func_235785_r_(iblockreader, blockpos5) ? 1 : 0); //isCollisionShapeOpaque
+		int i = (blockstate.hasOpaqueCollisionShape(iblockreader, blockpos2) ? -1 : 0) + (blockstate1.hasOpaqueCollisionShape(iblockreader, blockpos3) ? -1 : 0) + (blockstate2.hasOpaqueCollisionShape(iblockreader, blockpos4) ? 1 : 0) + (blockstate3.hasOpaqueCollisionShape(iblockreader, blockpos5) ? 1 : 0);
 		boolean flag = blockstate.getBlock() == this && blockstate.get(HALF) == DoubleBlockHalf.LOWER;
 		boolean flag1 = blockstate2.getBlock() == this && blockstate2.get(HALF) == DoubleBlockHalf.LOWER;
 		if ((!flag || flag1) && i <= 0) {

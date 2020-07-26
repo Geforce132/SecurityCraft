@@ -58,7 +58,7 @@ public class OpenGui {
 		ctx.get().enqueueWork(() -> {
 			ResourceLocation id = message.id;
 			ServerPlayerEntity player = ctx.get().getSender();
-			BlockPos pos = player.func_233580_cy_();
+			BlockPos pos = player.getPosition();
 
 			if(id.equals(SCContent.cTypeBriefcaseInventory.getRegistryName()))
 			{

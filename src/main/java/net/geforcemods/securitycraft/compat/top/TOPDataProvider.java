@@ -89,7 +89,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getString()));
 
 						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").func_230529_a_(new TranslationTextComponent(module.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(module.getTranslationKey())));
 					}
 				}
 
@@ -128,10 +128,10 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getString()));
 
 						if (!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").func_230529_a_(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
 
 						if (!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").func_230529_a_(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 					}
 
 					if (mode == SentryEntity.SentryMode.AGGRESSIVE)

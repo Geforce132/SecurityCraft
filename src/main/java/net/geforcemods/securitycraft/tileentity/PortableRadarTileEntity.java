@@ -67,11 +67,11 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((PlayerEntity)attacked))
 			{
-				IFormattableTextComponent attackedName = attacked.getName().copyRaw().func_240699_a_(TextFormatting.ITALIC);
+				IFormattableTextComponent attackedName = attacked.getName().copyRaw().mergeStyle(TextFormatting.ITALIC);
 				IFormattableTextComponent text;
 
 				if(hasCustomSCName())
-					text = ClientUtils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().func_240699_a_(TextFormatting.ITALIC));
+					text = ClientUtils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
 				else
 					text = ClientUtils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 

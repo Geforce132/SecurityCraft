@@ -98,7 +98,7 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
 
-			button.setMessage(button.getMessage().copyRaw().func_230529_a_(new StringTextComponent("" + camID)));
+			button.setMessage(button.getMessage().copyRaw().append(new StringTextComponent("" + camID)));
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {

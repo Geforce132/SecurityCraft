@@ -61,7 +61,7 @@ public class EditSecretSignScreen extends Screen
 	}
 
 	@Override
-	public void removed()
+	public void onClose()
 	{
 		minecraft.keyboardListener.enableRepeatEvents(false);
 
@@ -89,12 +89,12 @@ public class EditSecretSignScreen extends Screen
 	@Override
 	public boolean charTyped(char typedChar, int keyCode)
 	{
-		textInputUtil.func_216894_a(typedChar);
+		textInputUtil.putChar(typedChar);
 		return true;
 	}
 
 	@Override
-	public void onClose()
+	public void closeScreen()
 	{
 		close();
 	}
@@ -109,7 +109,7 @@ public class EditSecretSignScreen extends Screen
 			return true;
 		}
 		else if(keyCode != 264 && keyCode != 257 && keyCode != 335)
-			return textInputUtil.func_216897_a(keyCode) ? true : super.keyPressed(keyCode, p_keyPressed_2_, p_keyPressed_3_);
+			return textInputUtil.specialKeyPressed(keyCode) ? true : super.keyPressed(keyCode, p_keyPressed_2_, p_keyPressed_3_);
 		else
 		{
 			editLine = editLine + 1 & 3;
@@ -126,8 +126,8 @@ public class EditSecretSignScreen extends Screen
 		boolean update = updateCounter / 6 % 2 == 0;
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		int textColor = te.getTextColor().getTextColor();
-		int k = textInputUtil.func_216896_c();
-		int l = textInputUtil.func_216898_d();
+		int k = textInputUtil.getEndIndex();
+		int l = textInputUtil.getStartIndex();
 		int j1 = editLine * 10 - signText.length * 5;
 		IRenderTypeBuffer.Impl buffer;
 		IVertexBuilder builder;

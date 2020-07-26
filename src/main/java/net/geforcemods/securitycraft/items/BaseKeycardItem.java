@@ -52,7 +52,7 @@ public class BaseKeycardItem extends Item{
 				stack.getTag().putInt("Uses", 5);
 			}
 
-			list.add(ClientUtils.localize("tooltip.securitycraft:keycard.uses").func_230529_a_(new StringTextComponent(" " + stack.getTag().getInt("Uses"))).func_230530_a_(GRAY_STYLE));
+			list.add(ClientUtils.localize("tooltip.securitycraft:keycard.uses").append(new StringTextComponent(" " + stack.getTag().getInt("Uses"))).setStyle(GRAY_STYLE));
 
 		}
 	}

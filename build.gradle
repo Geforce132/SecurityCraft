@@ -45,7 +45,7 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200707-1.16.1'
+    mappings channel: 'snapshot', version: '20200723-1.16.1'
 	
     runs {
         client {
@@ -103,7 +103,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.67'
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.75'
     
 //  compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2:api")
 //  runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2")

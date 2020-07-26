@@ -74,7 +74,7 @@ public class SecurityCameraEntity extends Entity{
 		playerViewingName = player.getName().getString();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
-		TileEntity te = world.getTileEntity(func_233580_cy_());
+		TileEntity te = world.getTileEntity(getPosition());
 
 		if(te instanceof SecurityCameraTileEntity)
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
@@ -94,7 +94,7 @@ public class SecurityCameraEntity extends Entity{
 		playerViewingName = camera.playerViewingName;
 		setPosition(x + 0.5D, y, z + 0.5D);
 
-		TileEntity te = world.getTileEntity(func_233580_cy_());
+		TileEntity te = world.getTileEntity(getPosition());
 
 		if(te instanceof SecurityCameraTileEntity)
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
@@ -250,7 +250,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewLeft() {
-		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).func_235901_b_(SecurityCameraBlock.FACING)) { //has
+		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).hasProperty(SecurityCameraBlock.FACING)) {
 			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
@@ -282,7 +282,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewRight(){
-		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).func_235901_b_(SecurityCameraBlock.FACING)) { //has
+		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).hasProperty(SecurityCameraBlock.FACING)) {
 			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
@@ -317,7 +317,7 @@ public class SecurityCameraEntity extends Entity{
 		zoomAmount = Math.min(zoomAmount - 0.1F, 2.0F);
 
 		if(!zooming)
-			Minecraft.getInstance().world.playSound(func_233580_cy_(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void zoomOut()
@@ -325,7 +325,7 @@ public class SecurityCameraEntity extends Entity{
 		zoomAmount = Math.max(zoomAmount + 0.1F, -0.5F);
 
 		if(!zooming)
-			Minecraft.getInstance().world.playSound(func_233580_cy_(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
@@ -350,7 +350,7 @@ public class SecurityCameraEntity extends Entity{
 
 	private boolean isCameraDown()
 	{
-		return world.getTileEntity(func_233580_cy_()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)world.getTileEntity(func_233580_cy_())).down;
+		return world.getTileEntity(getPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)world.getTileEntity(getPosition())).down;
 	}
 
 	@Override

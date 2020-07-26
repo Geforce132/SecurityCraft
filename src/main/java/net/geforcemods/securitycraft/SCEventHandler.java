@@ -85,15 +85,15 @@ public class SCEventHandler {
 
 		String tipKey = getRandomTip();
 		IFormattableTextComponent message = new StringTextComponent("[")
-				.func_230529_a_(new StringTextComponent("SecurityCraft").func_240699_a_(TextFormatting.GOLD))
-				.func_230529_a_(new StringTextComponent("] "))
-				.func_230529_a_(ClientUtils.localize("messages.securitycraft:thanks",
+				.append(new StringTextComponent("SecurityCraft").mergeStyle(TextFormatting.GOLD))
+				.append(new StringTextComponent("] "))
+				.append(ClientUtils.localize("messages.securitycraft:thanks",
 						SecurityCraft.getVersion(),
 						ClientUtils.localize("messages.securitycraft:tip"),
 						ClientUtils.localize(tipKey)));
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = message.func_230529_a_(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
+			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
 
 		event.getPlayer().sendMessage(message, Util.DUMMY_UUID);
 	}
@@ -321,7 +321,7 @@ public class SCEventHandler {
 		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity && event.getEntityMounting() instanceof PlayerEntity)
 		{
 			PlayerEntity player = (PlayerEntity)event.getEntityMounting();
-			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().func_233580_cy_());
+			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
 			{

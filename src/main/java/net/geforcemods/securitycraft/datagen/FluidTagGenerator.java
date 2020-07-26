@@ -17,8 +17,8 @@ public class FluidTagGenerator extends FluidTagsProvider
 	@Override
 	protected void registerTags()
 	{
-		func_240522_a_(FluidTags.LAVA).func_240534_a_(SCContent.FAKE_LAVA.get(), SCContent.FLOWING_FAKE_LAVA.get());
-		func_240522_a_(FluidTags.WATER).func_240534_a_(SCContent.FAKE_WATER.get(), SCContent.FLOWING_FAKE_WATER.get());
+		getOrCreateBuilder(FluidTags.LAVA).add(SCContent.FAKE_LAVA.get(), SCContent.FLOWING_FAKE_LAVA.get());
+		getOrCreateBuilder(FluidTags.WATER).add(SCContent.FAKE_WATER.get(), SCContent.FLOWING_FAKE_WATER.get());
 	}
 
 	@Override

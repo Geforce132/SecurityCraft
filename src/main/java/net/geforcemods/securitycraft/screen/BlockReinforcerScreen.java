@@ -38,7 +38,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	}
 
 	@Override
-	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
 
@@ -67,7 +67,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	}
 
 	@Override
-	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

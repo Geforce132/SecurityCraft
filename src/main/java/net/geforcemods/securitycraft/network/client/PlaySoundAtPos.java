@@ -77,7 +77,7 @@ public class PlaySoundAtPos{
 	@OnlyIn(Dist.CLIENT)
 	public static void handleMessage(PlaySoundAtPos message, Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = Minecraft.getInstance().player;
-		BlockPos pos = player.func_233580_cy_();
+		BlockPos pos = player.getPosition();
 		BlockPos origin = new BlockPos(message.x, message.y, message.z);
 		int dist = Math.max(0, Math.min(pos.manhattanDistance(origin), 20)); //clamp between 0 and 20
 		float volume = (float)(message.volume * (1 - ((float)dist / 20))); //the further away the quieter

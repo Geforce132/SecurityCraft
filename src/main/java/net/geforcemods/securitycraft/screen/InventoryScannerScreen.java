@@ -72,11 +72,11 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void func_230451_b_(MatrixStack matrix, int mouseX, int mouseY)
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		//TODO: translate everything untranslated in here, also other mc versions
 		font.func_238422_b_(matrix, new StringTextComponent("Prohibited Items"), 8, 6, 4210752);
-		font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).func_230530_a_(UNDERLINE), 112, 6, 4210752);
+		font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
 			font.func_238422_b_(matrix, new StringTextComponent("Storage"), 183, 6, 4210752);
@@ -85,7 +85,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	}
 
 	@Override
-	protected void func_230450_a_(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		if(hasStorageModule && owns)

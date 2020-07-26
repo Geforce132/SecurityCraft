@@ -196,21 +196,21 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			switch(mode) {
 				case AGGRESSIVE:
 					sentries.get(0).toggleMode(Minecraft.getInstance().player, AGGRESSIVE, sendMessage);
-					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).func_233580_cy_(), mode, sendMessage));
+					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), mode, sendMessage));
 					guibuttons[sentry][AGGRESSIVE].active = false;
 					guibuttons[sentry][CAMOUFLAGE].active = true;
 					guibuttons[sentry][IDLE].active = true;
 					break;
 				case CAMOUFLAGE:
 					sentries.get(0).toggleMode(Minecraft.getInstance().player, CAMOUFLAGE, sendMessage);
-					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).func_233580_cy_(), mode, sendMessage));
+					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), mode, sendMessage));
 					guibuttons[sentry][AGGRESSIVE].active = true;
 					guibuttons[sentry][CAMOUFLAGE].active = false;
 					guibuttons[sentry][IDLE].active = true;
 					break;
 				case IDLE:
 					sentries.get(0).toggleMode(Minecraft.getInstance().player, IDLE, sendMessage);
-					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).func_233580_cy_(), mode, sendMessage));
+					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), mode, sendMessage));
 					guibuttons[sentry][AGGRESSIVE].active = true;
 					guibuttons[sentry][CAMOUFLAGE].active = true;
 					guibuttons[sentry][IDLE].active = false;

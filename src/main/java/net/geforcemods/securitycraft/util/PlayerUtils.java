@@ -74,17 +74,17 @@ public class PlayerUtils{
 		if(player != null)
 		{
 			player.sendMessage(new StringTextComponent("[")
-					.func_230529_a_(prefix.func_230530_a_(Style.EMPTY.setFormatting(color)))
-					.func_230529_a_(new StringTextComponent("] ")).func_230530_a_(Style.EMPTY.setFormatting(TextFormatting.WHITE))
-					.func_230529_a_(text), Util.DUMMY_UUID); //appendSibling
+					.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
+					.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
+					.append(text), Util.DUMMY_UUID); //appendSibling
 		}
 	}
 
 	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
 		player.sendMessage(new StringTextComponent("[")
-				.func_230529_a_(prefix.func_230530_a_(Style.EMPTY.setFormatting(color)))
-				.func_230529_a_(new StringTextComponent("] ")).func_230530_a_(Style.EMPTY.setFormatting(TextFormatting.WHITE))
-				.func_230529_a_(text), Util.DUMMY_UUID); //appendSibling
+				.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
+				.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
+				.append(text), Util.DUMMY_UUID); //appendSibling
 	}
 
 	/**
@@ -92,11 +92,11 @@ public class PlayerUtils{
 	 */
 	public static void sendMessageEndingWithLink(ICommandSource sender, IFormattableTextComponent prefix, IFormattableTextComponent text, String link, TextFormatting color){
 		sender.sendMessage(new StringTextComponent("[")
-				.func_230529_a_(prefix.func_230530_a_(Style.EMPTY.setFormatting(color)))
-				.func_230529_a_(new StringTextComponent("] ")).func_230530_a_(Style.EMPTY.setFormatting(TextFormatting.WHITE))
-				.func_230529_a_(text)
-				.func_230529_a_(new StringTextComponent(": "))
-				.func_230529_a_(ForgeHooks.newChatWithLinks(link)), Util.DUMMY_UUID); //appendSibling
+				.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
+				.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
+				.append(text)
+				.append(new StringTextComponent(": "))
+				.append(ForgeHooks.newChatWithLinks(link)), Util.DUMMY_UUID); //appendSibling
 	}
 
 	/**

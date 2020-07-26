@@ -50,7 +50,13 @@ public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return getDefaultState().with(UP, vanillaState.get(UP)).with(field_235613_c_, vanillaState.get(field_235613_c_)).with(field_235612_b_, vanillaState.get(field_235612_b_)).with(field_235614_d_, vanillaState.get(field_235614_d_)).with(field_235615_e_, vanillaState.get(field_235615_e_)).with(field_235616_f_, vanillaState.get(field_235616_f_));
+		return getDefaultState()
+				.with(UP, vanillaState.get(UP))
+				.with(WALL_HEIGHT_NORTH, vanillaState.get(WALL_HEIGHT_NORTH))
+				.with(WALL_HEIGHT_EAST, vanillaState.get(WALL_HEIGHT_EAST))
+				.with(WALL_HEIGHT_SOUTH, vanillaState.get(WALL_HEIGHT_SOUTH))
+				.with(WALL_HEIGHT_WEST, vanillaState.get(WALL_HEIGHT_WEST))
+				.with(WATERLOGGED, vanillaState.get(WATERLOGGED));
 	}
 
 	@Override

@@ -32,11 +32,11 @@ public class SCCommand {
 	{
 		return Commands.literal("connect").executes(ctx -> {
 			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[")
-					.func_230529_a_(new StringTextComponent("IRC").func_240699_a_(TextFormatting.GREEN))
-					.func_230529_a_(new StringTextComponent("] "))
-					.func_230529_a_(ClientUtils.localize("messages.securitycraft:irc.connected"))
-					.func_230529_a_(new StringTextComponent(" "))
-					.func_230529_a_(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))), Util.DUMMY_UUID); //appendSibling
+					.append(new StringTextComponent("IRC").mergeStyle(TextFormatting.GREEN))
+					.append(new StringTextComponent("] "))
+					.append(ClientUtils.localize("messages.securitycraft:irc.connected"))
+					.append(new StringTextComponent(" "))
+					.append(ForgeHooks.newChatWithLinks(SCEventHandler.tipsWithLink.get("discord"))), Util.DUMMY_UUID); //appendSibling
 			return 0;
 		});
 	}
