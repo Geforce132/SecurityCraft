@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.compat.waila;
 
+import java.util.List;
+
 import mcp.mobius.waila.api.IComponentProvider;
+import mcp.mobius.waila.api.IDataAccessor;
 import mcp.mobius.waila.api.IEntityAccessor;
 import mcp.mobius.waila.api.IEntityComponentProvider;
 import mcp.mobius.waila.api.IPluginConfig;
@@ -10,14 +13,18 @@ import mcp.mobius.waila.api.TooltipPosition;
 import mcp.mobius.waila.api.WailaPlugin;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -76,7 +83,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if(config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) te).getOwner().getName()));
+			body.add(ClientUtils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()));
 
 		if(disguised)
 			return;
@@ -84,23 +91,22 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		//if the te is ownable, show modules only when it's owned, otherwise always show
 		if(config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
 			if(!((IModuleInventory) te).getInsertedModules().isEmpty())
-				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
+				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-				body.add(new StringTextComponent("- " + new TranslationTextComponent(module.getTranslationKey()).getFormattedText()));
+				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
 		}
 
 		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
 			String password = ((IPasswordProtected) te).getPassword();
 
-			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))));
+			body.add(ClientUtils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))));
 		}
 
 		if(config.get(SHOW_CUSTOM_NAME) && te instanceof INameable && ((INameable) te).canBeNamed()){
 			ITextComponent text = ((INameable) te).getCustomSCName();
-			String name = text == null ? "" : text.getFormattedText();
 
-			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomSCName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
+			body.add(ClientUtils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? text : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
 		}
 	}
 
@@ -109,7 +115,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		Entity entity = data.getEntity();
 
 		if(config.get(SHOW_OWNER) && data.getEntity() instanceof SentryEntity) {
-			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
+			body.add(ClientUtils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName()));
 		}
 
 		if(config.get(SHOW_MODULES) && entity instanceof SentryEntity && ((SentryEntity) entity).getOwner().isOwner(data.getPlayer())){
@@ -117,13 +123,13 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 			if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 			{
-				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
+				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 				if (!sentry.getWhitelistModule().isEmpty())
-					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText()));
+					body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
 
 				if (!sentry.getDisguiseModule().isEmpty())
-					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
+					body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 			}
 		}
 
@@ -133,11 +139,11 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			SentryEntity.SentryMode mode = sentry.getMode();
 
 			if (mode == SentryEntity.SentryMode.AGGRESSIVE)
-				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode1")));
+				body.add(ClientUtils.localize("messages.securitycraft:sentry.mode1"));
 			else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
-				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode2")));
+				body.add(ClientUtils.localize("messages.securitycraft:sentry.mode2"));
 			else
-				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode3")));
+				body.add(ClientUtils.localize("messages.securitycraft:sentry.mode3"));
 		}
 	}
 }
