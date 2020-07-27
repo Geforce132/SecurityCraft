@@ -375,8 +375,7 @@ public class SCEventHandler {
 					}
 				}
 			}
-			while((pos = pos.up()).getY() < event.getWorld().getHeight());
-
+			while((pos = pos.up()).getY() < Math.min(event.getWorld().getHeight(), 256)); //open cubic chunks "fix"
 		}
 	}
 

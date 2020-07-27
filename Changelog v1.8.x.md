@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.19.2 of SecurityCraft--------------------------
+
+- Fix: SecurityCraft is incompatible with OpenCubicChunks
+- Fix: Crash on SC Manual pages with subpages, when using a language that does not use spaces to seperate words
+
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
 
 - Fix: Tooltips of modules show a header even if no blocks/items/players have been added (Thanks Redstone_Dubstep!)
