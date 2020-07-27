@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.19.1-beta1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.19.1-beta2 of SecurityCraft--------------------------
 
 - Misc.: Re-enable fix for Cyclic's Sack of Holding
 - Misc.: Re-enable HWYLA integration
