@@ -60,7 +60,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
-import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.geforcemods.securitycraft.network.packets.PacketSetCameraPowered;
 import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
 import net.geforcemods.securitycraft.network.packets.PacketSetKeycardLevel;
 import net.geforcemods.securitycraft.network.packets.PacketSetSentryMode;
@@ -427,7 +427,7 @@ public class RegistrationHandler
 
 	public static void registerPackets(SimpleNetworkWrapper network)
 	{
-		network.registerMessage(PacketSetBlock.Handler.class, PacketSetBlock.class, 1, Side.SERVER);
+		network.registerMessage(PacketSetCameraPowered.Handler.class, PacketSetCameraPowered.class, 1, Side.SERVER);
 		network.registerMessage(PacketSetKeycardLevel.Handler.class, PacketSetKeycardLevel.class, 3, Side.SERVER);
 		network.registerMessage(PacketUpdateLogger.Handler.class, PacketUpdateLogger.class, 4, Side.CLIENT);
 		network.registerMessage(PacketCUpdateNBTTag.Handler.class, PacketCUpdateNBTTag.class, 5, Side.CLIENT);

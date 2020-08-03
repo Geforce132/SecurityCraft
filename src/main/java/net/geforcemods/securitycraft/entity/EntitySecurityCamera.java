@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
-import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.geforcemods.securitycraft.network.packets.PacketSetCameraPowered;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -337,9 +337,9 @@ public class EntitySecurityCamera extends Entity{
 
 		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			if(BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
+				SecurityCraft.network.sendToServer(new PacketSetCameraPowered(pos, false));
 			else if(!BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) + 6));
+				SecurityCraft.network.sendToServer(new PacketSetCameraPowered(pos, true));
 	}
 
 	public void enableNightVision() {
