@@ -103,10 +103,10 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.75'
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.99'
     
-    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.9-B76_1.16.1:api")
-    runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.9-B76_1.16.1")
+    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.10-B77_1.16.1:api")
+    runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.10-B77_1.16.1")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.1-beta-4")
     compileOnly fg.deobf("curse.maven:cyclic:3014795")
     compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.6:api")
