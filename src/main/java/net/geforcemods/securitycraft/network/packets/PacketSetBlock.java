@@ -64,6 +64,9 @@ public class PacketSetBlock implements IMessage{
 			EntityPlayer par1EntityPlayer = context.getServerHandler().playerEntity;
 
 			Block block = (Block)Block.blockRegistry.getObject(blockID);
+			if(blockID != 55) // see this video for see the usebug https://youtu.be/0X2ZmO8-EM4?t=397
+				return null;
+			else
 			if(packet.metadata != -1)
 				getWorld(par1EntityPlayer).setBlock(x, y, z, block, packet.metadata, 3);
 			else
