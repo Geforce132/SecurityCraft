@@ -75,16 +75,18 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack){
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		if(entity instanceof PlayerEntity)
+		boolean isPlayer = entity instanceof PlayerEntity;
+
+		if(isPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
 
-		if(world.getTileEntity(pos.east()) instanceof KeypadChestTileEntity && ((KeypadChestTileEntity) world.getTileEntity(pos.east())).getOwner().isOwner((PlayerEntity) entity))
+		if(world.getTileEntity(pos.east()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.east())).getOwner().isOwner((PlayerEntity) entity))
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.east())).getPassword());
-		else if(world.getTileEntity(pos.west()) instanceof KeypadChestTileEntity && ((KeypadChestTileEntity) world.getTileEntity(pos.west())).getOwner().isOwner((PlayerEntity) entity))
+		else if(world.getTileEntity(pos.west()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.west())).getOwner().isOwner((PlayerEntity) entity))
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.west())).getPassword());
-		else if(world.getTileEntity(pos.south()) instanceof KeypadChestTileEntity && ((KeypadChestTileEntity) world.getTileEntity(pos.south())).getOwner().isOwner((PlayerEntity) entity))
+		else if(world.getTileEntity(pos.south()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.south())).getOwner().isOwner((PlayerEntity) entity))
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.south())).getPassword());
-		else if(world.getTileEntity(pos.north()) instanceof KeypadChestTileEntity && ((KeypadChestTileEntity) world.getTileEntity(pos.north())).getOwner().isOwner((PlayerEntity) entity))
+		else if(world.getTileEntity(pos.north()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.north())).getOwner().isOwner((PlayerEntity) entity))
 			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.north())).getPassword());
 	}
 
