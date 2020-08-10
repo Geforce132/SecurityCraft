@@ -64,13 +64,13 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
 		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		if(world.getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
+		if(world.getTileEntity(pos.east()) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) world.getTileEntity(pos.east())).getOwner().isOwner((EntityPlayer) entity))
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.east())).getPassword());
-		else if(world.getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
+		else if(world.getTileEntity(pos.west()) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) world.getTileEntity(pos.west())).getOwner().isOwner((EntityPlayer) entity))
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.west())).getPassword());
-		else if(world.getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
+		else if(world.getTileEntity(pos.south()) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) world.getTileEntity(pos.south())).getOwner().isOwner((EntityPlayer) entity))
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.south())).getPassword());
-		else if(world.getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
+		else if(world.getTileEntity(pos.north()) instanceof TileEntityKeypadChest && ((TileEntityKeypadChest) world.getTileEntity(pos.north())).getOwner().isOwner((EntityPlayer) entity))
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.north())).getPassword());
 	}
 
