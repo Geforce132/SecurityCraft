@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
+
+- Fix: Server crash with disguised blocks
+
 --------------------------Changelog for v1.8.19.1-beta2 of SecurityCraft--------------------------
 
 - Misc.: Re-enable fix for Cyclic's Sack of Holding

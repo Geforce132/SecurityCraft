@@ -22,11 +22,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 {
 	public DisguisableBlock(Block.Properties properties)
 	{
-		super(properties.notSolid().setOpaque(DisguisableBlock::isNormalCube).setSuffocates(DisguisableBlock::causesSuffocation));
+		super(properties.notSolid().setOpaque(DisguisableBlock::isNormalCube).setSuffocates(DisguisableBlock::isSuffocating));
 	}
 
 	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
-		super(soundType, properties.notSolid().setOpaque(DisguisableBlock::isNormalCube).setSuffocates(DisguisableBlock::causesSuffocation));
+		super(soundType, properties.notSolid().setOpaque(DisguisableBlock::isNormalCube).setSuffocates(DisguisableBlock::isSuffocating));
 	}
 
 	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
@@ -42,14 +42,14 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		return state.getMaterial().isOpaque() && state.hasOpaqueCollisionShape(world, pos);
 	}
 
-	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
+	public static boolean isSuffocating(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		if(state.getBlock() instanceof DisguisableBlock) //should not happen, but just to be safe
 		{
 			BlockState disguisedState = ((DisguisableBlock)state.getBlock()).getDisguisedStateOrDefault(state, world, pos);
 
 			if(disguisedState.getBlock() != state.getBlock())
-				return disguisedState.causesSuffocation(world, pos);
+				return disguisedState.isSuffocating(world, pos);
 		}
 
 		return state.getMaterial().blocksMovement() && state.hasOpaqueCollisionShape(world, pos);
