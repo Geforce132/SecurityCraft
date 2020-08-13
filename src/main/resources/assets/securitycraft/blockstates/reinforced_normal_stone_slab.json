@@ -2,6 +2,6 @@
     "variants": {
         "type=top": { "model": "securitycraft:block/reinforced_top_slab_normal_stone" },
         "type=bottom": { "model": "securitycraft:block/reinforced_half_slab_normal_stone" },
-        "type=double": { "model": "block/stone" }
+        "type=double": { "model": "securitycraft:block/reinforced_stone" }
     }
 }
