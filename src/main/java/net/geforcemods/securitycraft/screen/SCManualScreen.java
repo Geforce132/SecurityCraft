@@ -39,6 +39,7 @@ import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
@@ -123,9 +124,9 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-				font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.func_238422_b_(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.func_243248_b(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
 			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
@@ -134,11 +135,11 @@ public class SCManualScreen extends Screen {
 			if(designedBy != null && !designedBy.isEmpty())
 				font.func_238418_a_(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
+			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+				font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
@@ -203,7 +204,7 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof TextHoverChecker && ((TextHoverChecker)chc).getName() != null)
-						renderTooltip(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY);
+						func_243308_b(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
 						renderTooltip(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
 				}
@@ -394,7 +395,7 @@ public class SCManualScreen extends Screen {
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
-						List<ITextProperties> display = new ArrayList<>();
+						List<ITextComponent> display = new ArrayList<>();
 
 						display.add(ClientUtils.localize("gui.securitycraft:scManual.options"));
 						display.add(new StringTextComponent("---"));
@@ -416,7 +417,7 @@ public class SCManualScreen extends Screen {
 
 					if(moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0)
 					{
-						List<ITextProperties> display = new ArrayList<>();
+						List<ITextComponent> display = new ArrayList<>();
 
 						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules"));
 						display.add(new StringTextComponent("---"));

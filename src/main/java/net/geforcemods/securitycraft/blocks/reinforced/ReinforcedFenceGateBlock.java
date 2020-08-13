@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable {
@@ -65,12 +66,12 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 			if(((OwnableTileEntity)world.getTileEntity(pos)).getOwner().isOwner(player))
 				return;
 		}
-		else if(entity instanceof CreeperEntity)
+		else if(!world.isRemote && entity instanceof CreeperEntity)
 		{
 			CreeperEntity creeper = (CreeperEntity)entity;
 			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.copyCenteredHorizontally(pos), true);
 
-			creeper.onStruckByLightning(lightning);
+			creeper.func_241841_a((ServerWorld)world, lightning);
 			return;
 		}
 

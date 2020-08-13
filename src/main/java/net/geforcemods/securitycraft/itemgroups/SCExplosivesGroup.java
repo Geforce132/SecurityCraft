@@ -11,7 +11,7 @@ public class SCExplosivesGroup extends ItemGroup
 {
 	public SCExplosivesGroup()
 	{
-		super(SecurityCraft.MODID);
+		super(SecurityCraft.MODID + ".explosives");
 	}
 
 	@Override
@@ -19,11 +19,5 @@ public class SCExplosivesGroup extends ItemGroup
 	public ItemStack createIcon()
 	{
 		return new ItemStack(SCContent.MINE.get().asItem());
-	}
-
-	@Override
-	public String getTabLabel()
-	{
-		return super.getTabLabel() + ".explosives";
 	}
 }

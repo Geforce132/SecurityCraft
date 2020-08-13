@@ -84,11 +84,11 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
 		if(font.func_238414_a_(combined) < xSize - 10)
-			font.func_238422_b_(matrix, combined, xSize / 2 - font.func_238414_a_(combined) / 2, 6, 4210752);
+			font.func_243248_b(matrix, combined, xSize / 2 - font.func_238414_a_(combined) / 2, 6, 4210752);
 		else
 		{
-			font.func_238422_b_(matrix, blockName, xSize / 2 - font.func_238414_a_(blockName) / 2, 6.0F, 4210752);
-			font.func_238422_b_(matrix, setup, xSize / 2 - font.func_238414_a_(setup) / 2, 16, 4210752);
+			font.func_243248_b(matrix, blockName, xSize / 2 - font.func_238414_a_(blockName) / 2, 6.0F, 4210752);
+			font.func_243248_b(matrix, setup, xSize / 2 - font.func_238414_a_(setup) / 2, 16, 4210752);
 		}
 	}
 

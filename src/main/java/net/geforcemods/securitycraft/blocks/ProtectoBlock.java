@@ -39,7 +39,7 @@ public class ProtectoBlock extends OwnableBlock {
 
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		return Block.hasSolidSide(world.getBlockState(pos.down()), world, pos.down(), Direction.UP);
+		return world.getBlockState(pos.down()).isSolidSide(world, pos.down(), Direction.UP);
 	}
 
 	@Override

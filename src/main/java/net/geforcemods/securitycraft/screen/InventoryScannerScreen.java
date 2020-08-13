@@ -55,8 +55,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		font.func_238422_b_(matrix, redstoneString, guiLeft + 5, guiTop + 40, 4210752);
-		font.func_238422_b_(matrix, storageString, guiLeft + 5, guiTop + 50, 4210752);
+		font.func_243248_b(matrix, redstoneString, guiLeft + 5, guiTop + 40, 4210752);
+		font.func_243248_b(matrix, storageString, guiLeft + 5, guiTop + 50, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
@@ -75,13 +75,13 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		//TODO: translate everything untranslated in here, also other mc versions
-		font.func_238422_b_(matrix, new StringTextComponent("Prohibited Items"), 8, 6, 4210752);
-		font.func_238422_b_(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
+		font.func_243248_b(matrix, new StringTextComponent("Prohibited Items"), 8, 6, 4210752);
+		font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.func_238422_b_(matrix, new StringTextComponent("Storage"), 183, 6, 4210752);
+			font.func_243248_b(matrix, new StringTextComponent("Storage"), 183, 6, 4210752);
 
-		font.func_238422_b_(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
+		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
 	}
 
 	@Override

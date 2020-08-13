@@ -40,7 +40,7 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_238422_b_(matrix, title, xSize / 2 - font.func_238414_a_(title) / 2, 6.0F, 4210752);
+		font.func_243248_b(matrix, title, xSize / 2 - font.func_238414_a_(title) / 2, 6.0F, 4210752);
 		font.drawString(matrix, playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
 	}
 

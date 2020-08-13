@@ -93,7 +93,7 @@ public abstract class FakeWaterFluid extends FlowingFluid
 	{
 		TileEntity te = state.hasTileEntity() ? world.getTileEntity(pos) : null;
 
-		Block.spawnDrops(state, world.getWorld(), pos, te);
+		Block.spawnDrops(state, world, pos, te);
 	}
 
 	@Override

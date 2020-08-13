@@ -28,7 +28,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.DecoratedFeatureConfig;
 import net.minecraft.world.gen.feature.FlowersFeature;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
@@ -81,7 +80,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 		PlantType type = plantable.getPlantType(world, pos.offset(facing));
 
 		if(type == PlantType.CAVE)
-			return Block.hasSolidSide(state, world, pos, Direction.UP);
+			return state.isSolidSide(world, pos, Direction.UP);
 		else if(type == PlantType.PLAINS)
 			return true;
 		else if(type == PlantType.BEACH)
@@ -136,14 +135,15 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 
 					if(rand.nextInt(8) == 0)
 					{
-						List<ConfiguredFeature<?, ?>> flowers = world.getBiome(tempPos).getFlowers();
+						List<ConfiguredFeature<?, ?>> flowers = world.getBiome(tempPos).func_242440_e().func_242496_b();
 
 						if(flowers.isEmpty())
 							break;
 
-						ConfiguredFeature<?, ?> configuredfeature = ((DecoratedFeatureConfig)(flowers.get(0)).config).feature;
+						ConfiguredFeature<?, ?> configuredfeature = flowers.get(0);
+						FlowersFeature flowersfeature = (FlowersFeature)configuredfeature.feature;
 
-						placeState = ((FlowersFeature)configuredfeature.feature).getFlowerToPlace(rand, tempPos, configuredfeature.config);
+						placeState = flowersfeature.getFlowerToPlace(rand, tempPos, configuredfeature.func_242767_c());
 					}
 					else
 						placeState = grass;

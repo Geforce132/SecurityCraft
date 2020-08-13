@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.19.1 of SecurityCraft (since beta2)--------------------------
 
 - Fix: Server crash with disguised blocks
 

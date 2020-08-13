@@ -136,8 +136,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
 		TranslationTextComponent s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
-		font.func_238422_b_(matrix, s, xSize / 2 - font.func_238414_a_(s) / 2, 6, 4210752);
-		font.func_238422_b_(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.func_243248_b(matrix, s, xSize / 2 - font.func_238414_a_(s) / 2, 6, 4210752);
+		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override

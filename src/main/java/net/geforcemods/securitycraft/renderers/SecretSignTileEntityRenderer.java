@@ -18,9 +18,8 @@ import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer.SignModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.ITextProperties;
-import net.minecraft.util.text.Style;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -35,37 +34,37 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	}
 
 	@Override
-	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+	public void render(SecretSignTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
 	{
 		BlockState state = te.getBlockState();
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		FontRenderer font = renderDispatcher.getFontRenderer();
 		IVertexBuilder builder;
 
-		stack.push();
+		matrix.push();
 
 		if(state.getBlock() instanceof SecretStandingSignBlock)
 		{
-			stack.translate(0.5D, 0.5D, 0.5D);
-			stack.rotate(Vector3f.YP.rotationDegrees(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			matrix.translate(0.5D, 0.5D, 0.5D);
+			matrix.rotate(Vector3f.YP.rotationDegrees(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
 			model.signStick.showModel = true;
 		}
 		else
 		{
-			stack.translate(0.5D, 0.5D, 0.5D);
-			stack.rotate(Vector3f.YP.rotationDegrees(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
-			stack.translate(0.0D, -0.3125D, -0.4375D);
+			matrix.translate(0.5D, 0.5D, 0.5D);
+			matrix.rotate(Vector3f.YP.rotationDegrees(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
+			matrix.translate(0.0D, -0.3125D, -0.4375D);
 			model.signStick.showModel = false;
 		}
 
-		stack.push();
-		stack.scale(0.6666667F, -0.6666667F, -0.6666667F);
+		matrix.push();
+		matrix.scale(0.6666667F, -0.6666667F, -0.6666667F);
 		builder = material.getBuffer(buffer, model::getRenderType);
-		model.signBoard.render(stack, builder, combinedLight, combinedOverlay);
-		model.signStick.render(stack, builder, combinedLight, combinedOverlay);
-		stack.pop();
-		stack.translate(0.0D, 0.33333334F, 0.046666667F);
-		stack.scale(0.010416667F, -0.010416667F, 0.010416667F);
+		model.signBoard.render(matrix, builder, combinedLight, combinedOverlay);
+		model.signStick.render(matrix, builder, combinedLight, combinedOverlay);
+		matrix.pop();
+		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
+		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
 		if(te.getOwner().isOwner(Minecraft.getInstance().player))
 		{
@@ -77,16 +76,16 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 			for(int line = 0; line < 4; ++line)
 			{
-				ITextProperties text = te.func_235677_a_(line, textComponent -> {
-					List<ITextProperties> list = font.func_238420_b_().func_238362_b_(textComponent, 90, Style.EMPTY);
-					return list.isEmpty() ? ITextProperties.field_240651_c_ : list.get(0);
+				IReorderingProcessor rp = te.func_242686_a(line, (p_243502_1_) -> {
+					List<IReorderingProcessor> list = font.func_238425_b_(p_243502_1_, 90);
+					return list.isEmpty() ? IReorderingProcessor.field_242232_a : list.get(0);
 				});
 
-				if(text != null)
-					font.func_238416_a_(text, -font.func_238414_a_(text) / 2, line * 10 - 20, argb, false, stack.getLast().getMatrix(), buffer, false, 0, combinedLight);
+				if(rp != null)
+					font.func_238416_a_(rp, -font.func_243245_a(rp) / 2, line * 10 - 20, argb, false, matrix.getLast().getMatrix(), buffer, false, 0, combinedLight);
 			}
 		}
 
-		stack.pop();
+		matrix.pop();
 	}
 }

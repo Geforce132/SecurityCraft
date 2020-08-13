@@ -76,7 +76,7 @@ public class ScannerDoorBlock extends DoorBlock
 				drop = true;
 			}
 
-			if(!Block.hasSolidSide(world.getBlockState(pos.down()), world, pos.down(), Direction.UP))
+			if(!world.getBlockState(pos.down()).isSolidSide(world, pos.down(), Direction.UP))
 			{
 				world.destroyBlock(pos, false);
 				drop = true;

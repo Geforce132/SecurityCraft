@@ -11,7 +11,7 @@ public class SCTechnicalGroup extends ItemGroup
 {
 	public SCTechnicalGroup()
 	{
-		super(SecurityCraft.MODID);
+		super(SecurityCraft.MODID + ".explosives");
 	}
 
 	@Override
@@ -19,11 +19,5 @@ public class SCTechnicalGroup extends ItemGroup
 	public ItemStack createIcon()
 	{
 		return new ItemStack(SCContent.USERNAME_LOGGER.get().asItem());
-	}
-
-	@Override
-	public String getTabLabel()
-	{
-		return super.getTabLabel() + ".technical";
 	}
 }

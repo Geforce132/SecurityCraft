@@ -58,7 +58,7 @@ public class BlockUtils{
 
 	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
 	{
-		return Block.hasSolidSide(world.getBlockState(pos), world, pos, side);
+		return world.getBlockState(pos).isSolidSide(world, pos, side);
 	}
 
 	/**

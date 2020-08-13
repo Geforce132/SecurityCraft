@@ -40,6 +40,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	public static final BooleanProperty NORTH = SixWayBlock.NORTH;
@@ -184,7 +185,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
 		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
 		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-		return super.getStateForPlacement(ctx).with(NORTH, func_220111_a(blockstate, Block.hasSolidSide(blockstate, iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)).with(EAST, func_220111_a(blockstate1, Block.hasSolidSide(blockstate1, iblockreader, blockpos2, Direction.WEST), Direction.WEST)).with(SOUTH, func_220111_a(blockstate2, Block.hasSolidSide(blockstate2, iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)).with(WEST, func_220111_a(blockstate3, Block.hasSolidSide(blockstate3, iblockreader, blockpos4, Direction.EAST), Direction.EAST));
+		return super.getStateForPlacement(ctx).with(NORTH, func_220111_a(blockstate, blockstate.isSolidSide(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)).with(EAST, func_220111_a(blockstate1, blockstate1.isSolidSide(iblockreader, blockpos2, Direction.WEST), Direction.WEST)).with(SOUTH, func_220111_a(blockstate2, blockstate2.isSolidSide(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)).with(WEST, func_220111_a(blockstate3, blockstate3.isSolidSide(iblockreader, blockpos4, Direction.EAST), Direction.EAST));
 	}
 
 	@Override
@@ -196,7 +197,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	@Override
 	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), func_220111_a(facingState, Block.hasSolidSide(facingState, world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), func_220111_a(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
@@ -217,12 +218,12 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 			if(((OwnableTileEntity) world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity))
 				return;
 		}
-		else if(entity instanceof CreeperEntity)
+		else if(!world.isRemote && entity instanceof CreeperEntity)
 		{
 			CreeperEntity creeper = (CreeperEntity)entity;
 			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.copyCenteredHorizontally(pos), true);
 
-			creeper.onStruckByLightning(lightning);
+			creeper.func_241841_a((ServerWorld)world, lightning);
 			creeper.extinguish();
 			return;
 		}

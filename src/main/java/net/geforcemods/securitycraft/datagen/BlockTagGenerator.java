@@ -8,9 +8,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.fml.RegistryObject;
 
-//getOrCreateBuilder = getOrCreateBuilder
-//addTag = add
-//add = add
 public class BlockTagGenerator extends BlockTagsProvider
 {
 	protected BlockTagGenerator(DataGenerator dataGenerator)

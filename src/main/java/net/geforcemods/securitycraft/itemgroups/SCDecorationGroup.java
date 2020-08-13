@@ -11,7 +11,7 @@ public class SCDecorationGroup extends ItemGroup
 {
 	public SCDecorationGroup()
 	{
-		super(SecurityCraft.MODID);
+		super(SecurityCraft.MODID + ".decoration");
 	}
 
 	@Override
@@ -19,11 +19,5 @@ public class SCDecorationGroup extends ItemGroup
 	public ItemStack createIcon()
 	{
 		return new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get().asItem());
-	}
-
-	@Override
-	public String getTabLabel()
-	{
-		return super.getTabLabel() + ".decoration";
 	}
 }

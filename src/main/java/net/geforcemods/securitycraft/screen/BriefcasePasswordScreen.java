@@ -78,7 +78,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.func_238422_b_(matrix, enterPasscode, xSize / 2 - font.func_238414_a_(enterPasscode) / 2, 6, 4210752);
+		font.func_243248_b(matrix, enterPasscode, xSize / 2 - font.func_238414_a_(enterPasscode) / 2, 6, 4210752);
 	}
 
 	@Override

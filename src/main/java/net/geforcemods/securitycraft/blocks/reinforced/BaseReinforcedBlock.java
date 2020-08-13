@@ -146,7 +146,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		if(type == PlantType.DESERT)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 		else if(type == PlantType.CAVE)
-			return Block.hasSolidSide(state, world, pos, Direction.UP);
+			return state.isSolidSide(world, pos, Direction.UP);
 		else if(type == PlantType.PLAINS)
 			return isIn(SCTags.Blocks.REINFORCED_DIRT);
 		else if(type == PlantType.BEACH)
@@ -168,7 +168,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isPortalFrame(BlockState state, IWorldReader world, BlockPos pos)
+	public boolean isPortalFrame(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return this == SCContent.REINFORCED_OBSIDIAN.get();
 	}

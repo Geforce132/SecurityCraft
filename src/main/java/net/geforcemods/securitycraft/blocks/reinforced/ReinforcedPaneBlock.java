@@ -201,7 +201,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 		BlockState southState = world.getBlockState(southPos);
 		BlockState westState = world.getBlockState(westPos);
 		BlockState eastState = world.getBlockState(eastPos);
-		return getDefaultState().with(NORTH, canAttachTo(northState, Block.hasSolidSide(northState, world, northPos, Direction.SOUTH))).with(SOUTH, canAttachTo(southState, Block.hasSolidSide(southState, world, southPos, Direction.NORTH))).with(WEST, canAttachTo(westState, Block.hasSolidSide(westState, world, westPos, Direction.EAST))).with(EAST, canAttachTo(eastState, Block.hasSolidSide(eastState, world, eastPos, Direction.WEST))).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+		return getDefaultState().with(NORTH, canAttachTo(northState, northState.isSolidSide(world, northPos, Direction.SOUTH))).with(SOUTH, canAttachTo(southState, southState.isSolidSide(world, southPos, Direction.NORTH))).with(WEST, canAttachTo(westState, westState.isSolidSide(world, westPos, Direction.EAST))).with(EAST, canAttachTo(eastState, eastState.isSolidSide(world, eastPos, Direction.WEST))).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
 	}
 
 	@Override
@@ -210,7 +210,7 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 		if(state.get(WATERLOGGED))
 			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 
-		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), canAttachTo(facingState, Block.hasSolidSide(facingState, world, facingPos, facing.getOpposite()))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().isHorizontal() ? state.with(FACING_TO_PROPERTY_MAP.get(facing), canAttachTo(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite()))) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@OnlyIn(Dist.CLIENT)
