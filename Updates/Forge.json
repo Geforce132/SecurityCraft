@@ -32,7 +32,9 @@
     "1.15.2-latest": "v1.8.19.1",
     "1.15.2-recommended": "v1.8.19.1",
     "1.16.1-latest": "v1.8.19.1-beta2",
-    "1.16.1-recommended": "v1.8.19.1-beta2"
+    "1.16.1-recommended": "v1.8.19.1-beta2",
+    "1.16.2-latest": "v1.8.19.1",
+    "1.16.2-recommended": "v1.8.19.1"
   },
   "1.7.10": {
     "v1.8.13": "Tons of new features and fixes"
@@ -81,5 +83,8 @@
   },
   "1.16.1": {
 	"v1.8.19.1-beta2": "Fixes"
+  },
+  "1.16.2": {
+	"v1.8.19.1": "Fixes"
   }
 }
