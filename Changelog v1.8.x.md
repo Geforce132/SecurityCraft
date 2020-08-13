@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
+
+- Fix: WAILA exploit
+- Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
+
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
 
 - Fix: Tooltips of modules show a header even if no blocks/items/players have been added (Thanks Redstone_Dubstep!)
