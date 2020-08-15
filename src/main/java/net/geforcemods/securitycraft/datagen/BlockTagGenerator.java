@@ -60,6 +60,11 @@ public class BlockTagGenerator extends BlockTagsProvider
 		getOrCreateBuilder(SCTags.Blocks.REINFORCED_COBBLESTONE).add(
 				SCContent.REINFORCED_COBBLESTONE.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_CRIMSON_STEMS).add(
+				SCContent.REINFORCED_CRIMSON_STEM.get(),
+				SCContent.REINFORCED_CRIMSON_HYPHAE.get(),
+				SCContent.REINFORCED_STRIPPED_CRIMSON_STEM.get(),
+				SCContent.REINFORCED_STRIPPED_CRIMSON_HYPHAE.get());
 		getOrCreateBuilder(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS).add(
 				SCContent.REINFORCED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_DARK_OAK_WOOD.get(),
@@ -92,6 +97,9 @@ public class BlockTagGenerator extends BlockTagsProvider
 		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 		.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_NYLIUM).add(
+				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
+				SCContent.REINFORCED_WARPED_NYLIUM.get());
 		getOrCreateBuilder(SCTags.Blocks.REINFORCED_OAK_LOGS).add(
 				SCContent.REINFORCED_OAK_LOG.get(),
 				SCContent.REINFORCED_OAK_WOOD.get(),
@@ -106,6 +114,16 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_OAK_PLANKS.get(),
 				SCContent.REINFORCED_SPRUCE_PLANKS.get(),
 				SCContent.REINFORCED_WARPED_PLANKS.get());
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_PRESSURE_PLATES).add(
+				SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
 		getOrCreateBuilder(SCTags.Blocks.REINFORCED_SAND).add(
 				SCContent.REINFORCED_RED_SAND.get(),
 				SCContent.REINFORCED_SAND.get());
@@ -174,6 +192,11 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get());
+		getOrCreateBuilder(SCTags.Blocks.REINFORCED_WARPED_STEMS).add(
+				SCContent.REINFORCED_WARPED_STEM.get(),
+				SCContent.REINFORCED_WARPED_HYPHAE.get(),
+				SCContent.REINFORCED_STRIPPED_WARPED_STEM.get(),
+				SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE.get());
 		getOrCreateBuilder(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(
 				SCContent.REINFORCED_OAK_SLAB.get(),
 				SCContent.REINFORCED_SPRUCE_SLAB.get(),
