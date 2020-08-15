@@ -274,10 +274,16 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_GREEN_STAINED_GLASS.get(),
 				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
+		getOrCreateBuilder(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get());
+		getOrCreateBuilder(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
+		getOrCreateBuilder(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		getOrCreateBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		getOrCreateBuilder(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		getOrCreateBuilder(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
+		getOrCreateBuilder(BlockTags.STRIDER_WARM_BLOCKS).add(SCContent.FAKE_LAVA_BLOCK.get());
 		getOrCreateBuilder(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
+		getOrCreateBuilder(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		getOrCreateBuilder(BlockTags.SOUL_SPEED_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
 		getOrCreateBuilder(BlockTags.STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		getOrCreateBuilder(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get());
 		getOrCreateBuilder(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
@@ -299,6 +305,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_BLACKSTONE_WALL.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get());
+		getOrCreateBuilder(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
 
 		for(RegistryObject<Block> ro : SCContent.BLOCKS.getEntries())
 		{
