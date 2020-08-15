@@ -46,8 +46,10 @@ public class ItemModelGenerator extends ItemModelProvider
 		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get());
 		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
 		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
+		blockMine(Blocks.GILDED_BLACKSTONE, SCContent.GILDED_BLACKSTONE_MINE.get());
 		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
 		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
+		blockMine(Blocks.NETHER_GOLD_ORE, SCContent.NETHER_GOLD_ORE_MINE.get());
 		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
 		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
 		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());

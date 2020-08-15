@@ -228,11 +228,13 @@ public class SCContent
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> GOLD_ORE_MINE = BLOCKS.register("gold_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.GOLD_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> IRON_ORE_MINE = BLOCKS.register("iron_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.IRON_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> COAL_ORE_MINE = BLOCKS.register("coal_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.COAL_ORE, 3.0F));
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> NETHER_GOLD_ORE_MINE = BLOCKS.register("nether_gold_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.NETHER_GOLD, Blocks.NETHER_GOLD_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> LAPIS_ORE_MINE = BLOCKS.register("lapis_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.LAPIS_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> DIAMOND_ORE_MINE = BLOCKS.register("diamond_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.DIAMOND_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.EMERALD_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> QUARTZ_ORE_MINE = BLOCKS.register("quartz_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.NETHER_QUARTZ_ORE, 3.0F));
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.GILDED_BLACKSTONE, Blocks.GILDED_BLACKSTONE, 1.5F));
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(Material.ROCK, 3.5F));
 
 	//reinforced blocks (ordered by vanilla building blocks creative tab order)

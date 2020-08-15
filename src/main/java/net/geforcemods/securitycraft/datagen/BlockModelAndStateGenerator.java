@@ -67,8 +67,10 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
 		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
 		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
+		blockMine(Blocks.GILDED_BLACKSTONE, SCContent.GILDED_BLACKSTONE_MINE.get());
 		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
 		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
+		blockMine(Blocks.NETHER_GOLD_ORE, SCContent.NETHER_GOLD_ORE_MINE.get());
 		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
 		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
 		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());

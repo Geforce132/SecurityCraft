@@ -60,6 +60,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.EMERALD_ORE_MINE);
 		putMineLootTable(SCContent.FURNACE_MINE);
 		putMineLootTable(SCContent.GOLD_ORE_MINE);
+		putMineLootTable(SCContent.GILDED_BLACKSTONE_MINE);
 		putMineLootTable(SCContent.GRAVEL_MINE);
 		putStandardBlockLootTable(SCContent.INVENTORY_SCANNER);
 		putStandardBlockLootTable(SCContent.IRON_FENCE);
@@ -74,6 +75,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.LASER_BLOCK);
 		putMineLootTable(SCContent.MINE);
 		putStandardBlockLootTable(SCContent.MOTION_ACTIVATED_LIGHT);
+		putMineLootTable(SCContent.NETHER_GOLD_ORE_MINE);
 		putStandardBlockLootTable(SCContent.PANIC_BUTTON);
 		putStandardBlockLootTable(SCContent.PORTABLE_RADAR);
 		putStandardBlockLootTable(SCContent.PROJECTOR);
