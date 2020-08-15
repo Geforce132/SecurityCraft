@@ -44,7 +44,10 @@ public class BlockUtils{
 			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get()
+			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get()
 	});
 	private static final List<Block> BUTTONS = Arrays.asList(new Block[]{
 			SCContent.REINFORCED_STONE_BUTTON.get(),
@@ -53,7 +56,10 @@ public class BlockUtils{
 			SCContent.REINFORCED_BIRCH_BUTTON.get(),
 			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
 			SCContent.REINFORCED_ACACIA_BUTTON.get(),
-			SCContent.REINFORCED_DARK_OAK_BUTTON.get()
+			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
+			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
+			SCContent.REINFORCED_WARPED_BUTTON.get(),
+			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get()
 	});
 
 	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)

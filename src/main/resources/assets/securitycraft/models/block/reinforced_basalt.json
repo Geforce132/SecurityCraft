@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/reinforced_cube_column",
+  "textures": {
+    "end": "minecraft:block/basalt_top",
+    "side": "minecraft:block/basalt_side"
+  }
+}

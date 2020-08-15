@@ -1,0 +1,12 @@
+{
+  "parent": "securitycraft:block/reinforced_block",
+  "textures": {
+    "particle": "block/crimson_nylium",
+    "down": "block/netherrack",
+    "up": "block/crimson_nylium",
+    "north": "block/crimson_nylium_side",
+    "west": "block/crimson_nylium_side",
+    "south": "block/crimson_nylium_side",
+    "east": "block/crimson_nylium_side"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/reinforced_cube_column",
+  "textures": {
+    "end": "minecraft:block/crimson_stem",
+    "side": "minecraft:block/crimson_stem"
+  }
+}

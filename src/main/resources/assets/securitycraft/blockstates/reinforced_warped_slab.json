@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_warped_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_warped_planks"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_warped_slab_top"
+    }
+  }
+}

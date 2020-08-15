@@ -89,6 +89,8 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BIRCH_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BIRCH_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_CRIMSON_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_CRIMSON_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_JUNGLE_SIGN);
@@ -97,6 +99,8 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_WARPED_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
 		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
 		putMineLootTable(SCContent.STONE_MINE);

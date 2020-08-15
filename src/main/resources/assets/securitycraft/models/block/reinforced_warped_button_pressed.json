@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_button_pressed",
+  "textures": {
+    "texture": "minecraft:block/warped_planks"
+  }
+}

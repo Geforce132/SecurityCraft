@@ -43,10 +43,12 @@ public class ItemTagGenerator extends ItemTagsProvider
 		getOrCreateBuilder(SCTags.Items.SECRET_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN_ITEM.get(),
 				SCContent.SECRET_BIRCH_SIGN_ITEM.get(),
+				SCContent.SECRET_CRIMSON_SIGN_ITEM.get(),
 				SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(),
 				SCContent.SECRET_JUNGLE_SIGN_ITEM.get(),
 				SCContent.SECRET_OAK_SIGN_ITEM.get(),
-				SCContent.SECRET_SPRUCE_SIGN_ITEM.get());
+				SCContent.SECRET_SPRUCE_SIGN_ITEM.get(),
+				SCContent.SECRET_WARPED_SIGN_ITEM.get());
 
 		//minecraft tags
 		getOrCreateBuilder(ItemTags.CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);

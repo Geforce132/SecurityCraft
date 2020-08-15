@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:reinforced_pressure_plates",
+  "pattern": [
+    "SS"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_warped_planks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_warped_pressure_plate"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "securitycraft:block/reinforced_warped_hyphae",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "securitycraft:block/reinforced_warped_hyphae"
+    },
+    "axis=z": {
+      "model": "securitycraft:block/reinforced_warped_hyphae",
+      "x": 90
+    }
+  }
+}

@@ -13,12 +13,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.FungusBlock;
+import net.minecraft.block.NetherRootsBlock;
+import net.minecraft.block.NetherSproutsBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -32,6 +38,8 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -143,6 +151,14 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		if(plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
+		if (plantable instanceof BushBlock) //a workaround because BaseReinforcedBlock can't use isValidGround because it is protected
+		{
+			boolean bushCondition = state.isIn(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.isIn(SCContent.REINFORCED_DIRT.get()) || state.isIn(SCContent.REINFORCED_COARSE_DIRT.get()) || state.isIn(SCContent.REINFORCED_PODZOL.get());
+
+			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock || plantable instanceof FungusBlock)
+				return state.isIn(SCTags.Blocks.REINFORCED_NYLIUM) || state.isIn(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+		}
+
 		if(type == PlantType.DESERT)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 		else if(type == PlantType.CAVE)
@@ -204,6 +220,29 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				else {
 					world.setBlockState(pos, Blocks.WATER.getDefaultState());
 					world.neighborChanged(pos, Blocks.WATER, pos);
+				}
+			}
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+		if (this == SCContent.REINFORCED_CRYING_OBSIDIAN.get())
+		{
+			if(rand.nextInt(5) == 0)
+			{
+				Direction direction = Direction.func_239631_a_(rand);
+				if(direction != Direction.UP)
+				{
+					BlockPos blockpos = pos.offset(direction);
+					BlockState blockstate = worldIn.getBlockState(blockpos);
+					if(!stateIn.isSolid() || !blockstate.isSolidSide(worldIn, blockpos, direction.getOpposite()))
+					{
+						double d0 = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getXOffset() * 0.6D;
+						double d1 = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getYOffset() * 0.6D;
+						double d2 = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getZOffset() * 0.6D;
+						worldIn.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
+					}
 				}
 			}
 		}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_polished_blackstone_wall_from_reinforced_polished_blackstone_stonecutting"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_polished_blackstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:reinforced_polished_blackstone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:reinforced_polished_blackstone_wall_from_reinforced_polished_blackstone_stonecutting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_polished_blackstone",
+      "has_the_recipe"
+    ]
+  ]
+}
