@@ -44,6 +44,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFallingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
@@ -234,6 +235,7 @@ public class SCContent
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.EMERALD_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> QUARTZ_ORE_MINE = BLOCKS.register("quartz_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.NETHER_ORE, Blocks.NETHER_QUARTZ_ORE, 3.0F));
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> ANCIENT_DEBRIS_MINE = BLOCKS.register("ancient_debris_mine", () -> new BaseFullMineBlock(Material.IRON, SoundType.ANCIENT_DEBRIS, Blocks.ANCIENT_DEBRIS, 30.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.GILDED_BLACKSTONE, Blocks.GILDED_BLACKSTONE, 1.5F));
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(Material.ROCK, 3.5F));
 
@@ -500,6 +502,7 @@ public class SCContent
 	//ordered by vanilla decoration blocks creative tab order
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new BaseReinforcedBlock(Block.Properties.create(Material.WEB).doesNotBlockMovement(), Blocks.COBWEB));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedPaneBlock(SoundType.METAL, Material.IRON, Blocks.IRON_BARS));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CHAIN = BLOCKS.register("reinforced_chain", () -> new ReinforcedChainBlock());
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_GLASS_PANE = BLOCKS.register("reinforced_glass_pane", () -> new ReinforcedPaneBlock(SoundType.GLASS, Material.GLASS, Blocks.GLASS_PANE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE_WALL = BLOCKS.register("reinforced_cobblestone_wall", () -> new ReinforcedWallBlock(Blocks.COBBLESTONE_WALL));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE_WALL = BLOCKS.register("reinforced_mossy_cobblestone_wall", () -> new ReinforcedWallBlock(Blocks.MOSSY_COBBLESTONE_WALL));

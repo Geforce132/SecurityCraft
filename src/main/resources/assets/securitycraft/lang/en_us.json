@@ -27,6 +27,7 @@
 	"block.securitycraft.track_mine": "Track Mine",
 	"block.securitycraft.keypad_chest": "Password-protected Chest",
 	"block.securitycraft.retinal_scanner": "Retinal Scanner",
+	"block.securitycraft.reinforced_chain": "Reinforced Chain",
 	"block.securitycraft.reinforced_glass_pane": "Reinforced Glass Pane",
 	"block.securitycraft.alarm": "Alarm",
 	"block.securitycraft.reinforced_stone": "Reinforced Stone",
@@ -401,6 +402,7 @@
 	"block.securitycraft.emerald_mine": "Emerald Ore Mine",
 	"block.securitycraft.quartz_mine": "Nether Quartz Ore Mine",
 	"block.securitycraft.gilded_blackstone_mine": "Gilded Blackstone Mine",
+	"block.securitycraft.ancient_debris_mine": "Ancient Debris Mine",
 	"block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
 	"block.securitycraft.reinforced_hopper": "Reinforced Hopper",
 

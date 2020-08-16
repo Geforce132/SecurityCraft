@@ -585,6 +585,7 @@ public class RecipeGenerator extends RecipeProvider
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
 		addBarkRecipe(consumer, SCContent.REINFORCED_STRIPPED_WARPED_STEM.get(), SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE.get());
+		addBlockMineRecipe(consumer, Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());

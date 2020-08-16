@@ -38,6 +38,7 @@ public class ItemModelGenerator extends ItemModelProvider
 		reinforcedWallInventory(SCContent.REINFORCED_BLACKSTONE_WALL.get(), Blocks.BLACKSTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(), Blocks.POLISHED_BLACKSTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
+		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
 		blockMine(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
 		blockMine(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
 		blockMine(Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
