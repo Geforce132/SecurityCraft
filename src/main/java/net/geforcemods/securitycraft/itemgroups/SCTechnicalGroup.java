@@ -11,7 +11,7 @@ public class SCTechnicalGroup extends ItemGroup
 {
 	public SCTechnicalGroup()
 	{
-		super(SecurityCraft.MODID + ".explosives");
+		super(SecurityCraft.MODID + ".technical");
 	}
 
 	@Override
