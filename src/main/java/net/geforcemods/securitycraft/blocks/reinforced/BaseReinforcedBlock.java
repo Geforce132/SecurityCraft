@@ -238,9 +238,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 					BlockState blockstate = worldIn.getBlockState(blockpos);
 					if(!stateIn.isSolid() || !blockstate.isSolidSide(worldIn, blockpos, direction.getOpposite()))
 					{
-						double d0 = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getXOffset() * 0.6D;
-						double d1 = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getYOffset() * 0.6D;
-						double d2 = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getZOffset() * 0.6D;
+						double d0 = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getXOffset() * 0.6D;
+						double d1 = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getYOffset() * 0.6D;
+						double d2 = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getZOffset() * 0.6D;
 						worldIn.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
 					}
 				}
