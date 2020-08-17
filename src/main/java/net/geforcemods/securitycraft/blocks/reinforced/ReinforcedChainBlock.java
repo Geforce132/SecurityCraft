@@ -26,11 +26,12 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 
 	public ReinforcedChainBlock() {
 		super(SoundType.CHAIN, Material.IRON, Blocks.CHAIN);
-		this.setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, Boolean.valueOf(false)).with(AXIS, Direction.Axis.Y));
+		this.setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false).with(AXIS, Direction.Axis.Y));
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch((Direction.Axis)state.get(AXIS)) {
+		switch(state.get(AXIS)) {
 			case X:
 			default:
 				return X_AXIS_SHAPE;
@@ -41,12 +42,14 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 		}
 	}
 
+	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
 		boolean isWater = fluidstate.getFluid() == Fluids.WATER;
-		return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(isWater));
+		return super.getStateForPlacement(context).with(WATERLOGGED, isWater);
 	}
 
+	@Override
 	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.get(WATERLOGGED)) {
 			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
@@ -55,10 +58,12 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
+	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED).add(AXIS);
 	}
 
+	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}

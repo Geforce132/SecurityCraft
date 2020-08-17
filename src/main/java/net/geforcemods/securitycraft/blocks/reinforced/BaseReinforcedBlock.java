@@ -24,7 +24,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -225,6 +224,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		}
 	}
 
+	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (this == SCContent.REINFORCED_CRYING_OBSIDIAN.get())
@@ -241,7 +241,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 						double d0 = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getXOffset() * 0.6D;
 						double d1 = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getYOffset() * 0.6D;
 						double d2 = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + (double)direction.getZOffset() * 0.6D;
-						worldIn.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
+						worldIn.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
 					}
 				}
 			}
