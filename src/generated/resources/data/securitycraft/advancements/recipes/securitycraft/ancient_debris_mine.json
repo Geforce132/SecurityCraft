@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_granite_wall"
+      "securitycraft:ancient_debris_mine"
     ]
   },
   "criteria": {
-    "has_block": {
+    "has_mine": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "securitycraft:reinforced_granite"
+            "item": "securitycraft:mine"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "securitycraft:reinforced_granite_wall"
+        "recipe": "securitycraft:ancient_debris_mine"
       }
     }
   },
   "requirements": [
     [
-      "has_block",
+      "has_mine",
       "has_the_recipe"
     ]
   ]

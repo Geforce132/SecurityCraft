@@ -125,7 +125,7 @@ public class RegistrationHandler
 		{
 			try
 			{
-				if(field.isAnnotationPresent(Reinforced.class))
+				if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem())
 					event.getRegistry().register(new ReinforcedBlockItem(((RegistryObject<Block>)field.get(null)).get()));
 				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{

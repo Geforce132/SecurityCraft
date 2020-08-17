@@ -22,6 +22,11 @@ public @interface Reinforced
 	boolean hasTint() default true;
 
 	/**
+	 * @return true if the BlockItem of this block should be automatically registered, false if not
+	 */
+	boolean registerBlockItem() default true;
+
+	/**
 	 * @return The tint of this block, if hasTint is true. 0x999999 by default
 	 */
 	int tint() default 0x999999;

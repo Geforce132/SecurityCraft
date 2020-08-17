@@ -235,7 +235,7 @@ public class SCContent
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.STONE, Blocks.EMERALD_ORE, 3.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> QUARTZ_ORE_MINE = BLOCKS.register("quartz_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.NETHER_ORE, Blocks.NETHER_QUARTZ_ORE, 3.0F));
-	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> ANCIENT_DEBRIS_MINE = BLOCKS.register("ancient_debris_mine", () -> new BaseFullMineBlock(Material.IRON, SoundType.ANCIENT_DEBRIS, Blocks.ANCIENT_DEBRIS, 30.0F));
+    public static final RegistryObject<Block> ANCIENT_DEBRIS_MINE = BLOCKS.register("ancient_debris_mine", () -> new BaseFullMineBlock(Material.IRON, SoundType.ANCIENT_DEBRIS, Blocks.ANCIENT_DEBRIS, 30.0F));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(Material.ROCK, SoundType.GILDED_BLACKSTONE, Blocks.GILDED_BLACKSTONE, 1.5F));
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(Material.ROCK, 3.5F));
 
@@ -486,7 +486,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICK_SLAB = BLOCKS.register("reinforced_red_nether_brick_slab", () -> new ReinforcedSlabBlock(SoundType.NETHER_BRICK, Material.ROCK, Blocks.RED_NETHER_BRICK_SLAB));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE_SLAB = BLOCKS.register("reinforced_polished_andesite_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.POLISHED_ANDESITE_SLAB));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIORITE_SLAB = BLOCKS.register("reinforced_diorite_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.DIORITE_SLAB));
-	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHERITE_BLOCK = BLOCKS.register("reinforced_netherite_block", () -> new BaseReinforcedBlock(SoundType.NETHERITE, Material.IRON, Blocks.NETHERITE_BLOCK));
+	@OwnableTE @Reinforced(registerBlockItem=false) public static final RegistryObject<Block> REINFORCED_NETHERITE_BLOCK = BLOCKS.register("reinforced_netherite_block", () -> new BaseReinforcedBlock(SoundType.NETHERITE, Material.IRON, Blocks.NETHERITE_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CRYING_OBSIDIAN = BLOCKS.register("reinforced_crying_obsidian", () -> new BaseReinforcedBlock(SoundType.STONE, Material.ROCK, Blocks.CRYING_OBSIDIAN, lightValue -> 10));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLACKSTONE = BLOCKS.register("reinforced_blackstone", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.BLACKSTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLACKSTONE_SLAB = BLOCKS.register("reinforced_blackstone_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.BLACKSTONE_SLAB));
@@ -598,6 +598,7 @@ public class SCContent
 
 	//items
 	@HasManualPage public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem());
+	public static final RegistryObject<Item> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.register("ancient_debris_mine", () -> new BlockItem(SCContent.ANCIENT_DEBRIS_MINE.get(), new Item.Properties().group(SecurityCraft.groupSCMine).isBurnable()));
 	@HasManualPage public static final RegistryObject<Item> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem());
 	@HasManualPage public static final RegistryObject<Item> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem());
 	@HasManualPage public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem());
@@ -612,6 +613,7 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem());
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new BaseKeycardItem(3));
+	public static final RegistryObject<Item> REINFORCED_NETHERITE_BLOCK_ITEM = ITEMS.register("reinforced_netherite_block", () -> new BlockItem(SCContent.REINFORCED_NETHERITE_BLOCK.get(), new Item.Properties().group(SecurityCraft.groupSCDecoration).isBurnable()));
 	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem());
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem());
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem());
