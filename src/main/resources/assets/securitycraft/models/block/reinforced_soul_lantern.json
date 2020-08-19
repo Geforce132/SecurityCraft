@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/template_reinforced_lantern",
+  "textures": {
+    "lantern": "minecraft:block/soul_lantern"
+  }
+}
