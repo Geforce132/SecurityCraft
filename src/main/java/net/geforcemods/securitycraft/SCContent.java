@@ -486,7 +486,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICK_SLAB = BLOCKS.register("reinforced_red_nether_brick_slab", () -> new ReinforcedSlabBlock(SoundType.NETHER_BRICK, Material.ROCK, Blocks.RED_NETHER_BRICK_SLAB));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE_SLAB = BLOCKS.register("reinforced_polished_andesite_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.POLISHED_ANDESITE_SLAB));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIORITE_SLAB = BLOCKS.register("reinforced_diorite_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.DIORITE_SLAB));
-	@OwnableTE @Reinforced(registerBlockItem=false) public static final RegistryObject<Block> REINFORCED_NETHERITE_BLOCK = BLOCKS.register("reinforced_netherite_block", () -> new BaseReinforcedBlock(SoundType.NETHERITE, Material.IRON, Blocks.NETHERITE_BLOCK));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_NETHERITE_BLOCK = BLOCKS.register("reinforced_netherite_block", () -> new BaseReinforcedBlock(SoundType.NETHERITE, Material.IRON, Blocks.NETHERITE_BLOCK));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_CRYING_OBSIDIAN = BLOCKS.register("reinforced_crying_obsidian", () -> new BaseReinforcedBlock(SoundType.STONE, Material.ROCK, Blocks.CRYING_OBSIDIAN, lightValue -> 10));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLACKSTONE = BLOCKS.register("reinforced_blackstone", () -> new BaseReinforcedBlock(Material.ROCK, Blocks.BLACKSTONE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_BLACKSTONE_SLAB = BLOCKS.register("reinforced_blackstone_slab", () -> new ReinforcedSlabBlock(SoundType.STONE, Material.ROCK, Blocks.BLACKSTONE_SLAB));
@@ -613,7 +613,6 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem());
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), new Item.Properties().group(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new BaseKeycardItem(3));
-	public static final RegistryObject<Item> REINFORCED_NETHERITE_BLOCK_ITEM = ITEMS.register("reinforced_netherite_block", () -> new BlockItem(SCContent.REINFORCED_NETHERITE_BLOCK.get(), new Item.Properties().group(SecurityCraft.groupSCDecoration).isBurnable()));
 	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem());
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem());
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem());
