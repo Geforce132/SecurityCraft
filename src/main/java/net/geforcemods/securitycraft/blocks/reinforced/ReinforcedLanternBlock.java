@@ -48,19 +48,22 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 		return null;
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return state.get(HANGING) ? HANGING_SHAPE : STANDING_SHAPE;
 	}
 
+	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(HANGING, WATERLOGGED);
 	}
 
+	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 		Direction direction = getBlockConnected(state).getOpposite();
 		return Block.hasEnoughSolidSide(worldIn, pos.offset(direction), direction.getOpposite());
 	}
-
+	
 	protected static Direction getBlockConnected(BlockState state) {
 		return state.get(HANGING) ? Direction.DOWN : Direction.UP;
 	}
@@ -71,6 +74,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	 * returns its solidified counterpart.
 	 * Note that this method should ideally consider only the specific face passed in.
 	 */
+	@Override
 	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.get(WATERLOGGED)) {
 			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
@@ -79,10 +83,12 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 		return getBlockConnected(stateIn).getOpposite() == facing && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
+	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 
+	@Override
 	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
 		return false;
 	}
