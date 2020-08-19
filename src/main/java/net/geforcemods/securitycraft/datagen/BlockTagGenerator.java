@@ -298,6 +298,11 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
 		getOrCreateBuilder(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get());
+		getOrCreateBuilder(BlockTags.field_242171_aD).add( //MUSHROOM_GROW_BLOCK
+				SCContent.REINFORCED_MYCELIUM.get(),
+				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
+				SCContent.REINFORCED_WARPED_NYLIUM.get());
 		getOrCreateBuilder(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
 		getOrCreateBuilder(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		getOrCreateBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
