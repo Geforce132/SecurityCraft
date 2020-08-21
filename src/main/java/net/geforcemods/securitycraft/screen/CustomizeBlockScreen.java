@@ -110,7 +110,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 			if(button == null)
 				continue;
 
-			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
+			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getWidth_CLASH())); //getWidth_CLASH = getHeight
 		}
 	}
 

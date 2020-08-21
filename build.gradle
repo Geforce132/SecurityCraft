@@ -103,14 +103,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.2-33.0.0'
+    minecraft 'net.minecraftforge:forge:1.16.2-33.0.10'
     
-    compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.10-B77_1.16.1:api")
-    runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.10-B77_1.16.1")
-	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.1-beta-4")
-    compileOnly fg.deobf("curse.maven:cyclic:3014795")
-    compileOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.6:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.1:7.0.0.6")
+	implementation fg.deobf("mezz.jei:jei-1.16.2:7.1.0.11")
+	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.3-beta-6")
+    implementation fg.deobf("mcp.mobius.waila:Hwyla:1.10.11-B78_1.16.2")
+    compileOnly fg.deobf("curse.maven:cyclic:3037395")
 }
 
 jar {
@@ -119,9 +117,9 @@ jar {
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3",
-                    "Specification-Version": "v1.8.19.1",
+                    "Specification-Version": "v1.8.19.2",
                     "Implementation-Title": "SecurityCraft",
-                    "Implementation-Version": "v1.8.19.1",
+                    "Implementation-Version": "v1.8.19.2",
                     "Implementation-Vendor" :"Geforce, bl4ckscor3",
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")],)
     }
