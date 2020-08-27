@@ -14,7 +14,7 @@
       "item": "minecraft:paper"
     },
     "S": {
-      "tag": "forge:arrows"
+      "tag": "minecraft:arrows"
     }
   },
   "result": {
