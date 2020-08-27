@@ -4,6 +4,11 @@
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Incorrect item group name
 
+--------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
+
+- Fix: Harming Module recipe doesn't work
+- Fix: Incompatibility with Forge 33.0.22+
+
 --------------------------Changelog for v1.8.19.2 of SecurityCraft--------------------------
 
 - Fix: Incompatibility with Forge 33.0.10+

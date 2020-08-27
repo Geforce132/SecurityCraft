@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -47,7 +48,6 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.VanillaInventoryCodeHooks;
@@ -622,7 +622,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	}
 
 	//these are private in forge's code, so it's copied here
-	private LazyOptional<Pair<IItemHandler, Object>> getItemHandler(IHopper hopper, Direction hopperFacing)
+	private Optional<Pair<IItemHandler, Object>> getItemHandler(IHopper hopper, Direction hopperFacing)
 	{
 		double x = hopper.getXPos() + hopperFacing.getXOffset();
 		double y = hopper.getYPos() + hopperFacing.getYOffset();

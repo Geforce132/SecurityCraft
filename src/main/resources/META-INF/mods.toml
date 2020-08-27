@@ -9,7 +9,7 @@ license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.16.x/LI
 
 [[mods]] #mandatory
 modId="securitycraft" #mandatory
-version="v1.8.19.2" #mandatory
+version="v1.8.19.3" #mandatory
 displayName="SecurityCraft" #mandatory
 updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 description='''
@@ -26,7 +26,7 @@ Message of the update: Finally! Cameras!
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[33.0.10,)"
+    versionRange="[33.0.21,)"
     ordering="NONE"
     side="BOTH"
 
