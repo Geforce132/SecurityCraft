@@ -647,7 +647,7 @@ public class RecipeGenerator extends RecipeProvider
 		addKeycardRecipe(consumer, Tags.Items.GEMS_LAPIS, SCContent.LIMITED_USE_KEYCARD.get(), ToggleLimitedUseKeycardCondition.INSTANCE);
 		addModuleRecipe(consumer, Items.INK_SAC, SCContent.BLACKLIST_MODULE.get());
 		addModuleRecipe(consumer, Items.PAINTING, SCContent.DISGUISE_MODULE.get());
-		addModuleRecipe(consumer, Tags.Items.ARROWS, SCContent.HARMING_MODULE.get());
+		addModuleRecipe(consumer, ItemTags.ARROWS, SCContent.HARMING_MODULE.get());
 		addModuleRecipe(consumer, Tags.Items.DUSTS_REDSTONE, SCContent.REDSTONE_MODULE.get());
 		addModuleRecipe(consumer, Tags.Items.ENDER_PEARLS, SCContent.SMART_MODULE.get());
 		addModuleRecipe(consumer, SCContent.KEYPAD_CHEST.get(), SCContent.STORAGE_MODULE.get());
