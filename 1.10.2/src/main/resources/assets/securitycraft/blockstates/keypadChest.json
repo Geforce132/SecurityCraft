@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "facing=north": { "model": "securitycraft:keypadChest" },
-        "facing=south": { "model": "securitycraft:keypadChest", "y": 180 },
-        "facing=west":  { "model": "securitycraft:keypadChest", "y": 270 },
-        "facing=east":  { "model": "securitycraft:keypadChest", "y": 90 }
-    }
-}

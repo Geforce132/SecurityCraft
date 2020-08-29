@@ -1,9 +1,0 @@
-{
-    "variants": {
-    	"inventory": { "model": "securitycraft:reinforcedRedSandstone_default" },
-        "half=bottom,variant=red_sandstone": { "model": "securitycraft:reinforcedRedSandstone_default" },
-        "half=bottom,variant=purpur": { "model": "securitycraft:reinforcedPurpur_default" },
-        "half=top,variant=red_sandstone": { "model": "securitycraft:reinforcedRedSandstone_default" },
-        "half=top,variant=purpur": { "model": "securitycraft:reinforcedPurpur_default" }
-    }
-}
