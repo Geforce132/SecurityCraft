@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
@@ -22,7 +22,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, ICustomWailaDisplay, IReinforcedBlock {
+public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 
 	public BlockReinforcedWood(){
 		super();
@@ -36,13 +36,13 @@ public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvi
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
@@ -61,9 +61,7 @@ public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvi
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.PLANKS
-		});
+		return Arrays.asList(Blocks.PLANKS);
 	}
 
 	@Override

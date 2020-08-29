@@ -4,19 +4,21 @@ import java.util.ArrayList;
 
 import org.lwjgl.input.Mouse;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCSetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.packets.PacketGivePotionEffect;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
-import net.geforcemods.securitycraft.network.packets.PacketSetBlock;
+import net.geforcemods.securitycraft.network.packets.PacketSetCameraPowered;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -26,20 +28,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntitySecurityCamera extends Entity{
 
-	private final float CAMERA_SPEED = SecurityCraft.config.cameraSpeed;
+	private final float CAMERA_SPEED = ConfigHandler.cameraSpeed;
 
 	public int blockPosX;
 	public int blockPosY;
@@ -60,6 +62,7 @@ public class EntitySecurityCamera extends Entity{
 	private float zoomAmount = 1F;
 
 	private String playerViewingName = null;
+	private boolean zooming = false;
 
 	public EntitySecurityCamera(World world){
 		super(world);
@@ -80,20 +83,12 @@ public class EntitySecurityCamera extends Entity{
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
 		playerViewingName = player.getName();
-		setPosition(x + 0.5D, y + 1, z + 0.5D);
+		setPosition(x + 0.5D, y, z + 0.5D);
 
-		rotationPitch = 30F;
+		TileEntity te = world.getTileEntity(getPosition());
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
-
-		if(facing == EnumFacing.NORTH)
-			rotationYaw = 180F;
-		else if(facing == EnumFacing.WEST)
-			rotationYaw = 90F;
-		else if(facing == EnumFacing.SOUTH)
-			rotationYaw = 0F;
-		else if(facing == EnumFacing.EAST)
-			rotationYaw = 270F;
+		if(te instanceof TileEntitySecurityCamera)
+			setInitialPitchYaw((TileEntitySecurityCamera)te);
 	}
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
@@ -108,20 +103,38 @@ public class EntitySecurityCamera extends Entity{
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
 		playerViewingName = camera.playerViewingName;
-		setPosition(x + 0.5D, y + 1.0D, z + 0.5D);
+		setPosition(x + 0.5D, y, z + 0.5D);
 
-		rotationPitch = 30.0F;
+		TileEntity te = world.getTileEntity(getPosition());
 
-		EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(te instanceof TileEntitySecurityCamera)
+			setInitialPitchYaw((TileEntitySecurityCamera)te);
+	}
 
-		if(facing == EnumFacing.NORTH)
-			rotationYaw = 180F;
-		else if(facing == EnumFacing.WEST)
-			rotationYaw = 90F;
-		else if(facing == EnumFacing.SOUTH)
-			rotationYaw = 0F;
-		else if(facing == EnumFacing.EAST)
-			rotationYaw = 270F;
+	private void setInitialPitchYaw(TileEntitySecurityCamera te)
+	{
+		if(te != null && te.hasModule(EnumModuleType.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
+		{
+			rotationPitch = te.lastPitch;
+			rotationYaw = te.lastYaw;
+		}
+		else
+		{
+			rotationPitch = 30F;
+
+			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+
+			if(facing == EnumFacing.NORTH)
+				rotationYaw = 180F;
+			else if(facing == EnumFacing.WEST)
+				rotationYaw = 90F;
+			else if(facing == EnumFacing.SOUTH)
+				rotationYaw = 0F;
+			else if(facing == EnumFacing.EAST)
+				rotationYaw = 270F;
+			else if(facing == EnumFacing.DOWN)
+				rotationPitch = 75;
+		}
 	}
 
 	@Override
@@ -143,6 +156,9 @@ public class EntitySecurityCamera extends Entity{
 	public void onUpdate(){
 		if(world.isRemote && isBeingRidden()){
 			EntityPlayer lowestEntity = (EntityPlayer)getPassengers().get(0);
+
+			if(lowestEntity != Minecraft.getMinecraft().player)
+				return;
 
 			if(screenshotCooldown > 0)
 				screenshotCooldown -= 1;
@@ -177,7 +193,7 @@ public class EntitySecurityCamera extends Entity{
 		}
 
 		if(!world.isRemote)
-			if(getPassengers().size() == 0 | BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.securityCamera){
+			if(getPassengers().size() == 0 || BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.securityCamera){
 				setDead();
 				return;
 			}
@@ -185,9 +201,6 @@ public class EntitySecurityCamera extends Entity{
 
 	@SideOnly(Side.CLIENT)
 	private void checkKeysPressed() {
-		if (Minecraft.getMinecraft().gameSettings.keyBindSneak.isPressed())
-			dismountRidingEntity();
-
 		if(Minecraft.getMinecraft().gameSettings.keyBindForward.isKeyDown())
 			moveViewUp();
 
@@ -209,10 +222,17 @@ public class EntitySecurityCamera extends Entity{
 			enableNightVision();
 
 		if(KeyBindings.cameraZoomIn.isPressed())
-			zoomCameraView(-1);
-
-		if(KeyBindings.cameraZoomOut.isPressed())
-			zoomCameraView(1);
+		{
+			zoomIn();
+			zooming = true;
+		}
+		else if(KeyBindings.cameraZoomOut.isPressed())
+		{
+			zoomOut();
+			zooming = true;
+		}
+		else
+			zooming = false;
 
 		if(KeyBindings.cameraPrevious.isPressed())
 		{
@@ -226,7 +246,7 @@ public class EntitySecurityCamera extends Entity{
 					{
 						ItemCameraMonitor monitor = (ItemCameraMonitor)player.getHeldItem(EnumHand.MAIN_HAND).getItem();
 						ArrayList<CameraView> views = monitor.getCameraPositions(player.getHeldItem(EnumHand.MAIN_HAND).getTagCompound());
-						ArrayList<CameraView> nonNull = new ArrayList<CameraView>();
+						ArrayList<CameraView> nonNull = new ArrayList<>();
 						int newIndex = -1;
 						BlockPos newPos;
 
@@ -298,97 +318,121 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void moveViewUp() {
-		if(rotationPitch > -25F)
+		if(isCameraDown())
+		{
+			if(rotationPitch > 40F)
+				setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
+		}
+		else if(rotationPitch > -25F)
 			setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
 
 		updateServerRotation();
 	}
 
 	public void moveViewDown(){
-		if(rotationPitch < 60F)
+		if(isCameraDown())
+		{
+			if(rotationPitch < 100F)
+				setRotation(rotationYaw, rotationPitch += CAMERA_SPEED);
+		}
+		else if(rotationPitch < 60F)
 			setRotation(rotationYaw, rotationPitch += CAMERA_SPEED);
 
 		updateServerRotation();
 	}
 
 	public void moveViewLeft() {
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-			if(facing == EnumFacing.EAST){
+			if(facing == EnumFacing.EAST)
+			{
 				if((rotationYaw - CAMERA_SPEED) > -180F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
-			}else if(facing == EnumFacing.WEST){
+			}
+			else if(facing == EnumFacing.WEST)
+			{
 				if((rotationYaw - CAMERA_SPEED) > 0F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
-			}else if(facing == EnumFacing.NORTH){
+			}
+			else if(facing == EnumFacing.NORTH)
+			{
 				// Handles some problems the occurs from the way the rotationYaw value works in MC
 				if((((rotationYaw - CAMERA_SPEED) > 90F) && ((rotationYaw - CAMERA_SPEED) < 185F)) || (((rotationYaw - CAMERA_SPEED) > -190F) && ((rotationYaw - CAMERA_SPEED) < -90F)))
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
-			}else if(facing == EnumFacing.SOUTH)
+			}
+			else if(facing == EnumFacing.SOUTH)
+			{
 				if((rotationYaw - CAMERA_SPEED) > -90F)
 					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+			}
+			else if(facing == EnumFacing.DOWN)
+				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
 
 			updateServerRotation();
 		}
 	}
 
 	public void moveViewRight(){
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockPropertyAsEnum(world, BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
+			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
 
-			if(facing == EnumFacing.EAST){
+			if(facing == EnumFacing.EAST)
+			{
 				if((rotationYaw + CAMERA_SPEED) < 0F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
-			}else if(facing == EnumFacing.WEST){
+			}
+			else if(facing == EnumFacing.WEST)
+			{
 				if((rotationYaw + CAMERA_SPEED) < 180F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
-			}else if(facing == EnumFacing.NORTH){
+			}
+			else if(facing == EnumFacing.NORTH)
+			{
 				if((((rotationYaw + CAMERA_SPEED) > 85F) && ((rotationYaw + CAMERA_SPEED) < 185F)) || ((rotationYaw + CAMERA_SPEED) < -95F) && ((rotationYaw + CAMERA_SPEED) > -180F))
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
-			}else if(facing == EnumFacing.SOUTH)
+			}
+			else if(facing == EnumFacing.SOUTH)
+			{
 				if((rotationYaw + CAMERA_SPEED) < 90F)
 					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+			}
+			else if(facing == EnumFacing.DOWN)
+				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
 
 			updateServerRotation();
 		}
 	}
 
-	public void zoomCameraView(int zoom) {
-		if(zoom > 0){
-			if(zoomAmount == -0.5F)
-				zoomAmount = 1F;
-			else if(zoomAmount == 1F)
-				zoomAmount = 2F;
-		}else if(zoom < 0)
-			if(zoomAmount == 2F)
-				zoomAmount = 1F;
-			else if(zoomAmount == 1F)
-				zoomAmount = -0.5F;
+	public void zoomIn()
+	{
+		zoomAmount = Math.min(zoomAmount - 0.1F, 2.0F);
 
-		Minecraft.getMinecraft().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERAZOOMIN.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+		if(!zooming)
+			Minecraft.getMinecraft().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+	}
+
+	public void zoomOut()
+	{
+		zoomAmount = Math.max(zoomAmount + 0.1F, -0.5F);
+
+		if(!zooming)
+			Minecraft.getMinecraft().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
-		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) (posY - 1D), (int) Math.floor(posZ));
+		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ));
 
-		if(((CustomizableSCTE) world.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
-			if(BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) - 6));
-			else if(!BlockUtils.getBlockPropertyAsBoolean(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new PacketSetBlock(pos.getX(), pos.getY(), pos.getZ(), "securitycraft:security_camera", BlockUtils.getBlockMeta(world, pos) + 6));
+		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
+			if(BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
+				SecurityCraft.network.sendToServer(new PacketSetCameraPowered(pos, false));
+			else if(!BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
+				SecurityCraft.network.sendToServer(new PacketSetCameraPowered(pos, true));
 	}
 
 	public void enableNightVision() {
 		toggleNightVisionCooldown = 30;
 		shouldProvideNightVision = !shouldProvideNightVision;
-	}
-
-	public String getCameraInfo(){
-		String nowViewing = TextFormatting.UNDERLINE + "Now viewing camera #" + id + "\n\n";
-		String pos = TextFormatting.YELLOW + "Pos: " + TextFormatting.RESET + "X: " + (int) Math.floor(posX) + " Y: " + (int) (posY - 1D) + " Z: " + (int) Math.floor(posZ) + "\n";
-		String viewingFrom = (getPassengers().size() != 0 && SecurityCraft.instance.hasUsePosition(getPassengers().get(0).getName())) ? TextFormatting.YELLOW + "Viewing from: " + TextFormatting.RESET + " X: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[0]) + " Y: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[1]) + " Z: " + (int) Math.floor((Double) SecurityCraft.instance.getUsePosition(getPassengers().get(0).getName())[2]) : "";
-		return nowViewing + pos + viewingFrom;
 	}
 
 	public float getZoomAmount(){
@@ -398,6 +442,11 @@ public class EntitySecurityCamera extends Entity{
 	@SideOnly(Side.CLIENT)
 	private void updateServerRotation(){
 		SecurityCraft.network.sendToServer(new PacketSSetCameraRotation(rotationYaw, rotationPitch));
+	}
+
+	private boolean isCameraDown()
+	{
+		return world.getTileEntity(getPosition()) instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)world.getTileEntity(getPosition())).down;
 	}
 
 	@Override
@@ -415,49 +464,49 @@ public class EntitySecurityCamera extends Entity{
 	protected void entityInit(){}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tagCompound){
-		tagCompound.setInteger("CameraID", id);
+	public void writeEntityToNBT(NBTTagCompound tag){
+		tag.setInteger("CameraID", id);
 
 		if(playerViewingName != null)
-			tagCompound.setString("playerName", playerViewingName);
+			tag.setString("playerName", playerViewingName);
 
 		if(cameraUseX != 0.0D)
-			tagCompound.setDouble("cameraUseX", cameraUseX);
+			tag.setDouble("cameraUseX", cameraUseX);
 
 		if(cameraUseY != 0.0D)
-			tagCompound.setDouble("cameraUseY", cameraUseY);
+			tag.setDouble("cameraUseY", cameraUseY);
 
 		if(cameraUseZ != 0.0D)
-			tagCompound.setDouble("cameraUseZ", cameraUseZ);
+			tag.setDouble("cameraUseZ", cameraUseZ);
 
 		if(cameraUseYaw != 0.0D)
-			tagCompound.setDouble("cameraUseYaw", cameraUseYaw);
+			tag.setDouble("cameraUseYaw", cameraUseYaw);
 
 		if(cameraUsePitch != 0.0D)
-			tagCompound.setDouble("cameraUsePitch", cameraUsePitch);
+			tag.setDouble("cameraUsePitch", cameraUsePitch);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tagCompound){
-		id = tagCompound.getInteger("CameraID");
+	public void readEntityFromNBT(NBTTagCompound tag){
+		id = tag.getInteger("CameraID");
 
-		if(tagCompound.hasKey("playerName"))
-			playerViewingName = tagCompound.getString("playerName");
+		if(tag.hasKey("playerName"))
+			playerViewingName = tag.getString("playerName");
 
-		if(tagCompound.hasKey("cameraUseX"))
-			cameraUseX = tagCompound.getDouble("cameraUseX");
+		if(tag.hasKey("cameraUseX"))
+			cameraUseX = tag.getDouble("cameraUseX");
 
-		if(tagCompound.hasKey("cameraUseY"))
-			cameraUseY = tagCompound.getDouble("cameraUseY");
+		if(tag.hasKey("cameraUseY"))
+			cameraUseY = tag.getDouble("cameraUseY");
 
-		if(tagCompound.hasKey("cameraUseZ"))
-			cameraUseZ = tagCompound.getDouble("cameraUseZ");
+		if(tag.hasKey("cameraUseZ"))
+			cameraUseZ = tag.getDouble("cameraUseZ");
 
-		if(tagCompound.hasKey("cameraUseYaw"))
-			cameraUseYaw = tagCompound.getFloat("cameraUseYaw");
+		if(tag.hasKey("cameraUseYaw"))
+			cameraUseYaw = tag.getFloat("cameraUseYaw");
 
-		if(tagCompound.hasKey("cameraUsePitch"))
-			cameraUsePitch = tagCompound.getFloat("cameraUsePitch");
+		if(tag.hasKey("cameraUsePitch"))
+			cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 
 }

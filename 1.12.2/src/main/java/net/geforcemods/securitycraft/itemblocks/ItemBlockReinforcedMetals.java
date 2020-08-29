@@ -30,6 +30,7 @@ public class ItemBlockReinforcedMetals extends ItemBlock
 			case 1: return name + "_iron";
 			case 2: return name + "_diamond";
 			case 3: return name + "_emerald";
+			case 4: return name + "_redstone";
 			default: return name;
 		}
 	}

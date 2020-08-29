@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "securitycraft:reinforced_crystal_quartz",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "securitycraft:block_pocket_wall",
+    "count": 1
+  }
+}

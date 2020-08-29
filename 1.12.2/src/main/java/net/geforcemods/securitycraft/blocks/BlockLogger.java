@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -20,12 +19,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockLogger extends BlockContainer {
+public class BlockLogger extends BlockDisguisable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockLogger(Material par1Material) {
-		super(par1Material);
+	public BlockLogger(Material material) {
+		super(material);
 		setSoundType(SoundType.STONE);
 	}
 
@@ -35,13 +34,11 @@ public class BlockLogger extends BlockContainer {
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote)
-			return true;
-		else{
-			playerIn.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, worldIn, pos.getX(), pos.getY(), pos.getZ());
-			return true;
-		}
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(!world.isRemote)
+			player.openGui(SecurityCraft.instance, GuiHandler.USERNAME_LOGGER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+
+		return true;
 	}
 
 	/**
@@ -49,11 +46,11 @@ public class BlockLogger extends BlockContainer {
 	 * their own) Args: x, y, z, neighbor Block
 	 */
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		if (!worldIn.isRemote)
-			if(worldIn.isBlockPowered(pos))
-				((TileEntityLogger)worldIn.getTileEntity(pos)).logPlayers();
+		if (!world.isRemote)
+			if(world.isBlockPowered(pos))
+				((TileEntityLogger)world.getTileEntity(pos)).logPlayers();
 	}
 
 	@Override
@@ -62,33 +59,28 @@ public class BlockLogger extends BlockContainer {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
-
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
+		if(EnumFacing.values()[meta] == EnumFacing.DOWN || EnumFacing.values()[meta] == EnumFacing.UP)
+			return getDefaultState();
 		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta]);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(FACING).getIndex();
+		return state.getBlock() != this ? 0 : state.getValue(FACING).getIndex();
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par1) {
-		return new TileEntityLogger().attacks(EntityPlayer.class, SecurityCraft.config.usernameLoggerSearchRadius, 80);
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntityLogger().attacks(EntityPlayer.class, ConfigHandler.usernameLoggerSearchRadius, 80);
 	}
 }

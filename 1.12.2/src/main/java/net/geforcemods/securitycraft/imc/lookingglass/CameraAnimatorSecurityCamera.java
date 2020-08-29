@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 
 /**
  * The IWorldView animator for the security cameras. <p>
@@ -30,13 +31,13 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		cameraMeta = securityCameraMeta;
 
 		if(securityCameraMeta == 1)
-			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		else if(securityCameraMeta == 2)
-			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		else if(securityCameraMeta == 3)
-			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 		else if(securityCameraMeta == 4)
-			this.camera.setLocation(camera.getPosition().getX() + 0.5D, camera.getPosition().getY() - cameraYOffset, camera.getPosition().getZ() + 0.5D);
+			this.camera.setLocation(camera.getX() + 0.5D, camera.getY() - cameraYOffset, camera.getZ() + 0.5D);
 
 		if(securityCameraMeta == 1)
 			this.camera.setYaw(180F);
@@ -49,7 +50,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 	}
 
 	@Override
-	public void setTarget(BlockPos arg0) {}
+	public void setTarget(ChunkPos target) {}
 
 	@Override
 	public void refresh(){}
@@ -61,7 +62,7 @@ public class CameraAnimatorSecurityCamera implements ICameraAnimator {
 		if(BlockUtils.getBlock(Minecraft.getMinecraft().world, pos) != SCContent.securityCamera)
 			return;
 
-		float cameraRotation = ((TileEntitySecurityCamera) Minecraft.getMinecraft().world.getTileEntity(pos)).cameraRotation * 60;
+		float cameraRotation = (float)(((TileEntitySecurityCamera) Minecraft.getMinecraft().world.getTileEntity(pos)).cameraRotation * 60);
 
 		if(cameraMeta == 4)
 			camera.setYaw(180 + cameraRotation);

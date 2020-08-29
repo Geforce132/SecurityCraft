@@ -9,9 +9,9 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerDisguiseModule extends Container {
 
-	private ModuleInventory inventory;
+	private ModuleItemInventory inventory;
 
-	public ContainerDisguiseModule(EntityPlayer par1Player, InventoryPlayer playerInventory, ModuleInventory moduleInventory) {
+	public ContainerDisguiseModule(InventoryPlayer playerInventory, ModuleItemInventory moduleInventory) {
 		inventory = moduleInventory;
 		addSlotToContainer(new AddonSlot(inventory, 0, 79, 20));
 
@@ -24,45 +24,45 @@ public class ContainerDisguiseModule extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
-		ItemStack itemstack = ItemStack.EMPTY;
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack slotStack = slot.getStack();
+			slotStackCopy = slotStack.copy();
 
 			if(index < inventory.SIZE) {
-				if(!mergeItemStack(itemstack1, inventory.SIZE, 37, true))
+				if(!mergeItemStack(slotStack, inventory.SIZE, 37, true))
 					return ItemStack.EMPTY;
 
-				slot.onSlotChange(itemstack1, itemstack);
+				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(index >= inventory.SIZE)
-				if(!mergeItemStack(itemstack1, 0, inventory.SIZE, false))
+				if(!mergeItemStack(slotStack, 0, inventory.SIZE, false))
 					return ItemStack.EMPTY;
 
-			if(itemstack1.getCount() == 0)
+			if(slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.getCount() == itemstack.getCount())
+			if(slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
 
-			slot.onTake(par1EntityPlayer, itemstack1);
+			slot.onTake(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player)
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player)
 	{
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
 			return ItemStack.EMPTY;
 
-		return super.slotClick(slot, dragType, clickTypeIn, player);
+		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	@Override
@@ -73,18 +73,18 @@ public class ContainerDisguiseModule extends Container {
 
 	public static class AddonSlot extends Slot {
 
-		private ModuleInventory inventory;
+		private ModuleItemInventory inventory;
 
-		public AddonSlot(ModuleInventory par1IInventory, int par2, int par3, int par4) {
-			super(par1IInventory, par2, par3, par4);
-			inventory = par1IInventory;
+		public AddonSlot(ModuleItemInventory inventory, int index, int xPos, int yPos) {
+			super(inventory, index, xPos, yPos);
+			this.inventory = inventory;
 		}
 
 		@Override
-		public boolean isItemValid(ItemStack par1ItemStack) {
+		public boolean isItemValid(ItemStack itemStack) {
 			int numberOfItems = 0;
 			int numberOfBlocks = 0;
-			boolean isStackBlock = par1ItemStack.getTranslationKey().startsWith("tile.");
+			boolean isStackBlock = itemStack.getTranslationKey().startsWith("tile.");
 
 			for(ItemStack stack : inventory.moduleInventory)
 				if(!stack.isEmpty() && stack.getItem() != null)
@@ -93,12 +93,7 @@ public class ContainerDisguiseModule extends Container {
 					else
 						numberOfItems++;
 
-			if(isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks)
-				return true;
-			else if(!isStackBlock && numberOfItems < inventory.maxNumberOfItems)
-				return true;
-
-			return false;
+			return (isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks) || (!isStackBlock && numberOfItems < inventory.maxNumberOfItems);
 		}
 
 		@Override

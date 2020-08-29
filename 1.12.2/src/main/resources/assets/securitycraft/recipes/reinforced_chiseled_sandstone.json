@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_stone_slabs",
+      "data": 2
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_sandstone",
+    "data": 1
+  }
+}

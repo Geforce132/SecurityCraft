@@ -22,14 +22,14 @@ public class PlayerUtils{
 	 *
 	 * Args: playerName.
 	 */
-	public static EntityPlayer getPlayerFromName(String par1){
+	public static EntityPlayer getPlayerFromName(String name){
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 			List<?> players = Minecraft.getMinecraft().world.playerEntities;
 			Iterator<?> iterator = players.iterator();
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getName().matches(par1))
+				if(tempPlayer.getName().equals(name))
 					return tempPlayer;
 			}
 
@@ -40,33 +40,7 @@ public class PlayerUtils{
 
 			while(iterator.hasNext()){
 				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getName().matches(par1))
-					return tempPlayer;
-			}
-
-			return null;
-		}
-	}
-
-	public static EntityPlayer getPlayerByUUID(String uuid){
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
-			List<?> players = Minecraft.getMinecraft().world.playerEntities;
-			Iterator<?> iterator = players.iterator();
-
-			while(iterator.hasNext()){
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getGameProfile().getId().toString().matches(uuid))
-					return tempPlayer;
-			}
-
-			return null;
-		}else{
-			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
-			Iterator<?> iterator = players.iterator();
-
-			while(iterator.hasNext()){
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-				if(tempPlayer.getGameProfile().getId().toString().matches(uuid))
+				if(tempPlayer.getName().equals(name))
 					return tempPlayer;
 			}
 
@@ -79,27 +53,23 @@ public class PlayerUtils{
 	 *
 	 * Args: playerName.
 	 */
-	public static boolean isPlayerOnline(String par1) {
+	public static boolean isPlayerOnline(String name) {
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
 			for(int i = 0; i < Minecraft.getMinecraft().world.playerEntities.size(); i++){
 				EntityPlayer player = Minecraft.getMinecraft().world.playerEntities.get(i);
 
-				if(player != null && player.getName().matches(par1))
+				if(player != null && player.getName().equals(name))
 					return true;
 			}
 
 			return false;
 		}
 		else
-			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(par1) != null);
+			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
 	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){
 		player.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
-	}
-
-	public static void sendMessageToPlayer(ICommandSender sender, String prefix, String text, TextFormatting color){
-		sender.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
 	}
 
 	/**
@@ -129,6 +99,6 @@ public class PlayerUtils{
 	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
-		return entity.getRidingEntity() != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
+		return entity.getRidingEntity() instanceof EntitySecurityCamera;
 	}
 }

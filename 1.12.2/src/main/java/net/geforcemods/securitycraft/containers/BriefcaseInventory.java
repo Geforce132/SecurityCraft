@@ -16,7 +16,6 @@ public class BriefcaseInventory implements IInventory {
 
 	public static final int SIZE = 12;
 	private final ItemStack briefcase;
-
 	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
 
 	public BriefcaseInventory(ItemStack briefcaseItem) {
@@ -38,8 +37,8 @@ public class BriefcaseInventory implements IInventory {
 		return briefcaseInventory.get(index);
 	}
 
-	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+	public void readFromNBT(NBTTagCompound tag) {
+		NBTTagList items = tag.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 
 		for(int i = 0; i < items.tagCount(); i++) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
@@ -50,7 +49,7 @@ public class BriefcaseInventory implements IInventory {
 		}
 	}
 
-	public void writeToNBT(NBTTagCompound tagcompound) {
+	public void writeToNBT(NBTTagCompound tag) {
 		NBTTagList items = new NBTTagList();
 
 		for(int i = 0; i < getSizeInventory(); i++)
@@ -62,7 +61,7 @@ public class BriefcaseInventory implements IInventory {
 				items.appendTag(item);
 			}
 
-		tagcompound.setTag("ItemInventory", items);
+		tag.setTag("ItemInventory", items);
 		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
 	}
 
@@ -89,11 +88,11 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack itemstack) {
-		briefcaseInventory.set(index, itemstack);
+	public void setInventorySlotContents(int index, ItemStack itemStack) {
+		briefcaseInventory.set(index, itemStack);
 
-		if(!itemstack.isEmpty() && itemstack.getCount() > getInventoryStackLimit())
-			itemstack.setCount(getInventoryStackLimit());
+		if(!itemStack.isEmpty() && itemStack.getCount() > getInventoryStackLimit())
+			itemStack.setCount(getInventoryStackLimit());
 
 		markDirty();
 	}
@@ -134,7 +133,7 @@ public class BriefcaseInventory implements IInventory {
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int index, ItemStack itemStack) {
 		return true;
 	}
 

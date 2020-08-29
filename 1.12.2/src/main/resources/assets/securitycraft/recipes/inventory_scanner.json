@@ -7,7 +7,7 @@
   ],
   "key": {
     "S": {
-      "item": "minecraft:stone",
+      "item": "securitycraft:reinforced_stone",
       "data": 0
     },
     "L": {

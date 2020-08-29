@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "C"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "securitycraft:reinforced_cobblestone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_lever",
+    "count": 1
+  }
+}

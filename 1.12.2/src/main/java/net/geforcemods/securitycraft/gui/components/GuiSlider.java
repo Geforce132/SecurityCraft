@@ -36,48 +36,46 @@ public class GuiSlider extends GuiButtonExt
 {
 	/** The value of this slider control. */
 	public double sliderValue;
-
 	public String dispString = "";
-
 	/** Is this slider control being dragged. */
 	public boolean dragging = false;
 	public boolean showDecimal = true;
-
 	public double minValue = 0.0D;
 	public double maxValue = 5.0D;
 	public int precision = 1;
-
 	@Nullable
 	public ISlider parent = null;
-
-	public String suffix = "";
-
 	public boolean drawString = true;
-
 	private String blockName;
+	public String prefix;
 
-	public GuiSlider(int id, int xPos, int yPos, int width, int height, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr)
+	public GuiSlider(int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr)
 	{
-		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, width, height, prefix, suf, minVal, maxVal, currentVal, showDec, drawStr, null);
+		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, width, height, prefix, minVal, maxVal, currentVal, showDec, drawStr, null);
 	}
 
-	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
+	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, int minVal,int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
+	{
+		this(initialString, bN, id, xPos, yPos, width, height, prefix, (double)minVal, (double)maxVal, (double)currentVal, showDec, drawStr, par);
+	}
+
+	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
 	{
 		super(id, xPos, yPos, width, height, prefix);
 		minValue = minVal;
 		maxValue = maxVal;
 		dispString = prefix;
 		parent = par;
-		suffix = suf;
 		showDecimal = showDec;
 		blockName = bN;
 		String val;
 		sliderValue = (currentVal - minVal) / (maxVal - minVal);
+		this.prefix = prefix;
 
 		if (showDecimal)
 		{
 			val = Double.toString(getValue());
-			precision = Math.min(val.substring(val.indexOf(".") + 1).length(), 4);
+			precision = Math.min(val.substring(val.indexOf('.') + 1).length(), 4);
 		}
 		else
 		{
@@ -94,13 +92,9 @@ public class GuiSlider extends GuiButtonExt
 
 	public GuiSlider(int id, int xPos, int yPos, String displayStr, double minVal, double maxVal, double currentVal, ISlider par)
 	{
-		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, 150, 20, displayStr, "", minVal, maxVal, currentVal, true, true, par);
+		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, 150, 20, displayStr, minVal, maxVal, currentVal, true, true, par);
 	}
 
-	/**
-	 * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-	 * this button.
-	 */
 	/**
 	 * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
 	 * this button.
@@ -114,17 +108,14 @@ public class GuiSlider extends GuiButtonExt
 	/**
 	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
 	 */
-	/**
-	 * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
-	 */
 	@Override
-	protected void mouseDragged(Minecraft par1Minecraft, int par2, int par3)
+	protected void mouseDragged(Minecraft mc, int mouseX, int mouseY)
 	{
 		if (visible)
 		{
 			if (dragging)
 			{
-				sliderValue = (par2 - (x + 4)) / (double)(width - 8);
+				sliderValue = (mouseX - (x + 4)) / (double)(width - 8);
 				updateSlider();
 			}
 
@@ -138,16 +129,12 @@ public class GuiSlider extends GuiButtonExt
 	 * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
 	 * e).
 	 */
-	/**
-	 * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
-	 * e).
-	 */
 	@Override
-	public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
+	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY)
 	{
-		if (super.mousePressed(par1Minecraft, par2, par3))
+		if (super.mousePressed(mc, mouseX, mouseY))
 		{
-			sliderValue = (double)(par2 - (x + 4)) / (double)(width - 8);
+			sliderValue = (double)(mouseX - (x + 4)) / (double)(width - 8);
 			updateSlider();
 			dragging = true;
 			return true;
@@ -170,15 +157,15 @@ public class GuiSlider extends GuiButtonExt
 		{
 			val = Double.toString(getValue());
 
-			if (val.substring(val.indexOf(".") + 1).length() > precision)
+			if (val.substring(val.indexOf('.') + 1).length() > precision)
 			{
-				val = val.substring(0, val.indexOf(".") + precision + 1);
+				val = val.substring(0, val.indexOf('.') + precision + 1);
 
 				if (val.endsWith("."))
-					val = val.substring(0, val.indexOf(".") + precision);
+					val = val.substring(0, val.indexOf('.') + precision);
 			}
 			else
-				while (val.substring(val.indexOf(".") + 1).length() < precision)
+				while (val.substring(val.indexOf('.') + 1).length() < precision)
 					val = val + "0";
 		}
 		else
@@ -191,13 +178,11 @@ public class GuiSlider extends GuiButtonExt
 	/**
 	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
 	 */
-	/**
-	 * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
-	 */
 	@Override
-	public void mouseReleased(int par1, int par2)
+	public void mouseReleased(int mouseX, int mouseY)
 	{
 		dragging = false;
+		parent.onMouseRelease(id);
 	}
 
 	public int getValueInt()
@@ -210,13 +195,10 @@ public class GuiSlider extends GuiButtonExt
 		return sliderValue * (maxValue - minValue) + minValue;
 	}
 
-	public void setValue(double d)
-	{
-		sliderValue = (d - minValue) / (maxValue - minValue);
-	}
-
 	public static interface ISlider
 	{
 		void onChangeSliderValue(GuiSlider slider, String blockName, int id);
+
+		void onMouseRelease(int id);
 	}
 }

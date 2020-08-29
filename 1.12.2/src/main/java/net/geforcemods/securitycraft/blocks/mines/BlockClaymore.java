@@ -4,9 +4,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -30,8 +31,8 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
-	public BlockClaymore(Material materialIn) {
-		super(materialIn);
+	public BlockClaymore(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -61,31 +62,34 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		return null;
+		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+			return;
+		else
+			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{
-		return worldIn.getBlockState(pos.down()).getBlock().isSideSolid(worldIn.getBlockState(pos.down()), worldIn, pos.down(), EnumFacing.UP);
+		return world.getBlockState(pos.down()).getBlock().isSideSolid(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP);
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!worldIn.isRemote)
-			if(!playerIn.inventory.getCurrentItem().isEmpty() && playerIn.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
-				worldIn.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote)
+			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
+				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
 				return true;
-			}else if(!playerIn.inventory.getCurrentItem().isEmpty() && playerIn.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				worldIn.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
+			}else if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
+				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
 				return true;
 			}
 
@@ -94,22 +98,27 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
-		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
 		{
-			BlockUtils.destroyBlock(world, pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+			world.destroyBlock(pos, false);
+
+			if(!EntityUtils.doesPlayerOwn(player, world, pos))
+				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest);
 	}
 
 	@Override
-	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn)
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!worldIn.isRemote && BlockUtils.hasBlockProperty(worldIn, pos, BlockClaymore.DEACTIVATED) && !worldIn.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED).booleanValue())
+		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
 		{
-			BlockUtils.destroyBlock(worldIn, pos, false);
-			worldIn.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+			if(pos.equals(new BlockPos(explosion.getPosition())))
+				return;
+
+			world.destroyBlock(pos, false);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
 		}
 	}
 
@@ -134,7 +143,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
-			BlockUtils.destroyBlock(world, pos, false);
+			world.destroyBlock(pos, false);
 			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true);
 		}
 	}
@@ -142,22 +151,15 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH)
+		if (state.getValue(FACING) == EnumFacing.NORTH)
 			return new AxisAlignedBB(0.225F, 0.000F, 0.175F, 0.775F, 0.325F, 0.450F);
-		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
+		else if (state.getValue(FACING) == EnumFacing.SOUTH)
 			return new AxisAlignedBB(0.225F, 0.000F, 0.550F, 0.775F, 0.325F, 0.825F);
-		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST)
+		else if (state.getValue(FACING) == EnumFacing.EAST)
 			return new AxisAlignedBB(0.550F, 0.0F, 0.225F, 0.825F, 0.335F, 0.775F);
 		else
 			return new AxisAlignedBB(0.175F, 0.0F, 0.225F, 0.450F, 0.335F, 0.775F);
 	}
-
-	/* TODO: no clue about this
-	@SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
@@ -171,7 +173,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(DEACTIVATED).booleanValue())
+		if(state.getValue(DEACTIVATED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
@@ -180,12 +182,12 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, DEACTIVATED});
+		return new BlockStateContainer(this, FACING, DEACTIVATED);
 	}
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).getValue(DEACTIVATED).booleanValue();
+		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override
@@ -194,7 +196,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityClaymore();
 	}
 }

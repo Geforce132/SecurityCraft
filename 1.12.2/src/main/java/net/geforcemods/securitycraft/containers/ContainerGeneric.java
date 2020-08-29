@@ -7,12 +7,15 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerGeneric extends Container {
 
+	public ContainerGeneric()
+	{}
+
 	public ContainerGeneric(InventoryPlayer inventory, TileEntity te){
 
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 

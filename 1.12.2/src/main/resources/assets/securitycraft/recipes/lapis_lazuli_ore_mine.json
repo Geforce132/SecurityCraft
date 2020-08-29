@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "block_mines",
+  "conditions": [
+    {
+      "type": "securitycraft_toggle_mines"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:lapis_ore"
+    },
+    {
+      "item": "securitycraft:mine"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:lapis_mine",
+    "count": 1
+  }
+}

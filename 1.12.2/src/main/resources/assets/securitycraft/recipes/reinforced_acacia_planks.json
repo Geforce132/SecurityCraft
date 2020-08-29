@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:reinforced_planks",
+  "ingredients": [
+    {
+      "item": "securitycraft:reinforced_logs2",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "securitycraft:reinforced_planks",
+    "data": 4,
+    "count": 4
+  }
+}

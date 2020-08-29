@@ -5,12 +5,11 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,18 +23,17 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
-	public static final PropertyEnum<BlockReinforcedPurpur.EnumType> VARIANT = PropertyEnum.<BlockReinforcedPurpur.EnumType>create("variant", BlockReinforcedPurpur.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.<EnumType>create("variant", EnumType.class);
 
 	public BlockReinforcedPurpur()
 	{
 		super(Material.ROCK);
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.DEFAULT));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.DEFAULT));
 	}
 
 	/**
@@ -43,20 +41,20 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	 * IBlockstate
 	 */
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
 	{
-		if (meta == BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata())
+		if (meta == EnumType.LINES_Y.getMetadata())
 			switch (facing.getAxis())
 			{
 				case Z:
-					return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_Z);
+					return getDefaultState().withProperty(VARIANT, EnumType.LINES_Z);
 				case X:
-					return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_X);
+					return getDefaultState().withProperty(VARIANT, EnumType.LINES_X);
 				case Y:
-					return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_Y);
+					return getDefaultState().withProperty(VARIANT, EnumType.LINES_Y);
 			}
 
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.DEFAULT);
+		return getDefaultState().withProperty(VARIANT, EnumType.DEFAULT);
 	}
 
 	/**
@@ -66,27 +64,27 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		BlockReinforcedPurpur.EnumType blockquartz$enumtype = state.getValue(VARIANT);
-		return blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_X && blockquartz$enumtype != BlockReinforcedPurpur.EnumType.LINES_Z ? blockquartz$enumtype.getMetadata() : BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata();
+		EnumType type = state.getValue(VARIANT);
+		return type != EnumType.LINES_X && type != EnumType.LINES_Z ? type.getMetadata() : EnumType.LINES_Y.getMetadata();
 	}
 
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		list.add(new ItemStack(this, 1, BlockReinforcedPurpur.EnumType.DEFAULT.getMetadata()));
-		list.add(new ItemStack(this, 1, BlockReinforcedPurpur.EnumType.LINES_Y.getMetadata()));
+		list.add(new ItemStack(this, 1, EnumType.DEFAULT.getMetadata()));
+		list.add(new ItemStack(this, 1, EnumType.LINES_Y.getMetadata()));
 	}
 
 	/**
 	 * Get the MapColor for this Block and the given BlockState
 	 */
-	public MapColor getMapColor(IBlockState state)
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		return MapColor.QUARTZ;
+		return MapColor.MAGENTA;
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedPurpur.EnumType.byMetadata(meta));
+		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
 	/**
@@ -122,9 +120,9 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 				switch (state.getValue(VARIANT))
 				{
 					case LINES_X:
-						return state.withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_Z);
+						return state.withProperty(VARIANT, EnumType.LINES_Z);
 					case LINES_Z:
-						return state.withProperty(VARIANT, BlockReinforcedPurpur.EnumType.LINES_X);
+						return state.withProperty(VARIANT, EnumType.LINES_X);
 					default:
 						return state;
 				}
@@ -137,26 +135,21 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
+		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		IBlockState state = world.getBlockState(pos);
-		for (IProperty prop : state.getProperties().keySet())
-			if (prop.getName().equals("variant") && prop.getValueClass() == EnumType.class)
-			{
-				EnumType current = (EnumType)state.getValue(prop);
-				EnumType next = current == EnumType.LINES_X ? EnumType.LINES_Y :
-					current == EnumType.LINES_Y ? EnumType.LINES_Z :
-						current == EnumType.LINES_Z ? EnumType.LINES_X : current;
-				if (next == current)
-					return false;
-				world.setBlockState(pos, state.withProperty(prop, next));
-				return true;
-			}
-		return false;
+		EnumType current = state.getValue(VARIANT);
+		EnumType next = current == EnumType.LINES_X ? EnumType.LINES_Y :
+			current == EnumType.LINES_Y ? EnumType.LINES_Z :
+				current == EnumType.LINES_Z ? EnumType.LINES_X : current;
+		if (next == current)
+			return false;
+		world.setBlockState(pos, state.withProperty(VARIANT, next));
+		return true;
 	}
 
 	@Override
@@ -174,10 +167,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.PURPUR_BLOCK,
-				Blocks.PURPUR_PILLAR
-		});
+		return Arrays.asList(Blocks.PURPUR_BLOCK, Blocks.PURPUR_PILLAR);
 	}
 
 	@Override
@@ -193,7 +183,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 		LINES_X(2, "lines_x", "lines"),
 		LINES_Z(3, "lines_z", "lines");
 
-		private static final BlockReinforcedPurpur.EnumType[] META_LOOKUP = new BlockReinforcedPurpur.EnumType[values().length];
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String serializedName;
 		private final String unlocalizedName;
@@ -216,7 +206,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 			return unlocalizedName;
 		}
 
-		public static BlockReinforcedPurpur.EnumType byMetadata(int meta)
+		public static EnumType byMetadata(int meta)
 		{
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
@@ -232,8 +222,8 @@ public class BlockReinforcedPurpur extends BlockOwnable implements ICustomWailaD
 
 		static
 		{
-			for (BlockReinforcedPurpur.EnumType blockquartz$enumtype : values())
-				META_LOOKUP[blockquartz$enumtype.getMetadata()] = blockquartz$enumtype;
+			for (EnumType type : values())
+				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
 }

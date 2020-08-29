@@ -6,7 +6,6 @@ import com.xcompwiz.lookingglass.client.proxyworld.ProxyWorldManager;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
@@ -49,8 +48,7 @@ public class LookingGlassAPIProvider {
 				lgView.setAnimator(new CameraAnimatorSecurityCamera(lgView.getCamera(), pos, BlockUtils.getBlockMeta(world, pos)));
 
 				if(!SecurityCraft.instance.hasViewForCoords(pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + dimension)){
-					SecurityCraft.log("Inserting new view at" + Utils.getFormattedCoordinates(pos));
-					((ClientProxy) SecurityCraft.serverProxy).worldViews.put(pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + dimension, new IWorldViewHelper(lgView));
+					((ClientProxy)SecurityCraft.proxy).worldViews.put(pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + dimension, new IWorldViewHelper(lgView));
 				}
 			});
 		}

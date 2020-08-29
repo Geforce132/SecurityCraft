@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "powered=false": { "model": "securitycraft:reinforced_stone_pressure_plate" },
+        "powered=true": { "model": "securitycraft:reinforced_stone_pressure_plate_down" }
+    }
+}

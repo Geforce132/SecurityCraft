@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -13,18 +13,20 @@ public class BlockOwnable extends BlockContainer {
 
 	private EnumBlockRenderType renderType = EnumBlockRenderType.MODEL;
 
-	public BlockOwnable(Material par1) {
-		super(par1);
+	public BlockOwnable(Material material) {
+		super(material);
 
-		if(par1 == Material.GROUND)
+		if(material == Material.GROUND)
 			setSoundType(SoundType.GROUND);
+		else if(material == Material.GLASS)
+			setSoundType(SoundType.GLASS);
 		else
 			setSoundType(SoundType.STONE);
 	}
 
-	public BlockOwnable(Material par1, EnumBlockRenderType par2RenderType) {
-		this(par1);
-		renderType = par2RenderType;
+	public BlockOwnable(Material material, EnumBlockRenderType renderType) {
+		this(material);
+		this.renderType = renderType;
 	}
 
 	@Override
@@ -33,7 +35,7 @@ public class BlockOwnable extends BlockContainer {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 }

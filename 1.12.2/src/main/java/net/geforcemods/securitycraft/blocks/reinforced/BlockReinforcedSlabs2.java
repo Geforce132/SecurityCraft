@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -26,25 +26,25 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvider, ICustomWailaDisplay {
+public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
 
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedSlabs2.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
 	private final boolean isDouble;
-	public BlockReinforcedSlabs2(boolean isDouble, Material material){
-		super(material);
+	public BlockReinforcedSlabs2(boolean isDouble, Material blockMaterial){
+		super(blockMaterial);
 
 		this.isDouble = isDouble;
 		if(!isDouble())
 			useNeighborBrightness = true;
 
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedSlabs2.EnumType.RED_SANDSTONE));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.RED_SANDSTONE));
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
+	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items)
 	{
 		if(!isDouble)
 			for (EnumType et : EnumType.values())
@@ -62,18 +62,18 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs2));
 	}
 
 	@Override
 	public int damageDropped(IBlockState state){
-		return ((BlockReinforcedSlabs2.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
 	public String getTranslationKey(int meta){
-		return super.getTranslationKey() + "." + BlockReinforcedSlabs2.EnumType.byMetadata(meta).getTranslationKey();
+		return super.getTranslationKey() + "." + EnumType.byMetadata(meta).getTranslationKey();
 	}
 
 	@Override
@@ -83,32 +83,32 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 
 	@Override
 	public Comparable<?> getTypeForItem(ItemStack stack) {
-		return BlockReinforcedSlabs2.EnumType.byMetadata(stack.getMetadata() & 7);
+		return EnumType.byMetadata(stack.getMetadata() & 7);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		IBlockState iblockstate = getDefaultState().withProperty(VARIANT, BlockReinforcedSlabs2.EnumType.byMetadata(meta & 7));
+		IBlockState state = getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta & 7));
 
-		iblockstate = iblockstate.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+		state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
 
-		return iblockstate;
+		return state;
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state){
 		byte b0 = 0;
-		int i = b0 | ((BlockReinforcedSlabs2.EnumType)state.getValue(VARIANT)).getMetadata();
+		int meta = b0 | state.getValue(VARIANT).getMetadata();
 
 		if(state.getValue(HALF) == BlockSlab.EnumBlockHalf.TOP)
-			i |= 8;
+			meta |= 8;
 
-		return i;
+		return meta;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {HALF, VARIANT});
+		return new BlockStateContainer(this, HALF, VARIANT);
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
@@ -131,7 +131,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 		RED_SANDSTONE(0, "red_sandstone"),
 		PURPUR(1, "purpur");
 
-		private static final BlockReinforcedSlabs2.EnumType[] META_LOOKUP = new BlockReinforcedSlabs2.EnumType[values().length];
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
 		private final String unlocalizedName;
@@ -155,7 +155,7 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 			return name;
 		}
 
-		public static BlockReinforcedSlabs2.EnumType byMetadata(int meta){
+		public static EnumType byMetadata(int meta){
 			if(meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
 
@@ -172,12 +172,12 @@ public class BlockReinforcedSlabs2 extends BlockSlab implements ITileEntityProvi
 		}
 
 		static {
-			BlockReinforcedSlabs2.EnumType[] var0 = values();
-			int var1 = var0.length;
+			EnumType[] values = values();
+			int length = values.length;
 
-			for(int var2 = 0; var2 < var1; ++var2){
-				BlockReinforcedSlabs2.EnumType var3 = var0[var2];
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for(int i = 0; i < length; ++i){
+				EnumType type = values[i];
+				META_LOOKUP[type.getMetadata()] = type;
 			}
 		}
 	}

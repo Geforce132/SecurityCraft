@@ -29,48 +29,48 @@ public class PacketSSetPassword implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
-		ByteBufUtils.writeUTF8String(par1ByteBuf, password);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
+		ByteBufUtils.writeUTF8String(buf, password);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
-		password = ByteBufUtils.readUTF8String(par1ByteBuf);
+	public void fromBytes(ByteBuf buf) {
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
+		password = ByteBufUtils.readUTF8String(buf);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetPassword, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSSetPassword packet, MessageContext ctx) {
+		public IMessage onMessage(PacketSSetPassword message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
-				BlockPos pos = BlockUtils.toPos(packet.x, packet.y, packet.z);
-				String password = packet.password;
+				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				String password = message.password;
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
+				if(getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
 					((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
-					checkForAdjecentChest(pos, password, player);
+					checkForAdjacentChest(pos, password, player);
 				}
 			});
 
 			return null;
 		}
 
-		private void checkForAdjecentChest(BlockPos pos, String codeToSet, EntityPlayer player) {
-			if(getWorld(player).getTileEntity(pos) != null && getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest)
-				if(getWorld(player).getTileEntity(pos.east()) != null && getWorld(player).getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
+		private void checkForAdjacentChest(BlockPos pos, String codeToSet, EntityPlayer player) {
+			if(getWorld(player).getTileEntity(pos) instanceof TileEntityKeypadChest)
+				if(getWorld(player).getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.east())).setPassword(codeToSet);
-				else if(getWorld(player).getTileEntity(pos.west()) != null && getWorld(player).getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
+				else if(getWorld(player).getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.west())).setPassword(codeToSet);
-				else if(getWorld(player).getTileEntity(pos.south()) != null && getWorld(player).getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
+				else if(getWorld(player).getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.south())).setPassword(codeToSet);
-				else if(getWorld(player).getTileEntity(pos.north()) != null && getWorld(player).getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
+				else if(getWorld(player).getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
 					((IPasswordProtected) getWorld(player).getTileEntity(pos.north())).setPassword(codeToSet);
 		}
 	}

@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.imc.lookingglass.LookingGlassAPIProvider;
 import net.geforcemods.securitycraft.misc.CameraShutoffTimer;
 import net.geforcemods.securitycraft.misc.CameraView;
@@ -8,12 +10,13 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-public class TileEntityFrame extends TileEntityOwnable {
+public class TileEntityFrame extends TileEntityOwnable implements ITickable {
 
 	//private int[] boundCameraLocation = new int[3];
 	private CameraView cameraView;
@@ -75,14 +78,14 @@ public class TileEntityFrame extends TileEntityOwnable {
 
 	@SideOnly(Side.CLIENT)
 	public boolean shouldShowView(){
-		return SecurityCraft.config.fiveMinAutoShutoff ? shouldShowView : true;
+		return ConfigHandler.fiveMinAutoShutoff ? shouldShowView : true;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void enableView(){
 		shouldShowView = true;
 
-		if(SecurityCraft.config.fiveMinAutoShutoff){
+		if(ConfigHandler.fiveMinAutoShutoff){
 			if(!SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString()))
 				LookingGlassAPIProvider.createLookingGlassView(world, cameraView.dimension, cameraView.getLocation(), 192, 192);
 
@@ -93,7 +96,7 @@ public class TileEntityFrame extends TileEntityOwnable {
 	@SideOnly(Side.CLIENT)
 	public void disableView(){
 		WorldUtils.addScheduledTask(Minecraft.getMinecraft().world, () -> {
-			if(SecurityCraft.config.fiveMinAutoShutoff && SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString())){
+			if(ConfigHandler.fiveMinAutoShutoff && SecurityCraft.instance.hasViewForCoords(cameraView.toNBTString())){
 				SecurityCraft.instance.lookingGlass.cleanupWorldView(SecurityCraft.instance.getViewFromCoords(cameraView.toNBTString()).getView());
 				SecurityCraft.instance.removeViewForCoords(cameraView.toNBTString());
 			}

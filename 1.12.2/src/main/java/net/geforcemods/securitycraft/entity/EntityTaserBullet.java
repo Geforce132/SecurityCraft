@@ -1,33 +1,31 @@
 package net.geforcemods.securitycraft.entity;
 
+import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class EntityTaserBullet extends EntityThrowable {
 
 	private int deathTime = 2; //lives for 0.1 seconds aka 11 blocks range
+	private boolean powered;
 
-	public EntityTaserBullet(World worldIn){
-		super(worldIn);
+	public EntityTaserBullet(World world){
+		super(world);
 		setSize(0.01F, 0.01F);
 	}
 
-	public EntityTaserBullet(World worldIn, EntityLivingBase shooter){
-		super(worldIn, shooter);
+	public EntityTaserBullet(World world, EntityLivingBase shooter, boolean isPowered){
+		super(world, shooter);
 		setSize(0.01F, 0.01F);
+		powered = isPowered;
 		this.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F, 6.0F, 0.0F);
-	}
-
-	public EntityTaserBullet(World worldIn, double x, double y, double z){
-		super(worldIn, x, y, z);
-		setSize(0.01F, 0.01F);
 	}
 
 	@Override
@@ -47,23 +45,33 @@ public class EntityTaserBullet extends EntityThrowable {
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult par1RayTraceResult)
+	protected void onImpact(RayTraceResult result)
 	{
 		if(!world.isRemote)
-			if(par1RayTraceResult.typeOfHit == Type.ENTITY)
+		{
+			if(result.typeOfHit == Type.ENTITY)
 			{
-				if(par1RayTraceResult.entityHit instanceof EntityPlayer)
-					if(((EntityPlayer)par1RayTraceResult.entityHit).capabilities.isCreativeMode || (EntityLivingBase)par1RayTraceResult.entityHit == getThrower())
-						return;
-
-				if(par1RayTraceResult.entityHit instanceof EntityLivingBase)
+				if(result.entityHit instanceof EntityPlayer)
 				{
-					((EntityLivingBase) par1RayTraceResult.entityHit).attackEntityFrom(DamageSource.GENERIC, 1F);
-					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), 500, 2));
-					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), 500, 2));
-					((EntityLivingBase) par1RayTraceResult.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), 500, 2));
+					if(((EntityPlayer)result.entityHit).capabilities.isCreativeMode || (EntityLivingBase)result.entityHit == getThrower() || !FMLServerHandler.instance().getServer().isPVPEnabled())
+						return;
+				}
+
+				if(result.entityHit instanceof EntityLivingBase)
+				{
+					if(((EntityLivingBase) result.entityHit).attackEntityFrom(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
+					{
+						int strength = powered ? 4 : 1;
+						int length = powered ? 400 : 200;
+
+						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
+						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
+						((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
+					}
+
 					setDead();
 				}
 			}
+		}
 	}
 }

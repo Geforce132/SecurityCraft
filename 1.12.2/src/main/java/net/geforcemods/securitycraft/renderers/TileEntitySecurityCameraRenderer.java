@@ -1,53 +1,51 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.lwjgl.opengl.GL11;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
 public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<TileEntitySecurityCamera> {
 
-	private ModelSecurityCamera modelSecurityCamera;
-	private ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
-
-	public TileEntitySecurityCameraRenderer() {
-		modelSecurityCamera = new ModelSecurityCamera();
-	}
+	private static final ModelSecurityCamera modelSecurityCamera = new ModelSecurityCamera();
+	private static final ResourceLocation cameraTexture = new ResourceLocation("securitycraft:textures/blocks/security_camera1.png");
 
 	@Override
-	public void render(TileEntitySecurityCamera par1TileEntity, double x, double y, double z, float par5, int par6, float alpha) {
+	public void render(TileEntitySecurityCamera te, double x, double y, double z, float par5, int par6, float alpha) {
+		if(te.down || (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(te.getPos())))
+			return;
+
 		float rotation = 0F;
 
-		if(par1TileEntity.hasWorld()){
+		if(te.hasWorld()){
 			Tessellator tessellator = Tessellator.getInstance();
-			float f = par1TileEntity.getWorld().getLightBrightness(par1TileEntity.getPos());
-			int l = par1TileEntity.getWorld().getCombinedLight(par1TileEntity.getPos(), 0);
-			int l1 = l % 65536;
-			int l2 = l / 65536;
-			tessellator.getBuffer().putColorRGBA(0, (int)(f * 255.0F), (int)(f * 255.0F), (int)(f * 255.0F), 255); //TODO: does this work?
+			float brightness = te.getWorld().getLightBrightness(te.getPos());
+			int skyBrightness = te.getWorld().getCombinedLight(te.getPos(), 0);
+			int lightmapX = skyBrightness % 65536;
+			int lightmapY = skyBrightness / 65536;
+			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
 
-			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
+			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
 		}
 
-		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
 
-		GL11.glPushMatrix();
+		GlStateManager.pushMatrix();
 
-		if(par1TileEntity.hasWorld() && BlockUtils.getBlock(par1TileEntity.getWorld(), par1TileEntity.getPos()) == SCContent.securityCamera){
-			EnumFacing side = BlockUtils.getBlockPropertyAsEnum(getWorld(), par1TileEntity.getPos(), BlockSecurityCamera.FACING);
+		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera){
+			EnumFacing side = BlockUtils.getBlockProperty(getWorld(), te.getPos(), BlockSecurityCamera.FACING);
 
 			if(side == EnumFacing.EAST)
 				rotation = -1F;
@@ -61,14 +59,14 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		else
 			rotation = -10000F;
 
-		GL11.glRotatef(180F, rotation, 0.0F, 1.0F);
+		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
-		modelSecurityCamera.cameraRotationPoint.rotateAngleY = par1TileEntity.cameraRotation;
+		modelSecurityCamera.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
 
-		modelSecurityCamera.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-		GL11.glPopMatrix();
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
+		GlStateManager.popMatrix();
 	}
 
 

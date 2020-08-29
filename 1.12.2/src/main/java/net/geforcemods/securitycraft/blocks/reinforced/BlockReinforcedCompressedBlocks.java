@@ -5,11 +5,10 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,17 +20,15 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedCompressedBlocks.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
 	public BlockReinforcedCompressedBlocks()
 	{
 		super(Material.ROCK);
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.LAPIS));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.LAPIS));
 	}
 
 	/**
@@ -41,20 +38,19 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
+	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items)
 	{
-		BlockReinforcedCompressedBlocks.EnumType[] aenumtype = BlockReinforcedCompressedBlocks.EnumType.values();
+		EnumType[] values = EnumType.values();
 
-		for (BlockReinforcedCompressedBlocks.EnumType var3 : aenumtype)
-			items.add(new ItemStack(this, 1, var3.getMetadata()));
+		for (EnumType type : values)
+			items.add(new ItemStack(this, 1, type.getMetadata()));
 	}
 
 	/**
@@ -63,7 +59,7 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedCompressedBlocks.EnumType.byMetadata(meta));
+		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
 	/**
@@ -72,13 +68,13 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return ((BlockReinforcedCompressedBlocks.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
+		return new BlockStateContainer(this, VARIANT);
 	}
 
 	@Override
@@ -96,10 +92,7 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[]{
-				Blocks.LAPIS_BLOCK,
-				Blocks.COAL_BLOCK
-		});
+		return Arrays.asList(Blocks.LAPIS_BLOCK, Blocks.COAL_BLOCK);
 	}
 
 	@Override
@@ -110,19 +103,17 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 
 	public static enum EnumType implements IStringSerializable
 	{
-		LAPIS(0, "lapis", "lapis"),
-		COAL(1, "coal", "coal");
+		LAPIS(0, "lapis"),
+		COAL(1, "coal");
 
-		private static final BlockReinforcedCompressedBlocks.EnumType[] META_LOOKUP = new BlockReinforcedCompressedBlocks.EnumType[values().length];
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
-		private final String unlocalizedName;
 
-		private EnumType(int meta, String name, String unlocalizedName)
+		private EnumType(int meta, String name)
 		{
 			this.meta = meta;
 			this.name = name;
-			this.unlocalizedName = unlocalizedName;
 		}
 
 		public int getMetadata()
@@ -136,7 +127,7 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 			return name;
 		}
 
-		public static BlockReinforcedCompressedBlocks.EnumType byMetadata(int meta)
+		public static EnumType byMetadata(int meta)
 		{
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
@@ -150,15 +141,10 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements ICu
 			return name;
 		}
 
-		public String getTranslationKey()
-		{
-			return unlocalizedName;
-		}
-
 		static
 		{
-			for(BlockReinforcedCompressedBlocks.EnumType var3 : values())
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for(EnumType type : values())
+				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
 }

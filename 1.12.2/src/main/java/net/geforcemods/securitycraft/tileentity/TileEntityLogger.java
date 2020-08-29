@@ -3,23 +3,28 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class TileEntityLogger extends TileEntityOwnable {
+public class TileEntityLogger extends TileEntityDisguisable {
 
 	public String[] players = new String[100];
+	public String[] uuids = new String[100];
+	public long[] timestamps = new long[100];
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if (!world.isRemote) {
-			addPlayerName(((EntityPlayer) entity).getName());
-			sendChangeToClient();
+		if (!world.isRemote && entity instanceof EntityPlayer) {
+			addPlayer((EntityPlayer)entity);
+			sendChangeToClient(false);
 		}
 
 		return true;
@@ -31,64 +36,87 @@ public class TileEntityLogger extends TileEntityOwnable {
 	}
 
 	public void logPlayers(){
-		double d0 = SecurityCraft.config.usernameLoggerSearchRadius;
+		double range = ConfigHandler.usernameLoggerSearchRadius;
 
-		AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(d0, d0, d0);
-		List<?> list = world.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-		Iterator<?> iterator = list.iterator();
+		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
+		List<?> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area);
+		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
-			addPlayerName(((EntityPlayer)iterator.next()).getName());
+			addPlayer((EntityPlayer)iterator.next());
 
-		sendChangeToClient();
+		sendChangeToClient(false);
 	}
 
-	private void addPlayerName(String username) {
-		if(!hasPlayerName(username))
+	private void addPlayer(EntityPlayer player) {
+		long timestamp = System.currentTimeMillis();
+
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName(), timestamp))
+		{
 			for(int i = 0; i < players.length; i++)
-				if(players[i] == "" || players[i] == null){
-					players[i] = username;
+			{
+				if(players[i] == null || players[i].equals("")){
+					players[i] = player.getName();
+					uuids[i] = player.getGameProfile().getId().toString();
+					timestamps[i] = timestamp;
 					break;
 				}
-				else
-					continue;
+			}
+		}
 	}
 
-	private boolean hasPlayerName(String username) {
+	private boolean hasPlayerName(String username, long timestamp) {
 		for(int i = 0; i < players.length; i++)
-			if(players[i] == username)
+		{
+			if(players[i] != null && players[i].equals(username) && (timestamps[i] + 1000L) > timestamp) //was within the last second that the same player was last added
 				return true;
-			else
-				continue;
+		}
 
 		return false;
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if(players[i] != null)
-				par1NBTTagCompound.setString("player" + i, players[i]);
+		{
+			tag.setString("player" + i, players[i] == null ? "" : players[i]);
+			tag.setString("uuid" + i, uuids[i] == null ? "" : uuids[i]);
+			tag.setLong("timestamp" + i, timestamps[i]);
+		}
 
-		return par1NBTTagCompound;
+		return tag;
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
 		for(int i = 0; i < players.length; i++)
-			if (par1NBTTagCompound.hasKey("player" + i))
-				players[i] = par1NBTTagCompound.getString("player" + i);
+		{
+			if(tag.hasKey("player" + i))
+				players[i] = tag.getString("player" + i);
+
+			if(tag.hasKey("uuid" + i))
+				uuids[i] = tag.getString("uuid" + i);
+
+			if(tag.hasKey("timestamp" + i))
+				timestamps[i] = tag.getLong("timestamp" + i);
+		}
 	}
 
-	public void sendChangeToClient(){
-		for(int i = 0; i < players.length; i++)
-			if(players[i] != null)
-				//TODO
-				SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i]));
+	public void sendChangeToClient(boolean clear){
+		if(!clear)
+		{
+			for(int i = 0; i < players.length; i++)
+			{
+				if(players[i] != null)
+					SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+			}
+		}
+		else
+			SecurityCraft.network.sendToAll(new PacketCClearLogger(pos));
 	}
 
 }

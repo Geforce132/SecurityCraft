@@ -1,7 +1,12 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
+import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.BlockCageTrap;
+import net.geforcemods.securitycraft.blocks.BlockCrystalQuartz;
+import net.geforcemods.securitycraft.blocks.BlockCrystalQuartzSlab;
+import net.geforcemods.securitycraft.blocks.BlockCustomStairs;
 import net.geforcemods.securitycraft.blocks.BlockFakeLava;
 import net.geforcemods.securitycraft.blocks.BlockFakeLavaBase;
 import net.geforcemods.securitycraft.blocks.BlockFakeWater;
@@ -10,7 +15,6 @@ import net.geforcemods.securitycraft.blocks.BlockFrame;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
 import net.geforcemods.securitycraft.blocks.BlockIronFence;
-import net.geforcemods.securitycraft.blocks.BlockIronTrapDoor;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
@@ -18,41 +22,71 @@ import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockLaserField;
 import net.geforcemods.securitycraft.blocks.BlockLogger;
+import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.blocks.BlockPanicButton;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
+import net.geforcemods.securitycraft.blocks.BlockProjector;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
+import net.geforcemods.securitycraft.blocks.BlockSecretSignStanding;
+import net.geforcemods.securitycraft.blocks.BlockSecretSignWall;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.blocks.BlockTrophySystem;
 import net.geforcemods.securitycraft.blocks.mines.BlockBouncingBetty;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
 import net.geforcemods.securitycraft.blocks.mines.BlockFullMineBase;
+import net.geforcemods.securitycraft.blocks.mines.BlockFullMineFalling;
 import net.geforcemods.securitycraft.blocks.mines.BlockFurnaceMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.blocks.mines.BlockMine;
+import net.geforcemods.securitycraft.blocks.mines.BlockRedstoneOreMine;
 import net.geforcemods.securitycraft.blocks.mines.BlockTrackMine;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockHorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBase;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBoneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBookshelf;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedButton;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCarpet;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCobweb;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedConcrete;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartzSlab;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDirt;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFalling;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedFenceGate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGlassPane;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrassPath;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronTrapDoor;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedLever;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMetals;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedMycelium;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedNewLog;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedObserver;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedOldLog;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPrismarine;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPurpur;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedQuartz;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRedSandstone;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedRedstoneLamp;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSand;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSandstone;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedSlabs2;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedGlassPanes;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStainedHardenedClay;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStairs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStone;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedStoneBrick;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWall;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWood;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWool;
@@ -69,14 +103,18 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.items.ItemReinforcedDoor;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.items.ItemScannerDoor;
+import net.geforcemods.securitycraft.items.ItemSecretSign;
+import net.geforcemods.securitycraft.items.ItemSentry;
+import net.geforcemods.securitycraft.items.ItemSentryRemoteAccessTool;
 import net.geforcemods.securitycraft.items.ItemTaser;
-import net.geforcemods.securitycraft.items.ItemUniversalBlockModifier;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockRemover;
 import net.geforcemods.securitycraft.items.ItemUniversalKeyChanger;
 import net.geforcemods.securitycraft.items.ItemUniversalOwnerChanger;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.minecraft.block.BlockPressurePlate.Sensitivity;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -85,203 +123,191 @@ public class SetupHandler
 {
 	public static void setupBlocks()
 	{
-		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("laser_block").setTranslationKey("laserBlock");
-		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setRegistryName("laser");
-
-		SCContent.keypad = new BlockKeypad(Material.IRON).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad").setTranslationKey("keypad");
-
-		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("retinalScanner");
-
-		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setBlockUnbreakable().setResistance(1000F).setRegistryName("iron_door_reinforced").setTranslationKey("ironDoorReinforced");
-
-		SCContent.bogusLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("bogusLava");
-		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing").setTranslationKey("bogusLavaFlowing");
-		SCContent.bogusWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("bogusWater");
-		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing").setTranslationKey("bogusWaterFlowing");
-
-		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keycard_reader").setTranslationKey("keycardReader");
-
-		SCContent.ironTrapdoor = new BlockIronTrapDoor(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_iron_trapdoor").setTranslationKey("reinforcedIronTrapdoor");
-
-		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("inventory_scanner").setTranslationKey("inventoryScanner");
-		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setBlockUnbreakable().setResistance(1000F).setRegistryName("inventory_scanner_field").setTranslationKey("inventoryScannerField");
-
-		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("cage_trap").setTranslationKey("cageTrap");
-
-		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("portable_radar").setTranslationKey("portableRadar");
-
-		SCContent.unbreakableIronBars = new BlockReinforcedIronBars(Material.IRON, true).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(1000F).setRegistryName("reinforced_iron_bars").setTranslationKey("reinforcedIronBars");
-
-		SCContent.keypadChest = new BlockKeypadChest().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_chest").setTranslationKey("keypadChest");
-
-		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("username_logger").setTranslationKey("usernameLogger");
-
-		SCContent.alarm = new BlockAlarm(Material.IRON, false).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("alarm").setTranslationKey("alarm");
-		SCContent.alarmLit = new BlockAlarm(Material.IRON, true).setBlockUnbreakable().setResistance(1000F).setTickRandomly(true).setRegistryName("alarm_lit").setTranslationKey("alarmLit");
-
-		SCContent.reinforcedStone = new BlockReinforcedStone().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone").setTranslationKey("reinforcedStone");
-
-		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_fence_gate").setTranslationKey("reinforcedFenceGate");
-
-		SCContent.reinforcedWoodPlanks = new BlockReinforcedWood().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_planks").setTranslationKey("reinforcedPlanks");
-
-		SCContent.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("panic_button").setTranslationKey("panicButton");
-
-		SCContent.frame = new BlockFrame(Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_frame").setTranslationKey("keypadFrame");
-
-		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_furnace").setTranslationKey("keypadFurnace");
-
-		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("security_camera").setTranslationKey("securityCamera");
-
-		SCContent.reinforcedStairsOak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_oak").setTranslationKey("reinforcedStairsOak");
-		SCContent.reinforcedStairsSpruce = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_spruce").setTranslationKey("reinforcedStairsSpruce");
-		SCContent.reinforcedStairsBirch = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_birch").setTranslationKey("reinforcedStairsBirch");
-		SCContent.reinforcedStairsJungle = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 3).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_jungle").setTranslationKey("reinforcedStairsJungle");
-		SCContent.reinforcedStairsAcacia = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_acacia").setTranslationKey("reinforcedStairsAcacia");
-		SCContent.reinforcedStairsDarkoak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_darkoak").setTranslationKey("reinforcedStairsDarkoak");
-		SCContent.reinforcedStairsStone = new BlockReinforcedStairs(SCContent.reinforcedStone, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_stone").setTranslationKey("reinforcedStairsStone");
-
-		SCContent.ironFence = new BlockIronFence(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("electrified_iron_fence").setTranslationKey("electrifiedIronFence");
-
-		SCContent.reinforcedGlass = new BlockReinforcedGlass(Material.GLASS).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_glass_block").setTranslationKey("reinforcedGlassBlock");
-		SCContent.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.GLASS).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_glass").setTranslationKey("reinforcedStainedGlass");
-
-		SCContent.reinforcedDirt = new BlockReinforcedBase(Material.GROUND, 1, Blocks.DIRT).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_dirt").setTranslationKey("reinforcedDirt");
-
-		SCContent.reinforcedCobblestone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.COBBLESTONE).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cobblestone").setTranslationKey("reinforcedCobblestone");
-		SCContent.reinforcedStairsCobblestone = new BlockReinforcedStairs(SCContent.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_cobblestone").setTranslationKey("reinforcedStairsCobblestone");
-
-		SCContent.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_sandstone").setTranslationKey("reinforcedSandstone");
-		SCContent.reinforcedStairsSandstone = new BlockReinforcedStairs(SCContent.reinforcedSandstone, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_sandstone").setTranslationKey("reinforcedStairsSandstone");
-
-		SCContent.reinforcedWoodSlabs = new BlockReinforcedWoodSlabs(false).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wood_slabs").setTranslationKey("reinforcedWoodSlabs");
-		SCContent.reinforcedDoubleWoodSlabs = new BlockReinforcedWoodSlabs(true).setBlockUnbreakable().setResistance(1000).setRegistryName("reinforced_double_wood_slabs").setTranslationKey("reinforcedDoubleWoodSlabs");
-		SCContent.reinforcedStoneSlabs = new BlockReinforcedSlabs(false, Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_slabs").setTranslationKey("reinforcedStoneSlabs");
-		SCContent.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.ROCK).setBlockUnbreakable().setResistance(1000).setRegistryName("reinforced_double_stone_slabs").setTranslationKey("reinforcedDoubleStoneSlabs");
-
-
-		SCContent.protecto = new BlockProtecto(Material.IRON).setBlockUnbreakable().setResistance(1000F).setLightLevel(0.5F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("protecto").setTranslationKey("protecto");
-
-		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setBlockUnbreakable().setResistance(1000F).setRegistryName("scanner_door").setTranslationKey("scannerDoor");
-
-		SCContent.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_brick").setTranslationKey("reinforcedStoneBrick");
-		SCContent.reinforcedStairsStoneBrick= new BlockReinforcedStairs(SCContent.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_stone_brick").setTranslationKey("reinforcedStairsStoneBrick");
-
-		SCContent.reinforcedMossyCobblestone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.MOSSY_COBBLESTONE).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_mossy_cobblestone").setTranslationKey("reinforcedMossyCobblestone");
-
-		SCContent.reinforcedBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.BRICK_BLOCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_brick").setTranslationKey("reinforcedBrick");
-		SCContent.reinforcedStairsBrick= new BlockReinforcedStairs(SCContent.reinforcedBrick, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_brick").setTranslationKey("reinforcedStairsBrick");
-
-		SCContent.reinforcedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHER_BRICK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_nether_brick").setTranslationKey("reinforcedNetherBrick");
-		SCContent.reinforcedStairsNetherBrick= new BlockReinforcedStairs(SCContent.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_nether_brick").setTranslationKey("reinforcedStairsNetherBrick");
-
-		SCContent.reinforcedHardenedClay = new BlockReinforcedBase(Material.ROCK, 1, Blocks.HARDENED_CLAY).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hardened_clay").setTranslationKey("reinforcedHardenedClay");
-		SCContent.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_hardened_clay").setTranslationKey("reinforcedStainedHardenedClay");
-
-		SCContent.reinforcedOldLogs = new BlockReinforcedOldLog().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_logs").setTranslationKey("reinforcedLogs");
-		SCContent.reinforcedNewLogs = new BlockReinforcedNewLog().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_logs2").setTranslationKey("reinforcedLogs2");
-
-		SCContent.reinforcedMetals = new BlockReinforcedMetals().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_metals").setTranslationKey("reinforcedMetals");
-		SCContent.reinforcedCompressedBlocks = new BlockReinforcedCompressedBlocks().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_compressed_blocks").setTranslationKey("reinforcedCompressedBlocks");
-
-		SCContent.reinforcedWool = new BlockReinforcedWool().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wool").setTranslationKey("reinforcedWool");
-
-		SCContent.reinforcedQuartz = new BlockReinforcedQuartz().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_quartz").setTranslationKey("reinforcedQuartz");
-		SCContent.reinforcedStairsQuartz = new BlockReinforcedStairs(SCContent.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_quartz").setTranslationKey("reinforcedStairsQuartz");
-
-		SCContent.reinforcedPrismarine = new BlockReinforcedPrismarine().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_prismarine").setTranslationKey("reinforcedPrismarine");
-
-		SCContent.reinforcedRedSandstone = new BlockReinforcedRedSandstone().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_sandstone").setTranslationKey("reinforcedRedSandstone");
-		SCContent.reinforcedStairsRedSandstone = new BlockReinforcedStairs(SCContent.reinforcedRedSandstone, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_red_sandstone").setTranslationKey("reinforcedStairsRedSandstone");
-
-		SCContent.reinforcedStoneSlabs2 = new BlockReinforcedSlabs2(false, Material.ROCK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_slabs2").setTranslationKey("reinforcedStoneSlabs2");
-		SCContent.reinforcedDoubleStoneSlabs2 = new BlockReinforcedSlabs2(true, Material.ROCK).setBlockUnbreakable().setResistance(1000).setRegistryName("reinforced_double_stone_slabs2").setTranslationKey("reinforcedDoubleStoneSlabs2");
-
-		SCContent.reinforcedEndStoneBricks = new BlockReinforcedBase(Material.ROCK, 1, Blocks.END_BRICKS).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_end_stone_bricks").setTranslationKey("reinforcedEndStoneBricks");
-
-		SCContent.reinforcedRedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.RED_NETHER_BRICK).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_nether_brick").setTranslationKey("reinforcedRedNetherBrick");
-
-		SCContent.reinforcedPurpur = new BlockReinforcedPurpur().setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_purpur").setTranslationKey("reinforcedPurpur");
-		SCContent.reinforcedStairsPurpur = new BlockReinforcedStairs(SCContent.reinforcedPurpur, 0).setBlockUnbreakable().setResistance(1000).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_purpur").setTranslationKey("reinforcedStairsPurpur");
-
-		SCContent.reinforcedConcrete = new BlockReinforcedConcrete().setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_concrete").setTranslationKey("reinforcedConcrete");
+		SCContent.laserBlock = new BlockLaserBlock(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
+		SCContent.laserField = new BlockLaserField(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("laser");
+		SCContent.keypad = new BlockKeypad(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
+		SCContent.retinalScanner = new BlockRetinalScanner(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
+		SCContent.reinforcedDoor = new BlockReinforcedDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
+		SCContent.fakeLava = (BlockStaticLiquid) new BlockFakeLavaBase(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
+		SCContent.bogusLavaFlowing = new BlockFakeLava(Material.LAVA).setHardness(0.0F).setLightLevel(1.0F).setRegistryName("bogus_lava_flowing").setTranslationKey("securitycraft:bogusLavaFlowing");
+		SCContent.fakeWater = (BlockStaticLiquid) new BlockFakeWaterBase(Material.WATER).setHardness(100.0F).setRegistryName("bogus_water").setTranslationKey("securitycraft:bogusWater");
+		SCContent.bogusWaterFlowing = new BlockFakeWater(Material.WATER).setHardness(0.0F).setRegistryName("bogus_water_flowing").setTranslationKey("securitycraft:bogusWaterFlowing");
+		SCContent.keycardReader = new BlockKeycardReader(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");
+		SCContent.reinforcedIronTrapdoor = new BlockReinforcedIronTrapDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_iron_trapdoor").setTranslationKey("securitycraft:reinforcedIronTrapdoor");
+		SCContent.inventoryScanner = new BlockInventoryScanner(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("inventory_scanner").setTranslationKey("securitycraft:inventoryScanner");
+		SCContent.inventoryScannerField = new BlockInventoryScannerField(Material.GLASS).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
+		SCContent.cageTrap = new BlockCageTrap(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("cage_trap").setTranslationKey("securitycraft:cageTrap");
+		SCContent.portableRadar = new BlockPortableRadar(Material.CIRCUITS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
+		SCContent.reinforcedIronBars = new BlockReinforcedIronBars(Material.IRON, true).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_iron_bars").setTranslationKey("securitycraft:reinforcedIronBars");
+		SCContent.keypadChest = new BlockKeypadChest().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_chest").setTranslationKey("securitycraft:keypadChest");
+		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("username_logger").setTranslationKey("securitycraft:usernameLogger");
+		SCContent.alarm = new BlockAlarm(Material.IRON, false).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("alarm").setTranslationKey("securitycraft:alarm");
+		SCContent.alarmLit = new BlockAlarm(Material.IRON, true).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setRegistryName("alarm_lit").setTranslationKey("securitycraft:alarmLit");
+		SCContent.reinforcedStone = new BlockReinforcedStone().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone").setTranslationKey("securitycraft:reinforcedStone");
+		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_fence_gate").setTranslationKey("securitycraft:reinforcedFenceGate");
+		SCContent.reinforcedWoodPlanks = new BlockReinforcedWood().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_planks").setTranslationKey("securitycraft:reinforcedPlanks");
+		SCContent.panicButton = new BlockPanicButton().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("panic_button").setTranslationKey("securitycraft:panicButton");
+		SCContent.frame = new BlockFrame(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_frame").setTranslationKey("securitycraft:keypadFrame");
+		SCContent.keypadFurnace = new BlockKeypadFurnace(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_furnace").setTranslationKey("securitycraft:keypadFurnace");
+		SCContent.securityCamera = new BlockSecurityCamera(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("security_camera").setTranslationKey("securitycraft:securityCamera");
+		SCContent.reinforcedStairsOak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_oak").setTranslationKey("securitycraft:reinforcedStairsOak");
+		SCContent.reinforcedStairsSpruce = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 1).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_spruce").setTranslationKey("securitycraft:reinforcedStairsSpruce");
+		SCContent.reinforcedStairsBirch = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 2).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_birch").setTranslationKey("securitycraft:reinforcedStairsBirch");
+		SCContent.reinforcedStairsJungle = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 3).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_jungle").setTranslationKey("securitycraft:reinforcedStairsJungle");
+		SCContent.reinforcedStairsAcacia = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 4).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_acacia").setTranslationKey("securitycraft:reinforcedStairsAcacia");
+		SCContent.reinforcedStairsDarkoak = new BlockReinforcedStairs(SCContent.reinforcedWoodPlanks, 5).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_darkoak").setTranslationKey("securitycraft:reinforcedStairsDarkoak");
+		SCContent.reinforcedStairsStone = new BlockReinforcedStairs(SCContent.reinforcedStone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_stone").setTranslationKey("securitycraft:reinforcedStairsStone");
+		SCContent.ironFence = new BlockIronFence(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("electrified_iron_fence").setTranslationKey("securitycraft:electrifiedIronFence");
+		SCContent.reinforcedGlass = new BlockReinforcedGlass(Material.GLASS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_glass_block").setTranslationKey("securitycraft:reinforcedGlassBlock");
+		SCContent.reinforcedStainedGlass = new BlockReinforcedStainedGlass(Material.GLASS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_glass").setTranslationKey("securitycraft:reinforcedStainedGlass");
+		SCContent.reinforcedDirt = new BlockReinforcedDirt().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_dirt").setTranslationKey("securitycraft:reinforcedDirt");
+		SCContent.reinforcedCobblestone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.COBBLESTONE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cobblestone").setTranslationKey("securitycraft:reinforcedCobblestone");
+		SCContent.reinforcedStairsCobblestone = new BlockReinforcedStairs(SCContent.reinforcedCobblestone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_cobblestone").setTranslationKey("securitycraft:reinforcedStairsCobblestone");
+		SCContent.reinforcedSandstone = new BlockReinforcedSandstone().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_sandstone").setTranslationKey("securitycraft:reinforcedSandstone");
+		SCContent.reinforcedStairsSandstone = new BlockReinforcedStairs(SCContent.reinforcedSandstone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_sandstone").setTranslationKey("securitycraft:reinforcedStairsSandstone");
+		SCContent.reinforcedWoodSlabs = new BlockReinforcedWoodSlabs(false).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wood_slabs").setTranslationKey("securitycraft:reinforcedWoodSlabs");
+		SCContent.reinforcedDoubleWoodSlabs = new BlockReinforcedWoodSlabs(true).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_double_wood_slabs").setTranslationKey("securitycraft:reinforcedDoubleWoodSlabs");
+		SCContent.reinforcedStoneSlabs = new BlockReinforcedSlabs(false, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_slabs").setTranslationKey("securitycraft:reinforcedStoneSlabs");
+		SCContent.reinforcedDoubleStoneSlabs = new BlockReinforcedSlabs(true, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_double_stone_slabs").setTranslationKey("securitycraft:reinforcedDoubleStoneSlabs");
+		SCContent.protecto = new BlockProtecto(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setLightLevel(0.5F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("protecto").setTranslationKey("securitycraft:protecto");
+		SCContent.scannerDoor = new BlockScannerDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("scanner_door").setTranslationKey("securitycraft:scannerDoor");
+		SCContent.reinforcedStoneBrick = new BlockReinforcedStoneBrick().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_brick").setTranslationKey("securitycraft:reinforcedStoneBrick");
+		SCContent.reinforcedStairsStoneBrick= new BlockReinforcedStairs(SCContent.reinforcedStoneBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_stone_brick").setTranslationKey("securitycraft:reinforcedStairsStoneBrick");
+		SCContent.reinforcedMossyCobblestone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.MOSSY_COBBLESTONE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_mossy_cobblestone").setTranslationKey("securitycraft:reinforcedMossyCobblestone");
+		SCContent.reinforcedBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.BRICK_BLOCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_brick").setTranslationKey("securitycraft:reinforcedBrick");
+		SCContent.reinforcedStairsBrick= new BlockReinforcedStairs(SCContent.reinforcedBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_brick").setTranslationKey("securitycraft:reinforcedStairsBrick");
+		SCContent.reinforcedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHER_BRICK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_nether_brick").setTranslationKey("securitycraft:reinforcedNetherBrick");
+		SCContent.reinforcedStairsNetherBrick= new BlockReinforcedStairs(SCContent.reinforcedNetherBrick, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_nether_brick").setTranslationKey("securitycraft:reinforcedStairsNetherBrick");
+		SCContent.reinforcedHardenedClay = new BlockReinforcedBase(Material.ROCK, 1, Blocks.HARDENED_CLAY).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hardened_clay").setTranslationKey("securitycraft:reinforcedHardenedClay");
+		SCContent.reinforcedStainedHardenedClay = new BlockReinforcedStainedHardenedClay().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_hardened_clay").setTranslationKey("securitycraft:reinforcedStainedHardenedClay");
+		SCContent.reinforcedOldLogs = new BlockReinforcedOldLog().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_logs").setTranslationKey("securitycraft:reinforcedLogs");
+		SCContent.reinforcedNewLogs = new BlockReinforcedNewLog().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_logs2").setTranslationKey("securitycraft:reinforcedLogs2");
+		SCContent.reinforcedMetals = new BlockReinforcedMetals().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_metals").setTranslationKey("securitycraft:reinforcedMetals");
+		SCContent.reinforcedCompressedBlocks = new BlockReinforcedCompressedBlocks().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_compressed_blocks").setTranslationKey("securitycraft:reinforcedCompressedBlocks");
+		SCContent.reinforcedWool = new BlockReinforcedWool().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wool").setTranslationKey("securitycraft:reinforcedWool");
+		SCContent.reinforcedQuartz = new BlockReinforcedQuartz().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_quartz").setTranslationKey("securitycraft:reinforcedQuartz");
+		SCContent.reinforcedStairsQuartz = new BlockReinforcedStairs(SCContent.reinforcedQuartz, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_quartz").setTranslationKey("securitycraft:reinforcedStairsQuartz");
+		SCContent.reinforcedPrismarine = new BlockReinforcedPrismarine().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_prismarine").setTranslationKey("securitycraft:reinforcedPrismarine");
+		SCContent.reinforcedRedSandstone = new BlockReinforcedRedSandstone().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_sandstone").setTranslationKey("securitycraft:reinforcedRedSandstone");
+		SCContent.reinforcedStairsRedSandstone = new BlockReinforcedStairs(SCContent.reinforcedRedSandstone, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_red_sandstone").setTranslationKey("securitycraft:reinforcedStairsRedSandstone");
+		SCContent.reinforcedStoneSlabs2 = new BlockReinforcedSlabs2(false, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_slabs2").setTranslationKey("securitycraft:reinforcedStoneSlabs2");
+		SCContent.reinforcedDoubleStoneSlabs2 = new BlockReinforcedSlabs2(true, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_double_stone_slabs2").setTranslationKey("securitycraft:reinforcedDoubleStoneSlabs2");
+		SCContent.reinforcedEndStoneBricks = new BlockReinforcedBase(Material.ROCK, 1, Blocks.END_BRICKS).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_end_stone_bricks").setTranslationKey("securitycraft:reinforcedEndStoneBricks");
+		SCContent.reinforcedRedNetherBrick = new BlockReinforcedBase(Material.ROCK, 1, Blocks.RED_NETHER_BRICK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_red_nether_brick").setTranslationKey("securitycraft:reinforcedRedNetherBrick");
+		SCContent.reinforcedPurpur = new BlockReinforcedPurpur().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_purpur").setTranslationKey("securitycraft:reinforcedPurpur");
+		SCContent.reinforcedStairsPurpur = new BlockReinforcedStairs(SCContent.reinforcedPurpur, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_purpur").setTranslationKey("securitycraft:reinforcedStairsPurpur");
+		SCContent.reinforcedConcrete = new BlockReinforcedConcrete().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_concrete").setTranslationKey("securitycraft:reinforcedConcrete");
+		SCContent.secretSignStanding = new BlockSecretSignStanding().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_standing").setTranslationKey("securitycraft:secretSign");
+		SCContent.secretSignWall = new BlockSecretSignWall().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("secret_sign_wall").setTranslationKey("securitycraft:secretSign");
+		SCContent.motionActivatedLight = new BlockMotionActivatedLight(Material.GLASS).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("motion_activated_light").setTranslationKey("securitycraft:motionActivatedLight").setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.reinforcedObsidian = new BlockReinforcedBase(Material.ROCK, 1, Blocks.OBSIDIAN).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_obsidian").setTranslationKey("securitycraft:reinforcedObsidian");
+		SCContent.reinforcedNetherrack = new BlockReinforcedBase(Material.ROCK, 1, Blocks.NETHERRACK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_netherrack").setTranslationKey("securitycraft:reinforcedNetherrack");
+		SCContent.reinforcedEndStone = new BlockReinforcedBase(Material.ROCK, 1, Blocks.END_STONE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_end_stone").setTranslationKey("securitycraft:reinforcedEndStone");
+		SCContent.reinforcedSeaLantern = new BlockReinforcedBase(Material.GLASS, 1, Blocks.SEA_LANTERN).setBlockUnbreakable().setResistance(6000000.0F).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_sea_lantern").setTranslationKey("securitycraft:reinforcedSeaLantern");
+		SCContent.reinforcedBoneBlock = new BlockReinforcedBoneBlock(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bone_block").setTranslationKey("securitycraft:reinforcedBoneBlock");
+		SCContent.reinforcedGlassPane = new BlockReinforcedGlassPane().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_glass_pane").setTranslationKey("securitycraft:reinforcedGlassPane");
+		SCContent.reinforcedStainedGlassPanes = new BlockReinforcedStainedGlassPanes().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stained_panes").setTranslationKey("securitycraft:reinforcedStainedGlassPanes");
+		SCContent.reinforcedCarpet = new BlockReinforcedCarpet().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_carpet").setTranslationKey("securitycraft:reinforcedCarpet");
+		SCContent.reinforcedGlowstone = new BlockReinforcedBase(Material.GLASS, 1, Blocks.GLOWSTONE).setBlockUnbreakable().setResistance(6000000.0F).setLightLevel(1.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_glowstone").setTranslationKey("securitycraft:reinforcedGlowstone");
+		SCContent.reinforcedSand = new BlockReinforcedSand().setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_sand").setTranslationKey("securitycraft:reinforcedSand");
+		SCContent.reinforcedGravel = new BlockReinforcedFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_gravel").setTranslationKey("securitycraft:reinforcedGravel");
+		SCContent.trophySystem = new BlockTrophySystem(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("trophy_system").setTranslationKey("securitycraft:trophy_system");
+		SCContent.crystalQuartz = new BlockCrystalQuartz().setHardness(0.8F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("crystal_quartz").setTranslationKey("securitycraft:crystalQuartz");
+		SCContent.reinforcedCrystalQuartz = new BlockReinforcedCrystalQuartz().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_crystal_quartz").setTranslationKey("securitycraft:reinforcedCrystalQuartz");
+		SCContent.crystalQuartzSlab = new BlockCrystalQuartzSlab(false, Material.ROCK).setHardness(2.0F).setResistance(10.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("crystal_quartz_slab").setTranslationKey("securitycraft:crystalQuartzSlab");
+		SCContent.doubleCrystalQuartzSlab = new BlockCrystalQuartzSlab(true, Material.ROCK).setHardness(2.0F).setResistance(10.0F).setRegistryName("double_crystal_quartz_slab").setTranslationKey("securitycraft:doubleCrystalQuartzSlab");
+		SCContent.reinforcedCrystalQuartzSlab = new BlockReinforcedCrystalQuartzSlab(false, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_crystal_quartz_slab").setTranslationKey("securitycraft:reinforcedCrystalQuartzSlab");
+		SCContent.reinforcedDoubleCrystalQuartzSlab = new BlockReinforcedCrystalQuartzSlab(true, Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_double_crystal_quartz_slab").setTranslationKey("securitycraft:reinforcedDoubleCrystalQuartzSlab");
+		SCContent.stairsCrystalQuartz = new BlockCustomStairs(SCContent.crystalQuartz.getDefaultState()).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("stairs_crystal_quartz").setTranslationKey("securitycraft:stairsCrystalQuartz");
+		SCContent.reinforcedStairsCrystalQuartz = new BlockReinforcedStairs(SCContent.reinforcedCrystalQuartz, 0).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stairs_crystal_quartz").setTranslationKey("securitycraft:reinforcedStairsCrystalQuartz");
+		SCContent.blockPocketWall = new BlockBlockPocketWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("block_pocket_wall").setTranslationKey("securitycraft:blockPocketWall");
+		SCContent.blockPocketManager = new BlockBlockPocketManager().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("block_pocket_manager").setTranslationKey("securitycraft:blockPocketManager");
+		SCContent.reinforcedStonePressurePlate = new BlockReinforcedPressurePlate(Material.ROCK, Sensitivity.MOBS, SoundType.STONE, Blocks.STONE_PRESSURE_PLATE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_pressure_plate").setTranslationKey("securitycraft:reinforced_stone_pressure_plate");
+		SCContent.reinforcedWoodenPressurePlate = new BlockReinforcedPressurePlate(Material.WOOD, Sensitivity.EVERYTHING, SoundType.WOOD, Blocks.WOODEN_PRESSURE_PLATE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wooden_pressure_plate").setTranslationKey("securitycraft:reinforced_wooden_pressure_plate");
+		SCContent.reinforcedBookshelf = new BlockReinforcedBookshelf(Material.WOOD, 1, Blocks.BOOKSHELF).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_bookshelf").setTranslationKey("securitycraft:reinforcedBookshelf");
+		SCContent.horizontalReinforcedIronBars = new BlockHorizontalReinforcedIronBars().setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("horizontal_reinforced_iron_bars");
+		SCContent.reinforcedWalls = new BlockReinforcedWall().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_walls").setTranslationKey("securitycraft:reinforced_walls");
+		SCContent.reinforcedObserver = new BlockReinforcedObserver().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_observer").setTranslationKey("securitycraft:reinforced_observer");
+		SCContent.reinforcedRedstoneLamp = new BlockReinforcedRedstoneLamp().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_redstone_lamp").setTranslationKey("securitycraft:reinforced_redstone_lamp");
+		SCContent.reinforcedCobweb = new BlockReinforcedCobweb().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cobweb").setTranslationKey("securitycraft:reinforced_cobweb");
+		SCContent.reinforcedGrass = new BlockReinforcedGrass().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_grass").setTranslationKey("securitycraft:reinforced_grass");
+		SCContent.reinforcedSnowBlock = new BlockReinforcedBase(Material.CRAFTED_SNOW, 1, SoundType.SNOW, Blocks.SNOW).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_snow_block").setTranslationKey("securitycraft:reinforced_snow_block");
+		SCContent.reinforcedIce = new BlockReinforcedBase(Material.ICE, 1, SoundType.GLASS, Blocks.ICE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_ice").setTranslationKey("securitycraft:reinforced_ice");
+		SCContent.reinforcedPackedIce = new BlockReinforcedBase(Material.PACKED_ICE, 1, SoundType.GLASS, Blocks.PACKED_ICE).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_packed_ice").setTranslationKey("securitycraft:reinforced_packed_ice");
+		SCContent.reinforcedMycelium = new BlockReinforcedMycelium().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_mycelium").setTranslationKey("securitycraft:reinforced_mycelium");
+		SCContent.reinforcedClay = new BlockReinforcedBase(Material.GROUND, 1, Blocks.CLAY).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_clay").setTranslationKey("securitycraft:reinforced_clay");
+		SCContent.reinforcedNetherWartBlock = new BlockReinforcedBase(Material.GRASS, 1, SoundType.WOOD, Blocks.NETHER_WART_BLOCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_nether_wart_block").setTranslationKey("securitycraft:reinforced_nether_wart_block");
+		SCContent.reinforcedGrassPath = new BlockReinforcedGrassPath().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_grass_path").setTranslationKey("securitycraft:reinforced_grass_path");
+		SCContent.reinforcedStoneButton = new BlockReinforcedButton(false).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone_button").setTranslationKey("securitycraft:reinforced_stone_button");
+		SCContent.reinforcedWoodenButton = new BlockReinforcedButton(true).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_wooden_button").setTranslationKey("securitycraft:reinforced_wooden_button");
+		SCContent.reinforcedLever = new BlockReinforcedLever().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lever").setTranslationKey("securitycraft:reinforced_lever");
+		SCContent.reinforcedHopper = new BlockReinforcedHopper().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hopper").setTranslationKey("securitycraft:reinforced_hopper");
+		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 	}
 
 	public static void setupMines()
 	{
-		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("mine").setTranslationKey("mine");
-		SCContent.mineCut = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setRegistryName("mine_cut").setTranslationKey("mineCut");
-
-		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1.25F).setRegistryName("dirt_mine").setTranslationKey("dirtMine");
-		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 2.5F).setRegistryName("stone_mine").setTranslationKey("stoneMine");
-		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 2.75F).setRegistryName("cobblestone_mine").setTranslationKey("cobblestoneMine");
-		SCContent.sandMine = new BlockFullMineBase(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1.25F).setRegistryName("sand_mine").setTranslationKey("sandMine");
-		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 3.75F).setRegistryName("diamond_mine").setTranslationKey("diamondMine");
-		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 3.75F).setRegistryName("furnace_mine").setTranslationKey("furnaceMine");
-
-		SCContent.trackMine = new BlockTrackMine().setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 0.7F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("track_mine").setTranslationKey("trackMine");
-
-		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setTranslationKey("bouncingBetty");
-
-		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setHardness(!SecurityCraft.config.ableToBreakMines ? -1F : 1F).setResistance(3F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setTranslationKey("claymore");
-
-		SCContent.ims = new BlockIMS(Material.IRON).setBlockUnbreakable().setResistance(1000F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("ims").setTranslationKey("ims");
+		SCContent.mine = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("mine").setTranslationKey("securitycraft:mine");
+		SCContent.mineCut = (BlockMine) new BlockMine(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
+		SCContent.dirtMine = new BlockFullMineBase(Material.GROUND, Blocks.DIRT).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.5F).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
+		SCContent.stoneMine = new BlockFullMineBase(Material.ROCK, Blocks.STONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1.5F).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
+		SCContent.cobblestoneMine = new BlockFullMineBase(Material.ROCK, Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 2.0F).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
+		SCContent.sandMine = new BlockFullMineFalling(Material.SAND, Blocks.SAND).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.5F).setRegistryName("sand_mine").setTranslationKey("securitycraft:sandMine");
+		SCContent.diamondOreMine = new BlockFullMineBase(Material.ROCK, Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("diamond_mine").setTranslationKey("securitycraft:diamondMine");
+		SCContent.furnaceMine = new BlockFurnaceMine(Material.ROCK).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.5F).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
+		SCContent.gravelMine = new BlockFullMineFalling(Material.GROUND, Blocks.GRAVEL).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.6F).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
+		SCContent.trackMine = new BlockTrackMine().setHardness(!ConfigHandler.ableToBreakMines ? -1F : 0.7F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
+		SCContent.bouncingBetty = new BlockBouncingBetty(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
+		SCContent.claymore = new BlockClaymore(Material.CIRCUITS).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
+		SCContent.ims = new BlockIMS(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCMine).setRegistryName("ims").setTranslationKey("securitycraft:ims");
+		SCContent.coalOreMine = new BlockFullMineBase(Material.ROCK, Blocks.COAL_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("coal_mine").setTranslationKey("securitycraft:coal_mine");
+		SCContent.emeraldOreMine = new BlockFullMineBase(Material.ROCK, Blocks.EMERALD_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("emerald_mine").setTranslationKey("securitycraft:emerald_mine");
+		SCContent.goldOreMine = new BlockFullMineBase(Material.ROCK, Blocks.GOLD_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("gold_mine").setTranslationKey("securitycraft:gold_mine");
+		SCContent.ironOreMine = new BlockFullMineBase(Material.ROCK, Blocks.IRON_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("iron_mine").setTranslationKey("securitycraft:iron_mine");
+		SCContent.lapisOreMine = new BlockFullMineBase(Material.ROCK, Blocks.LAPIS_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("lapis_mine").setTranslationKey("securitycraft:lapis_mine");
+		SCContent.quartzOreMine = new BlockFullMineBase(Material.ROCK, Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
+		SCContent.redstoneOreMine = new BlockRedstoneOreMine().setCreativeTab(SecurityCraft.tabSCMine).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 3.0F).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
 	}
 
 	public static void setupItems()
 	{
-		SCContent.codebreaker = new ItemCodebreaker().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("codebreaker").setTranslationKey("codebreaker");
-
-		SCContent.keycardLV1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1").setTranslationKey("keycardLV1");
-		SCContent.keycardLV2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2").setTranslationKey("keycardLV2");
-		SCContent.keycardLV3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3").setTranslationKey("keycardLV3");
-		SCContent.keycardLV4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4").setTranslationKey("keycardLV4");
-		SCContent.keycardLV5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5").setTranslationKey("keycardLV5");
-		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setRegistryName("limited_use_keycard").setTranslationKey("limitedUseKeycard");
-
-		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setTranslationKey("doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
-
-		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("universalBlockRemover");
-
-		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_mine").setTranslationKey("remoteAccessMine");
-
-		SCContent.fWaterBucket = new ItemModifiedBucket(SCContent.bogusWaterFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_water").setTranslationKey("bucketFWater");
-
-		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_lava").setTranslationKey("bucketFLava");
-
-		SCContent.universalBlockModifier = new ItemUniversalBlockModifier().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_modifier").setTranslationKey("universalBlockModifier");
-
-		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumCustomModules.REDSTONE, false).setRegistryName("redstone_module").setTranslationKey("redstoneModule");
-		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumCustomModules.WHITELIST, true).setRegistryName("whitelist_module").setTranslationKey("whitelistModule");
-		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumCustomModules.BLACKLIST, true).setRegistryName("blacklist_module").setTranslationKey("blacklistModule");
-		SCContent.harmingModule = (ItemModule) new ItemModule(EnumCustomModules.HARMING, false).setRegistryName("harming_module").setTranslationKey("harmingModule");
-		SCContent.smartModule = (ItemModule) new ItemModule(EnumCustomModules.SMART, false).setRegistryName("smart_module").setTranslationKey("smartModule");
-		SCContent.storageModule = (ItemModule) new ItemModule(EnumCustomModules.STORAGE, false).setRegistryName("storage_module").setTranslationKey("storageModule");
-		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumCustomModules.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE, 0, 1).setRegistryName("disguise_module").setTranslationKey("disguiseModule");
-
-		SCContent.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("wire_cutters").setTranslationKey("wireCutters");
-
-		SCContent.keyPanel = new ItemKeyPanel().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_item").setTranslationKey("keypadItem");
-
-		SCContent.adminTool = new ItemAdminTool().setMaxStackSize(1).setRegistryName("admin_tool").setTranslationKey("adminTool");
-
-		SCContent.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("camera_monitor").setTranslationKey("cameraMonitor");
-
-		SCContent.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sc_manual").setTranslationKey("scManual");
-
-		SCContent.taser = new ItemTaser().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("taser").setTranslationKey("taser");
-
-		SCContent.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_owner_changer").setTranslationKey("universalOwnerChanger");
-
-
-		SCContent.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl1").setTranslationKey("universalBlockReinforcerLvL1");
-		SCContent.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl2").setTranslationKey("universalBlockReinforcerLvL2");
-		SCContent.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl3").setTranslationKey("universalBlockReinforcerLvL3");
-
-		SCContent.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("briefcase").setTranslationKey("briefcase");
-
-		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_key_changer").setTranslationKey("universalKeyChanger");
-
-		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName("scanner_door_item").setTranslationKey("scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.codebreaker = new ItemCodebreaker().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");
+		SCContent.keycardLvl1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1").setTranslationKey("securitycraft:keycardLV1");
+		SCContent.keycardLvl2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2").setTranslationKey("securitycraft:keycardLV2");
+		SCContent.keycardLvl3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3").setTranslationKey("securitycraft:keycardLV3");
+		SCContent.keycardLvl4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
+		SCContent.keycardLvl5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
+		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
+		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");
+		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");
+		SCContent.remoteAccessSentry = new ItemSentryRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_sentry").setTranslationKey("securitycraft:remoteAccessSentry");
+		SCContent.fWaterBucket = new ItemModifiedBucket(SCContent.bogusWaterFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_water").setTranslationKey("securitycraft:bucketFWater");
+		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_lava").setTranslationKey("securitycraft:bucketFLava");
+		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_modifier").setTranslationKey("securitycraft:universalBlockModifier");
+		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumModuleType.REDSTONE, false).setRegistryName("redstone_module").setTranslationKey("securitycraft:redstoneModule");
+		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumModuleType.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module").setTranslationKey("securitycraft:whitelistModule");
+		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumModuleType.BLACKLIST, true, true, GuiHandler.MODULES).setRegistryName("blacklist_module").setTranslationKey("securitycraft:blacklistModule");
+		SCContent.harmingModule = (ItemModule) new ItemModule(EnumModuleType.HARMING, false).setRegistryName("harming_module").setTranslationKey("securitycraft:harmingModule");
+		SCContent.smartModule = (ItemModule) new ItemModule(EnumModuleType.SMART, false).setRegistryName("smart_module").setTranslationKey("securitycraft:smartModule");
+		SCContent.storageModule = (ItemModule) new ItemModule(EnumModuleType.STORAGE, false).setRegistryName("storage_module").setTranslationKey("securitycraft:storageModule");
+		SCContent.disguiseModule = (ItemModule) new ItemModule(EnumModuleType.DISGUISE, false, true, GuiHandler.DISGUISE_MODULE, 0, 1).setRegistryName("disguise_module").setTranslationKey("securitycraft:disguiseModule");
+		SCContent.wireCutters = new Item().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("wire_cutters").setTranslationKey("securitycraft:wireCutters");
+		SCContent.keyPanel = new ItemKeyPanel().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_item").setTranslationKey("securitycraft:keypadItem");
+		SCContent.adminTool = new ItemAdminTool().setMaxStackSize(1).setRegistryName("admin_tool").setTranslationKey("securitycraft:adminTool");
+		SCContent.cameraMonitor = new ItemCameraMonitor().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("camera_monitor").setTranslationKey("securitycraft:cameraMonitor");
+		SCContent.scManual = new ItemSCManual().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("sc_manual").setTranslationKey("securitycraft:scManual");
+		SCContent.taser = new ItemTaser(false).setMaxStackSize(1).setRegistryName("taser").setTranslationKey("securitycraft:taser");
+		SCContent.taserPowered = new ItemTaser(true).setMaxStackSize(1).setRegistryName("taser_powered").setTranslationKey("securitycraft:taser");
+		SCContent.universalOwnerChanger = new ItemUniversalOwnerChanger().setMaxStackSize(1).setMaxDamage(48).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_owner_changer").setTranslationKey("securitycraft:universalOwnerChanger");
+		SCContent.universalBlockReinforcerLvL1 = new ItemUniversalBlockReinforcer(300).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl1").setTranslationKey("securitycraft:universalBlockReinforcerLvL1");
+		SCContent.universalBlockReinforcerLvL2 = new ItemUniversalBlockReinforcer(2700).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl2").setTranslationKey("securitycraft:universalBlockReinforcerLvL2");
+		SCContent.universalBlockReinforcerLvL3 = new ItemUniversalBlockReinforcer(0).setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_reinforcer_lvl3").setTranslationKey("securitycraft:universalBlockReinforcerLvL3");
+		SCContent.briefcase = new ItemBriefcase().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("briefcase").setTranslationKey("securitycraft:briefcase");
+		SCContent.universalKeyChanger = new ItemUniversalKeyChanger().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_key_changer").setTranslationKey("securitycraft:universalKeyChanger");
+		SCContent.scannerDoorItem = new ItemScannerDoor().setRegistryName("scanner_door_item").setTranslationKey("securitycraft:scannerDoorItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.secretSignItem = new ItemSecretSign().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.sentry = new ItemSentry().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.tabSCTechnical);
+		SCContent.crystalQuartzItem = new Item().setRegistryName("crystal_quartz_item").setTranslationKey("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 	}
 }

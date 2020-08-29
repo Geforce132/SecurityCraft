@@ -2,9 +2,13 @@ package net.geforcemods.securitycraft.network.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -25,33 +29,42 @@ public class PacketSUpdateSliderValue implements IMessage{
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeLong(pos.toLong());
-		par1ByteBuf.writeInt(id);
-		par1ByteBuf.writeDouble(value);
+	public void toBytes(ByteBuf buf) {
+		buf.writeLong(pos.toLong());
+		buf.writeInt(id);
+		buf.writeDouble(value);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		pos = BlockPos.fromLong(par1ByteBuf.readLong());
-		id = par1ByteBuf.readInt();
-		value = par1ByteBuf.readDouble();
+	public void fromBytes(ByteBuf buf) {
+		pos = BlockPos.fromLong(buf.readLong());
+		id = buf.readInt();
+		value = buf.readDouble();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateSliderValue, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSUpdateSliderValue packet, MessageContext context) {
+		public IMessage onMessage(PacketSUpdateSliderValue message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
-				BlockPos pos = packet.pos;
-				int id = packet.id;
-				double value = packet.value;
-				EntityPlayer par1EntityPlayer = context.getServerHandler().player;
+				BlockPos pos = message.pos;
+				int id = message.id;
+				double value = message.value;
+				EntityPlayer player = context.getServerHandler().player;
+				TileEntity te = getWorld(player).getTileEntity(pos);
 
-				if(getWorld(par1EntityPlayer).getTileEntity(pos) != null && getWorld(par1EntityPlayer).getTileEntity(pos) instanceof CustomizableSCTE) {
-					((OptionDouble)((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]).setValue(value);
-					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).onOptionChanged(((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).customOptions()[id]);
-					((CustomizableSCTE) getWorld(par1EntityPlayer).getTileEntity(pos)).sync();
+				if(te instanceof ICustomizable) {
+					Option<?> o = ((ICustomizable)te).customOptions()[id];
+
+					if(o instanceof OptionDouble)
+						((OptionDouble)o).setValue(value);
+					else if(o instanceof OptionInt)
+						((OptionInt)o).setValue((int)value);
+
+					((ICustomizable)te).onOptionChanged(((ICustomizable)te).customOptions()[id]);
+
+					if(te instanceof CustomizableSCTE)
+						((CustomizableSCTE)te).sync();
 				}
 			});
 

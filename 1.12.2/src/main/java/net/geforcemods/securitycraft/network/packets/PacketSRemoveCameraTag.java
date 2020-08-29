@@ -39,11 +39,11 @@ public class PacketSRemoveCameraTag implements IMessage
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSRemoveCameraTag, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSRemoveCameraTag packet, MessageContext context)
+		public IMessage onMessage(PacketSRemoveCameraTag message, MessageContext context)
 		{
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				ItemStack monitor = context.getServerHandler().player.inventory.getCurrentItem();
-				int id = packet.camID;
+				int id = message.camID;
 
 				monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(id - 1)));
 			});

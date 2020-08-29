@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " T ",
+    " B ",
+    "S S"
+  ],
+  "key": {
+    "T": {
+      "item": "securitycraft:sentry"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "securitycraft:reinforced_metals",
+      "data": 1
+    }
+  },
+  "result": {
+    "item": "securitycraft:trophy_system",
+    "count": 1
+  }
+}

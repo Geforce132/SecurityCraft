@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,9 +21,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -33,68 +34,80 @@ public class ItemModifiedBucket extends ItemBucket {
 	public ItemModifiedBucket(Block containedBlock) {
 		super(containedBlock);
 		this.containedBlock = containedBlock;
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorDefaultDispenseItem() {
+			private final BehaviorDefaultDispenseItem instance = new BehaviorDefaultDispenseItem();
+
+			@Override
+			public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
+			{
+				ItemBucket itembucket = (ItemBucket)stack.getItem();
+				BlockPos blockpos = source.getBlockPos().offset(source.getBlockState().getValue(BlockDispenser.FACING));
+
+				return itembucket.tryPlaceContainedLiquid(null, source.getWorld(), blockpos) ? new ItemStack(Items.BUCKET) : instance.dispense(source, stack);
+			}
+		});
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
-		ItemStack itemStackIn = playerIn.getHeldItem(hand);
-		boolean flag = containedBlock == Blocks.AIR;
-		RayTraceResult raytraceresult = rayTrace(worldIn, playerIn, flag);
-		ActionResult<ItemStack> ret = ForgeEventFactory.onBucketUse(playerIn, worldIn, itemStackIn, raytraceresult);
-		if (ret != null) return ret;
+		ItemStack stack = player.getHeldItem(hand);
+		boolean isAir = containedBlock == Blocks.AIR;
+		RayTraceResult rayTrace = rayTrace(world, player, isAir);
+		ActionResult<ItemStack> eventResult = ForgeEventFactory.onBucketUse(player, world, stack, rayTrace);
+		if (eventResult != null) return eventResult;
 
-		if (raytraceresult == null)
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
-		else if (raytraceresult.typeOfHit != RayTraceResult.Type.BLOCK)
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+		if (rayTrace == null)
+			return new ActionResult<>(EnumActionResult.PASS, stack);
+		else if (rayTrace.typeOfHit != RayTraceResult.Type.BLOCK)
+			return new ActionResult<>(EnumActionResult.PASS, stack);
 		else
 		{
-			BlockPos blockpos = raytraceresult.getBlockPos();
+			BlockPos pos = rayTrace.getBlockPos();
 
-			if (!worldIn.isBlockModifiable(playerIn, blockpos))
-				return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-			else if (flag)
+			if (!world.isBlockModifiable(player, pos))
+				return new ActionResult<>(EnumActionResult.FAIL, stack);
+			else if (isAir)
 			{
-				if (!playerIn.canPlayerEdit(blockpos.offset(raytraceresult.sideHit), raytraceresult.sideHit, itemStackIn))
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+				if (!player.canPlayerEdit(pos.offset(rayTrace.sideHit), rayTrace.sideHit, stack))
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
 				else
 				{
-					IBlockState iblockstate = worldIn.getBlockState(blockpos);
-					Material material = iblockstate.getMaterial();
+					IBlockState state = world.getBlockState(pos);
+					Material material = state.getMaterial();
 
-					if (material == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
+					if (material == Material.WATER && state.getValue(BlockLiquid.LEVEL) == 0)
 					{
-						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
-						playerIn.addStat(StatList.getObjectUseStats(this));
-						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(itemStackIn, playerIn, SCContent.fWaterBucket));
+						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+						player.addStat(StatList.getObjectUseStats(this));
+						player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+						return new ActionResult<>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fWaterBucket));
 					}
-					else if (material == Material.LAVA && iblockstate.getValue(BlockLiquid.LEVEL).intValue() == 0)
+					else if (material == Material.LAVA && state.getValue(BlockLiquid.LEVEL) == 0)
 					{
-						playerIn.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
-						worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 11);
-						playerIn.addStat(StatList.getObjectUseStats(this));
-						return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, fillBucket(itemStackIn, playerIn, SCContent.fLavaBucket));
+						player.playSound(SoundEvents.ITEM_BUCKET_FILL_LAVA, 1.0F, 1.0F);
+						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+						player.addStat(StatList.getObjectUseStats(this));
+						return new ActionResult<>(EnumActionResult.SUCCESS, fillBucket(stack, player, SCContent.fLavaBucket));
 					}
 					else
-						return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+						return new ActionResult<>(EnumActionResult.FAIL, stack);
 				}
 			}
 			else
 			{
-				boolean flag1 = worldIn.getBlockState(blockpos).getBlock().isReplaceable(worldIn, blockpos);
-				BlockPos blockpos1 = flag1 && raytraceresult.sideHit == EnumFacing.UP ? blockpos : blockpos.offset(raytraceresult.sideHit);
+				boolean isReplaceable = world.getBlockState(pos).getBlock().isReplaceable(world, pos);
+				BlockPos offsetPos = isReplaceable && rayTrace.sideHit == EnumFacing.UP ? pos : pos.offset(rayTrace.sideHit);
 
-				if (!playerIn.canPlayerEdit(blockpos1, raytraceresult.sideHit, itemStackIn))
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-				else if (this.tryPlaceContainedLiquid(playerIn, worldIn, blockpos1))
+				if (!player.canPlayerEdit(offsetPos, rayTrace.sideHit, stack))
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
+				else if (this.tryPlaceContainedLiquid(player, world, offsetPos))
 				{
-					playerIn.addStat(StatList.getObjectUseStats(this));
-					return !playerIn.capabilities.isCreativeMode ? new ActionResult<ItemStack>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+					player.addStat(StatList.getObjectUseStats(this));
+					return !player.capabilities.isCreativeMode ? new ActionResult<>(EnumActionResult.SUCCESS, new ItemStack(Items.BUCKET)) : new ActionResult<>(EnumActionResult.SUCCESS, stack);
 				}
 				else
-					return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}
 		}
 	}
@@ -117,37 +130,37 @@ public class ItemModifiedBucket extends ItemBucket {
 		}
 	}
 
-	public boolean tryPlaceContainedLiquid(World worldIn, BlockPos pos)
+	@Override
+	public boolean tryPlaceContainedLiquid(EntityPlayer player, World world, BlockPos pos)
 	{
 		if (containedBlock == Blocks.AIR)
 			return false;
 		else
 		{
-			Material material = worldIn.getBlockState(pos).getMaterial();
+			Material material = world.getBlockState(pos).getMaterial();
 			boolean flag = !material.isSolid();
 
-			if (!worldIn.isAirBlock(pos) && !flag)
+			if (!world.isAirBlock(pos) && !flag)
 				return false;
 			else
 			{
-				if (worldIn.provider.doesWaterVaporize() && containedBlock == Blocks.FLOWING_WATER)
+				if (world.provider.doesWaterVaporize() && containedBlock == SCContent.bogusWaterFlowing)
 				{
-					int i = pos.getX();
-					int j = pos.getY();
-					int k = pos.getZ();
+					int x = pos.getX();
+					int y = pos.getY();
+					int z = pos.getZ();
 
-					for(EntityPlayer player : worldIn.playerEntities)
-						worldIn.playSound(player, new BlockPos(i + 0.5F, j + 0.5F, k + 0.5F), SoundEvent.REGISTRY.getObject(new ResourceLocation("random.fizz")), SoundCategory.BLOCKS, 0.5F, 2.6F + (worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.8F);
+					world.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
 
 					for (int l = 0; l < 8; ++l)
-						worldIn.spawnParticle(EnumParticleTypes.SMOKE_LARGE, i + Math.random(), j + Math.random(), k + Math.random(), 0.0D, 0.0D, 0.0D, new int[0]);
+						world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + Math.random(), y + Math.random(), z + Math.random(), 0.0D, 0.0D, 0.0D);
 				}
 				else
 				{
-					if (!worldIn.isRemote && flag && !material.isLiquid())
-						worldIn.destroyBlock(pos, true);
+					if (!world.isRemote && flag && !material.isLiquid())
+						world.destroyBlock(pos, true);
 
-					worldIn.setBlockState(pos, containedBlock.getDefaultState(), 3);
+					world.setBlockState(pos, containedBlock.getDefaultState(), 3);
 				}
 
 				return true;

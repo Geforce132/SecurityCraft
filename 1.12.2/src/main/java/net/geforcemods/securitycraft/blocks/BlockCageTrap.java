@@ -1,68 +1,116 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
+
+import org.apache.logging.log4j.util.TriConsumer;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedIronBars;
+import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCageTrap extends BlockOwnable implements IIntersectable {
+public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
 
-	public BlockCageTrap(Material par2Material) {
-		super(par2Material);
+	public BlockCageTrap(Material material) {
+		super(material);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state){
+	public boolean isFullCube(IBlockState state)
+	{
 		return false;
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer()
-	{
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos){
-		if(BlockUtils.getBlock(worldIn, pos) == SCContent.cageTrap && !BlockUtils.getBlockPropertyAsBoolean(worldIn, pos, DEACTIVATED))
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos){
+		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 			return null;
 		else
-			return blockState.getBoundingBox(worldIn, pos);
+			return super.getCollisionBoundingBox(blockState, world, pos);
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		if(te instanceof TileEntityDisguisable)
+		{
+			TileEntityDisguisable disguisableTe = (TileEntityDisguisable)te;
+
+			if(entity instanceof EntityPlayer && te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((EntityPlayer)entity))
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+			if(entity instanceof EntityLiving && te instanceof TileEntityCageTrap && !state.getValue(DEACTIVATED))
+			{
+				if(((TileEntityCageTrap)te).capturesMobs())
+				{
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+					return;
+				}
+				else
+				{
+					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+					return;
+				}
+			}
+			else if(entity instanceof EntityItem)
+			{
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+				return;
+			}
+
+			if(state.getValue(DEACTIVATED))
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+			else
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+		}
+		else //shouldn't happen
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+	}
+
+	private void addCorrectShape(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState, TileEntityDisguisable disguisableTe)
+	{
+		ItemStack moduleStack = disguisableTe.getModule(EnumModuleType.DISGUISE);
+
+		if(!moduleStack.isEmpty() && (((ItemModule)moduleStack.getItem()).getBlockAddons(moduleStack.getTagCompound()).size() > 0))
+			super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, isActualState);
+		else
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
 	}
 
 	@Override
@@ -70,29 +118,37 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 		if(!world.isRemote){
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof EntityPlayer;
-			boolean shouldCaptureMobs = tileEntity.getOptionByName("captureMobs").asBoolean();
 
-			if(isPlayer || (entity instanceof EntityMob && shouldCaptureMobs)){
+			if(isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())){
 				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity)))
 					return;
 
-				if(BlockUtils.getBlockPropertyAsBoolean(world, pos, DEACTIVATED))
+				if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
 					return;
 
+				BlockPos topMiddle = pos.up(4);
+				BlockModifier placer = new BlockModifier(world, new MutableBlockPos(pos), tileEntity.getOwner());
+
+				placer.loop((w, p, o) -> {
+					if(w.isAirBlock(p))
+					{
+						if(p.equals(topMiddle))
+							w.setBlockState(p, SCContent.horizontalReinforcedIronBars.getDefaultState());
+						else
+							w.setBlockState(p, ((BlockReinforcedIronBars)SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), w, p));
+					}
+				});
+				placer.loop((w, p, o) -> {
+					TileEntity te = w.getTileEntity(p);
+
+					if(te instanceof IOwnable)
+						((IOwnable)te).getOwner().set(o);
+				});
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
-				BlockUtils.setBlock(world, pos.up(4), SCContent.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX() + 1, pos.getY() + 4, pos.getZ(), SCContent.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX() - 1, pos.getY() + 4, pos.getZ(), SCContent.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() + 1, SCContent.unbreakableIronBars);
-				BlockUtils.setBlock(world, pos.getX(), pos.getY() + 4, pos.getZ() - 1, SCContent.unbreakableIronBars);
-
-				BlockUtils.setBlockInBox(world, pos.getX(), pos.getY(), pos.getZ(), SCContent.unbreakableIronBars);
-				setTileEntities(world, pos.getX(), pos.getY(), pos.getZ(), ((IOwnable)world.getTileEntity(pos)).getOwner().getUUID(), ((IOwnable)world.getTileEntity(pos)).getOwner().getName());
-
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer)
-					world.getMinecraftServer().sendMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
+					world.getMinecraftServer().sendMessage(new TextComponentTranslation("["+ TextFormatting.BLACK + ClientUtils.localize("tile.securitycraft:cageTrap.name") + TextFormatting.RESET + "] " + ClientUtils.localize("messages.securitycraft:cageTrap.captured").replace("#player", ((EntityPlayer) entity).getName()).replace("#location", Utils.getFormattedCoordinates(pos))));
 			}
 		}
 	}
@@ -112,63 +168,63 @@ public class BlockCageTrap extends BlockOwnable implements IIntersectable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(DEACTIVATED).booleanValue() ? 1 : 0;
+		return state.getValue(DEACTIVATED) ? 1 : 0;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {DEACTIVATED});
+		return new BlockStateContainer(this, DEACTIVATED);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityCageTrap().intersectsEntities();
 	}
 
-	public void setTileEntities(World par1World, int par2, int par3, int par4, String uuid, String name)
+	public static class BlockModifier
 	{
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3, par4))).getOwner().set(uuid, name);
+		private World world;
+		private MutableBlockPos pos;
+		private BlockPos origin;
+		private Owner owner;
 
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 4, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 4, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 4, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 4, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 4, par4 - 1))).getOwner().set(uuid, name);
+		public BlockModifier(World world, MutableBlockPos origin, Owner owner)
+		{
+			this.world = world;
+			pos = origin.setPos(origin.getX() - 1, origin.getY() + 1, origin.getZ() - 1);
+			this.origin = origin.toImmutable();
+			this.owner = owner;
+		}
 
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 1, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 2, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 3, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 1, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 2, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 3, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 1, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 2, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 3, par4 + 1))).getOwner().set(uuid, name);
+		public void loop(TriConsumer<World,MutableBlockPos,Owner> ifTrue)
+		{
+			for(int y = 0; y < 4; y++)
+			{
+				for(int x = 0; x < 3; x++)
+				{
+					for(int z = 0; z < 3; z++)
+					{
+						//skip the middle column above the cage trap, but not the place where the horiztonal iron bars are
+						if(!(x == 1 && z == 1 && y != 3))
+							ifTrue.accept(world, pos, owner);
 
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4))).getOwner().set(uuid, name);
+						pos.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);
+					}
 
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 1, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 2, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2, par3 + 3, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 1, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 2, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 3, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 1, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 2, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 3, par4 - 1))).getOwner().set(uuid, name);
+					pos.setPos(pos.getX() + 1, pos.getY(), pos.getZ() - 3);
+				}
 
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 4, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 + 1, par3 + 4, par4 - 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 4, par4 + 1))).getOwner().set(uuid, name);
-		((IOwnable)par1World.getTileEntity(BlockUtils.toPos(par2 - 1, par3 + 4, par4 - 1))).getOwner().set(uuid, name);
+				pos.setPos(pos.getX() - 3, pos.getY() + 1, pos.getZ());
+			}
+
+			pos.setPos(origin); //reset the mutable block pos for the next usage
+		}
+
+		@FunctionalInterface
+		public interface TriFunction<T,U,V,R>
+		{
+			R apply(T t, U u, V v);
+		}
 	}
 }

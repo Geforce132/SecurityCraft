@@ -25,9 +25,7 @@ public class LinkedBlock {
 	}
 
 	public boolean validate(World world) {
-		if(world == null || (world.isAirBlock(blockPos) || !BlockUtils.getBlock(world, blockPos).getTranslationKey().matches(blockName))) return false;
-
-		return true;
+		return !(world == null || (world.isAirBlock(blockPos) || !BlockUtils.getBlock(world, blockPos).getTranslationKey().equals(blockName)));
 	}
 
 	public CustomizableSCTE asTileEntity(World world) {

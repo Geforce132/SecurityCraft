@@ -2,7 +2,7 @@
     "parent": "block/orientable",
     "textures": {
         "top": "blocks/furnace_top",
-        "front": "securitycraft:blocks/retinal_scanner_front",
+        "front": "securitycraft:blocks/retinal_scanner_front_frame",
         "side": "blocks/furnace_side"
     }
 }

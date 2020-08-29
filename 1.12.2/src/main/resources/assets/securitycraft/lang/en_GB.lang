@@ -1,0 +1,26 @@
+tile.securitycraft:reinforcedStainedGlass_gray.name=Reinforced Grey Stained Glass
+tile.securitycraft:reinforcedStainedGlass_silver.name=Reinforced Light Grey Stained Glass
+tile.securitycraft:reinforcedStainedGlassPanes_gray.name=Reinforced Grey Stained Glass Pane
+tile.securitycraft:reinforcedStainedGlassPanes_silver.name=Reinforced Light Grey Stained Glass Pane
+tile.securitycraft:reinforcedSandstone_chiseled.name=Reinforced Chiselled Sandstone
+tile.securitycraft:reinforcedStoneBrick_chiseled.name=Reinforced Chiselled Stone Bricks
+tile.securitycraft:reinforcedStainedHardenedClay_gray.name=Reinforced Grey Terracotta
+tile.securitycraft:reinforcedStainedHardenedClay_silver.name=Reinforced Light Grey Terracotta
+tile.securitycraft:reinforcedMetals_gold.name=Reinforced Gold Block
+tile.securitycraft:reinforcedMetals_iron.name=Reinforced Iron Block
+tile.securitycraft:reinforcedMetals_diamond.name=Reinforced Diamond Block
+tile.securitycraft:reinforcedMetals_emerald.name=Reinforced Emerald Block
+tile.securitycraft:reinforcedMetals_redstone.name=Reinforced Redstone Block
+tile.securitycraft:reinforcedCompressedBlocks_coal.name=Reinforced Coal Block
+tile.securitycraft:reinforcedWool_gray.name=Reinforced Grey Wool
+tile.securitycraft:reinforcedWool_silver.name=Reinforced Light Grey Wool
+tile.securitycraft:reinforcedQuartz_chiseled.name=Reinforced Chiselled Quartz Block
+tile.securitycraft:reinforcedRedSandstone_chiseled.name=Reinforced Chiselled Red Sandstone
+tile.securitycraft:reinforcedConcrete_gray.name=Reinforced Grey Concrete
+tile.securitycraft:reinforcedConcrete_silver.name=Reinforced Light Grey Concrete
+tile.securitycraft:reinforcedCarpet_gray.name=Reinforced Grey Carpet
+tile.securitycraft:reinforcedCarpet_silver.name=Reinforced Light Grey Carpet
+tile.securitycraft:crystalQuartz_chiseled.name=Chiselled Crystal Quartz Block
+tile.securitycraft:reinforcedCrystalQuartz_chiseled.name=Reinforced Chiselled Crystal Quartz Block
+
+help.securitycraft:blockPocketManager.info=The Block Pocket Manager is used to manage the Block Pocket, which is a room that only its owner and whitelisted players can enter. When opening its GUI, you see a selection of sizes. Choose one, then build the Block Pocket around the manager. Make sure that the manager is placed on the outside of the bottom layer. The Block Pocket is a cube of the size you chose. The corners are built with Reinforced Chiselled Crystal Quartz, the blocks between the corners are built with correctly oriented Reinforced Crystal Quartz Pillars, and the floor/wall/ceiling is built with Block Pocket Walls. See this image for an example of how it looks (the Block Pocket Manager is marked with a red arrow) https://i.imgur.com/KLQzMeY.png - Clicking "Activate" after the structure is built will activate any added modules. See the customization GUI for more information (rightclick with Universal Block Modifier).

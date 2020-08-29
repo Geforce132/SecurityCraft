@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, ICustomWailaDisplay {
+public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, IOverlayDisplay {
 
 	private final boolean isDouble;
 
@@ -36,9 +36,9 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs));
 	}
 
@@ -58,7 +58,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 

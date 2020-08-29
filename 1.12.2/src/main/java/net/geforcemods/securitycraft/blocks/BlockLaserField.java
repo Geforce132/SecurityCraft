@@ -1,26 +1,26 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IIntersectable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -36,13 +36,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockLaserField extends BlockContainer implements IIntersectable{
 
 	public static final PropertyInteger BOUNDTYPE = PropertyInteger.create("boundtype", 1, 3);
+	private static final AxisAlignedBB BOUNDTYPE_1_AABB, BOUNDTYPE_2_AABB, BOUNDTYPE_3_AABB;
+
+	static {
+		float px = 1.0F / 16.0F;
+
+		BOUNDTYPE_1_AABB = new AxisAlignedBB(6.75 * px, 0.0F, 6.75 * px, 9.25 * px, 1.0F, 9.25 * px);
+		BOUNDTYPE_2_AABB = new AxisAlignedBB(6.75 * px, 6.75 * px, 0.0F, 9.25 * px, 9.25 * px, 1.0F);
+		BOUNDTYPE_3_AABB = new AxisAlignedBB(0.0F, 6.75 * px, 6.75 * px, 1.0F, 9.25 * px, 9.25 * px);
+	}
 
 	public BlockLaserField(Material material) {
 		super(material);
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos)
 	{
 		return null;
 	}
@@ -80,7 +89,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+	public boolean isPassable(IBlockAccess world, BlockPos pos)
 	{
 		return true;
 	}
@@ -91,101 +100,33 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.doesMobHavePotionEffect((EntityLivingBase) entity, Potion.getPotionFromResourceLocation("invisibility"))){
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(world, pos.east(i));
-				if(id == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.east(i), BlockLaserBlock.POWERED)){
-					if(world.getTileEntity(pos.east(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos.east(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
-						return;
-					BlockUtils.setBlockProperty(world, pos.east(i), BlockLaserBlock.POWERED, true, true);
-					world.notifyNeighborsOfStateChange(pos.east(i), SCContent.laserBlock, false);
-					world.scheduleUpdate(pos.east(i), SCContent.laserBlock, 50);
+	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	{
+		if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase)entity))
+		{
+			for(EnumFacing facing : EnumFacing.VALUES)
+			{
+				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
+				{
+					BlockPos offsetPos = pos.offset(facing, i);
+					Block block = world.getBlockState(offsetPos).getBlock();
 
-					if(world.getTileEntity(pos.east(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.east(i))).hasModule(EnumCustomModules.HARMING))
-						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
+					if(block == SCContent.laserBlock && !BlockUtils.getBlockProperty(world, offsetPos, BlockLaserBlock.POWERED))
+					{
+						TileEntity te = world.getTileEntity(offsetPos);
 
-					break;
-				}
-			}
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumModuleType.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
+							return;
 
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(world, pos.west(i));
-				if(id == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.west(i), BlockLaserBlock.POWERED)){
-					if(world.getTileEntity(pos.west(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos.west(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
-						return;
-					BlockUtils.setBlockProperty(world, pos.west(i), BlockLaserBlock.POWERED, true, true);
-					world.notifyNeighborsOfStateChange(pos.west(i), SCContent.laserBlock, false);
-					world.scheduleUpdate(pos.west(i), SCContent.laserBlock, 50);
+						world.setBlockState(offsetPos, world.getBlockState(offsetPos).withProperty(BlockLaserBlock.POWERED, true));
+						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
-					if(world.getTileEntity(pos.west(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.west(i))).hasModule(EnumCustomModules.HARMING))
-						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
-
-					break;
-				}
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(world, pos.south(i));
-				if(id == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.south(i), BlockLaserBlock.POWERED)){
-					if(world.getTileEntity(pos.south(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos.south(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
-						return;
-					BlockUtils.setBlockProperty(world, pos.south(i), BlockLaserBlock.POWERED, true, true);
-					world.notifyNeighborsOfStateChange(pos.south(i), SCContent.laserBlock, false);
-					world.scheduleUpdate(pos.south(i), SCContent.laserBlock, 50);
-
-					if(world.getTileEntity(pos.south(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.south(i))).hasModule(EnumCustomModules.HARMING))
-						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
-
-					break;
-				}
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(world, pos.north(i));
-				if(id == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.north(i), BlockLaserBlock.POWERED)){
-					if(world.getTileEntity(pos.north(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos.north(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
-						return;
-					BlockUtils.setBlockProperty(world, pos.north(i), BlockLaserBlock.POWERED, true, true);
-					world.notifyNeighborsOfStateChange(pos.north(i), SCContent.laserBlock, false);
-					world.scheduleUpdate(pos.north(i), SCContent.laserBlock, 50);
-
-					if(world.getTileEntity(pos.north(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.north(i))).hasModule(EnumCustomModules.HARMING))
-						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
-
-					break;
-				}
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(world, pos.up(i));
-				if(id == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.up(i), BlockLaserBlock.POWERED)){
-					if(world.getTileEntity(pos.up(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos.up(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
-						return;
-					BlockUtils.setBlockProperty(world, pos.up(i), BlockLaserBlock.POWERED, true, true);
-					world.notifyNeighborsOfStateChange(pos.up(i), SCContent.laserBlock, false);
-					world.scheduleUpdate(pos.up(i), SCContent.laserBlock, 50);
-
-					if(world.getTileEntity(pos.up(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.up(i))).hasModule(EnumCustomModules.HARMING))
-						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
-
-					break;
-				}
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(world, pos.down(i));
-				if(id == SCContent.laserBlock && !BlockUtils.getBlockPropertyAsBoolean(world, pos.down(i), BlockLaserBlock.POWERED)){
-					if(world.getTileEntity(pos.down(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos.down(i), EnumCustomModules.WHITELIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
-						return;
-					BlockUtils.setBlockProperty(world, pos.down(i), BlockLaserBlock.POWERED, true, true);
-					world.notifyNeighborsOfStateChange(pos.down(i), SCContent.laserBlock, false);
-					world.scheduleUpdate(pos.down(i), SCContent.laserBlock, 50);
-
-					if(world.getTileEntity(pos.down(i)) instanceof CustomizableSCTE && ((CustomizableSCTE) world.getTileEntity(pos.down(i))).hasModule(EnumCustomModules.HARMING))
-						((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.laser, 10F);
-
-					break;
+						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.HARMING))
+						{
+							if(!(entity instanceof EntityPlayer && ((IOwnable)te).getOwner().isOwner((EntityPlayer)entity)))
+								((EntityLivingBase) entity).attackEntityFrom(CustomDamageSources.LASER, 10F);
+						}
+					}
 				}
 			}
 		}
@@ -195,49 +136,25 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	 * Called right before the block is destroyed by a player.  Args: world, pos, state
 	 */
 	@Override
-	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state)
+	public void onPlayerDestroy(World world, BlockPos pos, IBlockState state)
 	{
-		if(!par1World.isRemote){
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.east(i));
-				if(id == SCContent.laserBlock)
-					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.east(j), false);
-			}
+		if(!world.isRemote)
+		{
+			EnumFacing[] facingArray = {EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2), EnumFacing.byIndex((state.getValue(BlockLaserField.BOUNDTYPE) - 1) * 2).getOpposite()};
 
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.west(i));
-				if(id == SCContent.laserBlock)
-					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.west(j), false);
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.south(i));
-				if(id == SCContent.laserBlock)
-					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.south(j), false);
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.north(i));
-				if(id == SCContent.laserBlock)
-					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.north(j), false);
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.up(i));
-				if(id == SCContent.laserBlock)
-					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.up(j), false);
-			}
-
-			for(int i = 0; i < SecurityCraft.config.laserBlockRange; i++){
-				Block id = BlockUtils.getBlock(par1World, pos.down(i));
-				if(id == SCContent.laserBlock)
-					for(int j = 1; j < i; j++)
-						par1World.destroyBlock(pos.down(j), false);
+			for(EnumFacing facing : facingArray)
+			{
+				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
+				{
+					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.laserBlock)
+					{
+						for(int j = 1; j < i; j++)
+						{
+							world.destroyBlock(pos.offset(facing, j), false);
+						}
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -245,13 +162,13 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 1)
-			return new AxisAlignedBB(0.250F, 0.000F, 0.300F, 0.750F, 1.000F, 0.700F);
-		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 2)
-			return new AxisAlignedBB(0.325F, 0.300F, 0.000F, 0.700F, 0.700F, 1.000F);
-		else if (source.getBlockState(pos).getValue(BOUNDTYPE).intValue() == 3)
-			return new AxisAlignedBB(0.000F, 0.300F, 0.300F, 1.000F, 0.700F, 0.700F);
-		return new AxisAlignedBB(0.250F, 0.300F, 0.300F, 0.750F, 0.700F, 0.700F);
+		if (source.getBlockState(pos).getValue(BOUNDTYPE) == 1)
+			return BOUNDTYPE_1_AABB;
+		else if (source.getBlockState(pos).getValue(BOUNDTYPE) == 2)
+			return BOUNDTYPE_2_AABB;
+		else if (source.getBlockState(pos).getValue(BOUNDTYPE) == 3)
+			return BOUNDTYPE_3_AABB;
+		else return FULL_BLOCK_AABB;
 	}
 
 	@Override
@@ -269,13 +186,13 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(BOUNDTYPE).intValue();
+		return state.getValue(BOUNDTYPE);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {BOUNDTYPE});
+		return new BlockStateContainer(this, BOUNDTYPE);
 	}
 
 	@Override
@@ -284,13 +201,13 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	/**
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
-	public ItemStack getItem(World par1World, BlockPos pos, IBlockState state)
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntitySCTE().intersectsEntities();
 	}
 

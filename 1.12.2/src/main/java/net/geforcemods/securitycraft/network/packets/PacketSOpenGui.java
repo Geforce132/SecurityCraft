@@ -25,30 +25,30 @@ public class PacketSOpenGui implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf par1ByteBuf) {
-		par1ByteBuf.writeInt(id);
-		par1ByteBuf.writeInt(x);
-		par1ByteBuf.writeInt(y);
-		par1ByteBuf.writeInt(z);
+	public void toBytes(ByteBuf buf) {
+		buf.writeInt(id);
+		buf.writeInt(x);
+		buf.writeInt(y);
+		buf.writeInt(z);
 	}
 
 	@Override
-	public void fromBytes(ByteBuf par1ByteBuf) {
-		id = par1ByteBuf.readInt();
-		x = par1ByteBuf.readInt();
-		y = par1ByteBuf.readInt();
-		z = par1ByteBuf.readInt();
+	public void fromBytes(ByteBuf buf) {
+		id = buf.readInt();
+		x = buf.readInt();
+		y = buf.readInt();
+		z = buf.readInt();
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSOpenGui, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSOpenGui packet, MessageContext context) {
+		public IMessage onMessage(PacketSOpenGui message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
-				int id = packet.id;
-				int x = packet.x;
-				int y = packet.y;
-				int z = packet.z;
+				int id = message.id;
+				int x = message.x;
+				int y = message.y;
+				int z = message.z;
 				EntityPlayerMP player = context.getServerHandler().player;
 
 				player.openGui(SecurityCraft.instance, id, getWorld(player), x, y, z);

@@ -1,7 +1,10 @@
 {
     "variants": {
-        "normal": [
-            { "model": "securitycraft:reinforced_dirt" }
-        ]
+        "snowy=false,variant=dirt": { "model": "securitycraft:reinforced_dirt" },
+        "snowy=true,variant=dirt": { "model": "securitycraft:reinforced_dirt" },
+        "snowy=false,variant=coarse_dirt": { "model": "securitycraft:reinforced_coarse_dirt" },
+        "snowy=true,variant=coarse_dirt": { "model": "securitycraft:reinforced_coarse_dirt" },
+        "snowy=false,variant=podzol": { "model": "securitycraft:reinforced_podzol" },
+        "snowy=true,variant=podzol": { "model": "securitycraft:reinforced_podzol" }
     }
 }

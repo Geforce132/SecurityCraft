@@ -1,13 +1,9 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
-import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
@@ -40,19 +36,19 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		return false;
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(BlockUtils.getBlockPropertyAsBoolean(world, pos, OPEN))
+		if(BlockUtils.getBlockProperty(world, pos, OPEN))
 			return;
 
 		if(entity instanceof EntityItem)
@@ -73,43 +69,38 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.electricity, 6.0F);
+		entity.attackEntityFrom(CustomDamageSources.ELECTRICITY, 6.0F);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if(!worldIn.isRemote) {
-			boolean flag = isSCBlock(blockIn) && worldIn.isBlockPowered(pos);
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if(!world.isRemote) {
+			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
 
-			if (flag || blockIn.getDefaultState().canProvidePower())
-				if (flag && !state.getValue(OPEN).booleanValue() && !state.getValue(POWERED).booleanValue()) {
-					worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(true)).withProperty(POWERED, Boolean.valueOf(true)), 2);
-					worldIn.playEvent((EntityPlayer)null, 1008, pos, 0);
+			if (isPoweredSCBlock || block.getDefaultState().canProvidePower())
+				if (isPoweredSCBlock && !state.getValue(OPEN) && !state.getValue(POWERED)) {
+					world.setBlockState(pos, state.withProperty(OPEN, true).withProperty(POWERED, true), 2);
+					world.playEvent(null, 1008, pos, 0);
 				}
-				else if (!flag && state.getValue(OPEN).booleanValue() && state.getValue(POWERED).booleanValue()) {
-					worldIn.setBlockState(pos, state.withProperty(OPEN, Boolean.valueOf(false)).withProperty(POWERED, Boolean.valueOf(false)), 2);
-					worldIn.playEvent((EntityPlayer)null, 1014, pos, 0);
+				else if (!isPoweredSCBlock && state.getValue(OPEN) && state.getValue(POWERED)) {
+					world.setBlockState(pos, state.withProperty(OPEN, false).withProperty(POWERED, false), 2);
+					world.playEvent(null, 1014, pos, 0);
 				}
-				else if (flag != state.getValue(POWERED).booleanValue())
-					worldIn.setBlockState(pos, state.withProperty(POWERED, Boolean.valueOf(flag)), 2);
+				else if (isPoweredSCBlock != state.getValue(POWERED))
+					world.setBlockState(pos, state.withProperty(POWERED, isPoweredSCBlock), 2);
 		}
 	}
 
-	private boolean isSCBlock(Block block) {
-		return (block instanceof BlockLaserBlock || block instanceof BlockRetinalScanner ||
-				block instanceof BlockKeypad || block instanceof BlockKeycardReader || block instanceof BlockInventoryScanner);
-	}
-
 	@Override
-	public boolean eventReceived(IBlockState state, World par1World, BlockPos pos, int par5, int par6){
-		super.eventReceived(state, par1World, pos, par5, par6);
-		TileEntity tileentity = par1World.getTileEntity(pos);
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int par5, int par6){
+		super.eventReceived(state, world, pos, par5, par6);
+		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity != null ? tileentity.receiveClientEvent(par5, par6) : false;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityOwnable().intersectsEntities();
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 }

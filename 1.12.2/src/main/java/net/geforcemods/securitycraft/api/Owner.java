@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.datasync.DataSerializer;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.registries.DataSerializerEntry;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block.
@@ -9,7 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
  * @author Geforce
  */
 public class Owner {
-
+	@ObjectHolder(SecurityCraft.MODID + ":owner")
+	public static final DataSerializerEntry SERIALIZER = null;
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";
 
@@ -31,11 +36,11 @@ public class Owner {
 			String owner = ownable.getOwner().getName();
 
 			// Check the player's UUID first.
-			if(uuid != null && !uuid.matches(playerUUID))
+			if(uuid != null && !uuid.equals(playerUUID))
 				return false;
 
 			// If the TileEntity doesn't have a UUID saved, use the player's name instead.
-			if(owner != null && uuid.matches("ownerUUID") && !owner.matches("owner") && !owner.matches(playerName))
+			if(owner != null && uuid.equals("ownerUUID") && !owner.equals("owner") && !owner.equals(playerName))
 				return false;
 		}
 
@@ -50,13 +55,10 @@ public class Owner {
 		String uuid = player.getGameProfile().getId().toString();
 		String owner = player.getName();
 
-		if(uuid != null && uuid.matches(playerUUID))
+		if(uuid != null && uuid.equals(playerUUID))
 			return true;
 
-		if(owner != null && playerUUID.matches("ownerUUID") && owner.matches(playerName))
-			return true;
-
-		return false;
+		return owner != null && playerUUID.equals("ownerUUID") && owner.equals(playerName);
 	}
 
 	/**
@@ -112,4 +114,14 @@ public class Owner {
 		return "Name: " + playerName + "  UUID: " + playerUUID;
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		return obj instanceof Owner && getName().equals(((Owner)obj).getName()) && getUUID().equals(((Owner)obj).getUUID());
+	}
+
+	public static DataSerializer<Owner> getSerializer()
+	{
+		return (DataSerializer<Owner>)SERIALIZER.getSerializer();
+	}
 }

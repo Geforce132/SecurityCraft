@@ -3,12 +3,12 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +16,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -31,8 +30,8 @@ public class BlockAlarm extends BlockOwnable {
 	public final boolean isLit;
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-	public BlockAlarm(Material par1Material, boolean isLit) {
-		super(par1Material);
+	public BlockAlarm(Material material, boolean isLit) {
+		super(material);
 
 		this.isLit = isLit;
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -55,37 +54,21 @@ public class BlockAlarm extends BlockOwnable {
 		return false;
 	}
 
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state)
-	{
-		return EnumBlockRenderType.MODEL;
-	}
-
 	/**
 	 * Check whether this Block can be placed on the given side
 	 */
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-		return side == EnumFacing.UP && worldIn.isSideSolid(pos.down(), EnumFacing.UP) ? true : worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
+		return side == EnumFacing.UP && world.isSideSolid(pos.down(), EnumFacing.UP) ? true : world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		if (!canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING).getOpposite())) {
-			dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+		if (!canPlaceBlockOnSide(world, pos, state.getValue(FACING))) {
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
 		}
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		return worldIn.isSideSolid(pos.west(),	EnumFacing.EAST ) ||
-				worldIn.isSideSolid(pos.east(),	EnumFacing.WEST ) ||
-				worldIn.isSideSolid(pos.north(),	EnumFacing.SOUTH) ||
-				worldIn.isSideSolid(pos.south(),	EnumFacing.NORTH) ||
-				worldIn.isSideSolid(pos.down(),	EnumFacing.UP   ) ||
-				worldIn.isSideSolid(pos.up(),	EnumFacing.DOWN );
 	}
 
 	@Override
@@ -98,22 +81,22 @@ public class BlockAlarm extends BlockOwnable {
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state) {
-		if(par1World.isRemote)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+		if(world.isRemote)
 			return;
 		else
-			par1World.scheduleUpdate(pos, state.getBlock(), 1);
+			world.scheduleUpdate(pos, state.getBlock(), 1);
 	}
 
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		if(!par1World.isRemote){
-			playSoundAndUpdate(par1World, pos);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+		if(!world.isRemote){
+			playSoundAndUpdate(world, pos);
 
-			par1World.scheduleUpdate(pos, state.getBlock(), 5);
+			world.scheduleUpdate(pos, state.getBlock(), 5);
 		}
 	}
 
@@ -126,9 +109,9 @@ public class BlockAlarm extends BlockOwnable {
 
 		playSoundAndUpdate((world), pos);
 
-		EnumFacing enumfacing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
 
-		if (!world.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
+		if (!world.isSideSolid(pos.offset(facing.getOpposite()), facing, true))
 		{
 			dropBlockAsItem((world), pos, world.getBlockState(pos), 0);
 			world.setBlockToAir(pos);
@@ -138,63 +121,72 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		float f = 0.1875F;
-		float ySideMin = 0.5F - f; //bottom of the alarm when placed on a block side
-		float ySideMax = 0.5F + f; //top of the alarm when placed on a block side
-		float hSideMin = 0.5F - f; //the left start for s/w and right start for n/e
-		float hSideMax = 0.5F + f; //the left start for n/e and right start for s/w
-		EnumFacing enumfacing = state.getValue(FACING);
+		float threePx = 0.1875F;
+		float ySideMin = 0.5F - threePx; //bottom of the alarm when placed on a block side
+		float ySideMax = 0.5F + threePx; //top of the alarm when placed on a block side
+		float hSideMin = 0.5F - threePx; //the left start for s/w and right start for n/e
+		float hSideMax = 0.5F + threePx; //the left start for n/e and right start for s/w
+		float px = 1.0F / 16.0F; //one sixteenth of a block
+		EnumFacing facing = state.getValue(FACING);
 
-		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[enumfacing.ordinal()]){
+		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[facing.ordinal()]){
 			case 1: //east
-				return new AxisAlignedBB(0.0F, ySideMin, hSideMin, 0.5F, ySideMax, hSideMax);
+				return new AxisAlignedBB(0.0F, ySideMin - px, hSideMin - px, 0.5F, ySideMax + px, hSideMax + px);
 			case 2: //west
-				return new AxisAlignedBB(0.5F, ySideMin, hSideMin, 1.0F, ySideMax, hSideMax);
+				return new AxisAlignedBB(0.5F, ySideMin - px, hSideMin - px, 1.0F, ySideMax + px, hSideMax + px);
 			case 3: //north
-				return new AxisAlignedBB(hSideMin, ySideMin, 0.0F, hSideMax, ySideMax, 0.5F);
+				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.0F, hSideMax + px, ySideMax + px, 0.5F);
 			case 4: //south
-				return new AxisAlignedBB(hSideMin, ySideMin, 0.5F, hSideMax, ySideMax, 1.0F);
+				return new AxisAlignedBB(hSideMin - px, ySideMin - px, 0.5F, hSideMax + px, ySideMax + px, 1.0F);
 			case 5: //up
-				return new AxisAlignedBB(0.5F - f, 0F, 0.5F - f, 0.5F + f, 0.5F, 0.5F + f);
+				return new AxisAlignedBB(0.5F - threePx - px, 0F, 0.5F - threePx - px, 0.5F + threePx + px, 0.5F, 0.5F + threePx + px);
 			case 6: //down
-				return new AxisAlignedBB(0.5F - f, 0.5F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+				return new AxisAlignedBB(0.5F - threePx - px, 0.5F, 0.5F - threePx - px, 0.5F + threePx + px, 1.0F, 0.5F + threePx + px);
 		}
 
 		return state.getBoundingBox(source, pos);
 	}
 
-	private void playSoundAndUpdate(World par1World, BlockPos pos){
-		if(!(par1World.getTileEntity(pos) instanceof TileEntityAlarm)) return;
+	private void playSoundAndUpdate(World world, BlockPos pos){
+		if(!(world.getBlockState(pos).getBlock() instanceof BlockAlarm) || !(world.getTileEntity(pos) instanceof TileEntityAlarm)) return;
 
-		if(par1World.getRedstonePowerFromNeighbors(pos) > 0){
-			boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
+		TileEntityAlarm te = (TileEntityAlarm)world.getTileEntity(pos);
+
+		if(world.getRedstonePowerFromNeighbors(pos) > 0){
+			boolean isPowered = te.isPowered();
 
 			if(!isPowered){
-				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner();
-				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
-				BlockUtils.setBlock(par1World, pos, SCContent.alarmLit);
-				BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(true);
+				Owner owner = te.getOwner();
+				EnumFacing dir = BlockUtils.getBlockProperty(world, pos, FACING);
+				OptionInt range = te.range;
+				world.setBlockState(pos, SCContent.alarmLit.getDefaultState());
+				BlockUtils.setFacingProperty(world, pos, FACING, dir);
+				te = (TileEntityAlarm)world.getTileEntity(pos);
+				te.getOwner().set(owner);
+				te.setPowered(true);
+				te.range.copy(range);
 			}
 
 		}else{
-			boolean isPowered = ((TileEntityAlarm) par1World.getTileEntity(pos)).isPowered();
+			boolean isPowered = te.isPowered();
 
 			if(isPowered){
-				Owner owner = ((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner();
-				EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(par1World, pos, FACING);
-				BlockUtils.setBlock(par1World, pos, SCContent.alarm);
-				BlockUtils.setBlockProperty(par1World, pos, FACING, dir);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).getOwner().set(owner);
-				((TileEntityAlarm) par1World.getTileEntity(pos)).setPowered(false);
+				Owner owner = te.getOwner();
+				EnumFacing dir = BlockUtils.getBlockProperty(world, pos, FACING);
+				OptionInt range = te.range;
+				world.setBlockState(pos, SCContent.alarm.getDefaultState());
+				BlockUtils.setFacingProperty(world, pos, FACING, dir);
+				te = (TileEntityAlarm)world.getTileEntity(pos);
+				te.getOwner().set(owner);
+				te.setPowered(false);
+				te.range.copy(range);
 			}
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state){
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
 		return new ItemStack(Item.getItemFromBlock(SCContent.alarm));
 	}
 
@@ -203,75 +195,69 @@ public class BlockAlarm extends BlockOwnable {
 		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state){
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
-
 	@Override
 	public IBlockState getStateFromMeta(int meta){
-		EnumFacing enumfacing;
+		EnumFacing facing;
 
 		switch (meta & 7){
 			case 0:
-				enumfacing = EnumFacing.DOWN;
+				facing = EnumFacing.DOWN;
 				break;
 			case 1:
-				enumfacing = EnumFacing.EAST;
+				facing = EnumFacing.EAST;
 				break;
 			case 2:
-				enumfacing = EnumFacing.WEST;
+				facing = EnumFacing.WEST;
 				break;
 			case 3:
-				enumfacing = EnumFacing.SOUTH;
+				facing = EnumFacing.SOUTH;
 				break;
 			case 4:
-				enumfacing = EnumFacing.NORTH;
+				facing = EnumFacing.NORTH;
 				break;
 			case 5:
 			default:
-				enumfacing = EnumFacing.UP;
+				facing = EnumFacing.UP;
 		}
 
-		return getDefaultState().withProperty(FACING, enumfacing);
+		return getDefaultState().withProperty(FACING, facing);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state){
-		int i;
+		int meta;
 
 		switch(BlockAlarm.SwitchEnumFacing.FACING_LOOKUP[state.getValue(FACING).ordinal()]){
 			case 1:
-				i = 1;
+				meta = 1;
 				break;
 			case 2:
-				i = 2;
+				meta = 2;
 				break;
 			case 3:
-				i = 3;
+				meta = 3;
 				break;
 			case 4:
-				i = 4;
+				meta = 4;
 				break;
 			case 5:
 			default:
-				i = 5;
+				meta = 5;
 				break;
 			case 6:
-				i = 0;
+				meta = 0;
 		}
 
-		return i;
+		return meta;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2){
+	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntityAlarm();
 	}
 
@@ -281,38 +267,38 @@ public class BlockAlarm extends BlockOwnable {
 		static{
 			try{
 				FACING_LOOKUP[EnumFacing.EAST.ordinal()] = 1;
-			}catch (NoSuchFieldError var6){
-				;
+			}catch (NoSuchFieldError e){
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.WEST.ordinal()] = 2;
-			}catch (NoSuchFieldError var5){
-				;
+			}catch (NoSuchFieldError e){
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.SOUTH.ordinal()] = 3;
-			}catch (NoSuchFieldError var4){
-				;
+			}catch (NoSuchFieldError e){
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.NORTH.ordinal()] = 4;
-			}catch (NoSuchFieldError var3){
-				;
+			}catch (NoSuchFieldError e){
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.UP.ordinal()] = 5;
-			}catch (NoSuchFieldError var2){
-				;
+			}catch (NoSuchFieldError e){
+
 			}
 
 			try{
 				FACING_LOOKUP[EnumFacing.DOWN.ordinal()] = 6;
-			}catch (NoSuchFieldError var1){
-				;
+			}catch (NoSuchFieldError e){
+
 			}
 		}
 	}

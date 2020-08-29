@@ -1,46 +1,50 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
 
-public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswordProtected {
+public class TileEntityKeycardReader extends TileEntityDisguisable implements IPasswordProtected {
 
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
+	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
 
 	/**
 	 * Writes a tile entity to NBT.
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("passLV", passLV);
-		par1NBTTagCompound.setBoolean("requiresExactKeycard", requiresExactKeycard);
-		return par1NBTTagCompound;
+	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
+		tag.setInteger("passLV", passLV);
+		tag.setBoolean("requiresExactKeycard", requiresExactKeycard);
+		return tag;
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("passLV"))
-			passLV = par1NBTTagCompound.getInteger("passLV");
+		if (tag.hasKey("passLV"))
+			passLV = tag.getInteger("passLV");
 
-		if (par1NBTTagCompound.hasKey("requiresExactKeycard"))
-			requiresExactKeycard = par1NBTTagCompound.getBoolean("requiresExactKeycard");
+		if (tag.hasKey("requiresExactKeycard"))
+			requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
 
 	}
 
@@ -61,7 +65,12 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	@Override
 	public void openPasswordGUI(EntityPlayer player) {
 		if(getPassword() == null)
-			player.openGui(SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		{
+			if(getOwner().isOwner(player))
+				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			else
+				PlayerUtils.sendMessageToPlayer(player, "SecurityCraft", ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+		}
 	}
 
 	@Override
@@ -80,13 +89,17 @@ public class TileEntityKeycardReader extends CustomizableSCTE implements IPasswo
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST, EnumCustomModules.BLACKLIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.WHITELIST, EnumModuleType.BLACKLIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[]{ sendMessage };
 	}
 
+	public boolean sendsMessages()
+	{
+		return sendMessage.get();
+	}
 }

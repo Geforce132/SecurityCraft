@@ -4,8 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.ITileEntityProvider;
@@ -24,26 +23,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedIronBars extends BlockPane implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockReinforcedIronBars(Material par1Material, boolean par2) {
-		super(par1Material, par2);
+	public BlockReinforcedIronBars(Material material, boolean par2) {
+		super(material, par2);
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, SoundType.METAL, 16);
 	}
 
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random) {
-		BlockUtils.setBlock(par1World, pos, Blocks.IRON_BARS);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
-	}
-
-	@Override
-	public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int id, int param){
-		super.eventReceived(state, worldIn, pos, id, param);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param){
+		super.eventReceived(state, world, pos, id, param);
+		TileEntity tileentity = world.getTileEntity(pos);
 		return tileentity != null ? tileentity.receiveClientEvent(id, param) : false;
 	}
 
@@ -58,21 +52,19 @@ public class BlockReinforcedIronBars extends BlockPane implements ITileEntityPro
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Item getItemDropped(IBlockState state, Random par2Random, int par3){
+	public Item getItemDropped(IBlockState state, Random random, int par3){
 		return Item.getItemFromBlock(this);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World par1, int par2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.IRON_BARS
-		});
+		return Arrays.asList(Blocks.IRON_BARS);
 	}
 
 	@Override

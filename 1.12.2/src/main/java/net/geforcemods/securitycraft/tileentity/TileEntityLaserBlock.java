@@ -8,16 +8,16 @@ import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.item.ItemStack;
 
-public class TileEntityLaserBlock extends CustomizableSCTE {
+public class TileEntityLaserBlock extends TileEntityDisguisable {
 
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true) {
 		@Override
 		public void toggle() {
-			setValue(!getValue());
+			setValue(!get());
 
 			toggleLaser(this);
 		}
@@ -26,10 +26,10 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 	private void toggleLaser(OptionBoolean option) {
 		if(BlockUtils.getBlock(world, pos) != SCContent.laserBlock) return;
 
-		if(option.getValue())
-			((BlockLaserBlock) BlockUtils.getBlock(world, pos)).setLaser(world, pos);
+		if(option.get())
+			((BlockLaserBlock) BlockUtils.getBlock(world, pos)).setLaser(((TileEntityLaserBlock)world.getTileEntity(pos)).getOwner(), world, pos);
 		else
-			BlockLaserBlock.destroyAdjacentLasers(world, pos.getX(), pos.getY(), pos.getZ());
+			BlockLaserBlock.destroyAdjacentLasers(world, pos);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, parameters, excludedTEs);
 		}
 		else if(action == EnumLinkedAction.MODULE_REMOVED) {
-			EnumCustomModules module = (EnumCustomModules) parameters[1];
+			EnumModuleType module = (EnumModuleType) parameters[1];
 
 			removeModule(module);
 
@@ -61,8 +61,8 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.HARMING, EnumCustomModules.WHITELIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.HARMING, EnumModuleType.WHITELIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override
@@ -70,4 +70,8 @@ public class TileEntityLaserBlock extends CustomizableSCTE {
 		return new Option[]{ enabledOption };
 	}
 
+	public boolean isEnabled()
+	{
+		return enabledOption.get();
+	}
 }

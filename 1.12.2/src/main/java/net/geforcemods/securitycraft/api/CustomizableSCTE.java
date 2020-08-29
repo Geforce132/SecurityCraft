@@ -1,19 +1,12 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -27,14 +20,13 @@ import net.minecraftforge.common.util.Constants;
  *
  * @author Geforce
  */
-public abstract class CustomizableSCTE extends TileEntityOwnable implements IInventory{
+public abstract class CustomizableSCTE extends TileEntitySCTE implements IModuleInventory, ICustomizable{
 
 	private boolean linkable = false;
-	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<LinkedBlock>();
+	public ArrayList<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private NBTTagList nbtTagStorage = null;
 
-	public NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
-	public ItemStack[] itemStackss = new ItemStack[getNumberOfCustomizableOptions()];
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 	@Override
 	public void update() {
@@ -48,94 +40,66 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Modules", 10);
-		modules = NonNullList.withSize(getNumberOfCustomizableOptions(), ItemStack.EMPTY);
+		modules = readModuleInventory(tag);
+		readOptions(tag);
 
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
-		{
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-			byte b0 = nbttagcompound1.getByte("ModuleSlot");
+		if (tag.hasKey("linkable"))
+			linkable = tag.getBoolean("linkable");
 
-			if (b0 >= 0 && b0 < modules.size())
-				modules.set(b0, new ItemStack(nbttagcompound1));
-		}
-
-		if(customOptions() != null)
-			for(Option<?> option : customOptions())
-				option.readFromNBT(par1NBTTagCompound);
-
-		if (par1NBTTagCompound.hasKey("linkable"))
-			linkable = par1NBTTagCompound.getBoolean("linkable");
-
-		if (linkable && par1NBTTagCompound.hasKey("linkedBlocks"))
+		if (linkable && tag.hasKey("linkedBlocks"))
 		{
 			if(!hasWorld()) {
-				nbtTagStorage = par1NBTTagCompound.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
+				nbtTagStorage = tag.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
 				return;
 			}
 
-			readLinkedBlocks(par1NBTTagCompound.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND));
+			readLinkedBlocks(tag.getTagList("linkedBlocks", Constants.NBT.TAG_COMPOUND));
 		}
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
+		super.writeToNBT(tag);
 
-		NBTTagList nbttaglist = new NBTTagList();
+		writeModuleInventory(tag);
+		writeOptions(tag);
 
-		for(int i = 0; i < modules.size(); i++)
-			if (!modules.get(i).isEmpty())
-			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("ModuleSlot", (byte)i);
-				modules.get(i).writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-
-		par1NBTTagCompound.setTag("Modules", nbttaglist);
-
-		if(customOptions() != null)
-			for(Option<?> option : customOptions())
-				option.writeToNBT(par1NBTTagCompound);
-
-		par1NBTTagCompound.setBoolean("linkable", linkable);
+		tag.setBoolean("linkable", linkable);
 
 		if(linkable && hasWorld() && linkedBlocks.size() > 0) {
 			NBTTagList tagList = new NBTTagList();
 
 			WorldUtils.addScheduledTask(world, () -> {
-				Iterator<LinkedBlock> iterator = linkedBlocks.iterator();
-
-				while(iterator.hasNext()) {
-					LinkedBlock block = iterator.next();
-					NBTTagCompound tag = new NBTTagCompound();
+				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
+				{
+					LinkedBlock block = linkedBlocks.get(i);
+					NBTTagCompound toAppend = new NBTTagCompound();
 
 					if(block != null) {
 						if(!block.validate(world)) {
-							linkedBlocks.remove(block);
+							linkedBlocks.remove(i);
 							continue;
 						}
 
-						tag.setString("blockName", block.blockName);
-						tag.setInteger("blockX", block.getX());
-						tag.setInteger("blockY", block.getY());
-						tag.setInteger("blockZ", block.getZ());
+						toAppend.setString("blockName", block.blockName);
+						toAppend.setInteger("blockX", block.getX());
+						toAppend.setInteger("blockY", block.getY());
+						toAppend.setInteger("blockZ", block.getZ());
 					}
 
-					tagList.appendTag(tag);
+					tagList.appendTag(toAppend);
 				}
 
-				par1NBTTagCompound.setTag("linkedBlocks", tagList);
+				tag.setTag("linkedBlocks", tagList);
 			});
 		}
 
-		return par1NBTTagCompound;
+		return tag;
 	}
 
 	private void readLinkedBlocks(NBTTagList list) {
@@ -159,213 +123,13 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	}
 
 	@Override
-	public int getSizeInventory() {
-		return getNumberOfCustomizableOptions();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int par1) {
-		return modules.get(par1);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (!modules.get(par1).isEmpty())
-		{
-			ItemStack itemstack;
-
-			if (modules.get(par1).getCount() <= par2)
-			{
-				itemstack = modules.get(par1);
-				modules.set(par1, ItemStack.EMPTY);
-				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
-				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
-
-				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
-
-				return itemstack;
-			}
-			else
-			{
-				itemstack = modules.get(par1).splitStack(par2);
-
-				if (modules.get(par1).getCount() == 0)
-					modules.set(par1, ItemStack.EMPTY);
-
-				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
-				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
-
-				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
-
-				return itemstack;
-			}
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	/**
-	 * Copy of decrStackSize which can't be overrided by subclasses.
-	 */
-
-	public ItemStack safeDecrStackSize(int par1, int par2)
-	{
-		if (!modules.get(par1).isEmpty())
-		{
-			ItemStack itemstack;
-
-			if (modules.get(par1).getCount() <= par2)
-			{
-				itemstack = modules.get(par1);
-				modules.set(par1, ItemStack.EMPTY);
-				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
-				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
-
-				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
-
-				return itemstack;
-			}
-			else
-			{
-				itemstack = modules.get(par1).splitStack(par2);
-
-				if (modules.get(par1).getCount() == 0)
-					modules.set(par1, ItemStack.EMPTY);
-
-				onModuleRemoved(itemstack, ((ItemModule) itemstack.getItem()).getModule());
-				createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack, ((ItemModule) itemstack.getItem()).getModule() }, this);
-
-				if(this instanceof TileEntitySecurityCamera)
-					world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
-
-				return itemstack;
-			}
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	@Override
-	public ItemStack removeStackFromSlot(int par1)
-	{
-		if (!modules.get(par1).isEmpty())
-		{
-			ItemStack itemstack = modules.get(par1);
-			modules.set(par1, ItemStack.EMPTY);
-			return itemstack;
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	/**
-	 * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-	 */
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2)
-	{
-		modules.set(par1, par2);
-
-		if (!par2.isEmpty() && par2.getCount() > getInventoryStackLimit())
-			par2 = new ItemStack(par2.getItem(), getInventoryStackLimit(), par2.getMetadata());
-
-		if(!par2.isEmpty())
-		{
-			onModuleInserted(par2, ((ItemModule) par2.getItem()).getModule());
-
-			if(this instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
-		}
-	}
-
-	/**
-	 * Copy of setInventorySlotContents which can't be overrided by subclasses.
-	 */
-	public void safeSetInventorySlotContents(int par1, ItemStack par2) {
-		modules.set(par1, par2);
-
-		if (!par2.isEmpty() && par2.getCount() > getInventoryStackLimit())
-			par2 = new ItemStack(par2.getItem(), getInventoryStackLimit(), par2.getMetadata());
-
-		if(!par2.isEmpty() && par2.getItem() != null && par2.getItem() instanceof ItemModule){
-			onModuleInserted(par2, ((ItemModule) par2.getItem()).getModule());
-			createLinkedBlockAction(EnumLinkedAction.MODULE_INSERTED, new Object[]{ par2, ((ItemModule) par2.getItem()).getModule() }, this);
-
-			if(this instanceof TileEntitySecurityCamera)
-				world.notifyNeighborsOfStateChange(pos.offset(world.getBlockState(pos).getValue(BlockSecurityCamera.FACING), -1), world.getBlockState(pos).getBlock(), true);
-		}
-	}
-
-	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentTranslation(getName());
-	}
-
-	@Override
-	public String getName(){
-		return "Customize";
+		return new TextComponentTranslation(hasCustomName() ? getCustomName() : "Customize");
 	}
 
 	@Override
 	public boolean hasCustomName() {
-		return (getCustomName() != null && !getCustomName().matches("name"));
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 1;
-	}
-
-	@Override
-	public boolean isUsableByPlayer(EntityPlayer player)
-	{
-		return true;
-	}
-
-	@Override
-	public void openInventory(EntityPlayer player) {}
-
-	@Override
-	public void closeInventory(EntityPlayer player) {}
-
-	@Override
-	public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack) {
-		return par2ItemStack.getItem() instanceof ItemModule ? true : false;
-	}
-
-	@Override
-	public boolean isEmpty()
-	{
-		for(ItemStack stack : modules)
-			if(!stack.isEmpty())
-				return false;
-
-		return true;
-	}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
-	public void clear() {
-		for(int i = 0; i < modules.size(); i++)
-			modules.set(i, ItemStack.EMPTY);
+		return (getCustomName() != null && !getCustomName().equals("name"));
 	}
 
 	@Override
@@ -375,143 +139,16 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 				CustomizableSCTE.unlink(block.asTileEntity(world), this);
 	}
 
-	////////////////////////
-	// MODULE STUFF //
-	////////////////////////
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
+	}
 
-	/**
-	 * Called whenever a module is inserted into a slot in the "Customize" GUI.
-	 *
-	 * @param stack The raw ItemStack being inserted.
-	 * @param module The EnumCustomModules variant of stack.
-	 */
-	public void onModuleInserted(ItemStack stack, EnumCustomModules module) {}
-
-	/**
-	 * Called whenever a module is removed from a slot in the "Customize" GUI.
-	 *
-	 * @param stack The raw ItemStack being removed.
-	 * @param module The EnumCustomModules variant of stack.
-	 */
-	public void onModuleRemoved(ItemStack stack, EnumCustomModules module) {}
-
-	/**
-	 * @return An ArrayList of all EnumCustomModules currently inserted in the TileEntity.
-	 */
-	public ArrayList<EnumCustomModules> getModules(){
-		ArrayList<EnumCustomModules> modules = new ArrayList<EnumCustomModules>();
-
-		for(ItemStack stack : this.modules)
-			if(!stack.isEmpty() && stack.getItem() instanceof ItemModule)
-				modules.add(((ItemModule) stack.getItem()).getModule());
-
+	@Override
+	public NonNullList<ItemStack> getInventory()
+	{
 		return modules;
-	}
-
-	/**
-	 * @return The ItemStack for the given EnumCustomModules type.
-	 * If there is no ItemStack for that type, returns null.
-	 */
-	public ItemStack getModule(EnumCustomModules module){
-		for(int i = 0; i < modules.size(); i++)
-			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
-				return modules.get(i);
-
-		return ItemStack.EMPTY;
-	}
-
-	/**
-	 * Inserts a generic copy of the given module type into the Customization inventory.
-	 */
-	public void insertModule(EnumCustomModules module){
-		for(int i = 0; i < modules.size(); i++)
-			if(!modules.get(i).isEmpty())
-				if(modules.get(i).getItem() == module.getItem())
-					return;
-
-		for(int i = 0; i < modules.size(); i++)
-			if(!modules.get(i).isEmpty() && module != null){
-				modules.set(i, new ItemStack(module.getItem()));
-				break;
-			}else if(!modules.get(i).isEmpty() && module == null)
-				modules.set(i, ItemStack.EMPTY);
-			else
-				continue;
-	}
-
-	/**
-	 * Inserts an exact copy of the given item into the Customization inventory.
-	 */
-	public void insertModule(ItemStack module){
-		if(module.isEmpty() || !(module.getItem() instanceof ItemModule))
-			return;
-
-		for(int i = 0; i < modules.size(); i++)
-			if(!modules.get(i).isEmpty())
-				if(modules.get(i).getItem() == module.getItem())
-					return;
-
-		for(int i = 0; i < modules.size(); i++)
-			if(modules.get(i).isEmpty()){
-				modules.set(i, module.copy());
-				break;
-			}
-			else
-				continue;
-	}
-
-	/**
-	 * Removes the first item with the given module type from the inventory.
-	 */
-	public void removeModule(EnumCustomModules module){
-		for(int i = 0; i < modules.size(); i++)
-			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
-				modules.set(i, ItemStack.EMPTY);
-	}
-
-	/**
-	 * Does this inventory contain a item with the given module type?
-	 */
-	public boolean hasModule(EnumCustomModules module){
-		if(module == null){
-			for(int i = 0; i < modules.size(); i++)
-				if(modules.get(i).isEmpty())
-					return true;
-		}
-		else
-			for(int i = 0; i < modules.size(); i++)
-				if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
-					return true;
-
-		return false;
-	}
-
-	public int getNumberOfCustomizableOptions(){
-		return acceptedModules().length;
-	}
-
-	public ArrayList<EnumCustomModules> getAcceptedModules(){
-		ArrayList<EnumCustomModules> list = new ArrayList<EnumCustomModules>();
-
-		for(EnumCustomModules module : acceptedModules())
-			list.add(module);
-
-		return list;
-	}
-
-	/**
-	 * Checks to see if this TileEntity has an {@link Option}
-	 * with the given name, and if so, returns it.
-	 *
-	 * @param name Option name
-	 * @return The Option
-	 */
-	public Option<?> getOptionByName(String name) {
-		for(Option<?> option : customOptions())
-			if(option.getName().matches(name))
-				return option;
-
-		return null;
 	}
 
 	/**
@@ -574,11 +211,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 		return tileEntity1.linkedBlocks.contains(new LinkedBlock(tileEntity2)) && tileEntity2.linkedBlocks.contains(new LinkedBlock(tileEntity1));
 	}
 
-	/**
-	 * Called whenever an {@link Option} in this TileEntity changes values.
-	 *
-	 * @param option The changed Option
-	 */
+	@Override
 	public void onOptionChanged(Option<?> option) {
 		createLinkedBlockAction(EnumLinkedAction.OPTION_CHANGED, new Option[]{ option }, this);
 	}
@@ -595,7 +228,7 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 * @param excludedTE The CustomizableSCTE which called this method, prevents infinite loops.
 	 */
 	public void createLinkedBlockAction(EnumLinkedAction action, Object[] parameters, CustomizableSCTE excludedTE) {
-		ArrayList<CustomizableSCTE> list = new ArrayList<CustomizableSCTE>();
+		ArrayList<CustomizableSCTE> list = new ArrayList<>();
 
 		list.add(excludedTE);
 
@@ -634,17 +267,4 @@ public abstract class CustomizableSCTE extends TileEntityOwnable implements IInv
 	 *        always add your TileEntity to the list if you're going to call createLinkedBlockAction() in this method to chain-link multiple blocks (i.e: like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs) {}
-
-	/**
-	 * @return An array of what {@link EnumCustomModules} can be inserted
-	 *         into this TileEntity.
-	 */
-	public abstract EnumCustomModules[] acceptedModules();
-
-	/**
-	 * @return An array of what custom {@link Option}s this
-	 *         TileEntity has.
-	 */
-	public abstract Option<?>[] customOptions();
-
 }

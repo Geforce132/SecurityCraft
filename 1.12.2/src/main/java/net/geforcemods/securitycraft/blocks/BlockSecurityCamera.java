@@ -2,10 +2,12 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Iterator;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.network.packets.PacketCRemoveLGView;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -15,11 +17,12 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,11 +38,11 @@ import net.minecraft.world.World;
 
 public class BlockSecurityCamera extends BlockContainer{
 
-	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockSecurityCamera(Material par2Material) {
-		super(par2Material);
+	public BlockSecurityCamera(Material material) {
+		super(material);
 	}
 
 	@Override
@@ -49,6 +52,8 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState state){
+		if(state.getValue(FACING) == EnumFacing.DOWN)
+			return EnumBlockRenderType.MODEL;
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
@@ -72,17 +77,15 @@ public class BlockSecurityCamera extends BlockContainer{
 		world.notifyNeighborsOfStateChange(pos.east(), world.getBlockState(pos).getBlock(), true);
 		world.notifyNeighborsOfStateChange(pos.west(), world.getBlockState(pos).getBlock(), true);
 
-		if(SecurityCraft.config.useLookingGlass())
+		if(ConfigHandler.useLookingGlass)
 			SecurityCraft.network.sendToAll(new PacketCRemoveLGView(pos, world.provider.getDimension()));
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		// TODO: Check to make sure this works as intended, because if the 'source' object is a
-		//		 ChunkCache object instead of World, it may only be able to return properties
-		//		 if the X and Y coordinates are less than 256.
-		EnumFacing dir = BlockUtils.getBlockPropertyAsEnum(source, pos, FACING);
+		EnumFacing dir = BlockUtils.getBlockProperty(source, pos, FACING);
+		float px = 1.0F/16.0F; //one sixteenth of a block
 
 		if(dir == EnumFacing.SOUTH)
 			return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
@@ -90,6 +93,8 @@ public class BlockSecurityCamera extends BlockContainer{
 			return new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
 		else if(dir == EnumFacing.WEST)
 			return new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+		else if(dir == EnumFacing.DOWN)
+			return new AxisAlignedBB(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
 		else
 			return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
 	}
@@ -97,52 +102,52 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
 	{
-		IBlockState iblockstate = getDefaultState().withProperty(POWERED, Boolean.valueOf(false));
+		IBlockState state = getDefaultState().withProperty(POWERED, false);
 
 		if(world.isSideSolid(pos.offset(facing.getOpposite()), facing))
-			return iblockstate.withProperty(FACING, facing).withProperty(POWERED, false);
+			return state.withProperty(FACING, facing).withProperty(POWERED, false);
 		else{
 			Iterator<?> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-			EnumFacing enumfacing1;
+			EnumFacing iFacing;
 
 			do{
 				if(!iterator.hasNext())
-					return iblockstate;
+					return state;
 
-				enumfacing1 = (EnumFacing)iterator.next();
-			}while (!world.isSideSolid(pos.offset(enumfacing1.getOpposite()), enumfacing1));
+				iFacing = (EnumFacing)iterator.next();
+			}while (!world.isSideSolid(pos.offset(iFacing.getOpposite()), iFacing));
 
-			return iblockstate.withProperty(FACING, facing).withProperty(POWERED, false);
+			return state.withProperty(FACING, facing).withProperty(POWERED, false);
 		}
 	}
 
-	public void mountCamera(World world, int par2, int par3, int par4, int par5, EntityPlayer player){
-		if(!world.isRemote && player.getRidingEntity() == null)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securityCamera.name"), ClientUtils.localize("messages.securityCamera.mounted"), TextFormatting.GREEN);
+	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
+		if(world.isRemote && player.getRidingEntity() == null)
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:securityCamera.name"), ClientUtils.localize("messages.securitycraft:securityCamera.mounted").replace("#w", KeyBinding.getDisplayString("key.forward").get().toUpperCase()).replace("#a", KeyBinding.getDisplayString("key.left").get().toUpperCase()).replace("#s", KeyBinding.getDisplayString("key.back").get().toUpperCase()).replace("#d", KeyBinding.getDisplayString("key.right").get().toUpperCase()).replace("#i", KeyBindings.cameraZoomIn.getDisplayName()).replace("#o", KeyBindings.cameraZoomOut.getDisplayName()), TextFormatting.GREEN);
 
-		if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySecurityCamera){
-			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, (EntitySecurityCamera) player.getRidingEntity());
+		if(player.getRidingEntity() instanceof EntitySecurityCamera){
+			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 			player.startRiding(dummyEntity);
 			return;
 		}
 
-		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, par2, par3, par4, par5, player);
+		EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, player);
 		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));
 		player.startRiding(dummyEntity);
 
-		for(Object e : world.loadedEntityList)
+		for(Entity e : world.loadedEntityList)
 			if(e instanceof EntityLiving)
 				if(((EntityLiving)e).getAttackTarget() == player)
 					((EntityLiving)e).setAttackTarget(null);
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side){
-		if(side == EnumFacing.UP || side == EnumFacing.DOWN)
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side){
+		if(side == EnumFacing.UP)
 			return false;
 		else
-			return worldIn.isSideSolid(pos.offset(side.getOpposite()), side);
+			return world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
@@ -151,41 +156,34 @@ public class BlockSecurityCamera extends BlockContainer{
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue() && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
+		if(state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue() && ((CustomizableSCTE) blockAccess.getTileEntity(pos)).hasModule(EnumCustomModules.REDSTONE))
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side){
+		if(state.getValue(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-		if (!canPlaceBlockAt(worldIn, pos) && !canPlaceBlockOnSide(worldIn, pos, state.getValue(FACING))) {
-			dropBlockAsItem(worldIn, pos, state, 0);
-			worldIn.setBlockToAir(pos);
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+		if (!canPlaceBlockAt(world, pos) && !canPlaceBlockOnSide(world, pos, state.getValue(FACING))) {
+			dropBlockAsItem(world, pos, state, 0);
+			world.setBlockToAir(pos);
 		}
 	}
-
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
 		if(meta <= 5)
-			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP || EnumFacing.values()[meta] == EnumFacing.DOWN) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
+			return getDefaultState().withProperty(FACING, (EnumFacing.values()[meta] == EnumFacing.UP) ? EnumFacing.NORTH : EnumFacing.values()[meta]).withProperty(POWERED, false);
 		else
 			return getDefaultState().withProperty(FACING, EnumFacing.values()[meta - 6]).withProperty(POWERED, true);
 	}
@@ -193,7 +191,7 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(POWERED).booleanValue())
+		if(state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
@@ -202,11 +200,11 @@ public class BlockSecurityCamera extends BlockContainer{
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int par2){
+	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntitySecurityCamera().nameable();
 	}
 

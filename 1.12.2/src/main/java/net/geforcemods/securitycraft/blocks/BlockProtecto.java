@@ -3,13 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.tileentity.TileEntityProtecto;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -25,18 +23,13 @@ public class BlockProtecto extends BlockOwnable {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
 	public boolean isOpaqueCube(IBlockState state){
 		return false;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World par1World, BlockPos pos){
-		return par1World.isSideSolid(pos.down(), EnumFacing.UP);
+	public boolean canPlaceBlockAt(World world, BlockPos pos){
+		return world.isSideSolid(pos.down(), EnumFacing.UP);
 	}
 
 	@Override
@@ -54,17 +47,17 @@ public class BlockProtecto extends BlockOwnable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(ACTIVATED).booleanValue() == true ? 1 : 0;
+		return state.getValue(ACTIVATED) == true ? 1 : 0;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {ACTIVATED});
+		return new BlockStateContainer(this, ACTIVATED);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityProtecto().attacks(EntityLivingBase.class, 10, 200);
 	}
 

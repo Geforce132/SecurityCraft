@@ -1,0 +1,8 @@
+{
+    "parent": "securitycraft:block/reinforced_block_bottom_top",
+    "textures": {
+        "bottom": "securitycraft:blocks/block_pocket_wall_see_through_bottom",
+        "top": "securitycraft:blocks/block_pocket_wall_see_through_top",
+        "side": "securitycraft:blocks/block_pocket_wall_see_through_side"
+    }
+}

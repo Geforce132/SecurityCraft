@@ -1,14 +1,21 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -22,8 +29,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemUniversalOwnerChanger extends Item
 {
-	public ItemUniversalOwnerChanger(){}
-
 	/**
 	 * Returns True is the item is renderer in full 3D when hold.
 	 */
@@ -37,28 +42,44 @@ public class ItemUniversalOwnerChanger extends Item
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
+		Block block = world.getBlockState(pos).getBlock();
 		ItemStack stack = player.getHeldItem(hand);
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName();
 
 		if(!world.isRemote)
 		{
-			if(!stack.hasDisplayName())
-			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.noName"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
-			}
-
 			if(!(te instanceof IOwnable))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.cantChange"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
 			}
 
-			if(!((IOwnable)te).getOwner().isOwner(player))
+			Owner owner = ((IOwnable)te).getOwner();
+			boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+
+			if(!owner.isOwner(player) && !isDefault)
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.notOwned"), TextFormatting.RED);
+				if(!(block instanceof IBlockMine) && (!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)))
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.FAIL;
+			}
+
+			if(!stack.hasDisplayName() && !isDefault)
+			{
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+				return EnumActionResult.FAIL;
+			}
+
+			if(isDefault)
+			{
+				if(ConfigHandler.allowBlockClaim)
+					newOwner = player.getName();
+				else
+				{
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
+					return EnumActionResult.FAIL;
+				}
 			}
 
 			boolean door = false;
@@ -86,7 +107,7 @@ public class ItemUniversalOwnerChanger extends Item
 			if(door)
 				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
 
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.universalOwnerChanger.name"), ClientUtils.localize("messages.universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
 			return EnumActionResult.SUCCESS;
 		}
 

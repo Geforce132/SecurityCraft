@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS"
+  ],
+  "key": {
+    "S": [
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 0
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 1
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 2
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 3
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 4
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 5
+      }
+    ]
+  },
+  "result": {
+    "item": "securitycraft:reinforced_wooden_pressure_plate",
+    "count": 1
+  }
+}

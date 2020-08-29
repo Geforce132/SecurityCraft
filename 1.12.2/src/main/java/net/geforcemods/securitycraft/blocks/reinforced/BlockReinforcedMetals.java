@@ -5,12 +5,11 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,21 +17,21 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaDisplay, IReinforcedBlock
+public class BlockReinforcedMetals extends BlockOwnable implements IOverlayDisplay, IReinforcedBlock
 {
-	public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockReinforcedMetals.EnumType.class);
+	public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", EnumType.class);
 
 	public BlockReinforcedMetals()
 	{
 		super(Material.ROCK);
-		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockReinforcedMetals.EnumType.GOLD));
+		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.GOLD));
 		setSoundType(SoundType.METAL);
 	}
 
@@ -43,20 +42,19 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	@Override
 	public int damageDropped(IBlockState state)
 	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	/**
 	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
 	{
-		BlockReinforcedMetals.EnumType[] aenumtype = BlockReinforcedMetals.EnumType.values();
+		EnumType[] values = EnumType.values();
 
-		for (BlockReinforcedMetals.EnumType enumtype : aenumtype)
-			list.add(new ItemStack(this, 1, enumtype.getMetadata()));
+		for (EnumType type : values)
+			list.add(new ItemStack(this, 1, type.getMetadata()));
 	}
 
 	/**
@@ -65,7 +63,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(VARIANT, BlockReinforcedMetals.EnumType.byMetadata(meta));
+		return getDefaultState().withProperty(VARIANT, EnumType.byMetadata(meta));
 	}
 
 	/**
@@ -74,13 +72,31 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return ((BlockReinforcedMetals.EnumType)state.getValue(VARIANT)).getMetadata();
+		return state.getValue(VARIANT).getMetadata();
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {VARIANT});
+		return new BlockStateContainer(this, VARIANT);
+	}
+
+	@Override
+	public boolean isBeaconBase(IBlockAccess world, BlockPos pos, BlockPos beacon)
+	{
+		return world.getBlockState(pos).getValue(VARIANT) != EnumType.REDSTONE;
+	}
+
+	@Override
+	public boolean canProvidePower(IBlockState state)
+	{
+		return state.getValue(VARIANT) == EnumType.REDSTONE;
+	}
+
+	@Override
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+	{
+		return state.getValue(VARIANT) == EnumType.REDSTONE ? 15 : 0;
 	}
 
 	@Override
@@ -98,36 +114,30 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.GOLD_BLOCK,
-				Blocks.IRON_BLOCK,
-				Blocks.DIAMOND_BLOCK,
-				Blocks.EMERALD_BLOCK
-		});
+		return Arrays.asList(Blocks.GOLD_BLOCK, Blocks.IRON_BLOCK, Blocks.DIAMOND_BLOCK, Blocks.EMERALD_BLOCK, Blocks.REDSTONE_BLOCK);
 	}
 
 	@Override
 	public int getAmount()
 	{
-		return 4;
+		return 5;
 	}
 
 	public static enum EnumType implements IStringSerializable
 	{
-		GOLD(0, "gold", "gold"),
-		IRON(1, "iron", "iron"),
-		DIAMOND(2, "diamond", "diamond"),
-		EMERALD(3, "emerald", "emerald");
-		private static final BlockReinforcedMetals.EnumType[] META_LOOKUP = new BlockReinforcedMetals.EnumType[values().length];
+		GOLD(0, "gold"),
+		IRON(1, "iron"),
+		DIAMOND(2, "diamond"),
+		EMERALD(3, "emerald"),
+		REDSTONE(4, "redstone");
+		private static final EnumType[] META_LOOKUP = new EnumType[values().length];
 		private final int meta;
 		private final String name;
-		private final String unlocalizedName;
 
-		private EnumType(int meta, String name, String unlocalizedName)
+		private EnumType(int meta, String name)
 		{
 			this.meta = meta;
 			this.name = name;
-			this.unlocalizedName = unlocalizedName;
 		}
 
 		public int getMetadata()
@@ -141,7 +151,7 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 			return name;
 		}
 
-		public static BlockReinforcedMetals.EnumType byMetadata(int meta)
+		public static EnumType byMetadata(int meta)
 		{
 			if (meta < 0 || meta >= META_LOOKUP.length)
 				meta = 0;
@@ -155,17 +165,12 @@ public class BlockReinforcedMetals extends BlockOwnable implements ICustomWailaD
 			return name;
 		}
 
-		public String getTranslationKey()
-		{
-			return unlocalizedName;
-		}
-
 		static
 		{
-			BlockReinforcedMetals.EnumType[] var0 = values();
+			EnumType[] values = values();
 
-			for (BlockReinforcedMetals.EnumType var3 : var0)
-				META_LOOKUP[var3.getMetadata()] = var3;
+			for (EnumType type : values)
+				META_LOOKUP[type.getMetadata()] = type;
 		}
 	}
 }

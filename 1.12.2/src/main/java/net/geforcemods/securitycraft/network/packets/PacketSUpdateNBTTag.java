@@ -11,39 +11,39 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketSUpdateNBTTag implements IMessage{
 
-	private NBTTagCompound stack;
+	private NBTTagCompound stackTag;
 	private String itemName;
 
 	public PacketSUpdateNBTTag(){
 
 	}
 
-	public PacketSUpdateNBTTag(ItemStack par1ItemStack){
-		if(!par1ItemStack.isEmpty() && par1ItemStack.hasTagCompound()){
-			stack = par1ItemStack.getTagCompound();
-			itemName = par1ItemStack.getTranslationKey();
+	public PacketSUpdateNBTTag(ItemStack stack){
+		if(!stack.isEmpty() && stack.hasTagCompound()){
+			stackTag = stack.getTagCompound();
+			itemName = stack.getTranslationKey();
 		}
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		stack = ByteBufUtils.readTag(buf);
+		stackTag = ByteBufUtils.readTag(buf);
 		itemName = ByteBufUtils.readUTF8String(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		ByteBufUtils.writeTag(buf, stack);
+		ByteBufUtils.writeTag(buf, stackTag);
 		ByteBufUtils.writeUTF8String(buf, itemName);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateNBTTag, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSUpdateNBTTag packet, MessageContext context) {
+		public IMessage onMessage(PacketSUpdateNBTTag message, MessageContext context) {
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
-				if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getTranslationKey().matches(packet.itemName))
-					context.getServerHandler().player.inventory.getCurrentItem().setTagCompound(packet.stack);
+				if(!context.getServerHandler().player.inventory.getCurrentItem().isEmpty() && context.getServerHandler().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName))
+					context.getServerHandler().player.inventory.getCurrentItem().setTagCompound(message.stackTag);
 			});
 
 			return null;

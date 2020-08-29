@@ -4,7 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGlass;
 import net.minecraft.block.ITileEntityProvider;
@@ -13,24 +14,28 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvider, IReinforcedBlock {
 
-	public BlockReinforcedGlass(Material par1Material) {
-		super(par1Material, false);
+	public BlockReinforcedGlass(Material material) {
+		super(material, false);
 		setSoundType(SoundType.GLASS);
 	}
 
 	@Override
-	public void breakBlock(World par1World, BlockPos pos, IBlockState state){
-		super.breakBlock(par1World, pos, state);
-		par1World.removeTileEntity(pos);
+	public void breakBlock(World world, BlockPos pos, IBlockState state){
+		super.breakBlock(world, pos, state);
+		world.removeTileEntity(pos);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityOwnable();
 	}
 
@@ -43,14 +48,31 @@ public class BlockReinforcedGlass extends BlockGlass implements ITileEntityProvi
 	@Override
 	public List<Block> getVanillaBlocks()
 	{
-		return Arrays.asList(new Block[] {
-				Blocks.GLASS
-		});
+		return Arrays.asList(Blocks.GLASS);
 	}
 
 	@Override
 	public int getAmount()
 	{
 		return 1;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	{
+		IBlockState offsetState = blockAccess.getBlockState(pos.offset(side));
+		Block offsetBlock = offsetState.getBlock();
+
+		if(this == SCContent.reinforcedGlass)
+		{
+			if(blockState != offsetState)
+				return true;
+
+			if(offsetBlock == this)
+				return false;
+		}
+
+		return true;
 	}
 }

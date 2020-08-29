@@ -3,14 +3,14 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -18,17 +18,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityIMS extends CustomizableSCTE {
 
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
-
-	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players.**/
+	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
 	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
-
 	private boolean updateBombCount = false;
 
 	@Override
@@ -36,7 +36,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		super.update();
 
 		if(!world.isRemote && updateBombCount){
-			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockPropertyAsInteger(world, pos, BlockIMS.MINES) - 1);
+			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockProperty(world, pos, BlockIMS.MINES) - 1);
 			updateBombCount = false;
 		}
 
@@ -51,16 +51,17 @@ public class TileEntityIMS extends CustomizableSCTE {
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double d0 = SecurityCraft.config.imsRange;
+			double range = ConfigHandler.imsRange;
 
-			AxisAlignedBB axisalignedbb = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(d0, d0, d0);
-			List<?> list1 = world.getEntitiesWithinAABB(EntityPlayer.class, axisalignedbb);
-			List<?> list2 = world.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
-			Iterator<?> iterator1 = list1.iterator();
-			Iterator<?> iterator2 = list2.iterator();
+			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
+			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e));
+			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e));
+			Iterator<?> playerIterator = players.iterator();
+			Iterator<?> mobIterator = mobs.iterator();
 
-			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && iterator2.hasNext()){
-				EntityLivingBase entity = (EntityLivingBase) iterator2.next();
+			// targets players and mobs
+			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
+				EntityLivingBase entity = (EntityLivingBase) mobIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if(PlayerUtils.isPlayerMountedOnCamera(entity))
@@ -68,56 +69,72 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
 					continue;
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName().toLowerCase()))
+				if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase()))
 					continue;
 
-				double d5 = entity.posX - (pos.getX() + 0.5D);
-				double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double d7 = entity.posZ - (pos.getZ() + 0.5D);
+				double targetX = entity.posX - (pos.getX() + 0.5D);
+				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
-				this.spawnMine(entity, d5, d6, d7, launchHeight);
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
-				if(world.isRemote)
-					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
+				if(!world.isRemote)
+					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
-
-				if(bombsRemaining == 0)
-					world.scheduleUpdate(pos, BlockUtils.getBlock(world, pos), 140);
-
 				launchedMine = true;
 				updateBombCount = true;
-
 				break;
 			}
 
-			while(!launchedMine && iterator1.hasNext()){
-				EntityPlayer entity = (EntityPlayer) iterator1.next();
+			// Targets only hostile mobs
+			while(!launchedMine && targetingOption == EnumIMSTargetingMode.MOBS && mobIterator.hasNext()){
+				EntityMob entity = (EntityMob) mobIterator.next();
+				int launchHeight = getLaunchHeight();
+
+				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
+					continue;
+				if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase()))
+					continue;
+
+				double targetX = entity.posX - (pos.getX() + 0.5D);
+				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
+
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
+
+				if(!world.isRemote)
+					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+
+				bombsRemaining--;
+				launchedMine = true;
+				updateBombCount = true;
+				break;
+			}
+
+			// Targets only other players
+			while(!launchedMine && targetingOption == EnumIMSTargetingMode.PLAYERS && playerIterator.hasNext()){
+				EntityPlayer entity = (EntityPlayer) playerIterator.next();
 				int launchHeight = getLaunchHeight();
 
 				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
 					continue;
 				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
 					continue;
-				if(hasModule(EnumCustomModules.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumCustomModules.WHITELIST).contains(entity.getName()))
+				if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName()))
 					continue;
 
-				double d5 = entity.posX - (pos.getX() + 0.5D);
-				double d6 = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double d7 = entity.posZ - (pos.getZ() + 0.5D);
+				double targetX = entity.posX - (pos.getX() + 0.5D);
+				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
 
-				this.spawnMine(entity, d5, d6, d7, launchHeight);
+				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
 
-				if(world.isRemote)
-					SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX(), pos.getY(), pos.getZ(), "random.bow", 1.0F, "block"));
+				if(!world.isRemote)
+					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
-
-				if(bombsRemaining == 0)
-					world.scheduleUpdate(pos, BlockUtils.getBlock(world, pos), 140);
-
 				updateBombCount = true;
-
 				break;
 			}
 		}
@@ -127,38 +144,20 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
 	private void spawnMine(EntityPlayer target, double x, double y, double z, int launchHeight){
-		if(bombsRemaining == 4){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}else if(bombsRemaining == 3){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}else if(bombsRemaining == 2){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}else if(bombsRemaining == 1){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}
+		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
+		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
+
+		world.spawnEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
 	}
 
 	/**
 	 * Spawn a mine at the correct position on the IMS model.
 	 */
 	private void spawnMine(EntityLivingBase target, double x, double y, double z, int launchHeight){
-		if(bombsRemaining == 4){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}else if(bombsRemaining == 3){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 1.2D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}else if(bombsRemaining == 2){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 1.2D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}else if(bombsRemaining == 1){
-			EntityIMSBomb entitylargefireball = new EntityIMSBomb(world, target, pos.getX() + 0.55D, pos.getY(), pos.getZ() + 0.6D, x, y, z, launchHeight);
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entitylargefireball));
-		}
+		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
+		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
+
+		world.spawnEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
 	}
 
 	/**
@@ -181,30 +180,30 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound){
-		super.writeToNBT(par1NBTTagCompound);
+	public NBTTagCompound writeToNBT(NBTTagCompound tag){
+		super.writeToNBT(tag);
 
-		par1NBTTagCompound.setInteger("bombsRemaining", bombsRemaining);
-		par1NBTTagCompound.setInteger("targetingOption", targetingOption.modeIndex);
-		par1NBTTagCompound.setBoolean("updateBombCount", updateBombCount);
-		return par1NBTTagCompound;
+		tag.setInteger("bombsRemaining", bombsRemaining);
+		tag.setInteger("targetingOption", targetingOption.modeIndex);
+		tag.setBoolean("updateBombCount", updateBombCount);
+		return tag;
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound){
-		super.readFromNBT(par1NBTTagCompound);
+	public void readFromNBT(NBTTagCompound tag){
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("bombsRemaining"))
-			bombsRemaining = par1NBTTagCompound.getInteger("bombsRemaining");
+		if (tag.hasKey("bombsRemaining"))
+			bombsRemaining = tag.getInteger("bombsRemaining");
 
-		if (par1NBTTagCompound.hasKey("targetingOption"))
-			targetingOption = EnumIMSTargetingMode.values()[par1NBTTagCompound.getInteger("targetingOption")];
+		if (tag.hasKey("targetingOption"))
+			targetingOption = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
 
-		if (par1NBTTagCompound.hasKey("updateBombCount"))
-			updateBombCount = par1NBTTagCompound.getBoolean("updateBombCount");
+		if (tag.hasKey("updateBombCount"))
+			updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
 	public int getBombsRemaining() {
@@ -224,8 +223,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 	}
 
 	@Override
-	public EnumCustomModules[] acceptedModules() {
-		return new EnumCustomModules[]{EnumCustomModules.WHITELIST};
+	public EnumModuleType[] acceptedModules() {
+		return new EnumModuleType[]{EnumModuleType.WHITELIST};
 	}
 
 	@Override
@@ -236,15 +235,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public static enum EnumIMSTargetingMode {
 
 		PLAYERS(0),
-		PLAYERS_AND_MOBS(1);
+		PLAYERS_AND_MOBS(1),
+		MOBS(2);
 
 		public final int modeIndex;
 
 		private EnumIMSTargetingMode(int index){
 			modeIndex = index;
 		}
-
-
 	}
-
 }

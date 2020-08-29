@@ -1,49 +1,71 @@
 package net.geforcemods.securitycraft.network;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
-import net.geforcemods.securitycraft.RegistrationHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedGrass;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedWall;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
+import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.imc.lookingglass.IWorldViewHelper;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.RenderBouncingBetty;
+import net.geforcemods.securitycraft.renderers.RenderBullet;
 import net.geforcemods.securitycraft.renderers.RenderIMSBomb;
+import net.geforcemods.securitycraft.renderers.RenderSentry;
+import net.geforcemods.securitycraft.renderers.TileEntityBlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityFrameRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntityKeypadChestRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityProjectorRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityRetinalScannerRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntitySecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.TileEntitySecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.TileEntityTrophySystemRenderer;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityFrame;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockColored;
+import net.minecraft.block.BlockHopper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.ColorizerGrass;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ClientProxy extends ServerProxy{
+public class ClientProxy implements IProxy {
 
-	public HashMap<String, IWorldViewHelper> worldViews = new HashMap<String, IWorldViewHelper>();
+	public HashMap<String, IWorldViewHelper> worldViews = new HashMap<>();
 
 	/**
 	 * Register the texture files used by blocks with metadata/variants with the ModelBakery.
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerTextureFiles() {
+	public void registerVariants() {
 		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_planks"),
 				new ResourceLocation("securitycraft:reinforced_planks_oak"),
 				new ResourceLocation("securitycraft:reinforced_planks_spruce"),
@@ -185,11 +207,52 @@ public class ClientProxy extends ServerProxy{
 				new ResourceLocation("securitycraft:reinforced_stone_smooth_diorite"),
 				new ResourceLocation("securitycraft:reinforced_stone_andesite"),
 				new ResourceLocation("securitycraft:reinforced_stone_smooth_andesite"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_stained_panes"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_white"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_orange"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_magenta"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_light_blue"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_yellow"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_lime"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_pink"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_gray"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_silver"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_cyan"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_purple"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_blue"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_brown"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_green"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_red"),
+				new ResourceLocation("securitycraft:reinforced_stained_glass_panes_black"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_carpet"),
+				new ResourceLocation("securitycraft:reinforced_carpet_white"),
+				new ResourceLocation("securitycraft:reinforced_carpet_orange"),
+				new ResourceLocation("securitycraft:reinforced_carpet_magenta"),
+				new ResourceLocation("securitycraft:reinforced_carpet_light_blue"),
+				new ResourceLocation("securitycraft:reinforced_carpet_yellow"),
+				new ResourceLocation("securitycraft:reinforced_carpet_lime"),
+				new ResourceLocation("securitycraft:reinforced_carpet_pink"),
+				new ResourceLocation("securitycraft:reinforced_carpet_gray"),
+				new ResourceLocation("securitycraft:reinforced_carpet_silver"),
+				new ResourceLocation("securitycraft:reinforced_carpet_cyan"),
+				new ResourceLocation("securitycraft:reinforced_carpet_purple"),
+				new ResourceLocation("securitycraft:reinforced_carpet_blue"),
+				new ResourceLocation("securitycraft:reinforced_carpet_brown"),
+				new ResourceLocation("securitycraft:reinforced_carpet_green"),
+				new ResourceLocation("securitycraft:reinforced_carpet_red"),
+				new ResourceLocation("securitycraft:reinforced_carpet_black"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_walls"),
+				new ResourceLocation("securitycraft:reinforced_cobblestone_wall"),
+				new ResourceLocation("securitycraft:reinforced_mossy_cobblestone_wall"));
+		ModelBakery.registerItemVariants(findItem(SecurityCraft.MODID, "reinforced_dirt"),
+				new ResourceLocation("securitycraft:reinforced_dirt"),
+				new ResourceLocation("securitycraft:reinforced_coarse_dirt"),
+				new ResourceLocation("securitycraft:reinforced_podzol"));
 
 		Item fakeWater = findItem(SecurityCraft.MODID, "bogus_water");
 		ModelBakery.registerItemVariants(fakeWater);
 		ModelLoader.setCustomMeshDefinition(fakeWater, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "water"));
-		ModelLoader.setCustomStateMapper(SCContent.bogusWater, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.fakeWater, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -213,7 +276,7 @@ public class ClientProxy extends ServerProxy{
 		Item fakeLava = findItem(SecurityCraft.MODID, "bogus_Lava");
 		ModelBakery.registerItemVariants(fakeLava);
 		ModelLoader.setCustomMeshDefinition(fakeLava, stack -> new ModelResourceLocation("securitycraft:fake_liquids", "lava"));
-		ModelLoader.setCustomStateMapper(SCContent.bogusLava, new StateMapperBase()
+		ModelLoader.setCustomStateMapper(SCContent.fakeLava, new StateMapperBase()
 		{
 			@Override
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state)
@@ -233,6 +296,10 @@ public class ClientProxy extends ServerProxy{
 				return new ModelResourceLocation("securitycraft:fake_liquids", "lava_flowing");
 			}
 		});
+
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedStainedGlassPanes, new StateMap.Builder().withName(BlockColored.COLOR).withSuffix("_reinforced_stained_glass_panes").build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedWalls, new StateMap.Builder().withName(BlockReinforcedWall.VARIANT).withSuffix("_wall").build());
+		ModelLoader.setCustomStateMapper(SCContent.reinforcedHopper, new StateMap.Builder().ignore(BlockHopper.ENABLED).build());
 	}
 
 	private Item findItem(String modid, String resourceName)
@@ -242,8 +309,12 @@ public class ClientProxy extends ServerProxy{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerResourceLocations() {
-		RegistrationHandler.registerResourceLocations();
+	public void registerEntityRenderingHandlers()
+	{
+		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, RenderBouncingBetty::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, RenderIMSBomb::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySentry.class, RenderSentry::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityBullet.class, RenderBullet::new);
 	}
 
 	@Override
@@ -251,63 +322,93 @@ public class ClientProxy extends ServerProxy{
 	public void registerRenderThings(){
 		KeyBindings.init();
 
-		RenderingRegistry.registerEntityRenderingHandler(EntityBouncingBetty.class, new RenderBouncingBetty(Minecraft.getMinecraft().getRenderManager()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityIMSBomb.class, new RenderIMSBomb(Minecraft.getMinecraft().getRenderManager()));
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecurityCamera.class, new TileEntitySecurityCameraRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRetinalScanner.class, new TileEntityRetinalScannerRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySecretSign.class, new TileEntitySecretSignRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTrophySystem.class, new TileEntityTrophySystemRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlockPocketManager.class, new TileEntityBlockPocketManagerRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityProjector.class, new TileEntityProjectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFrame.class, new TileEntityFrameRenderer());
 
-		TileEntityItemStackRenderer.instance = new ItemKeypadChestRenderer();
+		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new ItemKeypadChestRenderer());
 
-		Block[] blocksToTint = {
-				SCContent.reinforcedBrick,
-				SCContent.reinforcedCobblestone,
-				SCContent.reinforcedCompressedBlocks,
-				SCContent.reinforcedConcrete,
-				SCContent.reinforcedDirt,
-				SCContent.reinforcedDoubleStoneSlabs,
-				SCContent.reinforcedDoubleStoneSlabs2,
-				SCContent.reinforcedDoubleWoodSlabs,
-				SCContent.reinforcedEndStoneBricks,
-				SCContent.reinforcedHardenedClay,
-				SCContent.reinforcedMetals,
-				SCContent.reinforcedMossyCobblestone,
-				SCContent.reinforcedNetherBrick,
-				SCContent.reinforcedNewLogs,
-				SCContent.reinforcedOldLogs,
-				SCContent.reinforcedPrismarine,
-				SCContent.reinforcedPurpur,
-				SCContent.reinforcedQuartz,
-				SCContent.reinforcedRedNetherBrick,
-				SCContent.reinforcedRedSandstone,
-				SCContent.reinforcedSandstone,
-				SCContent.reinforcedStainedHardenedClay,
-				SCContent.reinforcedStairsAcacia,
-				SCContent.reinforcedStairsBirch,
-				SCContent.reinforcedStairsBrick,
-				SCContent.reinforcedStairsCobblestone,
-				SCContent.reinforcedStairsDarkoak,
-				SCContent.reinforcedStairsJungle,
-				SCContent.reinforcedStairsNetherBrick,
-				SCContent.reinforcedStairsOak,
-				SCContent.reinforcedStairsPurpur,
-				SCContent.reinforcedStairsQuartz,
-				SCContent.reinforcedStairsRedSandstone,
-				SCContent.reinforcedStairsSandstone,
-				SCContent.reinforcedStairsSpruce,
-				SCContent.reinforcedStairsStone,
-				SCContent.reinforcedStairsStoneBrick,
-				SCContent.reinforcedStone,
-				SCContent.reinforcedStoneBrick,
-				SCContent.reinforcedStoneSlabs,
-				SCContent.reinforcedStoneSlabs2,
-				SCContent.reinforcedWoodPlanks,
-				SCContent.reinforcedWoodSlabs,
-				SCContent.reinforcedWool
-		};
-		//registering reinforced blocks color overlay for world
-		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, worldIn, pos, tintIndex) -> 0x999999, blocksToTint);
-		//same thing for inventory
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((IItemColor)(stack, tintIndex) -> 0x999999, blocksToTint);
+		for(Field field : SCContent.class.getFields())
+		{
+			if(field.isAnnotationPresent(Tinted.class))
+			{
+				int tint = field.getAnnotation(Tinted.class).value();
+				int noTint = 0xFFFFFF;
+				int crystalQuartzTint = 0x15B3A2;
+				int reinforcedCrystalQuartzTint = 0x0E7063;
+
+				try
+				{
+					Block block = (Block)field.get(null);
+
+					//registering reinforced blocks color overlay for world
+					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
+						if(state.getBlock() == SCContent.reinforcedGrass && !state.getValue(BlockReinforcedGrass.SNOWY))
+						{
+							if(tintIndex == 0)
+								return ConfigHandler.reinforcedBlockTint ? tint : noTint;
+
+							int grassTint = BiomeColorHelper.getGrassColorAtPos(world, pos);
+
+							return ConfigHandler.reinforcedBlockTint ? mixTints(grassTint, tint) : grassTint;
+						}
+						else if(ConfigHandler.reinforcedBlockTint)
+							return tint;
+						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
+							return crystalQuartzTint;
+						else
+							return noTint;
+					}, block);
+					//same thing for inventory
+					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+						if(block == SCContent.reinforcedGrass)
+						{
+							if(tintIndex == 0)
+								return ConfigHandler.reinforcedBlockTint ? tint : noTint;
+
+							int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
+
+							return ConfigHandler.reinforcedBlockTint ? mixTints(grassTint, tint) : grassTint;
+						}
+						else if(ConfigHandler.reinforcedBlockTint)
+							return tint;
+						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
+							return crystalQuartzTint;
+						else
+							return noTint;
+					}, block);
+				}
+				catch(IllegalArgumentException | IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+	}
+
+	private int mixTints(int tint1, int tint2)
+	{
+		int red = (tint1 >> 0x10) & 0xFF;
+		int green = (tint1 >> 0x8) & 0xFF;
+		int blue = tint1 & 0xFF;
+
+		red *= (float)(tint2 >> 0x10 & 0xFF) / 0xFF;
+		green *= (float)(tint2 >> 0x8 & 0xFF) / 0xFF;
+		blue *= (float)(tint2 & 0xFF) / 0xFF;
+
+		return ((red << 8) + green << 8) + blue;
+	}
+
+	@Override
+	public EntityPlayer getClientPlayer()
+	{
+		return Minecraft.getMinecraft().player;
 	}
 }

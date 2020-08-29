@@ -9,27 +9,27 @@ import net.minecraft.world.World;
 
 public class Utils {
 
-	//North: Z-  South: Z+  East: X+  West: X-  Up: Y+  Down: Y-
-
 	/**
 	 * Removes the last character in the given String. <p>
 	 */
-	public static String removeLastChar(String par1){
-		if(par1 == null || par1.isEmpty())
+	public static String removeLastChar(String line){
+		if(line == null || line.isEmpty())
 			return "";
 
-		return par1.substring(0, par1.length() - 1);
+		return line.substring(0, line.length() - 1);
 	}
 
 	public static String getFormattedCoordinates(BlockPos pos){
 		return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
 	}
 
-	public static void setISinTEAppropriately(World par1World, BlockPos pos, NonNullList<ItemStack> contents, String type)
+	public static void setISinTEAppropriately(World world, BlockPos pos, NonNullList<ItemStack> contents)
 	{
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(par1World, pos);
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+		if(connectedScanner == null)
+			return;
 
 		connectedScanner.setContents(contents);
-		connectedScanner.setType(type);
 	}
 }

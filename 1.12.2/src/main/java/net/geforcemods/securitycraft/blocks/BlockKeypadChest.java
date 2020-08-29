@@ -2,14 +2,15 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,37 +37,43 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!worldIn.isRemote) {
-			if(!PlayerUtils.isHoldingItem(playerIn, SCContent.codebreaker) && worldIn.getTileEntity(pos) != null && worldIn.getTileEntity(pos) instanceof TileEntityKeypadChest)
-				((TileEntityKeypadChest) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
-
-			return true;
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
+		{
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+				return false;
+			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST))
+				activate(world, pos, player);
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
+				((TileEntityKeypadChest) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
+
 
 		return true;
 	}
 
-	public static void activate(World par1World, BlockPos pos, EntityPlayer player){
-		if(!isBlocked(par1World, pos))
-			player.displayGUIChest(((BlockChest) BlockUtils.getBlock(par1World, pos)).getLockableContainer(par1World, pos));
+	public static void activate(World world, BlockPos pos, EntityPlayer player){
+		if(!isBlocked(world, pos))
+			player.displayGUIChest(((BlockChest) BlockUtils.getBlock(world, pos)).getLockableContainer(world, pos));
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World par1World, BlockPos pos, IBlockState state, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack){
-		super.onBlockPlacedBy(par1World, pos, state, par5EntityLivingBase, par6ItemStack);
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+		super.onBlockPlacedBy(world, pos, state, entity, stack);
 
-		if(par1World.getTileEntity(pos.east()) != null && par1World.getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.east())).getPassword());
-		else if(par1World.getTileEntity(pos.west()) != null && par1World.getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.west())).getPassword());
-		else if(par1World.getTileEntity(pos.south()) != null && par1World.getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.south())).getPassword());
-		else if(par1World.getTileEntity(pos.north()) != null && par1World.getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest)(par1World.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) par1World.getTileEntity(pos.north())).getPassword());
+		boolean isPlayer = entity instanceof EntityPlayer;
+
+		if(world.getTileEntity(pos.east()) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(pos.east())).getOwner().isOwner((EntityPlayer) entity))
+			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.east())).getPassword());
+		else if(world.getTileEntity(pos.west()) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(pos.west())).getOwner().isOwner((EntityPlayer) entity))
+			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.west())).getPassword());
+		else if(world.getTileEntity(pos.south()) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(pos.south())).getOwner().isOwner((EntityPlayer) entity))
+			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.south())).getPassword());
+		else if(world.getTileEntity(pos.north()) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(pos.north())).getOwner().isOwner((EntityPlayer) entity))
+			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(pos.north())).getPassword());
 	}
 
 	@Override
@@ -83,28 +90,26 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	 * Returns a new instance of a block's tile entity class. Called on placing the block.
 	 */
 	@Override
-	public TileEntity createNewTileEntity(World par1World, int par2)
+	public TileEntity createNewTileEntity(World world, int meta)
 	{
 		return new TileEntityKeypadChest();
 	}
 
-	public static boolean isBlocked(World worldIn, BlockPos pos)
+	public static boolean isBlocked(World world, BlockPos pos)
 	{
-		return isBelowSolidBlock(worldIn, pos) || isOcelotSittingOnChest(worldIn, pos);
+		return isBelowSolidBlock(world, pos) || isOcelotSittingOnChest(world, pos);
 	}
 
-	private static boolean isBelowSolidBlock(World worldIn, BlockPos pos)
+	private static boolean isBelowSolidBlock(World world, BlockPos pos)
 	{
-		return worldIn.getBlockState(pos.up()).isSideSolid(worldIn, pos.up(), EnumFacing.DOWN);
+		return world.getBlockState(pos.up()).doesSideBlockChestOpening(world, pos.up(), EnumFacing.DOWN);
 	}
 
-	private static boolean isOcelotSittingOnChest(World worldIn, BlockPos pos)
+	private static boolean isOcelotSittingOnChest(World world, BlockPos pos)
 	{
-		for (Entity entity : worldIn.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
+		for (EntityOcelot ocelot : world.getEntitiesWithinAABB(EntityOcelot.class, new AxisAlignedBB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 2, pos.getZ() + 1)))
 		{
-			EntityOcelot entityocelot = (EntityOcelot)entity;
-
-			if (entityocelot.isSitting())
+			if (ocelot.isSitting())
 				return true;
 		}
 
@@ -120,14 +125,44 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 	@Override
 	public boolean convert(EntityPlayer player, World world, BlockPos pos)
 	{
-		EnumFacing enumfacing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing doubleFacing = getDoubleChestFacing(world, pos);
+
+		convertChest(player, world, pos, facing);
+
+		if(doubleFacing != EnumFacing.UP)
+		{
+			BlockPos newPos = pos.offset(doubleFacing);
+
+			convertChest(player, world, newPos, world.getBlockState(newPos).getValue(FACING));
+		}
+
+		return true;
+	}
+
+	private void convertChest(EntityPlayer player, World world, BlockPos pos, EnumFacing facing)
+	{
 		TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
 		NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
 
 		chest.clear();
-		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, enumfacing));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
+		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
 		((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
-		return true;
+
+	}
+
+	private EnumFacing getDoubleChestFacing(World world, BlockPos pos)
+	{
+		if(world.getBlockState(pos).getBlock() instanceof BlockChest)
+		{
+			for(EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+			{
+				if(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockChest)
+					return facing;
+			}
+		}
+
+		return EnumFacing.UP;
 	}
 }

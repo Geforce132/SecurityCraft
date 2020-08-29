@@ -1,11 +1,14 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Random;
+import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IIntersectable;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.tileentity.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -14,34 +17,29 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFullMineBase extends BlockExplosive implements IIntersectable, ICustomWailaDisplay {
+public class BlockFullMineBase extends BlockExplosive implements IIntersectable, IOverlayDisplay, IBlockMine {
 
 	private final Block blockDisguisedAs;
 
-	public BlockFullMineBase(Material par1Material, Block disguisedBlock) {
-		super(par1Material);
+	public BlockFullMineBase(Material material, Block disguisedBlock) {
+		super(material);
 		blockDisguisedAs = disguisedBlock;
 
-		if(par1Material == Material.SAND)
+		if(material == Material.SAND)
 			setSoundType(SoundType.SAND);
-		else if(par1Material == Material.GROUND)
+		else if(material == Material.GROUND)
 			setSoundType(SoundType.GROUND);
 		else
 			setSoundType(SoundType.STONE);
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
 	}
 
 	@Override
@@ -50,10 +48,37 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
+	{
+		if(entity instanceof EntityItem)
+		{
+			addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+			return;
+		}
+		else if(entity instanceof EntityPlayer)
+		{
+			TileEntity te = world.getTileEntity(pos);
+
+			if(te instanceof TileEntityOwnable)
+			{
+				TileEntityOwnable ownableTe = (TileEntityOwnable) te;
+
+				if(ownableTe.getOwner().isOwner((EntityPlayer)entity))
+				{
+					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);
+					return;
+				}
+			}
+		}
+
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
+	}
+
+	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
 		if(entity instanceof EntityItem)
 			return;
-		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
+		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))
 			explode(world, pos);
 	}
 
@@ -61,20 +86,27 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onExplosionDestroy(World par1World, BlockPos pos, Explosion par5Explosion){
-		if (!par1World.isRemote)
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion){
+		if (!world.isRemote)
 		{
-			Random random = new Random();
+			if(pos.equals(new BlockPos(explosion.getPosition())))
+				return;
 
-			if(random.nextInt(3) == 1)
-				explode(par1World, pos);
+			explode(world, pos);
 		}
 	}
 
 	@Override
-	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state){
-		if (!par1World.isRemote)
-			explode(par1World, pos);
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+		if(!world.isRemote)
+			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
+				explode(world, pos);
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			}
+
+		return super.removedByPlayer(state, world, pos, player, willHarvest);
 	}
 
 	@Override
@@ -84,20 +116,20 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	public void defuseMine(World world, BlockPos pos) {}
 
 	@Override
-	public void explode(World par1World, BlockPos pos) {
-		par1World.destroyBlock(pos, false);
+	public void explode(World world, BlockPos pos) {
+		world.destroyBlock(pos, false);
 
-		if(SecurityCraft.config.smallerMineExplosion)
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
+		if(ConfigHandler.smallerMineExplosion)
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, true);
 		else
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, true);
 	}
 
 	/**
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion par1Explosion){
+	public boolean canDropFromExplosion(Explosion explosion){
 		return false;
 	}
 
@@ -117,8 +149,8 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntityOwnable().intersectsEntities();
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntitySCTE().intersectsEntities();
 	}
 
 	@Override

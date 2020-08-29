@@ -2,33 +2,26 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
-import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
-import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCustomizeBlock extends Container{
 
-	private CustomizableSCTE tileEntity;
+	private IModuleInventory moduleInv;
+	private final int maxSlots;
 
-	public ContainerCustomizeBlock(InventoryPlayer inventory, CustomizableSCTE tileEntity) {
-		this.tileEntity = tileEntity;
+	public ContainerCustomizeBlock(InventoryPlayer inventory, IModuleInventory tileEntity) {
+		this.moduleInv = tileEntity;
 
-		if(tileEntity.getNumberOfCustomizableOptions() == 1)
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 79, 20));
-		else if(tileEntity.getNumberOfCustomizableOptions() == 2){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 70, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 88, 20));
-		}else if(tileEntity.getNumberOfCustomizableOptions() == 3){
-			addSlotToContainer(new ModuleSlot(tileEntity, 0, 61, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 1, 79, 20));
-			addSlotToContainer(new ModuleSlot(tileEntity, 2, 97, 20));
-		}
+		int slotId = 0;
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; ++j)
@@ -36,108 +29,101 @@ public class ContainerCustomizeBlock extends Container{
 
 		for(int i = 0; i < 9; i++)
 			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+
+		if(moduleInv.enableHack())
+			slotId = 100;
+
+		if(moduleInv.getMaxNumberOfModules() == 1)
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId, 79, 20));
+		else if(moduleInv.getMaxNumberOfModules() == 2){
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 3){
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 61, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 79, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 97, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 4){
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
+		}else if(moduleInv.getMaxNumberOfModules() == 5){
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 34, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
+		}
+
+		maxSlots = 36 + moduleInv.getMaxNumberOfModules();
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1, int par2)
+	public ItemStack transferStackInSlot(EntityPlayer player, int index)
 	{
-		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(par2);
+		ItemStack copy = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack())
+		if(slot != null && slot.getHasStack())
 		{
-			ItemStack itemstack1 = slot.getStack();
+			ItemStack slotStack = slot.getStack();
+			boolean isModule = slotStack.getItem() instanceof ItemModule;
 
-			if(!(itemstack1.getItem() instanceof ItemModule))
-				return ItemStack.EMPTY;
+			copy = slotStack.copy();
 
-			itemstack = itemstack1.copy();
-
-			if (par2 < tileEntity.getSizeInventory())
+			if(index >= 36 && index <= maxSlots) //module slots
 			{
-				if (!mergeItemStack(itemstack1, 0, 35, true))
+				if(!mergeItemStack(slotStack, 0, 36, true)) //main inventory + hotbar
 					return ItemStack.EMPTY;
-				else{
-					tileEntity.onModuleRemoved(itemstack1, EnumCustomModules.getModuleFromStack(itemstack1));
-					tileEntity.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ itemstack1, EnumCustomModules.getModuleFromStack(itemstack1) }, tileEntity);
-
-					if(tileEntity instanceof TileEntitySecurityCamera)
-						tileEntity.getWorld().notifyNeighborsOfStateChange(tileEntity.getPos().offset(tileEntity.getWorld().getBlockState(tileEntity.getPos()).getValue(BlockSecurityCamera.FACING), -1), tileEntity.getWorld().getBlockState(tileEntity.getPos()).getBlock(), true);
-				}
 			}
-			else if (itemstack1.getItem() != null && itemstack1.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(EnumCustomModules.getModuleFromStack(itemstack1)) && !mergeItemStack(itemstack1, 0, tileEntity.getSizeInventory(), false))
-				return ItemStack.EMPTY;
+			else if(index >= 27 && index <= 35) //hotbar
+			{
+				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
+					return ItemStack.EMPTY;
+				else if(!mergeItemStack(slotStack, 0, 27, false)) //main inventory
+					return ItemStack.EMPTY;
+			}
+			else if(index <= 26) //main inventory
+			{
+				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
+					return ItemStack.EMPTY;
+				else if(!mergeItemStack(slotStack, 27, 36, false)) //hotbar
+					return ItemStack.EMPTY;
+			}
 
-			if (itemstack1.getCount() == 0)
+			slot.onSlotChange(slotStack, copy);
+
+			if(slotStack.isEmpty())
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
-
-			if(itemstack1.getCount() == itemstack.getCount())
-				return ItemStack.EMPTY;
-
-			slot.onTake(par1, itemstack1);
 		}
 
-		return itemstack;
+		return copy;
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer) {
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 
-
-	public static class ModuleSlot extends Slot{
-		private CustomizableSCTE tileEntity;
-		public ModuleSlot(CustomizableSCTE par1IInventory, int par2, int par3, int par4) {
-			super(par1IInventory, par2, par3, par4);
-			tileEntity = par1IInventory;
-		}
-
-		/**
-		 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
-		 */
-		@Override
-		public boolean isItemValid(ItemStack par1ItemStack)
+	private class CustomSlotItemHandler extends SlotItemHandler
+	{
+		public CustomSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition)
 		{
-			if(!par1ItemStack.isEmpty() && par1ItemStack.getItem() instanceof ItemModule && tileEntity.getAcceptedModules().contains(((ItemModule) par1ItemStack.getItem()).getModule()) && !tileEntity.hasModule(((ItemModule) par1ItemStack.getItem()).getModule()))
-				return true;
-			else
-				return false;
+			super(itemHandler, index, xPosition, yPosition);
 		}
 
 		@Override
-		public ItemStack getStack(){
-			return tileEntity.modules.get(getSlotIndex());
-		}
-
-		@Override
-		public void putStack(ItemStack p_75215_1_)
+		public void onSlotChange(ItemStack newStack, ItemStack oldStack)
 		{
-			tileEntity.safeSetInventorySlotContents(getSlotIndex(), p_75215_1_);
-			onSlotChanged();
-		}
+			if((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ItemModule)
+			{
+				moduleInv.onModuleRemoved(oldStack, ((ItemModule)oldStack.getItem()).getModule());
 
-		/**
-		 * Decrease the size of the stack in slot (first int arg) by the amount of the second int arg. Returns the new
-		 * stack.
-		 */
-		@Override
-		public ItemStack decrStackSize(int p_75209_1_)
-		{
-			return tileEntity.safeDecrStackSize(getSlotIndex(), p_75209_1_);
-		}
-
-		/**
-		 * Returns the maximum stack size for a given slot (usually the same as getInventoryStackLimit(), but 1 in the
-		 * case of armor slots)
-		 */
-		@Override
-		public int getSlotStackLimit()
-		{
-			return 1;
+				if(moduleInv instanceof CustomizableSCTE)
+					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, oldStack, (CustomizableSCTE)moduleInv);
+			}
 		}
 	}
-
 }

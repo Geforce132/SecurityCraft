@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tabs;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,6 @@ public class CreativeTabSCExplosives extends CreativeTabs{
 		super(getNextID(), "tabSecurityCraft");
 	}
 
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack createIcon(){
@@ -23,7 +21,7 @@ public class CreativeTabSCExplosives extends CreativeTabs{
 
 	@Override
 	public String getTabLabel(){
-		return "SecurityCraft: " + ClientUtils.localize("creativeTabExplosives");
+		return super.getTabLabel() + ".explosives";
 
 	}
 

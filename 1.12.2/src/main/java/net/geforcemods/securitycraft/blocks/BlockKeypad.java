@@ -1,167 +1,99 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
-import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.EnumCustomModules;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, IPasswordConvertible {
+public class BlockKeypad extends BlockDisguisable implements IPasswordConvertible {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public BlockKeypad(Material par2Material) {
-		super(par2Material);
+	public BlockKeypad(Material material) {
+		super(material);
 		setSoundType(SoundType.STONE);
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
-
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-		if(worldIn.getTileEntity(pos) == null)
-			return true;
-
-		CustomizableSCTE tileEntity = (CustomizableSCTE) worldIn.getTileEntity(pos);
-
-		if(tileEntity.hasModule(EnumCustomModules.DISGUISE))
-		{
-			ItemStack disguiseModule = tileEntity.getModule(EnumCustomModules.DISGUISE);
-			List<Block> blocks = ((ItemModule) disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
-
-			if(blocks.size() != 0)
-			{
-				Block blockToDisguiseAs = blocks.get(0);
-
-				// If the keypad has a disguise module added with a transparent block inserted.
-				if(!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube())
-					return checkForSideTransparency(worldIn, pos, worldIn.getBlockState(pos.offset(side)).getBlock(), side);
-			}
-		}
-
-		return true;
-	}
-
-	public boolean checkForSideTransparency(IBlockAccess world, BlockPos keypadPos, Block neighborBlock, EnumFacing side) {
-		if(neighborBlock == Blocks.AIR)
-			return true;
-
-		// Slightly cheating here, checking if the block is an instance of BlockBreakable
-		// and a vanilla block instead of checking for specific blocks, since all vanilla
-		// BlockBreakable blocks are transparent.
-		if(neighborBlock instanceof BlockBreakable && neighborBlock.toString().replace("Block{", "").startsWith("minecraft:"))
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(state.getValue(POWERED))
 			return false;
-
-		return true;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(worldIn.isRemote)
-			return true;
-		else {
-			if(state.getValue(POWERED).booleanValue())
+		else if(!world.isRemote) {
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
 				return false;
 
-			if(ModuleUtils.checkForModule(worldIn, pos, playerIn, EnumCustomModules.WHITELIST) || ModuleUtils.checkForModule(worldIn, pos, playerIn, EnumCustomModules.BLACKLIST)){
-				activate(worldIn, pos);
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
+				activate(world, pos, ((TileEntityKeypad)world.getTileEntity(pos)).getSignalLength());
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(playerIn, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(playerIn, SCContent.keyPanel))
-				((IPasswordProtected) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
-
-			return true;
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
+				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
+
+		return true;
 	}
 
-	public static void activate(World par1World, BlockPos pos){
-		BlockUtils.setBlockProperty(par1World, pos, POWERED, true);
-		par1World.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
-		par1World.scheduleUpdate(pos, SCContent.keypad, 60);
+	public static void activate(World world, BlockPos pos, int signalLength){
+		BlockUtils.setBlockProperty(world, pos, POWERED, true);
+		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
+		world.scheduleUpdate(pos, SCContent.keypad, signalLength);
 	}
 
 	@Override
-	public void updateTick(World par1World, BlockPos pos, IBlockState state, Random par5Random){
-		BlockUtils.setBlockProperty(par1World, pos, POWERED, false);
-		par1World.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
+		BlockUtils.setBlockProperty(world, pos, POWERED, false);
+		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
 	}
 
 	/**
 	 * Called whenever the block is added into the world. Args: world, x, y, z
 	 */
 	@Override
-	public void onBlockAdded(World par1World, BlockPos pos, IBlockState state)
+	public void onBlockAdded(World world, BlockPos pos, IBlockState state)
 	{
-		setDefaultFacing(par1World, pos, state);
+		setDefaultFacing(world, pos, state);
 	}
 
-	private void setDefaultFacing(World par1World, BlockPos pos, IBlockState state) {
-		IBlockState block = par1World.getBlockState(pos.north());
-		IBlockState block1 = par1World.getBlockState(pos.south());
-		IBlockState block2 = par1World.getBlockState(pos.west());
-		IBlockState block3 = par1World.getBlockState(pos.east());
-		EnumFacing enumfacing = state.getValue(FACING);
+	private void setDefaultFacing(World world, BlockPos pos, IBlockState state) {
+		IBlockState north = world.getBlockState(pos.north());
+		IBlockState south = world.getBlockState(pos.south());
+		IBlockState west = world.getBlockState(pos.west());
+		IBlockState east = world.getBlockState(pos.east());
+		EnumFacing facing = state.getValue(FACING);
 
-		if (enumfacing == EnumFacing.NORTH && block.isFullBlock() && !block1.isFullBlock())
-			enumfacing = EnumFacing.SOUTH;
-		else if (enumfacing == EnumFacing.SOUTH && block1.isFullBlock() && !block.isFullBlock())
-			enumfacing = EnumFacing.NORTH;
-		else if (enumfacing == EnumFacing.WEST && block2.isFullBlock() && !block3.isFullBlock())
-			enumfacing = EnumFacing.EAST;
-		else if (enumfacing == EnumFacing.EAST && block3.isFullBlock() && !block2.isFullBlock())
-			enumfacing = EnumFacing.WEST;
+		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
+			facing = EnumFacing.SOUTH;
+		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
+			facing = EnumFacing.NORTH;
+		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
+			facing = EnumFacing.EAST;
+		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
+			facing = EnumFacing.WEST;
 
-		par1World.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
+		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
 	}
 
 	@Override
@@ -176,7 +108,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	 */
 	@Override
 	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -188,7 +120,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	 */
 	@Override
 	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side){
-		if(blockState.getValue(POWERED).booleanValue())
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -199,13 +131,6 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	{
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(POWERED, false);
 	}
-
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
@@ -221,7 +146,7 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED).booleanValue())
+		if(state.getProperties().containsKey(POWERED) && state.getValue(POWERED))
 			return (state.getValue(FACING).getIndex() + 6);
 		else{
 			if(!state.getProperties().containsKey(FACING)) return 15;
@@ -231,88 +156,17 @@ public class BlockKeypad extends BlockContainer implements ICustomWailaDisplay, 
 	}
 
 	@Override
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState disguisedState = getDisguisedBlockState(world, pos);
-
-		return disguisedState != null ? disguisedState : state;
-	}
-
-	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
-		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
-			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
-
-			ItemStack module = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
-
-			if(!module.isEmpty() && !((ItemModule) module.getItem()).getBlockAddons(module.getTagCompound()).isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) module.getItem()).getAddons(module.getTagCompound()).get(0);
-				Block block = Block.getBlockFromItem(disguisedStack.getItem());
-				boolean hasMeta = disguisedStack.getHasSubtypes();
-
-				IBlockState disguisedModel = block.getStateFromMeta(hasMeta ? disguisedStack.getItemDamage() : getMetaFromState(world.getBlockState(pos)));
-
-				if (block != this)
-					return disguisedModel.getActualState(world, pos);
-			}
-		}
-
-		return null;
-	}
-
-	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
-		if(world.getTileEntity(pos) instanceof TileEntityKeypad) {
-			TileEntityKeypad te = (TileEntityKeypad) world.getTileEntity(pos);
-
-			ItemStack stack = te.hasModule(EnumCustomModules.DISGUISE) ? te.getModule(EnumCustomModules.DISGUISE) : ItemStack.EMPTY;
-
-			if(!stack.isEmpty() && !((ItemModule) stack.getItem()).getBlockAddons(stack.getTagCompound()).isEmpty()) {
-				ItemStack disguisedStack = ((ItemModule) stack.getItem()).getAddons(stack.getTagCompound()).get(0);
-
-				if(Block.getBlockFromItem(disguisedStack.getItem()) != this)
-					return disguisedStack;
-			}
-		}
-
-		return ItemStack.EMPTY;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, POWERED});
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	/**
 	 * Returns a new instance of a block's tile entity class. Called on placing the block.
 	 */
 	@Override
-	public TileEntity createNewTileEntity(World par1World, int par2){
+	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntityKeypad();
-	}
-
-	@Override
-	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos) {
-		ItemStack stack = getDisguisedStack(world, pos);
-
-		return !stack.isEmpty() ? stack : new ItemStack(this);
-	}
-
-	@Override
-	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return getDisguisedStack(world, pos).isEmpty();
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
-	{
-		ItemStack stack = getDisguisedStack(world, pos);
-
-		return stack == ItemStack.EMPTY ? new ItemStack(this) : stack;
 	}
 
 	@Override

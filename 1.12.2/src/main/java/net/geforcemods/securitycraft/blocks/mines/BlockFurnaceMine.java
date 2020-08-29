@@ -1,10 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -13,48 +14,50 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisplay {
+public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay, IBlockMine {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
-	public BlockFurnaceMine(Material par1Material) {
-		super(par1Material);
-	}
-
-	/**
-	 * Called upon the block being destroyed by an explosion
-	 */
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state){
-		return EnumBlockRenderType.MODEL;
-	}
-
-
-	@Override
-	public void onExplosionDestroy(World par1World, BlockPos pos, Explosion par5Explosion) {
-		if (!par1World.isRemote)
-			explode(par1World, pos);
+	public BlockFurnaceMine(Material material) {
+		super(material);
 	}
 
 	@Override
-	public void onPlayerDestroy(World par1World, BlockPos pos, IBlockState state){
-		if (!par1World.isRemote)
-			explode(par1World, pos);
+	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
+		if (!world.isRemote)
+		{
+			if(pos.equals(new BlockPos(explosion.getPosition())))
+				return;
+
+			explode(world, pos);
+		}
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote)
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
+		if(!world.isRemote)
+			if(player != null && player.capabilities.isCreativeMode && !ConfigHandler.mineExplodesWhenInCreative)
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
+				explode(world, pos);
+				return super.removedByPlayer(state, world, pos, player, willHarvest);
+			}
+
+		return super.removedByPlayer(state, world, pos, player, willHarvest);
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if(world.isRemote)
 			return true;
-		else if(playerIn.inventory.getCurrentItem().isEmpty() || playerIn.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine){
-			explode(worldIn, pos);
+		else if(player.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)){
+			explode(world, pos);
 			return true;
 		}
 		else
@@ -74,13 +77,13 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	public void defuseMine(World world, BlockPos pos) {}
 
 	@Override
-	public void explode(World par1World, BlockPos pos) {
-		par1World.destroyBlock(pos, false);
+	public void explode(World world, BlockPos pos) {
+		world.destroyBlock(pos, false);
 
-		if(SecurityCraft.config.smallerMineExplosion)
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
+		if(ConfigHandler.smallerMineExplosion)
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
 		else
-			par1World.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
 
 	}
 
@@ -88,16 +91,9 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion par1Explosion) {
+	public boolean canDropFromExplosion(Explosion explosion) {
 		return false;
 	}
-
-	/* TODO: no clue about this
-	@SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
@@ -111,7 +107,7 @@ public class BlockFurnaceMine extends BlockExplosive implements ICustomWailaDisp
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override

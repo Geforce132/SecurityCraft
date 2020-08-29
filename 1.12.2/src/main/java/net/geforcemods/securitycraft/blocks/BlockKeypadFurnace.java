@@ -4,13 +4,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -23,10 +24,10 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvertible {
@@ -34,14 +35,9 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
 
-	public BlockKeypadFurnace(Material materialIn) {
-		super(materialIn);
+	public BlockKeypadFurnace(Material material) {
+		super(material);
 		setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.MODEL;
 	}
 
 	/**
@@ -64,36 +60,48 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	}
 
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		TileEntity tileentity = world.getTileEntity(pos);
 
 		if (tileentity instanceof IInventory)
 		{
-			InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)tileentity);
-			worldIn.updateComparatorOutputLevel(pos, this);
+			InventoryHelper.dropInventoryItems(world, pos, (IInventory)tileentity);
+			world.updateComparatorOutputLevel(pos, this);
 		}
 
-		super.breakBlock(worldIn, pos, state);
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!worldIn.isRemote)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
+		if(!world.isRemote)
 		{
-			if(!PlayerUtils.isHoldingItem(playerIn, SCContent.codebreaker))
-				((TileEntityKeypadFurnace) worldIn.getTileEntity(pos)).openPasswordGUI(playerIn);
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+				return false;
+			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST))
+				activate(world, pos, player);
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker))
+				((TileEntityKeypadFurnace) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 
 		return true;
 	}
 
-	public static void activate(World par1World, BlockPos pos, EntityPlayer player){
-		if(!BlockUtils.getBlockPropertyAsBoolean(par1World, pos, BlockKeypadFurnace.OPEN))
-			BlockUtils.setBlockProperty(par1World, pos, BlockKeypadFurnace.OPEN, true, false);
+	public static void activate(World world, BlockPos pos, EntityPlayer player){
+		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypadFurnace.OPEN))
+			BlockUtils.setBlockProperty(world, pos, BlockKeypadFurnace.OPEN, true);
 
-		par1World.playEvent((EntityPlayer)null, 1006, pos, 0);
-		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, par1World, pos.getX(), pos.getY(), pos.getZ());
+		world.playEvent((EntityPlayer)null, 1006, pos, 0);
+		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		TileEntity te = world.getTileEntity(pos);
+
+		return (state.getValue(OPEN) && te != null && te instanceof TileEntityKeypadFurnace && ((TileEntityKeypadFurnace)te).isBurning()) ? 15 : 0;
 	}
 
 	@Override
@@ -101,13 +109,6 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	{
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
 	}
-
-	/* TODO: no clue about this
-    @SideOnly(Side.CLIENT)
-    public IBlockState getStateForEntityRender(IBlockState state)
-    {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
-    }*/
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
@@ -121,7 +122,7 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		if(state.getValue(OPEN).booleanValue())
+		if(state.getValue(OPEN))
 			return (state.getValue(FACING).getIndex() + 6);
 		else
 			return state.getValue(FACING).getIndex();
@@ -130,11 +131,11 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING, OPEN});
+		return new BlockStateContainer(this, FACING, OPEN);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1, int var2) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityKeypadFurnace();
 	}
 
@@ -147,13 +148,13 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	@Override
 	public boolean convert(EntityPlayer player, World world, BlockPos pos)
 	{
-		EnumFacing enumfacing = world.getBlockState(pos).getValue(FACING);
+		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
 		TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
 		NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
 
 		furnace.clear();
-		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, enumfacing).withProperty(OPEN, false));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getName(), player.getUniqueID().toString());
+		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
+		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
 		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
 		return true;
 	}

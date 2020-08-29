@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "BBB",
+    "PPP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "P": [
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 0
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 1
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 2
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 3
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 4
+      },
+      {
+        "item": "securitycraft:reinforced_planks",
+        "data": 5
+      }
+    ]
+  },
+  "result": {
+    "item": "securitycraft:reinforced_bookshelf"
+  }
+}

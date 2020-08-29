@@ -1,37 +1,39 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class TileEntityAlarm extends TileEntityOwnable {
+public class TileEntityAlarm extends CustomizableSCTE {
 
+	public OptionIntConfig range = new OptionIntConfig(this, "range", 17, 0, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
 	@Override
 	public void update(){
-		if(world.isRemote)
-			return;
-		else{
-			if(cooldown > 0){
-				cooldown--;
+		if(cooldown > 0)
+			cooldown--;
 
-				if(cooldown == 0)
-					SecurityCraft.log("Cooldown is 0");
+		if(isPowered && cooldown == 0)
+		{
+			TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
+
+			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
+			{
+				world.playSound(player, player.getPosition(), SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.alarmSoundVolume, 1.0F);
 			}
 
-			if(isPowered && cooldown == 0){
-				TileEntityAlarm TEA = (TileEntityAlarm) world.getTileEntity(pos);
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SCSounds.ALARM.event, SoundCategory.PLAYERS, SecurityCraft.config.alarmSoundVolume, 1.0F);
-				TEA.setCooldown((SecurityCraft.config.alarmTickDelay * 20));
-				world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2); //TODO
-				world.setTileEntity(pos, TEA);
-			}
+			te.setCooldown((ConfigHandler.alarmTickDelay * 20));
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
+			world.setTileEntity(pos, te);
 		}
 	}
 
@@ -40,37 +42,32 @@ public class TileEntityAlarm extends TileEntityOwnable {
 	 * @return
 	 */
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
-		super.writeToNBT(par1NBTTagCompound);
-		par1NBTTagCompound.setInteger("cooldown", cooldown);
-		par1NBTTagCompound.setBoolean("isPowered", isPowered);
-		return par1NBTTagCompound;
+		super.writeToNBT(tag);
+		tag.setInteger("cooldown", cooldown);
+		tag.setBoolean("isPowered", isPowered);
+		return tag;
 	}
 
 	/**
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	public void readFromNBT(NBTTagCompound tag)
 	{
-		super.readFromNBT(par1NBTTagCompound);
+		super.readFromNBT(tag);
 
-		if (par1NBTTagCompound.hasKey("cooldown"))
-			cooldown = par1NBTTagCompound.getInteger("cooldown");
+		if (tag.hasKey("cooldown"))
+			cooldown = tag.getInteger("cooldown");
 
-		if (par1NBTTagCompound.hasKey("isPowered"))
-			isPowered = par1NBTTagCompound.getBoolean("isPowered");
+		if (tag.hasKey("isPowered"))
+			isPowered = tag.getBoolean("isPowered");
 
 	}
 
-	public int getCooldown(){
-		return cooldown;
-	}
-
-	public void setCooldown(int par1){
-		SecurityCraft.log("Setting cooldown to " + par1 + " | " + FMLCommonHandler.instance().getEffectiveSide());
-		cooldown = par1;
+	public void setCooldown(int cooldown){
+		this.cooldown = cooldown;
 	}
 
 	public boolean isPowered() {
@@ -81,4 +78,29 @@ public class TileEntityAlarm extends TileEntityOwnable {
 		this.isPowered = isPowered;
 	}
 
+	@Override
+	public EnumModuleType[] acceptedModules()
+	{
+		return new EnumModuleType[]{};
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{ range };
+	}
+
+	public static class OptionIntConfig extends OptionInt
+	{
+		public OptionIntConfig(CustomizableSCTE te, String optionName, Integer value, Integer min, Integer increment, boolean s)
+		{
+			super(te, optionName, value, min, 0, increment, s);
+		}
+
+		@Override
+		public Integer getMax()
+		{
+			return ConfigHandler.maxAlarmRange;
+		}
+	}
 }

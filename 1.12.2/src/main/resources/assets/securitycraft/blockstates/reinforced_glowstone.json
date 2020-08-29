@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "securitycraft:reinforced_glowstone" }
+        ]
+    }
+}

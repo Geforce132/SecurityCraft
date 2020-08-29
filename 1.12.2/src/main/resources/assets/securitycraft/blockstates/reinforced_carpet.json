@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "color=white": { "model": "securitycraft:reinforced_carpet_white" },
+        "color=orange": { "model": "securitycraft:reinforced_carpet_orange" },
+        "color=magenta": { "model": "securitycraft:reinforced_carpet_magenta" },
+        "color=light_blue": { "model": "securitycraft:reinforced_carpet_light_blue" },
+        "color=yellow": { "model": "securitycraft:reinforced_carpet_yellow" },
+        "color=lime": { "model": "securitycraft:reinforced_carpet_lime" },
+        "color=pink": { "model": "securitycraft:reinforced_carpet_pink" },
+        "color=gray": { "model": "securitycraft:reinforced_carpet_gray" },
+        "color=silver": { "model": "securitycraft:reinforced_carpet_silver" },
+        "color=cyan": { "model": "securitycraft:reinforced_carpet_cyan" },
+        "color=purple": { "model": "securitycraft:reinforced_carpet_purple" },
+        "color=blue": { "model": "securitycraft:reinforced_carpet_blue" },
+        "color=brown": { "model": "securitycraft:reinforced_carpet_brown" },
+        "color=green": { "model": "securitycraft:reinforced_carpet_green" },
+        "color=red": { "model": "securitycraft:reinforced_carpet_red" },
+        "color=black": { "model": "securitycraft:reinforced_carpet_black" }
+    }
+}

@@ -12,7 +12,7 @@ public class ContainerBriefcase extends Container {
 
 	private BriefcaseInventory inventory;
 
-	public ContainerBriefcase(EntityPlayer par1Player, InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
+	public ContainerBriefcase(InventoryPlayer playerInventory, BriefcaseInventory briefcaseInventory) {
 		inventory = briefcaseInventory;
 
 		for(int i = 0; i < 3; i++)
@@ -28,44 +28,44 @@ public class ContainerBriefcase extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index) {
-		ItemStack itemstack = ItemStack.EMPTY;
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+		ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot slot = inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()) {
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			ItemStack slotStack = slot.getStack();
+			slotStackCopy = slotStack.copy();
 
 			if(index < BriefcaseInventory.SIZE) {
-				if(!mergeItemStack(itemstack1, BriefcaseInventory.SIZE, 48, true))
+				if(!mergeItemStack(slotStack, BriefcaseInventory.SIZE, 48, true))
 					return ItemStack.EMPTY;
 
-				slot.onSlotChange(itemstack1, itemstack);
+				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(index >= BriefcaseInventory.SIZE)
-				if(!mergeItemStack(itemstack1, 0, BriefcaseInventory.SIZE, false))
+				if(!mergeItemStack(slotStack, 0, BriefcaseInventory.SIZE, false))
 					return ItemStack.EMPTY;
 
-			if(itemstack1.getCount() == 0)
+			if(slotStack.getCount() == 0)
 				slot.putStack(ItemStack.EMPTY);
 			else
 				slot.onSlotChanged();
 
-			if(itemstack1.getCount() == itemstack.getCount())
+			if(slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
 
-			slot.onTake(par1EntityPlayer, itemstack1);
+			slot.onTake(player, slotStack);
 		}
 
-		return itemstack;
+		return slotStackCopy;
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player) {
 		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
 			return ItemStack.EMPTY;
 
-		return super.slotClick(slot, dragType, clickTypeIn, player);
+		return super.slotClick(slot, dragType, clickType, player);
 	}
 
 	@Override

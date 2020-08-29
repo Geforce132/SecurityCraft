@@ -1,16 +1,18 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
-import net.geforcemods.securitycraft.imc.waila.ICustomWailaDisplay;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -20,44 +22,45 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-//TODO: look at this class for changed method signatures
-public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersectable, ICustomWailaDisplay {
+public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntityProvider, IOverlayDisplay {
 
-	public BlockFakeWaterBase(Material par2Material)
+	public BlockFakeWaterBase(Material material)
 	{
-		super(par2Material);
+		super(material);
 	}
 
-	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		if (!checkForMixing(worldIn, pos, state))
-			updateLiquid(worldIn, pos, state);
+		if (!checkForMixing(world, pos, state))
+			updateLiquid(world, pos, state);
 	}
 
-	private void updateLiquid(World worldIn, BlockPos p_176370_2_, IBlockState p_176370_3_)
+	private void updateLiquid(World world, BlockPos pos, IBlockState state)
 	{
-		BlockDynamicLiquid blockdynamicliquid = getFlowingBlock(this.material);
-		worldIn.setBlockState(p_176370_2_, blockdynamicliquid.getDefaultState().withProperty(LEVEL, p_176370_3_.getValue(LEVEL)), 2);
-		worldIn.scheduleUpdate(p_176370_2_, blockdynamicliquid, tickRate(worldIn));
+		BlockDynamicLiquid liquid = getFlowingBlock(this.material);
+		world.setBlockState(pos, liquid.getDefaultState().withProperty(LEVEL, state.getValue(LEVEL)), 2);
+		world.scheduleUpdate(pos, liquid, tickRate(world));
 	}
 
-	public static BlockDynamicLiquid getFlowingBlock(Material materialIn)
+	public static BlockDynamicLiquid getFlowingBlock(Material material)
 	{
-		if (materialIn == Material.WATER)
+		if (material == Material.WATER)
 			return (BlockDynamicLiquid) SCContent.bogusWaterFlowing;
-		else if (materialIn == Material.LAVA)
+		else if (material == Material.LAVA)
 			return (BlockDynamicLiquid) SCContent.bogusLavaFlowing;
 		else
 			throw new IllegalArgumentException("Invalid material");
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote)
-			if(entity instanceof EntityPlayer && !((EntityPlayer) entity).capabilities.isCreativeMode)
-				((EntityPlayer) entity).attackEntityFrom(CustomDamageSources.fakeWater, 5F);
-			else
-				entity.attackEntityFrom(CustomDamageSources.fakeWater, 5F);
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
+	{
+		if(!world.isRemote && !(entity instanceof EntityItem) && !(entity instanceof EntityBoat))
+		{
+			if(!(entity instanceof EntityPlayer) || (!((EntityPlayer) entity).capabilities.isCreativeMode && !(((EntityPlayer)entity).getRidingEntity() instanceof EntityBoat)))
+				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
+		}
 	}
 
 	/**
@@ -65,14 +68,14 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements IIntersecta
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World p_149694_1_, BlockPos pos, IBlockState state)
+	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new TileEntitySCTE().intersectsEntities();
+	public TileEntity createNewTileEntity(World world, int meta) {
+		return new TileEntitySCTE();
 	}
 
 	@Override
