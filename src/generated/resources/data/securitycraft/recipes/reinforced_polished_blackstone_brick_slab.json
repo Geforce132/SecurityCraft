@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:slabs",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_polished_blackstone_bricks"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_polished_blackstone_brick_slab",
+    "count": 6
+  }
+}

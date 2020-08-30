@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_polished_blackstone_slab"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_chiseled_polished_blackstone"
+  }
+}

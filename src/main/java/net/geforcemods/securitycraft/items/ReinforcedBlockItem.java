@@ -9,7 +9,7 @@ public class ReinforcedBlockItem extends BlockItem
 {
 	public ReinforcedBlockItem(Block block)
 	{
-		super(block, new Item.Properties().group(SecurityCraft.groupSCDecoration));
+		super(block, new Item.Properties().group(SecurityCraft.groupSCDecoration).isBurnable());
 
 		setRegistryName(block.getRegistryName());
 	}

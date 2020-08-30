@@ -34,6 +34,9 @@ public class SCManualPage {
 			SCContent.REDSTONE_ORE_MINE.get(),
 			SCContent.IRON_ORE_MINE.get(),
 			SCContent.COAL_ORE_MINE.get(),
+			SCContent.NETHER_GOLD_ORE_MINE.get(),
+			SCContent.GILDED_BLACKSTONE_MINE.get(),
+			SCContent.ANCIENT_DEBRIS_MINE.get(),
 			SCContent.LAPIS_ORE_MINE.get(),
 			SCContent.GOLD_ORE_MINE.get()).stream().map(Block::asItem).collect(Collectors.toList());
 

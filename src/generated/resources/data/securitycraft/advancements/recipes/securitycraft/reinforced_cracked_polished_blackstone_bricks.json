@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_cracked_polished_blackstone_bricks"
+    ]
+  },
+  "criteria": {
+    "has_reinforced_blackstone_bricks": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:reinforced_polished_blackstone_bricks"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:reinforced_cracked_polished_blackstone_bricks"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_reinforced_blackstone_bricks",
+      "has_the_recipe"
+    ]
+  ]
+}

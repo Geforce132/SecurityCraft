@@ -44,6 +44,7 @@ public class BlockLootTableGenerator implements IDataProvider
 	private void addTables()
 	{
 		putStandardBlockLootTable(SCContent.ALARM);
+		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putStandardBlockLootTable(SCContent.BLOCK_POCKET_MANAGER);
 		putStandardBlockLootTable(SCContent.BLOCK_POCKET_WALL);
 		putMineLootTable(SCContent.BOUNCING_BETTY);
@@ -60,6 +61,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.EMERALD_ORE_MINE);
 		putMineLootTable(SCContent.FURNACE_MINE);
 		putMineLootTable(SCContent.GOLD_ORE_MINE);
+		putMineLootTable(SCContent.GILDED_BLACKSTONE_MINE);
 		putMineLootTable(SCContent.GRAVEL_MINE);
 		putStandardBlockLootTable(SCContent.INVENTORY_SCANNER);
 		putStandardBlockLootTable(SCContent.IRON_FENCE);
@@ -74,6 +76,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.LASER_BLOCK);
 		putMineLootTable(SCContent.MINE);
 		putStandardBlockLootTable(SCContent.MOTION_ACTIVATED_LIGHT);
+		putMineLootTable(SCContent.NETHER_GOLD_ORE_MINE);
 		putStandardBlockLootTable(SCContent.PANIC_BUTTON);
 		putStandardBlockLootTable(SCContent.PORTABLE_RADAR);
 		putStandardBlockLootTable(SCContent.PROJECTOR);
@@ -89,6 +92,8 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BIRCH_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_BIRCH_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_CRIMSON_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_CRIMSON_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_DARK_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_JUNGLE_SIGN);
@@ -97,6 +102,8 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_OAK_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_SPRUCE_WALL_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_WARPED_SIGN);
+		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
 		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
 		putMineLootTable(SCContent.STONE_MINE);

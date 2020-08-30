@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "securitycraft:stairs",
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_polished_blackstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_polished_blackstone_stairs",
+    "count": 4
+  }
+}

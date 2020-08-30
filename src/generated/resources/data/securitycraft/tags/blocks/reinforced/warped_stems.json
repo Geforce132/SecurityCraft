@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_warped_stem",
+    "securitycraft:reinforced_warped_hyphae",
+    "securitycraft:reinforced_stripped_warped_stem",
+    "securitycraft:reinforced_stripped_warped_hyphae"
+  ]
+}

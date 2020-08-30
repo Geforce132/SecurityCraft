@@ -35,6 +35,10 @@ public class ItemModelGenerator extends ItemModelProvider
 		reinforcedWallInventory(SCContent.REINFORCED_SANDSTONE_WALL.get(), Blocks.SANDSTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DIORITE_WALL.get(), Blocks.DIORITE_WALL);
+		reinforcedWallInventory(SCContent.REINFORCED_BLACKSTONE_WALL.get(), Blocks.BLACKSTONE_WALL);
+		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(), Blocks.POLISHED_BLACKSTONE_WALL);
+		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
+		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
 		blockMine(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
 		blockMine(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
 		blockMine(Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
@@ -43,8 +47,10 @@ public class ItemModelGenerator extends ItemModelProvider
 		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get());
 		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
 		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
+		blockMine(Blocks.GILDED_BLACKSTONE, SCContent.GILDED_BLACKSTONE_MINE.get());
 		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
 		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
+		blockMine(Blocks.NETHER_GOLD_ORE, SCContent.NETHER_GOLD_ORE_MINE.get());
 		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
 		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
 		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());

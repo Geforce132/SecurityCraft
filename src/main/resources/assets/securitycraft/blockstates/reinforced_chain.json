@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=x": {"model": "securitycraft:block/reinforced_chain", "x": 90, "y": 90},
+        "axis=y": {"model": "securitycraft:block/reinforced_chain"},
+        "axis=z": {"model": "securitycraft:block/reinforced_chain", "x": 90}
+    }
+}

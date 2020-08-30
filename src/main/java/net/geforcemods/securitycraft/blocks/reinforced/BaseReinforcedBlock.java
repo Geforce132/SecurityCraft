@@ -13,12 +13,17 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.FungusBlock;
+import net.minecraft.block.NetherRootsBlock;
+import net.minecraft.block.NetherSproutsBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext.Builder;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -32,6 +37,8 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -129,12 +136,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isFireSource(BlockState state, IWorldReader world, BlockPos pos, Direction side)
-	{
-		return this == SCContent.REINFORCED_NETHERRACK.get() && side == Direction.UP;
-	}
-
-	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
 		BlockState plant = plantable.getPlant(world, pos.offset(facing));
@@ -142,6 +143,14 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 		if(plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+
+		if (plantable instanceof BushBlock) //a workaround because BaseReinforcedBlock can't use isValidGround because it is protected
+		{
+			boolean bushCondition = state.isIn(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.isIn(SCContent.REINFORCED_DIRT.get()) || state.isIn(SCContent.REINFORCED_COARSE_DIRT.get()) || state.isIn(SCContent.REINFORCED_PODZOL.get());
+
+			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock || plantable instanceof FungusBlock)
+				return state.isIn(SCTags.Blocks.REINFORCED_NYLIUM) || state.isIn(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+		}
 
 		if(type == PlantType.DESERT)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
@@ -204,6 +213,33 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				else {
 					world.setBlockState(pos, Blocks.WATER.getDefaultState());
 					world.neighborChanged(pos, Blocks.WATER, pos);
+				}
+			}
+		}
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
+		if (this == SCContent.REINFORCED_CRYING_OBSIDIAN.get())
+		{
+			if(rand.nextInt(5) == 0)
+			{
+				Direction direction = Direction.func_239631_a_(rand);
+
+				if(direction != Direction.UP)
+				{
+					BlockPos offsetPos = pos.offset(direction);
+					BlockState offsetState = world.getBlockState(offsetPos);
+
+					if(!state.isSolid() || !offsetState.isSolidSide(world, offsetPos, direction.getOpposite()))
+					{
+						double xOffset = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getXOffset() * 0.6D;
+						double yOffset = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getYOffset() * 0.6D;
+						double zOffset = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getZOffset() * 0.6D;
+						
+						world.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0D, 0.0D, 0.0D);
+					}
 				}
 			}
 		}

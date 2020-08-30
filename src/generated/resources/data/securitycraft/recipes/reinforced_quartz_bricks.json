@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_quartz_block"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_quartz_bricks",
+    "count": 4
+  }
+}

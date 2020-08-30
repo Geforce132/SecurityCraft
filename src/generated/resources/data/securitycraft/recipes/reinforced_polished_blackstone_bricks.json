@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_polished_blackstone"
+    }
+  },
+  "result": {
+    "item": "securitycraft:reinforced_polished_blackstone_bricks",
+    "count": 4
+  }
+}
