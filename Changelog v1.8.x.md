@@ -1,5 +1,14 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
+- New: Reinforced Blocks: Crimson Nylium, Warped Nylium, Crimson Planks, Warped Planks, Crimson Stem, Warped Stem, Stripped Crimson Stem, Stripped Warped Stem, Stripped Crimson Hyphae, Stripped Warped Hyphae, Crimson Hyphae, Warped Hyphae, Crismon Slab, Warped Slab, Soul Soil, Basalt, Polished Basalt, Cracked Nether Bricks, Chiseled Nether Bricks, Crimson Stairs, Warped Stairs, Quartz Bricks, Warped Wart Block, Netherite Block, Crying Obsidian, Blackstone, Blackstone Slab, Blackstone Stairs, Polished Blackstone, Polished Blackstone Slab, Polished Blackstone Stairs, Polished Blackstone Bricks, Polished Blackstone Brick Slab, Polished Blackstone Brick Stairs, Chain, Blackstone Wall, Polished Blackstone Wall, Polished Blackstone Brick Wall, Lantern, Soul Lantern, Shroomlight, Crimson Pressure Plate, Warped Pressure Plate, Polished Blackstone Pressure Plate, Crimson Button, Warped Button, Polished Blackstone Button (Thanks Redstone_Dubstep!)
+- New: Ancient Debris Mine, Gilded Blackstone Mine, Nether Gold Ore Mine (Thanks Redstone_Dubstep!)
+- New: Secret Crimson and Secret Warped Signs (Thanks Redstone_Dubstep!)
+- New: Piglins now love Reinforced Gold Blocks (Thanks Redstone_Dubstep!)
+- New: Striders now find Fake Lava comfortably warm (Thanks Redstone_Dubstep!)
+- New: Reinforced Blocks are now immune to lava (Thanks Redstone_Dubstep!)
+- New: Block/item tags: securitycraft:reinforced/crimson_stems, securitycraft:reinforced/nylium, securitycraft:reinforced/pressure_plates, securitycraft:reinforced/warped_stems (Thanks Redstone_Dubstep!)
+- New: Support for the following block/item tags: minecraft:infiniburn_overworld, minecraft:mushroom_grow_block, minecraft:nylium, minecraft:pressure_plates, minecraft:soul_fire_base_blocks, minecraft:soul_speed_blocks, minecraft:strider_warm_blocks, minecraft:wither_summon_base_blocks, minecraft:piglin_loved (Thanks Redstone_Dubstep!)
+- Change: Sounds of reinforced blocks to match sounds of their vanilla equivalent (Thanks Redstone_Dubstep!)
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Incorrect item group name

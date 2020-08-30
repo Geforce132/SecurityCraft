@@ -42,7 +42,7 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowa
 
 	@Override
 	public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean flag) {
-		return world.getBlockState(pos.up()).isAir();
+		return world.getBlockState(pos.up()).isAir(world, pos);
 	}
 
 	@Override
@@ -54,6 +54,7 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowa
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState blockState) {
 		BlockState state = world.getBlockState(pos);
 		BlockPos upperPos = pos.up();
+
 		if (state.isIn(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.field_243987_k, 3, 1);
 		}

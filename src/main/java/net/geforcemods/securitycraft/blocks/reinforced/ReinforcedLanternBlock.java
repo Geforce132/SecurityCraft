@@ -49,7 +49,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
 		return state.get(HANGING) ? HANGING_SHAPE : STANDING_SHAPE;
 	}
 
@@ -59,28 +59,22 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		Direction direction = getBlockConnected(state).getOpposite();
-		return Block.hasEnoughSolidSide(worldIn, pos.offset(direction), direction.getOpposite());
+		return Block.hasEnoughSolidSide(world, pos.offset(direction), direction.getOpposite());
 	}
 	
 	protected static Direction getBlockConnected(BlockState state) {
 		return state.get(HANGING) ? Direction.DOWN : Direction.UP;
 	}
 
-	/**
-	 * Update the provided state given the provided neighbor facing and neighbor state, returning a new state.
-	 * For example, fences make their connections to the passed in state if possible, and wet concrete powder immediately
-	 * returns its solidified counterpart.
-	 * Note that this method should ideally consider only the specific face passed in.
-	 */
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		if (state.get(WATERLOGGED)) {
+			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 		}
 
-		return getBlockConnected(stateIn).getOpposite() == facing && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return getBlockConnected(state).getOpposite() == facing && !state.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
@@ -89,7 +83,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type) {
 		return false;
 	}
 }

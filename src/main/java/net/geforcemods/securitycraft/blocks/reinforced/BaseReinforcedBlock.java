@@ -136,12 +136,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isFireSource(BlockState state, IWorldReader world, BlockPos pos, Direction side)
-	{
-		return this == SCContent.REINFORCED_NETHERRACK.get() && side == Direction.UP;
-	}
-
-	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
 		BlockState plant = plantable.getPlant(world, pos.offset(facing));
@@ -226,22 +220,25 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if (this == SCContent.REINFORCED_CRYING_OBSIDIAN.get())
 		{
 			if(rand.nextInt(5) == 0)
 			{
 				Direction direction = Direction.func_239631_a_(rand);
+
 				if(direction != Direction.UP)
 				{
-					BlockPos blockpos = pos.offset(direction);
-					BlockState blockstate = worldIn.getBlockState(blockpos);
-					if(!stateIn.isSolid() || !blockstate.isSolidSide(worldIn, blockpos, direction.getOpposite()))
+					BlockPos offsetPos = pos.offset(direction);
+					BlockState offsetState = world.getBlockState(offsetPos);
+
+					if(!state.isSolid() || !offsetState.isSolidSide(world, offsetPos, direction.getOpposite()))
 					{
-						double d0 = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getXOffset() * 0.6D;
-						double d1 = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getYOffset() * 0.6D;
-						double d2 = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getZOffset() * 0.6D;
-						worldIn.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, 0.0D, 0.0D, 0.0D);
+						double xOffset = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getXOffset() * 0.6D;
+						double yOffset = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getYOffset() * 0.6D;
+						double zOffset = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getZOffset() * 0.6D;
+						
+						world.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0D, 0.0D, 0.0D);
 					}
 				}
 			}
