@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.SCContent;
+import java.util.function.Supplier;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -16,9 +17,9 @@ public class FakeLavaBlock extends FlowingFluidBlock
 {
 	private static final EffectInstance SHORT_FIRE_RESISTANCE = new EffectInstance(Effects.FIRE_RESISTANCE, 1);
 
-	public FakeLavaBlock()
+	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
 	{
-		super(SCContent.FAKE_LAVA, Block.Properties.create(Material.LAVA).doesNotBlockMovement().tickRandomly().hardnessAndResistance(-1.0F, 6000000.0F).setLightLevel(stat -> 15));
+		super(fluid, properties);
 	}
 
 	@Override

@@ -17,8 +17,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -44,8 +42,8 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
-	public CageTrapBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement());
+	public CageTrapBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 

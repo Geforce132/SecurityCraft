@@ -10,8 +10,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.SlabBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -37,9 +35,9 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
 
-	public HorizontalReinforcedIronBars(SoundType soundType, Material mat, Block vB)
+	public HorizontalReinforcedIronBars(Block.Properties properties, Block vB)
 	{
-		super(soundType, mat, vB);
+		super(properties, vB);
 		setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false));
 	}
 

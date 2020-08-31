@@ -9,9 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.StairsBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -65,14 +63,14 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	private final Block modelBlock;
 	private final BlockState modelState;
 
-	public ReinforcedStairsBlock(SoundType soundType, Material mat, Block vB)
+	public ReinforcedStairsBlock(Block.Properties properties, Block vB)
 	{
-		this(soundType, mat, () -> vB);
+		this(properties, () -> vB);
 	}
 
-	public ReinforcedStairsBlock(SoundType soundType, Material mat, Supplier<Block> vB)
+	public ReinforcedStairsBlock(Block.Properties properties, Supplier<Block> vB)
 	{
-		super(soundType, mat, vB);
+		super(properties, vB);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
 		modelBlock = getVanillaBlock();

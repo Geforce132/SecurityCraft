@@ -11,8 +11,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -45,14 +43,14 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 	protected static final VoxelShape BOTTOM_SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	protected static final VoxelShape TOP_SHAPE = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
-	public ReinforcedSlabBlock(SoundType soundType, Material mat, Block vB)
+	public ReinforcedSlabBlock(Block.Properties properties, Block vB)
 	{
-		this(soundType, mat, () -> vB);
+		this(properties, () -> vB);
 	}
 
-	public ReinforcedSlabBlock(SoundType soundType, Material mat, Supplier<Block> vB)
+	public ReinforcedSlabBlock(Block.Properties properties, Supplier<Block> vB)
 	{
-		super(soundType, mat, vB);
+		super(properties, vB);
 		setDefaultState(stateContainer.getBaseState().with(TYPE, SlabType.BOTTOM).with(WATERLOGGED, false));
 	}
 

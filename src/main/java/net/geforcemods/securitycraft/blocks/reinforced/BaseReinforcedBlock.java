@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
-import java.util.function.ToIntFunction;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
@@ -17,7 +16,6 @@ import net.minecraft.block.BushBlock;
 import net.minecraft.block.FungusBlock;
 import net.minecraft.block.NetherRootsBlock;
 import net.minecraft.block.NetherSproutsBlock;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,62 +44,14 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public BaseReinforcedBlock(Material mat, Block vB)
-	{
-		this(mat, vB, 0);
-	}
-
-	public BaseReinforcedBlock(Material mat, Block vB, int lightValue)
-	{
-		this(SoundType.STONE, mat, vB, state -> lightValue);
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB)
-	{
-		this(soundType, mat, vB, state -> 0);
-	}
-
 	public BaseReinforcedBlock(Block.Properties properties, Block vB)
 	{
-		super(properties.hardnessAndResistance(-1.0F, 6000000.0F));
-
-		vanillaBlockSupplier = () -> vB;
+		this(properties, () -> vB);
 	}
 
-	/**
-	 * Only use for non-solid blocks
-	 */
-	public BaseReinforcedBlock(Block.Properties properties, SoundType soundType, Block vB)
+	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB)
 	{
-		super(soundType, properties.notSolid());
-
-		vanillaBlockSupplier = () -> vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, float slipperiness)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).slipperiness(slipperiness));
-
-		vanillaBlockSupplier = () -> vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, ToIntFunction<BlockState> lightValue)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).setLightLevel(lightValue));
-
-		vanillaBlockSupplier = () -> vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F));
-
-		vanillaBlockSupplier = vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB, ToIntFunction<BlockState> lightValue)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).setLightLevel(lightValue));
+		super(properties);
 
 		vanillaBlockSupplier = vB;
 	}
@@ -237,7 +187,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 						double xOffset = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getXOffset() * 0.6D;
 						double yOffset = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getYOffset() * 0.6D;
 						double zOffset = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getZOffset() * 0.6D;
-						
+
 						world.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0D, 0.0D, 0.0D);
 					}
 				}

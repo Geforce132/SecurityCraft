@@ -4,9 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneTorchBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -29,9 +27,9 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock
 {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public RedstoneOreMineBlock()
+	public RedstoneOreMineBlock(Block.Properties properties, Block disguisedBlock)
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(3.0F, 6000000.0F).tickRandomly().setLightLevel(state -> state.get(LIT) ? 9 : 0), Blocks.REDSTONE_ORE);
+		super(properties, disguisedBlock);
 
 		setDefaultState(getDefaultState().with(LIT, false));
 	}

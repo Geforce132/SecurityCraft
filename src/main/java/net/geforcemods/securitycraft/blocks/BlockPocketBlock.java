@@ -7,16 +7,14 @@ import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
 
 public class BlockPocketBlock extends BaseReinforcedBlock implements IBlockPocket
 {
-	public BlockPocketBlock(Material mat, Supplier<Block> vB)
+	public BlockPocketBlock(Block.Properties properties, Supplier<Block> vB)
 	{
-		super(SoundType.STONE, mat, vB);
+		super(properties, vB);
 	}
 
 	@Override

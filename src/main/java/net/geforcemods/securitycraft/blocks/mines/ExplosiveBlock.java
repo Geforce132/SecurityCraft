@@ -8,8 +8,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResultType;
@@ -23,10 +21,6 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 
 	public ExplosiveBlock(Block.Properties properties) {
 		super(properties);
-	}
-
-	public ExplosiveBlock(SoundType soundType, Material material, float baseHardness) {
-		super(Block.Properties.create(material).sound(soundType).hardnessAndResistance(baseHardness, 6000000.0F));
 	}
 
 	@Override

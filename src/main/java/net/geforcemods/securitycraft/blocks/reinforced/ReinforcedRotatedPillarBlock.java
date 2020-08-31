@@ -5,8 +5,6 @@ import java.util.function.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -18,19 +16,14 @@ public class ReinforcedRotatedPillarBlock extends BaseReinforcedBlock
 {
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
-	public ReinforcedRotatedPillarBlock(Material mat, Block vB)
+	public ReinforcedRotatedPillarBlock(Block.Properties properties, Block vB)
 	{
-		this(SoundType.STONE, mat, () -> vB);
+		this(properties, () -> vB);
 	}
 
-	public ReinforcedRotatedPillarBlock(SoundType soundType, Material mat, Block vB)
+	public ReinforcedRotatedPillarBlock(Block.Properties properties, Supplier<Block> vB)
 	{
-		this(soundType, mat, () -> vB);
-	}
-
-	public ReinforcedRotatedPillarBlock(SoundType soundType, Material mat, Supplier<Block> vB)
-	{
-		super(soundType, mat, vB);
+		super(properties, vB);
 
 		setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y));
 	}

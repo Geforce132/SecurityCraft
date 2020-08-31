@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -31,9 +30,9 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
 
-	public BlockPocketWallBlock()
+	public BlockPocketWallBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).doesNotBlockMovement().setOpaque(BlockPocketWallBlock::isNormalCube).setSuffocates(BlockPocketWallBlock::causesSuffocation));
+		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
 	}

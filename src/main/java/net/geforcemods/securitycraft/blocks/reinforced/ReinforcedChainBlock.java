@@ -2,9 +2,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -24,8 +21,8 @@ public class ReinforcedChainBlock extends ReinforcedRotatedPillarBlock{
 	protected static final VoxelShape Y_AXIS_SHAPE = Block.makeCuboidShape(6.5D, 0.0D, 6.5D, 9.5D, 16.0D, 9.5D);
 	protected static final VoxelShape Z_AXIS_SHAPE = Block.makeCuboidShape(6.5D, 6.5D, 0.0D, 9.5D, 9.5D, 16.0D);
 
-	public ReinforcedChainBlock() {
-		super(SoundType.CHAIN, Material.IRON, Blocks.CHAIN);
+	public ReinforcedChainBlock(Block.Properties properties, Block vB) {
+		super(properties, vB);
 		this.setDefaultState(stateContainer.getBaseState().with(WATERLOGGED, false).with(AXIS, Direction.Axis.Y));
 	}
 

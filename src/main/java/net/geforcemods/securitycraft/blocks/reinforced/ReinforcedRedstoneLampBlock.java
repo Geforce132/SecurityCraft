@@ -6,10 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.RedstoneTorchBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -21,9 +18,9 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
 
-	public ReinforcedRedstoneLampBlock()
+	public ReinforcedRedstoneLampBlock(Block.Properties properties, Block vB)
 	{
-		super(Block.Properties.create(Material.REDSTONE_LIGHT).setLightLevel(state -> state.get(LIT) ? 15 : 0).hardnessAndResistance(-1.0F, 600000.0F), SoundType.GLASS, Blocks.REDSTONE_LAMP);
+		super(properties, vB);
 
 		setDefaultState(getDefaultState().with(LIT, false));
 	}

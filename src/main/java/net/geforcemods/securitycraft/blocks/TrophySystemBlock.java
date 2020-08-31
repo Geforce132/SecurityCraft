@@ -6,8 +6,6 @@ import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -33,8 +31,8 @@ public class TrophySystemBlock extends OwnableBlock {
 			Block.makeCuboidShape(6.5, 0, 1, 9.5, 1.5, 4)
 			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 
-	public TrophySystemBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).setOpaque(TrophySystemBlock::isNormalCube));
+	public TrophySystemBlock(Block.Properties properties) {
+		super(properties);
 	}
 
 	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {

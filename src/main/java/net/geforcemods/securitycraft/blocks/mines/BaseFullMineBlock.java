@@ -10,8 +10,6 @@ import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -32,24 +30,10 @@ import net.minecraft.world.World;
 public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable, IOverlayDisplay, IBlockMine {
 
 	private final Block blockDisguisedAs;
-	private final SoundType soundType;
 
 	public BaseFullMineBlock(Block.Properties properties, Block disguisedBlock) {
 		super(properties);
 		blockDisguisedAs = disguisedBlock;
-		this.soundType = SoundType.STONE;
-	}
-
-	public BaseFullMineBlock(Material material, SoundType soundType, Block disguisedBlock, float baseHardness) {
-		super(soundType, material, baseHardness);
-		blockDisguisedAs = disguisedBlock;
-		this.soundType = soundType;
-	}
-
-	@Override
-	public SoundType getSoundType(BlockState state)
-	{
-		return soundType;
 	}
 
 	@Override

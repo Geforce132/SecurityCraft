@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
@@ -27,8 +25,8 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 	protected static final VoxelShape STANDING_SHAPE = VoxelShapes.or(Block.makeCuboidShape(5.0D, 0.0D, 5.0D, 11.0D, 7.0D, 11.0D), Block.makeCuboidShape(6.0D, 7.0D, 6.0D, 10.0D, 9.0D, 10.0D));
 	protected static final VoxelShape HANGING_SHAPE = VoxelShapes.or(Block.makeCuboidShape(5.0D, 1.0D, 5.0D, 11.0D, 8.0D, 11.0D), Block.makeCuboidShape(6.0D, 8.0D, 6.0D, 10.0D, 10.0D, 10.0D));
 
-	public ReinforcedLanternBlock(Block vb, int lightLevel) {
-		super(SoundType.LANTERN, Material.IRON, vb, state -> lightLevel);
+	public ReinforcedLanternBlock(Block.Properties properties, Block vB) {
+		super(properties, vB);
 		this.setDefaultState(this.stateContainer.getBaseState().with(HANGING, false).with(WATERLOGGED, false));
 	}
 
@@ -63,7 +61,7 @@ public class ReinforcedLanternBlock extends BaseReinforcedBlock{
 		Direction direction = getBlockConnected(state).getOpposite();
 		return Block.hasEnoughSolidSide(world, pos.offset(direction), direction.getOpposite());
 	}
-	
+
 	protected static Direction getBlockConnected(BlockState state) {
 		return state.get(HANGING) ? Direction.DOWN : Direction.UP;
 	}

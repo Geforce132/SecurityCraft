@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -24,9 +23,9 @@ public class BlockPocketManagerBlock extends OwnableBlock
 {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
-	public BlockPocketManagerBlock()
+	public BlockPocketManagerBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(properties);
 	}
 
 	@Override

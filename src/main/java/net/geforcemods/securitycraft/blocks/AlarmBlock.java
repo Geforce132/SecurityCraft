@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -38,8 +37,8 @@ public class AlarmBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_UP = Block.makeCuboidShape(4, 0, 4, 12, 8, 12);
 	private static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(4, 8, 4, 12, 16, 12);
 
-	public AlarmBlock() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().setLightLevel(state -> state.get(LIT) ? 15 : 0));
+	public AlarmBlock(Block.Properties properties) {
+		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP).with(LIT, false));
 	}

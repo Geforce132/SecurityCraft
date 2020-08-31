@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -32,8 +31,8 @@ public class MineBlock extends ExplosiveBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(5, 0, 5, 11, 3, 11);
 
-	public MineBlock(Material material, float baseHardness) {
-		super(SoundType.STONE, material, baseHardness);
+	public MineBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 

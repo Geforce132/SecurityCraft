@@ -6,8 +6,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -45,8 +43,8 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.makeCuboidShape(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.makeCuboidShape(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock() {
-		super(false, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
+	public PanicButtonBlock(Block.Properties properties) {
+		super(false, properties);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,9 +18,9 @@ import net.minecraft.world.server.ServerWorld;
 
 public class ReinforcedFallingBlock extends BaseReinforcedBlock
 {
-	public ReinforcedFallingBlock(SoundType soundType, Material mat, Block vB)
+	public ReinforcedFallingBlock(Block.Properties properties, Block vB)
 	{
-		super(soundType, mat, vB);
+		super(properties, vB);
 	}
 
 	@Override

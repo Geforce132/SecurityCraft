@@ -5,10 +5,8 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.WallSignBlock;
 import net.minecraft.block.WoodType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -27,9 +25,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class SecretWallSignBlock extends WallSignBlock
 {
-	public SecretWallSignBlock(WoodType woodType)
+	public SecretWallSignBlock(Block.Properties properties, WoodType woodType)
 	{
-		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(-1.0F, 6000000.0F), woodType);
+		super(properties, woodType);
 	}
 
 	@Override

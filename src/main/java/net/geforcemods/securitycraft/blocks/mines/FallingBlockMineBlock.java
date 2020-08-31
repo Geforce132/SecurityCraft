@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -23,9 +22,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock
 {
-	public FallingBlockMineBlock(Material material, SoundType soundType, Block disguisedBlock, float baseHardness)
+	public FallingBlockMineBlock(Block.Properties properties, Block disguisedBlock)
 	{
-		super(material, soundType, disguisedBlock, baseHardness);
+		super(properties, disguisedBlock);
 	}
 
 	@Override

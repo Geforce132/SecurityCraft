@@ -26,8 +26,8 @@ public class PortableRadarBlock extends OwnableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(5, 0, 5, 11, 7, 11);
 
-	public PortableRadarBlock(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+	public PortableRadarBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
 	}
 

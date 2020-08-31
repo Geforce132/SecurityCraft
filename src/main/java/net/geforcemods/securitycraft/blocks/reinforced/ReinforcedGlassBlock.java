@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -14,9 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedGlassBlock extends BaseReinforcedBlock
 {
-	public ReinforcedGlassBlock(Block vB)
+	public ReinforcedGlassBlock(Block.Properties properties, Block vB)
 	{
-		super(Block.Properties.create(Material.GLASS).hardnessAndResistance(-1.0F, 6000000.0F), SoundType.GLASS, vB);
+		super(properties, vB);
 	}
 
 	@Override

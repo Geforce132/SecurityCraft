@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -40,8 +39,8 @@ public class ProjectorBlock extends DisguisableBlock {
 	private static final VoxelShape WEST = Stream.of(Block.makeCuboidShape(0.5, 5, 13, 1, 8, 14), Block.makeCuboidShape(0.5, 5, 9, 1, 8, 10), Block.makeCuboidShape(0.5, 4, 9, 1, 5, 14), Block.makeCuboidShape(0.5, 8, 9, 1, 9, 14), Block.makeCuboidShape(0.75, 5, 10, 1.75, 8, 13), Block.makeCuboidShape(1, 0, 14, 3, 3, 16), Block.makeCuboidShape(14, 0, 14, 16, 3, 16), Block.makeCuboidShape(14, 0, 0, 16, 3, 2), Block.makeCuboidShape(1, 0, 0, 3, 3, 2), Block.makeCuboidShape(1, 3, 0, 16, 10, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 	private static final VoxelShape EAST = Stream.of(Block.makeCuboidShape(15, 5, 2, 15.5, 8, 3), Block.makeCuboidShape(15, 5, 6, 15.5, 8, 7), Block.makeCuboidShape(15, 4, 2, 15.5, 5, 7), Block.makeCuboidShape(15, 8, 2, 15.5, 9, 7), Block.makeCuboidShape(14.25, 5, 3, 15.25, 8, 6), Block.makeCuboidShape(13, 0, 0, 15, 3, 2), Block.makeCuboidShape(0, 0, 0, 2, 3, 2), Block.makeCuboidShape(0, 0, 14, 2, 3, 16), Block.makeCuboidShape(13, 0, 14, 15, 3, 16), Block.makeCuboidShape(0, 3, 0, 15, 10, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 
-	public ProjectorBlock(Properties properties) {
-		super(SoundType.METAL, properties);
+	public ProjectorBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 

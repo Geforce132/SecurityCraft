@@ -8,8 +8,6 @@ import net.minecraft.block.IBucketPickupHandler;
 import net.minecraft.block.ILiquidContainer;
 import net.minecraft.block.PaneBlock;
 import net.minecraft.block.SixWayBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -42,9 +40,9 @@ public class ReinforcedPaneBlock extends BaseReinforcedBlock implements IBucketP
 	protected final VoxelShape[] field_196410_A;
 	protected final VoxelShape[] field_196412_B;
 
-	public ReinforcedPaneBlock(SoundType soundType, Material mat, Block vB)
+	public ReinforcedPaneBlock(Block.Properties properties, Block vB)
 	{
-		super(soundType, mat, vB);
+		super(properties, vB);
 		field_196410_A = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		field_196412_B = func_196408_a(1.0F, 1.0F, 16.0F, 0.0F, 16.0F);
 		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(WATERLOGGED, false));

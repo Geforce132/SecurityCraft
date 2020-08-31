@@ -22,11 +22,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 {
 	public DisguisableBlock(Block.Properties properties)
 	{
-		super(properties.notSolid().setOpaque(DisguisableBlock::isNormalCube).setSuffocates(DisguisableBlock::isSuffocating));
-	}
-
-	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
-		super(soundType, properties.notSolid().setOpaque(DisguisableBlock::isNormalCube).setSuffocates(DisguisableBlock::isSuffocating));
+		super(properties);
 	}
 
 	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)

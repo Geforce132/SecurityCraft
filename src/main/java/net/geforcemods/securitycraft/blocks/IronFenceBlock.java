@@ -11,9 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.SixWayBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -52,9 +49,9 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
 
-	public IronFenceBlock(Material material)
+	public IronFenceBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(material, MaterialColor.IRON).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
+		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false));
 		renderShapes = func_196408_a(2.0F, 1.0F, 16.0F, 6.0F, 15.0F);
