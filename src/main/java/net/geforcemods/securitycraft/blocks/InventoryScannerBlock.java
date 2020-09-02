@@ -69,17 +69,14 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if(world.isRemote)
 			return;
 
-		checkAndPlaceAppropriately(world, pos, entity);
+		checkAndPlaceAppropriately(world, pos);
 	}
 
-	private void checkAndPlaceAppropriately(World world, BlockPos pos, LivingEntity entity)
+	private void checkAndPlaceAppropriately(World world, BlockPos pos)
 	{
-		if(!(entity instanceof PlayerEntity))
-			return;
-
 		InventoryScannerTileEntity connectedScanner = getConnectedInventoryScanner(world, pos);
 
-		if(connectedScanner == null || !connectedScanner.getOwner().isOwner((PlayerEntity)entity))
+		if(connectedScanner == null || !connectedScanner.getOwner().equals(((InventoryScannerTileEntity)world.getTileEntity(pos)).getOwner()))
 			return;
 
 		Direction facing = world.getBlockState(pos).get(FACING);
@@ -175,6 +172,11 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor) {
+		checkAndPlaceAppropriately((World)world, pos);
 	}
 
 	/**
