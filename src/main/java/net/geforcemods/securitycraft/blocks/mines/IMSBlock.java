@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -46,8 +45,8 @@ public class IMSBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_3_MINES = VoxelShapes.or(SHAPE_2_MINES, Block.makeCuboidShape(11, 0, 0, 16, 5, 5));
 	private static final VoxelShape SHAPE_4_MINES = VoxelShapes.or(SHAPE_3_MINES, Block.makeCuboidShape(11, 0, 11, 16, 5, 16));
 
-	public IMSBlock(Material material) {
-		super(SoundType.METAL, Block.Properties.create(material).hardnessAndResistance(0.7F, 6000000.0F));
+	public IMSBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(MINES, 4));
 	}
 

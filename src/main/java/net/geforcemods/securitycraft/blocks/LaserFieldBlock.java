@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,8 +38,8 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 	private static final VoxelShape SHAPE_Y = Block.makeCuboidShape(6.75, 0, 6.75, 9.25, 16, 9.25);
 	private static final VoxelShape SHAPE_Z = Block.makeCuboidShape(6.75, 6.75, 0, 9.25, 9.25, 16);
 
-	public LaserFieldBlock(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+	public LaserFieldBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(BOUNDTYPE, 1));
 	}
 

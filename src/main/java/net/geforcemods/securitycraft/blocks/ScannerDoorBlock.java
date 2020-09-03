@@ -6,8 +6,6 @@ import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,9 +21,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ScannerDoorBlock extends DoorBlock
 {
-	public ScannerDoorBlock(Material material)
+	public ScannerDoorBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F).notSolid());
+		super(properties);
 	}
 
 	@Override

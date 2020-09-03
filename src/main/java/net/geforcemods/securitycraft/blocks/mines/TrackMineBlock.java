@@ -9,8 +9,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RailBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -29,8 +27,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class TrackMineBlock extends RailBlock implements IExplosive {
 
-	public TrackMineBlock() {
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(0.7F, 6000000.0F).doesNotBlockMovement().sound(SoundType.METAL));
+	public TrackMineBlock(Block.Properties properties) {
+		super(properties);
 	}
 
 	@Override

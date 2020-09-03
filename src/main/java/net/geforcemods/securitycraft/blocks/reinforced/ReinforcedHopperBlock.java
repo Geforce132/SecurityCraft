@@ -10,9 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HopperBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,9 +26,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock
 {
-	public ReinforcedHopperBlock()
+	public ReinforcedHopperBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(Material.IRON, MaterialColor.STONE).hardnessAndResistance(-1.0F, 60000000.0F).sound(SoundType.METAL).notSolid());
+		super(properties);
 	}
 
 	@Override

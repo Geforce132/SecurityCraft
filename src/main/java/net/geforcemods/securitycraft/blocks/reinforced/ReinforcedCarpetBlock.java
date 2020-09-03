@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -16,9 +14,9 @@ public class ReinforcedCarpetBlock extends BaseReinforcedBlock
 {
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-	public ReinforcedCarpetBlock(Block block)
+	public ReinforcedCarpetBlock(Block.Properties properties, Block block)
 	{
-		super(SoundType.CLOTH, Material.WOOL, block);
+		super(properties, block);
 	}
 
 	@Override

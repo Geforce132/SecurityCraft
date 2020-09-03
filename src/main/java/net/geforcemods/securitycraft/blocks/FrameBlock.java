@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
@@ -30,8 +28,8 @@ public class FrameBlock extends OwnableBlock {
 	private static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(2, 2, 15, 14, 14, 16);
 	private static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(0, 2, 2, 1, 14, 14);
 
-	public FrameBlock(Material material){
-		super(SoundType.STONE, Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F));
+	public FrameBlock(Block.Properties properties){
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 

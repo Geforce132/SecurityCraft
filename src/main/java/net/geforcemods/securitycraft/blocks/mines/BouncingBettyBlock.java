@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -33,8 +32,8 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	private static final VoxelShape SHAPE = Block.makeCuboidShape(3, 0, 3, 13, 3, 13);
 
-	public BouncingBettyBlock(Material material, float baseHardness) {
-		super(SoundType.STONE, material, baseHardness);
+	public BouncingBettyBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
 	}
 

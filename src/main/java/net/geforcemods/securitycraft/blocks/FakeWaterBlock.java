@@ -1,23 +1,24 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.SCContent;
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class FakeWaterBlock extends FlowingFluidBlock
 {
-	public FakeWaterBlock()
+	public FakeWaterBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
 	{
-		super(SCContent.FAKE_WATER, Block.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F));
+		super(fluid, properties);
 	}
 
 	@Override

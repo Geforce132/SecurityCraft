@@ -12,7 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,55 +37,14 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 {
 	private final Supplier<Block> vanillaBlockSupplier;
 
-	public BaseReinforcedBlock(Material mat, Block vB)
-	{
-		this(mat, vB, 0);
-	}
-
-	public BaseReinforcedBlock(Material mat, Block vB, int lightValue)
-	{
-		this(SoundType.STONE, mat, vB, lightValue);
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB)
-	{
-		this(soundType, mat, vB, 0);
-	}
-
 	public BaseReinforcedBlock(Block.Properties properties, Block vB)
 	{
-		super(properties.hardnessAndResistance(-1.0F, 6000000.0F));
-
-		vanillaBlockSupplier = () -> vB;
+		this(properties, () -> vB);
 	}
 
-	/**
-	 * Only use for non-solid blocks
-	 */
-	public BaseReinforcedBlock(Block.Properties properties, SoundType soundType, Block vB)
+	public BaseReinforcedBlock(Block.Properties properties, Supplier<Block> vB)
 	{
-		super(soundType, properties.notSolid());
-
-		vanillaBlockSupplier = () -> vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, float slipperiness)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).slipperiness(slipperiness));
-
-		vanillaBlockSupplier = () -> vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Block vB, int lightValue)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(lightValue));
-
-		vanillaBlockSupplier = () -> vB;
-	}
-
-	public BaseReinforcedBlock(SoundType soundType, Material mat, Supplier<Block> vB, int lightValue)
-	{
-		super(soundType, Block.Properties.create(mat).hardnessAndResistance(-1.0F, 6000000.0F).lightValue(lightValue));
+		super(properties);
 
 		vanillaBlockSupplier = vB;
 	}

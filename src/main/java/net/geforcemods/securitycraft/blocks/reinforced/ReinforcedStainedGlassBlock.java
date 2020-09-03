@@ -15,9 +15,9 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 {
 	private final DyeColor color;
 
-	public ReinforcedStainedGlassBlock(DyeColor color, Block vB)
+	public ReinforcedStainedGlassBlock(Block.Properties properties, DyeColor color, Block vB)
 	{
-		super(vB);
+		super(properties, vB);
 		this.color = color;
 	}
 
