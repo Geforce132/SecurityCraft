@@ -10,3 +10,4 @@
 /run
 /src/generated/resources/.cache/*
 /.idea
+/logs
