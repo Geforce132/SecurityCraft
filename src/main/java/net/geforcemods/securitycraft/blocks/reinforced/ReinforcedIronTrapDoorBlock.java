@@ -6,9 +6,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.TrapDoorBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,8 +21,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinforcedBlock {
 
-	public ReinforcedIronTrapDoorBlock(Material material) {
-		super(Block.Properties.create(material).sound(SoundType.METAL).hardnessAndResistance(-1.0F, 6000000.0F).notSolid());
+	public ReinforcedIronTrapDoorBlock(Block.Properties properties) {
+		super(properties);
 	}
 
 	@Override

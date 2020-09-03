@@ -9,8 +9,6 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -29,8 +27,6 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinforcedBlock
 {
-	public static final Block.Properties STONE_PROPERTIES = Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F);
-	public static final Block.Properties WOOD_PROPERTIES = Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.WOOD);
 	private final Block vanillaBlock;
 	public boolean isWoodenButton;
 

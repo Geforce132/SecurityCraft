@@ -10,8 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ObserverBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -26,9 +24,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
 {
-	public ReinforcedObserverBlock()
+	public ReinforcedObserverBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(properties);
 	}
 
 	@Override
