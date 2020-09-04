@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.TaserBulletEntity;
 import net.geforcemods.securitycraft.items.ReinforcedBlockItem;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard1Condition;
@@ -211,14 +210,6 @@ public class RegistrationHandler
 				.setCustomClientFactory((spawnEntity, world) -> new BouncingBettyEntity(SCContent.eTypeBouncingBetty, world))
 				.build(SecurityCraft.MODID + ":bouncingbetty")
 				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty")));
-		event.getRegistry().register(EntityType.Builder.<TaserBulletEntity>create(TaserBulletEntity::new, EntityClassification.MISC)
-				.size(0.01F, 0.01F)
-				.setTrackingRange(256)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.setCustomClientFactory((spawnEntity, world) -> new TaserBulletEntity(SCContent.eTypeTaserBullet, world))
-				.build(SecurityCraft.MODID + ":taserbullet")
-				.setRegistryName(new ResourceLocation(SecurityCraft.MODID, "taserbullet")));
 		event.getRegistry().register(EntityType.Builder.<IMSBombEntity>create(IMSBombEntity::new, EntityClassification.MISC)
 				.size(0.25F, 0.3F)
 				.setTrackingRange(256)
