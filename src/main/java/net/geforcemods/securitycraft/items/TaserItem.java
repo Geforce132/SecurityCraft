@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
@@ -87,6 +88,7 @@ public class TaserItem extends Item {
 				EntityRayTraceResult entityRayTraceResult = ProjectileHelper.rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.getPosX(), player.getPosY(), player.getPosZ(), SCSounds.TASERFIRED.path, 1.0F, "players"));
+
 				if (entityRayTraceResult != null)
 				{
 					LivingEntity entity = (LivingEntity)entityRayTraceResult.getEntity();
@@ -96,9 +98,9 @@ public class TaserItem extends Item {
 						int strength = powered ? 4 : 1;
 						int length = powered ? 400 : 200;
 
-						entity.addPotionEffect(new EffectInstance(Effect.get(18), length, strength));
-						entity.addPotionEffect(new EffectInstance(Effect.get(9), length, strength));
-						entity.addPotionEffect(new EffectInstance(Effect.get(2), length, strength));
+						entity.addPotionEffect(new EffectInstance(Effects.WEAKNESS, length, strength));
+						entity.addPotionEffect(new EffectInstance(Effects.NAUSEA, length, strength));
+						entity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, length, strength));
 					}
 				}
 
