@@ -2,6 +2,8 @@
 
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
+- Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
+- Removed: Taser Bullet entity
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
 
