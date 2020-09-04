@@ -54,6 +54,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassPathBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNetherrackBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
@@ -517,6 +518,7 @@ public class SCContent
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS_PANE = BLOCKS.register("reinforced_green_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS_PANE = BLOCKS.register("reinforced_red_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS_PANE = BLOCKS.register("reinforced_black_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE));
+	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_LANTERN = BLOCKS.register("reinforced_lantern", () -> new ReinforcedLanternBlock(prop(Material.IRON).sound(SoundType.LANTERN).lightValue(15), Blocks.LANTERN));
 	//ordered by vanilla redstone tab order
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(Material.MISCELLANEOUS).doesNotBlockMovement().sound(SoundType.WOOD)));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop().doesNotBlockMovement(), Blocks.STONE_PRESSURE_PLATE));

@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
+- New: Reinforced Lantern (Thanks Redstone_Dubstep!)
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
