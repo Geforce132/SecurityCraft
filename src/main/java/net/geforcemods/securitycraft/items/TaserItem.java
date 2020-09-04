@@ -124,42 +124,54 @@ public class TaserItem extends Item {
 	}
 
 	//Copied from ProjectileHelper to get rid of the @OnlyIn(Dist.CLIENT) annotation
-	public static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist) {
+	private static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist) 
+	{
 		World world = shooter.world;
 		double distance = dist;
-		Entity entity = null;
-		Vector3d vector3d = null;
+		Entity rayTracedEntity = null;
+		Vector3d hitVec = null;
 
-		for(Entity entity1 : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter)) {
-			AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(entity1.getCollisionBorderSize());
-			Optional<Vector3d> optional = axisalignedbb.rayTrace(startVec, endVec);
-			if (axisalignedbb.contains(startVec)) {
-				if (distance >= 0.0D) {
-					entity = entity1;
-					vector3d = optional.orElse(startVec);
+		for(Entity entity : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter)) 
+		{
+			AxisAlignedBB boxToCheck = entity.getBoundingBox().grow(entity.getCollisionBorderSize());
+			Optional<Vector3d> optional = boxToCheck.rayTrace(startVec, endVec);
+			
+			if(boxToCheck.contains(startVec)) 
+			{
+				if(distance >= 0.0D) 
+				{
+					rayTracedEntity = entity;
+					hitVec = optional.orElse(startVec);
 					distance = 0.0D;
 				}
-			} else if (optional.isPresent()) {
-				Vector3d vector3d1 = optional.get();
-				double d1 = startVec.squareDistanceTo(vector3d1);
-				if (d1 < distance || distance == 0.0D) {
-					if (entity1.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity1.canRiderInteract()) {
-						if (distance == 0.0D) {
-							entity = entity1;
-							vector3d = vector3d1;
+			} 
+			else if(optional.isPresent()) 
+			{
+				Vector3d vector = optional.get();
+				double sqDist = startVec.squareDistanceTo(vector);
+				
+				if(sqDist < distance || distance == 0.0D) 
+				{
+					if(entity.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity.canRiderInteract()) 
+					{
+						if(distance == 0.0D)
+						{
+							rayTracedEntity = entity;
+							hitVec = vector;
 						}
-					} else {
-						entity = entity1;
-						vector3d = vector3d1;
-						distance = d1;
+					} 
+					else 
+					{
+						rayTracedEntity = entity;
+						hitVec = vector;
+						distance = sqDist;
 					}
 				}
 			}
 		}
 
-		return entity == null ? null : new EntityRayTraceResult(entity, vector3d);
+		return rayTracedEntity == null ? null : new EntityRayTraceResult(rayTracedEntity, hitVec);
 	}
-
 	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)
 	{
 		if(hand == Hand.MAIN_HAND)
