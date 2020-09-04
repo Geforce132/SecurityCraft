@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -8,13 +11,11 @@ import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
@@ -85,7 +86,7 @@ public class TaserItem extends Item {
 				Vector3d lookVec = player.getLook(1.0F).scale(range);
 				Vector3d endVec = startVec.add(lookVec);
 				AxisAlignedBB boundingBox = player.getBoundingBox().expand(lookVec).grow(1, 1, 1);
-				EntityRayTraceResult entityRayTraceResult = ProjectileHelper.rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
+				EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
 				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.getPosX(), player.getPosY(), player.getPosZ(), SCSounds.TASERFIRED.path, 1.0F, "players"));
 
@@ -120,6 +121,43 @@ public class TaserItem extends Item {
 		}
 
 		return ActionResult.resultPass(stack);
+	}
+
+	//Copied from ProjectileHelper to get rid of the @OnlyIn(Dist.CLIENT) annotation
+	public static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist) {
+		World world = shooter.world;
+		double distance = dist;
+		Entity entity = null;
+		Vector3d vector3d = null;
+
+		for(Entity entity1 : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter)) {
+			AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(entity1.getCollisionBorderSize());
+			Optional<Vector3d> optional = axisalignedbb.rayTrace(startVec, endVec);
+			if (axisalignedbb.contains(startVec)) {
+				if (distance >= 0.0D) {
+					entity = entity1;
+					vector3d = optional.orElse(startVec);
+					distance = 0.0D;
+				}
+			} else if (optional.isPresent()) {
+				Vector3d vector3d1 = optional.get();
+				double d1 = startVec.squareDistanceTo(vector3d1);
+				if (d1 < distance || distance == 0.0D) {
+					if (entity1.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity1.canRiderInteract()) {
+						if (distance == 0.0D) {
+							entity = entity1;
+							vector3d = vector3d1;
+						}
+					} else {
+						entity = entity1;
+						vector3d = vector3d1;
+						distance = d1;
+					}
+				}
+			}
+		}
+
+		return entity == null ? null : new EntityRayTraceResult(entity, vector3d);
 	}
 
 	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)
