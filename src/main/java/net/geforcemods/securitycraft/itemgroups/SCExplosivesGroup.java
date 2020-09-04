@@ -11,7 +11,8 @@ public class SCExplosivesGroup extends ItemGroup
 {
 	public SCExplosivesGroup()
 	{
-		super(SecurityCraft.MODID);
+		super(SecurityCraft.MODID + ".explosives");
+		setTabPath(SecurityCraft.MODID);
 	}
 
 	@Override

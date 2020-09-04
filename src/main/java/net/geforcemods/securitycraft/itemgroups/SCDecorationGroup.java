@@ -11,7 +11,8 @@ public class SCDecorationGroup extends ItemGroup
 {
 	public SCDecorationGroup()
 	{
-		super(SecurityCraft.MODID);
+		super(SecurityCraft.MODID + ".decoration");
+		setTabPath(SecurityCraft.MODID);
 	}
 
 	@Override
