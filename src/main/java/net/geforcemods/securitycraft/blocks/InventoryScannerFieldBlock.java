@@ -237,10 +237,18 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	{
 		if(!world.isRemote())
 		{
-			checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
-			checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
-			checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
-			checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
+			Direction facing = state.get(FACING);
+
+			if (facing == Direction.EAST || facing == Direction.WEST)
+			{
+				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
+				checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
+			}
+			else if (facing == Direction.NORTH || facing == Direction.SOUTH)
+			{
+				checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
+				checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
+			}
 		}
 	}
 
@@ -254,7 +262,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			{
 				for(int j = 1; j < i; j++)
 				{
-					world.destroyBlock(modifiedPos, false);
+					world.destroyBlock(posModifier.apply(pos, j), false);
 				}
 
 				break;
