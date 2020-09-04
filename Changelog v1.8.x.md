@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
+
+- Fix: WAILA exploit
+
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
 
 - Fix: Packet exploit
