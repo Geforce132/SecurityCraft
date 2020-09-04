@@ -12,7 +12,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SnowyDirtBlock;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,9 +37,9 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 {
 	private Block vanillaBlock;
 
-	public ReinforcedSnowyDirtBlock(Material mat, SoundType soundType, Block vB)
+	public ReinforcedSnowyDirtBlock(Block.Properties properties, Block vB)
 	{
-		super(Block.Properties.create(mat).sound(soundType).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(properties);
 		this.vanillaBlock = vB;
 	}
 

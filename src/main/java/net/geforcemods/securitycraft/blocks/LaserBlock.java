@@ -9,8 +9,6 @@ import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.RedstoneParticleData;
@@ -31,8 +29,8 @@ public class LaserBlock extends DisguisableBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public LaserBlock(Material material) {
-		super(Block.Properties.create(material).hardnessAndResistance(-1.0F, 6000000.0F).tickRandomly().sound(SoundType.METAL));
+	public LaserBlock(Block.Properties properties) {
+		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(POWERED, false));
 	}
 

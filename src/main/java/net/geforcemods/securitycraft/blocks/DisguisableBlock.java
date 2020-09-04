@@ -26,10 +26,6 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		super(properties);
 	}
 
-	public DisguisableBlock(SoundType soundType, Block.Properties properties) {
-		super(soundType, properties);
-	}
-
 	@Override
 	public SoundType getSoundType(BlockState state, IWorldReader world, BlockPos pos, Entity entity)
 	{

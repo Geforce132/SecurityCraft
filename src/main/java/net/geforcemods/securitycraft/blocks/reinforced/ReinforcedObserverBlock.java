@@ -2,14 +2,14 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ObserverBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,13 +22,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.MinecraftForge;
 
-import javax.annotation.Nullable;
-
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
 {
-	public ReinforcedObserverBlock()
+	public ReinforcedObserverBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(properties);
 	}
 
 	@Override

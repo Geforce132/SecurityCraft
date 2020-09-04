@@ -5,9 +5,7 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.StandingSignBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -25,9 +23,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class SecretStandingSignBlock extends StandingSignBlock
 {
-	public SecretStandingSignBlock()
+	public SecretStandingSignBlock(Block.Properties properties)
 	{
-		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(-1.0F, 6000000.0F));
+		super(properties);
 	}
 
 	@Override

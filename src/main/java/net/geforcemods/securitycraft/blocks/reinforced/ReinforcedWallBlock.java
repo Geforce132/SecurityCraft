@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.WallBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,11 +22,6 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock
 {
 	private final Supplier<Block> vanillaBlockSupplier;
-
-	public ReinforcedWallBlock(Block vanillaBlock)
-	{
-		this(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F), vanillaBlock);
-	}
 
 	public ReinforcedWallBlock(Block.Properties properties, Block vanillaBlock)
 	{

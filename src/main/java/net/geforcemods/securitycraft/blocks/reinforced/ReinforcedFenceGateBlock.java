@@ -9,8 +9,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -28,8 +26,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedFenceGateBlock extends FenceGateBlock implements IIntersectable {
 
-	public ReinforcedFenceGateBlock(){
-		super(Block.Properties.create(Material.IRON).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
+	public ReinforcedFenceGateBlock(Block.Properties properties){
+		super(properties);
 	}
 
 	/**

@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -17,11 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class OwnableBlock extends Block {
 
 	public OwnableBlock(Block.Properties properties) {
-		this(SoundType.STONE, properties);
-	}
-
-	public OwnableBlock(SoundType soundType, Block.Properties properties) {
-		super(properties.sound(soundType));
+		super(properties);
 	}
 
 	@Override
