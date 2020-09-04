@@ -220,7 +220,6 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.USERNAME_LOGGER.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.PROJECTOR.get(), cutoutMipped);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeBouncingBetty, BouncingBettyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeTaserBullet, EmptyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeImsBomb, IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSecurityCamera, EmptyRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(SCContent.eTypeSentry, SentryRenderer::new);
