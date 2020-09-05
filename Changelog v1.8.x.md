@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - Fix: WAILA exploit
+- Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
 
@@ -9,7 +10,7 @@
 --------------------------Changelog for v1.8.19.2 of SecurityCraft--------------------------
 
 - Fix: SecurityCraft is incompatible with OpenCubicChunks
-- Fix: Crash on SC Manual pages with subpages, when using a language that does not use spaces to seperate words
+- Fix: Crash on SC Manual pages with subpages, when using a language that does not use spaces to seperate words (Thanks jihuayu!)
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
 

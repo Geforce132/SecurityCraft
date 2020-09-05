@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
-import net.geforcemods.securitycraft.entity.EntityTaserBullet;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCrystalQuartzSlab;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockCustomQuartz;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedCompressedBlocks;
@@ -393,12 +392,6 @@ public class RegistrationHandler
 				.entity(EntityBouncingBetty.class)
 				.name("BBetty")
 				.tracker(128, 1, true).build());
-
-		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation(SecurityCraft.MODID, "taserbullet"), 2)
-				.entity(EntityTaserBullet.class)
-				.name("TazerBullet")
-				.tracker(256, 1, true).build());
 
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), 3)
