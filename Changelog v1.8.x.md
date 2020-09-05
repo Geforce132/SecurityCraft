@@ -14,6 +14,7 @@
 - Change: Laser and Taser damage no longer bypasses armor
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
+- Fix: Walking through a block pocket wall blocks vision
 - Removed: Taser Bullet entity
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
