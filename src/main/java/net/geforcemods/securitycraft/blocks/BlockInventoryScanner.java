@@ -118,14 +118,19 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		checkAndPlaceAppropriately(world, pos, entity);
 	}
 
-	private void checkAndPlaceAppropriately(World world, BlockPos pos, EntityLivingBase entity)
+	private void checkAndPlaceAppropriately(World world, BlockPos pos, EntityLivingBase player)
 	{
-		if(!(entity instanceof EntityPlayer))
-			return;
-
 		TileEntityInventoryScanner connectedScanner = getConnectedInventoryScanner(world, pos);
 
-		if(connectedScanner == null || !connectedScanner.getOwner().isOwner((EntityPlayer)entity))
+		if(connectedScanner == null)
+			return;
+
+		if(player instanceof EntityPlayer)
+		{
+			if(!connectedScanner.getOwner().isOwner((EntityPlayer)player))
+				return;
+		}
+		else if(!connectedScanner.getOwner().equals(((TileEntityInventoryScanner)world.getTileEntity(pos)).getOwner()))
 			return;
 
 		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
@@ -143,6 +148,12 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		}
 
 		CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), connectedScanner);
+	}
+
+	@Override
+	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
+	{
+		checkAndPlaceAppropriately(world, pos, null);
 	}
 
 	@Override

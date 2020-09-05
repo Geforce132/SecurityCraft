@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.function.BiFunction;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
@@ -275,56 +277,35 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	{
 		if(!world.isRemote)
 		{
-			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
-			{
-				if(BlockUtils.getBlock(world, pos.west(i)) == SCContent.inventoryScanner)
-				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.west(j), false);
-					}
+			EnumFacing facing = state.getValue(FACING);
 
-					break;
-				}
+			if (facing == EnumFacing.EAST || facing == EnumFacing.WEST)
+			{
+				checkAndDestroyFields(world, pos, (p, i) -> p.west(i));
+				checkAndDestroyFields(world, pos, (p, i) -> p.east(i));
 			}
-
-			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
+			else if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH)
 			{
-				if(BlockUtils.getBlock(world, pos.east(i)) == SCContent.inventoryScanner)
-				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.east(j), false);
-					}
-
-					break;
-				}
+				checkAndDestroyFields(world, pos, (p, i) -> p.north(i));
+				checkAndDestroyFields(world, pos, (p, i) -> p.south(i));
 			}
+		}
+	}
 
-			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
+	private void checkAndDestroyFields(World world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
+	{
+		for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
+		{
+			BlockPos modifiedPos = posModifier.apply(pos, i);
+
+			if(BlockUtils.getBlock(world, modifiedPos) == SCContent.inventoryScanner)
 			{
-				if(BlockUtils.getBlock(world, pos.north(i)) == SCContent.inventoryScanner)
+				for(int j = 1; j < i; j++)
 				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.north(j), false);
-					}
-
-					break;
+					world.destroyBlock(posModifier.apply(pos, j), false);
 				}
-			}
 
-			for(int i = 0; i < ConfigHandler.inventoryScannerRange; i++)
-			{
-				if(BlockUtils.getBlock(world, pos.south(i)) == SCContent.inventoryScanner)
-				{
-					for(int j = 1; j < i; j++)
-					{
-						world.destroyBlock(pos.south(j), false);
-					}
-
-					break;
-				}
+				break;
 			}
 		}
 	}
