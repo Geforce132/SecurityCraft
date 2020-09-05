@@ -4,6 +4,7 @@
 - Change: Laser and Taser damage no longer bypasses armor
 - Fix: WAILA exploit
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
+- Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen 
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
 
