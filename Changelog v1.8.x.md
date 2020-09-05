@@ -13,6 +13,7 @@
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
 - Change: Laser and Taser damage no longer bypasses armor
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
+- Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Removed: Taser Bullet entity
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------

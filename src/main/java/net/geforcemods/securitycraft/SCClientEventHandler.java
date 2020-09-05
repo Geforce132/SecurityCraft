@@ -216,14 +216,15 @@ public class SCClientEventHandler
 		ITextComponent nightVision = ClientUtils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
 		ITextComponent redstone = ClientUtils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.func_238171_j_());
 		ITextComponent redstoneNote = ClientUtils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+		String time = ClientUtils.getFormattedMinecraftTime();
 
-		font.drawStringWithShadow(matrix, ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() / 2 - font.getStringWidth(ClientUtils.getFormattedMinecraftTime()) / 2, 8, 16777215);
+		font.drawStringWithShadow(matrix, time, resolution.getScaledWidth() - font.getStringWidth(time) - 8, 25, 16777215);
 		//drawStringWithShadow
-		font.func_243246_a(matrix, exit, resolution.getScaledWidth() - 98 - font.func_238414_a_(exit) / 2, resolution.getScaledHeight() - 70, 16777215);
-		font.func_243246_a(matrix, zoom, resolution.getScaledWidth() - 80 - font.func_238414_a_(zoom) / 2, resolution.getScaledHeight() - 60, 16777215);
-		font.func_243246_a(matrix, nightVision, resolution.getScaledWidth() - 91 - font.func_238414_a_(nightVision) / 2, resolution.getScaledHeight() - 50, 16777215);
-		font.func_243246_a(matrix, redstone, resolution.getScaledWidth() - 82 - font.func_238414_a_(redstone) / 2, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.func_243246_a(matrix, redstoneNote, resolution.getScaledWidth() - 82 - font.func_238414_a_(redstoneNote) / 2, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.func_243246_a(matrix, exit, resolution.getScaledWidth() - font.func_238414_a_(exit) - 8, resolution.getScaledHeight() - 70, 16777215);
+		font.func_243246_a(matrix, zoom, resolution.getScaledWidth() - font.func_238414_a_(zoom) - 8, resolution.getScaledHeight() - 60, 16777215);
+		font.func_243246_a(matrix, nightVision, resolution.getScaledWidth() - font.func_238414_a_(nightVision) - 8, resolution.getScaledHeight() - 50, 16777215);
+		font.func_243246_a(matrix, redstone, resolution.getScaledWidth() - font.func_238414_a_(redstone) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
+		font.func_243246_a(matrix, redstoneNote, resolution.getScaledWidth() - font.func_238414_a_(redstoneNote) -8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
