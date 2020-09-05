@@ -84,7 +84,6 @@ import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.entity.TaserBulletEntity;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.items.AdminToolItem;
@@ -652,8 +651,6 @@ public class SCContent
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
 	public static EntityType<BouncingBettyEntity> eTypeBouncingBetty;
-	@ObjectHolder(SecurityCraft.MODID + ":taserbullet")
-	public static EntityType<TaserBulletEntity> eTypeTaserBullet;
 	@ObjectHolder(SecurityCraft.MODID + ":imsbomb")
 	public static EntityType<IMSBombEntity> eTypeImsBomb;
 	@ObjectHolder(SecurityCraft.MODID + ":securitycamera")
