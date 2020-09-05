@@ -684,6 +684,7 @@
 	"messages.securitycraft:adminTool.password": "Password: %s",
 	"messages.securitycraft:adminTool.equippedModules": "Equipped Modules:",
 	"messages.securitycraft:adminTool.noInfo": "This block has no information to display!",
+	"messages.securitycraft:adminTool.needCreative": "You need to be in creative mode to use the admin tool.",
 	"messages.securitycraft:reinforcedSlab": "Reinforced Slab",
 	"messages.securitycraft:reinforcedSlab.cannotDoubleSlab": "You must be the owner of this block to turn it into a double slab.",
 	"messages.securitycraft:cameraMonitor.cannotView": "You can't view a camera that doesn't belong to you.",

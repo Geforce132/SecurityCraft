@@ -37,8 +37,15 @@ public class AdminToolItem extends Item {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
+
 		if(world.isRemote && ConfigHandler.CONFIG.allowAdminTool.get()) {
 			IFormattableTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
+
+			if(!player.isCreative())
+			{
+				PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
+				return ActionResultType.FAIL;
+			}
 
 			if(world.getTileEntity(pos) != null) {
 				TileEntity te = world.getTileEntity(pos);

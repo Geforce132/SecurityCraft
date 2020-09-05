@@ -685,6 +685,7 @@
 	"messages.securitycraft:adminTool.password": "Passwort: %s",
 	"messages.securitycraft:adminTool.equippedModules": "Installierte Module:",
 	"messages.securitycraft:adminTool.noInfo": "Dieser Block enthält keine Informationen!",
+	"messages.securitycraft:adminTool.needCreative": "Du musst im Kreativmodus sein, um das Admin-Werkzeug zu verwenden.",
 	"messages.securitycraft:reinforcedSlab": "Verstärkte Stufe",
 	"messages.securitycraft:reinforcedSlab.cannotDoubleSlab": "Du musst diesen Block besitzen, um eine Doppelstufe daraus zu machen.",
 	"messages.securitycraft:cameraMonitor.cannotView": "Du kannst dir keine Kamera anschauen die nicht dir gehört.",
