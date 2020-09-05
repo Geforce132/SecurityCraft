@@ -77,14 +77,10 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	}
 
 	private void updateButtonText(){
-		lvlOfSecurity++;
-		if(lvlOfSecurity <= 5)
-			lvlOfSecurityButton.setMessage(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded", lvlOfSecurity));
-		else{
+		if(++lvlOfSecurity > 5)
 			lvlOfSecurity = 1;
-			lvlOfSecurityButton.setMessage(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded", lvlOfSecurity));
 
-		}
+		lvlOfSecurityButton.setMessage(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded", lvlOfSecurity));
 	}
 
 	protected void actionPerformed(ClickButton button){
