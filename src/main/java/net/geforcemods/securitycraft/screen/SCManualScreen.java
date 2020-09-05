@@ -460,8 +460,12 @@ public class SCManualScreen extends Screen {
 		while(font.getStringWidth(helpInfo) > subpageLength)
 		{
 			String trimmed = font.trimStringToWidth(helpInfo, 1285);
+			int lastIndex = trimmed.lastIndexOf(' ');
 
-			trimmed = trimmed.trim().substring(0, trimmed.lastIndexOf(' ')).trim(); //remove last word to remove the possibility to break it up onto multiple pages
+			if(lastIndex > 0)
+				trimmed = trimmed.trim().substring(0, lastIndex); //remove last word to remove the possibility to break it up onto multiple pages
+
+			trimmed = trimmed.trim();
 			subpages.add(trimmed);
 			helpInfo = helpInfo.replace(trimmed, "").trim();
 		}
