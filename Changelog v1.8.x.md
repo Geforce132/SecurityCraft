@@ -9,6 +9,7 @@
 - New: Reinforced Blocks are now immune to lava (Thanks Redstone_Dubstep!)
 - New: Block/item tags: securitycraft:reinforced/crimson_stems, securitycraft:reinforced/nylium, securitycraft:reinforced/pressure_plates, securitycraft:reinforced/warped_stems (Thanks Redstone_Dubstep!)
 - New: Support for the following block/item tags: minecraft:infiniburn_overworld, minecraft:mushroom_grow_block, minecraft:nylium, minecraft:pressure_plates, minecraft:soul_fire_base_blocks, minecraft:soul_speed_blocks, minecraft:strider_warm_blocks, minecraft:wither_summon_base_blocks, minecraft:piglin_loved (Thanks Redstone_Dubstep!)
+- New: The name of a camera is now displayed in the top right when the player is mounted to it
 - Change: Sounds of reinforced blocks to match sounds of their vanilla equivalent (Thanks Redstone_Dubstep!)
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
 - Change: Laser and Taser damage no longer bypasses armor

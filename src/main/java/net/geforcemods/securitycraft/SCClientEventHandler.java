@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
@@ -210,15 +209,25 @@ public class SCClientEventHandler
 	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
 		FontRenderer font = Minecraft.getInstance().fontRenderer;
 		GameSettings settings = Minecraft.getInstance().gameSettings;
-		boolean hasRedstoneModule = ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE);
+		SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getTileEntity(pos);
+		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
 		ITextComponent exit = ClientUtils.localize("gui.securitycraft:camera.exit", settings.keyBindSneak.func_238171_j_());
 		ITextComponent zoom = ClientUtils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.func_238171_j_(), KeyBindings.cameraZoomOut.func_238171_j_());
 		ITextComponent nightVision = ClientUtils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
 		ITextComponent redstone = ClientUtils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.func_238171_j_());
 		ITextComponent redstoneNote = ClientUtils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 		String time = ClientUtils.getFormattedMinecraftTime();
+		int timeY = 25;
 
-		font.drawStringWithShadow(matrix, time, resolution.getScaledWidth() - font.getStringWidth(time) - 8, 25, 16777215);
+		if(te.hasCustomSCName())
+		{
+			ITextComponent cameraName = te.getCustomSCName();
+
+			font.func_243246_a(matrix, cameraName, resolution.getScaledWidth() - font.func_238414_a_(cameraName) - 8, 25, 16777215);
+			timeY += 10;
+		}
+
+		font.drawStringWithShadow(matrix, time, resolution.getScaledWidth() - font.getStringWidth(time) - 8, timeY, 16777215);
 		//drawStringWithShadow
 		font.func_243246_a(matrix, exit, resolution.getScaledWidth() - font.func_238414_a_(exit) - 8, resolution.getScaledHeight() - 70, 16777215);
 		font.func_243246_a(matrix, zoom, resolution.getScaledWidth() - font.func_238414_a_(zoom) - 8, resolution.getScaledHeight() - 60, 16777215);
@@ -239,9 +248,9 @@ public class SCClientEventHandler
 			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		}
 
-		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (!((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE)))
+		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && !te.hasModule(ModuleType.REDSTONE))
 			gui.blit(matrix, 12, 2, 104, 0, 12, 12);
-		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && (((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE)))
+		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
 			gui.blit(matrix, 12, 3, 90, 0, 12, 11);
 		else
 			Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(REDSTONE, 10, 0);
