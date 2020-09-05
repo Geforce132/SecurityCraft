@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
+- Change: Laser and Taser damage no longer bypasses armor
 - Fix: WAILA exploit
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 
