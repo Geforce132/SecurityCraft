@@ -11,6 +11,7 @@
 - New: Support for the following block/item tags: minecraft:infiniburn_overworld, minecraft:mushroom_grow_block, minecraft:nylium, minecraft:pressure_plates, minecraft:soul_fire_base_blocks, minecraft:soul_speed_blocks, minecraft:strider_warm_blocks, minecraft:wither_summon_base_blocks, minecraft:piglin_loved (Thanks Redstone_Dubstep!)
 - Change: Sounds of reinforced blocks to match sounds of their vanilla equivalent (Thanks Redstone_Dubstep!)
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
+- Change: Laser and Taser damage no longer bypasses armor
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Removed: Taser Bullet entity
 
