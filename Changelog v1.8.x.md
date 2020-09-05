@@ -1,14 +1,15 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - New: Reinforced Lantern (Thanks Redstone_Dubstep!)
-- Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
+- New: The name of a camera is now displayed in the top right when the player is mounted to it
+- Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!)
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Crash on SC Manual pages with subpages, when using a language that does not use spaces to seperate words (Thanks jihuayu!)
-- Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen 
+- Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Removed: Taser Bullet entity
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
