@@ -63,14 +63,10 @@ public class GuiKeycardSetup extends GuiContainer{
 	}
 
 	private void updateButtonText(){
-		lvlOfSecurity++;
-		if(lvlOfSecurity <= 5)
-			lvlOfSecurityButton.displayString = ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity;
-		else{
+		if(++lvlOfSecurity > 5)
 			lvlOfSecurity = 1;
-			lvlOfSecurityButton.displayString = ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity;
 
-		}
+		lvlOfSecurityButton.displayString = ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded") + " " + lvlOfSecurity;
 	}
 
 	@Override
