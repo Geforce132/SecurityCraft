@@ -33,6 +33,12 @@ public class ItemAdminTool extends Item {
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(!world.isRemote && ConfigHandler.allowAdminTool) {
+			if(!player.isCreative())
+			{
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
+				return EnumActionResult.FAIL;
+			}
+
 			if(world.getTileEntity(pos) != null) {
 				TileEntity te = world.getTileEntity(pos);
 				boolean hasInfo = false;

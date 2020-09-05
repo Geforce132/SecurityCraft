@@ -2,6 +2,7 @@
 
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
 - Change: Laser and Taser damage no longer bypasses armor
+- Change: The Admin Tool now only works in creative mode
 - Fix: WAILA exploit
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen 
