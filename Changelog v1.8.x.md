@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
+- New: The name of a camera is now displayed in the top right when the player is mounted to it
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
