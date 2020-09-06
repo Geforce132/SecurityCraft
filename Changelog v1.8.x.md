@@ -3,16 +3,20 @@
 - New: Reinforced Lantern (Thanks Redstone_Dubstep!)
 - New: The name of a camera is now displayed in the top right when the player is mounted to it
 - New: Inventory Scanner modifying option to have inventory scanner fields be horizontal
+- New: A briefcase's owner can now be changed if its owner rightclicks while holding the briefcase in their off hand and a named Universal Owner Changer in their main hand (Thanks Redstone_Dubstep!)
+- New: The codebreaker can now be used on a briefcase by holding the briefcase in the off hand and the codebreaker in the main hand and rightclicking (Thanks Redstone_Dubstep!)
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!)
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Change: The inventory scanner's texture is now up to date with the new Minecraft textures
+- Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Crash on SC Manual pages with subpages, when using a language that does not use spaces to seperate words (Thanks jihuayu!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Fix: Welcome message doesn't show
+- Fix: Anyone can reset a briefcase's passcode (Thanks Redstone_Dubstep!)
 - Removed: Taser Bullet entity
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
