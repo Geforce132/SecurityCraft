@@ -40,7 +40,6 @@ public class UniversalKeyChangerItem extends Item {
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		System.out.println("OnItemUseFirst in UKCI!");
 		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getItem());
 	}
 
@@ -82,7 +81,7 @@ public class UniversalKeyChangerItem extends Item {
 			if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
 				ItemStack briefcase = player.getHeldItemOffhand();
 
-				if (isOwnedBy(player, briefcase)) {
+				if (isOwnedBy(briefcase, player)) {
 					if (briefcase.hasTag() && briefcase.getTag().contains("passcode")) {
 						if (!briefcase.hasTag())
 							briefcase.setTag(new CompoundNBT());
@@ -91,27 +90,18 @@ public class UniversalKeyChangerItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
 						return ActionResult.resultSuccess(keyChanger);
 					}
-					else {
+					else
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.noPasscode"), TextFormatting.RED);
-					}
 				}
-				else {
+				else
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), TextFormatting.RED);
-				}
 			}
 		}
 
 		return ActionResult.resultFail(keyChanger);
 	}
 
-	private boolean isOwnedBy(PlayerEntity player, ItemStack briefcase) {
-		if (!briefcase.hasTag())
-			return true;
-		else if (!briefcase.getTag().contains("owner"))
-			return true;
-		else if (briefcase.getTag().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTag().getString("ownerUUID").equals("ownerUUID") && briefcase.getTag().getString("owner").equals(player.getName().getString())))
-			return true;
-		else
-			return false;
+	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {
+		return !briefcase.hasTag() || !briefcase.getTag().contains("owner") || briefcase.getTag().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTag().getString("ownerUUID").equals("ownerUUID") && briefcase.getTag().getString("owner").equals(player.getName().getString()));
 	}
 }

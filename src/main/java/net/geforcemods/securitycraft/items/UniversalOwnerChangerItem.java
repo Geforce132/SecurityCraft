@@ -130,35 +130,22 @@ public class UniversalOwnerChangerItem extends Item
 			if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
 				ItemStack briefcase = player.getHeldItemOffhand();
 
-				if (isOwnedBy(player, briefcase)) {
+				if (UniversalKeyChangerItem.isOwnedBy(briefcase, player)) {
 					String newOwner = ownerChanger.getDisplayName().getString();
 
 					if (!briefcase.hasTag())
 						briefcase.setTag(new CompoundNBT());
 
 					briefcase.getTag().putString("owner", newOwner);
-					briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getName().toString() : "ownerUUID");
+					briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
-
 					return ActionResult.resultSuccess(ownerChanger);
 				}
-				else {
+				else
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
-				}
 			}
 		}
 
 		return ActionResult.resultFail(ownerChanger);
-	}
-
-	private boolean isOwnedBy(PlayerEntity player, ItemStack briefcase) {
-		if (!briefcase.hasTag())
-			return true;
-		else if (!briefcase.getTag().contains("owner"))
-			return true;
-		else if (briefcase.getTag().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTag().getString("ownerUUID").equals("ownerUUID") && briefcase.getTag().getString("owner").equals(player.getName().getString())))
-			return true;
-		else
-			return false;
 	}
 }
