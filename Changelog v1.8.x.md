@@ -2,9 +2,11 @@
 
 - New: Reinforced Lantern (Thanks Redstone_Dubstep!)
 - New: The name of a camera is now displayed in the top right when the player is mounted to it
+- New: Inventory Scanner modifying option to have inventory scanner fields be horizontal
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!)
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
+- Change: The inventory scanner's texture is now up to date with the new Minecraft textures
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
