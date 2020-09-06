@@ -148,8 +148,14 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 					CompoundNBT nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTag();
 					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
 
-					if(nbt.getString("passcode").equals(code))
+					if(nbt.getString("passcode").equals(code)) {
+						if (!nbt.contains("owner")) {
+							nbt.putString("owner", Minecraft.getInstance().player.getName().getString());
+							nbt.putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
+						}
+						
 						SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseInventory.getRegistryName(), getTitle()));
+					}
 				}
 
 				break;

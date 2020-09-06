@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import net.minecraft.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -140,11 +141,19 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 				}
 
 				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE)) {
-					if(Minecraft.getInstance().player.inventory.getCurrentItem().getTag() == null)
-						Minecraft.getInstance().player.inventory.getCurrentItem().setTag(new CompoundNBT());
+					ItemStack briefcase = Minecraft.getInstance().player.inventory.getCurrentItem();
 
-					Minecraft.getInstance().player.inventory.getCurrentItem().getTag().putString("passcode", keycodeTextbox.getText());
-					ClientUtils.syncItemNBT(Minecraft.getInstance().player.inventory.getCurrentItem());
+					if(!briefcase.hasTag())
+						briefcase.setTag(new CompoundNBT());
+
+					briefcase.getTag().putString("passcode", keycodeTextbox.getText());
+
+					if (!briefcase.getTag().contains("owner")) {
+						briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
+						briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
+					}
+
+					ClientUtils.syncItemNBT(briefcase);
 					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
 				}
 		}

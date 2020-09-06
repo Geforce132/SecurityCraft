@@ -20,9 +20,12 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -112,5 +115,37 @@ public class UniversalOwnerChangerItem extends Item
 		}
 
 		return ActionResultType.FAIL;
+	}
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+		ItemStack ownerChanger = player.getHeldItem(hand);
+
+		if (!world.isRemote) {
+			if (!ownerChanger.hasDisplayName()) {
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+				return ActionResult.resultFail(ownerChanger);
+			}
+
+			if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
+				ItemStack briefcase = player.getHeldItemOffhand();
+
+				if (BriefcaseItem.isOwnedBy(briefcase, player)) {
+					String newOwner = ownerChanger.getDisplayName().getString();
+
+					if (!briefcase.hasTag())
+						briefcase.setTag(new CompoundNBT());
+
+					briefcase.getTag().putString("owner", newOwner);
+					briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+					return ActionResult.resultSuccess(ownerChanger);
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
+			}
+		}
+
+		return ActionResult.resultFail(ownerChanger);
 	}
 }
