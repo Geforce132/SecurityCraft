@@ -111,16 +111,11 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		}
 		else
 		{
-			boolean decrease = button.id > 3;
 			int index = button.id % 4;
 
 			//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used
-			digits[index] = Math.floorMod((decrease ? --digits[index] : ++digits[index]), 10);
-
-			keycodeTextboxes[0].setText(String.valueOf(digits[0]));
-			keycodeTextboxes[1].setText(String.valueOf(digits[1]));
-			keycodeTextboxes[2].setText(String.valueOf(digits[2]));
-			keycodeTextboxes[3].setText(String.valueOf(digits[3]));
+			digits[index] = Math.floorMod((button.id > 3 ? --digits[index] : ++digits[index]), 10);
+			keycodeTextboxes[index].setText(String.valueOf(digits[index]));
 		}
 	}
 }
