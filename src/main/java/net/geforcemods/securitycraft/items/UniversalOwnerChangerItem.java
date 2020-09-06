@@ -130,7 +130,7 @@ public class UniversalOwnerChangerItem extends Item
 			if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
 				ItemStack briefcase = player.getHeldItemOffhand();
 
-				if (UniversalKeyChangerItem.isOwnedBy(briefcase, player)) {
+				if (BriefcaseItem.isOwnedBy(briefcase, player)) {
 					String newOwner = ownerChanger.getDisplayName().getString();
 
 					if (!briefcase.hasTag())

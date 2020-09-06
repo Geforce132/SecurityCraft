@@ -80,7 +80,7 @@ public class UniversalKeyChangerItem extends Item {
 			if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
 				ItemStack briefcase = player.getHeldItemOffhand();
 
-				if (isOwnedBy(briefcase, player)) {
+				if (BriefcaseItem.isOwnedBy(briefcase, player)) {
 					if (briefcase.hasTag() && briefcase.getTag().contains("passcode")) {
 						briefcase.getTag().remove("passcode");
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
@@ -95,9 +95,5 @@ public class UniversalKeyChangerItem extends Item {
 		}
 
 		return ActionResult.resultFail(keyChanger);
-	}
-
-	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {
-		return !briefcase.hasTag() || !briefcase.getTag().contains("owner") || briefcase.getTag().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTag().getString("ownerUUID").equals("ownerUUID") && briefcase.getTag().getString("owner").equals(player.getName().getString()));
 	}
 }
