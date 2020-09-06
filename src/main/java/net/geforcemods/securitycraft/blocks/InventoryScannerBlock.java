@@ -16,6 +16,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -34,10 +35,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class InventoryScannerBlock extends DisguisableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
 
 	public InventoryScannerBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HORIZONTAL, false));
 	}
 
 	@Override
@@ -79,6 +81,13 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if(connectedScanner == null || !connectedScanner.getOwner().equals(((InventoryScannerTileEntity)world.getTileEntity(pos)).getOwner()))
 			return;
 
+		boolean horizontal = false;
+
+		if(connectedScanner.getBlockState().get(HORIZONTAL))
+			horizontal = true;
+
+		((InventoryScannerTileEntity)world.getTileEntity(pos)).setHorizontal(horizontal);
+
 		Direction facing = world.getBlockState(pos).get(FACING);
 		int loopBoundary = facing == Direction.WEST || facing == Direction.EAST ? Math.abs(pos.getX() - connectedScanner.getPos().getX()) : (facing == Direction.NORTH || facing == Direction.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getPos().getZ()) : 0);
 
@@ -90,7 +99,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 
 		for(int i = 1; i < loopBoundary; i++)
 		{
-			world.setBlockState(pos.offset(facing, i), SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing));
+			world.setBlockState(pos.offset(facing, i), SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing).with(HORIZONTAL, horizontal));
 		}
 
 		CustomizableTileEntity.link((CustomizableTileEntity)world.getTileEntity(pos), connectedScanner);
@@ -99,7 +108,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		if(world.isRemote)
+		if(world.isRemote || state.getBlock() == newState.getBlock())
 			return;
 
 		InventoryScannerTileEntity connectedScanner = null;
@@ -233,7 +242,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
+		builder.add(FACING, HORIZONTAL);
 	}
 
 	@Override

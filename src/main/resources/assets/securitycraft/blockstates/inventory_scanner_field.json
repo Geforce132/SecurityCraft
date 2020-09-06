@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=north": { "model": "securitycraft:block/inventory_scanner_field", "y": 90 },
-        "facing=south": { "model": "securitycraft:block/inventory_scanner_field", "y": 90 },
-        "facing=west":  { "model": "securitycraft:block/inventory_scanner_field" },
-        "facing=east":  { "model": "securitycraft:block/inventory_scanner_field" }
+        "facing=north,horizontal=false": { "model": "securitycraft:block/inventory_scanner_field", "y": 90 },
+        "facing=south,horizontal=false": { "model": "securitycraft:block/inventory_scanner_field", "y": 90 },
+        "facing=west,horizontal=false":  { "model": "securitycraft:block/inventory_scanner_field" },
+        "facing=east,horizontal=false":  { "model": "securitycraft:block/inventory_scanner_field" },
+        "facing=north,horizontal=true": { "model": "securitycraft:block/inventory_scanner_field", "x": 90, "y": 90 },
+        "facing=south,horizontal=true": { "model": "securitycraft:block/inventory_scanner_field", "x": 90, "y": 90 },
+        "facing=west,horizontal=true":  { "model": "securitycraft:block/inventory_scanner_field", "x": 90 },
+        "facing=east,horizontal=true":  { "model": "securitycraft:block/inventory_scanner_field", "x": 90 }
     }
 }

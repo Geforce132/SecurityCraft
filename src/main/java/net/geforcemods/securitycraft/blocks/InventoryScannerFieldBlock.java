@@ -19,6 +19,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -40,12 +41,14 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class InventoryScannerFieldBlock extends OwnableBlock implements IIntersectable {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
 	private static final VoxelShape SHAPE_EW = Block.makeCuboidShape(0, 0, 6, 16, 16, 10);
 	private static final VoxelShape SHAPE_NS = Block.makeCuboidShape(6, 0, 0, 10, 16, 16);
+	private static final VoxelShape HORIZONTAL_SHAPE = Block.makeCuboidShape(0, 6, 0, 16, 10, 16);
 
 	public InventoryScannerFieldBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HORIZONTAL, false));
 	}
 
 	@Override
@@ -273,6 +276,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
+		if(state.get(HORIZONTAL))
+			return HORIZONTAL_SHAPE;
+
 		Direction facing = state.get(FACING);
 
 		if (facing == Direction.EAST || facing == Direction.WEST)
@@ -285,7 +291,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	@Override
 	protected void fillStateContainer(Builder<Block, BlockState> builder)
 	{
-		builder.add(FACING);
+		builder.add(FACING, HORIZONTAL);
 	}
 
 	@Override

@@ -10,10 +10,12 @@
 - New: Block/item tags: securitycraft:reinforced/crimson_stems, securitycraft:reinforced/nylium, securitycraft:reinforced/pressure_plates, securitycraft:reinforced/warped_stems (Thanks Redstone_Dubstep!)
 - New: Support for the following block/item tags: minecraft:infiniburn_overworld, minecraft:mushroom_grow_block, minecraft:nylium, minecraft:pressure_plates, minecraft:soul_fire_base_blocks, minecraft:soul_speed_blocks, minecraft:strider_warm_blocks, minecraft:wither_summon_base_blocks, minecraft:piglin_loved (Thanks Redstone_Dubstep!)
 - New: The name of a camera is now displayed in the top right when the player is mounted to it
-- Change: Sounds of reinforced blocks to match sounds of their vanilla equivalent (Thanks Redstone_Dubstep!)
-- Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
+- New: Inventory Scanner modifying option to have inventory scanner fields be horizontal
+- Change: Sounds of reinforced blocks now match the sounds of their vanilla equivalent (Thanks Redstone_Dubstep!)
+- Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!)
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
+- Change: The inventory scanner's texture is now up to date with the new Minecraft textures
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Fix: Walking through a block pocket wall blocks vision

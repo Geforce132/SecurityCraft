@@ -937,6 +937,8 @@
 	"option.securitycraft.keypad_chest.sendMessage.description": "Does this chest send a message upon activation (when using whitelist/blacklist modules)?",
 	"option.securitycraft.keypad_furnace.sendMessage": "Message: %s",
 	"option.securitycraft.keypad_furnace.sendMessage.description": "Does this furnace send a message upon activation (when using whitelist/blacklist modules)?",
+	"option.securitycraft.inventory_scanner.horizontal": "Horizontal: %s",
+	"option.securitycraft.inventory_scanner.horizontal.description": "Should the inventory scanner fields created by this scanner be horizontal?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
