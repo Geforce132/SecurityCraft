@@ -26,11 +26,11 @@ public class BriefcaseItem extends Item {
 	@Override
 	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
+		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getHand());
 	}
 
-	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ) {
-		if(world.isRemote) {
+	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, Hand hand) {
+		if(world.isRemote && hand == Hand.MAIN_HAND) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);
@@ -49,7 +49,7 @@ public class BriefcaseItem extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(world.isRemote) {
+		if(world.isRemote && hand == Hand.MAIN_HAND) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);
