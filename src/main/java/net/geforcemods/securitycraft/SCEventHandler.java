@@ -78,16 +78,14 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!event.getPlayer().getEntityWorld().isRemote || !ConfigHandler.CONFIG.sayThanksMessage.get())
+		if(!ConfigHandler.CONFIG.sayThanksMessage.get())
 			return;
 
 		String tipKey = getRandomTip();
-		ITextComponent message;
+		ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ");
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
-		else
-			message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
+			message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
 		event.getPlayer().sendMessage(message);
 	}
@@ -378,11 +376,11 @@ public class SCEventHandler {
 
 	private static String getRandomTip(){
 		String[] tips = {
-				"messages.tip.scHelp",
-				"messages.tip.trello",
-				"messages.tip.patreon",
-				"messages.tip.discord",
-				"messages.tip.scserver"
+				"messages.securitycraft:tip.scHelp",
+				"messages.securitycraft:tip.trello",
+				"messages.securitycraft:tip.patreon",
+				"messages.securitycraft:tip.discord",
+				"messages.securitycraft:tip.scserver"
 		};
 
 		return tips[new Random().nextInt(tips.length)];
