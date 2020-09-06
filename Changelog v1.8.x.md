@@ -10,6 +10,7 @@
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Crash on SC Manual pages with subpages, when using a language that does not use spaces to seperate words (Thanks jihuayu!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
+- Fix: Welcome message doesn't show
 - Removed: Taser Bullet entity
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
