@@ -77,11 +77,8 @@ public class BriefcaseItem extends Item {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		System.out.println("AddInformation!");
-		if (briefcase.hasTag()) {
-			if (briefcase.getTag().contains("owner"))
-				tooltip.add(ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).setStyle(GRAY_STYLE));
-		}
+		if (briefcase.hasTag() && briefcase.getTag().contains("owner"))
+			tooltip.add(ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).setStyle(GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {
