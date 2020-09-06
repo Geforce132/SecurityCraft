@@ -63,21 +63,4 @@ public class BriefcaseItem extends Item {
 
 		return ActionResult.resultPass(stack);
 	}
-
-	@Override
-	public ItemStack getContainerItem(ItemStack stack)
-	{
-		ItemStack newStack = stack.copy();
-
-		if(newStack.getTag() != null && newStack.getTag().contains("passcode"))
-			newStack.getTag().remove("passcode");
-
-		return newStack;
-	}
-
-	@Override
-	public boolean hasContainerItem()
-	{
-		return true;
-	}
 }

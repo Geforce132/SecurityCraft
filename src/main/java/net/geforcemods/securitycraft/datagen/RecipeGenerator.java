@@ -533,11 +533,6 @@ public class RecipeGenerator extends RecipeProvider
 		.addIngredient(SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
 		.addCriterion("has_reinforced_crystal_quartz", hasItem(SCContent.REINFORCED_CRYSTAL_QUARTZ.get()))
 		.build(consumer);
-		ShapelessRecipeBuilder.shapelessRecipe(SCContent.UNIVERSAL_KEY_CHANGER.get())
-		.addIngredient(SCContent.UNIVERSAL_KEY_CHANGER.get())
-		.addIngredient(SCContent.BRIEFCASE.get())
-		.addCriterion("has_briefcase", hasItem(SCContent.BRIEFCASE.get()))
-		.build(consumer, new ResourceLocation(SecurityCraft.MODID, "briefcase_reset"));
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_ANDESITE.get(), 2)
 		.addIngredient(SCContent.REINFORCED_DIORITE.get())
 		.addIngredient(SCTags.Items.REINFORCED_COBBLESTONE)
