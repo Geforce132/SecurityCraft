@@ -12,6 +12,7 @@
 - New: The name of a camera is now displayed in the top right when the player is mounted to it
 - New: Inventory Scanner modifying option to have inventory scanner fields be horizontal
 - New: A briefcase's owner can now be changed if its owner rightclicks while holding the briefcase in their off hand and a named Universal Owner Changer in their main hand (Thanks Redstone_Dubstep!)
+- New: The codebreaker can now be used on a briefcase by holding the briefcase in the off hand and the codebreaker in the main hand and rightclicking (Thanks Redstone_Dubstep!)
 - Change: Sounds of reinforced blocks now match the sounds of their vanilla equivalent (Thanks Redstone_Dubstep!)
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!)
 - Change: Laser and Taser damage no longer bypasses armor
