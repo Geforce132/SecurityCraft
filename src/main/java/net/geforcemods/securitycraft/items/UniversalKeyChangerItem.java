@@ -18,7 +18,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -83,9 +82,6 @@ public class UniversalKeyChangerItem extends Item {
 
 				if (isOwnedBy(briefcase, player)) {
 					if (briefcase.hasTag() && briefcase.getTag().contains("passcode")) {
-						if (!briefcase.hasTag())
-							briefcase.setTag(new CompoundNBT());
-
 						briefcase.getTag().remove("passcode");
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
 						return ActionResult.resultSuccess(keyChanger);
