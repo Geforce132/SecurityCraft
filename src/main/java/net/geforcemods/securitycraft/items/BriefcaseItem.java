@@ -14,9 +14,14 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item {
+
+	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 
 	public BriefcaseItem()
 	{
@@ -62,5 +67,15 @@ public class BriefcaseItem extends Item {
 		}
 
 		return ActionResult.resultPass(stack);
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+		System.out.println("AddInformation!");
+		if (briefcase.hasTag()) {
+			if (briefcase.getTag().contains("owner"))
+				tooltip.add(ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).setStyle(GRAY_STYLE));
+		}
 	}
 }
