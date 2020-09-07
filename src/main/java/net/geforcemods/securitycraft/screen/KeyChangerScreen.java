@@ -107,7 +107,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 			{
 				Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
 				focusedTextField.setText(Utils.removeLastChar(focusedTextField.getText()));
-				correctSaveButtonState();
+				setConfirmButtonState();
 				return true;
 			}
 		}
@@ -127,7 +127,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		else
 			return super.charTyped(typedChar, keyCode);
 
-		correctSaveButtonState();
+		setConfirmButtonState();
 		return true;
 	}
 
@@ -141,7 +141,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		return false;
 	}
 
-	private void correctSaveButtonState() {
+	private void setConfirmButtonState() {
 		String newPasscode = textboxNewPasscode.getText();
 
 		confirmButton.active = newPasscode != null && newPasscode.equals(textboxConfirmPasscode.getText());
