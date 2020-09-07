@@ -121,7 +121,6 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		else if(!connectedScanner.getOwner().equals(((TileEntityInventoryScanner)world.getTileEntity(pos)).getOwner()))
 			return;
 
-
 		boolean horizontal = false;
 
 		if(world.getBlockState(connectedScanner.getPos()).getValue(HORIZONTAL))
@@ -149,7 +148,8 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos)
 	{
-		checkAndPlaceAppropriately(world, pos, null);
+		if(world.getBlockState(fromPos).getBlock() != SCContent.inventoryScannerField)
+			checkAndPlaceAppropriately(world, pos, null);
 	}
 
 	@Override
