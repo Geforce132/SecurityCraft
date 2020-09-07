@@ -880,7 +880,7 @@
 	"option.securitycraft.keypad_chest.sendMessage.description": "Sendet diese Truhe eine Nachricht, wenn sie aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
 	"option.securitycraft.keypad_furnace.sendMessage": "Nachricht: #",
 	"option.securitycraft.keypad_furnace.sendMessage.description": "Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
-	"option.securitycraft.inventory_scanner.horizontal": "Horizontal: %s",
+	"option.securitycraft.inventory_scanner.horizontal": "Horizontal: #",
 	"option.securitycraft.inventory_scanner.horizontal.description": "Sollen die Inventarscannerfelder von diesem Inventarscanner horizontal sein?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
