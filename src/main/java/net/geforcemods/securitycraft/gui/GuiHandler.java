@@ -42,7 +42,8 @@ public class GuiHandler implements IGuiHandler {
 	public static final int CAMERA_MONITOR_GUI_ID = 12;
 	public static final int BRIEFCASE_CODE_SETUP_GUI_ID = 13;
 	public static final int BRIEFCASE_INSERT_CODE_GUI_ID = 14;
-	public static final int BRIEFCASE_GUI_ID = 15;
+	public static final int BRIEFCASE_GUI_ID_MAIN_HAND = 15;
+	public static final int BRIEFCASE_GUI_ID_OFF_HAND = 150;
 	public static final int KEY_CHANGER_GUI_ID = 16;
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int DISGUISE_MODULE = 102;
@@ -84,10 +85,14 @@ public class GuiHandler implements IGuiHandler {
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return null;
-			case BRIEFCASE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
+			case BRIEFCASE_GUI_ID_MAIN_HAND:
+				if(player.getHeldItemMainhand().getItem() != SCContent.briefcase)
 					return null;
-				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(player.inventory.getCurrentItem()));
+				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(player.getHeldItemMainhand()));
+			case BRIEFCASE_GUI_ID_OFF_HAND:
+				if(player.getHeldItemOffhand().getItem() != SCContent.briefcase)
+					return null;
+				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(player.getHeldItemOffhand()));
 			case KEY_CHANGER_GUI_ID:
 				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;
@@ -153,10 +158,14 @@ public class GuiHandler implements IGuiHandler {
 				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
 					return null;
 				return new GuiBriefcase(player.inventory, null);
-			case BRIEFCASE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
+			case BRIEFCASE_GUI_ID_MAIN_HAND:
+				if(player.getHeldItemMainhand().getItem() != SCContent.briefcase)
 					return null;
-				return new GuiBriefcaseInventory(player.inventory, player.inventory.getCurrentItem());
+				return new GuiBriefcaseInventory(player.inventory, player.getHeldItemMainhand());
+			case BRIEFCASE_GUI_ID_OFF_HAND:
+				if(player.getHeldItemOffhand().getItem() != SCContent.briefcase)
+					return null;
+				return new GuiBriefcaseInventory(player.inventory, player.getHeldItemOffhand());
 			case KEY_CHANGER_GUI_ID:
 				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
 					return null;

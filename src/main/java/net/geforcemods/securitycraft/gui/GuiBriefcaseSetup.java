@@ -15,6 +15,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -116,11 +117,19 @@ public class GuiBriefcaseSetup extends GuiContainer {
 			}
 
 			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-				if(Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound() == null)
-					Minecraft.getMinecraft().player.inventory.getCurrentItem().setTagCompound(new NBTTagCompound());
+				ItemStack briefcase = Minecraft.getMinecraft().player.inventory.getCurrentItem();
 
-				Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound().setString("passcode", keycodeTextbox.getText());
-				ClientUtils.syncItemNBT(Minecraft.getMinecraft().player.inventory.getCurrentItem());
+				if(!briefcase.hasTagCompound())
+					briefcase.setTagCompound(new NBTTagCompound());
+
+				briefcase.getTagCompound().setString("passcode", keycodeTextbox.getText());
+
+				if (!briefcase.getTagCompound().hasKey("owner")) {
+					briefcase.getTagCompound().setString("owner", Minecraft.getMinecraft().player.getName());
+					briefcase.getTagCompound().setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
+				}
+
+				ClientUtils.syncItemNBT(briefcase);
 				Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, Minecraft.getMinecraft().world, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ);
 			}
 		}
