@@ -25,6 +25,7 @@ public class GuiBriefcase extends GuiContainer {
 	private GuiButton[] keycodeBottomButtons = new GuiButton[4];
 	private GuiTextField[] keycodeTextboxes = new GuiTextField[4];
 	private GuiButton continueButton;
+	private int[] digits = {0, 0, 0, 0};
 
 	public GuiBriefcase(InventoryPlayer inventoryPlayer, TileEntity tileEntity) {
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
@@ -84,78 +85,29 @@ public class GuiBriefcase extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		int[] keys = new int[]{Integer.parseInt(keycodeTextboxes[0].getText()), Integer.parseInt(keycodeTextboxes[1].getText()), Integer.parseInt(keycodeTextboxes[2].getText()), Integer.parseInt(keycodeTextboxes[3].getText())};
+		if(button.id == 8)
+		{
+			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
+				NBTTagCompound nbt = Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound();
+				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
 
-		switch(button.id) {
-			case 0:
-				if(keys[0] == 9)
-					keys[0] = 0;
-				else
-					keys[0]++;
-				break;
-			case 1:
-				if(keys[1] == 9)
-					keys[1] = 0;
-				else
-					keys[1]++;
-				break;
-			case 2:
-				if(keys[2] == 9)
-					keys[2] = 0;
-				else
-					keys[2]++;
-				break;
-			case 3:
-				if(keys[3] == 9)
-					keys[3] = 0;
-				else
-					keys[3]++;
-				break;
-			case 4:
-				if(keys[0] == 0)
-					keys[0] = 9;
-				else
-					keys[0]--;
-				break;
-			case 5:
-				if(keys[1] == 0)
-					keys[1] = 9;
-				else
-					keys[1]--;
-				break;
-			case 6:
-				if(keys[2] == 0)
-					keys[2] = 9;
-				else
-					keys[2]--;
-				break;
-			case 7:
-				if(keys[3] == 0)
-					keys[3] = 9;
-				else
-					keys[3]--;
-				break;
-			case 8:
-				if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-					NBTTagCompound nbt = Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound();
-					String code = keys[0] + "" + keys[1] + "" +  keys[2] + "" + keys[3];
-
-					if(nbt.getString("passcode").equals(code)) {
-						if (!nbt.hasKey("owner")) {
-							nbt.setString("owner", Minecraft.getMinecraft().player.getName());
-							nbt.setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
-						}
-
-						SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID_MAIN_HAND, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
+				if(nbt.getString("passcode").equals(code)) {
+					if (!nbt.hasKey("owner")) {
+						nbt.setString("owner", Minecraft.getMinecraft().player.getName());
+						nbt.setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
 					}
+
+					SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID_MAIN_HAND, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
 				}
-
-				break;
+			}
 		}
+		else
+		{
+			int index = button.id % 4;
 
-		keycodeTextboxes[0].setText(String.valueOf(keys[0]));
-		keycodeTextboxes[1].setText(String.valueOf(keys[1]));
-		keycodeTextboxes[2].setText(String.valueOf(keys[2]));
-		keycodeTextboxes[3].setText(String.valueOf(keys[3]));
+			//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used
+			digits[index] = Math.floorMod((button.id > 3 ? --digits[index] : ++digits[index]), 10);
+			keycodeTextboxes[index].setText(String.valueOf(digits[index]));
+		}
 	}
 }
