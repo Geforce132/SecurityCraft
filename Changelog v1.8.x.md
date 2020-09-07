@@ -14,6 +14,7 @@
 - Fix: Inventory Scanner and Inventory Scanner Field metadata is calculcated incorrectly (This means that the orientation of your Inventory Scanner (Fields) might reset!)
 - Fix: Some customizable blocks don't drop their items correctly when broken
 - Fix: Anyone can reset a briefcase's passcode (Thanks Redstone_Dubstep!)
+- Fix: Confirm button in the Universal Key Changer's GUI doesn't properly react to changes in the textboxes (Thanks Redstone_Dubstep!)
 - Removed: Taser Bullet entity
 - Misc.: Various French language fixes (Thanks supercat95!)
 

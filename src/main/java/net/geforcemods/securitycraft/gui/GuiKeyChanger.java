@@ -104,7 +104,7 @@ public class GuiKeyChanger extends GuiContainer {
 		else
 			super.keyTyped(typedChar, keyCode);
 
-		checkToEnableSaveButton();
+		setConfirmButtonState();
 	}
 
 	private boolean isValidChar(char c) {
@@ -117,14 +117,10 @@ public class GuiKeyChanger extends GuiContainer {
 		return false;
 	}
 
-	private void checkToEnableSaveButton() {
-		String newPasscode = !textboxNewPasscode.getText().isEmpty() ? textboxNewPasscode.getText() : null;
-		String confirmedPasscode = !textboxConfirmPasscode.getText().isEmpty() ? textboxConfirmPasscode.getText() : null;
+	private void setConfirmButtonState() {
+		String newPasscode = textboxNewPasscode.getText();
 
-		if(newPasscode == null || confirmedPasscode == null) return;
-		if(!newPasscode.equals(confirmedPasscode)) return;
-
-		confirmButton.enabled = true;
+		confirmButton.enabled = newPasscode != null && newPasscode.equals(textboxConfirmPasscode.getText());
 	}
 
 	@Override
