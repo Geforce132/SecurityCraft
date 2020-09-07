@@ -276,13 +276,13 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(FACING, EnumFacing.values()[meta].getAxis() == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.values()[meta]);
+		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta % 4));
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getBlock() != this ? 0 : state.getValue(FACING).getIndex();
+		return state.getBlock() != this ? 0 : state.getValue(FACING).getHorizontalIndex();
 	}
 
 	@Override
