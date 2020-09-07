@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -32,10 +33,12 @@ import net.minecraft.world.World;
 public class BlockInventoryScanner extends BlockDisguisable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool HORIZONTAL = PropertyBool.create("horizontal");
 
 	public BlockInventoryScanner(Material material) {
 		super(material);
 		setSoundType(SoundType.STONE);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HORIZONTAL, false));
 	}
 
 	@Override
@@ -99,22 +102,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		if(world.isRemote)
 			return;
 
-		IBlockState north = world.getBlockState(pos.north());
-		IBlockState south = world.getBlockState(pos.south());
-		IBlockState west = world.getBlockState(pos.west());
-		IBlockState east = world.getBlockState(pos.east());
-		EnumFacing facing = state.getValue(FACING);
-
-		if (facing == EnumFacing.NORTH && north.isFullBlock() && !south.isFullBlock())
-			facing = EnumFacing.SOUTH;
-		else if (facing == EnumFacing.SOUTH && south.isFullBlock() && !north.isFullBlock())
-			facing = EnumFacing.NORTH;
-		else if (facing == EnumFacing.WEST && west.isFullBlock() && !east.isFullBlock())
-			facing = EnumFacing.EAST;
-		else if (facing == EnumFacing.EAST && east.isFullBlock() && !west.isFullBlock())
-			facing = EnumFacing.WEST;
-
-		world.setBlockState(pos, state.withProperty(FACING, facing), 2);
+		setDefaultFacing(world, pos, state);
 		checkAndPlaceAppropriately(world, pos, entity);
 	}
 
@@ -133,6 +121,14 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		else if(!connectedScanner.getOwner().equals(((TileEntityInventoryScanner)world.getTileEntity(pos)).getOwner()))
 			return;
 
+
+		boolean horizontal = false;
+
+		if(world.getBlockState(connectedScanner.getPos()).getValue(HORIZONTAL))
+			horizontal = true;
+
+		((TileEntityInventoryScanner)world.getTileEntity(pos)).setHorizontal(horizontal);
+
 		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
 		int loopBoundary = facing == EnumFacing.WEST || facing == EnumFacing.EAST ? Math.abs(pos.getX() - connectedScanner.getPos().getX()) : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? Math.abs(pos.getZ() - connectedScanner.getPos().getZ()) : 0);
 
@@ -144,7 +140,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 
 		for(int i = 1; i < loopBoundary; i++)
 		{
-			world.setBlockState(pos.offset(facing, i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, facing));
+			world.setBlockState(pos.offset(facing, i), SCContent.inventoryScannerField.getDefaultState().withProperty(FACING, facing).withProperty(HORIZONTAL, horizontal));
 		}
 
 		CustomizableSCTE.link((CustomizableSCTE)world.getTileEntity(pos), connectedScanner);
@@ -276,19 +272,19 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta % 4));
+		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta % 4)).withProperty(HORIZONTAL, meta > 3);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getBlock() != this ? 0 : state.getValue(FACING).getHorizontalIndex();
+		return state.getBlock() != this ? 0 : state.getValue(FACING).getHorizontalIndex() + (state.getValue(HORIZONTAL) ? 4 : 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, HORIZONTAL);
 	}
 
 	@Override

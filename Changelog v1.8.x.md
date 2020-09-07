@@ -1,12 +1,13 @@
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - New: The name of a camera is now displayed in the top right when the player is mounted to it
+- New: Inventory Scanner modifying option to have inventory scanner fields be horizontal
 - Change: Inventory Scanner Fields now cannot be destroyed when between two Inventory Scanners (Thanks Redstone_Dubstep!) 
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Fix: WAILA exploit
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
-- Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen 
+- Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Fix: Inventory Scanner and Inventory Scanner Field metadata is calculcated incorrectly (This means that the orientation of your Inventory Scanner (Fields) might reset!)
 - Fix: Some customizable blocks don't drop their items correctly when broken
 

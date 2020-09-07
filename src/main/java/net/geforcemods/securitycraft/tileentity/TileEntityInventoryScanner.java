@@ -1,24 +1,31 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScanner;
 import net.geforcemods.securitycraft.blocks.BlockInventoryScannerField;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
+	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
 	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
@@ -276,8 +283,50 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	}
 
 	@Override
-	public Option<?>[] customOptions() {
-		return null;
+	public void onOptionChanged(Option<?> option)
+	{
+		if(!option.getName().equals("horizontal"))
+			return;
+
+		OptionBoolean bo = (OptionBoolean)option;
+
+		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+		IBlockState thisState = world.getBlockState(pos);
+
+		if(connectedScanner != null)
+		{
+			EnumFacing facing = thisState.getValue(BlockInventoryScanner.FACING);
+
+			for(int i = 0; i <= ConfigHandler.inventoryScannerRange; i++)
+			{
+				BlockPos offsetPos = pos.offset(facing, i);
+				Block block = BlockUtils.getBlock(world, offsetPos);
+				IBlockState state = world.getBlockState(offsetPos);
+
+				if(block == SCContent.inventoryScannerField)
+					world.setBlockState(offsetPos, state.withProperty(BlockInventoryScannerField.HORIZONTAL, bo.get()));
+				else if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+					break;
+				else if(block == SCContent.inventoryScanner && state.getValue(BlockInventoryScanner.FACING) == facing.getOpposite())
+					break;
+			}
+
+			connectedScanner.setHorizontal(bo.get());
+		}
+
+		world.setBlockState(pos, thisState.withProperty(BlockInventoryScanner.HORIZONTAL, bo.get()));
+	}
+
+	public void setHorizontal(boolean isHorizontal)
+	{
+		horizontal.setValue(isHorizontal);
+		world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, isHorizontal));
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[] {horizontal};
 	}
 
 	@Override

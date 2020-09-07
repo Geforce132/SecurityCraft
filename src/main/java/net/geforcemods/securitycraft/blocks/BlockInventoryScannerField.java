@@ -15,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -40,9 +41,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockInventoryScannerField extends BlockContainer implements IIntersectable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool HORIZONTAL = PropertyBool.create("horizontal");
+	public static final AxisAlignedBB EAST_WEST_SHAPE = new AxisAlignedBB(0.000F, 0.000F, 6F/16F, 1.000F, 1.000F, 10F/16F);
+	public static final AxisAlignedBB NORTH_SOUTH_SHAPE = new AxisAlignedBB(6F/16F, 0.000F, 0.000F, 10F/16F, 1.000F, 1.000F);
+	public static final AxisAlignedBB HORIZONTAL_SHAPE = new AxisAlignedBB(0.000F, 6F/16F, 0.000F, 1.000F, 10F/16F, 1.000F);
 
 	public BlockInventoryScannerField(Material material) {
 		super(material);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HORIZONTAL, false));
 	}
 
 	@Override
@@ -311,38 +317,36 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
-		if (source.getBlockState(pos).getValue(FACING) == EnumFacing.EAST || source.getBlockState(pos).getValue(FACING) == EnumFacing.WEST)
-			return new AxisAlignedBB(0.000F, 0.000F, 6F/16F, 1.000F, 1.000F, 10F/16F); //ew
-		else if (source.getBlockState(pos).getValue(FACING) == EnumFacing.NORTH || source.getBlockState(pos).getValue(FACING) == EnumFacing.SOUTH)
-			return new AxisAlignedBB(6F/16F, 0.000F, 0.000F, 10F/16F, 1.000F, 1.000F); //ns
-		return state.getBoundingBox(source, pos);
+		if(state.getValue(HORIZONTAL))
+			return HORIZONTAL_SHAPE;
+
+		if (state.getValue(FACING) == EnumFacing.EAST || state.getValue(FACING) == EnumFacing.WEST)
+			return EAST_WEST_SHAPE;
+		else if (state.getValue(FACING) == EnumFacing.NORTH || state.getValue(FACING) == EnumFacing.SOUTH)
+			return NORTH_SOUTH_SHAPE;
+		return super.getBoundingBox(state, world, pos);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta)
 	{
-		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta % 4));
+		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta % 4)).withProperty(HORIZONTAL, meta > 3);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(FACING).getHorizontalIndex();
+		return state.getValue(FACING).getHorizontalIndex() + (state.getValue(HORIZONTAL) ? 4 : 0);
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, HORIZONTAL);
 	}
 
-	@SideOnly(Side.CLIENT)
-
-	/**
-	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
-	 */
 	@Override
 	public ItemStack getItem(World world, BlockPos pos, IBlockState state)
 	{

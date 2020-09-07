@@ -794,6 +794,8 @@ option.securitycraft:keypadChest.sendMessage=Nachricht: #
 option.securitycraft:keypadChest.sendMessage.description=Sendet diese Truhe eine Nachricht, wenn sie aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
 option.securitycraft:keypadFurnace.sendMessage=Nachricht: #
 option.securitycraft:keypadFurnace.sendMessage.description=Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
+option.securitycraft:inventoryScanner.horizontal=Horizontal: #
+option.securitycraft:inventoryScanner.horizontal.description=Sollen die Inventarscannerfelder von diesem Inventarscanner horizontal sein?
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag
