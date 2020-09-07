@@ -24,6 +24,7 @@
 - Fix: Walking through a block pocket wall blocks vision
 - Fix: Anyone can reset a briefcase's passcode (Thanks Redstone_Dubstep!)
 - Removed: Taser Bullet entity
+- Misc.: Various French language fixes (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
 
