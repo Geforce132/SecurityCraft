@@ -8,6 +8,7 @@
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen 
 - Fix: Inventory Scanner and Inventory Scanner Field metadata is calculcated incorrectly (This means that the orientation of your Inventory Scanner (Fields) might reset!)
+- Fix: Some customizable blocks don't drop their items correctly when broken
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
 
