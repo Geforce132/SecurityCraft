@@ -51,10 +51,11 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		boolean whitelisted = ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST);
 		int requiredLevel = -1;
 		int cardLvl = ((BaseKeycardItem) stack.getItem()).getKeycardLvl();
-		boolean exact = ((KeycardReaderTileEntity)world.getTileEntity(pos)).doesRequireExactKeycard();
+		KeycardReaderTileEntity te = ((KeycardReaderTileEntity)world.getTileEntity(pos));
+		boolean exact = te.doesRequireExactKeycard();
 
-		if(((KeycardReaderTileEntity)world.getTileEntity(pos)).getPassword() != null)
-			requiredLevel = Integer.parseInt(((KeycardReaderTileEntity)world.getTileEntity(pos)).getPassword());
+		if(te.getPassword() != null)
+			requiredLevel = Integer.parseInt(te.getPassword());
 
 		if(whitelisted || (!exact && requiredLevel <= cardLvl || exact && requiredLevel == cardLvl)){
 			if(cardLvl == 6 && stack.getTag() != null && !player.isCreative()){
@@ -64,14 +65,12 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 					stack.shrink(1);
 			}
 
-			KeycardReaderBlock.activate(world, pos, ((KeycardReaderTileEntity)world.getTileEntity(pos)).getSignalLength());
+			KeycardReaderBlock.activate(world, pos, te.getSignalLength());
 		}
-		else if (requiredLevel == -1) {
-			if(world.isRemote)
+		else if (world.isRemote) {
+			if(requiredLevel == -1)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
-		}
-		else {
-			if (world.isRemote)
+			else
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required", ((IPasswordProtected) world.getTileEntity(pos)).getPassword(), ((BaseKeycardItem) stack.getItem()).getKeycardLvl()), TextFormatting.RED);
 		}
 	}
