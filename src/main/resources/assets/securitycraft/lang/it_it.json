@@ -869,6 +869,8 @@
 	"option.securitycraft.alarm.range.description": "Da quanti blocchi di distanza si può udire il suono dell'allarme?",
 	"option.securitycraft.keycard_reader.sendMessage": "Messaggio: %s",
 	"option.securitycraft.keycard_reader.sendMessage.description": "Questo lettore di tessere magnetiche manda un messaggio all'attivazione (usando moduli lista bianca/nera)?",
+	"option.securitycraft.keycard_reader.signalLength": "Lunghezza segnale: %s",
+	"option.securitycraft.keycard_reader.signalLength.description": "Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)",
 	"option.securitycraft.keypad_chest.sendMessage": "Messaggio: %s",
 	"option.securitycraft.keypad_chest.sendMessage.description": "Questo baule manda un messaggio all'attivazione (usando moduli lista bianca/nera)?",
 	"option.securitycraft.keypad_furnace.sendMessage": "Messaggio: %s",

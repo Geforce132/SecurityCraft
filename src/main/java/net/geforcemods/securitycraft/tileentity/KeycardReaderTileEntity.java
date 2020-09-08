@@ -28,6 +28,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private Option.IntOption signalLength = new Option.IntOption(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeycardReaderTileEntity()
 	{
@@ -72,7 +73,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	@Override
 	public void activate(PlayerEntity player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeycardReaderBlock)
-			KeycardReaderBlock.activate(world, getPos());
+			KeycardReaderBlock.activate(world, getPos(), signalLength.get());
 	}
 
 	@Override
@@ -108,12 +109,17 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ sendMessage };
+		return new Option[]{ sendMessage, signalLength };
 	}
 
 	public boolean sendsMessages()
 	{
 		return sendMessage.get();
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.get();
 	}
 
 	@Override
