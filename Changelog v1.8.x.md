@@ -18,6 +18,7 @@
 - Fix: Welcome message doesn't show
 - Fix: Anyone can reset a briefcase's passcode (Thanks Redstone_Dubstep!)
 - Fix: Confirm button in the Universal Key Changer's GUI doesn't properly react to changes in the textboxes (Thanks Redstone_Dubstep!)
+- Fix: Defused Claymore model is incorrect (Thanks Redstone_Dubstep!)
 - Removed: Taser Bullet entity
 - Misc.: Various French language fixes (Thanks supercat95!)
 
