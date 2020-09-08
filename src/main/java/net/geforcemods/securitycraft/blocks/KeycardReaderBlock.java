@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.items.BaseKeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
@@ -71,7 +70,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 			if(requiredLevel == -1)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required", ((IPasswordProtected) world.getTileEntity(pos)).getPassword(), ((BaseKeycardItem) stack.getItem()).getKeycardLvl()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required", te.getPassword(), ((BaseKeycardItem) stack.getItem()).getKeycardLvl()), TextFormatting.RED);
 		}
 	}
 
