@@ -869,6 +869,8 @@
 	"option.securitycraft.motion_activated_light.searchRadius.description": "À quelle distance la lumière pourra détecter une entité ?",
 	"option.securitycraft.keycard_reader.sendMessage": "Message : %s",
 	"option.securitycraft.keycard_reader.sendMessage.description": "Cette carte d'accès envoie-t-elle un message lors de l'activation (quand utilisant des modules de liste blanche/noire) ?",
+	"option.securitycraft.keycard_reader.signalLength": "Largeur du signal : %s",
+	"option.securitycraft.keycard_reader.signalLength.description": "Pour combien de temps resterait le signal de redstone en cas de succès ? (En ticks, 20 ticks = 1 seconde)",
 	"option.securitycraft.keypad_chest.sendMessage": "Message : %s",
 	"option.securitycraft.keypad_chest.sendMessage.description": "Ce coffre protégé par un clavier à code envoie-t-il un message lors de l'activation (quand utilisant des modules de liste blanche/noire) ?",
 	"option.securitycraft.keypad_furnace.sendMessage": "Message : %s",

@@ -63,7 +63,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 					stack.shrink(1);
 			}
 
-			KeycardReaderBlock.activate(world, pos);
+			KeycardReaderBlock.activate(world, pos, ((KeycardReaderTileEntity)world.getTileEntity(pos)).getSignalLength());
 		}
 
 		if(world.isRemote)
