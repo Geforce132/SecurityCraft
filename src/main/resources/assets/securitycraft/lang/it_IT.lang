@@ -782,6 +782,8 @@ option.securitycraft:motionActivatedLight.searchRadius=Raggio di ricerca: #
 option.securitycraft:motionActivatedLight.searchRadius.description=La lampada rileva un'entità fino a quale distanza?
 option.securitycraft:keycardReader.sendMessage=Messaggio: #
 option.securitycraft:keycardReader.sendMessage.description=Questo lettore di tessere magnetiche manda un messaggio all'attivazione (usando moduli lista bianca/nera)?
+option.securitycraft:keycardReader.signalLength=Lunghezza segnale: #
+option.securitycraft:keycardReader.signalLength.description=Quanto dovrebbe durare un segnale di redstone dall'attivazione? (In tick, 20 tick = 1 secondo)
 option.securitycraft:keypadChest.sendMessage=Messaggio: #
 option.securitycraft:keypadChest.sendMessage.description=Questo baule manda un messaggio all'attivazione (usando moduli lista bianca/nera)?
 option.securitycraft:keypadFurnace.sendMessage=Messaggio: #

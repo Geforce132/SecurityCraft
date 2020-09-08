@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -20,6 +21,7 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private OptionInt signalLength = new OptionInt(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	/**
 	 * Writes a tile entity to NBT.
@@ -59,7 +61,7 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 	@Override
 	public void activate(EntityPlayer player) {
 		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeycardReader)
-			BlockKeycardReader.activate(world, getPos());
+			BlockKeycardReader.activate(world, getPos(), signalLength.get());
 	}
 
 	@Override
@@ -95,11 +97,16 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ sendMessage };
+		return new Option[]{ sendMessage, signalLength };
 	}
 
 	public boolean sendsMessages()
 	{
 		return sendMessage.get();
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.get();
 	}
 }

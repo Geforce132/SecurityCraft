@@ -795,6 +795,8 @@ option.securitycraft:motionActivatedLight.searchRadius=Suchradius: #
 option.securitycraft:motionActivatedLight.searchRadius.description=Wie weit entfernt erkennt das Licht einen Mob/Spieler?
 option.securitycraft:keycardReader.sendMessage=Nachricht: #
 option.securitycraft:keycardReader.sendMessage.description=Sendet dieser Schlüsselkartenleser eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
+option.securitycraft:keycardReader.signalLength=Signallänge: #
+option.securitycraft:keycardReader.signalLength.description=Wie lange soll das Redstonesignal bei erfolgreicher Aktivierung sein? (In Ticks, 20 Ticks = 1 Sekunde)
 option.securitycraft:keypadChest.sendMessage=Nachricht: #
 option.securitycraft:keypadChest.sendMessage.description=Sendet diese Truhe eine Nachricht, wenn sie aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
 option.securitycraft:keypadFurnace.sendMessage=Nachricht: #
