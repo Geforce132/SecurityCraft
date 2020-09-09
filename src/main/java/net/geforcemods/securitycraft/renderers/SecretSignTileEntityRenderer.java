@@ -66,7 +66,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
 		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		if(te.getOwner().isOwner(Minecraft.getInstance().player))
+		if(te.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
 		{
 			int textColor = te.getTextColor().getTextColor();
 			int r = (int)(NativeImage.getRed(textColor) * 0.4D);
