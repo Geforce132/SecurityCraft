@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -98,7 +97,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	public boolean isPlayerAllowedToSeeText(PlayerEntity player) {
-		return !isSecret() || getOwner().isOwner(Minecraft.getInstance().player) || ModuleUtils.checkForModule(Minecraft.getInstance().world, getPos(), player, ModuleType.WHITELIST);
+		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.checkForModule(getWorld(), getPos(), player, ModuleType.WHITELIST);
 	}
 
 	@Override
