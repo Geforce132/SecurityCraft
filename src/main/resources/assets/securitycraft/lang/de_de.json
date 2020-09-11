@@ -714,7 +714,7 @@
 	"messages.securitycraft:naming.error": "Du kannst diesen Block nicht '%1$s' nennen, da der Name den nicht erlaubten Character '%2$sc' enthält.",
 	"messages.securitycraft:thanks": "Danke, dass du SecurityCraft %1$s nutzt! %2$s %3$s ",
 	"messages.securitycraft:tip": "Tipp:",
-	"messages.securitycraft:tip.scHelp": "Schreibe /sc help, um eine SecurityCraft Anleitung zu bekommen, welche dir Informationen zu SecurityCraft Blöcken/Items anzeigt.",
+	"messages.securitycraft:tip.scHelp": "Schreibe /sc help, um das Rezept der SecurityCraft Anleitung zu bekommen. Diese zeigt dir Informationen zu SecurityCraft Blöcken und Items.",
 	"messages.securitycraft:tip.trello": "Schau mal beim Trello-Board von SecurityCraft vorbei und melde Bugs oder gib uns Vorschläge!",
 	"messages.securitycraft:tip.patreon": "Möchtest du SecurityCraft unterstützen?",
 	"messages.securitycraft:tip.discord": "Tritt unserem Discord Server bei, um mit uns zu chatten und wichtige Updates und Informationen über SecurityCraft zu bekommen!",
