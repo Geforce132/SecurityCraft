@@ -658,7 +658,7 @@
 	"messages.securitycraft:naming.error": "Vous ne pouvez pas nommer ce bloc ’%1$s’, car le nom contient le caractère non valide ’%2$s’.",
 	"messages.securitycraft:thanks": "Merci pour l’utilisation de SecurityCraft %1$s ! %2$s %3$s ",
 	"messages.securitycraft:tip": "Conseil :",
-	"messages.securitycraft:tip.scHelp": "Tapez /sc help vous donnera un manuel SecurityCraft, qui affichera des informations d’aide pour les blocs / objets SecurityCraft.",
+	"messages.securitycraft:tip.scHelp": "Tapez /sc help vous donnera la recette pour le manuel SecurityCraft, qui affichera des informations d’aide pour les blocs / objets SecurityCraft.",
 	"messages.securitycraft:tip.trello": "Allez à la planche Trello de SecurityCraft pour signaler des problèmes ou donnez-nous des suggestions !",
 	"messages.securitycraft:tip.patreon": "Voudriez-vous supporter SecurityCraft ?",
 	"messages.securitycraft:tip.discord": "Rejoindrez notre serveur de Discord pour bavarder avec nous et à recevoir des annonces importantes qui concernent SecurityCraft !",
