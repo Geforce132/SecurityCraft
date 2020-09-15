@@ -27,8 +27,10 @@
 - Fix: Confirm button in the Universal Key Changer's GUI doesn't properly react to changes in the textboxes (Thanks Redstone_Dubstep!)
 - Fix: Defused Claymore model is incorrect (Thanks Redstone_Dubstep!)
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
+- Fix: Tooltips in SecurityCraft Manual don't completely show on the screen
 - Removed: Taser Bullet entity
 - Misc.: Various French language fixes (Thanks supercat95!)
+- Misc.: The minimum required Forge version is now 34.0.3
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
 
