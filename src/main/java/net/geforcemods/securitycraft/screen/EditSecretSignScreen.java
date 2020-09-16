@@ -52,12 +52,12 @@ public class EditSecretSignScreen extends Screen
 	protected void init()
 	{
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, DialogTexts.field_240632_c_, button -> close()));
+		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, DialogTexts.GUI_DONE, button -> close()));
 		te.setEditable(false);
 		textInputUtil = new TextInputUtil(() -> signText[editLine], s -> {
 			signText[editLine] = s;
 			te.setText(editLine, new StringTextComponent(s));
-		}, TextInputUtil.func_238570_a_(minecraft), TextInputUtil.func_238582_c_(minecraft), t -> minecraft.fontRenderer.getStringWidth(t) <= 90);
+		}, TextInputUtil.getClipboardTextSupplier(minecraft), TextInputUtil.getClipboardTextSetter(minecraft), t -> minecraft.fontRenderer.getStringWidth(t) <= 90);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class EditSecretSignScreen extends Screen
 		if(keyCode == 265)
 		{
 			editLine = editLine - 1 & 3;
-			textInputUtil.func_238588_f_();
+			textInputUtil.moveCursorToEnd();
 			return true;
 		}
 		else if(keyCode != 264 && keyCode != 257 && keyCode != 335)
@@ -113,7 +113,7 @@ public class EditSecretSignScreen extends Screen
 		else
 		{
 			editLine = editLine + 1 & 3;
-			textInputUtil.func_238588_f_();
+			textInputUtil.moveCursorToEnd();
 			return true;
 		}
 	}

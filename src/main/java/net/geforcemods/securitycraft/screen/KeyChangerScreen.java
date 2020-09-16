@@ -86,9 +86,9 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
-		font.func_243248_b(matrix, ukcName, xSize / 2 - font.func_238414_a_(ukcName) / 2, 6, 4210752);
-		font.func_243248_b(matrix, enterPasscode, xSize / 2 - font.func_238414_a_(enterPasscode) / 2, 25, 4210752);
-		font.func_243248_b(matrix, confirmPasscode, xSize / 2 - font.func_238414_a_(confirmPasscode) / 2, 65, 4210752);
+		font.func_243248_b(matrix, ukcName, xSize / 2 - font.getStringPropertyWidth(ukcName) / 2, 6, 4210752);
+		font.func_243248_b(matrix, enterPasscode, xSize / 2 - font.getStringPropertyWidth(enterPasscode) / 2, 25, 4210752);
+		font.func_243248_b(matrix, confirmPasscode, xSize / 2 - font.getStringPropertyWidth(confirmPasscode) / 2, 65, 4210752);
 	}
 
 	@Override

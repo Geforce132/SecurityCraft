@@ -20,7 +20,7 @@ public class CameraView { //TODO: is this still needed? could switch to net.mine
 	public int x = 0;
 	public int y = 0;
 	public int z = 0;
-	public ResourceLocation dimension = World.field_234918_g_.func_240901_a_();
+	public ResourceLocation dimension = World.OVERWORLD.getLocation();
 
 	public CameraView(int x, int y, int z, RegistryKey<World> dim) {
 		this.x = x;
@@ -28,7 +28,7 @@ public class CameraView { //TODO: is this still needed? could switch to net.mine
 		this.z = z;
 
 		if(dim != null)
-			dimension = dim.func_240901_a_();
+			dimension = dim.getLocation();
 	}
 
 	public CameraView(int x, int y, int z, ResourceLocation dim) {
@@ -46,7 +46,7 @@ public class CameraView { //TODO: is this still needed? could switch to net.mine
 		z = pos.getZ();
 
 		if(dim != null)
-			dimension = dim.func_240901_a_();
+			dimension = dim.getLocation();
 	}
 
 

@@ -60,7 +60,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, logged, xSize / 2 - font.func_238414_a_(logged) / 2, 6, 4210752);
+		font.func_243248_b(matrix, logged, xSize / 2 - font.getStringPropertyWidth(logged) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
 			renderTooltip(matrix, clear, mouseX - guiLeft, mouseY - guiTop);
@@ -179,7 +179,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
-						font.func_243248_b(matrix, localized, guiLeft + (xSize / 2 - font.func_238414_a_(localized) / 2), bottom + 5, 4210752);
+						font.func_243248_b(matrix, localized, guiLeft + (xSize / 2 - font.getStringPropertyWidth(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}

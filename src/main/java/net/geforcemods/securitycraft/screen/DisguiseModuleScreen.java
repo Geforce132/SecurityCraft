@@ -34,7 +34,7 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.func_243248_b(matrix, disguiseModuleName, xSize / 2 - font.func_238414_a_(disguiseModuleName) / 2, 6, 4210752);
+		font.func_243248_b(matrix, disguiseModuleName, xSize / 2 - font.getStringPropertyWidth(disguiseModuleName) / 2, 6, 4210752);
 	}
 
 	@Override

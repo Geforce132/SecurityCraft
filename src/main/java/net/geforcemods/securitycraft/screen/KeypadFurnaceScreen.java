@@ -34,13 +34,13 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		func_230459_a_(matrix, mouseX, mouseY);
+		renderHoveredTooltip(matrix, mouseX, mouseY);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, title, xSize / 2 - font.func_238414_a_(title) / 2, 6.0F, 4210752);
+		font.func_243248_b(matrix, title, xSize / 2 - font.getStringPropertyWidth(title) / 2, 6.0F, 4210752);
 		font.drawString(matrix, playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
 	}
 

@@ -42,7 +42,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
 
-		font.func_243248_b(matrix, ubr, (xSize - font.func_238414_a_(ubr)) / 2, 5, 4210752);
+		font.func_243248_b(matrix, ubr, (xSize - font.getStringPropertyWidth(ubr)) / 2, 5, 4210752);
 		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(0).isEmpty())

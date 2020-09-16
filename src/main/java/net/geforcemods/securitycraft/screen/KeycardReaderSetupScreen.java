@@ -57,13 +57,13 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, explanation1, xSize / 2 - font.func_238414_a_(explanation1) / 2, 6, 4210752);
-		font.func_243248_b(matrix, explanation2, xSize / 2 - font.func_238414_a_(explanation2) / 2 - 2, 30 - 10, 4210752);
-		font.func_243248_b(matrix, explanation3, xSize / 2 - font.func_238414_a_(explanation3) / 2 - 11, 42 - 10, 4210752);
-		font.func_243248_b(matrix, explanation4, xSize / 2 - font.func_238414_a_(explanation4) / 2 - 10, 54 - 10, 4210752);
+		font.func_243248_b(matrix, explanation1, xSize / 2 - font.getStringPropertyWidth(explanation1) / 2, 6, 4210752);
+		font.func_243248_b(matrix, explanation2, xSize / 2 - font.getStringPropertyWidth(explanation2) / 2 - 2, 30 - 10, 4210752);
+		font.func_243248_b(matrix, explanation3, xSize / 2 - font.getStringPropertyWidth(explanation3) / 2 - 11, 42 - 10, 4210752);
+		font.func_243248_b(matrix, explanation4, xSize / 2 - font.getStringPropertyWidth(explanation4) / 2 - 10, 54 - 10, 4210752);
 		font.func_243248_b(matrix, explanation5, xSize / 2 + 45, 66 - 5, 4210752);
-		font.func_243248_b(matrix, explanation6, xSize / 2 - font.func_238414_a_(explanation6) / 2 - 6, 78 - 1, 4210752);
-		font.func_243248_b(matrix, explanation7, xSize / 2 - font.func_238414_a_(explanation7) / 2 - 20, 90 - 1, 4210752);
+		font.func_243248_b(matrix, explanation6, xSize / 2 - font.getStringPropertyWidth(explanation6) / 2 - 6, 78 - 1, 4210752);
+		font.func_243248_b(matrix, explanation7, xSize / 2 - font.getStringPropertyWidth(explanation7) / 2 - 20, 90 - 1, 4210752);
 	}
 
 	@Override

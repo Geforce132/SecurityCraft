@@ -24,7 +24,7 @@ public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock
 	{
 		if(rand.nextInt(5) == 0)
 		{
-			Direction direction = Direction.func_239631_a_(rand);
+			Direction direction = Direction.getRandomDirection(rand);
 
 			if(direction != Direction.UP)
 			{

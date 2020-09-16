@@ -27,7 +27,7 @@ public class ReinforcedIceBlock extends BaseReinforcedBlock
 	{
 		if(world.getLightFor(LightType.BLOCK, pos) > 11 - state.getOpacity(world, pos))
 		{
-			if(world.func_230315_m_().func_236040_e_()) //getDimensionType, doesWaterVaporize
+			if(world.getDimensionType().isUltrawarm())
 				world.removeBlock(pos, false);
 			else
 			{

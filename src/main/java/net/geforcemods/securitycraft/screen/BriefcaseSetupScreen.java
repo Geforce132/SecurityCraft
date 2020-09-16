@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import net.minecraft.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -87,7 +87,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.func_243248_b(matrix, setupTitle, xSize / 2 - font.func_238414_a_(setupTitle) / 2, 6, 4210752);
+		font.func_243248_b(matrix, setupTitle, xSize / 2 - font.getStringPropertyWidth(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override

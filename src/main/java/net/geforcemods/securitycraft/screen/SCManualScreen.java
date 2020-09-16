@@ -460,7 +460,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		subpages = font.func_238420_b_().func_238362_b_(helpInfo, subpageLength, Style.EMPTY);
+		subpages = font.getCharacterManager().func_238362_b_(helpInfo, subpageLength, Style.EMPTY);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}

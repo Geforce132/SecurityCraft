@@ -223,17 +223,17 @@ public class SCClientEventHandler
 		{
 			ITextComponent cameraName = te.getCustomSCName();
 
-			font.func_243246_a(matrix, cameraName, resolution.getScaledWidth() - font.func_238414_a_(cameraName) - 8, 25, 16777215);
+			font.func_243246_a(matrix, cameraName, resolution.getScaledWidth() - font.getStringPropertyWidth(cameraName) - 8, 25, 16777215);
 			timeY += 10;
 		}
 
 		font.drawStringWithShadow(matrix, time, resolution.getScaledWidth() - font.getStringWidth(time) - 8, timeY, 16777215);
 		//drawStringWithShadow
-		font.func_243246_a(matrix, exit, resolution.getScaledWidth() - font.func_238414_a_(exit) - 8, resolution.getScaledHeight() - 70, 16777215);
-		font.func_243246_a(matrix, zoom, resolution.getScaledWidth() - font.func_238414_a_(zoom) - 8, resolution.getScaledHeight() - 60, 16777215);
-		font.func_243246_a(matrix, nightVision, resolution.getScaledWidth() - font.func_238414_a_(nightVision) - 8, resolution.getScaledHeight() - 50, 16777215);
-		font.func_243246_a(matrix, redstone, resolution.getScaledWidth() - font.func_238414_a_(redstone) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
-		font.func_243246_a(matrix, redstoneNote, resolution.getScaledWidth() - font.func_238414_a_(redstoneNote) -8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
+		font.func_243246_a(matrix, exit, resolution.getScaledWidth() - font.getStringPropertyWidth(exit) - 8, resolution.getScaledHeight() - 70, 16777215);
+		font.func_243246_a(matrix, zoom, resolution.getScaledWidth() - font.getStringPropertyWidth(zoom) - 8, resolution.getScaledHeight() - 60, 16777215);
+		font.func_243246_a(matrix, nightVision, resolution.getScaledWidth() - font.getStringPropertyWidth(nightVision) - 8, resolution.getScaledHeight() - 50, 16777215);
+		font.func_243246_a(matrix, redstone, resolution.getScaledWidth() - font.getStringPropertyWidth(redstone) - 8, resolution.getScaledHeight() - 40, hasRedstoneModule ? 16777215 : 16724855);
+		font.func_243246_a(matrix, redstoneNote, resolution.getScaledWidth() - font.getStringPropertyWidth(redstoneNote) -8, resolution.getScaledHeight() - 30, hasRedstoneModule ? 16777215 : 16724855);
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);

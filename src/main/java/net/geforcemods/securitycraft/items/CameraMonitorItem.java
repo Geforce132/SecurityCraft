@@ -61,7 +61,7 @@ public class CameraMonitorItem extends Item {
 				if(stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				CameraView view = new CameraView(pos, player.world.func_234923_W_());
+				CameraView view = new CameraView(pos, player.world.getDimensionKey());
 
 				if(isCameraAdded(stack.getTag(), view)){
 					stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));

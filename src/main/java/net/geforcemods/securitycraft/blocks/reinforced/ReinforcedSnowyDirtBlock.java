@@ -134,7 +134,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 
 					if(rand.nextInt(8) == 0)
 					{
-						List<ConfiguredFeature<?, ?>> flowers = world.getBiome(tempPos).func_242440_e().func_242496_b();
+						List<ConfiguredFeature<?, ?>> flowers = world.getBiome(tempPos).getGenerationSettings().getFlowerFeatures();
 
 						if(flowers.isEmpty())
 							break;

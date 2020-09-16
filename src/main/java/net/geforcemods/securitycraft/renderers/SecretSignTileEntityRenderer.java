@@ -77,7 +77,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 			for(int line = 0; line < 4; ++line)
 			{
 				IReorderingProcessor rp = te.func_242686_a(line, (p_243502_1_) -> {
-					List<IReorderingProcessor> list = font.func_238425_b_(p_243502_1_, 90);
+					List<IReorderingProcessor> list = font.trimStringToWidth(p_243502_1_, 90);
 					return list.isEmpty() ? IReorderingProcessor.field_242232_a : list.get(0);
 				});
 

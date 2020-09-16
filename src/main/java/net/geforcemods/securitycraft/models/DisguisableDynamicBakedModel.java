@@ -130,7 +130,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel
 	}
 
 	@Override
-	public boolean func_230044_c_() //doesNotUseDiffuseLighting or something like that, idk
+	public boolean isSideLit()
 	{
 		return false;
 	}

@@ -102,7 +102,7 @@ public class CameraMonitorScreen extends Screen {
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
-				if(!view.dimension.equals(Minecraft.getInstance().player.world.func_234923_W_().func_240901_a_())) {
+				if(!view.dimension.equals(Minecraft.getInstance().player.world.getDimensionKey().getLocation())) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
@@ -153,15 +153,15 @@ public class CameraMonitorScreen extends Screen {
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.func_243248_b(matrix, selectCameras, startX + xSize / 2 - font.func_238414_a_(selectCameras) / 2, startY + 6, 4210752);
+		font.func_243248_b(matrix, selectCameras, startX + xSize / 2 - font.getStringPropertyWidth(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.trimStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					renderTooltip(matrix, font.func_238425_b_(ClientUtils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.trimStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
 			}
 	}
 
