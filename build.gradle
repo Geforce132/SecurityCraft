@@ -103,7 +103,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.2-33.0.37'
+    minecraft 'net.minecraftforge:forge:1.16.3-34.0.3'
     
 	implementation fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.3-beta-6")

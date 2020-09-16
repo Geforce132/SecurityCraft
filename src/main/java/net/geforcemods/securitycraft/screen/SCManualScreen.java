@@ -46,6 +46,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -204,7 +205,7 @@ public class SCManualScreen extends Screen {
 				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
 					if(chc instanceof TextHoverChecker && ((TextHoverChecker)chc).getName() != null)
-						func_243308_b(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY);
+						GuiUtils.drawHoveringText(matrix, ((TextHoverChecker)chc).getLines(), mouseX, mouseY, width, height, -1, font);
 					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
 						renderTooltip(matrix, displays[i].getCurrentStack(), mouseX, mouseY);
 				}
