@@ -48,9 +48,10 @@ public class SecretWallSignBlock extends WallSignBlock
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote && player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
-			SCContent.ADMIN_TOOL.get().onItemUse(new ItemUseContext(player, hand, hit));
+			return SCContent.ADMIN_TOOL.get().onItemUse(new ItemUseContext(player, hand, hit));
 
 		SecretSignTileEntity te = (SecretSignTileEntity)world.getTileEntity(pos);
+
 		if (te != null && te.isPlayerAllowedToSeeText(player))
 			return super.onBlockActivated(state, world, pos, player, hand, hit);
 

@@ -131,9 +131,10 @@ public class ModuleUtils{
 		}else if(te instanceof InventoryScannerTileEntity){
 			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
-		}else if(te instanceof SecretSignTileEntity)
+		}else if(te instanceof SecretSignTileEntity) {
 			if(module == ModuleType.WHITELIST && ((SecretSignTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
+		}
 
 		return false;
 	}
