@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
+import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -127,9 +128,13 @@ public class ModuleUtils{
 		}else if(te instanceof RetinalScannerTileEntity){
 			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
-		}else if(te instanceof InventoryScannerTileEntity)
-			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
+		}else if(te instanceof InventoryScannerTileEntity){
+			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
+		}else if(te instanceof SecretSignTileEntity) {
+			if(module == ModuleType.WHITELIST && ((SecretSignTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
+				return true;
+		}
 
 		return false;
 	}
