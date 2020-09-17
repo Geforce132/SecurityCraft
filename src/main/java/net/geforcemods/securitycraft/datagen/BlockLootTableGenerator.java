@@ -85,6 +85,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.REDSTONE_ORE_MINE);
 		putStandardBlockLootTable(SCContent.REINFORCED_FENCEGATE);
 		putStandardBlockLootTable(SCContent.REINFORCED_IRON_TRAPDOOR);
+		putStandardBlockLootTable(SCContent.REINFORCED_HOPPER);
 		putStandardBlockLootTable(SCContent.RETINAL_SCANNER);
 		putMineLootTable(SCContent.SAND_MINE);
 		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);

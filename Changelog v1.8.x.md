@@ -31,6 +31,7 @@
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
 - Fix: Tooltips in SecurityCraft Manual don't completely show on the screen
 - Fix: Secret Signs can be colored by anyone (Thanks Redstone_Dubstep!)
+- Fix: Reinforced Hopper does not drop
 - Removed: Taser Bullet entity
 - Misc.: Various French language fixes (Thanks supercat95!)
 - Misc.: The minimum required Forge version is now 34.0.3
