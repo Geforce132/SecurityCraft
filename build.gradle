@@ -45,11 +45,11 @@ sourceSets {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200515-1.15.1'
+    mappings channel: 'snapshot', version: '20200917-1.15.1'
 	
     runs {
         client {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/client')
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -60,7 +60,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/server')
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -71,7 +71,7 @@ minecraft {
         }
 
         data {
-            workingDirectory project.file('run')
+            workingDirectory project.file('run/data')
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/')
 
@@ -103,7 +103,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.0'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.41'
     
 	compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2:api")
 	runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2")
