@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
-import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
@@ -69,9 +68,6 @@ public class SecurityCraft {
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);
-
-		if(ModList.get().isLoaded("cyclic"))
-			MinecraftForge.EVENT_BUS.addListener(CyclicCompat::onRightClickBlock);
 	}
 
 	@SubscribeEvent

@@ -9,10 +9,6 @@ buildscript {
     }
 }
 
-plugins {
-	id "com.wynprice.cursemaven" version "2.1.1"
-}
-
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
@@ -108,7 +104,6 @@ dependencies {
 	implementation fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.3-beta-6")
     implementation fg.deobf("mcp.mobius.waila:Hwyla:1.10.11-B78_1.16.2")
-    compileOnly fg.deobf("curse.maven:cyclic:3037395")
 }
 
 jar {
