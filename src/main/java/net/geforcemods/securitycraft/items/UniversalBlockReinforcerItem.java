@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
@@ -23,9 +22,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UniversalBlockReinforcerItem extends Item
 {
-	public UniversalBlockReinforcerItem(int damage)
+	public UniversalBlockReinforcerItem(Item.Properties properties)
 	{
-		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(damage).group(SecurityCraft.groupSCTechnical));
+		super(properties);
 	}
 
 	@Override

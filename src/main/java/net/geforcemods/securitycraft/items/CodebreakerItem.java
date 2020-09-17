@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -29,8 +28,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class CodebreakerItem extends Item {
 
-	public CodebreakerItem() {
-		super(new Item.Properties().maxStackSize(1).defaultMaxDamage(3).group(SecurityCraft.groupSCTechnical));
+	public CodebreakerItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
@@ -32,9 +31,9 @@ import net.minecraft.world.World;
 
 public class UniversalOwnerChangerItem extends Item
 {
-	public UniversalOwnerChangerItem()
+	public UniversalOwnerChangerItem(Item.Properties properties)
 	{
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1).defaultMaxDamage(48));
+		super(properties);
 	}
 
 	@Override

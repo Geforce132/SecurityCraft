@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -17,9 +16,9 @@ import net.minecraft.world.World;
 
 public class SentryItem extends Item
 {
-	public SentryItem()
+	public SentryItem(Item.Properties properties)
 	{
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
+		super(properties);
 	}
 
 	@Override

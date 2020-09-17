@@ -35,8 +35,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SentryRemoteAccessToolItem extends Item {
 
-	public SentryRemoteAccessToolItem() {
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+	public SentryRemoteAccessToolItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override

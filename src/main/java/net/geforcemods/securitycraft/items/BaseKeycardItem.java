@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -19,8 +18,8 @@ public class BaseKeycardItem extends Item{
 
 	private final int level;
 
-	public BaseKeycardItem(int level) {
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
+	public BaseKeycardItem(Item.Properties properties, int level) {
+		super(properties);
 		this.level = level;
 	}
 
