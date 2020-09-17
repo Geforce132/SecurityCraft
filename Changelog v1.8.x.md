@@ -24,6 +24,7 @@
 - Fix: Defused Claymore model is incorrect (Thanks Redstone_Dubstep!)
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
 - Fix: Secret Signs can be colored by anyone (Thanks Redstone_Dubstep!)
+- Fix: Reinforced Hopper does not drop
 - Removed: Taser Bullet entity
 - Misc.: Various French language fixes (Thanks supercat95!)
 
