@@ -81,7 +81,7 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 
 		int i = te.getTextColor().getTextColor();
 
-		if(te.getOwner().isOwner(Minecraft.getInstance().player) && destroyStage < 0)
+		if(te.isPlayerAllowedToSeeText(Minecraft.getInstance().player) && destroyStage < 0)
 		{
 			for(int j = 0; j < 4; ++j)
 			{
