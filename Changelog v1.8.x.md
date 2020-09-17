@@ -6,6 +6,8 @@
 - New: A briefcase's owner can now be changed if its owner rightclicks while holding the briefcase in their off hand and a named Universal Owner Changer in their main hand (Thanks Redstone_Dubstep!)
 - New: The codebreaker can now be used on a briefcase by holding the briefcase in the off hand and the codebreaker in the main hand and rightclicking (Thanks Redstone_Dubstep!)
 - New: Customization option to change how long the Keycard Reader emits a redstone signal when it has been activated (Thanks Redstone_Dubstep!)
+- New: Secret Signs can now have a whitelist (Thanks Redstone_Dubstep!)
+- New: New customization option to make the text of Secret Signs visible to everyone (Thanks Redstone_Dubstep!)
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)

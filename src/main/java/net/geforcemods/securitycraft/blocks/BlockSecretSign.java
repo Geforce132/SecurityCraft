@@ -17,6 +17,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -119,11 +120,17 @@ public class BlockSecretSign extends BlockContainer
 		else
 		{
 			if(player.getHeldItem(hand).getItem() == SCContent.adminTool)
-				SCContent.adminTool.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+				return SCContent.adminTool.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ) == EnumActionResult.SUCCESS;
 
-			TileEntity tileentity = world.getTileEntity(pos);
-			return tileentity instanceof TileEntitySecretSign ? ((TileEntitySecretSign)tileentity).executeCommand(player) : false;
+			TileEntity te = world.getTileEntity(pos);
+			return te instanceof TileEntitySecretSign && ((TileEntitySecretSign)te).isPlayerAllowedToSeeText(player) ? ((TileEntitySecretSign)te).executeCommand(player) : false;
 		}
+	}
+
+	@Override
+	public String getTranslationKey()
+	{
+		return "tile.securitycraft:secret_sign";
 	}
 
 	@Override

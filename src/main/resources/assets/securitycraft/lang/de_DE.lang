@@ -283,6 +283,7 @@ tile.securitycraft:reinforced_wooden_button.name=Verstärkter Knopf
 tile.securitycraft:reinforced_lever.name=Verstärkter Hebel
 tile.securitycraft:reinforced_hopper.name=Verstärkter Trichter
 tile.securitycraft:projector.name=Projektor
+tile.securitycraft:secret_sign.name=Geheimes Schild
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -430,7 +431,7 @@ help.securitycraft:universalBlockReinforcerLvL2.info=Der Universelle Blockverst�
 help.securitycraft:universalBlockReinforcerLvL3.info=Der Universelle Blockverstärker verstärkt zahlreiche Vanilla Blöcke und wandelt sie in ihre SecurityCraft Varianten um. Rechtsklicke den Universellen Blockverstärker, und platziere Blöcke in den oberen Slot um sie zu verstärken, dann schließe das GUI. Um verstärkte Blöcke wieder in ihre Vanilla-Varianten umzuwandeln, nutze den unteren Slot. LvL3 hat unendlich Nutzungen.
 help.securitycraft:briefcase.info=Der Aktenkoffer ist ein einfaches, Passwort gesichertes Item, welches bis zu zwölf Items aufnehmen kann. Rechtsklicke es nach dem Herstellen, um den vierstelligen Code einzugeben, der den Aktenkoffer öffnet. Ein erneuter Rechtsklick öffnet den Aktenkoffer und du musst den richtigen Code eingeben, um an die Items zu kommen. Um den Code zu entfernen oder den Besitzer zu ändern, lege den Aktenkoffer in deine Zweithand und rechtsklicke mit einem Universellen Passwortwechsler/Universellen Besitzeränderer in deiner Haupthand.
 help.securitycraft:universalKeyChanger.info=Der Universelle Passwortwechsler erlaubt dir, das Passwort deiner Passwort gesicherten Blöcke zu ändern. Rechtsklicke einen Passwort gesicherten Block, um das GUI zu öffnen, dann gib das neue Passwort ein.
-help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla-Schild, mit dem Unterschied, dass nur der Besitzer den Text lesen kann. Stelle sicher, dass keiner den Block, an dem das Schild ist, zerstören kann!
+help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla-Schild, mit dem Unterschied, dass nur der Besitzer und gewhitelistete Spieler den Text lesen und mit dem Schild interagieren können. Stelle sicher, dass keiner den Block, an dem das Schild ist, zerstören kann!
 help.securitycraft:sentry.info=Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen), und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es.
 help.securitycraft:crystalQuartzItem.info=Kristallquartz wird benutzt, um Kristallquartz-Blöcke herzustellen.
 
@@ -687,6 +688,7 @@ module.securitycraft:keypadFurnace.whitelistModule.description=Ein Whitelist-Mod
 module.securitycraft:keypadFurnace.blacklistModule.description=Ein Blacklist-Modul in einem Passwort gesicherten Ofen verhindert, dass geblacklistete Spieler mit dem Schloss interagieren können. 
 module.securitycraft:projector.redstoneModule.description=Ein Redstone-Modul in einem Projektor erlaubt es dir, den Projektor mithilfe von Redstone manuell an- und auszuschalten.
 module.securitycraft:projector.disguiseModule.description=Wenn ein Tarnmodul zu einem Projektor hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.
+module.securitycraft:secret_sign.whitelistModule.description=Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?
@@ -803,6 +805,8 @@ option.securitycraft:keypadFurnace.sendMessage=Nachricht: #
 option.securitycraft:keypadFurnace.sendMessage.description=Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?
 option.securitycraft:inventoryScanner.horizontal=Horizontal: #
 option.securitycraft:inventoryScanner.horizontal.description=Sollen die Inventarscannerfelder von diesem Inventarscanner horizontal sein?
+option.securitycraft:secret_sign.isSecret=Geheim: #
+option.securitycraft:secret_sign.isSecret.description=Soll der Text des geheimen Schildes nur für den Besitzer und gewhitelistete Spieler sichtbar sein?
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag

@@ -281,6 +281,7 @@ tile.securitycraft:reinforced_wooden_button.name=Reinforced Button
 tile.securitycraft:reinforced_lever.name=Reinforced Lever
 tile.securitycraft:reinforced_hopper.name=Reinforced Hopper
 tile.securitycraft:projector.name=Projector
+tile.securitycraft:secret_sign.name=Secret Sign
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -427,7 +428,7 @@ help.securitycraft:universalBlockReinforcerLvL2.info=The Universal Block Reinfor
 help.securitycraft:universalBlockReinforcerLvL3.info=The Universal Block Reinforcer reinforces numerous vanilla blocks, and turns them into the SecurityCraft variants. To do this, right-click the Universal Block Reinforcer and put the vanilla block into the top slot, then close the GUI. To convert a reinforced block back to its vanilla variant, use the bottom slot. LvL3 has unlimited uses. Break any block outside of Creative mode to reinforce it.
 help.securitycraft:briefcase.info=The briefcase is a keypad-locked portable storage unit containing 12 slots. After crafting it, rightclick it to setup the 4-digit passcode to use from then on. Rightclick it again and insert the code to interact with the items. To remove a Briefcase's code or change its owner, put it into your offhand and rightclick while holding a Universal Key Changer/Universal Owner Changer in your mainhand.
 help.securitycraft:universalKeyChanger.info=The universal key changer allows you to change the passcode of passcode-protected blocks you own. Rightclick a passcode-protected block to open a GUI, then type in the new passcode you want.
-help.securitycraft:secretSignItem.info=The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign can view the text on it. Make sure noone can break the block it's placed on!
+help.securitycraft:secretSignItem.info=The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign and whitelisted players can interact with, and view the text on it. Make sure noone can break the block it's placed on!
 help.securitycraft:sentry.info=The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.
 help.securitycraft:crystalQuartzItem.info=Crystal Quartz is used to craft Crystal Quartz blocks.
 
@@ -685,6 +686,7 @@ module.securitycraft:keypadFurnace.whitelistModule.description=Adding a whitelis
 module.securitycraft:keypadFurnace.blacklistModule.description=Adding a blacklist module to a Password-protected Furnace will ban players from interacting with the block.
 module.securitycraft:projector.redstoneModule.description=Adding a redstone module to a Projector will allow you to manually toggle the Projector on and off using redstone power.
 module.securitycraft:projector.disguiseModule.description=Adding a disguise module to a Projector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
+module.securitycraft:secret_sign.whitelistModule.description=Adding a whitelist module to a Secret Sign will allow whitelisted players to interact with, and view the text on it.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
@@ -801,6 +803,8 @@ option.securitycraft:keypadFurnace.sendMessage=Message: #
 option.securitycraft:keypadFurnace.sendMessage.description=Does this furnace send a message upon activation (when using whitelist/blacklist modules)?
 option.securitycraft:inventoryScanner.horizontal=Horizontal: #
 option.securitycraft:inventoryScanner.horizontal.description=Should the inventory scanner fields created by this scanner be horizontal?
+option.securitycraft:secret_sign.isSecret=Secret: #
+option.securitycraft:secret_sign.isSecret.description=Should the text of the secret sign only be visible to the owner and whitelisted players?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityRetinalScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -128,10 +129,13 @@ public class ModuleUtils{
 		}else if(te instanceof TileEntityRetinalScanner){
 			if(module == EnumModuleType.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase()))
 				return true;
-		}else if(te instanceof TileEntityInventoryScanner)
+		}else if(te instanceof TileEntityInventoryScanner){
 			if(module == EnumModuleType.WHITELIST && ((CustomizableSCTE) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase()))
 				return true;
-
+		}else if(te instanceof TileEntitySecretSign) {
+			if(module == EnumModuleType.WHITELIST && ((TileEntitySecretSign) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase()))
+				return true;
+		}
 		return false;
 	}
 
