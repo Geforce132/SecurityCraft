@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -28,8 +27,8 @@ import net.minecraft.world.World;
 
 public class AdminToolItem extends Item {
 
-	public AdminToolItem() {
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1).maxStackSize(1));
+	public AdminToolItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override

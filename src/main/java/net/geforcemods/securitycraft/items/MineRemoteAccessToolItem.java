@@ -36,8 +36,8 @@ public class MineRemoteAccessToolItem extends Item {
 
 	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 
-	public MineRemoteAccessToolItem() {
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+	public MineRemoteAccessToolItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override

@@ -17,8 +17,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class KeyPanelItem extends Item {
 
-	public KeyPanelItem(){
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical));
+	public KeyPanelItem(Item.Properties properties){
+		super(properties);
 	}
 
 	@Override

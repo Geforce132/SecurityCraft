@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -23,9 +22,9 @@ import net.minecraft.world.World;
 
 public class ScannerDoorItem extends Item
 {
-	public ScannerDoorItem()
+	public ScannerDoorItem(Item.Properties properties)
 	{
-		super(new Item.Properties().group(SecurityCraft.groupSCDecoration));
+		super(properties);
 	}
 
 	@Override

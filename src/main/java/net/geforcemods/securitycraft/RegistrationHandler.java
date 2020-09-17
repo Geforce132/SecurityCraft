@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
-import net.geforcemods.securitycraft.items.ReinforcedBlockItem;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard1Condition;
 import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard2Condition;
@@ -125,7 +124,11 @@ public class RegistrationHandler
 			try
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
-					event.getRegistry().register(new ReinforcedBlockItem(((RegistryObject<Block>)field.get(null)).get()));
+				{
+					Block block = ((RegistryObject<Block>)field.get(null)).get();
+
+					event.getRegistry().register(new BlockItem(block, new Item.Properties().group(SecurityCraft.groupSCDecoration).isImmuneToFire()).setRegistryName(block.getRegistryName()));
+				}
 				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{
 					int tab = field.getAnnotation(RegisterItemBlock.class).value().ordinal();

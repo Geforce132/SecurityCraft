@@ -43,16 +43,16 @@ public class ModuleItem extends Item{
 	private int numberOfItemAddons;
 	private int numberOfBlockAddons;
 
-	public ModuleItem(ModuleType module, boolean nbtCanBeModified){
-		this(module, nbtCanBeModified, false, 0, 0);
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified){
+		this(properties, module, nbtCanBeModified, false, 0, 0);
 	}
 
-	public ModuleItem(ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized){
-		this(module, nbtCanBeModified, canBeCustomized, 0, 0);
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized){
+		this(properties, module, nbtCanBeModified, canBeCustomized, 0, 0);
 	}
 
-	public ModuleItem(ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized, int itemAddons, int blockAddons){
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+	public ModuleItem(Item.Properties properties, ModuleType module, boolean nbtCanBeModified, boolean canBeCustomized, int itemAddons, int blockAddons){
+		super(properties);
 		this.module = module;
 		this.nbtCanBeModified = nbtCanBeModified;
 		this.canBeCustomized = canBeCustomized;

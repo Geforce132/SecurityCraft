@@ -31,8 +31,8 @@ public class TaserItem extends Item {
 
 	public boolean powered;
 
-	public TaserItem(boolean isPowered){
-		super(new Item.Properties().defaultMaxDamage(151).group(isPowered ? null : SecurityCraft.groupSCTechnical));
+	public TaserItem(Item.Properties properties, boolean isPowered){
+		super(properties);
 
 		powered = isPowered;
 	}
@@ -124,43 +124,43 @@ public class TaserItem extends Item {
 	}
 
 	//Copied from ProjectileHelper to get rid of the @OnlyIn(Dist.CLIENT) annotation
-	private static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist) 
+	private static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist)
 	{
 		World world = shooter.world;
 		double distance = dist;
 		Entity rayTracedEntity = null;
 		Vector3d hitVec = null;
 
-		for(Entity entity : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter)) 
+		for(Entity entity : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter))
 		{
 			AxisAlignedBB boxToCheck = entity.getBoundingBox().grow(entity.getCollisionBorderSize());
 			Optional<Vector3d> optional = boxToCheck.rayTrace(startVec, endVec);
-			
-			if(boxToCheck.contains(startVec)) 
+
+			if(boxToCheck.contains(startVec))
 			{
-				if(distance >= 0.0D) 
+				if(distance >= 0.0D)
 				{
 					rayTracedEntity = entity;
 					hitVec = optional.orElse(startVec);
 					distance = 0.0D;
 				}
-			} 
-			else if(optional.isPresent()) 
+			}
+			else if(optional.isPresent())
 			{
 				Vector3d vector = optional.get();
 				double sqDist = startVec.squareDistanceTo(vector);
-				
-				if(sqDist < distance || distance == 0.0D) 
+
+				if(sqDist < distance || distance == 0.0D)
 				{
-					if(entity.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity.canRiderInteract()) 
+					if(entity.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity.canRiderInteract())
 					{
 						if(distance == 0.0D)
 						{
 							rayTracedEntity = entity;
 							hitVec = vector;
 						}
-					} 
-					else 
+					}
+					else
 					{
 						rayTracedEntity = entity;
 						hitVec = vector;

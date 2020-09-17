@@ -17,9 +17,9 @@ public class SecretSignItem extends WallOrFloorItem
 {
 	private final String translationKey;
 
-	public SecretSignItem(Block floor, Block wall, String translationKey)
+	public SecretSignItem(Item.Properties properties, Block floor, Block wall, String translationKey)
 	{
-		super(floor, wall, new Item.Properties().maxStackSize(16).group(SecurityCraft.groupSCDecoration));
+		super(floor, wall, properties);
 
 		this.translationKey = translationKey;
 	}

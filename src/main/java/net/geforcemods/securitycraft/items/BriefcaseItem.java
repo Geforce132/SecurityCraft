@@ -28,9 +28,9 @@ public class BriefcaseItem extends Item {
 
 	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 
-	public BriefcaseItem()
+	public BriefcaseItem(Item.Properties properties)
 	{
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+		super(properties);
 	}
 
 	@Override
