@@ -26,9 +26,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item {
 
-	public BriefcaseItem()
+	public BriefcaseItem(Item.Properties properties)
 	{
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+		super(properties);
 	}
 
 	@Override

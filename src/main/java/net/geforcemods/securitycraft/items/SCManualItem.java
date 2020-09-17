@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 
 public class SCManualItem extends Item {
 
-	public SCManualItem(){
-		super(new Item.Properties().maxStackSize(1).group(SecurityCraft.groupSCTechnical));
+	public SCManualItem(Item.Properties properties){
+		super(properties);
 	}
 
 	@Override

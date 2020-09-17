@@ -33,8 +33,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class MineRemoteAccessToolItem extends Item {
 
-	public MineRemoteAccessToolItem() {
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+	public MineRemoteAccessToolItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override

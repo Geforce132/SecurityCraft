@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -23,9 +22,9 @@ import net.minecraft.world.World;
 
 public class ReinforcedDoorItem extends Item
 {
-	public ReinforcedDoorItem()
+	public ReinforcedDoorItem(Item.Properties properties)
 	{
-		super(new Item.Properties().group(SecurityCraft.groupSCDecoration));
+		super(properties);
 	}
 
 	@Override

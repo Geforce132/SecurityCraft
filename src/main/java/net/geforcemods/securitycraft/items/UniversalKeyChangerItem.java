@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -32,8 +31,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UniversalKeyChangerItem extends Item {
 
-	public UniversalKeyChangerItem() {
-		super(new Item.Properties().group(SecurityCraft.groupSCTechnical).maxStackSize(1));
+	public UniversalKeyChangerItem(Item.Properties properties) {
+		super(properties);
 	}
 
 	@Override
