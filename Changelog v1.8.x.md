@@ -38,6 +38,7 @@
 - Fix: Reinforced Doors and Scanner Doors cannot be placed by rightclick the side of a block
 - Fix: Reinforced Doors and Scanner Doors can remove blocks
 - Fix: Rare crash
+- Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play
