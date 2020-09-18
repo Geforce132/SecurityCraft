@@ -88,7 +88,6 @@ public class ClientProxy implements IProxy
 				new ResourceLocation(SecurityCraft.MODID, "retinal_scanner")
 		};
 		ResourceLocation[] facingBlocks = {
-				new ResourceLocation(SecurityCraft.MODID, "inventory_scanner"),
 				new ResourceLocation(SecurityCraft.MODID, "projector"),
 				new ResourceLocation(SecurityCraft.MODID, "username_logger")
 		};
@@ -121,9 +120,16 @@ public class ClientProxy implements IProxy
 		}
 
 		ResourceLocation cageTrapRl = new ResourceLocation(SecurityCraft.MODID, "cage_trap");
+		ResourceLocation invScanRL = new ResourceLocation(SecurityCraft.MODID, "inventory_scanner");
 
 		registerDisguisedModel(event, cageTrapRl, "deactivated=true");
 		registerDisguisedModel(event, cageTrapRl, "deactivated=false");
+
+		for(String facing : facings)
+		{
+			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
+			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
+		}
 	}
 
 	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
