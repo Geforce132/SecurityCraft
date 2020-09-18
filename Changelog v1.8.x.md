@@ -35,6 +35,7 @@
 - Fix: Redstone cannot be placed on Reinforced Hoppers
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
+- Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
 - Misc.: The minimum required Forge version is now 34.0.3
 

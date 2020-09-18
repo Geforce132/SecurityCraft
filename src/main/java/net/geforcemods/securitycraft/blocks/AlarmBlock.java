@@ -79,7 +79,7 @@ public class AlarmBlock extends OwnableBlock {
 		if(world.isRemote)
 			return;
 		else
-			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 1);
+			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 5);
 	}
 
 	/**
