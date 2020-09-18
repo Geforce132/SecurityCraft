@@ -22,6 +22,7 @@
 - Change: The Admin Tool now only works in creative mode
 - Change: The inventory scanner's texture is now up to date with the new Minecraft textures
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)
+- Change: Balanced Fake Liquids: Reduced damage of Fake Water by 70% and added regeneration effect to Fake Lava instead of healing instantly
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Fix: Walking through a block pocket wall blocks vision
@@ -33,6 +34,7 @@
 - Fix: Secret Signs can be colored by anyone (Thanks Redstone_Dubstep!)
 - Fix: Reinforced Hopper does not drop
 - Fix: Redstone cannot be placed on Reinforced Hoppers
+- Fix: Fire doesn't get removed after exiting Fake Lava
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play
