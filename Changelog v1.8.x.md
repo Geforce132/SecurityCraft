@@ -27,6 +27,8 @@
 - Fix: Secret Signs can be colored by anyone (Thanks Redstone_Dubstep!)
 - Fix: Reinforced Hopper does not drop
 - Fix: Fire doesn't get removed after exiting Fake Lava
+- Fix: Reinforced Doors and Scanner Doors cannot be placed by rightclick the side of a block
+- Fix: Reinforced Doors and Scanner Doors can remove blocks
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play
