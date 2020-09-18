@@ -93,6 +93,12 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
+	public boolean matchesBlock(Block block)
+	{
+		return block == this || block == Blocks.HOPPER;
+	}
+
+	@Override
 	public Block getVanillaBlock()
 	{
 		return Blocks.HOPPER;

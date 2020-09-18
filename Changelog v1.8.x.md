@@ -32,6 +32,7 @@
 - Fix: Tooltips in SecurityCraft Manual don't completely show on the screen
 - Fix: Secret Signs can be colored by anyone (Thanks Redstone_Dubstep!)
 - Fix: Reinforced Hopper does not drop
+- Fix: Redstone cannot be placed on Reinforced Hoppers
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Misc.: Various French language fixes (Thanks supercat95!)
