@@ -27,6 +27,7 @@
 - Fix: Reinforced Hopper does not drop
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
+- Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
