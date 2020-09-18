@@ -30,6 +30,7 @@
 - Fix: Reinforced Doors and Scanner Doors cannot be placed by rightclick the side of a block
 - Fix: Reinforced Doors and Scanner Doors can remove blocks
 - Fix: Rare crash
+- Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
