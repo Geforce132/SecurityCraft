@@ -63,10 +63,6 @@ public class BlockUtils{
 
 	/**
 	 * Updates a block and notify's neighboring blocks of a change.
-	 *
-	 * Args: worldObj, pos, blockID, tickRate, shouldUpdate
-	 *
-	 *
 	 */
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
@@ -88,6 +84,11 @@ public class BlockUtils{
 	}
 
 	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value, boolean retainOldTileEntity) {
+		BlockState state = world.getBlockState(pos);
+
+		if(!state.has(property))
+			return;
+
 		if(retainOldTileEntity){
 			CompoundNBT modules = null;
 			String password = "";
@@ -113,7 +114,7 @@ public class BlockUtils{
 				cooldown = ((PortableRadarTileEntity) world.getTileEntity(pos)).getAttackCooldown();
 
 			TileEntity tileEntity = world.getTileEntity(pos);
-			world.setBlockState(pos, world.getBlockState(pos).with(property, value));
+			world.setBlockState(pos, state.with(property, value));
 			world.setTileEntity(pos, tileEntity);
 
 			if(modules != null)
@@ -135,11 +136,14 @@ public class BlockUtils{
 				((PortableRadarTileEntity) world.getTileEntity(pos)).setAttackCooldown(cooldown);
 		}
 		else
-			world.setBlockState(pos, world.getBlockState(pos).with(property, value));
+			world.setBlockState(pos, state.with(property, value));
 	}
 
 	public static void setBlockProperty(World world, BlockPos pos, IntegerProperty property, int value) {
-		world.setBlockState(pos, world.getBlockState(pos).with(property, value));
+		BlockState state = world.getBlockState(pos);
+
+		if(state.has(property))
+			world.setBlockState(pos, state.with(property, value));
 	}
 
 	public static <T extends Comparable<T>> T getBlockProperty(World world, BlockPos pos, IProperty<T> property){
