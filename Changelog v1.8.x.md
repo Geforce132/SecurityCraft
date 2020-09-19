@@ -11,6 +11,7 @@
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)
+- Change: Balanced Fake Liquids: Reduced damage of Fake Water by 70% and added regeneration effect to Fake Lava instead of healing instantly
 - Fix: WAILA exploit
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
@@ -20,6 +21,7 @@
 - Fix: Confirm button in the Universal Key Changer's GUI doesn't properly react to changes in the textboxes (Thanks Redstone_Dubstep!)
 - Fix: Defused Claymore model is incorrect (Thanks Redstone_Dubstep!)
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
+- Fix: Fire doesn't get removed after exiting Fake Lava
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

@@ -59,7 +59,7 @@ public class BlockFakeWaterBase extends BlockStaticLiquid implements ITileEntity
 		if(!world.isRemote && !(entity instanceof EntityItem) && !(entity instanceof EntityBoat))
 		{
 			if(!(entity instanceof EntityPlayer) || (!((EntityPlayer) entity).capabilities.isCreativeMode && !(((EntityPlayer)entity).getRidingEntity() instanceof EntityBoat)))
-				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 5F);
+				entity.attackEntityFrom(CustomDamageSources.FAKE_WATER, 1.5F);
 		}
 	}
 

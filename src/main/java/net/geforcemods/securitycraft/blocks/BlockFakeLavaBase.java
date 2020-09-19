@@ -57,14 +57,17 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 	@Override
 	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
-		if(!world.isRemote && entity instanceof EntityLivingBase)
+		if(entity instanceof EntityLivingBase)
 		{
 			EntityLivingBase lEntity = (EntityLivingBase)entity;
 
-			if(!lEntity.isPotionActive(MobEffects.FIRE_RESISTANCE))
-				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
+			lEntity.extinguish();
 
-			lEntity.heal(4);
+			if(!world.isRemote)
+			{
+				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
+				lEntity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 1));
+			}
 		}
 	}
 
