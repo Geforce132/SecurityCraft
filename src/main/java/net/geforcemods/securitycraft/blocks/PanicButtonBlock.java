@@ -43,8 +43,14 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	private static final VoxelShape CEILING_EW_POWERED = Block.makeCuboidShape(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.makeCuboidShape(5, 14, 3, 11, 16, 13);
 
-	public PanicButtonBlock(Block.Properties properties) {
-		super(false, properties);
+	public PanicButtonBlock(boolean isWooden, Block.Properties properties) {
+		super(isWooden, properties);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos)
+	{
+		return state.get(POWERED) ? 4 : 0;
 	}
 
 	@Override
@@ -57,7 +63,10 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		BlockUtils.setBlockProperty(world, pos, POWERED, !state.get(POWERED), true);
+		boolean newPowered = !state.get(POWERED);
+
+		BlockUtils.setBlockProperty(world, pos, POWERED, newPowered, true);
+		playSound(player, world, pos, newPowered);
 
 		if(state.get(FACE) == AttachFace.WALL)
 			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));

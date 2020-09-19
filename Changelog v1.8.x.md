@@ -14,6 +14,7 @@
 - Change: The inventory scanner's texture is now up to date with the new Minecraft textures
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)
 - Change: Balanced Fake Liquids: Reduced damage of Fake Water by 70% and added regeneration effect to Fake Lava instead of healing instantly
+- Change: The Panic Button now emits a light level of 4 when turned on
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
@@ -31,6 +32,7 @@
 - Fix: Reinforced Doors and Scanner Doors can remove blocks
 - Fix: Rare crash
 - Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
+- Fix: Panic button has no sound
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play
