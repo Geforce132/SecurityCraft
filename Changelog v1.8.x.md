@@ -22,6 +22,7 @@
 - Fix: Defused Claymore model is incorrect (Thanks Redstone_Dubstep!)
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
 - Fix: Fire doesn't get removed after exiting Fake Lava
+- Fix: Rare crash
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

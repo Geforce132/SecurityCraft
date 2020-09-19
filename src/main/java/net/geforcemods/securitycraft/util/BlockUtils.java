@@ -32,13 +32,6 @@ public class BlockUtils{
 	private static final List<Block> PRESSURE_PLATES = Arrays.asList(SCContent.reinforcedStonePressurePlate, SCContent.reinforcedWoodenPressurePlate);
 	private static final List<Block> BUTTONS = Arrays.asList(SCContent.reinforcedStoneButton, SCContent.reinforcedWoodenButton);
 
-	/**
-	 * Updates a block and notify's neighboring blocks of a change.
-	 *
-	 * Args: worldObj, pos, blockID, tickRate, shouldUpdate
-	 *
-	 *
-	 */
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
 			world.scheduleUpdate(pos, block, delay);
@@ -59,15 +52,24 @@ public class BlockUtils{
 	}
 
 	public static void setBlockProperty(World world, BlockPos pos, PropertyBool property, boolean value) {
-		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getProperties().containsKey(property))
+			world.setBlockState(pos, state.withProperty(property, value));
 	}
 
 	public static void setBlockProperty(World world, BlockPos pos, PropertyInteger property, int value) {
-		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getProperties().containsKey(property))
+			world.setBlockState(pos, state.withProperty(property, value));
 	}
 
 	public static void setFacingProperty(World world, BlockPos pos, PropertyEnum<EnumFacing> property, EnumFacing value) {
-		world.setBlockState(pos, world.getBlockState(pos).withProperty(property, value));
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getProperties().containsKey(property))
+			world.setBlockState(pos, state.withProperty(property, value));
 	}
 
 	public static boolean hasBlockProperty(World world, BlockPos pos, IProperty<?> property){
