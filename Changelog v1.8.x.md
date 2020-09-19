@@ -23,6 +23,7 @@
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
 - Fix: Fire doesn't get removed after exiting Fake Lava
 - Fix: Rare crash
+- Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
