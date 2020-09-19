@@ -26,6 +26,7 @@
 - Fix: Secret Signs can be colored by anyone (Thanks Redstone_Dubstep!)
 - Fix: Reinforced Hopper does not drop
 - Removed: Taser Bullet entity
+- Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.19.1 of SecurityCraft--------------------------
