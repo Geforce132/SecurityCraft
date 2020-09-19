@@ -85,7 +85,7 @@ public class BlockAlarm extends BlockOwnable {
 		if(world.isRemote)
 			return;
 		else
-			world.scheduleUpdate(pos, state.getBlock(), 1);
+			world.scheduleUpdate(pos, state.getBlock(), 5);
 	}
 
 	/**

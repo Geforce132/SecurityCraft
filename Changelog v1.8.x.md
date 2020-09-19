@@ -21,6 +21,7 @@
 - Fix: Defused Claymore model is incorrect (Thanks Redstone_Dubstep!)
 - Fix: Keycard Reader sometimes sends incorrect messages (Thanks Redstone_Dubstep!)
 - Removed: Taser Bullet entity
+- Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
 
 --------------------------Changelog for v1.8.19.3 of SecurityCraft--------------------------
