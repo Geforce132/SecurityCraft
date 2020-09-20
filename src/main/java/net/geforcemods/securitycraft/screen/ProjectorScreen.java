@@ -98,6 +98,21 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button)
+	{
+		if(projectionWidth.dragging)
+			projectionWidth.mouseReleased(mouseX, mouseY, button);
+
+		if(projectionRange.dragging)
+			projectionRange.mouseReleased(mouseX, mouseY, button);
+
+		if(projectionOffset.dragging)
+			projectionOffset.mouseReleased(mouseX, mouseY, button);
+
+		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
 	public void sliderReleased(NamedSlider slider)
 	{
 		if(slider.id == 0)
