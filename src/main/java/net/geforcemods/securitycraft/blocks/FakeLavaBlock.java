@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 public class FakeLavaBlock extends FlowingFluidBlock
 {
 	private static final EffectInstance SHORT_FIRE_RESISTANCE = new EffectInstance(Effects.FIRE_RESISTANCE, 1);
-	private static final EffectInstance SHORT_REGENERATION = new EffectInstance(Effects.REGENERATION, 1);
 
 	public FakeLavaBlock(Block.Properties properties, Supplier<? extends FlowingFluid> fluid)
 	{
@@ -37,7 +36,9 @@ public class FakeLavaBlock extends FlowingFluidBlock
 			if(!world.isRemote)
 			{
 				lEntity.addPotionEffect(SHORT_FIRE_RESISTANCE);
-				lEntity.addPotionEffect(SHORT_REGENERATION);
+
+				if(!lEntity.isPotionActive(Effects.REGENERATION))
+					lEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 20, 2));
 			}
 		}
 	}
