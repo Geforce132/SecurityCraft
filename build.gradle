@@ -58,6 +58,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
             property 'forge.logging.console.level', 'debug'
+            args '-nogui'
 
             mods {
                 securitycraft {
