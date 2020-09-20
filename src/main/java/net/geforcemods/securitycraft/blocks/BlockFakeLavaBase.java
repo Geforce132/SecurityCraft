@@ -66,7 +66,9 @@ public class BlockFakeLavaBase extends BlockStaticLiquid implements ITileEntityP
 			if(!world.isRemote)
 			{
 				lEntity.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 1));
-				lEntity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 1));
+
+				if(!lEntity.isPotionActive(MobEffects.REGENERATION))
+					lEntity.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 2));
 			}
 		}
 	}
