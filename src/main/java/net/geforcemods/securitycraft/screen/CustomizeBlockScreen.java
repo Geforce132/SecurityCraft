@@ -31,6 +31,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.HoverChecker;
+import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
@@ -107,6 +108,18 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 			extraAreas.add(new Rectangle2d(button.x, button.y, button.getWidth(), button.getHeight()));
 		}
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button)
+	{
+		for(Button b : optionButtons)
+		{
+			if(b instanceof Slider && ((Slider)b).dragging)
+				((Slider)b).mouseReleased(mouseX, mouseY, button);
+		}
+
+		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	@Override
