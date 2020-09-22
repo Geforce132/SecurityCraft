@@ -42,6 +42,7 @@
 - Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
 - Fix: Panic button has no sound
 - Fix: Sliders in GUIs sometimes don't stop sliding after the mouse button has been released
+- Fix: Universal Block Reinforcer dupe
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play

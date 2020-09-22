@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
@@ -45,6 +46,16 @@ public class BlockReinforcerContainer extends Container
 	@Override
 	public void onContainerClosed(PlayerEntity player)
 	{
+		if(!player.isAlive() || player instanceof ServerPlayerEntity && ((ServerPlayerEntity)player).hasDisconnected())
+		{
+			for(int slot = 0; slot < itemInventory.getSizeInventory(); ++slot)
+			{
+				player.dropItem(itemInventory.removeStackFromSlot(slot), false);
+			}
+
+			return;
+		}
+
 		if(!itemInventory.getStackInSlot(0).isEmpty())
 		{
 			player.dropItem(reinforcingSlot.output, false);
