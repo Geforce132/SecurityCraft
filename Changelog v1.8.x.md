@@ -26,6 +26,7 @@
 - Fix: Rare crash
 - Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
 - Fix: Panic button has no sound
+- Fix: Rotating/mirroring some blocks (e.g. using mods like Recurrent Complex) does not work correctly
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

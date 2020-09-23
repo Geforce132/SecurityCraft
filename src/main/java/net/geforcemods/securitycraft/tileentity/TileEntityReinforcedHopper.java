@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.blocks.reinforced;
+package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;

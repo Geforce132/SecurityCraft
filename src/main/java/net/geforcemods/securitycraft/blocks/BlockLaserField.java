@@ -26,6 +26,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -211,4 +212,11 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 		return new TileEntitySCTE().intersectsEntities();
 	}
 
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot)
+	{
+		int boundType = state.getValue(BOUNDTYPE);
+
+		return state.withProperty(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
+	}
 }

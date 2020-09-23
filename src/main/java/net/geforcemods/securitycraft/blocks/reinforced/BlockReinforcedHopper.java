@@ -6,6 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;

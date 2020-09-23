@@ -209,5 +209,4 @@ public class BlockLaserBlock extends BlockDisguisable {
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityLaserBlock().linkable();
 	}
-
 }

@@ -30,6 +30,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -370,5 +371,11 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 				return false;
 
 		return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	}
+
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot)
+	{
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
 	}
 }

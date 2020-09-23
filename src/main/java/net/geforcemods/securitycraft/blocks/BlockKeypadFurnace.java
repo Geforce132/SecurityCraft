@@ -26,6 +26,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -157,5 +159,17 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
 		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
 		return true;
+	}
+
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot)
+	{
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirror)
+	{
+		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
 	}
 }

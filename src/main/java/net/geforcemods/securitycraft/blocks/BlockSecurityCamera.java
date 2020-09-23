@@ -26,7 +26,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -202,4 +205,30 @@ public class BlockSecurityCamera extends BlockContainer{
 		return new TileEntitySecurityCamera().nameable();
 	}
 
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot)
+	{
+		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirror)
+	{
+		EnumFacing facing = state.getValue(FACING);
+
+		switch(mirror)
+		{
+			case LEFT_RIGHT:
+				if(facing.getAxis() == Axis.Z)
+					return state.withProperty(FACING, facing.getOpposite());
+				break;
+			case FRONT_BACK:
+				if(facing.getAxis() == Axis.X)
+					return state.withProperty(FACING, facing.getOpposite());
+				break;
+			case NONE: break;
+		}
+
+		return state;
+	}
 }
