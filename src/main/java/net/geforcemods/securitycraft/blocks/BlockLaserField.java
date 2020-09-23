@@ -217,6 +217,6 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	{
 		int boundType = state.getValue(BOUNDTYPE);
 
-		return state.withProperty(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
+		return rot == Rotation.CLOCKWISE_180 ? state : state.withProperty(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
 	}
 }
