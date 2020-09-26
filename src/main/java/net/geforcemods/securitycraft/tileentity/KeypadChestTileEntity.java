@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
@@ -50,6 +51,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
+	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -131,15 +133,27 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
-		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == Direction.DOWN)
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
 			BlockPos offsetPos = pos.offset(side);
 
-			if(world.getBlockState(offsetPos).getBlock() != SCContent.REINFORCED_HOPPER.get() || !ReinforcedHopperBlock.canExtract(this, world, offsetPos))
-				return EMPTY_INVENTORY.cast();
+			if(world.getBlockState(offsetPos).getBlock() == SCContent.REINFORCED_HOPPER.get())
+			{
+				if(!ReinforcedHopperBlock.canExtract(this, world, offsetPos))
+					return EMPTY_INVENTORY.cast();
+				else return super.getCapability(cap, side);
+			}
+			else return getInsertOnlyHandler().cast();
 		}
+		else return super.getCapability(cap, side);
+	}
 
-		return super.getCapability(cap, side);
+	private LazyOptional<IItemHandler> getInsertOnlyHandler()
+	{
+		if(insertOnlyHandler == null)
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadChestTileEntity.this));
+
+		return insertOnlyHandler;
 	}
 
 	@Override
