@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
-import net.geforcemods.securitycraft.containers.BriefcaseInventory;
 import net.geforcemods.securitycraft.containers.GenericContainer;
+import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
