@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
-import net.geforcemods.securitycraft.containers.ModuleItemInventory;
+import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
