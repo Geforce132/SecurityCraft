@@ -28,6 +28,7 @@
 - Fix: Panic button has no sound
 - Fix: Rotating/mirroring some blocks (e.g. using mods like Recurrent Complex) does not work correctly
 - Fix: Pipe interaction with Password-protected Chest/Furnace
+- Fix: Incorrect Reinforced Hopper sounds
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
+import net.minecraft.block.SoundType;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +18,13 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedHopper extends BlockHopper implements IReinforcedBlock
 {
+	public BlockReinforcedHopper()
+	{
+		super();
+
+		setSoundType(SoundType.METAL);
+	}
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
