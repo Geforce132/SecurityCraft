@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
+import net.geforcemods.securitycraft.compat.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -46,11 +47,13 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable {
 
 	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
+	private IItemHandler insertOnlyHandler;
 	private static final int[] slotsTop = new int[] {0};
 	private static final int[] slotsBottom = new int[] {2, 1};
 	private static final int[] slotsSides = new int[] {1};
@@ -499,15 +502,27 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN)
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
 			BlockPos offsetPos = pos.offset(facing);
 
-			if(world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !BlockReinforcedHopper.canExtract(this, world, offsetPos))
-				return (T) EMPTY_INVENTORY;
+			if(world.getBlockState(offsetPos).getBlock() == SCContent.reinforcedHopper)
+			{
+				if(!BlockReinforcedHopper.canExtract(this, world, offsetPos))
+					return (T) EMPTY_INVENTORY;
+				else return super.getCapability(capability, facing);
+			}
+			else return (T) getInsertOnlyHandler();
 		}
+		else return super.getCapability(capability, facing);
+	}
 
-		return super.getCapability(capability, facing);
+	private IItemHandler getInsertOnlyHandler()
+	{
+		if(insertOnlyHandler == null)
+			insertOnlyHandler = new InsertOnlyInvWrapper(this);
+
+		return insertOnlyHandler;
 	}
 
 	@Override

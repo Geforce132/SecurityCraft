@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
+import net.geforcemods.securitycraft.compat.inventory.InsertOnlyDoubleChestHandler;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -38,6 +39,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
 	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
+	private InsertOnlyDoubleChestHandler insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -126,15 +128,27 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN)
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
 			BlockPos offsetPos = pos.offset(facing);
 
-			if(world.getBlockState(offsetPos).getBlock() != SCContent.reinforcedHopper || !BlockReinforcedHopper.canExtract(this, world, offsetPos))
-				return (T) EMPTY_INVENTORY;
+			if(world.getBlockState(offsetPos).getBlock() == SCContent.reinforcedHopper)
+			{
+				if(!BlockReinforcedHopper.canExtract(this, world, offsetPos))
+					return (T) EMPTY_INVENTORY;
+				else return super.getCapability(capability, facing);
+			}
+			else return (T) getInsertOnlyHandler();
 		}
+		else return super.getCapability(capability, facing);
+	}
 
-		return super.getCapability(capability, facing);
+	private InsertOnlyDoubleChestHandler getInsertOnlyHandler()
+	{
+		if(insertOnlyHandler == null || insertOnlyHandler.needsRefresh())
+			insertOnlyHandler = InsertOnlyDoubleChestHandler.get(this);
+
+		return insertOnlyHandler;
 	}
 
 	@Override
