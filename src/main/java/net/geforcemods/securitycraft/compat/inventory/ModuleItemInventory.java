@@ -1,6 +1,7 @@
-package net.geforcemods.securitycraft.containers;
+package net.geforcemods.securitycraft.compat.inventory;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,19 +13,29 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
 
-public class BriefcaseInventory implements IInventory {
+public class ModuleItemInventory implements IInventory {
 
-	public static final int SIZE = 12;
-	private final ItemStack briefcase;
-	private NonNullList<ItemStack> briefcaseInventory = NonNullList.<ItemStack>withSize(SIZE, ItemStack.EMPTY);
+	public int SIZE = 0;
+	private final ItemStack module;
 
-	public BriefcaseInventory(ItemStack briefcaseItem) {
-		briefcase = briefcaseItem;
+	public NonNullList<ItemStack> moduleInventory;
+	public int maxNumberOfItems;
+	public int maxNumberOfBlocks;
 
-		if (!briefcase.hasTagCompound())
-			briefcase.setTagCompound(new NBTTagCompound());
+	public ModuleItemInventory(ItemStack moduleItem) {
+		module = moduleItem;
 
-		readFromNBT(briefcase.getTagCompound());
+		if(!(moduleItem.getItem() instanceof ItemModule)) return;
+
+		SIZE = ((ItemModule) moduleItem.getItem()).getNumberOfAddons();
+		maxNumberOfItems = ((ItemModule) moduleItem.getItem()).getNumberOfItemAddons();
+		maxNumberOfBlocks = ((ItemModule) moduleItem.getItem()).getNumberOfBlockAddons();
+		moduleInventory = NonNullList.withSize(SIZE, ItemStack.EMPTY);
+
+		if (!module.hasTagCompound())
+			module.setTagCompound(new NBTTagCompound());
+
+		readFromNBT(module.getTagCompound());
 	}
 
 	@Override
@@ -34,7 +45,7 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return briefcaseInventory.get(index);
+		return moduleInventory.get(index);
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
@@ -45,7 +56,7 @@ public class BriefcaseInventory implements IInventory {
 			int slot = item.getInteger("Slot");
 
 			if(slot < getSizeInventory())
-				briefcaseInventory.set(slot, new ItemStack(item));
+				moduleInventory.set(slot, new ItemStack(item));
 		}
 	}
 
@@ -53,7 +64,7 @@ public class BriefcaseInventory implements IInventory {
 		NBTTagList items = new NBTTagList();
 
 		for(int i = 0; i < getSizeInventory(); i++)
-			if(getStackInSlot(i) != null) {
+			if(!getStackInSlot(i).isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				getStackInSlot(i).writeToNBT(item);
@@ -62,7 +73,7 @@ public class BriefcaseInventory implements IInventory {
 			}
 
 		tag.setTag("ItemInventory", items);
-		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(briefcase));
+		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
 	}
 
 	@Override
@@ -88,18 +99,23 @@ public class BriefcaseInventory implements IInventory {
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack itemStack) {
-		briefcaseInventory.set(index, itemStack);
+	public void setInventorySlotContents(int index, ItemStack stack) {
+		moduleInventory.set(index, stack);
 
-		if(!itemStack.isEmpty() && itemStack.getCount() > getInventoryStackLimit())
-			itemStack.setCount(getInventoryStackLimit());
+		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
+			stack.setCount(getInventoryStackLimit());
 
 		markDirty();
 	}
 
 	@Override
 	public String getName() {
-		return "Briefcase";
+		return "ModuleCustomization";
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TextComponentString(getName());
 	}
 
 	@Override
@@ -116,9 +132,9 @@ public class BriefcaseInventory implements IInventory {
 	public void markDirty() {
 		for(int i = 0; i < getSizeInventory(); i++)
 			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
-				briefcaseInventory.set(i, ItemStack.EMPTY);
+				moduleInventory.set(i, ItemStack.EMPTY);
 
-		writeToNBT(briefcase.getTagCompound());
+		writeToNBT(module.getTagCompound());
 	}
 
 	@Override
@@ -133,13 +149,8 @@ public class BriefcaseInventory implements IInventory {
 	public void closeInventory(EntityPlayer player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return true;
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TextComponentString(getName());
 	}
 
 	@Override
@@ -152,19 +163,16 @@ public class BriefcaseInventory implements IInventory {
 
 	@Override
 	public int getFieldCount() {
-		return 0;
+		return 5;
 	}
 
 	@Override
-	public void clear() {
-		for(int i = 0; i < SIZE; i++)
-			briefcaseInventory.set(i, ItemStack.EMPTY);
-	}
+	public void clear() {}
 
 	@Override
 	public boolean isEmpty()
 	{
-		for(ItemStack stack : briefcaseInventory)
+		for(ItemStack stack : moduleInventory)
 			if(!stack.isEmpty())
 				return false;
 
