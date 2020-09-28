@@ -683,8 +683,6 @@
 	"messages.securitycraft:blockpocket.notEnoughItems": "Non hai abbastanza materiale da assemblare un blocco tascabile di quella dimensione!",
 	"messages.securitycraft:blockpocket.assembled": "Blocco tascabile assemblato!",
 
-	"jei.securitycraft:reinforcedBlock.info": "Clicca col tasto destro con un rinforza-blocchi universale e piazza il seguente blocco nello slot. Altrimenti puoi piazzare il seguente blocco e distruggerlo con il rinforza-blocchi universale.",
-
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft:showowner": "Possessore dello schermo?",
 	"config.waila.plugin_securitycraft:showmodules": "Mostra moduli?",

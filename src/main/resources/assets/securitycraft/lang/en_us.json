@@ -753,7 +753,8 @@
 	"messages.securitycraft:blockpocket.assembled": "Block Pocket assembled!",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 
-	"jei.securitycraft:reinforcedBlock.info": "Rightclick a Universal Block Reinforcer and place the following block into the slot. Alternatively you can place the following block down and break it with the Universal Block Reinforcer.",
+	"jei.securitycraft.category.reinforcing": "Block Reinforcing",
+	"jei.securitycraft.category.unreinforcing": "Removing Reinforcment",
 
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft.showowner": "Display Owner?",

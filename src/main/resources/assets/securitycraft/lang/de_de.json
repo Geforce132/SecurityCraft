@@ -752,7 +752,8 @@
 	"messages.securitycraft:blockpocket.deactivated": "Blocktasche deaktiviert!",
 	"messages.securitycraft:blockpocket.assembled": "Blocktasche aufgebaut!",
 
-	"jei.securitycraft:reinforcedBlock.info": "Rechtsklicke einen Universellen Blockentferner und platziere den folgenden Block in den Slot. Alternativ kannst du den folgenden Block auf den Boden platzieren und ihn mit dem Universellen Blockentferner abbauen.",
+	"jei.securitycraft.category.reinforcing": "Blöcke verstärken",
+	"jei.securitycraft.category.unreinforcing": "Verstärkung entfernen",
 
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft:showowner": "Besitzer anzeigen?",

@@ -683,8 +683,6 @@
 	"messages.securitycraft:blockpocket.activated": "Poche bloc activaté !",
 	"messages.securitycraft:blockpocket.deactivated": "Poche bloc désactivaté !",
 
-	"jei.securitycraft:reinforcedBlock.info": "Clic droit sur un renforçateur de blocs universel et placez le bloc suivant dans la case. Sinon, vous pouvez placer le bloc suivant vers le bas et le casser avec le renforçateur de blocs universel.",
-
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft.showowner": "Afficher le propriétaire ?",
 	"config.waila.plugin_securitycraft.showmodules": "Afficher les modules ?",
