@@ -104,7 +104,7 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new ContainerDisguiseModule(player.inventory, new ModuleItemInventory(player.inventory.getCurrentItem()));
 			case BLOCK_REINFORCER:
-				return new ContainerBlockReinforcer(player, player.inventory);
+				return new ContainerBlockReinforcer(player, player.inventory, player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1);
 			case MODULES:
 				return new ContainerGeneric(player.inventory, te);
 			case BLOCK_POCKET_MANAGER:
@@ -177,7 +177,8 @@ public class GuiHandler implements IGuiHandler {
 					return null;
 				return new GuiDisguiseModule(player.inventory);
 			case BLOCK_REINFORCER:
-				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory));
+				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
+				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory, isLvl1), isLvl1);
 			case MODULES:
 				if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule || player.getHeldItemMainhand().getItem() == SCContent.blacklistModule)
 					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), te);

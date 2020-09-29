@@ -14,10 +14,14 @@ import net.minecraft.util.ResourceLocation;
 public class GuiBlockReinforcer extends GuiContainer
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
+	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
+	private final boolean isLvl1;
 
-	public GuiBlockReinforcer(Container container)
+	public GuiBlockReinforcer(Container container, boolean isLvl1)
 	{
 		super(container);
+
+		this.isLvl1 = isLvl1;
 	}
 
 	@Override
@@ -48,7 +52,7 @@ public class GuiBlockReinforcer extends GuiContainer
 				renderToolTip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
 		}
 
-		if(!inv.get(1).isEmpty())
+		if(!isLvl1 && !inv.get(1).isEmpty())
 		{
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
 			GuiUtils.drawItemStackToGui(container.unreinforcingSlot.getOutput(), 116, 46, false);
@@ -63,7 +67,7 @@ public class GuiBlockReinforcer extends GuiContainer
 	{
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURE);
+		mc.getTextureManager().bindTexture(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 }

@@ -20,12 +20,18 @@ public class ContainerBlockReinforcer extends Container
 	private InventoryBasic itemInventory = new InventoryBasic("BlockReinforcer", true, 2);
 	public final SlotBlockReinforcer reinforcingSlot;
 	public final SlotBlockReinforcer unreinforcingSlot;
+	public final boolean isLvl1;
 
-	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory)
+	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory, boolean isLvl1)
 	{
 		blockReinforcer = player.inventory.getCurrentItem();
+		this.isLvl1 = isLvl1;
 		addSlotToContainer(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
-		addSlotToContainer(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
+
+		if(!isLvl1)
+			addSlotToContainer(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
+		else
+			unreinforcingSlot = null;
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -52,7 +58,7 @@ public class ContainerBlockReinforcer extends Container
 			blockReinforcer.damageItem(reinforcingSlot.output.getCount(), player);
 		}
 
-		if(!itemInventory.getStackInSlot(1).isEmpty())
+		if(!isLvl1 && !itemInventory.getStackInSlot(1).isEmpty())
 		{
 			player.dropItem(unreinforcingSlot.output, false);
 			blockReinforcer.damageItem(unreinforcingSlot.output.getCount(), player);
@@ -71,14 +77,14 @@ public class ContainerBlockReinforcer extends Container
 
 			slotStackCopy = slotStack.copy();
 
-			if(id <= 1)
+			if(id <= fixSlot(1))
 			{
-				if(!mergeItemStack(slotStack, 2, 38, true))
+				if(!mergeItemStack(slotStack, fixSlot(2), fixSlot(38), true))
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(id > 1)
-				if(!mergeItemStack(slotStack, 0, 2, false))
+				if(!mergeItemStack(slotStack, 0, fixSlot(2), false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
@@ -92,6 +98,11 @@ public class ContainerBlockReinforcer extends Container
 		}
 
 		return slotStackCopy;
+	}
+
+	private int fixSlot(int slot)
+	{
+		return isLvl1 ? slot - 1 : slot;
 	}
 
 	//edited to check if the item to be merged is valid in that slot
