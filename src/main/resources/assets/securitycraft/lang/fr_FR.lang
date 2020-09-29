@@ -573,8 +573,6 @@ messages.securitycraft:blockpocket.deactivated=Poche bloc desactivée !
 messages.securitycraft:blockpocket.assembled=Poche bloc assemblée !
 messages.securitycraft:sc_help=%s : %s + %s
 
-jei.securitycraft:reinforcedBlock.info=Clic droit sur un Blindeur de blocs universel et placez le bloc suivant dans l’emplacement. Sinon, vous pouvez placer le bloc suivant vers le bas et le casser avec le Blindeur de blocs universel.
-
 waila.securitycraft:displayOwner=Afficher le propriétaire ?
 waila.securitycraft:showModules=Afficher les Modules ?
 waila.securitycraft:showPasswords=Afficher le mots de passe ?

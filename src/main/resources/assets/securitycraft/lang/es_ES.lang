@@ -612,8 +612,6 @@ messages.securitycraft:blockpocket.activated=¡Bolsillo de bloques activado!
 messages.securitycraft:blockpocket.deactivated=¡Bolsillo de bloques desactivado!
 messages.securitycraft:blockpocket.assembled=¡Bolsillo de bloques ensamblado!
 
-jei.securitycraft:reinforcedBlock.info=Haz clic derecho con un reforzador de bloques universal y coloca el siguiente bloque en el hueco. Si lo deseas, también puedes colocar el bloque y romperlo con el reforzador de bloques universal.
-
 waila.securitycraft:displayOwner=¿Mostrar propietario?
 waila.securitycraft:showModules=¿Mostrar módulos?
 waila.securitycraft:showPasswords=¿Mostrar contraseñas?

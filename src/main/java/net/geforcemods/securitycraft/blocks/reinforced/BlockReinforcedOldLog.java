@@ -110,7 +110,7 @@ public class BlockReinforcedOldLog extends BlockReinforcedLog implements IReinfo
 	@Override
 	public int getAmount()
 	{
-		return 12;
+		return 4;
 	}
 
 	static final class SwitchEnumAxis

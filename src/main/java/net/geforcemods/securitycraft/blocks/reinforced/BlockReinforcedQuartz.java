@@ -60,6 +60,6 @@ public class BlockReinforcedQuartz extends BlockQuartz implements ITileEntityPro
 	@Override
 	public int getAmount()
 	{
-		return 5;
+		return 3;
 	}
 }

@@ -59,6 +59,6 @@ public class BlockReinforcedCrystalQuartz extends BlockQuartz implements ITileEn
 	@Override
 	public int getAmount()
 	{
-		return 5;
+		return 3;
 	}
 }

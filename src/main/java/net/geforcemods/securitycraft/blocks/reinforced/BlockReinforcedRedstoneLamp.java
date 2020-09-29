@@ -18,7 +18,7 @@ public class BlockReinforcedRedstoneLamp extends BlockReinforcedBase
 
 	public BlockReinforcedRedstoneLamp()
 	{
-		super(Material.REDSTONE_LIGHT, 2, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
+		super(Material.REDSTONE_LIGHT, 1, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
 
 		setDefaultState(getDefaultState().withProperty(LIT, false));
 		setSoundType(SoundType.GLASS);

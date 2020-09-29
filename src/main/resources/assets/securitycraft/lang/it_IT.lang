@@ -607,8 +607,6 @@ messages.securitycraft:blockpocket.unowned=Non possiedi il blocco "%2$s" alla po
 messages.securitycraft:blockpocket.notEnoughItems=Non hai abbastanza materiale da assemblare un blocco tascabile di quella dimensione!
 messages.securitycraft:blockpocket.assembled=Blocco tascabile assemblato!
 
-jei.securitycraft:reinforcedBlock.info=Clicca col tasto destro con un rinforza-blocchi universale e piazza il seguente blocco nello slot. Altrimenti puoi piazzare il seguente blocco e distruggerlo con il rinforza-blocchi universale.
-
 waila.securitycraft:displayOwner=Possessore dello schermo?
 waila.securitycraft:showModules=Mostra moduli?
 waila.securitycraft:showPasswords=Mostra password?
