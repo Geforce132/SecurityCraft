@@ -39,6 +39,7 @@
 - Fix: Universal Block Reinforcer dupe
 - Fix: Pipe interaction with Password-protected Chest/Furnace
 - Fix: Projector is missing its English translation
+- Fix: Admin Tool has to be sneal-rightclicked in order to show information
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -28,7 +29,7 @@ public class AdminToolItem extends Item {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx) {
+	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
@@ -39,7 +40,7 @@ public class AdminToolItem extends Item {
 			if(!player.isCreative())
 			{
 				PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
-				return ActionResultType.FAIL;
+				return ActionResultType.SUCCESS;
 			}
 
 			if(world.getTileEntity(pos) != null) {
@@ -85,13 +86,13 @@ public class AdminToolItem extends Item {
 				if(!hasInfo)
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
-				return ActionResultType.FAIL;
+				return ActionResultType.SUCCESS;
 			}
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 		}
 
-		return ActionResultType.FAIL;
+		return ActionResultType.SUCCESS;
 	}
 
 }
