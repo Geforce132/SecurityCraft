@@ -31,12 +31,12 @@ public class ItemAdminTool extends Item {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		if(!world.isRemote && ConfigHandler.allowAdminTool) {
 			if(!player.isCreative())
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
-				return EnumActionResult.FAIL;
+				return EnumActionResult.SUCCESS;
 			}
 
 			if(world.getTileEntity(pos) != null) {
@@ -82,13 +82,13 @@ public class ItemAdminTool extends Item {
 				if(!hasInfo)
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
-				return EnumActionResult.FAIL;
+				return EnumActionResult.SUCCESS;
 			}
 
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 		}
 
-		return EnumActionResult.FAIL;
+		return EnumActionResult.SUCCESS;
 	}
 
 }

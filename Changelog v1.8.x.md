@@ -31,6 +31,7 @@
 - Fix: Rotating/mirroring some blocks (e.g. using mods like Recurrent Complex) does not work correctly
 - Fix: Pipe interaction with Password-protected Chest/Furnace
 - Fix: Incorrect Reinforced Hopper sounds
+- Fix: Admin Tool has to be sneak-rightclicked in order to show information
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
