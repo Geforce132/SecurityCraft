@@ -1,9 +1,14 @@
 package net.geforcemods.securitycraft.compat.jei;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -16,18 +21,35 @@ import net.minecraft.util.ResourceLocation;
 @JeiPlugin
 public class SCJEIPlugin implements IModPlugin
 {
+	public static final ResourceLocation VTS_ID = new ResourceLocation(SecurityCraft.MODID, "vanilla_to_securitycraft");
+	public static final ResourceLocation STV_ID = new ResourceLocation(SecurityCraft.MODID, "securitycraft_to_vanilla");
+
 	@Override
 	public void registerRecipes(IRecipeRegistration registration)
 	{
+		List<ReinforcerRecipe> recipes = IReinforcedBlock.BLOCKS.stream().map(block -> new ReinforcerRecipe(((IReinforcedBlock)block).getVanillaBlock(), block)).collect(Collectors.toList());
+
 		registration.addIngredientInfo(new ItemStack(SCContent.ADMIN_TOOL.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
 		IPasswordConvertible.BLOCKS.forEach(pc -> {
 			registration.addIngredientInfo(new ItemStack(pc), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + pc.getRegistryName().getPath());
 		});
-		IReinforcedBlock.BLOCKS.forEach(rb -> {
-			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
+		registration.addRecipes(recipes, VTS_ID);
+		registration.addRecipes(recipes, STV_ID);
+	}
 
-			registration.addIngredientInfo(new ItemStack(rb), VanillaTypes.ITEM, "jei.securitycraft:reinforcedBlock.info", "", reinforcedBlock.getVanillaBlock().getTranslationKey());
-		});
+	@Override
+	public void registerCategories(IRecipeCategoryRegistration registration)
+	{
+		registration.addRecipeCategories(new VanillaToSecurityCraftCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new SecurityCraftToVanillaCategory(registration.getJeiHelpers().getGuiHelper()));
+	}
+
+	@Override
+	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
+	{
+		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()), VTS_ID);
+		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get()), VTS_ID, STV_ID);
+		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()), VTS_ID, STV_ID);
 	}
 
 	@Override

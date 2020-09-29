@@ -687,8 +687,6 @@
 	"messages.securitycraft:blockpocket.deactivated": "¡Bolsillo de bloques desactivado!",
 	"messages.securitycraft:blockpocket.assembled": "¡Bolsillo de bloques ensamblado!",
 
-	"jei.securitycraft:reinforcedBlock.info": "Haz clic derecho con un reforzador de bloques universal y coloca el siguiente bloque en el hueco. Si lo deseas, también puedes colocar el bloque y romperlo con el reforzador de bloques universal.",
-
 	"config.waila.plugin_securitycraft": "SecurityCraft",
 	"config.waila.plugin_securitycraft.showowner": "¿Mostrar propietario?",
 	"config.waila.plugin_securitycraft.showmodules": "¿Mostrar módulos?",

@@ -13,6 +13,7 @@
 - Change: The Admin Tool now only works in creative mode
 - Change: The inventory scanner's texture is now up to date with the new Minecraft textures
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)
+- Change: Just Enough Items now shows proper recipes for un-/reinforcing blocks - the old info screen has been removed in favor of this
 - Change: Balanced Fake Liquids: Reduced damage of Fake Water by 70% and added regeneration effect to Fake Lava instead of healing instantly
 - Change: The Panic Button now emits a light level of 4 when turned on
 - Fix: WAILA exploit
