@@ -38,6 +38,7 @@
 - Fix: Sliders in GUIs sometimes don't stop sliding after the mouse button has been released
 - Fix: Universal Block Reinforcer dupe
 - Fix: Pipe interaction with Password-protected Chest/Furnace
+- Fix: Projector is missing its English translation
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
