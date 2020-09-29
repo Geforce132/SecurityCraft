@@ -19,10 +19,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContainer>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
+	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
+	private final boolean isLvl1;
 
 	public BlockReinforcerScreen(BlockReinforcerContainer container, PlayerInventory inv, ITextComponent name)
 	{
 		super(container, inv, name);
+
+		this.isLvl1 = container.isLvl1;
 	}
 
 	@Override
@@ -52,7 +56,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 				renderTooltip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
 		}
 
-		if(!inv.get(1).isEmpty())
+		if(!isLvl1 && !inv.get(1).isEmpty())
 		{
 			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
 			GuiUtils.drawItemStackToGui(container.unreinforcingSlot.getOutput(), 116, 46, false);
@@ -67,7 +71,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	{
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
 		blit(guiLeft, guiTop, 0, 0, xSize, ySize);
 	}
 }

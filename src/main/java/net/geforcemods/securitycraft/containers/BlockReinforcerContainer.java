@@ -18,14 +18,20 @@ public class BlockReinforcerContainer extends Container
 	private final Inventory itemInventory = new Inventory(2);
 	public final SlotBlockReinforcer reinforcingSlot;
 	public final SlotBlockReinforcer unreinforcingSlot;
+	public final boolean isLvl1;
 
-	public BlockReinforcerContainer(int windowId, PlayerInventory inventory)
+	public BlockReinforcerContainer(int windowId, PlayerInventory inventory, boolean isLvl1)
 	{
 		super(SCContent.cTypeBlockReinforcer, windowId);
 
 		blockReinforcer = inventory.getCurrentItem();
+		this.isLvl1 = isLvl1;
 		addSlot(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
-		addSlot(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
+
+		if(!isLvl1)
+			addSlot(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
+		else
+			unreinforcingSlot = null;
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -62,7 +68,7 @@ public class BlockReinforcerContainer extends Container
 			blockReinforcer.damageItem(reinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
 		}
 
-		if(!itemInventory.getStackInSlot(1).isEmpty())
+		if(!isLvl1 && !itemInventory.getStackInSlot(1).isEmpty())
 		{
 			player.dropItem(unreinforcingSlot.output, false);
 			blockReinforcer.damageItem(unreinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
@@ -81,14 +87,14 @@ public class BlockReinforcerContainer extends Container
 
 			slotStackCopy = slotStack.copy();
 
-			if(id <= 1)
+			if(id <= fixSlot(1))
 			{
-				if(!mergeItemStack(slotStack, 2, 38, true))
+				if(!mergeItemStack(slotStack, fixSlot(1), fixSlot(38), true))
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
 			else if(id > 1)
-				if(!mergeItemStack(slotStack, 0, 2, false))
+				if(!mergeItemStack(slotStack, 0, fixSlot(2), false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
@@ -102,6 +108,11 @@ public class BlockReinforcerContainer extends Container
 		}
 
 		return slotStackCopy;
+	}
+
+	private int fixSlot(int slot)
+	{
+		return isLvl1 ? slot - 1 : slot;
 	}
 
 	//edited to check if the item to be merged is valid in that slot

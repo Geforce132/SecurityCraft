@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
@@ -36,7 +37,7 @@ public class UniversalBlockReinforcerItem extends Item
 				@Override
 				public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 				{
-					return new BlockReinforcerContainer(windowId, inv);
+					return new BlockReinforcerContainer(windowId, inv, UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				}
 
 				@Override
@@ -44,7 +45,7 @@ public class UniversalBlockReinforcerItem extends Item
 				{
 					return new TranslationTextComponent(getTranslationKey());
 				}
-			});
+			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 		return super.onItemRightClick(world, player, hand);
 	}
