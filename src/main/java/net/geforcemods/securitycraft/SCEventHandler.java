@@ -88,7 +88,7 @@ public class SCEventHandler {
 				.append(new StringTextComponent("SecurityCraft").mergeStyle(TextFormatting.GOLD))
 				.append(new StringTextComponent("] "))
 				.append(ClientUtils.localize("messages.securitycraft:thanks",
-						SecurityCraft.getVersion(),
+						SecurityCraft.VERSION,
 						ClientUtils.localize("messages.securitycraft:tip"),
 						ClientUtils.localize(tipKey)));
 

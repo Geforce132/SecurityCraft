@@ -2,8 +2,12 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
+import net.geforcemods.securitycraft.api.IExtractionBlock;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
@@ -17,11 +21,14 @@ import net.geforcemods.securitycraft.network.ServerProxy;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -48,7 +55,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	//********************************* This is v1.8.19.3 for MC 1.16.2!
-	protected static final String VERSION = "v1.8.19.3";
+	public static final String VERSION = "v1.8.19.3";
 	public static IProxy proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
@@ -57,6 +64,8 @@ public class SecurityCraft {
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
 	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
+	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
+	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
 
 	public SecurityCraft()
 	{
@@ -81,18 +90,20 @@ public class SecurityCraft {
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
+		InterModComms.sendTo(MODID, IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
 
 			if(vcUpdateTag != null)
 				InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
 		});
-
 		proxy.tint();
 	}
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event){ //stage 4
+		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock)msg.getMessageSupplier().get()));
+
 		for(Field field : SCContent.class.getFields())
 		{
 			try
@@ -145,7 +156,8 @@ public class SecurityCraft {
 		SCCommand.register(event.getDispatcher());
 	}
 
-	public static String getVersion() {
-		return VERSION;
+	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
+	{
+		return registeredExtractionBlocks;
 	}
 }

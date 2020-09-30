@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -110,22 +112,32 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		return getDefaultState().with(ENABLED, vanillaState.get(ENABLED)).with(FACING, vanillaState.get(FACING));
 	}
 
-	public static boolean canExtract(IOwnable te, World world, BlockPos hopperPos)
+	public static class ExtractionBlock implements IExtractionBlock
 	{
-		ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getTileEntity(hopperPos);
-
-		if(!te.getOwner().owns(hopperTe))
+		@Override
+		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state)
 		{
-			if(te instanceof IModuleInventory)
+			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getTileEntity(pos);
+
+			if(!te.getOwner().owns(hopperTe))
 			{
-				IModuleInventory inv = (IModuleInventory)te;
+				if(te instanceof IModuleInventory)
+				{
+					IModuleInventory inv = (IModuleInventory)te;
 
-				if(inv.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
-					return true;
+					if(inv.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+						return true;
+				}
+
+				return false;
 			}
-
-			return false;
+			else return true;
 		}
-		else return true;
+
+		@Override
+		public Block getBlock()
+		{
+			return SCContent.REINFORCED_HOPPER.get();
+		}
 	}
 }
