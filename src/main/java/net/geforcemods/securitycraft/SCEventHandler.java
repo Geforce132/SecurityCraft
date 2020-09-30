@@ -729,7 +729,7 @@ public class SCEventHandler {
 				if(event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
 					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
-				if(new Random().nextInt(3) == 1)
+				if(event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !ConfigHandler.allowCodebreakerItem);
 				else return true;
 			}
