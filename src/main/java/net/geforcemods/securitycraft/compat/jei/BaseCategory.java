@@ -15,11 +15,9 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
 	protected static final TranslationTextComponent OUTPUT_TEXT = ClientUtils.localize("gui.securitycraft:blockReinforcer.output");
 	private final IDrawable background;
 	private final IDrawable icon;
-	IGuiHelper helper;
 
 	public BaseCategory(IGuiHelper helper)
 	{
-		this.helper = helper;
 		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, 126, 43);
 		icon = helper.createDrawableIngredient(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
 	}
