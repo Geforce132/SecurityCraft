@@ -17,6 +17,7 @@
 - Change: The Panic Button now emits a light level of 4 when turned on
 - Change: Just Enough Items now shows proper recipes for un-/reinforcing blocks - the old info screen has been removed in favor of this
 - Change: The level 1 Universal Block Reinforcer can no longer unreinforce blocks. At least level 2 is required for this now
+- Change: The codebreaker is now 100% effective when using in creative mode
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
