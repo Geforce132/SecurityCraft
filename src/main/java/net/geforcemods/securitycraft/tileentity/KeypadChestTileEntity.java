@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
@@ -10,7 +11,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -136,14 +136,19 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
 			BlockPos offsetPos = pos.offset(side);
+			BlockState offsetState = world.getBlockState(offsetPos);
 
-			if(world.getBlockState(offsetPos).getBlock() == SCContent.REINFORCED_HOPPER.get())
+			for(IExtractionBlock extractionBlock : SecurityCraft.getRegisteredExtractionBlocks())
 			{
-				if(!ReinforcedHopperBlock.canExtract(this, world, offsetPos))
-					return EMPTY_INVENTORY.cast();
-				else return super.getCapability(cap, side);
+				if(offsetState.getBlock() == extractionBlock.getBlock())
+				{
+					if(!extractionBlock.canExtract(this, world, offsetPos, offsetState))
+						return EMPTY_INVENTORY.cast();
+					else return super.getCapability(cap, side);
+				}
 			}
-			else return getInsertOnlyHandler().cast();
+
+			return getInsertOnlyHandler().cast();
 		}
 		else return super.getCapability(cap, side);
 	}
