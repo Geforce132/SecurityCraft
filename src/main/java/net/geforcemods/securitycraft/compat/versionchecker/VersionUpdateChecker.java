@@ -27,7 +27,7 @@ public class VersionUpdateChecker {
 
 			if(update == null) return null;
 
-			if((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.getVersion())){
+			if((update.getVersion().equals("0.0.0") && update.getFileName().equals("test")) || update.getVersion().equals(SecurityCraft.VERSION)){
 				return null;
 			}
 
