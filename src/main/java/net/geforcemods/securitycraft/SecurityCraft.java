@@ -3,7 +3,12 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
+import net.geforcemods.securitycraft.api.IExtractionBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
@@ -31,6 +36,8 @@ import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -43,7 +50,7 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	private static final String MOTU = "Finally! Cameras!";
 	//********************************* This is v1.8.19.3 for MC 1.12.2!
-	protected static final String VERSION = "v1.8.19.3";
+	public static final String VERSION = "v1.8.19.3";
 	protected static final String DEPENDENCIES = "required-after:forge@[14.23.5.2826,)";
 	protected static final String UPDATEJSONURL = "https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json";
 	@SidedProxy(clientSide = "net.geforcemods.securitycraft.network.ClientProxy", serverSide = "net.geforcemods.securitycraft.network.ServerProxy")
@@ -57,6 +64,8 @@ public class SecurityCraft {
 	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
+	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
+	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
@@ -86,6 +95,7 @@ public class SecurityCraft {
 	public void init(FMLInitializationEvent event){
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
+		FMLInterModComms.sendFunctionMessage(MODID, IMC_EXTRACTION_BLOCK_MSG, BlockReinforcedHopper.ExtractionBlock.class.getName());
 
 		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
@@ -102,6 +112,23 @@ public class SecurityCraft {
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedSand, 1, 1), new ItemStack(SCContent.reinforcedGlass, 1, 0), 0.1F);
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedStoneBrick, 1, 0), new ItemStack(SCContent.reinforcedStoneBrick, 1, 2), 0.1F);
 		GameRegistry.addSmelting(new ItemStack(SCContent.reinforcedClay, 1, 0), new ItemStack(SCContent.reinforcedHardenedClay, 1, 0), 0.35F);
+	}
+
+	@EventHandler
+	public void onIMC(IMCEvent event)
+	{
+		for(IMCMessage msg : event.getMessages())
+		{
+			if(msg.key.equals(IMC_EXTRACTION_BLOCK_MSG))
+			{
+				Optional<Function<Object,IExtractionBlock>> value = msg.getFunctionValue(Object.class, IExtractionBlock.class);
+
+				if(value.isPresent())
+					registeredExtractionBlocks.add(value.get().apply(null));
+				else
+					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient extraction block information.", msg.getSender()));
+			}
+		}
 	}
 
 	@EventHandler
@@ -125,7 +152,8 @@ public class SecurityCraft {
 		}
 	}
 
-	public static String getVersion() {
-		return VERSION;
+	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
+	{
+		return registeredExtractionBlocks;
 	}
 }
