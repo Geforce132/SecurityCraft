@@ -42,7 +42,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	@Override
 	public void tick()
 	{
-		if(!world.isRemote && ticksUntilNextSearch-- <= 0)
+		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
 			ticksUntilNextSearch = getSearchDelay();
 
@@ -119,7 +119,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 			lastPlayerName = player.getName().getString();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && enabledOption.get() && !player.getName().getString().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !player.getName().getString().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {
