@@ -22,6 +22,7 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -156,4 +157,11 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 		return new SecurityCraftTileEntity().intersectsEntities();
 	}
 
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot)
+	{
+		int boundType = state.get(BOUNDTYPE);
+
+		return rot == Rotation.CLOCKWISE_180 ? state : state.with(BOUNDTYPE, boundType == 2 ? 3 : (boundType == 3 ? 2 : 1));
+	}
 }

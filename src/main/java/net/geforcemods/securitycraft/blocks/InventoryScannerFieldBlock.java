@@ -25,6 +25,7 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -316,4 +317,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 		return super.isSideInvisible(state, adjacentBlockState, side);
 	}
 
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror)
+	{
+		return state.rotate(mirror.toRotation(state.get(FACING)));
+	}
 }

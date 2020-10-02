@@ -198,5 +198,4 @@ public class LaserBlock extends DisguisableBlock {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new LaserBlockTileEntity().linkable();
 	}
-
 }

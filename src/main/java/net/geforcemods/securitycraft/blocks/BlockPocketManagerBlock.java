@@ -13,6 +13,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -58,5 +60,17 @@ public class BlockPocketManagerBlock extends OwnableBlock
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new BlockPocketManagerTileEntity();
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot)
+	{
+		return state.with(FACING, rot.rotate(state.get(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror)
+	{
+		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
 }
