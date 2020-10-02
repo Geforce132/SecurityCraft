@@ -42,6 +42,7 @@
 - Fix: Pipe interaction with Password-protected Chest/Furnace
 - Fix: Projector is missing its English translation
 - Fix: Admin Tool has to be sneak-rightclicked in order to show information
+- Fix: Portable Radar sometimes doesn't turn off the redstone signal when it's supposed to
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
