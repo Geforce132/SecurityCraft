@@ -48,6 +48,7 @@
 - Fix: Sliders in GUIs sometimes don't stop sliding after the mouse button has been released
 - Fix: Universal Block Reinforcer dupe
 - Fix: Pipe interaction with Password-protected Chest/Furnace
+- Fix: Portable Radar sometimes doesn't turn off the redstone signal when it's supposed to
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play
