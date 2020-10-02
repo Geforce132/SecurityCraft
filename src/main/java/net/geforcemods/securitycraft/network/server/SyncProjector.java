@@ -68,7 +68,7 @@ public class SyncProjector {
 			World world = ctx.get().getSender().world;
 			TileEntity te = world.getTileEntity(pos);
 
-			if(world.isBlockLoaded(pos) && te instanceof ProjectorTileEntity)
+			if(world.isBlockPresent(pos) && te instanceof ProjectorTileEntity)
 			{
 				ProjectorTileEntity projector = (ProjectorTileEntity)te;
 				BlockState state = world.getBlockState(pos);
