@@ -42,6 +42,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	@Override
 	public void tick()
 	{
+		super.tick();
+
 		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
 			ticksUntilNextSearch = getSearchDelay();
