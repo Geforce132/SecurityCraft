@@ -40,6 +40,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	@Override
 	public void tick()
 	{
+		super.tick();
+
 		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
 			ticksUntilNextSearch = getSearchDelay();
@@ -63,7 +65,10 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 				for(PlayerEntity e : entities)
 				{
 					if(shouldSendMessage(e))
+					{
 						PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), hasCustomSCName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomSCName().getFormattedText() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + e.getName().getFormattedText() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+						setSentMessage();
+					}
 				}
 			}
 		}
