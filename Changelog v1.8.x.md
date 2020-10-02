@@ -49,6 +49,7 @@
 - Fix: Universal Block Reinforcer dupe
 - Fix: Pipe interaction with Password-protected Chest/Furnace
 - Fix: Portable Radar sometimes doesn't turn off the redstone signal when it's supposed to
+- Fix: Rotating/mirroring some blocks (e.g. using mods like World Edit) does not work correctly
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play

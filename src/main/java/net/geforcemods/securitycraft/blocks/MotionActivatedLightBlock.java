@@ -17,6 +17,9 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -112,4 +115,30 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, ConfigHandler.CONFIG.motionActivatedLightSearchRadius.get(), 1);
 	}
 
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot)
+	{
+		return state.with(FACING, rot.rotate(state.get(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror)
+	{
+		Direction facing = state.get(FACING);
+
+		switch(mirror)
+		{
+			case LEFT_RIGHT:
+				if(facing.getAxis() == Axis.Z)
+					return state.with(FACING, facing.getOpposite());
+				break;
+			case FRONT_BACK:
+				if(facing.getAxis() == Axis.X)
+					return state.with(FACING, facing.getOpposite());
+				break;
+			case NONE: break;
+		}
+
+		return state;
+	}
 }
