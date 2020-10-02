@@ -11,11 +11,9 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -31,51 +29,43 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
 	private boolean shouldSendNewMessage = true;
 	private String lastPlayerName = "";
+	private int ticksUntilNextSearch = getSearchDelay();
 
-	//Using TileEntitySCTE.attacks() and the attackEntity() method to check for players. :3
 	@Override
-	public boolean attackEntity(Entity attacked) {
-		if (attacked instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer)attacked))
+	public void update()
+	{
+		super.update();
+
+		if(!world.isRemote && enabledOption.get() && ticksUntilNextSearch-- <= 0)
 		{
-			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
-			List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);
-
-			if(entities.isEmpty())
-			{
-				boolean redstoneModule = hasModule(EnumModuleType.REDSTONE);
-
-				if(!redstoneModule || world.getBlockState(pos).getValue(BlockPortableRadar.POWERED))
-				{
-					BlockPortableRadar.togglePowerOutput(world, pos, false);
-					return false;
-				}
-			}
+			ticksUntilNextSearch = getSearchDelay();
 
 			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
+			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
+			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> {
+				boolean isNotWhitelisted = true;
 
-			if(owner != null && hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(attacked.getName().toLowerCase()))
-				return false;
+				if(hasModule(EnumModuleType.WHITELIST))
+					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(e.getName().toLowerCase());
 
-
-			if(PlayerUtils.isPlayerOnline(getOwner().getName()) && shouldSendMessage((EntityPlayer)attacked))
-			{
-				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + attacked.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomName() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + attacked.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
-				setSentMessage();
-			}
+				return e != owner && isNotWhitelisted;
+			});
 
 			if(hasModule(EnumModuleType.REDSTONE))
-				BlockPortableRadar.togglePowerOutput(world, pos, true);
+				BlockPortableRadar.togglePowerOutput(world, pos, !entities.isEmpty());
 
-			return true;
+			if(owner != null)
+			{
+				for(EntityPlayer e : entities)
+				{
+					if(shouldSendMessage(e))
+					{
+						PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize("tile.securitycraft:portableRadar.name"), hasCustomName() ? (ClientUtils.localize("messages.securitycraft:portableRadar.withName").replace("#p", TextFormatting.ITALIC + e.getName() + TextFormatting.RESET).replace("#n", TextFormatting.ITALIC + getCustomName() + TextFormatting.RESET)) : (ClientUtils.localize("messages.securitycraft:portableRadar.withoutName").replace("#p", TextFormatting.ITALIC + e.getName() + TextFormatting.RESET).replace("#l", Utils.getFormattedCoordinates(pos))), TextFormatting.BLUE);
+						setSentMessage();
+					}
+				}
+			}
 		}
-		else return false;
-	}
-
-	@Override
-	public void attackFailed()
-	{
-		if(hasModule(EnumModuleType.REDSTONE))
-			BlockPortableRadar.togglePowerOutput(world, pos, false);
 	}
 
 	@Override
@@ -115,30 +105,18 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 			lastPlayerName = player.getName();
 		}
 
-		return (shouldSendNewMessage || repeatMessageOption.get()) && enabledOption.get() && !player.getName().equals(getOwner().getName());
+		return (shouldSendNewMessage || repeatMessageOption.get()) && !player.getName().equals(getOwner().getName());
 	}
 
 	public void setSentMessage() {
 		shouldSendNewMessage = false;
 	}
 
-	@Override
-	public boolean canAttack() {
-		return true;
-	}
-
-	@Override
-	public boolean shouldSyncToClient() {
-		return false;
-	}
-
-	@Override
-	public double getAttackRange() {
+	public double getSearchRadius() {
 		return searchRadiusOption.get();
 	}
 
-	@Override
-	public int getTicksBetweenAttacks() {
+	public int getSearchDelay() {
 		return searchDelayOption.get() * 20;
 	}
 
