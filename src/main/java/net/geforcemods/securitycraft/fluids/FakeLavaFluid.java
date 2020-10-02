@@ -132,7 +132,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 		}
 	}
 
-	private boolean isSurroundingBlockFlammable(IWorldReader world, BlockPos pos)
+	private boolean isSurroundingBlockFlammable(World world, BlockPos pos)
 	{
 		for(Direction Direction : Direction.values())
 		{
@@ -143,9 +143,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 		return false;
 	}
 
-	private boolean getCanBlockBurn(IWorldReader world, BlockPos pos)
+	private boolean getCanBlockBurn(World world, BlockPos pos)
 	{
-		return pos.getY() >= 0 && pos.getY() < 256 && !world.isBlockLoaded(pos) ? false : world.getBlockState(pos).getMaterial().isFlammable();
+		return !world.isBlockPresent(pos) ? false : world.getBlockState(pos).getMaterial().isFlammable();
 	}
 
 	@Nullable
