@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -29,9 +30,18 @@ public class BulletEntity extends AbstractArrowEntity
 	@Override
 	protected void onHit(RayTraceResult raytraceResult)
 	{
-		if(raytraceResult.getType() == Type.ENTITY && !(((EntityRayTraceResult)raytraceResult).getEntity() instanceof SentryEntity))
+		if(raytraceResult.getType() != Type.ENTITY)
+			return;
+
+		Entity entity = ((EntityRayTraceResult)raytraceResult).getEntity();
+
+		if(!(entity instanceof SentryEntity))
 		{
-			((EntityRayTraceResult)raytraceResult).getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
+			entity.attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
+
+			if(entity instanceof LivingEntity)
+				((LivingEntity)entity).damageShield(3.0F);
+
 			remove();
 		}
 		else if(raytraceResult.getType() == Type.BLOCK)
