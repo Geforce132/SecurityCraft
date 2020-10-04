@@ -46,6 +46,7 @@
 - Fix: Rotating/mirroring some blocks (e.g. using mods like World Edit) does not work correctly
 - Fix: Sentry bullets don't disappear upon hitting a block
 - Fix: Sentry bullets don't damage shields
+- Fix: Vanilla redstone power sources can still activate Reinforced Doors and similar in specific cases
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
