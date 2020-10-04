@@ -7,8 +7,11 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -44,19 +47,33 @@ public class ItemUniversalBlockReinforcer extends Item
 
 				if(reinforcedBlock.getVanillaBlocks().contains(block))
 				{
+					IBlockState convertedState = null;
+					TileEntity te = world.getTileEntity(pos);
+					NBTTagCompound tag = te.writeToNBT(new NBTTagCompound());
+
 					if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
 					{
 						for(int i = 0; i < reinforcedBlock.getAmount(); i++)
 						{
 							if(block.equals(reinforcedBlock.getVanillaBlocks().get(i)))
-								world.setBlockState(pos, rb.getStateFromMeta(i));
+								convertedState = rb.getStateFromMeta(i);
 						}
 					}
 					else
-						world.setBlockState(pos, rb.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos))));
+						convertedState = rb.getStateFromMeta(block.getMetaFromState(block.getActualState(state, world, pos)));
 
-					((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					stack.damageItem(1, player);
+					if(convertedState != null) //shouldn't happen, but just to be safe
+					{
+						if(te instanceof IInventory)
+							((IInventory)te).clear();
+
+						world.setBlockState(pos, convertedState);
+						te = world.getTileEntity(pos);
+						te.readFromNBT(tag);
+						((IOwnable)te).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+						stack.damageItem(1, player);
+					}
+
 					return true;
 				}
 			}

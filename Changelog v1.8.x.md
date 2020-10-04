@@ -37,6 +37,7 @@
 - Fix: Portable Radar sometimes doesn't turn off the redstone signal when it's supposed to
 - Fix: Incorrect Reinforced Lever sounds
 - Fix: Vanilla redstone power sources can still activate Reinforced Doors and similar in specific cases
+- Fix: Reinforcing a hopper in the world drops its contents
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
