@@ -9,10 +9,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -60,8 +63,17 @@ public class UniversalBlockReinforcerItem extends Item
 
 			if(rb != null)
 			{
-				world.setBlockState(pos, ((IReinforcedBlock)rb).getConvertedState(vanillaState));
-				((IOwnable)world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
+				TileEntity te = world.getTileEntity(pos);
+				CompoundNBT tag = te.write(new CompoundNBT());
+
+				if(te instanceof IInventory)
+					((IInventory)te).clear();
+
+				world.setBlockState(pos, convertedState);
+				te = world.getTileEntity(pos);
+				te.read(convertedState, tag);
+				((IOwnable)te).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 				player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
 				return false;
 			}

@@ -53,6 +53,7 @@
 - Fix: Sentry bullets don't disappear upon hitting a block
 - Fix: Sentry bullets don't damage shields
 - Fix: Vanilla redstone power sources can still activate Reinforced Doors and similar in specific cases
+- Fix: Reinforcing a hopper in the world drops its contents
 - Removed: Taser Bullet entity
 - Removed: Fix for Cyclic's Sack of Holding (Cyclic has a fix in place itself)
 - Potential Fix: First Alarm sound sometimes does not play
