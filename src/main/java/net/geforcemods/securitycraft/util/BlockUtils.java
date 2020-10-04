@@ -16,6 +16,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePl
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockLever;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
@@ -149,6 +151,17 @@ public class BlockUtils{
 
 					if(!checkForBlock || offsetState.getBlock() == block)
 					{
+						if(offsetState.getPropertyKeys().contains(BlockLever.FACING))
+						{
+							if(dirOffset != offsetState.getValue(BlockLever.FACING).getFacing())
+								return false;
+						}
+						else if(offsetState.getPropertyKeys().contains(BlockDirectional.FACING))
+						{
+							if(dirOffset != offsetState.getValue(BlockDirectional.FACING))
+								return false;
+						}
+
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
 						if(extraCondition.apply(offsetState, offsetTe))
