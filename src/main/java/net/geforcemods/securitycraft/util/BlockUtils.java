@@ -28,8 +28,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.Property;
+import net.minecraft.state.properties.AttachFace;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -220,6 +223,29 @@ public class BlockUtils{
 
 					if(!checkForBlock || offsetState.getBlock() == block)
 					{
+						//checking that e.g. a lever/button is correctly attached to the block
+						if(offsetState.hasProperty(BlockStateProperties.FACE) && offsetState.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
+						{
+							Axis offsetAxis = dirOffset.getAxis();
+							Direction offsetFacing = offsetState.get(BlockStateProperties.HORIZONTAL_FACING);
+							AttachFace offsetAttachFace = offsetState.get(BlockStateProperties.FACE);
+
+							switch(offsetAxis)
+							{
+								case X:
+									if((dirOffset == Direction.EAST && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.EAST)) || (dirOffset == Direction.WEST && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.WEST)))
+										return false;
+									break;
+								case Y:
+									if((dirOffset == Direction.UP && offsetAttachFace != AttachFace.FLOOR) || (dirOffset == Direction.DOWN && offsetAttachFace != AttachFace.CEILING))
+										return false;
+									break;
+								case Z:
+									if((dirOffset == Direction.SOUTH && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.SOUTH)) || (dirOffset == Direction.NORTH && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.NORTH)))
+										return false;
+							}
+						}
+
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
 						if(extraCondition.apply(offsetState, offsetTe))
