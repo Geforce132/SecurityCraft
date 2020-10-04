@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -10,7 +11,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -29,9 +29,15 @@ public class BulletEntity extends AbstractArrowEntity
 	@Override
 	protected void onEntityHit(EntityRayTraceResult raytraceResult)
 	{
-		if(!(raytraceResult.getEntity() instanceof SentryEntity))
+		Entity entity = raytraceResult.getEntity();
+
+		if(!(entity instanceof SentryEntity))
 		{
-			raytraceResult.getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, func_234616_v_()), MathHelper.ceil(getMotion().length()));
+			entity.attackEntityFrom(DamageSource.causeArrowDamage(this, func_234616_v_()), MathHelper.ceil(getMotion().length()));
+
+			if(entity instanceof LivingEntity)
+				((LivingEntity)entity).damageShield(3.0F);
+
 			remove();
 		}
 	}
