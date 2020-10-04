@@ -39,9 +39,7 @@ public class BulletEntity extends AbstractArrowEntity
 	@Override
 	protected void func_230299_a_(BlockRayTraceResult raytraceResult) //onBlockHit
 	{
-		Vector3d vec3d = raytraceResult.getHitVec().subtract(this.getPosX(), this.getPosY(), this.getPosZ());
-		this.inGround = true;
-		this.setMotion(vec3d);
+		remove();
 	}
 
 	@Override
