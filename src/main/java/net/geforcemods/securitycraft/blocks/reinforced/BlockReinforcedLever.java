@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityWhitelistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLever;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,6 +20,13 @@ import net.minecraft.world.World;
 
 public class BlockReinforcedLever extends BlockLever implements IReinforcedBlock
 {
+	public BlockReinforcedLever()
+	{
+		super();
+
+		setSoundType(SoundType.WOOD);
+	}
+
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
