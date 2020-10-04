@@ -232,17 +232,14 @@ public class BlockUtils{
 
 							switch(offsetAxis)
 							{
-								case X:
-									if((dirOffset == Direction.EAST && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.EAST)) || (dirOffset == Direction.WEST && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.WEST)))
+								case X: case Z:
+									if(offsetAttachFace != AttachFace.WALL || dirOffset != offsetFacing)
 										return false;
 									break;
 								case Y:
 									if((dirOffset == Direction.UP && offsetAttachFace != AttachFace.FLOOR) || (dirOffset == Direction.DOWN && offsetAttachFace != AttachFace.CEILING))
 										return false;
 									break;
-								case Z:
-									if((dirOffset == Direction.SOUTH && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.SOUTH)) || (dirOffset == Direction.NORTH && (offsetAttachFace != AttachFace.WALL || offsetFacing != Direction.NORTH)))
-										return false;
 							}
 						}
 
