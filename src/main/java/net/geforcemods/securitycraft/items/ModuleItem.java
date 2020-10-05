@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -18,9 +19,12 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -58,6 +62,29 @@ public class ModuleItem extends Item{
 		this.canBeCustomized = canBeCustomized;
 		numberOfItemAddons = itemAddons;
 		numberOfBlockAddons = blockAddons;
+	}
+
+	@Override
+	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
+	{
+		TileEntity te = ctx.getWorld().getTileEntity(ctx.getPos());
+
+		if(te instanceof IModuleInventory)
+		{
+			IModuleInventory inv = (IModuleInventory)te;
+
+			if(!inv.hasModule(((ModuleItem)stack.getItem()).getModule()))
+			{
+				inv.insertModule(stack);
+
+				if(!ctx.getPlayer().isCreative())
+					stack.shrink(1);
+
+				return ActionResultType.SUCCESS;
+			}
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override
