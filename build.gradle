@@ -42,7 +42,6 @@ sourceSets {
 
 minecraft {
     mappings channel: 'snapshot', version: '20200917-1.15.1'
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 	
     runs {
         client {
