@@ -72,8 +72,9 @@ public class ModuleItem extends Item{
 		if(te instanceof IModuleInventory)
 		{
 			IModuleInventory inv = (IModuleInventory)te;
+			ModuleType type = ((ModuleItem)stack.getItem()).getModuleType();
 
-			if(!inv.hasModule(((ModuleItem)stack.getItem()).getModuleType()))
+			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
 				inv.insertModule(stack);
 
