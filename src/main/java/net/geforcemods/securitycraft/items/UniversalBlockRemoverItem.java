@@ -84,7 +84,7 @@ public class UniversalBlockRemoverItem extends Item
 				for(ItemStack module : te.getInventory())
 				{
 					if(!module.isEmpty())
-						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModule()}, te);
+						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, te);
 				}
 
 				world.destroyBlock(pos, true);

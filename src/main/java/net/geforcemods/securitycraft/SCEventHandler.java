@@ -252,10 +252,10 @@ public class SCEventHandler {
 						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addEntity(item));
 
-						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModule());
+						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
 						if(te instanceof CustomizableTileEntity)
-							((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModule() }, (CustomizableTileEntity)te);
+							((CustomizableTileEntity)te).createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ModuleItem) stack.getItem()).getModuleType() }, (CustomizableTileEntity)te);
 
 						if(te instanceof SecurityCameraTileEntity)
 						{

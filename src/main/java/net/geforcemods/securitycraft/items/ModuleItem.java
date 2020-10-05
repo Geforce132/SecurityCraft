@@ -73,7 +73,7 @@ public class ModuleItem extends Item{
 		{
 			IModuleInventory inv = (IModuleInventory)te;
 
-			if(!inv.hasModule(((ModuleItem)stack.getItem()).getModule()))
+			if(!inv.hasModule(((ModuleItem)stack.getItem()).getModuleType()))
 			{
 				inv.insertModule(stack);
 
@@ -157,7 +157,7 @@ public class ModuleItem extends Item{
 		}
 	}
 
-	public ModuleType getModule() {
+	public ModuleType getModuleType() {
 		return module;
 	}
 

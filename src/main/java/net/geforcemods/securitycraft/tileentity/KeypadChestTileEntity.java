@@ -279,7 +279,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		if(offsetTe != null)
 		{
 			if(remove)
-				offsetTe.removeModule(((ModuleItem)module.getItem()).getModule());
+				offsetTe.removeModule(((ModuleItem)module.getItem()).getModuleType());
 			else
 				offsetTe.insertModule(module);
 		}

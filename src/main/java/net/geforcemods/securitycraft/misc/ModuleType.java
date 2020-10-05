@@ -39,7 +39,7 @@ public enum ModuleType {
 
 	public static ModuleType getModuleFromStack(ItemStack stack) {
 		if(stack.getItem() instanceof ModuleItem)
-			return ((ModuleItem)stack.getItem()).getModule();
+			return ((ModuleItem)stack.getItem()).getModuleType();
 		else return null;
 	}
 
