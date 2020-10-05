@@ -43,7 +43,7 @@
 - Fix: Fire doesn't get removed after exiting Fake Lava
 - Fix: Reinforced Doors and Scanner Doors cannot be placed by rightclick the side of a block
 - Fix: Reinforced Doors and Scanner Doors can remove blocks
-- Fix: Rare crash
+- Fix: Crashes
 - Fix: Transparent pixels in Codebreaker and Sentry Remote Access Tool textures
 - Fix: Panic button has no sound
 - Fix: Sliders in GUIs sometimes don't stop sliding after the mouse button has been released

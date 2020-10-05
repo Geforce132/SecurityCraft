@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,8 +31,7 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 			return;
 
 		Matrix4f positionMatrix = matrix.getLast().getMatrix();
-		BlockPos pos = te.getPos();
-		Direction facing = te.getWorld().getBlockState(pos).get(BlockPocketManagerBlock.FACING);
+		Direction facing = te.getBlockState().get(BlockPocketManagerBlock.FACING);
 		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
 		int size = te.size;
 		int half = (size-1)/2;
