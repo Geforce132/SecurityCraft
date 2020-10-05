@@ -144,7 +144,7 @@ public class ModuleUtils{
 		if(action == LinkedAction.MODULE_INSERTED)
 			te.createLinkedBlockAction(action, new Object[] {stack, (ModuleItem)stack.getItem()}, te);
 		else if(action == LinkedAction.MODULE_REMOVED)
-			te.createLinkedBlockAction(action, new Object[] {stack, ((ModuleItem)stack.getItem()).getModule()}, te);
+			te.createLinkedBlockAction(action, new Object[] {stack, ((ModuleItem)stack.getItem()).getModuleType()}, te);
 
 		if(te instanceof SecurityCameraTileEntity)
 			te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getBlockState().get(SecurityCameraBlock.FACING), -1), te.getBlockState().getBlock());
