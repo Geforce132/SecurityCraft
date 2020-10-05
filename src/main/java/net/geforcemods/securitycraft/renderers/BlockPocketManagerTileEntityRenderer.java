@@ -34,9 +34,9 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 		Direction facing = te.getBlockState().get(BlockPocketManagerBlock.FACING);
 		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
 		int size = te.size;
-		int half = (size-1)/2;
+		int half = (size - 1) / 2;
 		int leftX = -half;
-		int rightX = half+1;
+		int rightX = half + 1;
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
 		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1-size;
 
