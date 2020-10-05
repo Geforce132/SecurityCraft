@@ -136,7 +136,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 				if(stack.getItem() instanceof ItemModule)
 				{
-					onModuleRemoved(stack, ((ItemModule)stack.getItem()).getModule());
+					onModuleRemoved(stack, ((ItemModule)stack.getItem()).getModuleType());
 
 					if(te instanceof CustomizableSCTE)
 						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, stack, (CustomizableSCTE)te);
@@ -173,7 +173,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 				if(stack.getItem() instanceof ItemModule)
 				{
-					onModuleInserted(stack, ((ItemModule)stack.getItem()).getModule());
+					onModuleInserted(stack, ((ItemModule)stack.getItem()).getModuleType());
 
 					if(te instanceof CustomizableSCTE)
 						ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, copy, (CustomizableSCTE)te);
@@ -202,7 +202,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		//call the correct methods, should there have been a module in the slot previously
 		if(!previous.isEmpty())
 		{
-			onModuleRemoved(previous, ((ItemModule)previous.getItem()).getModule());
+			onModuleRemoved(previous, ((ItemModule)previous.getItem()).getModuleType());
 
 			if(te instanceof CustomizableSCTE)
 				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, previous, (CustomizableSCTE)te);
@@ -212,7 +212,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 		if(stack.getItem() instanceof ItemModule)
 		{
-			onModuleInserted(stack, ((ItemModule)stack.getItem()).getModule());
+			onModuleInserted(stack, ((ItemModule)stack.getItem()).getModuleType());
 
 			if(te instanceof CustomizableSCTE)
 				ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, (CustomizableSCTE)te);
@@ -229,7 +229,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	public default boolean isItemValid(int slot, ItemStack stack)
 	{
 		slot = fixSlotId(slot);
-		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ItemModule && getAcceptedModules().contains(((ItemModule) stack.getItem()).getModule()) && !hasModule(((ItemModule) stack.getItem()).getModule());
+		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ItemModule && getAcceptedModules().contains(((ItemModule) stack.getItem()).getModuleType()) && !hasModule(((ItemModule) stack.getItem()).getModuleType());
 	}
 
 	/**
@@ -255,7 +255,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		for(ItemStack stack : getInventory())
 		{
 			if(!stack.isEmpty() && stack.getItem() instanceof ItemModule)
-				modules.add(((ItemModule) stack.getItem()).getModule());
+				modules.add(((ItemModule) stack.getItem()).getModuleType());
 		}
 
 		return modules;
@@ -272,7 +272,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 		for(int i = 0; i < modules.size(); i++)
 		{
-			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
+			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module)
 				return modules.get(i);
 		}
 
@@ -348,7 +348,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 		for(int i = 0; i < modules.size(); i++)
 		{
-			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
+			if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module)
 				modules.set(i, ItemStack.EMPTY);
 		}
 	}
@@ -373,7 +373,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 		{
 			for(int i = 0; i < modules.size(); i++)
 			{
-				if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModule() == module)
+				if(!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ItemModule && ((ItemModule) modules.get(i).getItem()).getModuleType() == module)
 					return true;
 			}
 		}

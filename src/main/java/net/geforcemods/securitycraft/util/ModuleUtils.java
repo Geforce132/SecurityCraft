@@ -144,7 +144,7 @@ public class ModuleUtils{
 		if(action == EnumLinkedAction.MODULE_INSERTED)
 			te.createLinkedBlockAction(action, new Object[] {stack, (ItemModule)stack.getItem()}, te);
 		else if(action == EnumLinkedAction.MODULE_REMOVED)
-			te.createLinkedBlockAction(action, new Object[] {stack, ((ItemModule)stack.getItem()).getModule()}, te);
+			te.createLinkedBlockAction(action, new Object[] {stack, ((ItemModule)stack.getItem()).getModuleType()}, te);
 
 		if(te instanceof TileEntitySecurityCamera)
 			te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getWorld().getBlockState(te.getPos()).getValue(BlockSecurityCamera.FACING), -1), te.getBlockType(), false);

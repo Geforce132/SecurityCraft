@@ -64,7 +64,7 @@ public class ItemModule extends Item{
 		{
 			IModuleInventory inv = (IModuleInventory)te;
 			ItemStack stack = player.getHeldItem(hand);
-			EnumModuleType type = ((ItemModule)stack.getItem()).getModule();
+			EnumModuleType type = ((ItemModule)stack.getItem()).getModuleType();
 
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
@@ -139,7 +139,7 @@ public class ItemModule extends Item{
 		}
 	}
 
-	public EnumModuleType getModule() {
+	public EnumModuleType getModuleType() {
 		return module;
 	}
 

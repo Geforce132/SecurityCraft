@@ -416,10 +416,10 @@ public class SCEventHandler {
 						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
 						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
 
-						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModule());
+						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType());
 
 						if(te instanceof CustomizableSCTE)
-							((CustomizableSCTE)te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModule() }, (CustomizableSCTE)te);
+							((CustomizableSCTE)te).createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[]{ stack, ((ItemModule) stack.getItem()).getModuleType() }, (CustomizableSCTE)te);
 
 						if(te instanceof TileEntitySecurityCamera)
 						{

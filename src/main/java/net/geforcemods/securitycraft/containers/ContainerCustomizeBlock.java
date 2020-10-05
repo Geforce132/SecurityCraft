@@ -119,7 +119,7 @@ public class ContainerCustomizeBlock extends Container{
 		{
 			if((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ItemModule)
 			{
-				moduleInv.onModuleRemoved(oldStack, ((ItemModule)oldStack.getItem()).getModule());
+				moduleInv.onModuleRemoved(oldStack, ((ItemModule)oldStack.getItem()).getModuleType());
 
 				if(moduleInv instanceof CustomizableSCTE)
 					ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, oldStack, (CustomizableSCTE)moduleInv);

@@ -239,7 +239,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		if(offsetTe != null)
 		{
 			if(remove)
-				offsetTe.removeModule(((ItemModule)module.getItem()).getModule());
+				offsetTe.removeModule(((ItemModule)module.getItem()).getModuleType());
 			else
 				offsetTe.insertModule(module);
 		}
