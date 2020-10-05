@@ -100,9 +100,9 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.3-34.0.7'
+    minecraft 'net.minecraftforge:forge:1.16.3-34.1.7'
     
-	implementation fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
+	implementation fg.deobf("mezz.jei:jei-1.16.3:7.5.0.42")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.3-beta-6")
     implementation fg.deobf("mcp.mobius.waila:Hwyla:1.10.11-B78_1.16.2")
 }
