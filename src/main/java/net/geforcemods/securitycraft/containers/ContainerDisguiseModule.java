@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
-import net.geforcemods.securitycraft.compat.inventory.ModuleItemInventory;
+import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.gui;
 
-import net.geforcemods.securitycraft.compat.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
+import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

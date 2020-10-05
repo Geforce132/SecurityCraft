@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.compat.inventory;
+package net.geforcemods.securitycraft.inventory;
 
 import javax.annotation.Nullable;
 
