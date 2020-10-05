@@ -70,7 +70,7 @@ public class ModuleItem extends Item{
 		if(te instanceof IModuleInventory)
 		{
 			IModuleInventory inv = (IModuleInventory)te;
-			ModuleType type = ((ModuleItem)stack.getItem()).getModule();
+			ModuleType type = ((ModuleItem)stack.getItem()).getModuleType();
 
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
@@ -156,7 +156,7 @@ public class ModuleItem extends Item{
 		}
 	}
 
-	public ModuleType getModule() {
+	public ModuleType getModuleType() {
 		return module;
 	}
 

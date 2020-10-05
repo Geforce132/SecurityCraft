@@ -123,7 +123,7 @@ public class CustomizeBlockContainer extends Container{
 		{
 			if((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ModuleItem)
 			{
-				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModule());
+				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModuleType());
 
 				if(moduleInv instanceof CustomizableTileEntity)
 					ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, oldStack, (CustomizableTileEntity)moduleInv);
