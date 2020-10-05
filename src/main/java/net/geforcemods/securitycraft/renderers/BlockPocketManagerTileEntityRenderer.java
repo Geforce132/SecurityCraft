@@ -25,11 +25,11 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 		if(!te.showOutline)
 			return;
 
-		Direction facing = te.getWorld().getBlockState(te.getPos()).get(BlockPocketManagerBlock.FACING);
+		Direction facing = te.getBlockState().get(BlockPocketManagerBlock.FACING);
 		int size = te.size;
-		int half = (size-1)/2;
+		int half = (size - 1) / 2;
 		int leftX = -half;
-		int rightX = half+1;
+		int rightX = half + 1;
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
 		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1-size;
 
