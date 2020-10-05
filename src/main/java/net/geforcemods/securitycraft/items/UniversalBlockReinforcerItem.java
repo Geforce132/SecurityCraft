@@ -76,7 +76,7 @@ public class UniversalBlockReinforcerItem extends Item
 				te = world.getTileEntity(pos);
 				te.read(tag);
 				((IOwnable)te).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-				player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
+				stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
 				return true;
 			}
 		}
