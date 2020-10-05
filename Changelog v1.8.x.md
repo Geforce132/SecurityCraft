@@ -8,6 +8,7 @@
 - New: Customization option to change how long the Keycard Reader emits a redstone signal when it has been activated (Thanks Redstone_Dubstep!)
 - New: Secret Signs can now have a whitelist (Thanks Redstone_Dubstep!)
 - New: New customization option to make the text of Secret Signs visible to everyone (Thanks Redstone_Dubstep!)
+- New: Modules can now also be added to a block by rightclicking them onto the block instead of using the Universal Block Modifier
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)
