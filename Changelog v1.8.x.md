@@ -40,6 +40,7 @@
 - Fix: Vanilla redstone power sources can still activate Reinforced Doors and similar in specific cases
 - Fix: Reinforcing a hopper in the world drops its contents
 - Fix: Changes to installed modules don't sync to clients on a dedicated server
+- Fix: The first rightlick of a Whitelist/Blacklist Module does not open the GUI on a dedicated server
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

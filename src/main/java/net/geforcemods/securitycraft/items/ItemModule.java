@@ -90,10 +90,8 @@ public class ItemModule extends Item{
 			try
 			{
 				if(!world.isRemote) {
-					if(!stack.hasTagCompound()) {
+					if(!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
-						ClientUtils.syncItemNBT(stack);
-					}
 
 					if(canBeCustomized())
 						player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
