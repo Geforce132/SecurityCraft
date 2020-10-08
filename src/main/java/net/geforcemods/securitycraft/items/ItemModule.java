@@ -85,19 +85,22 @@ public class ItemModule extends Item{
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		try
+		if(!player.isSneaking())
 		{
-			if(!world.isRemote) {
-				if(!stack.hasTagCompound()) {
-					stack.setTagCompound(new NBTTagCompound());
-					ClientUtils.syncItemNBT(stack);
-				}
+			try
+			{
+				if(!world.isRemote) {
+					if(!stack.hasTagCompound()) {
+						stack.setTagCompound(new NBTTagCompound());
+						ClientUtils.syncItemNBT(stack);
+					}
 
-				if(canBeCustomized())
-					player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+					if(canBeCustomized())
+						player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+				}
 			}
+			catch(NoSuchMethodError e) {/*:^)*/}
 		}
-		catch(NoSuchMethodError e) {/*:^)*/}
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
