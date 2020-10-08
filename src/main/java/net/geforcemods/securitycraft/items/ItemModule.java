@@ -56,7 +56,7 @@ public class ItemModule extends Item{
 	}
 
 	@Override
-	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		TileEntity te = world.getTileEntity(pos);
 
@@ -69,6 +69,7 @@ public class ItemModule extends Item{
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
 				inv.insertModule(stack);
+				inv.onModuleInserted(stack, type);
 
 				if(!player.isCreative())
 					stack.shrink(1);
