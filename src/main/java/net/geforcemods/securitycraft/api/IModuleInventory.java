@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 /**
@@ -59,6 +60,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 			te.getWorld().notifyBlockUpdate(te.getPos(), state, state, 3);
 			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);
+			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
 		}
 	}
 
@@ -78,6 +80,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 
 			te.getWorld().notifyBlockUpdate(te.getPos(), state, state, 3);
 			te.getWorld().notifyNeighborsOfStateChange(te.getPos(), te.getBlockType(), false);
+			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
 		}
 	}
 
