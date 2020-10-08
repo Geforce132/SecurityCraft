@@ -41,6 +41,7 @@
 - Fix: Reinforcing a hopper in the world drops its contents
 - Fix: Changes to installed modules don't sync to clients on a dedicated server
 - Fix: The first rightlick of a Whitelist/Blacklist Module does not open the GUI on a dedicated server
+- Fix: Cannot exit GUIs using escape key when a textfield is focused
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)

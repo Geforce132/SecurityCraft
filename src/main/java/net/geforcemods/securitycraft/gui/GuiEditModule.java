@@ -102,7 +102,7 @@ public class GuiEditModule extends GuiContainer
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException{
-		if(inputField.isFocused())
+		if(keyCode != Keyboard.KEY_ESCAPE && inputField.isFocused())
 		{
 			if(keyCode == Keyboard.KEY_SPACE)
 				return;

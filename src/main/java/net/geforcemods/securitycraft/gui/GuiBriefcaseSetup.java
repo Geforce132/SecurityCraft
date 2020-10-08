@@ -81,7 +81,7 @@ public class GuiBriefcaseSetup extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
+		if(keyCode != Keyboard.KEY_ESCAPE && keycodeTextbox.isFocused() && isValidChar(typedChar))
 			keycodeTextbox.textboxKeyTyped(typedChar, keyCode);
 		else
 			super.keyTyped(typedChar, keyCode);

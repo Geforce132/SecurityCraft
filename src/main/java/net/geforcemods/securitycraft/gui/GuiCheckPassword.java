@@ -101,18 +101,19 @@ public class GuiCheckPassword extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(isValidChar(typedChar) && typedChar == '\u001B')
-			ClientUtils.closePlayerScreen();
-		else if(isValidChar(typedChar) && typedChar != '' && currentString.length() < MAX_CHARS){
-			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
-			currentString += typedChar;
-			setTextboxCensoredText(keycodeTextbox, currentString);
-			checkCode(currentString);
-		}else if(isValidChar(typedChar) && typedChar == ''){
-			Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
-			currentString = Utils.removeLastChar(currentString);
-			setTextboxCensoredText(keycodeTextbox, currentString);
-			checkCode(currentString);
+		if(keyCode != Keyboard.KEY_ESCAPE && isValidChar(typedChar))
+		{
+			if(typedChar != '' && currentString.length() < MAX_CHARS){
+				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+				currentString += typedChar;
+				setTextboxCensoredText(keycodeTextbox, currentString);
+				checkCode(currentString);
+			}else if(typedChar == ''){
+				Minecraft.getMinecraft().player.playSound(SoundEvent.REGISTRY.getObject(new ResourceLocation("random.click")), 0.15F, 1.0F);
+				currentString = Utils.removeLastChar(currentString);
+				setTextboxCensoredText(keycodeTextbox, currentString);
+				checkCode(currentString);
+			}
 		}
 		else
 			super.keyTyped(typedChar, keyCode);

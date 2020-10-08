@@ -94,8 +94,11 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(!isValidChar(typedChar))
+		if(keyCode == Keyboard.KEY_ESCAPE || !isValidChar(typedChar))
+		{
+			super.keyTyped(typedChar, keyCode);
 			return;
+		}
 
 		if(textboxNewPasscode.isFocused())
 			textboxNewPasscode.textboxKeyTyped(typedChar, keyCode);
