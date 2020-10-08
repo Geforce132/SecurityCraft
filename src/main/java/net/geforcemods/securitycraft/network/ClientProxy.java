@@ -325,17 +325,14 @@ public class ClientProxy implements IProxy
 			else return noTint;
 		}, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			if(tintBlocks)
+			Block block = state.getBlock();
+
+			if(block instanceof DisguisableBlock)
 			{
-				Block block = state.getBlock();
+				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
 
-				if(block instanceof DisguisableBlock)
-				{
-					Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
-
-					if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
-						return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
-				}
+				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
+					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
 			}
 
 			return noTint;
