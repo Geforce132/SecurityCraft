@@ -65,9 +65,10 @@ public class ModuleItem extends Item{
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
+	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
 		TileEntity te = ctx.getWorld().getTileEntity(ctx.getPos());
+		ItemStack stack = ctx.getItem();
 
 		if(te instanceof IModuleInventory)
 		{
@@ -77,6 +78,7 @@ public class ModuleItem extends Item{
 			if(inv.getAcceptedModules().contains(type) && !inv.hasModule(type))
 			{
 				inv.insertModule(stack);
+				inv.onModuleInserted(stack, type);
 
 				if(!ctx.getPlayer().isCreative())
 					stack.shrink(1);
