@@ -56,7 +56,7 @@ public class BlockSecurityCamera extends BlockContainer{
 		{
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof TileEntitySecurityCamera)
+			if(te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).isShutDown())
 			{
 				((TileEntitySecurityCamera)te).reactivate();
 
