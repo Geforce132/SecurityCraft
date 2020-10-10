@@ -100,7 +100,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(view.getLocation());
 
-				if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) != SCContent.securityCamera || (te instanceof TileEntitySecurityCamera && !((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player) && !((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART)))
+				if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) != SCContent.securityCamera || (te instanceof TileEntitySecurityCamera && (!((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player) && !((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART)) || (((TileEntitySecurityCamera)te).isShutDown())))
 				{
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;

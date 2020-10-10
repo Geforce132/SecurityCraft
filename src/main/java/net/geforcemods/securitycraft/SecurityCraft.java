@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
+import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -89,6 +90,9 @@ public class SecurityCraft {
 		modMeta.logoFile = "/scLogo.png";
 
 		proxy.registerEntityRenderingHandlers();
+
+		if(Loader.isModLoaded("icbmclassic"))
+			MinecraftForge.EVENT_BUS.register(new ICBMClassicEMPCompat());
 	}
 
 	@EventHandler

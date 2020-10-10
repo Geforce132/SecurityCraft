@@ -1,14 +1,17 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TileEntitySecurityCamera extends CustomizableSCTE {
 
@@ -18,6 +21,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	public boolean down = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
+	private boolean shutDown = false;
 	private OptionDouble rotationSpeedOption = new OptionDouble("rotationSpeed", CAMERA_SPEED, 0.0100D, 0.0250D, 0.001D);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
@@ -26,21 +30,54 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	public void update(){
 		super.update();
 
-		if(!shouldRotateOption.get())
+		if(!shutDown)
 		{
-			cameraRotation = customRotationOption.get();
-			return;
+			if(!shouldRotateOption.get())
+			{
+				cameraRotation = customRotationOption.get();
+				return;
+			}
+
+			if(addToRotation && cameraRotation <= 1.55F)
+				cameraRotation += rotationSpeedOption.get();
+			else
+				addToRotation = false;
+
+			if(!addToRotation && cameraRotation >= -1.55F)
+				cameraRotation -= rotationSpeedOption.get();
+			else
+				addToRotation = true;
+		}
+	}
+
+	public void shutDown()
+	{
+		shutDown = true;
+
+
+		if(hasModule(EnumModuleType.REDSTONE))
+		{
+			IBlockState state = world.getBlockState(pos);
+
+			if(state.getBlock() == SCContent.securityCamera && state.getValue(BlockSecurityCamera.POWERED))
+				world.setBlockState(pos,state.withProperty(BlockSecurityCamera.POWERED, false));
 		}
 
-		if(addToRotation && cameraRotation <= 1.55F)
-			cameraRotation += rotationSpeedOption.get();
-		else
-			addToRotation = false;
+		if(!world.isRemote)
+			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
+	}
 
-		if(!addToRotation && cameraRotation >= -1.55F)
-			cameraRotation -= rotationSpeedOption.get();
-		else
-			addToRotation = true;
+	public void reactivate()
+	{
+		shutDown = false;
+
+		if(!world.isRemote)
+			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
+	}
+
+	public boolean isShutDown()
+	{
+		return shutDown;
 	}
 
 	@Override
@@ -48,6 +85,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 	{
 		tag.setFloat("LastPitch", lastPitch);
 		tag.setFloat("LastYaw", lastYaw);
+		tag.setBoolean("ShutDown", shutDown);
 		return super.writeToNBT(tag);
 	}
 
@@ -57,6 +95,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 		super.readFromNBT(tag);
 		lastPitch = tag.getFloat("LastPitch");
 		lastYaw = tag.getFloat("LastYaw");
+		shutDown = tag.getBoolean("ShutDown");
 	}
 
 	@Override
