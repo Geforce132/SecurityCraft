@@ -70,6 +70,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
@@ -382,6 +383,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityWhitelistOnly.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
 		GameRegistry.registerTileEntity(TileEntityReinforcedHopper.class, new ResourceLocation("securitycraft:reinforced_hopper"));
 		GameRegistry.registerTileEntity(TileEntityProjector.class, new ResourceLocation("securitycraft:projector"));
+		GameRegistry.registerTileEntity(TileEntityIronFence.class, new ResourceLocation("securitycraft:iron_fence"));
 	}
 
 	@SubscribeEvent

@@ -23,8 +23,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -45,29 +43,6 @@ public class BlockSecurityCamera extends BlockContainer{
 
 	public BlockSecurityCamera(Material material) {
 		super(material);
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
-	{
-		ItemStack stack = player.getHeldItem(hand);
-
-		if(stack.getItem() == Items.REDSTONE)
-		{
-			TileEntity te = world.getTileEntity(pos);
-
-			if(te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).isShutDown())
-			{
-				((TileEntitySecurityCamera)te).reactivate();
-
-				if(!player.isCreative())
-					stack.shrink(1);
-
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@Override

@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
+import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -98,6 +98,6 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta)
 	{
-		return new TileEntitySCTE().intersectsEntities();
+		return new TileEntityIronFence().intersectsEntities();
 	}
 }

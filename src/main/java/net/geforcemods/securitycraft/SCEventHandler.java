@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
+import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -164,12 +165,25 @@ public class SCEventHandler {
 			return;
 		}
 
+		World world = event.getWorld();
+		TileEntity tileEntity = world.getTileEntity(event.getPos());
+
+		if(event.getItemStack().getItem() == Items.REDSTONE && tileEntity instanceof IEMPAffected && ((IEMPAffected)tileEntity).isShutDown())
+		{
+			((IEMPAffected)tileEntity).reactivate();
+
+			if(!event.getEntityPlayer().isCreative())
+				event.getItemStack().shrink(1);
+
+			event.getEntityPlayer().swingArm(event.getHand());
+			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.SUCCESS);
+			return;
+		}
+
 		if(event.getHand() == EnumHand.MAIN_HAND)
 		{
-			World world = event.getWorld();
-
 			if(!world.isRemote){
-				TileEntity tileEntity = world.getTileEntity(event.getPos());
 				Block block = world.getBlockState(event.getPos()).getBlock();
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel))

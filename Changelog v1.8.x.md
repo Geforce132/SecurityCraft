@@ -9,7 +9,7 @@
 - New: Secret Signs can now have a whitelist (Thanks Redstone_Dubstep!)
 - New: New customization option to make the text of Secret Signs visible to everyone (Thanks Redstone_Dubstep!)
 - New: Modules can now also be added to a block by (sneak-)rightclicking them onto the block instead of using the Universal Block Modifier
-- New: Security Cameras now get affected by ICBM Classic's EMP blast. Cameras that have been hit can be reactivated by rightclicking them with redstone
+- New: Security Cameras, Reinforced Iron Fences, and Reinforced Iron Fence Gates now get affected by ICBM Classic's EMP blast. Blocks that have been hit can be reactivated by rightclicking them with redstone
 - Change: Laser and Taser damage no longer bypasses armor
 - Change: The Admin Tool now only works in creative mode
 - Change: Instead of using a crafting table, a briefcase's code can now be reset if its owner rightclicks while holding the briefcase in their off hand and a Universal Key Changer in their main hand. (Thanks Redstone_Dubstep!)

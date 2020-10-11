@@ -1,19 +1,17 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
-public class TileEntitySecurityCamera extends CustomizableSCTE {
+public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAffected {
 
 	private final double CAMERA_SPEED = 0.0180D;
 	public double cameraRotation = 0.0D;
@@ -50,34 +48,22 @@ public class TileEntitySecurityCamera extends CustomizableSCTE {
 		}
 	}
 
-	public void shutDown()
-	{
-		shutDown = true;
-
-
-		if(hasModule(EnumModuleType.REDSTONE))
-		{
-			IBlockState state = world.getBlockState(pos);
-
-			if(state.getBlock() == SCContent.securityCamera && state.getValue(BlockSecurityCamera.POWERED))
-				world.setBlockState(pos,state.withProperty(BlockSecurityCamera.POWERED, false));
-		}
-
-		if(!world.isRemote)
-			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
-	}
-
-	public void reactivate()
-	{
-		shutDown = false;
-
-		if(!world.isRemote)
-			FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().sendPacketToAllPlayers(getTileEntity().getUpdatePacket());
-	}
-
+	@Override
 	public boolean isShutDown()
 	{
 		return shutDown;
+	}
+
+	@Override
+	public void setShutDown(boolean shutDown)
+	{
+		this.shutDown = shutDown;
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
 	}
 
 	@Override
