@@ -19,6 +19,7 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -159,6 +160,18 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 				++j;
 			}
 		}
+	}
+
+	@Override
+	public BlockRenderLayer getRenderLayer()
+	{
+		return BlockRenderLayer.CUTOUT_MIPPED;
+	}
+
+	@Override
+	public boolean isSolid(BlockState state)
+	{
+		return true;
 	}
 
 	@Override

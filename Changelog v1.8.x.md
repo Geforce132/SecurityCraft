@@ -49,6 +49,7 @@
 - Fix: Vanilla redstone power sources can still activate Reinforced Doors and similar in specific cases
 - Fix: Reinforcing a hopper in the world drops its contents
 - Fix: Disguised blocks don't get tinted correctly when the reinforced_block_tint configuration option is turned off
+- Fix: Reinforced Grass Block has a faulty model
 - Removed: Taser Bullet entity
 - Potential Fix: First Alarm sound sometimes does not play
 - Misc.: Various French language fixes (Thanks supercat95!)
