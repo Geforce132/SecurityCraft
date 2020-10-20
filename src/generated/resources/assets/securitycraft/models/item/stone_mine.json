@@ -1,3 +1,11 @@
 {
-  "parent": "block/stone"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "block/stone",
+    "up": "block/stone",
+    "north": "block/stone",
+    "east": "block/stone",
+    "south": "block/stone",
+    "west": "block/stone"
+  }
 }

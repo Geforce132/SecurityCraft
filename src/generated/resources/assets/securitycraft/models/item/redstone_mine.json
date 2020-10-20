@@ -1,3 +1,11 @@
 {
-  "parent": "block/redstone_ore"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "block/redstone_ore",
+    "up": "block/redstone_ore",
+    "north": "block/redstone_ore",
+    "east": "block/redstone_ore",
+    "south": "block/redstone_ore",
+    "west": "block/redstone_ore"
+  }
 }
