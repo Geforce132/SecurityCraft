@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.Collections;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.data.DataGenerator;
+import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -18,7 +21,7 @@ public class DataGenRegistrar
 		generator.addProvider(new BlockLootTableGenerator(generator));
 		generator.addProvider(new BlockModelAndStateGenerator(generator, event.getExistingFileHelper()));
 		generator.addProvider(new BlockTagGenerator(generator));
-		generator.addProvider(new ItemModelGenerator(generator, event.getExistingFileHelper()));
+		generator.addProvider(new ItemModelGenerator(generator, new ExistingFileHelper(Collections.EMPTY_LIST, false)));
 		generator.addProvider(new FluidTagGenerator(generator));
 		generator.addProvider(new ItemTagGenerator(generator));
 		generator.addProvider(new RecipeGenerator(generator));
