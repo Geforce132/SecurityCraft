@@ -1,3 +1,11 @@
 {
-  "parent": "block/gravel"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/gravel",
+    "up": "minecraft:block/gravel",
+    "north": "minecraft:block/gravel",
+    "east": "minecraft:block/gravel",
+    "south": "minecraft:block/gravel",
+    "west": "minecraft:block/gravel"
+  }
 }

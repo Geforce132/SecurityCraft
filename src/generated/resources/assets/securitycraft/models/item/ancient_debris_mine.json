@@ -1,3 +1,11 @@
 {
-  "parent": "minecraft:block/ancient_debris"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/ancient_debris_top",
+    "up": "minecraft:block/ancient_debris_top",
+    "north": "minecraft:block/ancient_debris_side",
+    "east": "minecraft:block/ancient_debris_side",
+    "south": "minecraft:block/ancient_debris_side",
+    "west": "minecraft:block/ancient_debris_side"
+  }
 }

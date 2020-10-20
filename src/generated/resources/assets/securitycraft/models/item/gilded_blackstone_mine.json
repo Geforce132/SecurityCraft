@@ -1,3 +1,11 @@
 {
-  "parent": "minecraft:block/gilded_blackstone"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/gilded_blackstone",
+    "up": "minecraft:block/gilded_blackstone",
+    "north": "minecraft:block/gilded_blackstone",
+    "east": "minecraft:block/gilded_blackstone",
+    "south": "minecraft:block/gilded_blackstone",
+    "west": "minecraft:block/gilded_blackstone"
+  }
 }

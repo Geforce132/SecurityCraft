@@ -1,3 +1,11 @@
 {
-  "parent": "block/gold_ore"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/gold_ore",
+    "up": "minecraft:block/gold_ore",
+    "north": "minecraft:block/gold_ore",
+    "east": "minecraft:block/gold_ore",
+    "south": "minecraft:block/gold_ore",
+    "west": "minecraft:block/gold_ore"
+  }
 }

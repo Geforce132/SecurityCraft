@@ -1,3 +1,11 @@
 {
-  "parent": "block/sand"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/sand",
+    "up": "minecraft:block/sand",
+    "north": "minecraft:block/sand",
+    "east": "minecraft:block/sand",
+    "south": "minecraft:block/sand",
+    "west": "minecraft:block/sand"
+  }
 }

@@ -1,3 +1,11 @@
 {
-  "parent": "block/iron_ore"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/iron_ore",
+    "up": "minecraft:block/iron_ore",
+    "north": "minecraft:block/iron_ore",
+    "east": "minecraft:block/iron_ore",
+    "south": "minecraft:block/iron_ore",
+    "west": "minecraft:block/iron_ore"
+  }
 }

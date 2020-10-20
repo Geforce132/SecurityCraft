@@ -1,3 +1,11 @@
 {
-  "parent": "block/dirt"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/dirt",
+    "up": "minecraft:block/dirt",
+    "north": "minecraft:block/dirt",
+    "east": "minecraft:block/dirt",
+    "south": "minecraft:block/dirt",
+    "west": "minecraft:block/dirt"
+  }
 }

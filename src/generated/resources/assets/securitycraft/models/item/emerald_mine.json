@@ -1,3 +1,11 @@
 {
-  "parent": "block/emerald_ore"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/emerald_ore",
+    "up": "minecraft:block/emerald_ore",
+    "north": "minecraft:block/emerald_ore",
+    "east": "minecraft:block/emerald_ore",
+    "south": "minecraft:block/emerald_ore",
+    "west": "minecraft:block/emerald_ore"
+  }
 }

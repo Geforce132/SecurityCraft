@@ -1,3 +1,11 @@
 {
-  "parent": "minecraft:block/nether_gold_ore"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/nether_gold_ore",
+    "up": "minecraft:block/nether_gold_ore",
+    "north": "minecraft:block/nether_gold_ore",
+    "east": "minecraft:block/nether_gold_ore",
+    "south": "minecraft:block/nether_gold_ore",
+    "west": "minecraft:block/nether_gold_ore"
+  }
 }

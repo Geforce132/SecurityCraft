@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.KeyBindings;
+import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerTileEntityRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
@@ -94,6 +95,7 @@ public class ClientProxy implements IProxy
 		ResourceLocation[] poweredBlocks = {
 				new ResourceLocation(SecurityCraft.MODID, "laser_block")
 		};
+		String[] mines = {"coal_ore", "cobblestone", "diamond_ore", "dirt", "emerald_ore", "gravel", "gold_ore", "gilded_blackstone", "furnace", "iron_ore", "lapis_ore", "nether_gold_ore", "redstone_ore", "sand", "stone"};
 
 		for(String facing : facings)
 		{
@@ -130,6 +132,13 @@ public class ClientProxy implements IProxy
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=true");
 			registerDisguisedModel(event, invScanRL, "facing=" + facing + ",horizontal=false");
 		}
+
+		for(String mine : mines)
+		{
+			registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, mine.replace("_ore", "") + "_mine"), new ResourceLocation(mine));
+		}
+
+		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
 	}
 
 	private static void registerDisguisedModel(ModelBakeEvent event, ResourceLocation rl, String stateString)
@@ -137,6 +146,13 @@ public class ClientProxy implements IProxy
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
 		event.getModelRegistry().put(mrl, new DisguisableDynamicBakedModel(rl, event.getModelRegistry().get(mrl)));
+	}
+
+	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl)
+	{
+		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
+
+		event.getModelRegistry().put(mineMrl, new BlockMineModel(event.getModelRegistry().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModelRegistry().get(mineMrl)));
 	}
 
 	@SubscribeEvent

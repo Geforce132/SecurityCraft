@@ -1,3 +1,11 @@
 {
-  "parent": "block/nether_quartz_ore"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "minecraft:block/nether_quartz_ore",
+    "up": "minecraft:block/nether_quartz_ore",
+    "north": "minecraft:block/nether_quartz_ore",
+    "east": "minecraft:block/nether_quartz_ore",
+    "south": "minecraft:block/nether_quartz_ore",
+    "west": "minecraft:block/nether_quartz_ore"
+  }
 }
