@@ -1,3 +1,11 @@
 {
-  "parent": "securitycraft:block/coal_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/coal_ore",
+    "up": "blocks/coal_ore",
+    "north": "blocks/coal_ore",
+    "east": "blocks/coal_ore",
+    "south": "blocks/coal_ore",
+    "west": "blocks/coal_ore"
+  }
 }

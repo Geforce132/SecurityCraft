@@ -1,3 +1,11 @@
 {
-    "parent": "securitycraft:block/furnace_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/furnace_top",
+    "up": "blocks/furnace_top",
+    "north": "blocks/furnace_front_off",
+    "east": "blocks/furnace_side",
+    "south": "blocks/furnace_side",
+    "west": "blocks/furnace_side"
+  }
 }

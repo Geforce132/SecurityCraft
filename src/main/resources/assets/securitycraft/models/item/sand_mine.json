@@ -1,3 +1,11 @@
 {
-    "parent": "securitycraft:block/sand_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/sand",
+    "up": "blocks/sand",
+    "north": "blocks/sand",
+    "east": "blocks/sand",
+    "south": "blocks/sand",
+    "west": "blocks/sand"
+  }
 }

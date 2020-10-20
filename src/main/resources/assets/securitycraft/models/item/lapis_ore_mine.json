@@ -1,3 +1,11 @@
 {
-  "parent": "securitycraft:block/lapis_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/lapis_ore",
+    "up": "blocks/lapis_ore",
+    "north": "blocks/lapis_ore",
+    "east": "blocks/lapis_ore",
+    "south": "blocks/lapis_ore",
+    "west": "blocks/lapis_ore"
+  }
 }

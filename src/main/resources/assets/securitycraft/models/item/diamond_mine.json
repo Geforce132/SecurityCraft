@@ -1,3 +1,11 @@
 {
-    "parent": "securitycraft:block/diamond_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/diamond_ore",
+    "up": "blocks/diamond_ore",
+    "north": "blocks/diamond_ore",
+    "east": "blocks/diamond_ore",
+    "south": "blocks/diamond_ore",
+    "west": "blocks/diamond_ore"
+  }
 }

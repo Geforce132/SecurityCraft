@@ -1,3 +1,11 @@
 {
-  "parent": "securitycraft:block/quartz_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/quartz_ore",
+    "up": "blocks/quartz_ore",
+    "north": "blocks/quartz_ore",
+    "east": "blocks/quartz_ore",
+    "south": "blocks/quartz_ore",
+    "west": "blocks/quartz_ore"
+  }
 }

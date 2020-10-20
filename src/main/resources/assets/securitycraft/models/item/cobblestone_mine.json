@@ -1,3 +1,11 @@
 {
-    "parent": "securitycraft:block/cobblestone_mine"
+  "parent": "securitycraft:item/template_block_mine",
+  "textures": {
+    "down": "blocks/cobblestone",
+    "up": "blocks/cobblestone",
+    "north": "blocks/cobblestone",
+    "east": "blocks/cobblestone",
+    "south": "blocks/cobblestone",
+    "west": "blocks/cobblestone"
+  }
 }
