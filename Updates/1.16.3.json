@@ -1,6 +1,6 @@
 {
-	"version": "v1.8.19.3",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3043344",
-	"fileName": "[1.16.3] SecurityCraft v1.8.19.3",
-	"changelog": "Fix compatibility with Forge 33.0.21+"
+	"version": "v1.8.20",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3088775",
+	"fileName": "[1.16.3] SecurityCraft v1.8.20",
+	"changelog": "Nether update content, lots of small features, tons of fixes."
 }
