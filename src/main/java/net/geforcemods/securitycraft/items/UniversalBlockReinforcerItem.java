@@ -68,7 +68,10 @@ public class UniversalBlockReinforcerItem extends Item
 				{
 					BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
 					TileEntity te = world.getTileEntity(pos);
-					CompoundNBT tag = te.write(new CompoundNBT());
+					CompoundNBT tag = new CompoundNBT();
+
+					if(te != null)
+						te.write(tag);
 
 					if(te instanceof IInventory)
 						((IInventory)te).clear();
