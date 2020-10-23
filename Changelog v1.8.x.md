@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
+
+- Fix: Crash when reinforcing blocks in the world
+
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - New: Reinforced Lantern (Thanks Redstone_Dubstep!)
@@ -20,7 +24,7 @@
 - Change: Just Enough Items now shows proper recipes for un-/reinforcing blocks - the old info screen has been removed in favor of this
 - Change: The level 1 Universal Block Reinforcer can no longer unreinforce blocks. At least level 2 is required for this now
 - Change: The codebreaker is now 100% effective when using in creative mode
-- API: Added hook for mods to define blocks that can extract from Password-protected Chests/Furnaces. Fore more info, see IExtractionBlock
+- API: Added hook for mods to define blocks that can extract from Password-protected Chests/Furnaces. For more info, see IExtractionBlock
 - Fix: WAILA exploit
 - Fix: Double Stone Slab has no tint (Thanks Redstone_Dubstep!)
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
