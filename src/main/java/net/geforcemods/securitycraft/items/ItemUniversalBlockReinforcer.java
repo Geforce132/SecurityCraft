@@ -49,10 +49,10 @@ public class ItemUniversalBlockReinforcer extends Item
 				{
 					IBlockState convertedState = null;
 					TileEntity te = world.getTileEntity(pos);
-					NBTTagCompound tag = new NBTTagCompound();
+					NBTTagCompound tag = null;
 
 					if(te != null)
-						te.writeToNBT(tag);
+						tag = te.writeToNBT(new NBTTagCompound());
 
 					if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
 					{
@@ -72,7 +72,10 @@ public class ItemUniversalBlockReinforcer extends Item
 
 						world.setBlockState(pos, convertedState);
 						te = world.getTileEntity(pos);
-						te.readFromNBT(tag);
+
+						if(tag != null)
+							te.readFromNBT(tag);
+
 						((IOwnable)te).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 						stack.damageItem(1, player);
 					}
