@@ -68,17 +68,22 @@ public class UniversalBlockReinforcerItem extends Item
 				{
 					BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
 					TileEntity te = world.getTileEntity(pos);
-					CompoundNBT tag = new CompoundNBT();
+					CompoundNBT tag = null;
 
 					if(te != null)
-						te.write(tag);
+					{
+						tag = te.write(new CompoundNBT());
 
-					if(te instanceof IInventory)
-						((IInventory)te).clear();
+						if(te instanceof IInventory)
+							((IInventory)te).clear();
+					}
 
 					world.setBlockState(pos, convertedState);
 					te = world.getTileEntity(pos);
-					te.read(tag);
+
+					if(tag != null)
+						te.read(tag);
+
 					((IOwnable)te).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
 					stack.damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
 					return true;
