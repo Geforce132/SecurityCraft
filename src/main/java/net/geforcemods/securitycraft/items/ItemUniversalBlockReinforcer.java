@@ -49,7 +49,10 @@ public class ItemUniversalBlockReinforcer extends Item
 				{
 					IBlockState convertedState = null;
 					TileEntity te = world.getTileEntity(pos);
-					NBTTagCompound tag = te.writeToNBT(new NBTTagCompound());
+					NBTTagCompound tag = new NBTTagCompound();
+
+					if(te != null)
+						te.writeToNBT(tag);
 
 					if(reinforcedBlock.getVanillaBlocks().size() == reinforcedBlock.getAmount())
 					{

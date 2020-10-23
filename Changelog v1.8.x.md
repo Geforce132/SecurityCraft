@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
+
+- Fix: Crash when reinforcing blocks in the world
+
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - New: The name of a camera is now displayed in the top right when the player is mounted to it
@@ -19,11 +23,11 @@
 - Change: Just Enough Items now shows proper recipes for un-/reinforcing blocks - the old info screen has been removed in favor of this
 - Change: The level 1 Universal Block Reinforcer can no longer unreinforce blocks. At least level 2 is required for this now
 - Change: The codebreaker is now 100% effective when using in creative mode
-- API: Added hook for mods to define blocks that can extract from Password-protected Chests/Furnaces. Fore more info, see IExtractionBlock
+- API: Added hook for mods to define blocks that can extract from Password-protected Chests/Furnaces. For more info, see IExtractionBlock
 - Fix: WAILA exploit
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
-- Fix: Inventory Scanner and Inventory Scanner Field metadata is calculcated incorrectly (This means that the orientation of your Inventory Scanner (Fields) might reset!)
+- Fix: Inventory Scanner and Inventory Scanner Field metadata is calculated incorrectly (This means that the orientation of your Inventory Scanner (Fields) might reset!)
 - Fix: Some customizable blocks don't drop their items correctly when broken
 - Fix: Anyone can reset a briefcase's passcode (Thanks Redstone_Dubstep!)
 - Fix: Confirm button in the Universal Key Changer's GUI doesn't properly react to changes in the textboxes (Thanks Redstone_Dubstep!)
