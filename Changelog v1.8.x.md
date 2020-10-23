@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
+
+- Fix: Crash when reinforcing blocks in the world
+
 --------------------------Changelog for v1.8.20 of SecurityCraft--------------------------
 
 - New: Reinforced Blocks: Crimson Nylium, Warped Nylium, Crimson Planks, Warped Planks, Crimson Stem, Warped Stem, Stripped Crimson Stem, Stripped Warped Stem, Stripped Crimson Hyphae, Stripped Warped Hyphae, Crimson Hyphae, Warped Hyphae, Crismon Slab, Warped Slab, Soul Soil, Basalt, Polished Basalt, Cracked Nether Bricks, Chiseled Nether Bricks, Crimson Stairs, Warped Stairs, Quartz Bricks, Warped Wart Block, Netherite Block, Crying Obsidian, Blackstone, Blackstone Slab, Blackstone Stairs, Polished Blackstone, Polished Blackstone Slab, Polished Blackstone Stairs, Polished Blackstone Bricks, Polished Blackstone Brick Slab, Polished Blackstone Brick Stairs, Chain, Blackstone Wall, Polished Blackstone Wall, Polished Blackstone Brick Wall, Soul Lantern, Shroomlight, Crimson Pressure Plate, Warped Pressure Plate, Polished Blackstone Pressure Plate, Crimson Button, Warped Button, Polished Blackstone Button (Thanks Redstone_Dubstep!)
@@ -30,7 +34,7 @@
 - Change: The level 1 Universal Block Reinforcer can no longer unreinforce blocks. At least level 2 is required for this now
 - Change: The codebreaker is now 100% effective when using in creative mode
 - Change: Reinforced Carpets can no longer be used as fuel
-- API: Added hook for mods to define blocks that can extract from Password-protected Chests/Furnaces. Fore more info, see IExtractionBlock
+- API: Added hook for mods to define blocks that can extract from Password-protected Chests/Furnaces. For more info, see IExtractionBlock
 - Fix: Taser does not reliably hit entities (Thanks Redstone_Dubstep!)
 - Fix: Camera overlay's time and hotkey texts sometimes get obscured or render partly offscreen
 - Fix: Walking through a block pocket wall blocks vision
