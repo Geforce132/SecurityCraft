@@ -667,7 +667,7 @@
 	"gui.securitycraft:projector.offset": "L'offset de la projection : %s",
 	"gui.securitycraft:projector.offset.description": "L'offset horizontal de la projection.",
 
-	"messages.securitycraft:bugReport": "Vous pouvez signaler un plantage ou un bug en utilisant ce formulaire GoogleDocs",
+	"messages.securitycraft:bugReport": "S'il vous plait, signaler des bogues dans la salon #bugreport de notre serveur Discord. Lire les règles en avance, s'il vous plait",
 	"messages.securitycraft:securityCamera.mounted": "Vous êtes maintenant connectés sur une caméra. Utilisez les touches %1$s%2$s%3$s%4$s pour déplacer la vue de la caméra et les boutons %5$s/%6$s pour zoomer et dézoomer.",
 	"messages.securitycraft:retinalScanner.hello": "Salut %s.",
 	"messages.securitycraft:retinalScanner.notOwner": "Je suis désolé, vous ne pouvez pas utiliser ce scanner. Il appartient à %s.",
@@ -752,7 +752,7 @@
 	"messages.securitycraft:blockpocket.activated": "Poche bloc activaté !",
 	"messages.securitycraft:blockpocket.deactivated": "Poche bloc désactivaté !",
 	"messages.securitycraft:blockpocket.assembled": "Poche bloc assemblée !",
-	"messages.securitycraft:sc_help": "%s: %s + %s",  
+	"messages.securitycraft:sc_help": "%s : %s + %s",  
 	
 	"jei.securitycraft.category.reinforcing": "Renforcer un bloc ",
 	"jei.securitycraft.category.unreinforcing": "Enlève d’un renforcement ",
