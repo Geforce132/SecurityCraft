@@ -259,6 +259,7 @@ tile.securitycraft:reinforced_wooden_button.name=Bouton en bois de chêne renfor
 tile.securitycraft:reinforced_lever.name=Levier renforcé
 tile.securitycraft:reinforced_hopper.name=Etonnoir renforcé
 tile.securitycraft:projector.name=Projecteur
+tile.securitycraft.secret_sign.name=Panneau secret en chêne
 
 item.securitycraft:codebreaker.name=Décrypteur
 item.securitycraft:doorIndestructibleIronItem.name=porte blindée en Fer
@@ -386,9 +387,9 @@ help.securitycraft:universalOwnerChanger.info=Le Modificateur Universel de propr
 help.securitycraft:universalBlockReinforcerLvL1.info=Le Blindeur de blocs universel renforce plusieurs blocs standards et les transforme en variantes SecurityCraft. LvL1 a 300 utilisations. Brisez n’importe quel bloc en dehors du mode créatif pour le blinder.
 help.securitycraft:universalBlockReinforcerLvL2.info=Le Blindeur de blocs universel renforce plusieurs blocs standards et les transforme en variantes SecurityCraft. LvL2 a 2700 utilisations. Brisez n’importe quel bloc en dehors du mode créatif pour le blinder.
 help.securitycraft:universalBlockReinforcerLvL3.info=Le Blindeur de blocs universel renforce plusieurs blocs standards et les transforme en variantes SecurityCraft. LvL3 a un nombre illimité d’utilisations. Brisez n’importe quel bloc en dehors du mode créatif pour le blinder.
-help.securitycraft:briefcase.info=La malette est verrouillée par un code qui vous permet d’y stocker jusqu’à douze éléments supplémentaires. Après l’avoir créé, faites un clic droit dessus pour configurer le mot de passe à 4 chiffres. Cliquez à nouveau avec le bouton droit et tapez le code pour afficher les éléments.
+help.securitycraft:briefcase.info=La mallette est un unité de stockage portable verrouillé au clavier à code contenant 12 cases. Après l'avoir créé, cliquez dessus avec le bouton droit de la souris pour configurer le code à 4 chiffres à utiliser à partir de ce moment. Cliquez avec le bouton droit de la souris à nouveau et insérez le code pour interagir avec les éléments. Pour retirer le code d’un porte-documents ou changer son propriétaire, placez-le en main secondaire et cliquant avec le bouton droit de la souris en portant un changeur de code universel/changeur de propriétaire universel dans votre main principale.
 help.securitycraft:universalKeyChanger.info=Le changeur de code universel vous permet de changer le mot de passe des blocs protégés par mot de passe que vous possédez. Cliquez droit sur un bloc protégé par mot de passe pour ouvrir une interface graphique, puis saisissez le nouveau mot de passe souhaité. Créez-le avec une mallette pour en supprimer le code.
-help.securitycraft:secretSignItem.info=Le Panneau à Secret fonctionne comme un panneau standard, à la différence que seul le propriétaire du panneau peut voir son texte. Assurez que personne ne puisse détruire le bloc sur lequel il est placé!
+help.securitycraft:secretSignItem.info=Le Panneau secret fonctionne comme un panneau de la version vanille, à la légère différence près que seul le propriétaire et les joueurs sur la liste blanche peuvent interagir avec et voir le texte qui s'y trouve. Assurez-vous que personne ne peut briser le bloc sur lequel elle est placée !
 help.securitycraft:sentry.info=La Sentinelle a trois modes qui peuvent être commutés en cliquant dessus avec le bouton droit. Inactif (il n’attaquera jamais), Camouflage (il n’attaquera que les joueurs ennemis à sa portée) et Agressif (il attaquera les mobs hostiles et les joueurs ennemis). Un clic droit avec un module de camouflage contenant un bloc plein et opaque (par exemple de la pierre, mais pas de verre ou un escalier) camouflera la Sentinelle elle-même. Le module peut être commuté directement ou extrait par un clic droit avec un Modificateur de Bloc universel. Pour retirer la sentinelle, faites un clic droit dessus.
 help.securitycraft:crystalQuartzItem.info=Le cristal de quartz est utilisé pour fabriquer des blocs de quartz de cristal.
 
@@ -517,6 +518,7 @@ messages.securitycraft:adminTool.owner.uuid=Propriétaire UUID: #
 messages.securitycraft:adminTool.password=Mot de passe: #
 messages.securitycraft:adminTool.equippedModules=Modules:
 messages.securitycraft:adminTool.noInfo=Ce bloc n’a aucune information à afficher!
+messages.securitycraft:adminTool.needCreative=Vous devez être en mode Créatif pour utilizer l’outil d’administration.
 messages.securitycraft:reinforcedSlab=Dalle blindée
 messages.securitycraft:reinforcedSlab.cannotDoubleSlab=Vous devez être propriétaire de ce bloc pour le transformer en double dalle.
 messages.securitycraft:cameraMonitor.cannotView=Vous ne pouvez pas voir une caméra qui ne vous appartient pas.
@@ -537,6 +539,7 @@ messages.securitycraft:universalOwnerChanger.cantChange=Ce bloc ne peut pas cont
 messages.securitycraft:universalOwnerChanger.notOwned=Ce n’est pas votre bloc, vous ne pouvez pas changer de propriétaire.
 messages.securitycraft:universalOwnerChanger.changed=# est maintenant le nouveau propriétaire.
 messages.securitycraft:universalOwnerChanger.noBlockClaiming=Vous ne pouvez pas revendiquer des blocs sans propriétaire.
+messages.securitycraft:universalOwnerChanger.briefcase.notOwned=Ce n’est pas votre mallette; vous ne pouvez pas changer son propriétaire.
 messages.securitycraft:irc.connected=Le chat IRC n’est plus pris en charge à partir de la v1.8.3 de SecurityCraft. Si vous avez besoin d’aide, veuillez vous référer au canal #help sur SecurityCraft’s Discord!
 messages.securitycraft:cageTrap.captured=#player a été capturé à #location.
 messages.securitycraft:frame.rightclick=RClic droit avec un moniteur associé pour le voir.
@@ -552,6 +555,9 @@ messages.securitycraft:tip.discord=Rejoignez notre serveur Discord pour discuter
 messages.securitycraft:tip.scserver=Le serveur officiel SecurityCraft est de retour ! Rejoignez-nous sur cette IP: 64.38.249.237
 messages.securitycraft:universalKeyChanger.notKeypad=Clic droit sur un clavier avec le changeur de code universel pour changer son mot de passe.
 messages.securitycraft:universalKeyChanger.passcodeChanged=Le code a été changé.
+messages.securitycraft:universalKeyChanger.briefcase.passcodeReset=Le code d’accès de cette mallette a été réinitialisé.
+messages.securitycraft:universalKeyChanger.briefcase.noPasscode=Cette mallette n’a pas un code d’accès; il ne peut pas être réinitialiser.
+messages.securitycraft:universalKeyChanger.briefcase.notOwned=Ce n’est pas votre mallette; vous ne pouvez pas changer son code d’accès.
 messages.securitycraft:passwordProtected.notSetUp=Ce bloc n’a pas encore de mot de passe. Vous ne pouvez pas interagir avec.
 messages.securitycraft:sentry.needsBlockBelow=Les Sentinelles se placent sur un bloc!
 messages.securitycraft:sentry.needsBlocksAround=Assurez-vous que votre Sentinelle est entourée de blocs sur ses quatre côtés!
@@ -572,6 +578,9 @@ messages.securitycraft:blockpocket.activated=Poche bloc activée !
 messages.securitycraft:blockpocket.deactivated=Poche bloc desactivée !
 messages.securitycraft:blockpocket.assembled=Poche bloc assemblée !
 messages.securitycraft:sc_help=%s : %s + %s
+
+jei.securitycraft.category.reinforcing=Renforcer un bloc
+jei.securitycraft.category.unreinforcing=Enlève d’un renforcement
 
 waila.securitycraft:displayOwner=Afficher le propriétaire ?
 waila.securitycraft:showModules=Afficher les Modules ?
@@ -595,6 +604,7 @@ tooltip.securitycraft:module.itemAddons.usage.blocks=Vous pouvez ajouter # bloc(
 tooltip.securitycraft:module.itemAddons.usage.items=Vous pouvez ajouter # élément(s).
 tooltip.securitycraft:module.itemAddons.usage.blocksAndItems=Vous pouvez ajouter # bloc(s) et $ élément(s).
 tooltip.securitycraft:module.itemAddons.added=Ajouté
+tooltip.securitycraft:briefcase.owner=Propriétaire : %s
 tooltip.securitycraft:keycard.uses=utilisations restantes:
 
 itemGroup.tabSecurityCraft.decoration=SecurityCraft: Décoration
@@ -638,7 +648,8 @@ module.securitycraft:keypadFurnace.whitelistModule.description=L'ajout d'un modu
 module.securitycraft:keypadFurnace.blacklistModule.description=L'ajout d'un module de liste noire à un fourneau protégé par un clavier à code interdira aux joueurs d'interagir avec le bloc.
 module.securitycraft:projector.redstoneModule.description=L'ajout d'un module de redstone à un projecteur vous permettra d'activer et de désactiver manuellement le projecteur en utilisant la puissance de redstone.
 module.securitycraft:projector.disguiseModule.description=L'ajout d'un module de déguisement à un projecteur provoquera la texture et le modèle de celui-ci à changer à la texture et au modèle du block qui est ajouté au module de déguisement.
-	 
+module.securitycraft:secret_sign.whitelistModule.description=L’ajout d’un module de liste blanche à un panneau secret permettra aux joueurs sur liste blanche d’interagir et de voir le texte dessus.
+
 config.securitycraft:isCodebreakerAllowed=Décrypteur autorisé ?
 config.securitycraft:isCodebreakerAllowed.tooltip=Est-ce que le décrypteur peut être utilisé ?
 config.securitycraft:allowAdminTool=Est-ce que l’outil d‘admin est autorisé ?
@@ -746,6 +757,10 @@ option.securitycraft:keypadChest.sendMessage=Message : #
 option.securitycraft:keypadChest.sendMessage.description=Ce coffre protégé par un clavier à code envoie-t-il un message lors de l'activation (quand utilisant des modules de liste blanche/noire) ?
 option.securitycraft:keypadFurnace.sendMessage=Message : #
 option.securitycraft:keypadFurnace.sendMessage.description=Ce fourneau protégé par un clavier à code envoie-t-il un message lors de l'activation (quand utilisant des modules de liste blanche/noire) ?
+option.securitycraft:inventoryScanner.horizontal=Horizontale: #
+option.securitycraft:inventoryScanner.horizontal.description=Les champs crée par ce scanner d’inventaire doivent-ils être horizontaux ?
+option.securitycraft:secretSign.isSecret=Secret : #
+option.securitycraft:secretSign.isSecret.description= Le texte du panneau secret doit-il être visible par seuls le propriétaire et les joueurs sur liste blanche ?
 
 securitycraft.subtitle.alarm=Sonnerie d‘alarme
 securitycraft.subtitle.electrified=Entité électrocuté
