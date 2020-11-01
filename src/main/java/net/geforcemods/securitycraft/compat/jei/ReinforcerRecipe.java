@@ -22,4 +22,10 @@ public class ReinforcerRecipe
 	{
 		return securityCraftBlock;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Reinforcer Recipe - Vanilla Block: " + getVanillaBlock().getRegistryName().toString() + " - Reinforced Block: " + getSecurityCraftBlock().getRegistryName().toString();
+	}
 }
