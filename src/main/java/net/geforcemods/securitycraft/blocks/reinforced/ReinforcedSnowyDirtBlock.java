@@ -142,7 +142,7 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 						ConfiguredFeature<?, ?> configuredfeature = flowers.get(0);
 						FlowersFeature flowersfeature = (FlowersFeature)configuredfeature.feature;
 
-						placeState = flowersfeature.getFlowerToPlace(rand, tempPos, configuredfeature.func_242767_c());
+						placeState = flowersfeature.getFlowerToPlace(rand, tempPos, configuredfeature.getConfig());
 					}
 					else
 						placeState = grass;
