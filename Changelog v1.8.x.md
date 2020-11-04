@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
+
+- Fix: Track Mine is see-through in certain cases
+
 --------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
 
 - Fix: Crash when reinforcing blocks in the world
