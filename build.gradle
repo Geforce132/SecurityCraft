@@ -93,16 +93,12 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
-    maven { // JEI fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.0.0'
+    minecraft 'net.minecraftforge:forge:1.16.4-35.0.15'
     
-	implementation fg.deobf("mezz.jei:jei-1.16.3:7.6.0.49")
+	implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.0.57")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.3-beta-6")
     implementation fg.deobf("mcp.mobius.waila:Hwyla:1.10.11-B78_1.16.2")
 }
