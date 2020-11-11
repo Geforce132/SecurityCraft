@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
+
+- Fix: Potential crash while starting the game
+
 --------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
 
 - Fix: Crash when reinforcing blocks in the world
