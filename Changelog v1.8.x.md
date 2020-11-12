@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
 - Fix: Potential crash while starting the game
 
