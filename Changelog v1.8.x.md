@@ -2,6 +2,7 @@
 
 - Fix: Track Mine is see-through in certain cases
 - Fix: Potential crash while starting the game
+- Fix: Reinforced (Stained) Glass Panes and Reinforced Iron Bars do not connect to walls and vanilla panes
 
 --------------------------Changelog for v1.8.20.1 of SecurityCraft--------------------------
 
