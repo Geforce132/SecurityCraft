@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
 - Fix: Track Mine is see-through in certain cases
 - Fix: Potential crash while starting the game
