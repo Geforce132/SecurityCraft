@@ -19,24 +19,26 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PictureButton extends ClickButton{
+public class TogglePictureButton extends ClickButton{
 
-	private final ItemRenderer itemRenderer;
 	private Block blockToRender;
 	private Item itemToRender;
 	private ResourceLocation textureLocation;
-	private int u;
-	private int v;
-	private int texWidth;
-	private int texHeight;
+	private int[] u;
+	private int[] v;
+	private int[] texWidth;
+	private int[] texHeight;
+	private int currentIndex = 0;
+	private final int toggleCount;
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender) {
-		this(id, xPos, yPos, width, height, par7, itemToRender, null);
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ItemStack stackToRender, int toggleCount) {
+		this(id, xPos, yPos, width, height, stackToRender, toggleCount, null);
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender, Consumer<ClickButton> onClick) {
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ItemStack itemToRender, int toggleCount, Consumer<ClickButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
-		itemRenderer = par7;
+
+		this.toggleCount = toggleCount;
 
 		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
 			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
@@ -44,16 +46,19 @@ public class PictureButton extends ClickButton{
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<ClickButton> onClick)
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int[] textureWidth, int[] textureHeight, int toggleCount, Consumer<ClickButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
-		itemRenderer = null;
+		if(u.length != toggleCount || v.length != toggleCount || textureWidth.length != toggleCount || texHeight.length != toggleCount)
+			throw new RuntimeException("TogglePictureButton was setup incorrectly. Array lengths must match toggleCount");
+
 		textureLocation = texture;
 		u = textureX;
 		v = textureY;
 		texWidth = textureWidth;
 		texHeight = textureHeight;
+		this.toggleCount = toggleCount;
 	}
 
 	/**
@@ -62,20 +67,21 @@ public class PictureButton extends ClickButton{
 	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
-		Minecraft mc = Minecraft.getInstance();
-
 		if (visible)
 		{
+			Minecraft mc = Minecraft.getInstance();
 			FontRenderer font = mc.fontRenderer;
+			ItemRenderer itemRenderer = mc.getItemRenderer();
+			int hoverState = !active ? 0 : !isHovered ? 1 : 2;
+
 			mc.getTextureManager().bindTexture(WIDGETS_LOCATION);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			int hoverState = !active ? 0 : !isHovered ? 1 : 2;
 			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(770, 771, 1, 0);
 			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			this.blit(matrix, x, y, 0, 46 + hoverState * 20, width / 2, height);
-			this.blit(matrix, x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
+			blit(matrix, x, y, 0, 46 + hoverState * 20, width / 2, height);
+			blit(matrix, x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
 
 			if(blockToRender != null){
 				RenderSystem.enableRescaleNormal(); //(this.width / 2) - 8
@@ -91,7 +97,7 @@ public class PictureButton extends ClickButton{
 			{
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(textureLocation);
-				blit(matrix, x, y + 1, u, v, texWidth, texHeight);
+				blit(matrix, x, y + 1, u[currentIndex], v[currentIndex], texWidth[currentIndex], texHeight[currentIndex]);
 			}
 
 			int color = 14737632;
@@ -104,6 +110,18 @@ public class PictureButton extends ClickButton{
 			drawCenteredString(matrix, font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
 
 		}
+	}
+
+	@Override
+	public void onClick(double mouseX, double mouseY)
+	{
+		currentIndex = (currentIndex + 1) % toggleCount;
+		super.onClick(mouseX, mouseY);
+	}
+
+	public int getCurrentIndex()
+	{
+		return currentIndex;
 	}
 
 	public Item getItemStack() {

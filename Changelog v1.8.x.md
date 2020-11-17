@@ -1,3 +1,9 @@
+--------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
+
+**Disclaimer: If your sentry is set to idle mode, it will now be set to attack hostile mobs due to the new sentry modes**
+
+- New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
+
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
 - Fix: Track Mine is see-through in certain cases
