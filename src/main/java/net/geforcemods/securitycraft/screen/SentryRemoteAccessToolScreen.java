@@ -38,7 +38,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private ItemStack srat;
 	private ClickButton[][] guibuttons = new ClickButton[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
 	private ITextComponent[] names = new ITextComponent[12];
-	private TogglePictureButton[] guibuttonsGlobal = new TogglePictureButton[3];
+	private ClickButton[] guibuttonsGlobal = new ClickButton[3];
 	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
@@ -128,14 +128,16 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		//Add buttons for global operation (all sentries), large id
 		guibuttonsGlobal[0] = new TogglePictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, new int[]{-2, 40, 19}, new int[]{-1, -1, -1}, new int[]{18, 18, 18}, new int[]{18, 18, 17}, 3, this::actionPerformedGlobal);
 		guibuttonsGlobal[1] = new TogglePictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, new int[]{-2, 40, 19}, new int[]{-1, -1, -1}, new int[]{18, 18, 18}, new int[]{18, 18, 17}, 3, this::actionPerformedGlobal);
-		guibuttonsGlobal[2] = new TogglePictureButton(1002, startX + 44 + 260, startY + 188, 20, 20, SENTRY_ICONS, new int[]{-2, 40, 19}, new int[]{-1, -1, -1}, new int[]{18, 18, 18}, new int[]{18, 18, 17}, 3, this::actionPerformedGlobal);
+		guibuttonsGlobal[2] = new ClickButton(1002, startX + 44 + 260, startY + 188, 20, 20, "X", this::clickGlobalUnbind);
 
 		for (int j = 0; j < 3; j++) {
 			guibuttonsGlobal[j].active = foundSentry;
 			addButton(guibuttonsGlobal[j]);
-			hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
-			hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
 		}
+
+		hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
+		hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
+		hoverCheckers.add(new TextHoverChecker(guibuttonsGlobal[UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 	}
 
 	@Override
@@ -200,7 +202,19 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	private void clickUnbind(ClickButton button)
 	{
-		int sentry = button.id / 3;
+		unbindSentry(button.id / 3);
+	}
+
+	private void clickGlobalUnbind(ClickButton button)
+	{
+		for(int i = 0; i < 12; i++)
+		{
+			unbindSentry(i);
+		}
+	}
+
+	private void unbindSentry(int sentry)
+	{
 		int[] coords = getSentryCoordinates(sentry);
 
 		removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
@@ -224,10 +238,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 * Action to perform when a button is clicked
 	 */
 	protected void actionPerformed(ClickButton button) {
-		TogglePictureButton tbp = (TogglePictureButton)button;
 		int sentry = button.id / 3;
 		int type = button.id % 3;
-		int mode = tbp.getCurrentIndex();
+		int mode = ((TogglePictureButton)button).getCurrentIndex();
 		int targets = mode;
 
 		if(type == 0)
@@ -248,7 +261,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			{
 				if(getSentryCoordinates(i)[1] != 0)
 				{
-					performSingleAction(((ClickButton)buttons.get(i * 3)).id / 3, guibuttonsGlobal[MODE].getCurrentIndex(), guibuttonsGlobal[TARGETS].getCurrentIndex(), !messageSent);
+					performSingleAction(((ClickButton)buttons.get(i * 3)).id / 3, ((TogglePictureButton)guibuttonsGlobal[MODE]).getCurrentIndex(), ((TogglePictureButton)guibuttonsGlobal[TARGETS]).getCurrentIndex(), !messageSent);
 					messageSent = true;
 				}
 			}
