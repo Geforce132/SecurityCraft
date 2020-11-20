@@ -117,7 +117,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					}
 				}
 				else {
-					for (int j = 0; j < 3; j++) {
+					for (int j = 0; j < 2; j++) {
 						hoverCheckers.add(new TextHoverChecker(guibuttons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
 					hoverCheckers.add(new TextHoverChecker(guibuttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
