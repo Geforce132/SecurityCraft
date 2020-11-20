@@ -71,7 +71,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			coords = getSentryCoordinates(i);
 
 			for (int j = 0; j < 3; j++) {
-				int btnX = startX + j * paddingX + 127 + x;
+				int btnX = startX + j * paddingX + 147 + x;
 				int btnY = startY + y - 48;
 
 				switch (j) {
@@ -164,9 +164,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else
 				line = new StringTextComponent(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
-			font.func_243248_b(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
-			font.func_243248_b(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
+			font.func_243248_b(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
+
+		font.func_243248_b(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
 
 		for(TextHoverChecker chc : hoverCheckers)
 		{
