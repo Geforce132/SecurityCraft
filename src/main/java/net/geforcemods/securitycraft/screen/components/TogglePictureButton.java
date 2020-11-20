@@ -50,8 +50,8 @@ public class TogglePictureButton extends ClickButton{
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
-		if(u.length != toggleCount || v.length != toggleCount || textureWidth.length != toggleCount || texHeight.length != toggleCount)
-			throw new RuntimeException("TogglePictureButton was setup incorrectly. Array lengths must match toggleCount");
+		if(textureX.length != toggleCount || textureY.length != toggleCount || textureWidth.length != toggleCount || textureHeight.length != toggleCount)
+			throw new RuntimeException("TogglePictureButton was setup incorrectly. Array lengths must match toggleCount!");
 
 		textureLocation = texture;
 		u = textureX;
@@ -108,7 +108,6 @@ public class TogglePictureButton extends ClickButton{
 				color = 16777120;
 
 			drawCenteredString(matrix, font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
-
 		}
 	}
 

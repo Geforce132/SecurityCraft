@@ -39,7 +39,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private ClickButton[][] guibuttons = new ClickButton[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
 	private ITextComponent[] names = new ITextComponent[12];
 	private TogglePictureButton[] guibuttonsGlobal = new TogglePictureButton[3];
-	private static final int MODE = 0, TARGETS = 1, UNBIND = 3;
+	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
 	private int viewDistance;
