@@ -1,6 +1,6 @@
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
-**Disclaimer: If your sentry is set to idle mode, it will now be set to attack hostile mobs due to the new sentry modes**
+**Disclaimer: Due to the new sentry modes, your sentries will not behave as in the previous mod version. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked!**
 
 - New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
 

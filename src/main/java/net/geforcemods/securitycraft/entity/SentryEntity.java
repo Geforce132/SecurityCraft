@@ -599,7 +599,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 	public static enum SentryMode
 	{
-		AGGRESSIVE_HP(0, 0), CAMOUFLAGE_HP(1, 0), AGGRESSIVE_H(0, 1), CAMOUFLAGE_H(1, 1), AGGRESSIVE_P(0, 2), CAMOUFLAGE_P(1, 2), IDLE(-1, -1);
+		CAMOUFLAGE_HP(1, 0), CAMOUFLAGE_H(1, 1), CAMOUFLAGE_P(1, 2), AGGRESSIVE_HP(0, 0), AGGRESSIVE_H(0, 1), AGGRESSIVE_P(0, 2), IDLE(-1, -1);
 
 		private final int type;
 		private final int attack;
