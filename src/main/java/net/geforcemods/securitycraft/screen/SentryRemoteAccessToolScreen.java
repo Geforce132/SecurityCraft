@@ -258,17 +258,15 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		for (int i = 0; i < buttons.size() / 3; i++) {
 			Widget widget = buttons.get(i * 3);
 
-			if(widget instanceof ClickButton)
+			if(widget instanceof ClickButton && getSentryCoordinates(i)[1] != 0)
 			{
-				if(getSentryCoordinates(i)[1] != 0)
-					performSingleAction(((ClickButton)buttons.get(i * 3)).id / 3, ((TogglePictureButton)guibuttonsGlobal[MODE]).getCurrentIndex(), ((TogglePictureButton)guibuttonsGlobal[TARGETS]).getCurrentIndex());
-			}
-		}
+				int sentry = ((ClickButton)buttons.get(i * 3)).id / 3;
+				int mode = button.id == guibuttonsGlobal[MODE].id ? ((TogglePictureButton)guibuttonsGlobal[MODE]).getCurrentIndex() : ((TogglePictureButton)guibuttons[sentry][MODE]).getCurrentIndex();
+				int targets = button.id == guibuttonsGlobal[TARGETS].id ? ((TogglePictureButton)guibuttonsGlobal[TARGETS]).getCurrentIndex() : ((TogglePictureButton)guibuttons[sentry][TARGETS]).getCurrentIndex();
 
-		for(int sentry = 0; sentry < 12; sentry++) {
-			if(getSentryCoordinates(sentry)[1] != 0) {
-				((TogglePictureButton)guibuttons[sentry][MODE]).setCurrentIndex(((TogglePictureButton)guibuttonsGlobal[MODE]).getCurrentIndex());
-				((TogglePictureButton)guibuttons[sentry][TARGETS]).setCurrentIndex(((TogglePictureButton)guibuttonsGlobal[TARGETS]).getCurrentIndex());
+				((TogglePictureButton)guibuttons[sentry][MODE]).setCurrentIndex(mode);
+				((TogglePictureButton)guibuttons[sentry][TARGETS]).setCurrentIndex(targets);
+				performSingleAction(sentry, mode, targets);
 			}
 		}
 	}
