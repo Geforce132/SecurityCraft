@@ -108,7 +108,16 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						SentryMode mode = sentry.getMode();
 
 						if(sentry.hasCustomName())
+						{
+							StringTextComponent line = new StringTextComponent(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+							int nameWidth = font.getStringPropertyWidth(sentry.getCustomName());
+							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
+							int nameY = startY + (i % 6) * 30 + 7;
+							TextHoverChecker posTooltipText = new TextHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
+
 							names[i] = sentry.getCustomName();
+							hoverCheckers.add(posTooltipText);
+						}
 
 						guibuttons[i][MODE].active = true;
 						guibuttons[i][TARGETS].active = mode != SentryMode.IDLE;
