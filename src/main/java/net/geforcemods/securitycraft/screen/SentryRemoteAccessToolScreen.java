@@ -190,7 +190,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
-	protected void performSingleAction(int sentry, int mode, int targets, boolean sendMessage){
+	protected void performSingleAction(int sentry, int mode, int targets){
 		int[] coords = getSentryCoordinates(sentry);
 		List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 
@@ -198,8 +198,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
 
 			guibuttons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
-			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, sendMessage);
-			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode, sendMessage));
+			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
+			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode, false));
 		}
 	}
 
@@ -251,22 +251,17 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		else if(type == 1)
 			mode = ((TogglePictureButton)guibuttons[sentry][MODE]).getCurrentIndex();
 
-		performSingleAction(sentry, mode, targets, true);
+		performSingleAction(sentry, mode, targets);
 	}
 
 	protected void actionPerformedGlobal(ClickButton button) {
-		boolean messageSent = false;
-
 		for (int i = 0; i < buttons.size() / 3; i++) {
 			Widget widget = buttons.get(i * 3);
 
 			if(widget instanceof ClickButton)
 			{
 				if(getSentryCoordinates(i)[1] != 0)
-				{
-					performSingleAction(((ClickButton)buttons.get(i * 3)).id / 3, ((TogglePictureButton)guibuttonsGlobal[MODE]).getCurrentIndex(), ((TogglePictureButton)guibuttonsGlobal[TARGETS]).getCurrentIndex(), !messageSent);
-					messageSent = true;
-				}
+					performSingleAction(((ClickButton)buttons.get(i * 3)).id / 3, ((TogglePictureButton)guibuttonsGlobal[MODE]).getCurrentIndex(), ((TogglePictureButton)guibuttonsGlobal[TARGETS]).getCurrentIndex());
 			}
 		}
 
