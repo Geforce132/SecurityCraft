@@ -199,7 +199,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 			guibuttons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode, false));
+			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode));
 		}
 	}
 
