@@ -47,7 +47,7 @@ public class SentryItem extends Item
 			entity.setupSentry(player);
 			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 			world.addEntity(entity);
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (SentryMode.CAMOUFLAGE_HP.ordinal() % 2)).append(ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + SentryMode.CAMOUFLAGE_HP.ordinal())), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), TextFormatting.DARK_RED);
 
 			if(!player.isCreative())
 				stack.shrink(1);

@@ -135,7 +135,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 					}
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode == SentryMode.IDLE ? 2 : mode.ordinal() % 2)).getString()));
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize(mode.getModeKey()).getString()));
 				}
 			}
 		});

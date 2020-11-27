@@ -137,7 +137,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				}
 			}
 
-			body.add(ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode == SentryMode.IDLE ? 2 : mode.ordinal() % 2)));
+			body.add(ClientUtils.localize(mode.getModeKey()));
 		}
 	}
 }

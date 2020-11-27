@@ -26,8 +26,6 @@ public class TogglePictureButton extends ClickButton{
 	private ResourceLocation textureLocation;
 	private int[] u;
 	private int[] v;
-	private int[] texWidth;
-	private int[] texHeight;
 	private int currentIndex = 0;
 	private final int toggleCount;
 
@@ -46,18 +44,16 @@ public class TogglePictureButton extends ClickButton{
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int[] textureWidth, int[] textureHeight, int toggleCount, Consumer<ClickButton> onClick)
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int toggleCount, Consumer<ClickButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
-		if(textureX.length != toggleCount || textureY.length != toggleCount || textureWidth.length != toggleCount || textureHeight.length != toggleCount)
+		if(textureX.length != toggleCount || textureY.length != toggleCount)
 			throw new RuntimeException("TogglePictureButton was setup incorrectly. Array lengths must match toggleCount!");
 
 		textureLocation = texture;
 		u = textureX;
 		v = textureY;
-		texWidth = textureWidth;
-		texHeight = textureHeight;
 		this.toggleCount = toggleCount;
 	}
 
@@ -97,15 +93,15 @@ public class TogglePictureButton extends ClickButton{
 			{
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(textureLocation);
-				blit(matrix, x, y + 1, u[currentIndex], v[currentIndex], texWidth[currentIndex], texHeight[currentIndex]);
+				blit(matrix, x + 2, y + 2, u[currentIndex], v[currentIndex], 16, 16);
 			}
 
-			int color = 14737632;
+			int color = 0xe0e0e0;
 
 			if (!active)
-				color = 10526880;
+				color = 0xa0a0a0;
 			else if (isHovered)
-				color = 16777120;
+				color = 0xffffa0;
 
 			drawCenteredString(matrix, font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
 		}
@@ -114,13 +110,18 @@ public class TogglePictureButton extends ClickButton{
 	@Override
 	public void onClick(double mouseX, double mouseY)
 	{
-		currentIndex = (currentIndex + 1) % toggleCount;
+		setCurrentIndex(currentIndex + 1);
 		super.onClick(mouseX, mouseY);
 	}
 
 	public int getCurrentIndex()
 	{
 		return currentIndex;
+	}
+
+	public void setCurrentIndex(int newIndex)
+	{
+		currentIndex = newIndex % toggleCount;
 	}
 
 	public Item getItemStack() {

@@ -300,7 +300,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (SentryMode.values()[mode] == SentryMode.IDLE ? 2 : mode % 2)).append(ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + mode)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.values()[mode].getModeKey()).append(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
@@ -599,15 +599,17 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 	public static enum SentryMode
 	{
-		CAMOUFLAGE_HP(1, 0), CAMOUFLAGE_H(1, 1), CAMOUFLAGE_P(1, 2), AGGRESSIVE_HP(0, 0), AGGRESSIVE_H(0, 1), AGGRESSIVE_P(0, 2), IDLE(-1, -1);
+		CAMOUFLAGE_HP(1, 0, 1), CAMOUFLAGE_H(1, 1, 3), CAMOUFLAGE_P(1, 2, 5), AGGRESSIVE_HP(0, 0, 0), AGGRESSIVE_H(0, 1, 2), AGGRESSIVE_P(0, 2, 4), IDLE(-1, -1, 6);
 
 		private final int type;
 		private final int attack;
+		private final int descriptionKeyIndex;
 
-		SentryMode(int type, int attack)
+		SentryMode(int type, int attack, int descriptionKeyIndex)
 		{
 			this.type = type;
 			this.attack = attack;
+			this.descriptionKeyIndex = descriptionKeyIndex;
 		}
 
 		public boolean isAggressive()
@@ -628,6 +630,18 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		public boolean attacksPlayers()
 		{
 			return attack == 0 || attack == 2;
+		}
+
+		public String getModeKey()
+		{
+			String key = "messages.securitycraft:sentry.mode";
+
+			return isAggressive() ? key + "0" : (isCamouflage() ? key + "1" : key + "2");
+		}
+
+		public String getDescriptionKey()
+		{
+			return "messages.securitycraft:sentry.descriptionMode" + descriptionKeyIndex;
 		}
 	}
 }
