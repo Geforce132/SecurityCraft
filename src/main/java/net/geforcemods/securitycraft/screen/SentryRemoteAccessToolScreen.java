@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -12,8 +13,8 @@ import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
-import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
+import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -33,10 +34,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private ItemStack srat;
-	private ClickButton[][] guiButtons = new ClickButton[12][4]; // 12 buttons, 4 modes (aggressive, camouflage, idle, unbind)
+	private ClickButton[][] guiButtons = new ClickButton[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
 	private ITextComponent[] names = new ITextComponent[12];
-	private ClickButton[][] guiButtonsGlobal = new ClickButton[1][3];
-	private static final int AGGRESSIVE = 0, CAMOUFLAGE = 1, IDLE = 2, UNBIND = 3;
+	private ClickButton[] guiButtonsGlobal = new ClickButton[3];
+	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
 	private int viewDistance;
@@ -60,6 +61,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		int[] coords = null;
 		int id = 0;
 		boolean foundSentry = false;
+		int[] modeTextureX = {0, 16, 32};
+		int[] targetTextureX = {48, 64, 80};
+		int[] yStarts = {0, 0, 0};
+
 		hoverCheckers.clear();
 
 		for (int i = 0; i < 12; i++) {
@@ -67,25 +72,21 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			int y = ((i % 6) + 1) * 30 + paddingY;
 			coords = getSentryCoordinates(i);
 
-			for (int j = 0; j < 4; j++) {
-				int btnX = startX + j * paddingX + 127 + x;
+			for (int j = 0; j < 3; j++) {
+				int btnX = startX + j * paddingX + 147 + x;
 				int btnY = startY + y - 48;
 
 				switch (j) {
-					case AGGRESSIVE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
+					case MODE:
+						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
-					case CAMOUFLAGE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
-						guiButtons[i][j].active = false;
-						break;
-					case IDLE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+					case TARGETS:
+						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
+						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::clickUnbind);
 						guiButtons[i][j].active = false;
 						break;
 				}
@@ -101,31 +102,39 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 					if (!sentries.isEmpty()) {
 						SentryEntity sentry = sentries.get(0);
-						boolean aggressiveMode = sentry.getMode() == SentryMode.AGGRESSIVE;
-						boolean camouflageMode = sentry.getMode() == SentryMode.CAMOUFLAGE;
-						boolean idleMode = sentry.getMode() == SentryMode.IDLE;
+						SentryMode mode = sentry.getMode();
 
 						if(sentry.hasCustomName())
-							names[i] = sentry.getCustomName();
+						{
+							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+							int nameWidth = font.getStringWidth(sentry.getCustomName().getFormattedText());
+							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
+							int nameY = startY + (i % 6) * 30 + 7;
+							StringHoverChecker posTooltipText = new StringHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, 20, line);
 
-						guiButtons[i][AGGRESSIVE].active = !aggressiveMode;
-						guiButtons[i][CAMOUFLAGE].active = !camouflageMode;
-						guiButtons[i][IDLE].active = !idleMode;
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
+							names[i] = sentry.getCustomName();
+							hoverCheckers.add(posTooltipText);
+						}
+
+						guiButtons[i][MODE].active = true;
+						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
+						guiButtons[i][UNBIND].active = true;
+						((TogglePictureButton)guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
+						((TogglePictureButton)guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
 					else {
 						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
-						for (int j = 0; j < 4; j++) {
+						for (int j = 0; j < 3; j++) {
 							guiButtons[i][j].active = false;
 						}
 					}
 				}
 				else {
-					for (int j = 0; j < 3; j++) {
+					for (int j = 0; j < 2; j++) {
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], 20, ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
 					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
@@ -134,17 +143,18 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 
 		//Add buttons for global operation (all sentries), large id
-		guiButtonsGlobal[0][0] = new PictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, -2, -1, 18, 18, this::actionPerformed);
-		guiButtonsGlobal[0][1] = new PictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, 40, -1, 18, 18, this::actionPerformed);
-		guiButtonsGlobal[0][2] = new PictureButton(1002, startX + 44 + 260, startY + 188, 20, 20, SENTRY_ICONS, 19, -1, 18, 17, this::actionPerformed);
+		guiButtonsGlobal[MODE] = new TogglePictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformedGlobal);
+		guiButtonsGlobal[TARGETS] = new TogglePictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformedGlobal);
+		guiButtonsGlobal[UNBIND] = new ClickButton(1002, startX + 44 + 260, startY + 188, 20, 20, "X", this::clickGlobalUnbind);
 
 		for (int j = 0; j < 3; j++) {
-			guiButtonsGlobal[0][j].active = foundSentry;
-			addButton(guiButtonsGlobal[0][j]);
-			hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[0][AGGRESSIVE], 20, ClientUtils.localize("gui.securitycraft:srat.mode1")));
-			hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[0][CAMOUFLAGE], 20, ClientUtils.localize("gui.securitycraft:srat.mode2")));
-			hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[0][IDLE], 20, ClientUtils.localize("gui.securitycraft:srat.mode3")));
+			guiButtonsGlobal[j].active = foundSentry;
+			addButton(guiButtonsGlobal[j]);
 		}
+
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
 	}
 
 	@Override
@@ -172,101 +182,100 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.drawString(line, startX + xSize / 4 - font.getStringWidth(line) + 15 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
-			font.drawString(modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
+			font.drawString(line, startX + xSize / 4 - font.getStringWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
+
+		font.drawString(modifyAll, startX + xSize / 2 - font.getStringWidth(modifyAll) + 25, startY + 194, 4210752);
 
 		for(StringHoverChecker chc : hoverCheckers)
 		{
-			if(chc != null && chc.checkHover(mouseX, mouseY) && chc.getName() != null)
-				renderTooltip(chc.getLines(), mouseX, mouseY);
+			if(chc != null && chc.checkHover(mouseX, mouseY))
+				renderTooltip(chc.getName(), mouseX, mouseY);
 		}
 	}
 
 	/**
 	 * Change the sentry mode, and update GUI buttons state
 	 */
-	protected void performSingleAction(int sentry, int mode, boolean sendMessage){
+	protected void performSingleAction(int sentry, int mode, int targets){
 		int[] coords = getSentryCoordinates(sentry);
 		List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 
 		if(!sentries.isEmpty()) {
-			switch(mode) {
-				case AGGRESSIVE:
-					sentries.get(0).toggleMode(Minecraft.getInstance().player, AGGRESSIVE, sendMessage);
-					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), mode, sendMessage));
-					guiButtons[sentry][AGGRESSIVE].active = false;
-					guiButtons[sentry][CAMOUFLAGE].active = true;
-					guiButtons[sentry][IDLE].active = true;
-					break;
-				case CAMOUFLAGE:
-					sentries.get(0).toggleMode(Minecraft.getInstance().player, CAMOUFLAGE, sendMessage);
-					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), mode, sendMessage));
-					guiButtons[sentry][AGGRESSIVE].active = true;
-					guiButtons[sentry][CAMOUFLAGE].active = false;
-					guiButtons[sentry][IDLE].active = true;
-					break;
-				case IDLE:
-					sentries.get(0).toggleMode(Minecraft.getInstance().player, IDLE, sendMessage);
-					SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), mode, sendMessage));
-					guiButtons[sentry][AGGRESSIVE].active = true;
-					guiButtons[sentry][CAMOUFLAGE].active = true;
-					guiButtons[sentry][IDLE].active = false;
-					break;
-			}
-		}
-		if (mode == UNBIND) {
-			removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
+			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
 
-			for(int i = 0; i < 4; i++) {
-				guiButtons[sentry][i].active = false;
-			}
-
-			for(int i = 0; i < guiButtons.length; i++)
-			{
-				if(guiButtons[i][UNBIND].active)
-					return;
-			}
-
-			for (int i = 0; i < 3; i++) {
-				guiButtonsGlobal[0][i].active = false;
-			}
+			guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
+			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
+			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode));
 		}
 	}
 
-	/**
-	 * Forces sentry to a defined mode, overriding its associated button state/mode
-	 */
-	protected void forceMode(ClickButton button, int mode, boolean sendMessage) {
-		int sentry = button.id / 4;
-		performSingleAction(sentry, mode, sendMessage);
+	private void clickUnbind(ClickButton button)
+	{
+		unbindSentry(button.id / 3);
+	}
+
+	private void clickGlobalUnbind(ClickButton button)
+	{
+		for(int i = 0; i < 12; i++)
+		{
+			unbindSentry(i);
+		}
+	}
+
+	private void unbindSentry(int sentry)
+	{
+		int[] coords = getSentryCoordinates(sentry);
+
+		removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
+
+		for(int i = 0; i < 3; i++) {
+			guiButtons[sentry][i].active = false;
+		}
+
+		for(int i = 0; i < guiButtons.length; i++)
+		{
+			if(guiButtons[i][UNBIND].active)
+				return;
+		}
+
+		for (int i = 0; i < 3; i++) {
+			guiButtonsGlobal[i].active = false;
+		}
 	}
 
 	/**
 	 * Action to perform when a button is clicked
 	 */
 	protected void actionPerformed(ClickButton button) {
-		int sentry = button.id / 4;
-		int mode = button.id % 4;
-		boolean messageSent = false;
+		int sentry = button.id / 3;
+		int type = button.id % 3;
+		int mode = ((TogglePictureButton)button).getCurrentIndex();
+		int targets = mode;
 
-		if (sentry > 100) { //clicked on global buttons
-			for (int i = 0; i < buttons.size() / 4; i++) {
-				Widget widget = buttons.get(i * 4);
+		if(type == 0)
+			targets = ((TogglePictureButton)guiButtons[sentry][TARGETS]).getCurrentIndex();
+		else if(type == 1)
+			mode = ((TogglePictureButton)guiButtons[sentry][MODE]).getCurrentIndex();
 
-				if(widget instanceof ClickButton)
-				{
-					if(getSentryCoordinates(i)[1] != 0)
-					{
-						forceMode((ClickButton)buttons.get(i * 4), mode, !messageSent);
-						messageSent = true;
-					}
-				}
+		performSingleAction(sentry, mode, targets);
+	}
+
+	protected void actionPerformedGlobal(ClickButton button) {
+		for (int i = 0; i < buttons.size() / 3; i++) {
+			Widget widget = buttons.get(i * 3);
+
+			if(widget instanceof ClickButton && getSentryCoordinates(i)[1] != 0)
+			{
+				int sentry = ((ClickButton)buttons.get(i * 3)).id / 3;
+				int mode = button.id == guiButtonsGlobal[MODE].id ? ((TogglePictureButton)guiButtonsGlobal[MODE]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][MODE]).getCurrentIndex();
+				int targets = button.id == guiButtonsGlobal[TARGETS].id ? ((TogglePictureButton)guiButtonsGlobal[TARGETS]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][TARGETS]).getCurrentIndex();
+
+				((TogglePictureButton)guiButtons[sentry][MODE]).setCurrentIndex(mode);
+				((TogglePictureButton)guiButtons[sentry][TARGETS]).setCurrentIndex(targets);
+				performSingleAction(sentry, mode, targets);
 			}
-			return;
 		}
-
-		performSingleAction(sentry, mode, true);
 	}
 
 	/**

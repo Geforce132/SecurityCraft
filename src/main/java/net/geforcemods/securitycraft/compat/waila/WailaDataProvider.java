@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -30,6 +31,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 @WailaPlugin(SecurityCraft.MODID)
@@ -114,36 +116,34 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 	public void appendBody(List<ITextComponent> body, IEntityAccessor data, IPluginConfig config) {
 		Entity entity = data.getEntity();
 
-		if(config.get(SHOW_OWNER) && data.getEntity() instanceof SentryEntity) {
-			body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
-		}
-
-		if(config.get(SHOW_MODULES) && entity instanceof SentryEntity && ((SentryEntity) entity).getOwner().isOwner(data.getPlayer())){
-			SentryEntity sentry = (SentryEntity)entity;
-
-			if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
-			{
-				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
-
-				if (!sentry.getWhitelistModule().isEmpty())
-					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText()));
-
-				if (!sentry.getDisguiseModule().isEmpty())
-					body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
-			}
-		}
-
-		if (entity instanceof SentryEntity)
+		if(entity instanceof SentryEntity)
 		{
 			SentryEntity sentry = (SentryEntity)entity;
-			SentryEntity.SentryMode mode = sentry.getMode();
+			SentryMode mode = sentry.getMode();
 
-			if (mode == SentryEntity.SentryMode.AGGRESSIVE)
-				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode1")));
-			else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
-				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode2")));
-			else
-				body.add(new StringTextComponent(ClientUtils.localize("messages.securitycraft:sentry.mode3")));
+			if(config.get(SHOW_OWNER))
+				body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:owner") + " " + sentry.getOwner().getName()));
+
+			if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer()))
+			{
+				if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+				{
+					body.add(new StringTextComponent(ClientUtils.localize("waila.securitycraft:equipped")));
+
+					if (!sentry.getWhitelistModule().isEmpty())
+						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText()));
+
+					if (!sentry.getDisguiseModule().isEmpty())
+						body.add(new StringTextComponent("- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText()));
+				}
+			}
+
+			String modeDescription = ClientUtils.localize(mode.getModeKey());
+
+			if(mode != SentryMode.IDLE)
+				modeDescription += "- " + ClientUtils.localize(mode.getTargetKey());
+
+			body.add(new StringTextComponent(TextFormatting.GRAY + modeDescription));
 		}
 	}
 }

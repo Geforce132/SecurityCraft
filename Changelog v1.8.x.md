@@ -1,3 +1,11 @@
+--------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
+
+**Disclaimer: Due to the new sentry modes, your sentries will not behave as in the previous mod version. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked!**
+
+- New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
+- New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
+- Fix: Sentry Remote Access Tool tooltip shows incorrectly
+
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
 - Fix: Track Mine is see-through in certain cases
@@ -70,7 +78,7 @@
 
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
-DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.
+**DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.**
 
 - New: The Reinforced Hopper is now the only block that can pull out of Password-protected Chests and Furnaces. The owner of both blocks needs to be the same, or the hopper needs to be owned by a whitelisted player
 - New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace (including customization options to turn off the messages)
@@ -107,7 +115,7 @@ DISCLAIMER: The backend of the module system has been rewritten. Despite thoroug
 
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
-DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!
+**DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!**
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers

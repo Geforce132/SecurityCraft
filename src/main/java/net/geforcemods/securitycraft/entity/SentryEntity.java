@@ -76,7 +76,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
 		dataManager.set(MODULE, new CompoundNBT());
 		dataManager.set(WHITELIST, new CompoundNBT());
-		dataManager.set(MODE, SentryMode.CAMOUFLAGE.ordinal());
+		dataManager.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
 
@@ -87,7 +87,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(MODULE, new CompoundNBT());
 		dataManager.register(WHITELIST, new CompoundNBT());
-		dataManager.register(MODE, SentryMode.CAMOUFLAGE.ordinal());
+		dataManager.register(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
 
@@ -105,7 +105,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		if(world.isRemote)
 		{
-			if(!animate && headYTranslation > 0.0F && dataManager.get(MODE) == 0)
+			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
 			{
 				animateUpwards = true;
 				animate = true;
@@ -283,17 +283,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	 */
 	public void toggleMode(PlayerEntity player)
 	{
-		int mode = dataManager.get(MODE) + 1;
-
-		if(mode >= 3) //bigger than three in case that players set the value manually with command
-			mode = 0;
-
-		dataManager.set(MODE, mode);
-
-		if(player.world.isRemote)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
-		else
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
+		toggleMode(player, dataManager.get(MODE) + 1, true);
 	}
 
 	/**
@@ -303,23 +293,23 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	 */
 	public void toggleMode(PlayerEntity player, int mode, boolean sendMessage)
 	{
-		if(mode < 0 || mode > 2)
+		if(mode < 0 || mode >= SentryMode.values().length) //bigger than the amount of possible values in case a player sets the value manually by command
 			mode = 0;
 
 		dataManager.set(MODE, mode);
 
 		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.mode" + (mode + 1)) + ClientUtils.localize("messages.securitycraft:sentry.descriptionMode" + (mode + 1)), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.values()[mode].getModeKey()) + ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey()), TextFormatting.DARK_RED);
 		else if(!player.world.isRemote)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, mode == 0));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
 
 	@Override
 	public void setAttackTarget(LivingEntity target)
 	{
-		if(getMode() != SentryMode.AGGRESSIVE && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId())))
+		if(!getMode().isAggressive() && (target == null && previousTargetId != Long.MIN_VALUE || (target != null && previousTargetId != target.getEntityId())))
 		{
-			animateUpwards = getMode() == SentryMode.CAMOUFLAGE && target != null;
+			animateUpwards = getMode().isCamouflage() && target != null;
 			animate = true;
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), animate, animateUpwards));
 		}
@@ -346,15 +336,15 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			return;
 
 		BulletEntity throwableEntity = new BulletEntity(world, this);
-		double y = target.getPosY() + target.getEyeHeight() - 1.100000023841858D;
+		double baseY = target.getPosY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getPosX() - getPosX();
-		double d2 = y - throwableEntity.getPosY();
+		double y = baseY - throwableEntity.getPosY();
 		double z = target.getPosZ() - getPosZ();
-		float f = MathHelper.sqrt(x * x + z * z) * 0.2F;
+		float yOffset = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
 		throwableEntity.setRawPosition(throwableEntity.getPosX(), throwableEntity.getPosY() - 0.1F, throwableEntity.getPosZ());
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
-		throwableEntity.shoot(x, d2 + f, z, 1.6F, 0.0F); //no inaccuracy for sentries!
+		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
 		world.addEntity(throwableEntity);
 	}
@@ -459,13 +449,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	/**
-	 * @return The mode in which the sentry is currently in, CAMOUFLAGE if the saved mode is smaller than 0 or greater than 2 (there are only 3 valid modes: 0, 1, 2)
+	 * @return The mode in which the sentry is currently in, CAMOUFLAGE_HP as a fallback if the saved mode is not a valid mode
 	 */
 	public SentryMode getMode()
 	{
 		int mode = dataManager.get(MODE);
 
-		return mode < 0 || mode > 2 ? SentryMode.CAMOUFLAGE : SentryMode.values()[mode];
+		return mode < 0 || mode >= SentryMode.values().length ? SentryMode.CAMOUFLAGE_HP : SentryMode.values()[mode];
 	}
 
 	/**
@@ -608,6 +598,56 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 	public static enum SentryMode
 	{
-		AGGRESSIVE, CAMOUFLAGE, IDLE;
+		CAMOUFLAGE_HP(1, 0, 1), CAMOUFLAGE_H(1, 1, 3), CAMOUFLAGE_P(1, 2, 5), AGGRESSIVE_HP(0, 0, 0), AGGRESSIVE_H(0, 1, 2), AGGRESSIVE_P(0, 2, 4), IDLE(-1, -1, 6);
+
+		private final int type;
+		private final int attack;
+		private final int descriptionKeyIndex;
+
+		SentryMode(int type, int attack, int descriptionKeyIndex)
+		{
+			this.type = type;
+			this.attack = attack;
+			this.descriptionKeyIndex = descriptionKeyIndex;
+		}
+
+		public boolean isAggressive()
+		{
+			return type == 0;
+		}
+
+		public boolean isCamouflage()
+		{
+			return type == 1;
+		}
+
+		public boolean attacksHostile()
+		{
+			return attack == 0 || attack == 1;
+		}
+
+		public boolean attacksPlayers()
+		{
+			return attack == 0 || attack == 2;
+		}
+
+		public String getModeKey()
+		{
+			String key = "messages.securitycraft:sentry.mode";
+
+			return isAggressive() ? key + "0" : (isCamouflage() ? key + "1" : key + "2");
+		}
+
+		public String getTargetKey()
+		{
+			String key = "gui.securitycraft:srat.targets";
+
+			return attacksHostile() && attacksPlayers() ? key + "1" : (attacksHostile() ? key + "2" : (attacksPlayers() ? key + "3" : ""));
+		}
+
+		public String getDescriptionKey()
+		{
+			return "messages.securitycraft:sentry.descriptionMode" + descriptionKeyIndex;
+		}
 	}
 }
