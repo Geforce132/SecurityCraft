@@ -9,6 +9,7 @@ import net.minecraft.util.text.ITextComponent;
 public class TextHoverChecker extends HoverChecker
 {
 	private List<ITextComponent> lines;
+	private final TogglePictureButton button;
 
 	public TextHoverChecker(int top, int bottom, int left, int right, ITextComponent line)
 	{
@@ -19,6 +20,7 @@ public class TextHoverChecker extends HoverChecker
 	{
 		super(top, bottom, left, right);
 		this.lines = lines;
+		button = null;
 	}
 
 	public TextHoverChecker(Button button, ITextComponent line)
@@ -30,11 +32,12 @@ public class TextHoverChecker extends HoverChecker
 	{
 		super(button);
 		this.lines = lines;
+		this.button = button instanceof TogglePictureButton ? (TogglePictureButton)button : null;
 	}
 
 	public ITextComponent getName()
 	{
-		return lines.get(0);
+		return lines.get(button == null ? 0 : button.getCurrentIndex());
 	}
 
 	public List<ITextComponent> getLines()

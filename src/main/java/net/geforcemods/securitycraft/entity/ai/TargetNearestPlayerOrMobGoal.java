@@ -39,6 +39,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 			return false;
 		else
 		{
+			SentryMode mode = sentry.getMode();
 			int i;
 
 			Collections.sort(list, (e1, e2) -> {
@@ -55,11 +56,18 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 			{
 				LivingEntity potentialTarget = list.get(i);
 
-				if(potentialTarget instanceof PlayerEntity && !((PlayerEntity)potentialTarget).isSpectator() && !((PlayerEntity)potentialTarget).isCreative() && !((SentryEntity)goalOwner).getOwner().isOwner(((PlayerEntity)potentialTarget)))
-					break;
-				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
-					break;
-				else if(sentry.getMode() == SentryMode.AGGRESSIVE && isSupportedTarget(potentialTarget))
+				if(mode.attacksPlayers())
+				{
+					if(potentialTarget instanceof PlayerEntity
+							&& !((PlayerEntity)potentialTarget).isSpectator()
+							&& !((PlayerEntity)potentialTarget).isCreative()
+							&& !((SentryEntity)goalOwner).getOwner().isOwner(((PlayerEntity)potentialTarget))
+							&& !sentry.isTargetingWhitelistedPlayer(potentialTarget)
+							&& !EntityUtils.isInvisible(potentialTarget))
+						break;
+				}
+
+				if(mode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
 			}
 

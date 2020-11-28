@@ -4,7 +4,6 @@ import java.util.EnumSet;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
-import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -36,11 +35,6 @@ public class AttackRangedIfEnabledGoal extends Goal
 
 		if(potentialTarget == null)
 			return false;
-		else if(sentry.isTargetingWhitelistedPlayer(potentialTarget) || EntityUtils.isInvisible(potentialTarget))
-		{
-			sentry.setAttackTarget(null);
-			return false;
-		}
 		else
 		{
 			attackTarget = potentialTarget;
@@ -68,9 +62,9 @@ public class AttackRangedIfEnabledGoal extends Goal
 				return;
 
 			float f = MathHelper.sqrt(targetDistance) / attackRadius;
-			float lvt_5_1_ = MathHelper.clamp(f, 0.1F, 1.0F);
+			float distanceFactor = MathHelper.clamp(f, 0.1F, 1.0F);
 
-			sentry.attackEntityWithRangedAttack(attackTarget, lvt_5_1_);
+			sentry.attackEntityWithRangedAttack(attackTarget, distanceFactor);
 			rangedAttackTime = MathHelper.floor(f * (maxRangedAttackTime - attackIntervalMin) + attackIntervalMin);
 		}
 		else if(rangedAttackTime < 0)

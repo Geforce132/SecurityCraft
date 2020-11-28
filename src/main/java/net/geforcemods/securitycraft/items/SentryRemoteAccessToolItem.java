@@ -116,7 +116,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
 						nameToShow = sentries.get(0).getCustomName().getString();
 					else
-						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry") + " " + i;
+						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
 
 					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos)));
 				}
@@ -164,12 +164,15 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	private int getNextAvaliableSlot(ItemStack stack){
 		for(int i = 1; i <= 12; i++)
+		{
 			if(stack.getTag() == null)
 				return 1;
-			else if(stack.getTag().getIntArray("sentry" + i).length == 0 || (stack.getTag().getIntArray("sentry" + i)[0] == 0 && stack.getTag().getIntArray("sentry" + i)[1] == 0 && stack.getTag().getIntArray("sentry" + i)[2] == 0))
+
+			int[] pos = stack.getTag().getIntArray("sentry" + i);
+
+			if(pos.length == 0 || (pos[0] == 0 && pos[1] == 0 && pos[2] == 0))
 				return i;
-			else
-				continue;
+		}
 
 		return 0;
 	}
