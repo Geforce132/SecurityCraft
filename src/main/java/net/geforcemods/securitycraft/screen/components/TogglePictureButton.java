@@ -11,7 +11,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -29,27 +28,12 @@ public class TogglePictureButton extends ClickButton{
 	private int currentIndex = 0;
 	private final int toggleCount;
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ItemStack stackToRender, int toggleCount) {
-		this(id, xPos, yPos, width, height, stackToRender, toggleCount, null);
-	}
-
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ItemStack itemToRender, int toggleCount, Consumer<ClickButton> onClick) {
-		super(id, xPos, yPos, width, height, "", onClick);
-
-		this.toggleCount = toggleCount;
-
-		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
-			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
-		else
-			this.itemToRender = itemToRender.getItem();
-	}
-
 	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int toggleCount, Consumer<ClickButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
 		if(textureX.length != toggleCount || textureY.length != toggleCount)
-			throw new RuntimeException("TogglePictureButton was setup incorrectly. Array lengths must match toggleCount!");
+			throw new RuntimeException("TogglePictureButton was set up incorrectly. Array lengths must match toggleCount!");
 
 		textureLocation = texture;
 		u = textureX;
