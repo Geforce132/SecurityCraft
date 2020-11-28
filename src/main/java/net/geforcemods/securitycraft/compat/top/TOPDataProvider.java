@@ -158,19 +158,19 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						if (!sentry.getWhitelistModule().isEmpty())
+						if(!sentry.getWhitelistModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()));
 
-						if (!sentry.getDisguiseModule().isEmpty())
+						if(!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()));
 					}
 
-					if (mode == EnumSentryMode.AGGRESSIVE)
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
-					else if (mode == EnumSentryMode.CAMOUFLAGE)
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
-					else
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
+					String modeDescription = ClientUtils.localize(mode.getModeKey());
+
+					if(mode != EnumSentryMode.IDLE)
+						modeDescription += " - " + ClientUtils.localize(mode.getTargetKey());
+
+					probeInfo.text(TextFormatting.GRAY + modeDescription);
 				}
 			}
 		});

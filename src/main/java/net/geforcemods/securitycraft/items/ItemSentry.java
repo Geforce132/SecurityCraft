@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -35,6 +36,7 @@ public class ItemSentry extends Item
 
 			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()) + ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey()), TextFormatting.DARK_RED);
 
 			if(!player.isCreative())
 				player.getHeldItem(hand).shrink(1);

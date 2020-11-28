@@ -111,36 +111,35 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	@Override
 	public List<String> getWailaBody(Entity entity, List<String> body, IWailaEntityAccessor data, IWailaConfigHandler config)
 	{
-		if(config.getConfig(SHOW_OWNER) && data.getEntity() instanceof EntitySentry)
-			body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + ((EntitySentry) entity).getOwner().getName());
-
-		if(config.getConfig(SHOW_MODULES) && entity instanceof EntitySentry && ((EntitySentry) entity).getOwner().isOwner(data.getPlayer()))
-		{
-			EntitySentry sentry = (EntitySentry)entity;
-
-			if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
-			{
-				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
-
-				if (!sentry.getWhitelistModule().isEmpty())
-					body.add("- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()));
-
-				if (!sentry.getDisguiseModule().isEmpty())
-					body.add("- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()));
-			}
-		}
-
-		if (entity instanceof EntitySentry)
+		if(entity instanceof EntitySentry)
 		{
 			EntitySentry sentry = (EntitySentry)entity;
 			EnumSentryMode mode = sentry.getMode();
 
-			if (mode == EnumSentryMode.AGGRESSIVE)
-				body.add(ClientUtils.localize("messages.securitycraft:sentry.mode1"));
-			else if (mode == EnumSentryMode.CAMOUFLAGE)
-				body.add(ClientUtils.localize("messages.securitycraft:sentry.mode2"));
-			else
-				body.add(ClientUtils.localize("messages.securitycraft:sentry.mode3"));
+			if(config.getConfig(SHOW_OWNER))
+				body.add(ClientUtils.localize("waila.securitycraft:owner") + " " + sentry.getOwner().getName());
+
+			if(config.getConfig(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer()))
+			{
+
+				if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+				{
+					body.add(ClientUtils.localize("waila.securitycraft:equipped"));
+
+					if (!sentry.getWhitelistModule().isEmpty())
+						body.add("- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()));
+
+					if (!sentry.getDisguiseModule().isEmpty())
+						body.add("- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()));
+				}
+			}
+
+			String modeDescription = ClientUtils.localize(mode.getModeKey());
+
+			if(mode != EnumSentryMode.IDLE)
+				modeDescription += " - " + ClientUtils.localize(mode.getTargetKey());
+
+			body.add(modeDescription);
 		}
 
 		return body;

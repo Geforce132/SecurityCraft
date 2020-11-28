@@ -39,6 +39,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 			return false;
 		else
 		{
+			EnumSentryMode mode = sentry.getMode();
 			int i;
 
 			Collections.sort(list, sorter);
@@ -48,11 +49,18 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 			{
 				EntityLivingBase potentialTarget = list.get(i);
 
-				if(potentialTarget instanceof EntityPlayer && !((EntityPlayer)potentialTarget).isSpectator() && !((EntityPlayer)potentialTarget).isCreative() && !((EntitySentry)taskOwner).getOwner().isOwner(((EntityPlayer)potentialTarget)))
-					break;
-				else if(sentry.isTargetingWhitelistedPlayer(potentialTarget))
-					break;
-				else if(isSupportedTarget(potentialTarget) && sentry.getMode() == EnumSentryMode.AGGRESSIVE)
+				if(mode.attacksPlayers())
+				{
+					if(potentialTarget instanceof EntityPlayer
+							&& !((EntityPlayer)potentialTarget).isSpectator()
+							&& !((EntityPlayer)potentialTarget).isCreative()
+							&& !((EntitySentry)taskOwner).getOwner().isOwner(((EntityPlayer)potentialTarget))
+							&& !sentry.isTargetingWhitelistedPlayer(potentialTarget)
+							&& !EntityUtils.isInvisible(potentialTarget))
+						break;
+				}
+
+				if(mode.attacksHostile() && isSupportedTarget(potentialTarget))
 					break;
 			}
 

@@ -153,12 +153,15 @@ public class ItemSentryRemoteAccessTool extends Item {
 
 	private int getNextAvailableSlot(ItemStack stack){
 		for(int i = 1; i <= 12; i++)
+		{
 			if(stack.getTagCompound() == null)
 				return 1;
-			else if(stack.getTagCompound().getIntArray("sentry" + i).length == 0 || (stack.getTagCompound().getIntArray("sentry" + i)[0] == 0 && stack.getTagCompound().getIntArray("sentry" + i)[1] == 0 && stack.getTagCompound().getIntArray("sentry" + i)[2] == 0))
+
+			int[] pos = stack.getTagCompound().getIntArray("sentry" + i);
+
+			if(pos.length == 0 || (pos[0] == 0 && pos[1] == 0 && pos[2] == 0))
 				return i;
-			else
-				continue;
+		}
 
 		return 0;
 	}
