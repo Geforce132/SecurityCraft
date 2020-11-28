@@ -94,8 +94,6 @@ public class PictureButton extends ClickButton{
 				blit(x, y + 1, u, v, texWidth, texHeight);
 			}
 
-			onDrag(mouseX, mouseY, 0, 0);
-
 			int color = 14737632;
 
 			if (!active)

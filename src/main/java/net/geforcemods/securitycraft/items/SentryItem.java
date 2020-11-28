@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,6 +47,7 @@ public class SentryItem extends Item
 			entity.setupSentry(player);
 			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 			world.addEntity(entity);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()) + ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey()), TextFormatting.DARK_RED);
 
 			if(!player.isCreative())
 				stack.shrink(1);

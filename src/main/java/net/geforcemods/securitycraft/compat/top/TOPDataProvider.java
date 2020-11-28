@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SentryEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -120,7 +121,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				if (entity instanceof SentryEntity)
 				{
 					SentryEntity sentry = (SentryEntity)entity;
-					SentryEntity.SentryMode mode = sentry.getMode();
+					SentryMode mode = sentry.getMode();
 
 					probeInfo.text(TextFormatting.GRAY + (ClientUtils.localize("waila.securitycraft:owner") + " " + ((SentryEntity) entity).getOwner().getName()));
 
@@ -128,19 +129,19 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					{
 						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
 
-						if (!sentry.getWhitelistModule().isEmpty())
+						if(!sentry.getWhitelistModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey()).getFormattedText());
 
-						if (!sentry.getDisguiseModule().isEmpty())
+						if(!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 					}
 
-					if (mode == SentryEntity.SentryMode.AGGRESSIVE)
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode1"));
-					else if (mode == SentryEntity.SentryMode.CAMOUFLAGE)
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode2"));
-					else
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("messages.securitycraft:sentry.mode3"));
+					String modeDescription = ClientUtils.localize(mode.getModeKey());
+
+					if(mode != SentryMode.IDLE)
+						modeDescription += "- " + ClientUtils.localize(mode.getTargetKey());
+
+					probeInfo.text(TextFormatting.GRAY + modeDescription);
 				}
 			}
 		});

@@ -14,29 +14,25 @@ public class SetSentryMode
 {
 	public BlockPos pos;
 	public int mode;
-	public boolean sendMessage;
 
 	public SetSentryMode() {}
 
-	public SetSentryMode(BlockPos sentryPos, int mode, boolean sendMessage)
+	public SetSentryMode(BlockPos sentryPos, int mode)
 	{
 		pos = sentryPos;
 		this.mode = mode;
-		this.sendMessage = sendMessage;
 	}
 
 	public void fromBytes(PacketBuffer buf)
 	{
 		pos = buf.readBlockPos();
 		mode = buf.readInt();
-		sendMessage = buf.readBoolean();
 	}
 
 	public void toBytes(PacketBuffer buf)
 	{
 		buf.writeBlockPos(pos);
 		buf.writeInt(mode);
-		buf.writeBoolean(sendMessage);
 	}
 
 	public static void encode(SetSentryMode message, PacketBuffer packet)
@@ -60,7 +56,7 @@ public class SetSentryMode
 			List<SentryEntity> sentries = player.world.<SentryEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
 
 			if(!sentries.isEmpty())
-				sentries.get(0).toggleMode(player, message.mode, message.sendMessage);
+				sentries.get(0).toggleMode(player, message.mode, false);
 		});
 
 		ctx.get().setPacketHandled(true);
