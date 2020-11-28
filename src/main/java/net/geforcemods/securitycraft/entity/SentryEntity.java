@@ -639,6 +639,13 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 			return isAggressive() ? key + "0" : (isCamouflage() ? key + "1" : key + "2");
 		}
 
+		public String getTargetKey()
+		{
+			String key = "gui.securitycraft:srat.targets";
+
+			return attacksHostile() && attacksPlayers() ? key + "1" : (attacksHostile() ? key + "2" : (attacksPlayers() ? key + "3" : ""));
+		}
+
 		public String getDescriptionKey()
 		{
 			return "messages.securitycraft:sentry.descriptionMode" + descriptionKeyIndex;

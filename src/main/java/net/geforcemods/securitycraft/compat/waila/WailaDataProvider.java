@@ -29,6 +29,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -137,7 +138,12 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				}
 			}
 
-			body.add(ClientUtils.localize(mode.getModeKey()));
+			IFormattableTextComponent modeDescription = ClientUtils.localize(mode.getModeKey());
+
+			if(mode != SentryMode.IDLE)
+				modeDescription.appendString("- ").append(ClientUtils.localize(mode.getTargetKey()));
+
+			body.add(modeDescription);
 		}
 	}
 }

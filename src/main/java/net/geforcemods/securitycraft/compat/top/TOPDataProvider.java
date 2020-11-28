@@ -29,6 +29,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -135,7 +136,12 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 					}
 
-					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize(mode.getModeKey()).getString()));
+					IFormattableTextComponent modeDescription = ClientUtils.localize(mode.getModeKey());
+
+					if(mode != SentryMode.IDLE)
+						modeDescription.appendString("- ").append(ClientUtils.localize(mode.getTargetKey()));
+
+					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + modeDescription.getString()));
 				}
 			}
 		});
