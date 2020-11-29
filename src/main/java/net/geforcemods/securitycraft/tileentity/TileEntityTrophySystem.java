@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
+import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
@@ -98,6 +100,7 @@ public class TileEntityTrophySystem extends TileEntityOwnable implements ITickab
 		potentialTargets.addAll(world.getEntitiesWithinAABB(EntityArrow.class, area));
 		potentialTargets.addAll(world.getEntitiesWithinAABB(EntityFireball.class, area));
 		potentialTargets.addAll(world.getEntitiesWithinAABB(EntityShulkerBullet.class, area));
+		potentialTargets = potentialTargets.stream().filter(e -> !(e instanceof EntityBullet && ((EntityBullet)e).getOwner().equals(getOwner()))).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
