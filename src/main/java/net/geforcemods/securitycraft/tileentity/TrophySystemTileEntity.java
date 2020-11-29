@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
@@ -107,6 +109,9 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		potentialTargets.addAll(world.getEntitiesWithinAABB(AbstractArrowEntity.class, area, e -> !(e instanceof TridentEntity))); //ignore tridents
 		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ShulkerBulletEntity.class, area));
+
+		//remove bullets shot by sentries of this trophy system's owner
+		potentialTargets = potentialTargets.stream().filter(e -> !(e instanceof BulletEntity && ((BulletEntity)e).getOwner().equals(getOwner()))).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
