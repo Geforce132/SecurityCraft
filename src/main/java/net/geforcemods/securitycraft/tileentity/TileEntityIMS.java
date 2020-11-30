@@ -184,7 +184,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		super.writeToNBT(tag);
 
 		tag.setInteger("bombsRemaining", bombsRemaining);
-		tag.setInteger("targetingOption", targetingOption.modeIndex);
+		tag.setInteger("targetingOption", targetingOption.ordinal());
 		tag.setBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
@@ -233,15 +233,6 @@ public class TileEntityIMS extends CustomizableSCTE {
 	}
 
 	public static enum EnumIMSTargetingMode {
-
-		PLAYERS(0),
-		PLAYERS_AND_MOBS(1),
-		MOBS(2);
-
-		public final int modeIndex;
-
-		private EnumIMSTargetingMode(int index){
-			modeIndex = index;
-		}
+		PLAYERS, PLAYERS_AND_MOBS, MOBS;
 	}
 }

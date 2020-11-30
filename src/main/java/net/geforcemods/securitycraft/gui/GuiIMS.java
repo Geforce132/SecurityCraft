@@ -15,19 +15,20 @@ public class GuiIMS extends GuiContainer{
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntityIMS tileEntity;
 	private GuiButton targetButton;
-	private int targetingOptionIndex = 0;
+	private EnumIMSTargetingMode targetMode;
 
 	public GuiIMS(InventoryPlayer inventory, TileEntityIMS te) {
 		super(new ContainerGeneric(inventory, te));
 		tileEntity = te;
-		targetingOptionIndex = tileEntity.getTargetingOption().modeIndex;
+		targetMode = tileEntity.getTargetingOption();
 	}
 
 	@Override
 	public void initGui(){
 		super.initGui();
 
-		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, tileEntity.getTargetingOption() == EnumIMSTargetingMode.PLAYERS_AND_MOBS ? ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers") : ClientUtils.localize("tooltip.securitycraft:module.players")));
+		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, ""));
+		updateButtonText();
 	}
 
 	/**
@@ -52,25 +53,19 @@ public class GuiIMS extends GuiContainer{
 	@Override
 	protected void actionPerformed(GuiButton button){
 		if(button.id == 0){
-			targetingOptionIndex++;
-
-			if(targetingOptionIndex > (EnumIMSTargetingMode.values().length - 1))
-				targetingOptionIndex = 0;
-
-			tileEntity.setTargetingOption(EnumIMSTargetingMode.values()[targetingOptionIndex]);
-
+			targetMode = EnumIMSTargetingMode.values()[(targetMode.ordinal() + 1) % EnumIMSTargetingMode.values().length]; //next enum value
+			tileEntity.setTargetingOption(targetMode);
 			ClientUtils.syncTileEntity(tileEntity);
-
 			updateButtonText();
 		}
 	}
 
 	private void updateButtonText() {
-		if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS)
+		if(targetMode == EnumIMSTargetingMode.PLAYERS)
 			targetButton.displayString = ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players");
-		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
+		else if(targetMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
 			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers");
-		else if(EnumIMSTargetingMode.values()[targetingOptionIndex] == EnumIMSTargetingMode.MOBS)
+		else if(targetMode == EnumIMSTargetingMode.MOBS)
 			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostile");
 	}
 
