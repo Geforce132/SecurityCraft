@@ -200,7 +200,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		super.write(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
-		tag.putInt("targetingOption", targetingOption.modeIndex);
+		tag.putInt("targetingOption", targetingOption.ordinal());
 		tag.putBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
@@ -257,15 +257,6 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	}
 
 	public static enum IMSTargetingMode {
-
-		PLAYERS(0),
-		PLAYERS_AND_MOBS(1),
-		MOBS(2);
-
-		public final int modeIndex;
-
-		private IMSTargetingMode(int index){
-			modeIndex = index;
-		}
+		PLAYERS, PLAYERS_AND_MOBS, MOBS;
 	}
 }
