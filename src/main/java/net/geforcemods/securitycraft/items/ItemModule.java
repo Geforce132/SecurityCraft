@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -169,9 +170,9 @@ public class ItemModule extends Item{
 			int slot = item.getInteger("Slot");
 
 			if(slot < numberOfBlockAddons) {
-				ItemStack stack;
+				ItemStack stack = new ItemStack(item);
 
-				if((stack = new ItemStack(item)).getTranslationKey().startsWith("tile."))
+				if(stack.getItem() instanceof ItemBlock)
 					list.add(Block.getBlockFromItem(stack.getItem()));
 			}
 		}

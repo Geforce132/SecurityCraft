@@ -6,6 +6,7 @@
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
+- Fix: The Disguise Module does not accept some modded blocks
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
