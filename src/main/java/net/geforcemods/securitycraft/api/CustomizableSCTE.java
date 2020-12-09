@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -149,6 +151,20 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IModule
 	public NonNullList<ItemStack> getInventory()
 	{
 		return modules;
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
+	{
+		IModuleInventory.super.onModuleInserted(stack, module);
+		ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_INSERTED, stack, this);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
+	{
+		IModuleInventory.super.onModuleRemoved(stack, module);
+		ModuleUtils.createLinkedAction(EnumLinkedAction.MODULE_REMOVED, stack, this);
 	}
 
 	/**

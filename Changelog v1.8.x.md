@@ -7,6 +7,7 @@
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
 - Fix: The Disguise Module does not accept some modded blocks
+- Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
