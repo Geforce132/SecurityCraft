@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -147,6 +149,20 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	public NonNullList<ItemStack> getInventory()
 	{
 		return modules;
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		IModuleInventory.super.onModuleInserted(stack, module);
+		ModuleUtils.createLinkedAction(LinkedAction.MODULE_INSERTED, stack, this);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		IModuleInventory.super.onModuleRemoved(stack, module);
+		ModuleUtils.createLinkedAction(LinkedAction.MODULE_REMOVED, stack, this);
 	}
 
 	/**

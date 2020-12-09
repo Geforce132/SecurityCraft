@@ -5,6 +5,7 @@
 - New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
 - Fix: Trophy Systems shoot bullets of their owner's sentries
+- Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
