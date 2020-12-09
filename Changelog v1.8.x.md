@@ -6,6 +6,7 @@
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
 - Fix: Sentry Remote Access Tool tooltip shows incorrectly
 - Fix: Trophy Systems shoot bullets of their owner's sentries
+- Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
