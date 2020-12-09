@@ -93,31 +93,28 @@ public class ModuleItem extends Item{
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
-		try
-		{
-			if(canBeCustomized())
-			{
-				if(world.isRemote && (module == ModuleType.WHITELIST || module == ModuleType.BLACKLIST))
-					SecurityCraft.proxy.displayEditModuleGui(stack);
-				else if(!world.isRemote && module == ModuleType.DISGUISE)
-				{
-					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
-						@Override
-						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-						{
-							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
-						}
 
-						@Override
-						public ITextComponent getDisplayName()
-						{
-							return new TranslationTextComponent(getTranslationKey());
-						}
-					});
-				}
+		if(canBeCustomized())
+		{
+			if(world.isRemote && (module == ModuleType.WHITELIST || module == ModuleType.BLACKLIST))
+				SecurityCraft.proxy.displayEditModuleGui(stack);
+			else if(!world.isRemote && module == ModuleType.DISGUISE)
+			{
+				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+					@Override
+					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+					{
+						return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
+					}
+
+					@Override
+					public ITextComponent getDisplayName()
+					{
+						return new TranslationTextComponent(getTranslationKey());
+					}
+				});
 			}
 		}
-		catch(NoSuchMethodError e) {/*:^)*/}
 
 		return ActionResult.resultPass(stack);
 	}
@@ -188,9 +185,9 @@ public class ModuleItem extends Item{
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons) {
-				ItemStack stack;
+				ItemStack stack = ItemStack.read(item);
 
-				if((stack = ItemStack.read(item)).getItem() instanceof BlockItem)
+				if(stack.getItem() instanceof BlockItem)
 					list.add(Block.getBlockFromItem(stack.getItem()));
 			}
 		}
