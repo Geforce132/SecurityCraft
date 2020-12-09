@@ -1,4 +1,4 @@
-[![](http://cf.way2muchnoise.eu/full_security-craft_downloads.svg)](https://minecraft.curseforge.com/projects/security-craft) [![](http://cf.way2muchnoise.eu/versions/For%20MC_security-craft_all.svg)](https://minecraft.curseforge.com/projects/security-craft/files)
+[![](http://cf.way2muchnoise.eu/full_security-craft_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/security-craft) [![](http://cf.way2muchnoise.eu/versions/For%20MC_security-craft_all.svg)](https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all)
 
 SecurityCraft
 =============
