@@ -91,10 +91,10 @@ public class DisguiseModuleContainer extends Container {
 			boolean isStackBlock = itemStack.getItem() instanceof BlockItem;
 
 			for(ItemStack stack : inventory.moduleInventory)
-				if(!stack.isEmpty() && stack.getItem() != null)
+				if(!stack.isEmpty())
 					if(stack.getItem() instanceof BlockItem)
 						numberOfBlocks++;
-					else
+					else if(stack.getItem() != null)
 						numberOfItems++;
 
 			return (isStackBlock && numberOfBlocks < inventory.maxNumberOfBlocks) || (!isStackBlock && numberOfItems < inventory.maxNumberOfItems);
