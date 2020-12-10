@@ -41,6 +41,7 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -81,6 +82,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -351,6 +353,16 @@ public class SCEventHandler {
 		//remove sentry if block below is broken
 		if(!sentries.isEmpty())
 			sentries.get(0).remove();
+	}
+
+	@SubscribeEvent
+	public static void onExplosionDetonate(ExplosionEvent.Detonate event)
+	{
+		for(Entity entity : event.getAffectedEntities())
+		{
+			if(entity instanceof SentryEntity && event.getAffectedBlocks().contains(entity.getPosition().down()))
+				entity.remove();
+		}
 	}
 
 	@SubscribeEvent
