@@ -49,6 +49,9 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 			{
 				EntityLivingBase potentialTarget = list.get(i);
 
+				if(potentialTarget.getIsInvulnerable())
+					continue;
+
 				if(mode.attacksPlayers())
 				{
 					if(potentialTarget instanceof EntityPlayer
