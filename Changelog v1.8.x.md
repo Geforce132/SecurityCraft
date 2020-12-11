@@ -8,7 +8,7 @@
 - Fix: I.M.S. GUI sometimes has faulty text 
 - Fix: The Disguise Module does not accept some modded blocks
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
-- Fix: Exploding the block under a Sentry does not remove the Sentry
+- Fix: Numerous cases where removing the block under a Sentry would not remove the Sentry
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 

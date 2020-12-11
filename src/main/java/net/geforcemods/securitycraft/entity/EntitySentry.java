@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.misc.SentryTracker;
 import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -87,6 +88,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.register(WHITELIST, new NBTTagCompound());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
+		SentryTracker.track(this);
 	}
 
 	@Override
@@ -265,6 +267,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, pos, getWhitelistModule()); //if there is none, nothing will drop
+		SentryTracker.stopTracking(this);
 		setDead();
 	}
 

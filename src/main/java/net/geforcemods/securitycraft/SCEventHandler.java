@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -24,6 +25,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
+import net.geforcemods.securitycraft.misc.SentryTracker;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
@@ -58,7 +60,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -247,29 +248,27 @@ public class SCEventHandler {
 
 			//outside !world.isRemote for properly checking the interaction
 			//all the sentry functionality for when the sentry is diguised
-			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
-
-			if(!sentries.isEmpty())
-			{
-				event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
+			SentryTracker.getSentryAtPosition(world, event.getPos()).ifPresent(sentry -> {
+				event.setCanceled(sentry.processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
 				event.setCancellationResult(EnumActionResult.SUCCESS);
-			}
+			});
 		}
 	}
 
 	@SubscribeEvent
 	public void onBlockEventBreak(BlockEvent.BreakEvent event)
 	{
-		List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+		Optional<EntitySentry> optionalSentry = SentryTracker.getSentryAtPosition(event.getWorld(), event.getPos());
 
 		//don't let people break the disguise block
-		if(!sentries.isEmpty())
+		if(optionalSentry.isPresent())
 		{
+			EntitySentry sentry = optionalSentry.get();
 			BlockPos pos = event.getPos();
 
-			if (!sentries.get(0).getDisguiseModule().isEmpty())
+			if(!sentry.getDisguiseModule().isEmpty())
 			{
-				ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+				ItemStack disguiseModule = sentry.getDisguiseModule();
 				List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
 
 				if(blocks.size() > 0)
@@ -282,11 +281,8 @@ public class SCEventHandler {
 			return;
 		}
 
-		sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos().up()));
-
 		//remove sentry if block below is broken
-		if(!sentries.isEmpty())
-			sentries.get(0).remove();
+		SentryTracker.getSentryAtPosition(event.getWorld(), event.getPos().up()).ifPresent(sentry -> sentry.remove());
 	}
 
 	@SubscribeEvent
@@ -432,14 +428,17 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public void onBlockBroken(BreakEvent event){
 		if(!event.getWorld().isRemote) {
-			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
-				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
+			BlockPos pos = event.getPos();
+			World world = event.getWorld();
+
+			if(world.getTileEntity(pos) instanceof IModuleInventory){
+				IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
 
 				for(int i = 100; i - 100 < te.getMaxNumberOfModules(); i++) {
 					if(!te.getStackInSlot(i).isEmpty()){
 						ItemStack stack = te.getStackInSlot(i);
-						EntityItem item = new EntityItem(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().spawnEntity(item));
+						EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), stack);
+						WorldUtils.addScheduledTask(world, () -> world.spawnEntity(item));
 
 						te.onModuleRemoved(stack, ((ItemModule) stack.getItem()).getModuleType());
 
@@ -456,25 +455,20 @@ public class SCEventHandler {
 				}
 			}
 
-			List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
-
-			if(!sentries.isEmpty())
-			{
-				BlockPos pos = event.getPos();
-
-				if (!sentries.get(0).getDisguiseModule().isEmpty())
+			SentryTracker.getSentryAtPosition(world, pos).ifPresent(sentry -> {
+				if(!sentry.getDisguiseModule().isEmpty())
 				{
-					ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+					ItemStack disguiseModule = sentry.getDisguiseModule();
 					List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
 
 					if(blocks.size() > 0)
 					{
 						IBlockState state = blocks.get(0).getDefaultState();
 
-						event.getWorld().setBlockState(pos, state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
+						world.setBlockState(pos, state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
 					}
 				}
-			}
+			});
 		}
 	}
 

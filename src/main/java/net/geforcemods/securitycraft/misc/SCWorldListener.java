@@ -27,6 +27,8 @@ public class SCWorldListener implements IWorldEventListener
 			world.setBlockState(pos, oldState);
 		else if(oldState.getBlock() == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
 			world.setBlockState(pos, oldState);
+		else if(!oldState.getBlock().isAir(oldState, world, pos) && newState.getBlock().isAir(newState, world, pos))
+			SentryTracker.getSentryAtPosition(world, pos.up()).ifPresent(sentry -> sentry.remove());
 	}
 
 	@Override
