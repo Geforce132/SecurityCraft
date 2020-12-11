@@ -40,14 +40,14 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 		else
 		{
 			EnumSentryMode mode = sentry.getMode();
-			int i;
+			EntityLivingBase potentialTarget = null;
 
 			Collections.sort(list, sorter);
 
 			//get the nearest target that is either a mob or a player
-			for(i = 0; i < list.size(); i++)
+			for(int i = 0; i < list.size(); i++)
 			{
-				EntityLivingBase potentialTarget = list.get(i);
+				potentialTarget = list.get(i);
 
 				if(potentialTarget.getIsInvulnerable())
 					continue;
@@ -67,14 +67,11 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 					break;
 			}
 
-			if(i < list.size())
+			if(potentialTarget != null && isCloseEnough(potentialTarget))
 			{
-				if(isCloseEnough(list.get(i)))
-				{
-					targetEntity = list.get(i);
-					taskOwner.setAttackTarget(targetEntity);
-					return true;
-				}
+				targetEntity = potentialTarget;
+				taskOwner.setAttackTarget(targetEntity);
+				return true;
 			}
 
 			return false;
