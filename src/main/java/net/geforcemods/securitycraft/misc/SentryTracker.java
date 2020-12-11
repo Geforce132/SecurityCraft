@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ import net.minecraft.world.World;
  */
 public class SentryTracker
 {
-	private static final Map<Integer,Collection<EntitySentry>> TRACKED_SENTRIES = new HashMap<>();
+	private static final Map<Integer,List<EntitySentry>> TRACKED_SENTRIES = new HashMap<>();
 
 	/**
 	 * Starts tracking a sentry
@@ -24,7 +24,10 @@ public class SentryTracker
 	 */
 	public static void track(EntitySentry entity)
 	{
-		getTrackedSentries(entity.world).add(entity);
+		List<EntitySentry> sentries = getTrackedSentries(entity.world);
+
+		if(!sentries.contains(entity))
+			sentries.add(entity);
 	}
 
 	/**
@@ -44,8 +47,12 @@ public class SentryTracker
 	 */
 	public static Optional<EntitySentry> getSentryAtPosition(World world, BlockPos pos)
 	{
-		for(EntitySentry sentry : getTrackedSentries(world))
+		List<EntitySentry> sentries = getTrackedSentries(world);
+
+		for(int i = 0; i < sentries.size(); i++)
 		{
+			EntitySentry sentry = sentries.get(i);
+
 			if(sentry.getPosition().equals(pos))
 				return Optional.of(sentry);
 		}
@@ -57,13 +64,13 @@ public class SentryTracker
 	 * Gets all block positions at which a sentry is being tracked for the given world
 	 * @param world The world to get the tracked sentries of
 	 */
-	private static Collection<EntitySentry> getTrackedSentries(World world)
+	private static List<EntitySentry> getTrackedSentries(World world)
 	{
-		Collection<EntitySentry> sentries = TRACKED_SENTRIES.get(world.provider.getDimension());
+		List<EntitySentry> sentries = TRACKED_SENTRIES.get(world.provider.getDimension());
 
 		if(sentries == null)
 		{
-			sentries = new HashSet<>();
+			sentries = new ArrayList<>();
 			TRACKED_SENTRIES.put(world.provider.getDimension(), sentries);
 		}
 
