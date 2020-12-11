@@ -9,3 +9,7 @@
 /.settings
 *.launch
 /.idea
+/out
+*.iml
+*.ipr
+*.iws
