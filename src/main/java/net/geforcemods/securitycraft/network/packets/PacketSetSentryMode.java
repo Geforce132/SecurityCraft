@@ -1,12 +1,9 @@
 package net.geforcemods.securitycraft.network.packets;
 
-import java.util.List;
-
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.misc.SentryTracker;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -47,10 +44,7 @@ public class PacketSetSentryMode implements IMessage
 			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
 				EntityPlayer player = context.getServerHandler().player;
 
-				List<EntitySentry> sentries = getWorld(player).<EntitySentry>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
-
-				if(!sentries.isEmpty())
-					sentries.get(0).toggleMode(player, message.mode, false);
+				SentryTracker.getSentryAtPosition(getWorld(player), message.pos).ifPresent(sentry -> sentry.toggleMode(player, message.mode, false));
 			});
 
 			return null;

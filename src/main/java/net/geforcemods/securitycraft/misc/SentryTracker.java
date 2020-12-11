@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Tracks all exisiting sentries so searching for them all the time is obsolete.
+ * Tracks all exisiting sentries server side, so searching for them all the time is obsolete.
  * Also manages range checks
  */
 public class SentryTracker
@@ -20,10 +20,13 @@ public class SentryTracker
 
 	/**
 	 * Starts tracking a sentry
-	 * @param te The sentry to track
+	 * @param entity The sentry to track
 	 */
 	public static void track(EntitySentry entity)
 	{
+		if(entity.world.isRemote)
+			return;
+
 		List<EntitySentry> sentries = getTrackedSentries(entity.world);
 
 		if(!sentries.contains(entity))
@@ -32,10 +35,13 @@ public class SentryTracker
 
 	/**
 	 * Stops tracking the given sentry. Use when e.g. removing the tile entity from the world
-	 * @param te The sentry to stop tracking
+	 * @param entity The sentry to stop tracking
 	 */
 	public static void stopTracking(EntitySentry entity)
 	{
+		if(entity.world.isRemote)
+			return;
+
 		getTrackedSentries(entity.world).remove(entity);
 	}
 
@@ -47,14 +53,17 @@ public class SentryTracker
 	 */
 	public static Optional<EntitySentry> getSentryAtPosition(World world, BlockPos pos)
 	{
-		List<EntitySentry> sentries = getTrackedSentries(world);
-
-		for(int i = 0; i < sentries.size(); i++)
+		if(!world.isRemote)
 		{
-			EntitySentry sentry = sentries.get(i);
+			List<EntitySentry> sentries = getTrackedSentries(world);
 
-			if(sentry.getPosition().equals(pos))
-				return Optional.of(sentry);
+			for(int i = 0; i < sentries.size(); i++)
+			{
+				EntitySentry sentry = sentries.get(i);
+
+				if(sentry.getPosition().equals(pos))
+					return Optional.of(sentry);
+			}
 		}
 
 		return Optional.empty();
