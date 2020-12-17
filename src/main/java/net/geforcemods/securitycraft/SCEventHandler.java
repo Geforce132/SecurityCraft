@@ -90,7 +90,6 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -278,16 +277,6 @@ public class SCEventHandler {
 			}
 
 			return;
-		}
-	}
-
-	@SubscribeEvent
-	public static void onExplosionDetonate(ExplosionEvent.Detonate event)
-	{
-		for(Entity entity : event.getAffectedEntities())
-		{
-			if(entity instanceof EntitySentry && event.getAffectedBlocks().contains(entity.getPosition().down()))
-				((EntitySentry)entity).remove();
 		}
 	}
 

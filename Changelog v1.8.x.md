@@ -8,7 +8,7 @@
 - Fix: I.M.S. GUI sometimes has faulty text 
 - Fix: The Disguise Module does not accept some modded blocks
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
-- Fix: Numerous cases where removing the block under a Sentry would not remove the Sentry
+- Fix: Removing the block under a Sentry does not remove the Sentry in numerous cases
 - Fix: Sentries target invulnerable entities
 - Fix: Block of a disguised Sentry sometimes does not properly reappear when broken
 
