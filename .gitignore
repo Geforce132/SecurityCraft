@@ -11,3 +11,7 @@
 /src/generated/resources/.cache/*
 /.idea
 /logs
+/out
+*.iml
+*.ipr
+*.iws
