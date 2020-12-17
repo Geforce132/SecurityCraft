@@ -103,7 +103,12 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		super.tick();
 
-		if(world.isRemote)
+		if(!world.isRemote)
+		{
+			if(world.getBlockState(getPosition().down()).isAir())
+				remove();
+		}
+		else
 		{
 			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
 			{
