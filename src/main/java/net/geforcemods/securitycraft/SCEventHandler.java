@@ -37,7 +37,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -280,9 +279,6 @@ public class SCEventHandler {
 
 			return;
 		}
-
-		//remove sentry if block below is broken
-		SentryTracker.getSentryAtPosition(event.getWorld(), event.getPos().up()).ifPresent(sentry -> sentry.remove());
 	}
 
 	@SubscribeEvent
@@ -462,11 +458,7 @@ public class SCEventHandler {
 					List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
 
 					if(blocks.size() > 0)
-					{
-						IBlockState state = blocks.get(0).getDefaultState();
-
-						world.setBlockState(pos, state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
-					}
+						event.setCanceled(true);
 				}
 			});
 		}
