@@ -56,6 +56,9 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 			{
 				LivingEntity potentialTarget = list.get(i);
 
+				if(potentialTarget.isInvulnerable())
+					continue;
+
 				if(mode.attacksPlayers())
 				{
 					if(potentialTarget instanceof PlayerEntity
