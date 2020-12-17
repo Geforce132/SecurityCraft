@@ -40,7 +40,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 		else
 		{
 			SentryMode mode = sentry.getMode();
-			LivingEntity potentialTarget = null;
+			int i;
 
 			Collections.sort(list, (e1, e2) -> {
 				double distTo1 = goalOwner.getDistanceSq(e1);
@@ -52,9 +52,9 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 			});
 
 			//get the nearest target that is either a mob or a player
-			for(int i = 0; i < list.size(); i++)
+			for(i = 0; i < list.size(); i++)
 			{
-				potentialTarget = list.get(i);
+				LivingEntity potentialTarget = list.get(i);
 
 				if(potentialTarget.isInvulnerable())
 					continue;
@@ -74,11 +74,14 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 					break;
 			}
 
-			if(potentialTarget != null && isCloseEnough(potentialTarget))
+			if(i < list.size())
 			{
-				nearestTarget = potentialTarget;
-				goalOwner.setAttackTarget(nearestTarget);
-				return true;
+				if(isCloseEnough(list.get(i)))
+				{
+					nearestTarget = list.get(i);
+					goalOwner.setAttackTarget(nearestTarget);
+					return true;
+				}
 			}
 
 			return false;
