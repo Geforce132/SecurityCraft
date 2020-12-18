@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -36,10 +37,15 @@ public class SentryItem extends Item
 
 			if(!world.isAirBlock(pos))
 				return ActionResultType.PASS;
-			else if(world.isAirBlock(pos.down()))
+			else
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
-				return ActionResultType.FAIL;
+				BlockPos downPos = pos.down();
+
+				if(world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos)))
+				{
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+					return ActionResultType.FAIL;
+				}
 			}
 
 			SentryEntity entity = SCContent.eTypeSentry.create(world);
