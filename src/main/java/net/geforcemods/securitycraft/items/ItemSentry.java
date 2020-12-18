@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -26,10 +27,15 @@ public class ItemSentry extends Item
 
 			if(!world.isAirBlock(pos))
 				return EnumActionResult.PASS;
-			else if(world.isAirBlock(pos.down()))
+			else
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
-				return EnumActionResult.FAIL;
+				BlockPos downPos = pos.down();
+
+				if(world.isAirBlock(downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
+				{
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+					return EnumActionResult.FAIL;
+				}
 			}
 
 			Entity entity = new EntitySentry(world, player);

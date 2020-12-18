@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
@@ -27,7 +28,7 @@ public class SCWorldListener implements IWorldEventListener
 			world.setBlockState(pos, oldState);
 		else if(oldState.getBlock() == SCContent.bogusWaterFlowing && newState.getBlock() == Blocks.FLOWING_WATER)
 			world.setBlockState(pos, oldState);
-		else if(!oldState.getBlock().isAir(oldState, world, pos) && newState.getBlock().isAir(newState, world, pos))
+		else if(!oldState.getBlock().isAir(oldState, world, pos) && newState.getBlock().isAir(newState, world, pos) && world.getCollisionBoxes(null, new AxisAlignedBB(pos)).isEmpty())
 			SentryTracker.getSentryAtPosition(world, pos.up()).ifPresent(sentry -> sentry.remove());
 	}
 
