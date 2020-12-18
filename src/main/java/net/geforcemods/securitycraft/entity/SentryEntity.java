@@ -40,6 +40,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
@@ -107,7 +108,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		if(!world.isRemote)
 		{
-			if(world.getBlockState(getPosition().down()).isAir())
+			BlockPos downPos = getPosition().down();
+
+			if(world.getBlockState(downPos).isAir() || world.areCollisionShapesEmpty(new AxisAlignedBB(downPos)))
 				remove();
 		}
 		else
