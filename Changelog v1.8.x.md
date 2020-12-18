@@ -1,6 +1,8 @@
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
-**Disclaimer: Due to the new sentry modes, your sentries will not behave as in the previous mod version. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked!**
+**Disclaimer:
+1. Due to the new sentry modes, your sentries will not behave as in the previous mod version. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked!
+2. If you have placed Sentries above water, lava, or other liquids, they will pop off!**
 
 - New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
@@ -8,6 +10,7 @@
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 - Fix: Removing the block under a Sentry does not remove the Sentry in numerous cases
 - Fix: Sentries target invulnerable entities
+- Fix: Sentries can be placed above liquids
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
