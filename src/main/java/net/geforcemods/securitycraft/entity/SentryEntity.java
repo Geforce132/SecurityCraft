@@ -61,8 +61,10 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(SentryEntity.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(SentryEntity.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
+	private static final float ANIMATION_STEP_SIZE = 0.025F;
+	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
+	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
-	private final float animationStepSize = 0.025F;
 	public boolean animateUpwards = true;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
@@ -119,21 +121,21 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			if(animate) //no else if because animate can be changed in the above if statement
 			{
-				if(animateUpwards && headYTranslation > 0.0F)
+				if(animateUpwards && headYTranslation > UPWARDS_ANIMATION_LIMIT)
 				{
-					headYTranslation -= animationStepSize;
+					headYTranslation -= ANIMATION_STEP_SIZE;
 
-					if(headYTranslation <= 0.0F)
+					if(headYTranslation <= UPWARDS_ANIMATION_LIMIT)
 					{
 						animateUpwards = false;
 						animate = false;
 					}
 				}
-				else if(!animateUpwards && headYTranslation < 0.9F)
+				else if(!animateUpwards && headYTranslation < DOWNWARDS_ANIMATION_LIMIT)
 				{
-					headYTranslation += animationStepSize;
+					headYTranslation += ANIMATION_STEP_SIZE;
 
-					if(headYTranslation >= 0.9F)
+					if(headYTranslation >= DOWNWARDS_ANIMATION_LIMIT)
 					{
 						animateUpwards = true;
 						animate = false;
