@@ -76,7 +76,7 @@ public class TogglePictureButton extends ClickButton{
 			{
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(textureLocation);
-				blit(x + 4, y + 3, u[currentIndex], v[currentIndex], 16, 16);
+				blit(x + 2, y + 2, u[currentIndex], v[currentIndex], 16, 16);
 			}
 
 			int color = 0xe0e0e0;
