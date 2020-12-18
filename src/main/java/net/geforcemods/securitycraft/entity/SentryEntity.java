@@ -65,7 +65,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	private static final float UPWARDS_ANIMATION_LIMIT = 0.025F;
 	private static final float DOWNWARDS_ANIMATION_LIMIT = 0.9F;
 	private float headYTranslation = 0.9F;
-	public boolean animateUpwards = true;
+	public boolean animateUpwards = false;
 	public boolean animate = false;
 	private long previousTargetId = Long.MIN_VALUE;
 
