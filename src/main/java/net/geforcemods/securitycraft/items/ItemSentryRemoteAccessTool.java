@@ -49,7 +49,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 		if(!world.isRemote){
 			Optional<EntitySentry> optionalSentry = SentryTracker.getSentryAtPosition(world, pos);
 
-			if(!optionalSentry.isPresent()) {
+			if(optionalSentry.isPresent()) {
 				EntitySentry sentry = optionalSentry.get();
 				BlockPos pos2 = sentry.getPosition();
 
