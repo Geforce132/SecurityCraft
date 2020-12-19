@@ -83,7 +83,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			int y = pos.getY();
 			int z = pos.getZ();
 			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).grow(5, 5, 5));
-			List<?> entities = world.getEntitiesWithinAABB(LivingEntity.class, area);
+			List<?> entities = world.getEntitiesWithinAABB(LivingEntity.class, area, e -> !(e instanceof PlayerEntity) || !((PlayerEntity)e).isSpectator());
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 

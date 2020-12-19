@@ -11,6 +11,7 @@
 - Fix: Removing the block under a Sentry does not remove the Sentry in numerous cases
 - Fix: Sentries target invulnerable entities
 - Fix: Sentries can be placed above liquids
+- Fix: Players in spectator mode can activate some blocks (e.g. Portable Radar)
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
