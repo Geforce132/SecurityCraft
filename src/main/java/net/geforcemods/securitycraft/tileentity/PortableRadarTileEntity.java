@@ -54,7 +54,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 				if(hasModule(ModuleType.WHITELIST))
 					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(e.getName().getString().toLowerCase());
 
-				return e != owner && isNotWhitelisted;
+				return e != owner && isNotWhitelisted && !e.isSpectator();
 			});
 
 			if(hasModule(ModuleType.REDSTONE))
