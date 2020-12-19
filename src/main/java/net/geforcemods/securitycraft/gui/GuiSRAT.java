@@ -217,7 +217,7 @@ public class GuiSRAT extends GuiContainer {
 
 			guiButtons[sentry][TARGETS].enabled = EnumSentryMode.values()[resultingMode] != EnumSentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getMinecraft().player, resultingMode, false);
-			SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), mode));
+			SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), resultingMode));
 		}
 	}
 
