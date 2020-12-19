@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.misc.SentryTracker;
 import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -37,6 +36,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -90,7 +90,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.register(WHITELIST, new NBTTagCompound());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
-		SentryTracker.track(this);
 	}
 
 	@Override
@@ -105,7 +104,15 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		super.onEntityUpdate();
 
-		if(world.isRemote)
+		if(!world.isRemote)
+		{
+			BlockPos downPos = getPosition().down();
+			IBlockState state = world.getBlockState(downPos);
+
+			if(state.getBlock().isAir(state, world, downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
+				remove();
+		}
+		else
 		{
 			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
 			{
@@ -269,7 +276,6 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, pos, getWhitelistModule()); //if there is none, nothing will drop
-		SentryTracker.stopTracking(this);
 		setDead();
 	}
 

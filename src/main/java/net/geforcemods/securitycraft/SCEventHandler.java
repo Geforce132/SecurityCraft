@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -25,7 +24,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
-import net.geforcemods.securitycraft.misc.SentryTracker;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
@@ -59,6 +57,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -246,27 +245,29 @@ public class SCEventHandler {
 
 			//outside !world.isRemote for properly checking the interaction
 			//all the sentry functionality for when the sentry is diguised
-			SentryTracker.getSentryAtPosition(world, event.getPos()).ifPresent(sentry -> {
-				event.setCanceled(sentry.processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
+			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+			if(!sentries.isEmpty())
+			{
+				event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
 				event.setCancellationResult(EnumActionResult.SUCCESS);
-			});
+			}
 		}
 	}
 
 	@SubscribeEvent
 	public void onBlockEventBreak(BlockEvent.BreakEvent event)
 	{
-		Optional<EntitySentry> optionalSentry = SentryTracker.getSentryAtPosition(event.getWorld(), event.getPos());
+		List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
-		if(optionalSentry.isPresent())
+		if(!sentries.isEmpty())
 		{
-			EntitySentry sentry = optionalSentry.get();
 			BlockPos pos = event.getPos();
 
-			if(!sentry.getDisguiseModule().isEmpty())
+			if (!sentries.get(0).getDisguiseModule().isEmpty())
 			{
-				ItemStack disguiseModule = sentry.getDisguiseModule();
+				ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
 				List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
 
 				if(blocks.size() > 0)
@@ -440,16 +441,19 @@ public class SCEventHandler {
 				}
 			}
 
-			SentryTracker.getSentryAtPosition(world, pos).ifPresent(sentry -> {
-				if(!sentry.getDisguiseModule().isEmpty())
+			List<EntitySentry> sentries = event.getWorld().getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+			if(!sentries.isEmpty())
+			{
+				if (!sentries.get(0).getDisguiseModule().isEmpty())
 				{
-					ItemStack disguiseModule = sentry.getDisguiseModule();
+					ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
 					List<Block> blocks = ((ItemModule)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTagCompound());
 
 					if(blocks.size() > 0)
 						event.setCanceled(true);
 				}
-			});
+			}
 		}
 	}
 

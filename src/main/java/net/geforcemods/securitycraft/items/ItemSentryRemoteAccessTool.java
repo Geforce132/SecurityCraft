@@ -1,12 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
 import java.util.List;
-import java.util.Optional;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.SentryTracker;
 import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -47,10 +45,10 @@ public class ItemSentryRemoteAccessTool extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(!world.isRemote){
-			Optional<EntitySentry> optionalSentry = SentryTracker.getSentryAtPosition(world, pos);
+			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
 
-			if(optionalSentry.isPresent()) {
-				EntitySentry sentry = optionalSentry.get();
+			if(!sentries.isEmpty()) {
+				EntitySentry sentry = sentries.get(0);
 				BlockPos pos2 = sentry.getPosition();
 
 				if(!isSentryAdded(stack, pos2)){
