@@ -48,7 +48,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				if(hasModule(EnumModuleType.WHITELIST))
 					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(e.getName().toLowerCase());
 
-				return e != owner && isNotWhitelisted;
+				return e != owner && isNotWhitelisted && !e.isSpectator();
 			});
 
 			if(hasModule(EnumModuleType.REDSTONE))

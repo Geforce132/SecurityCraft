@@ -100,7 +100,7 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 
 			if (canAttack()) {
 				AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
-				List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);
+				List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area, e -> !(e instanceof EntityPlayer) || !((EntityPlayer)e).isSpectator());
 				Iterator<?> iterator = entities.iterator();
 
 				if(!world.isRemote){
