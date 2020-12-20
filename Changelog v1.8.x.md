@@ -13,6 +13,7 @@
 - Fix: Sentries target invulnerable entities
 - Fix: Sentries can be placed above liquids
 - Fix: Players in spectator mode can activate some blocks (e.g. Portable Radar)
+- Fix: Fake liquids can sometimes be picked up when they shouldn't
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
