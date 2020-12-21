@@ -11,12 +11,16 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
 public class ScannerDoorTileEntity extends CustomizableTileEntity
@@ -44,7 +48,7 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
-			if(!getOwner().isOwner(player))
+			if(!getOwner().isOwner(player) && (!hasModule(ModuleType.WHITELIST) || !ModuleUtils.getPlayersFromModule(getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;
@@ -58,6 +62,48 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 
 			if(open && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
+		}
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module)
+	{
+		super.onModuleInserted(stack, module);
+		handleModule(stack, module, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module)
+	{
+		super.onModuleRemoved(stack, module);
+		handleModule(stack, module, true);
+	}
+
+	private void handleModule(ItemStack stack, ModuleType module, boolean removed)
+	{
+		DoubleBlockHalf myHalf = getBlockState().get(DoorBlock.HALF);
+		BlockPos otherPos;
+
+		if(myHalf == DoubleBlockHalf.UPPER)
+			otherPos = getPos().down();
+		else
+			otherPos = getPos().up();
+
+		BlockState other = world.getBlockState(otherPos);
+
+		if(other.get(DoorBlock.HALF) != myHalf)
+		{
+			TileEntity otherTe = world.getTileEntity(otherPos);
+
+			if(otherTe instanceof ScannerDoorTileEntity)
+			{
+				ScannerDoorTileEntity otherDoorTe = (ScannerDoorTileEntity)otherTe;
+
+				if(!removed && !otherDoorTe.hasModule(module))
+					otherDoorTe.insertModule(stack);
+				else if(removed && otherDoorTe.hasModule(module))
+					otherDoorTe.removeModule(module);
+			}
 		}
 	}
 
@@ -77,7 +123,7 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[]{};
+		return new ModuleType[]{ModuleType.WHITELIST};
 	}
 
 	@Override
