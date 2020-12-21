@@ -697,6 +697,7 @@ module.securitycraft:keypadFurnace.blacklistModule.description=Ein Blacklist-Mod
 module.securitycraft:projector.redstoneModule.description=Ein Redstone-Modul in einem Projektor erlaubt es dir, den Projektor mithilfe von Redstone manuell an- und auszuschalten.
 module.securitycraft:projector.disguiseModule.description=Wenn ein Tarnmodul zu einem Projektor hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.
 module.securitycraft:secret_sign.whitelistModule.description=Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.
+module.securitycraft:scannerDoor.whitelistModule.description=Ein Whitelist-Modul in einer Scannertür erlaubt gewhitelisteten Spielern, die Scannertür zu nutzen, wenn sie nicht der Besitzer sind.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?

@@ -695,6 +695,7 @@ module.securitycraft:keypadFurnace.blacklistModule.description=Adding a blacklis
 module.securitycraft:projector.redstoneModule.description=Adding a redstone module to a Projector will allow you to manually toggle the Projector on and off using redstone power.
 module.securitycraft:projector.disguiseModule.description=Adding a disguise module to a Projector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:secret_sign.whitelistModule.description=Adding a whitelist module to a Secret Sign will allow whitelisted players to interact with, and view the text on it.
+module.securitycraft:scannerDoor.whitelistModule.description=Adding the whitelist module to a scanner door will allow players to use the scanner door even if they aren't the player who placed down the block.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?

@@ -10,11 +10,16 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityScannerDoor extends CustomizableSCTE
@@ -37,7 +42,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
-			if(!getOwner().isOwner(player))
+			if(!getOwner().isOwner(player) && (!hasModule(EnumModuleType.WHITELIST) || !ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.WHITELIST)).contains(player.getName().toLowerCase())))
 			{
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
 				return;
@@ -52,6 +57,48 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 
 			if(open && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
+		}
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, EnumModuleType module)
+	{
+		super.onModuleInserted(stack, module);
+		handleModule(stack, module, false);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, EnumModuleType module)
+	{
+		super.onModuleRemoved(stack, module);
+		handleModule(stack, module, true);
+	}
+
+	private void handleModule(ItemStack stack, EnumModuleType module, boolean removed)
+	{
+		EnumDoorHalf myHalf = world.getBlockState(pos).getValue(BlockDoor.HALF);
+		BlockPos otherPos;
+
+		if(myHalf == EnumDoorHalf.UPPER)
+			otherPos = getPos().down();
+		else
+			otherPos = getPos().up();
+
+		IBlockState other = world.getBlockState(otherPos);
+
+		if(other.getValue(BlockDoor.HALF) != myHalf)
+		{
+			TileEntity otherTe = world.getTileEntity(otherPos);
+
+			if(otherTe instanceof TileEntityScannerDoor)
+			{
+				TileEntityScannerDoor otherDoorTe = (TileEntityScannerDoor)otherTe;
+
+				if(!removed && !otherDoorTe.hasModule(module))
+					otherDoorTe.insertModule(stack);
+				else if(removed && otherDoorTe.hasModule(module))
+					otherDoorTe.removeModule(module);
+			}
 		}
 	}
 
@@ -71,7 +118,7 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[]{};
+		return new EnumModuleType[]{EnumModuleType.WHITELIST};
 	}
 
 	@Override
