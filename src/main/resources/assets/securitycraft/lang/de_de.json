@@ -790,6 +790,7 @@
 	"module.securitycraft.secret_jungle_sign.whitelist_module.description": "Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
 	"module.securitycraft.secret_acacia_sign.whitelist_module.description": "Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
 	"module.securitycraft.secret_dark_oak_sign.whitelist_module.description": "Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
+	"module.securitycraft.scanner_door.whitelist_module.description": "Ein Whitelist-Modul in einer Scannertür erlaubt gewhitelisteten Spielern, die Scannertü zu nutzen, wenn sie nicht der Besitzer sind.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Ist der Codebrecher erlaubt?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Kann der Codebrecher benutzt werden?",
