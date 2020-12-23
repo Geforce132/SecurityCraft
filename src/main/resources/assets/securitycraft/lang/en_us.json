@@ -791,6 +791,7 @@
 	"module.securitycraft.secret_acacia_sign.whitelist_module.description": "Adding a whitelist module to a Secret Sign will allow whitelisted players to interact with, and view the text on it.",
 	"module.securitycraft.secret_dark_oak_sign.whitelist_module.description": "Adding a whitelist module to a Secret Sign will allow whitelisted players to interact with, and view the text on it.",
 	"module.securitycraft.scanner_door.whitelist_module.description": "Adding the whitelist module to a scanner door will allow players to use the scanner door even if they aren't the player who placed down the block.",
+	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Adding the whitelist module to a reinforced hopper will allow whitelisted players to access the hopper's contents and extract out of their own password-protected chests/furnaces/... using this hopper.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Is codebreaker allowed?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Can the codebreaker be used?",
