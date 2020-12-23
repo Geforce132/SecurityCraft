@@ -11,8 +11,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -53,8 +55,9 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.VanillaInventoryCodeHooks;
 
 //fuck vanilla for not making the hopper te extensible
-public class ReinforcedHopperTileEntity extends LockableLootTileEntity implements IHopper, ITickableTileEntity, IOwnable
+public class ReinforcedHopperTileEntity extends LockableLootTileEntity implements IHopper, ITickableTileEntity, IOwnable, IModuleInventory
 {
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> inventory = NonNullList.withSize(5, ItemStack.EMPTY);
 	private int transferCooldown = -1;
@@ -82,6 +85,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 			owner.setOwnerUUID(tag.getString("ownerUUID"));
 
 		transferCooldown = tag.getInt("TransferCooldown");
+		modules = readModuleInventory(tag);
 	}
 
 	@Override
@@ -99,6 +103,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 		}
 
 		tag.putInt("TransferCooldown", transferCooldown);
+		writeModuleInventory(tag);
 		return tag;
 	}
 
@@ -582,6 +587,36 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	{
 		if(world.isRemote)
 			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos(), getWorld().dimension.getType().getId()));
+	}
+
+	@Override
+	public boolean enableHack()
+	{
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot)
+	{
+		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
+	}
+
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[] {ModuleType.WHITELIST};
+	}
+
+	@Override
+	public NonNullList<ItemStack> getInventory()
+	{
+		return modules;
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
 	}
 
 	//code from Forge, as it is hardcoded to the vanilla hopper
