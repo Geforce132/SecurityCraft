@@ -853,7 +853,8 @@
 	"module.securitycraft.secret_dark_oak_sign.whitelist_module.description": "Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
 	"module.securitycraft.secret_crimson_sign.whitelist_module.description": "Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
 	"module.securitycraft.secret_warped_sign.whitelist_module.description": "Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.",
-	"module.securitycraft.scanner_door.whitelist_module.description": "Ein Whitelist-Modul in einer Scannertür erlaubt gewhitelisteten Spielern, die Scannertü zu nutzen, wenn sie nicht der Besitzer sind.",
+	"module.securitycraft.scanner_door.whitelist_module.description": "Ein Whitelist-Modul in einer Scannertür erlaubt gewhitelisteten Spielern, die Scannertür zu nutzen, wenn sie nicht der Besitzer sind.",
+	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Ein Whitelist-Modul in einem verstärkten Trichter erlaubt gewhitelisteten Spielern, den Trichter zu benutzen, sowie ihn zum Extrahieren von Items aus ihren Passwort gesicherten Truhen/Öfen/... zu verwenden.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Ist der Codebrecher erlaubt?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Kann der Codebrecher benutzt werden?",

@@ -51,12 +51,18 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if (!world.isRemote)
+		if(!world.isRemote)
 		{
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity tileEntity = world.getTileEntity(pos);
 
-			if(te instanceof ReinforcedHopperTileEntity)
-				player.openContainer((ReinforcedHopperTileEntity)te);
+			if(tileEntity instanceof ReinforcedHopperTileEntity)
+			{
+				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity)tileEntity;
+
+				//only allow the owner or whitelisted players to access a reinforced hopper
+				if(te.getOwner().isOwner(player) || ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase()))
+					player.openContainer(te);
+			}
 		}
 
 		return ActionResultType.SUCCESS;
@@ -125,7 +131,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 				{
 					IModuleInventory inv = (IModuleInventory)te;
 
-					if(inv.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's whitelist module
+					if(ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+						return true;
+					//hoppers can extract out of e.g. chests whose owner is on the hopper's whitelist module
+					else if(ModuleUtils.getPlayersFromModule(hopperTe.getModule(ModuleType.WHITELIST)).contains(te.getOwner().getName().toLowerCase()))
 						return true;
 				}
 
