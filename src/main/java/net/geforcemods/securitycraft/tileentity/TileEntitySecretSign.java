@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.NonNullList;
 
@@ -60,12 +59,6 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 
 		if (tag.hasKey("ownerUUID"))
 			owner.setOwnerUUID(tag.getString("ownerUUID"));
-	}
-
-	@Override
-	public TileEntity getTileEntity()
-	{
-		return this;
 	}
 
 	@Override

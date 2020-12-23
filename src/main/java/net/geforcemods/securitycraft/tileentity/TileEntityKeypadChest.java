@@ -310,12 +310,6 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public TileEntity getTileEntity()
-	{
-		return this;
-	}
-
-	@Override
 	public NonNullList<ItemStack> getInventory()
 	{
 		return modules;

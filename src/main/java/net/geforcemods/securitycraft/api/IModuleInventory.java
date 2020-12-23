@@ -34,7 +34,10 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	/**
 	 * @return The TileEntity this inventory is for
 	 */
-	public TileEntity getTileEntity();
+	public default TileEntity getTileEntity()
+	{
+		return (TileEntity)this;
+	}
 
 	/**
 	 * @return The amount of modules that can be inserted

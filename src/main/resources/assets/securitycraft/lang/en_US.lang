@@ -554,7 +554,7 @@ messages.securitycraft:module.alreadyContained=The module you are holding alread
 messages.securitycraft:module.added=Added # to the held module.
 messages.securitycraft:module.removed=Removed # from the held module.
 messages.securitycraft:module.notHoldingForModify=You must be holding the module you wish to modify!
-messages.securitycraft:notOwned=I'm sorry, you cannot do that to this block. This block is owned by #.
+messages.securitycraft:notOwned=Sorry, you cannot do that to this block. It is owned by #.
 messages.securitycraft:adminTool.owner.name=Owner: #
 messages.securitycraft:adminTool.owner.uuid=Owner's UUID: #
 messages.securitycraft:adminTool.password=Password: #
@@ -696,6 +696,7 @@ module.securitycraft:projector.redstoneModule.description=Adding a redstone modu
 module.securitycraft:projector.disguiseModule.description=Adding a disguise module to a Projector will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:secret_sign.whitelistModule.description=Adding a whitelist module to a Secret Sign will allow whitelisted players to interact with, and view the text on it.
 module.securitycraft:scannerDoor.whitelistModule.description=Adding the whitelist module to a scanner door will allow players to use the scanner door even if they aren't the player who placed down the block.
+module.securitycraft:reinforced_hopper.whitelistModule.description=Adding the whitelist module to a reinforced hopper will allow whitelisted players to access the hopper's contents and extract out of their own password-protected chests/furnaces/... using this hopper.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?

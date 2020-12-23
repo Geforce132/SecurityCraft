@@ -698,6 +698,7 @@ module.securitycraft:projector.redstoneModule.description=Ein Redstone-Modul in 
 module.securitycraft:projector.disguiseModule.description=Wenn ein Tarnmodul zu einem Projektor hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.
 module.securitycraft:secret_sign.whitelistModule.description=Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.
 module.securitycraft:scannerDoor.whitelistModule.description=Ein Whitelist-Modul in einer Scannertür erlaubt gewhitelisteten Spielern, die Scannertür zu nutzen, wenn sie nicht der Besitzer sind.
+module.securitycraft:reinforced_hopper.whitelistModule.description=Ein Whitelist-Modul in einem verstärkten Trichter erlaubt gewhitelisteten Spielern, den Trichter zu benutzen, sowie ihn zum Extrahieren von Items aus ihren Passwort gesicherten Truhen/Öfen/... zu verwenden.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?

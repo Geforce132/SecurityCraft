@@ -15,8 +15,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -27,6 +31,29 @@ public class BlockReinforcedHopper extends BlockHopper implements IReinforcedBlo
 		super();
 
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if(!world.isRemote)
+		{
+			TileEntity tileEntity = world.getTileEntity(pos);
+
+			if(tileEntity instanceof TileEntityReinforcedHopper)
+			{
+				TileEntityReinforcedHopper te = (TileEntityReinforcedHopper)tileEntity;
+
+				//only allow the owner or whitelisted players to access a reinforced hopper
+				if(te.getOwner().isOwner(player) || ModuleUtils.getPlayersFromModule(te.getModule(EnumModuleType.WHITELIST)).contains(player.getName().toLowerCase()))
+				{
+					player.displayGUIChest(te);
+					player.addStat(StatList.HOPPER_INSPECTED);
+				}
+			}
+		}
+
+		return true;
 	}
 
 	@Override
@@ -66,7 +93,11 @@ public class BlockReinforcedHopper extends BlockHopper implements IReinforcedBlo
 				{
 					IModuleInventory inv = (IModuleInventory)te;
 
-					if(inv.hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(inv.getModule(EnumModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's whitelist module
+					if(ModuleUtils.getPlayersFromModule(inv.getModule(EnumModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+						return true;
+					//hoppers can extract out of e.g. chests whose owner is on the hopper's whitelist module
+					else if(ModuleUtils.getPlayersFromModule(hopperTe.getModule(EnumModuleType.WHITELIST)).contains(te.getOwner().getName().toLowerCase()))
 						return true;
 				}
 

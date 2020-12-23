@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -139,12 +138,6 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IModule
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
 				CustomizableSCTE.unlink(block.asTileEntity(world), this);
-	}
-
-	@Override
-	public TileEntity getTileEntity()
-	{
-		return this;
 	}
 
 	@Override
