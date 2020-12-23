@@ -7,6 +7,8 @@
 - New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
 - New: The Whitelist Module can now be used in the Scanner Door
+- New: Adding a whitelist module to a Reinforced Hopper will allow whitelisted players to access the hopper and use it to extract items out of their own blocks
+- Change: Reinforced Hoppers can no longer be accessed by anyone
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 - Fix: Removing the block under a Sentry does not remove the Sentry in numerous cases
