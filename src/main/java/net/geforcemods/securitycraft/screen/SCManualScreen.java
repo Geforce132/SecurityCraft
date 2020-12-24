@@ -171,9 +171,9 @@ public class SCManualScreen extends Screen {
 					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
 						this.blit(startX + 81, 118, 36, 1, 17, 16);
 
-				if(te instanceof ICustomizable)
-				{
-					ICustomizable scte = (ICustomizable)te;
+					if(te instanceof ICustomizable)
+					{
+						ICustomizable scte = (ICustomizable)te;
 
 						this.blit(startX + 213, 118, 72, 1, 16, 16);
 
@@ -187,23 +187,23 @@ public class SCManualScreen extends Screen {
 							this.blit(startX + 163, 118, 105, 1, 16, 16);
 					}
 				}
+			}
 
-				for(IngredientDisplay display : displays)
+			for(IngredientDisplay display : displays)
+			{
+				display.render(partialTicks);
+			}
+
+			for(int i = 0; i < hoverCheckers.size(); i++)
+			{
+				HoverChecker chc = hoverCheckers.get(i);
+
+				if(chc != null && chc.checkHover(mouseX, mouseY))
 				{
-					display.render(partialTicks);
-				}
-
-				for(int i = 0; i < hoverCheckers.size(); i++)
-				{
-					HoverChecker chc = hoverCheckers.get(i);
-
-					if(chc != null && chc.checkHover(mouseX, mouseY))
-					{
-						if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
-							renderTooltip(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
-						else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
-							renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
-					}
+					if(chc instanceof StringHoverChecker && ((StringHoverChecker)chc).getName() != null)
+						renderTooltip(((StringHoverChecker)chc).getLines(), mouseX, mouseY);
+					else if(i < displays.length && !displays[i].getCurrentStack().isEmpty())
+						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
 		}
