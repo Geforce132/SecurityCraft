@@ -18,6 +18,7 @@
 - Fix: Block of a disguised Sentry sometimes does not properly reappear when broken
 - Fix: Sentries can be placed above liquids
 - Fix: Players in spectator mode can activate some blocks (e.g. Portable Radar)
+- Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
