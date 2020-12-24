@@ -313,10 +313,13 @@ public class SCManualScreen extends Screen {
 				ShapedRecipe recipe = (ShapedRecipe) object;
 
 				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
-					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
+					NonNullList<Ingredient> ingredients = recipe.getIngredients();
+					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
-					for(int i = 0; i < recipeItems.size(); i++)
-						recipeItems.set(i, recipe.getIngredients().get(i));
+					for(int i = 0; i < ingredients.size(); i++)
+					{
+						recipeItems.set(getCraftMatrixPosition(i, recipe.getWidth(), recipe.getHeight()), ingredients.get(i));
+					}
 
 					this.recipe = recipeItems;
 					break;
@@ -508,4 +511,40 @@ public class SCManualScreen extends Screen {
 		}
 	}
 
+	//from JEI
+	private int getCraftMatrixPosition(int i, int width, int height)
+	{
+		int index;
+
+		if(width == 1)
+		{
+			if(height == 3)
+				index = (i * 3) + 1;
+			else if(height == 2)
+				index = (i * 3) + 1;
+			else
+				index = 4;
+
+		}
+		else if(height == 1)
+			index = i + 3;
+		else if(width == 2)
+		{
+			index = i;
+
+			if(i > 1)
+			{
+				index++;
+
+				if(i > 3)
+					index++;
+			}
+		}
+		else if(height == 2)
+			index = i + 3;
+		else
+			index = i;
+
+		return index;
+	}
 }
