@@ -17,6 +17,7 @@
 - Fix: Sentries can be placed above liquids
 - Fix: Players in spectator mode can activate some blocks (e.g. Portable Radar)
 - Fix: Fake liquids can sometimes be picked up when they shouldn't
+- Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
