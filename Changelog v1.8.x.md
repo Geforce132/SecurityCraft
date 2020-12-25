@@ -8,6 +8,7 @@
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
 - New: The Whitelist Module can now be used in the Scanner Door
 - New: Adding a whitelist module to a Reinforced Hopper will allow whitelisted players to access the hopper and use it to extract items out of their own blocks
+- New: Customization option to change how long the Retinal Scanner emits a redstone signal when it has been activated
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 

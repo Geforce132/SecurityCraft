@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -40,6 +41,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private OptionInt signalLength = new OptionInt(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;
@@ -59,7 +61,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 			}
 
 			BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
-			world.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, 60);
+			world.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, getSignalLength());
 
 			if(entity instanceof EntityPlayer && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.securitycraft:retinalScanner.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", entity.getName()), TextFormatting.GREEN);
@@ -68,12 +70,17 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 
 	@Override
 	public int getViewCooldown() {
-		return 30;
+		return getSignalLength() + 30;
 	}
 
 	@Override
 	public boolean activatedOnlyByPlayer() {
 		return !activatedByEntities.get();
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.get();
 	}
 
 	@Override
@@ -83,9 +90,8 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[]{ activatedByEntities, sendMessage };
+		return new Option[]{ activatedByEntities, sendMessage, signalLength };
 	}
-
 
 	public static void setProfileCache(PlayerProfileCache profileCacheIn) {
 		profileCache = profileCacheIn;

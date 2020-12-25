@@ -37,7 +37,7 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 
 	private double attackRange = 0.0D;
 
-	private int viewCooldown = getViewCooldown();
+	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 

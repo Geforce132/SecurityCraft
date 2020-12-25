@@ -793,6 +793,8 @@ option.securitycraft:retinalScanner.activatedByEntities=NPC-activated: #
 option.securitycraft:retinalScanner.activatedByEntities.description=Can this scanner be activated by NPC mobs that look at it?
 option.securitycraft:retinalScanner.sendMessage=Message: #
 option.securitycraft:retinalScanner.sendMessage.description=Does this scanner send a message upon activation?
+option.securitycraft:retinalScanner.signalLength=Signal length: #
+option.securitycraft:retinalScanner.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
 option.securitycraft:scannerDoor.sendMessage=Message: #
 option.securitycraft:scannerDoor.sendMessage.description=Does this scanner door send a message upon activation?
 option.securitycraft:alarm.range=Range: #
