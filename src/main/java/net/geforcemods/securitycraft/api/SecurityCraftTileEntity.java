@@ -41,7 +41,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	private boolean canBeNamed = false;
 	private ITextComponent customName = new StringTextComponent("name");
 	private double attackRange = 0.0D;
-	private int viewCooldown = getViewCooldown();
+	private int viewCooldown = 0;
 	private int ticksBetweenAttacks = 0;
 	private int attackCooldown = 0;
 	private Class<? extends Entity> typeToAttack = Entity.class;
