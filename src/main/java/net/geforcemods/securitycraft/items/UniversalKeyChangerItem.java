@@ -38,10 +38,15 @@ public class UniversalKeyChangerItem extends Item {
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getItem());
+		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getItem(), ctx.getHand());
 	}
 
-	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, double hitX, double hitY, double hitZ, ItemStack stack) {
+	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, ItemStack stack, Hand hand) {
+		ActionResultType briefcaseResult = handleBriefcase(world, player, hand).getType();
+
+		if(briefcaseResult != ActionResultType.PASS)
+			return briefcaseResult;
+
 		TileEntity te = world.getTileEntity(pos);
 
 		if(!world.isRemote && te instanceof IPasswordProtected) {
@@ -73,6 +78,11 @@ public class UniversalKeyChangerItem extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+		return handleBriefcase(world, player, hand);
+	}
+
+	private ActionResult<ItemStack> handleBriefcase(World world, PlayerEntity player, Hand hand)
+	{
 		ItemStack keyChanger = player.getHeldItem(hand);
 
 		if (!world.isRemote) {
@@ -90,9 +100,11 @@ public class UniversalKeyChangerItem extends Item {
 				}
 				else
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), TextFormatting.RED);
+
+				return ActionResult.resultFail(keyChanger);
 			}
 		}
 
-		return ActionResult.resultFail(keyChanger);
+		return ActionResult.resultPass(keyChanger);
 	}
 }
