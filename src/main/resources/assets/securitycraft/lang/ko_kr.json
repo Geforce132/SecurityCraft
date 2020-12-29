@@ -771,8 +771,6 @@
 	"config.securitycraft:useLookingGlass.tooltip": "세큐리티크래프트는 카메라를 볼 때 거울을 사용해야 합니까?\\n\\n거울이 설치되지 않은 경우 자동으로 \"false\"로 설정됩니다.",
 	"config.securitycraft:laserBlockRange": "레이저 반경:",
 	"config.securitycraft:laserBlockRange.tooltip": "레이저 블록은 몇 블록 떨어진 곳에서 다른 레이저 블록에 연결할 수 있습니까?",
-	"config.securitycraft:imsRange": "IMS 범위:",
-	"config.securitycraft:imsRange.tooltip": "IMS는 몇 블록 떨어진 곳에서 플레이어를 감지할 수 있습니까?",
 	"config.securitycraft:sayThanksMessage": "스폰 지점에 '팁' 메시지를 표시합니까?",
 	"config.securitycraft:sayThanksMessage.tooltip": "월드에 들어갈 때 '팁' 메시지가 플레이어에게 전송되어야 합니까?",
 	"config.securitycraft:debuggingMode": "디버그 모드입니까? (권장하지 않습니다!)",
@@ -837,6 +835,7 @@
 	"option.securitycraft.keycard_reader.sendMessage.description": "이 키카드 판독기는 활성화 시 메시지를 전송합니까(화이트리스트/블랙리스트 모듈을 사용하는 경우)?",
 	"option.securitycraft.claymore.range": "범위: #",
 	"option.securitycraft.claymore.range.description": "클레이모어 지뢰는 몇 블록에서 발을 헛디딜 수 있습니까?",
+	"option.securitycraft.ims.range": "범위: #",
 
 	"securitycraft.subtitle.alarm": "알람 소리",
 	"securitycraft.subtitle.electrified": "엔티티 감전",

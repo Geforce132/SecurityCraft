@@ -58,7 +58,6 @@ public class ConfigHandler {
 		public BooleanValue smallerMineExplosion;
 		public BooleanValue mineExplodesWhenInCreative;
 		public IntValue laserBlockRange;
-		public IntValue imsRange;
 		public IntValue inventoryScannerRange;
 		public IntValue maxAlarmRange;
 		public BooleanValue allowBlockClaim;
@@ -147,11 +146,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:laserBlockRange")
 					.comment("From how many blocks away can a laser block connect to another laser block?")
 					.defineInRange("laserBlockRange", 5, 0, Integer.MAX_VALUE);
-
-			imsRange = builder
-					.translation("config.securitycraft:imsRange")
-					.comment("How many blocks away can the I.M.S. detect players from?")
-					.defineInRange("imsRange", 12, 0, Integer.MAX_VALUE);
 
 			inventoryScannerRange = builder
 					.translation("config.securitycraft:inventoryScannerRange")

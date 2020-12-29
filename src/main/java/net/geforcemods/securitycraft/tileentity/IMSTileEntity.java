@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
@@ -32,6 +32,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
 
+	private IntOption range = new IntOption(this::getPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
@@ -67,9 +68,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double range = ConfigHandler.SERVER.imsRange.get();
-
-			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
+			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			List<?> mobs = world.getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> playerIterator = players.iterator();
@@ -241,7 +240,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[]{range};
 	}
 
 	@Override
