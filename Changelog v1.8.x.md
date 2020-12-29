@@ -10,6 +10,7 @@
 - New: Adding a whitelist module to a Reinforced Hopper will allow whitelisted players to access the hopper and use it to extract items out of their own blocks
 - New: Customization option to change how long the Retinal Scanner emits a redstone signal when it has been activated
 - New: Customization option to change the player search radius of the Username Logger
+- New: Customization option to change the length of the pause between alarm sounds
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
@@ -24,9 +25,10 @@
 - Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
 - Removed: Configuration option "alarmSoundVolume"
-- Removed: Configuration option "portableRadarSearchRadius"
-- Removed: Configuration option "portableRadarDelay"
+- Removed: Configuration option "alarmTickDelay"
 - Removed: Configuration option "motionActivatedLightSearchRadius"
+- Removed: Configuration option "portableRadarDelay"
+- Removed: Configuration option "portableRadarSearchRadius"
 - Removed: Configuration option "usernameLoggerSearchRadius"
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
