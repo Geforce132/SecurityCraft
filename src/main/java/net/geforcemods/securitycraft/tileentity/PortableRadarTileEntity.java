@@ -24,7 +24,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class PortableRadarTileEntity extends CustomizableTileEntity {
 
-	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", ConfigHandler.SERVER.portableRadarSearchRadius.get(), 5.0D, 50.0D, 5.0D);
+	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 25.0D, 5.0D, 50.0D, 5.0D);
 	private IntOption searchDelayOption = new IntOption("searchDelay", ConfigHandler.SERVER.portableRadarDelay.get(), 4, 10, 1);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private BooleanOption enabledOption = new BooleanOption("enabled", true);
