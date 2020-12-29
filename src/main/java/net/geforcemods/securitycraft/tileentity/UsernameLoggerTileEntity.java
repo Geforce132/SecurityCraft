@@ -3,9 +3,10 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
+	private IntOption searchRadius = new IntOption(this, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -50,7 +52,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	public void logPlayers(){
-		double range = ConfigHandler.SERVER.usernameLoggerSearchRadius.get();
+		int range = searchRadius.get();
 
 		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 		List<?> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area);
@@ -143,5 +145,11 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getTranslationKey());
+	}
+
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{searchRadius};
 	}
 }

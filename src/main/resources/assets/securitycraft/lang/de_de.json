@@ -884,8 +884,6 @@
 	"config.securitycraft:fiveMinAutoShutoff.tooltip": "Wenn LookingGlass installiert ist, sollen sich die Monitore nach 5 Minuten ausschalten, um Ressourcen zu sparen?",
 	"config.securitycraft:useLookingGlass": "Nutze LookingGlass für Kameras?",
 	"config.securitycraft:useLookingGlass.tooltip": "Soll SecurityCraft LookingGlass verwenden, um Kameras anzuzeigen?\\n\\nWird automatisch zu \"false\" gesetzt, wenn LookingGlass nicht installiert ist.",
-	"config.securitycraft:usernameLoggerSearchRadius": "Suchradius Nutzernamen-Protokollierer:",
-	"config.securitycraft:usernameLoggerSearchRadius.tooltip": "Von wie vielen Blöcken entfernt soll der Protokollierer Spieler erkennen?",
 	"config.securitycraft:laserBlockRange": "Laser Reichweite:",
 	"config.securitycraft:laserBlockRange.tooltip": "Von wie vielen Blöcken maximal entfernt soll sich der Laser mit einem anderen Laser verbinden können?",
 	"config.securitycraft:alarmTickDelay": "Verzögerung zwischen Alarmsounds (Sekunden):",
@@ -979,6 +977,8 @@
 	"option.securitycraft.secret_crimson_sign.isSecret.description": "Soll der Text des geheimen Schildes nur für den Besitzer und gewhitelistete Spieler sichtbar sein?",
 	"option.securitycraft.secret_warped_sign.isSecret": "Geheim: %s",
 	"option.securitycraft.secret_warped_sign.isSecret.description": "Soll der Text des geheimen Schildes nur für den Besitzer und gewhitelistete Spieler sichtbar sein?",
+	"option.securitycraft.username_logger.searchRadius": "Suchradius: %s",
+	"option.securitycraft.username_logger.searchRadius.description": "Der Radius in Blöcken, in dem der Protokollierer nach Spielern sucht.",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",

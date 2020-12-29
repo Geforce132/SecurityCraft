@@ -769,8 +769,6 @@
 	"config.securitycraft:fiveMinAutoShutoff.tooltip": "거울이 설치된 경우 활성화된 지 5분이 경과한 후 리소스를 절약하기 위해 보기를 꺼야 합니까?",
 	"config.securitycraft:useLookingGlass": "카메라를 볼 때 거울을 사용합니까?",
 	"config.securitycraft:useLookingGlass.tooltip": "세큐리티크래프트는 카메라를 볼 때 거울을 사용해야 합니까?\\n\\n거울이 설치되지 않은 경우 자동으로 \"false\"로 설정됩니다.",
-	"config.securitycraft:usernameLoggerSearchRadius": "사용자 이름 기록기 검색 반경:",
-	"config.securitycraft:usernameLoggerSearchRadius.tooltip": "사용자 이름 기록기가 플레이어를 탐지할 수 있는 블록은 몇 개입니까?",
 	"config.securitycraft:laserBlockRange": "레이저 반경:",
 	"config.securitycraft:laserBlockRange.tooltip": "레이저 블록은 몇 블록 떨어진 곳에서 다른 레이저 블록에 연결할 수 있습니까?",
 	"config.securitycraft:alarmTickDelay": "알람음 간 지연(초):",

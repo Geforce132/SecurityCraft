@@ -792,8 +792,6 @@
 	"config.securitycraft:fiveMinAutoShutoff.tooltip": "Si LookingGlass está instalado, ¿deberían apagarse los monitores para ahorrar recursos si pasan 5 minutos desde que se activó?",
 	"config.securitycraft:useLookingGlass": "¿Usar LookingGlass para ver las cámaras?",
 	"config.securitycraft:useLookingGlass.tooltip": "¿Debería SecurityCraft usar LookingGlass para ver las cámaras?\\n\\nEstará desactivado automáticamente si LookingGlass no está instalado.",
-	"config.securitycraft:usernameLoggerSearchRadius": "Radio de alcance del registrador de nombres:",
-	"config.securitycraft:usernameLoggerSearchRadius.tooltip": "¿Desde cuántos bloques de distancia puede el registrador detectar jugadores?",
 	"config.securitycraft:laserBlockRange": "Alcance del láser:",
 	"config.securitycraft:laserBlockRange.tooltip": "¿Desde cuántos bloques de distancia puede un bloque láser conectarse con otro?",
 	"config.securitycraft:alarmTickDelay": "Demora entre sonidos de alarma (segundos):",

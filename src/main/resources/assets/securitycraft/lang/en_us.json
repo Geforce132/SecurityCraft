@@ -885,8 +885,6 @@
 	"config.securitycraft:fiveMinAutoShutoff.tooltip": "If LookingGlass is installed, should monitor views turn off to save resources after 5 minutes have passed since it was activated?",
 	"config.securitycraft:useLookingGlass": "Use LookingGlass for viewing cameras?",
 	"config.securitycraft:useLookingGlass.tooltip": "Should SecurityCraft use LookingGlass for viewing cameras?\\n\\nAutomatically gets set to \"false\" if LookingGlass is not installed.",
-	"config.securitycraft:usernameLoggerSearchRadius": "Username logger search radius:",
-	"config.securitycraft:usernameLoggerSearchRadius.tooltip": "From how many blocks can the username logger detect players?",
 	"config.securitycraft:laserBlockRange": "Laser range:",
 	"config.securitycraft:laserBlockRange.tooltip": "From how many blocks away can a laser block connect to another laser block?",
 	"config.securitycraft:alarmTickDelay": "Delay between alarm sounds (seconds):",
@@ -982,6 +980,8 @@
 	"option.securitycraft.secret_crimson_sign.isSecret.description": "Should the text of the secret sign only be visible to the owner and whitelisted players?",
 	"option.securitycraft.secret_warped_sign.isSecret": "Secret: %s",
 	"option.securitycraft.secret_warped_sign.isSecret.description": "Should the text of the secret sign only be visible to the owner and whitelisted players?",
+	"option.securitycraft.username_logger.searchRadius": "Search radius: %s",
+	"option.securitycraft.username_logger.searchRadius.description": "The range in blocks in which the username logger searches for players.",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
