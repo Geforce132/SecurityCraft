@@ -794,8 +794,6 @@
 	"config.securitycraft:useLookingGlass.tooltip": "¿Debería SecurityCraft usar LookingGlass para ver las cámaras?\\n\\nEstará desactivado automáticamente si LookingGlass no está instalado.",
 	"config.securitycraft:laserBlockRange": "Alcance del láser:",
 	"config.securitycraft:laserBlockRange.tooltip": "¿Desde cuántos bloques de distancia puede un bloque láser conectarse con otro?",
-	"config.securitycraft:claymoreRange": "Alcance de Claymore:",
-	"config.securitycraft:claymoreRange.tooltip": "¿Desde cuántos bloques de distancia puede detonarse la Claymore?",
 	"config.securitycraft:imsRange": "Alcance del S.M.I.:",
 	"config.securitycraft:imsRange.tooltip": "¿Desde cuántos bloques de distancia puede detectar jugadores el S.M.I.?",
 	"config.securitycraft:sayThanksMessage": "¿Mostrar un \"consejo\" al unirse?",
@@ -868,6 +866,8 @@
 	"option.securitycraft.keypad_chest.sendMessage.description": "¿Este cofre envía un mensaje al ser activado (cuando se usa un módulo de lista blanca/negra)?",
 	"option.securitycraft.keypad_furnace.sendMessage": "Mensaje: %s",
 	"option.securitycraft.keypad_furnace.sendMessage.description": "¿Este horno envía un mensaje al ser activado (cuando se usa un módulo de lista blanca/negra)?",
+	"option.securitycraft.claymore.range": "Alcance: %s",
+	"option.securitycraft.claymore.range.description": "¿Desde cuántos bloques de distancia puede detonarse la Claymore?",
 
 	"securitycraft.subtitle.alarm": "Alarma suena",
 	"securitycraft.subtitle.electrified": "Entidad se electrocuta",

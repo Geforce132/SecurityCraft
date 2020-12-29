@@ -38,7 +38,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		}
 	};
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeypadTileEntity()
 	{

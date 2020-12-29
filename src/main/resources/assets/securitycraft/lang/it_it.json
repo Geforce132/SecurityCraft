@@ -875,8 +875,6 @@
 	"config.securitycraft:useLookingGlass.tooltip": "La SecurityCraft ha bisogno della LookingGlass per vedere le telecamere?\\n\\nAutomaticamente viene impostato \"false\" se la LookingGlass non è installata.",
 	"config.securitycraft:laserBlockRange": "Range del raser:",
 	"config.securitycraft:laserBlockRange.tooltip": "Da quanti blocchi di distanza possono essere connessi due blocchi laser?",
-	"config.securitycraft:claymoreRange": "Range del claymore:",
-	"config.securitycraft:claymoreRange.tooltip": "Da quanti blocchi può viaggiare una mina claymore?",
 	"config.securitycraft:imsRange": "Range dello S.M.I.:",
 	"config.securitycraft:imsRange.tooltip": "Da quanti blocchi può lo S.M.I. rilevare i giocatori?",
 	"config.securitycraft:sayThanksMessage": "Mostra un consiglio alla rigenerazione?",
@@ -965,6 +963,8 @@
 	"option.securitycraft.secret_crimson_sign.isSecret.description": "Il testo di questo cartello segreto dovrebbe essere visibile solo al proprietario ed ai giocatori nella lista bianca?",
 	"option.securitycraft.secret_warped_sign.isSecret": "Segreto: %s",
 	"option.securitycraft.secret_warped_sign.isSecret.description": "Il testo di questo cartello segreto dovrebbe essere visibile solo al proprietario ed ai giocatori nella lista bianca?",
+	"option.securitycraft.claymore.range": "Raggio: %s",
+	"option.securitycraft.claymore.range.description": "Da quanti blocchi può viaggiare una mina claymore?",
 
 	"securitycraft.subtitle.alarm": "L'allarme sta suonando",
 	"securitycraft.subtitle.electrified": "Entità folgorata",

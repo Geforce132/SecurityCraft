@@ -29,7 +29,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	private int passLV = 0;
 	private boolean requiresExactKeycard = false;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeycardReaderTileEntity()
 	{

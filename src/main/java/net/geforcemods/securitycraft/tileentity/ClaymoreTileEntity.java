@@ -3,10 +3,12 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -21,8 +23,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion.Mode;
 
-public class ClaymoreTileEntity extends SecurityCraftTileEntity{
-
+public class ClaymoreTileEntity extends CustomizableTileEntity
+{
+	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
 	private double entityX = -1D;
 	private double entityY = -1D;
 	private double entityZ = -1D;
@@ -37,7 +40,7 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 	public void tick() {
 		if(!getWorld().isRemote)
 		{
-			if(getWorld().getBlockState(getPos()).get(ClaymoreBlock.DEACTIVATED))
+			if(getBlockState().get(ClaymoreBlock.DEACTIVATED))
 				return;
 
 			if(cooldown > 0){
@@ -55,13 +58,13 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == Direction.NORTH)
-				area = area.contract(-0, -0, ConfigHandler.SERVER.claymoreRange.get());
+				area = area.contract(-0, -0, range.get());
 			else if(dir == Direction.SOUTH)
-				area = area.contract(-0, -0, -ConfigHandler.SERVER.claymoreRange.get());
+				area = area.contract(-0, -0, -range.get());
 			else if(dir == Direction.EAST)
-				area = area.contract(-ConfigHandler.SERVER.claymoreRange.get(), -0, -0);
+				area = area.contract(-range.get(), -0, -0);
 			else if(dir == Direction.WEST)
-				area = area.contract(ConfigHandler.SERVER.claymoreRange.get(), -0, -0);
+				area = area.contract(range.get(), -0, -0);
 
 			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> iterator = entities.iterator();
@@ -92,6 +95,7 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
+		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.putDouble("entityX", entityX);
 		tag.putDouble("entityY", entityY);
@@ -107,6 +111,8 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 	{
 		super.read(state, tag);
 
+		readOptions(tag);
+
 		if (tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
 
@@ -120,4 +126,15 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 			entityZ = tag.getDouble("entityZ");
 	}
 
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{range};
+	}
+
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[0];
+	}
 }

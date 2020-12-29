@@ -1,11 +1,14 @@
 package net.geforcemods.securitycraft.api;
 
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
@@ -160,7 +163,7 @@ public abstract class Option<T> {
 	 */
 	public static class IntOption extends Option<Integer> implements ISlider{
 		private boolean slider;
-		private CustomizableTileEntity tileEntity;
+		private Supplier<BlockPos> pos;
 
 		public IntOption(String optionName, Integer value) {
 			super(optionName, value);
@@ -170,10 +173,10 @@ public abstract class Option<T> {
 			super(optionName, value, min, max, increment);
 		}
 
-		public IntOption(CustomizableTileEntity te, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
+		public IntOption(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
 			super(optionName, value, min, max, increment);
 			slider = s;
-			tileEntity = te;
+			this.pos = pos;
 		}
 
 		@Override
@@ -225,10 +228,10 @@ public abstract class Option<T> {
 		{
 			if(!isSlider() || !(slider instanceof NamedSlider))
 				return;
-
+			System.out.println(pos.get());
 			setValue((int)slider.getValue());
 			slider.setMessage(ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName(), toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, get()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
 		}
 	}
 
@@ -237,7 +240,7 @@ public abstract class Option<T> {
 	 */
 	public static class DoubleOption extends Option<Double> implements ISlider{
 		private boolean slider;
-		private CustomizableTileEntity tileEntity;
+		private Supplier<BlockPos> pos;
 
 		public DoubleOption(String optionName, Double value) {
 			super(optionName, value);
@@ -249,10 +252,10 @@ public abstract class Option<T> {
 			slider = false;
 		}
 
-		public DoubleOption(CustomizableTileEntity te, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
+		public DoubleOption(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
 			super(optionName, value, min, max, increment);
 			slider = s;
-			tileEntity = te;
+			this.pos = pos;
 		}
 
 		@Override
@@ -307,7 +310,7 @@ public abstract class Option<T> {
 
 			setValue(slider.getValue());
 			slider.setMessage(ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName(), toString()));
-			SecurityCraft.channel.sendToServer(new UpdateSliderValue(tileEntity.getPos(), ((NamedSlider)slider).id, get()));
+			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
 		}
 	}
 

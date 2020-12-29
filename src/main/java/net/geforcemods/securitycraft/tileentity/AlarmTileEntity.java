@@ -16,8 +16,8 @@ import net.minecraft.world.server.ServerWorld;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
 
-	private IntOption range = new IntOption(this, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
-	private IntOption delay = new IntOption(this, "delay", 2, 1, 30, 1, true);
+	private IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
+	private IntOption delay = new IntOption(this::getPos, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
