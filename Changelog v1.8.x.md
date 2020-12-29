@@ -26,6 +26,7 @@
 - Fix: Fake liquids can sometimes be picked up when they shouldn't
 - Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
+- Fix: Customization option tooltips overlap sliders when changing their value
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay"
 - Removed: Configuration option "claymoreRange"

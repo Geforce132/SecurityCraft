@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.gui.widget.Widget;
+import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class HoverChecker
 {
@@ -29,7 +30,7 @@ public class HoverChecker
 	{
 		if(widget != null)
 		{
-			if(!widget.visible)
+			if(!widget.visible || (widget instanceof Slider && ((Slider)widget).dragging))
 				return false;
 			else return widget.isHovered();
 		}
