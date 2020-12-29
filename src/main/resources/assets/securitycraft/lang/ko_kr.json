@@ -775,8 +775,6 @@
 	"config.securitycraft:laserBlockRange.tooltip": "레이저 블록은 몇 블록 떨어진 곳에서 다른 레이저 블록에 연결할 수 있습니까?",
 	"config.securitycraft:alarmTickDelay": "알람음 간 지연(초):",
 	"config.securitycraft:alarmTickDelay.tooltip": "알람이 활성화된 경우 효과 발생 시간(초)은 얼마입니까?",
-	"config.securitycraft:portableRadarDelay": "휴대용 레이더 지연(초):",
-	"config.securitycraft:portableRadarDelay.tooltip": "휴대용 레이더가 활성화된 경우 레이더가 다시 검색하려면 몇 초가 지나야 합니까?",
 	"config.securitycraft:claymoreRange": "클레이모어 범위:",
 	"config.securitycraft:claymoreRange.tooltip": "클레이모어 지뢰는 몇 블록에서 발을 헛디딜 수 있습니까?",
 	"config.securitycraft:imsRange": "IMS 범위:",

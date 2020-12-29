@@ -60,7 +60,6 @@ public class ConfigHandler {
 		public IntValue usernameLoggerSearchRadius;
 		public IntValue laserBlockRange;
 		public IntValue alarmTickDelay;
-		public IntValue portableRadarDelay;
 		public IntValue claymoreRange;
 		public IntValue imsRange;
 		public IntValue inventoryScannerRange;
@@ -162,11 +161,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:alarmTickDelay")
 					.comment("If an alarm is activated, how many seconds in-between alarm sounds effects?")
 					.defineInRange("alarmTickDelay", 2, 0, Integer.MAX_VALUE);
-
-			portableRadarDelay = builder
-					.translation("config.securitycraft:portableRadarDelay")
-					.comment("If a portable radar is activated, how many seconds should pass before the radar searches again?")
-					.defineInRange("portableRadarDelay", 4, 0, Integer.MAX_VALUE);
 
 			claymoreRange = builder
 					.translation("config.securitycraft:claymoreRange")
