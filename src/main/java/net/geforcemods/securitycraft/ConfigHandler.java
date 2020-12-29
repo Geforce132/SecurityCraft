@@ -57,7 +57,6 @@ public class ConfigHandler {
 		public BooleanValue ableToCraftLUKeycard;
 		public BooleanValue smallerMineExplosion;
 		public BooleanValue mineExplodesWhenInCreative;
-		public DoubleValue portableRadarSearchRadius;
 		public IntValue usernameLoggerSearchRadius;
 		public IntValue laserBlockRange;
 		public IntValue alarmTickDelay;
@@ -148,11 +147,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:mineExplodesWhenInCreative")
 					.comment("Should mines explode if broken while in Creative mode?")
 					.define("mineExplodesWhenInCreative", true);
-
-			portableRadarSearchRadius = builder
-					.translation("config.securitycraft:portableRadarSearchRadius")
-					.comment("From how many blocks can the portable radar detect players?")
-					.defineInRange("portableRadarSearchRadius", 25.0D, 0.0D, Double.MAX_VALUE);
 
 			usernameLoggerSearchRadius = builder
 					.translation("config.securitycraft:usernameLoggerSearchRadius")
