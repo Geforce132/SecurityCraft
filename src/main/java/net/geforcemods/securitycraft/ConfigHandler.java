@@ -63,7 +63,6 @@ public class ConfigHandler {
 		public IntValue imsRange;
 		public IntValue inventoryScannerRange;
 		public IntValue maxAlarmRange;
-		public DoubleValue motionActivatedLightSearchRadius;
 		public BooleanValue allowBlockClaim;
 		public BooleanValue respectInvisibility;
 		public BooleanValue reinforcedBlockTint;
@@ -180,11 +179,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:maxAlarmRange")
 					.comment("What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also not be finetuneable.")
 					.defineInRange("maxAlarmRange", 100, 1, Integer.MAX_VALUE);
-
-			motionActivatedLightSearchRadius = builder
-					.translation("config.securitycraft:motionActivatedLightSearchRadius")
-					.comment("How many blocks away can the Motion Activated Light detect entities from?")
-					.defineInRange("motionActivatedLightSearchRadius", 5.0D, 0.0D, Double.MAX_VALUE);
 
 			allowBlockClaim = builder
 					.translation("config.securitycraft:allowBlockClaim")
