@@ -2,7 +2,7 @@
 
 **Disclaimer:
 1. Due to the new sentry modes, your sentries will not behave as in previous mod versions. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked! Do note, that due to an additional fix regarding the Sentry, Sentries placed above water, lava, or other liquids will be removed and dropped as an item!
-2. Your SecurityCraft config will reset! This is because the mod's configuration file has been split up into client and server configs, and some config options have been removed in favor of ingame per-block configuration (accessible by rightclicking the block with a Universal Block Modifier). Read the changelog below for details. If a configuration option is not mentioned, it has simply been moved to the server config. The server configuration can be found in the "serverconfig" folder within your world folder. The client configuration can still be found in the normal "config" folder.**
+2. Your SecurityCraft config will reset! This is because the mod's configuration file has been split up into client and server configs, and some config options have been removed in favor of ingame per-block configuration (accessible by rightclicking the block with a Universal Block Modifier). Read the changelog below for details. If a configuration option is not mentioned, it has simply been moved to the server config. The server configuration can be found in the "serverconfig" folder within your world folder. The client configuration can still be found in the normal "config" folder. You can find your old configuration in the "config/securitycraft-common.toml" file.**
 
 - New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
@@ -12,6 +12,7 @@
 - New: Customization option to change the player search radius of the Username Logger
 - New: Customization option to change the length of the pause between alarm sounds
 - New: Customization option to change the range of blocks in which the Claymore can be tripped
+- New: Customization option to change the range of blocks in which the I.M.S. can find potential targets
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
@@ -28,6 +29,7 @@
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay"
 - Removed: Configuration option "claymoreRange"
+- Removed: Configuration option "imsRange"
 - Removed: Configuration option "motionActivatedLightSearchRadius"
 - Removed: Configuration option "portableRadarDelay"
 - Removed: Configuration option "portableRadarSearchRadius"

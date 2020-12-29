@@ -879,8 +879,6 @@
 	"config.securitycraft:useLookingGlass.tooltip": "SecurityCraft devrait-il utiliser LookingGlass pour visualiser les caméras? \\n\\nAutomatiquement réglé sur « faux » si LookingGlass n’est pas installé.",
 	"config.securitycraft:laserBlockRange": "Portée du laser :",
 	"config.securitycraft:laserBlockRange.tooltip": "À partir de combien de blocs de distance un bloc laser peut-il se connecter à un autre bloc laser ?",
-	"config.securitycraft:imsRange": "Portée du S.M.I. :",
-	"config.securitycraft:imsRange.tooltip": "À combien de blocs de distance le S.M.I. peut détecter les joueurs ?",
 	"config.securitycraft:sayThanksMessage": "Afficher un message de ‘conseil’ à l’apparition?",
 	"config.securitycraft:sayThanksMessage.tooltip": "Faut-il envoyer un message de ‘conseil’ au joueur lorsqu’il rejoint un monde?",
 	"config.securitycraft:debuggingMode": "Mode débogage actif? (non recommandé !) ?",
@@ -969,6 +967,7 @@
 	"option.securitycraft.secret_warped_sign.isSecret.description": " Le texte du panneau secret doit-il être visible par seuls le propriétaire et les joueurs sur liste blanche ?",
 	"option.securitycraft.claymore.range": "Portée : %s",
 	"option.securitycraft.claymore.range.description": "À partir de combien de blocs de distance la mine à détecteur peut-elle être déclenchée ?",
+	"option.securitycraft.ims.range": "Portée : %s",
 
 	"securitycraft.subtitle.alarm": "Sonnerie d‘alarme",
 	"securitycraft.subtitle.electrified": "Entité électrocuté",
