@@ -25,6 +25,7 @@
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "portableRadarSearchRadius"
 - Removed: Configuration option "portableRadarDelay"
+- Removed: Configuration option "motionActivatedLightSearchRadius"
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
