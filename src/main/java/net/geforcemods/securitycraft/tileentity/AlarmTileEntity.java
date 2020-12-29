@@ -37,7 +37,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 
 				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 				{
-					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.CLIENT.alarmSoundVolume.get().floatValue(), 1.0F);
+					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 				}
 
 				te.setCooldown((ConfigHandler.SERVER.alarmTickDelay.get() * 20));

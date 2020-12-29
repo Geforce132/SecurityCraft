@@ -27,7 +27,6 @@ public class ConfigHandler {
 	public static class Client
 	{
 		public BooleanValue sayThanksMessage;
-		public DoubleValue alarmSoundVolume;
 		public DoubleValue cameraSpeed;
 
 		Client(ForgeConfigSpec.Builder builder)
@@ -36,11 +35,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:sayThanksMessage")
 					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
-
-			alarmSoundVolume = builder
-					.translation("config.securitycraft:alarmSoundVolume")
-					.comment("What volume should the alarm sound effect be played at?")
-					.defineInRange("alarmSoundVolume", 0.3D, 0.0D, Double.MAX_VALUE);
 
 			cameraSpeed = builder
 					.translation("config.securitycraft:cameraSpeed")
