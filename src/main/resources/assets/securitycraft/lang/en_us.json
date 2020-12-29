@@ -893,8 +893,6 @@
 	"config.securitycraft:laserBlockRange.tooltip": "From how many blocks away can a laser block connect to another laser block?",
 	"config.securitycraft:alarmTickDelay": "Delay between alarm sounds (seconds):",
 	"config.securitycraft:alarmTickDelay.tooltip": "If an alarm is activated, how many seconds in-between alarm sounds effects?",
-	"config.securitycraft:alarmSoundVolume": "Alarm sound volume:",
-	"config.securitycraft:alarmSoundVolume.tooltip": "What volume should the alarm sound effect be played at?",
 	"config.securitycraft:portableRadarDelay": "Portable radar delay (seconds):",
 	"config.securitycraft:portableRadarDelay.tooltip": "If a portable radar is activated, how many seconds should pass before the radar searches again?",
 	"config.securitycraft:claymoreRange": "Claymore range:",

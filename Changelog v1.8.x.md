@@ -22,6 +22,7 @@
 - Fix: Fake liquids can sometimes be picked up when they shouldn't
 - Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
+- Removed: Configuration option "alarmSoundVolume"
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
