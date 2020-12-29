@@ -883,8 +883,6 @@
 	"config.securitycraft:laserBlockRange.tooltip": "À partir de combien de blocs de distance un bloc laser peut-il se connecter à un autre bloc laser ?",
 	"config.securitycraft:alarmTickDelay": "Délai entre les sonnaries d'alarme (en secondes) :",
 	"config.securitycraft:alarmTickDelay.tooltip": "Si une alarme est activée, combien de secondes entre les sonneries ?",
-	"config.securitycraft:portableRadarDelay": "Retard radar portable (en secondes) :",
-	"config.securitycraft:portableRadarDelay.tooltip": "Si un radar portable est activé, combien de secondes doivent s’écouler avant que le radar ne recherche à nouveau?",
 	"config.securitycraft:claymoreRange": "Portée de la mine à détecteur :",
 	"config.securitycraft:claymoreRange.tooltip": "À partir de combien de blocs de distance la mine à détecteur peut-elle être déclenchée ?",
 	"config.securitycraft:imsRange": "Portée du S.M.I. :",

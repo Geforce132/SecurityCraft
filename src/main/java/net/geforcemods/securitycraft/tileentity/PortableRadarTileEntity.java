@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -27,7 +26,7 @@ import net.minecraft.util.text.TextFormatting;
 public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 25.0D, 5.0D, 50.0D, 5.0D);
-	private IntOption searchDelayOption = new IntOption("searchDelay", ConfigHandler.SERVER.portableRadarDelay.get(), 4, 10, 1);
+	private IntOption searchDelayOption = new IntOption("searchDelay", 4, 4, 10, 1);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private BooleanOption enabledOption = new BooleanOption("enabled", true);
 	private boolean shouldSendNewMessage = true;

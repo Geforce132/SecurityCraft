@@ -798,8 +798,6 @@
 	"config.securitycraft:laserBlockRange.tooltip": "¿Desde cuántos bloques de distancia puede un bloque láser conectarse con otro?",
 	"config.securitycraft:alarmTickDelay": "Demora entre sonidos de alarma (segundos):",
 	"config.securitycraft:alarmTickDelay.tooltip": "Si una alarma está activada, ¿cuántos segundos entre los efectos de sonido de la alarma?",
-	"config.securitycraft:portableRadarDelay": "Demora del radar portátil (segundos):",
-	"config.securitycraft:portableRadarDelay.tooltip": "Si un radar portátil está activado, ¿cuántos segundos deberían pasar hasta que el radar pueda buscar otra vez?",
 	"config.securitycraft:claymoreRange": "Alcance de Claymore:",
 	"config.securitycraft:claymoreRange.tooltip": "¿Desde cuántos bloques de distancia puede detonarse la Claymore?",
 	"config.securitycraft:imsRange": "Alcance del S.M.I.:",
