@@ -57,7 +57,7 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	@Override
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos)
 	{
-		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getPlayerRelativeBlockHardness(state, player, world, pos);
+		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 			world.destroyBlock(pos, false);
 
 			if(!EntityUtils.doesPlayerOwn(player, world, pos))
-				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -111,7 +111,7 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 				return;
 
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 

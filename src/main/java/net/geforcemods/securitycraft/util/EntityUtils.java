@@ -28,6 +28,6 @@ public class EntityUtils{
 
 	public static boolean isInvisible(LivingEntity entity)
 	{
-		return ConfigHandler.CONFIG.respectInvisibility.get() && entity.isPotionActive(Effects.INVISIBILITY);
+		return ConfigHandler.SERVER.respectInvisibility.get() && entity.isPotionActive(Effects.INVISIBILITY);
 	}
 }

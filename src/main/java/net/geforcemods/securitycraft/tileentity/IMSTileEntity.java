@@ -67,7 +67,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double range = ConfigHandler.CONFIG.imsRange.get();
+			double range = ConfigHandler.SERVER.imsRange.get();
 
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e));

@@ -112,7 +112,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, ConfigHandler.CONFIG.motionActivatedLightSearchRadius.get(), 1);
+		return new MotionActivatedLightTileEntity().attacks(LivingEntity.class, ConfigHandler.SERVER.motionActivatedLightSearchRadius.get(), 1);
 	}
 
 	@Override

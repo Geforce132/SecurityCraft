@@ -50,7 +50,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	public void logPlayers(){
-		double range = ConfigHandler.CONFIG.usernameLoggerSearchRadius.get();
+		double range = ConfigHandler.SERVER.usernameLoggerSearchRadius.get();
 
 		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 		List<?> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area);

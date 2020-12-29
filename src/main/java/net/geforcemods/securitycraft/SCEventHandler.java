@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +21,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
+import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -33,6 +33,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,17 +41,14 @@ import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -72,33 +70,9 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
-	public static HashMap<String, String> tipsWithLink = new HashMap<>();
-
-	static
-	{
-		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
-		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
-		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
-	}
-
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!ConfigHandler.CONFIG.sayThanksMessage.get())
-			return;
-
-		String tipKey = getRandomTip();
-		IFormattableTextComponent message = new StringTextComponent("[")
-				.append(new StringTextComponent("SecurityCraft").mergeStyle(TextFormatting.GOLD))
-				.append(new StringTextComponent("] "))
-				.append(ClientUtils.localize("messages.securitycraft:thanks",
-						SecurityCraft.VERSION,
-						ClientUtils.localize("messages.securitycraft:tip"),
-						ClientUtils.localize(tipKey)));
-
-		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
-
-		event.getPlayer().sendMessage(message, Util.DUMMY_UUID);
+		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)event.getPlayer()), new SendTip());
 	}
 
 	@SubscribeEvent
@@ -369,7 +343,7 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent event) {
-		if(ConfigHandler.CONFIG.allowCodebreakerItem.get())
+		if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 		{
 			World world = event.getPlayer().world;
 			TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
@@ -380,23 +354,11 @@ public class SCEventHandler {
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.CONFIG.allowCodebreakerItem.get());
+					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.SERVER.allowCodebreakerItem.get());
 				else return true;
 			}
 		}
 
 		return false;
-	}
-
-	private static String getRandomTip(){
-		String[] tips = {
-				"messages.securitycraft:tip.scHelp",
-				"messages.securitycraft:tip.trello",
-				"messages.securitycraft:tip.patreon",
-				"messages.securitycraft:tip.discord",
-				"messages.securitycraft:tip.scserver"
-		};
-
-		return tips[new Random().nextInt(tips.length)];
 	}
 }

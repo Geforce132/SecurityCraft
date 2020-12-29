@@ -37,7 +37,7 @@ public class AdminToolItem extends Item {
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
 
-		if(world.isRemote && ConfigHandler.CONFIG.allowAdminTool.get()) {
+		if(world.isRemote && ConfigHandler.SERVER.allowAdminTool.get()) {
 			IFormattableTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
 
 			if(!player.isCreative())

@@ -77,7 +77,7 @@ public class LoggerBlock extends DisguisableBlock {
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, ConfigHandler.CONFIG.usernameLoggerSearchRadius.get(), 80);
+		return new UsernameLoggerTileEntity().attacks(PlayerEntity.class, ConfigHandler.SERVER.usernameLoggerSearchRadius.get(), 80);
 	}
 
 	@Override

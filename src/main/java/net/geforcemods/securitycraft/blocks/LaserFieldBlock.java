@@ -57,7 +57,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 		{
 			for(Direction facing : Direction.values())
 			{
-				for(int i = 0; i < ConfigHandler.CONFIG.laserBlockRange.get(); i++)
+				for(int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++)
 				{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
@@ -96,7 +96,7 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 
 			for(Direction facing : facingArray)
 			{
-				for(int i = 0; i < ConfigHandler.CONFIG.laserBlockRange.get(); i++)
+				for(int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++)
 				{
 					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.LASER_BLOCK.get())
 					{

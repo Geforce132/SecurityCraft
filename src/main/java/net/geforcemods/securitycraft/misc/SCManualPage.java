@@ -45,19 +45,19 @@ public class SCManualPage {
 		this.helpInfo = helpInfo;
 
 		if(item == SCContent.KEYCARD_LVL_1.get()) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard1.get();}
+			configValue = () -> ConfigHandler.SERVER.ableToCraftKeycard1.get();}
 		else if(item == SCContent.KEYCARD_LVL_2.get()) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard2.get();}
+			configValue = () -> ConfigHandler.SERVER.ableToCraftKeycard2.get();}
 		else if(item == SCContent.KEYCARD_LVL_3.get()) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard3.get();}
+			configValue = () -> ConfigHandler.SERVER.ableToCraftKeycard3.get();}
 		else if(item == SCContent.KEYCARD_LVL_4.get()) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard4.get();}
+			configValue = () -> ConfigHandler.SERVER.ableToCraftKeycard4.get();}
 		else if(item == SCContent.KEYCARD_LVL_5.get()) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftKeycard5.get();}
+			configValue = () -> ConfigHandler.SERVER.ableToCraftKeycard5.get();}
 		else if(item == SCContent.LIMITED_USE_KEYCARD.get()) {
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftLUKeycard.get();}
+			configValue = () -> ConfigHandler.SERVER.ableToCraftLUKeycard.get();}
 		else if(EXPLOSIVES.contains(item))
-			configValue = () -> ConfigHandler.CONFIG.ableToCraftMines.get();
+			configValue = () -> ConfigHandler.SERVER.ableToCraftMines.get();
 	}
 
 	public Item getItem() {
