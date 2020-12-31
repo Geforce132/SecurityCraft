@@ -143,8 +143,6 @@ public class SecurityCameraEntity extends Entity{
 
 	@Override
 	public void tick(){
-		if(!world.isRemote)
-			System.out.println(CAMERA_SPEED);
 		if(world.isRemote && isBeingRidden()){
 			PlayerEntity lowestEntity = (PlayerEntity)getPassengers().get(0);
 
