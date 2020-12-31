@@ -823,8 +823,6 @@
 	"config.securitycraft:useLookingGlass.tooltip": "Soll SecurityCraft LookingGlass verwenden, um Kameras anzuzeigen?\\n\\nWird automatisch zu \"false\" gesetzt, wenn LookingGlass nicht installiert ist.",
 	"config.securitycraft:laserBlockRange": "Laser Reichweite:",
 	"config.securitycraft:laserBlockRange.tooltip": "Von wie vielen Blöcken maximal entfernt soll sich der Laser mit einem anderen Laser verbinden können?",
-	"config.securitycraft:imsRange": "Reichweite IMS:",
-	"config.securitycraft:imsRange.tooltip": "Von wie vielen Blöcken aus kann das I.M.S. Spieler aufstöbern?",
 	"config.securitycraft:sayThanksMessage": "Soll ein Tipp beim Betreten einer Welt angezeigt werden?",
 	"config.securitycraft:sayThanksMessage.tooltip": "Soll ein Tipp beim Betreten einer Welt angezeigt werden?",
 	"config.securitycraft:debuggingMode": "Debugmodus aktiviert? (Nicht empfohlen!)",
@@ -912,6 +910,8 @@
 	"option.securitycraft.username_logger.searchRadius.description": "Der Radius in Blöcken, in dem der Protokollierer nach Spielern sucht.",
 	"option.securitycraft.claymore.range": "Reichweite: #",
 	"option.securitycraft.claymore.range.description": "Von wie vielen Blöcken entfernt kann die Claymore aktiviert werden?",
+	"option.securitycraft.ims.range": "Reichweite: #",
+	"option.securitycraft.ims.range.description": "Von wie vielen Blöcken aus kann das I.M.S. mögliche Ziele aufstöbern?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",
