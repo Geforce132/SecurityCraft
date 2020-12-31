@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -32,7 +33,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.client.config.GuiSlider.ISlider;
-import net.minecraftforge.fml.client.config.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
 public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContainer>{
@@ -69,7 +69,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
 			addButton(descriptionButtons[i]);
-			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
+			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
 		TileEntity te = moduleInv.getTileEntity();
@@ -97,7 +97,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 				}
 
 				addButton(optionButtons[i]);
-				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i], 20);
+				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}
 
