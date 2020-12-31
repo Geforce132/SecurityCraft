@@ -122,10 +122,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:motionLightSearchRadius")
 	public static double motionActivatedLightSearchRadius = 5.0D;
 
-	@Name("Is debug mode? (not recommended!)")
-	@LangKey("config.securitycraft:debuggingMode")
-	public static boolean debug = false;
-
 	@Name("Allow claiming unowned blocks?")
 	@LangKey("config.securitycraft:allowBlockClaim")
 	public static boolean allowBlockClaim = false;
