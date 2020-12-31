@@ -228,7 +228,7 @@ public abstract class Option<T> {
 		{
 			if(!isSlider() || !(slider instanceof NamedSlider))
 				return;
-			System.out.println(pos.get());
+
 			setValue((int)slider.getValue());
 			slider.setMessage(ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName(), toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
