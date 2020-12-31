@@ -827,8 +827,6 @@
 	"config.securitycraft:laserBlockRange.tooltip": "Von wie vielen Blöcken maximal entfernt soll sich der Laser mit einem anderen Laser verbinden können?",
 	"config.securitycraft:alarmTickDelay": "Verzögerung zwischen Alarmsounds (Sekunden):",
 	"config.securitycraft:alarmTickDelay.tooltip": "Wenn ein Alarm aktiviert wird, wie viele Sekunden soll zwischen den Alarmsounds Ruhe sein?",
-	"config.securitycraft:portableRadarDelay": "Verzögerung Tragbarer Radar (Sekunden):",
-	"config.securitycraft:portableRadarDelay.tooltip": "Wenn ein Radar aktiviert wird, wie viele Sekunden soll er warten, bis er das nächste mal den Radius absucht?",
 	"config.securitycraft:claymoreRange": "Reichweite Claymore:",
 	"config.securitycraft:claymoreRange.tooltip": "Von wie vielen Blöcken aus kann auf die Claymore draufgetreten werden?",
 	"config.securitycraft:imsRange": "Reichweite IMS:",
