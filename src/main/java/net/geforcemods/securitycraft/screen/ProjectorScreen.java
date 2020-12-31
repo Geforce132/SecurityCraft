@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
+import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -14,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.client.gui.HoverChecker;
 
 @OnlyIn(Dist.CLIENT)
 public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
@@ -57,9 +57,9 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		addButton(projectionRange);
 		addButton(projectionOffset);
 
-		hoverCheckers[0] = new HoverChecker(projectionWidth, 20);
-		hoverCheckers[1] = new HoverChecker(projectionRange, 20);
-		hoverCheckers[2] = new HoverChecker(projectionOffset, 20);
+		hoverCheckers[0] = new HoverChecker(projectionWidth);
+		hoverCheckers[1] = new HoverChecker(projectionRange);
+		hoverCheckers[2] = new HoverChecker(projectionOffset);
 	}
 
 	@Override

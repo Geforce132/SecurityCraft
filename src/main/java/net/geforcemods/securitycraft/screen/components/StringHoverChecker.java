@@ -4,33 +4,32 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraftforge.fml.client.gui.HoverChecker;
 
 public class StringHoverChecker extends HoverChecker
 {
 	private List<String> lines;
 	private final TogglePictureButton button;
 
-	public StringHoverChecker(int top, int bottom, int left, int right, int threshold, String line)
+	public StringHoverChecker(int top, int bottom, int left, int right, String line)
 	{
-		this(top, bottom, left, right, threshold, Arrays.asList(line));
+		this(top, bottom, left, right, Arrays.asList(line));
 	}
 
-	public StringHoverChecker(int top, int bottom, int left, int right, int threshold, List<String> lines)
+	public StringHoverChecker(int top, int bottom, int left, int right, List<String> lines)
 	{
-		super(top, bottom, left, right, threshold);
+		super(top, bottom, left, right);
 		this.lines = lines;
 		button = null;
 	}
 
-	public StringHoverChecker(Button button, int threshold, String line)
+	public StringHoverChecker(Button button, String line)
 	{
-		this(button, threshold, Arrays.asList(line));
+		this(button, Arrays.asList(line));
 	}
 
-	public StringHoverChecker(Button button, int threshold, List<String> lines)
+	public StringHoverChecker(Button button, List<String> lines)
 	{
-		super(button, threshold);
+		super(button);
 		this.lines = lines;
 		this.button = button instanceof TogglePictureButton ? (TogglePictureButton)button : null;
 	}

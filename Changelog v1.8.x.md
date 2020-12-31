@@ -24,6 +24,7 @@
 - Fix: Players in spectator mode can activate some blocks (e.g. Portable Radar)
 - Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
+- Fix: Slider tooltips overlap sliders when changing their value (affects Projector, block customization, ...)
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay"
 - Removed: Configuration option "claymoreRange"

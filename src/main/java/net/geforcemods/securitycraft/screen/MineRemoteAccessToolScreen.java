@@ -102,10 +102,10 @@ public class MineRemoteAccessToolScreen extends Screen{
 						guiButtons[i][DEFUSE].active = active && defusable;
 						guiButtons[i][ACTIVATE].active = !active && defusable;
 						guiButtons[i][DETONATE].active = active;
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DEFUSE], 20, ClientUtils.localize("gui.securitycraft:mrat.defuse")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][ACTIVATE], 20, ClientUtils.localize("gui.securitycraft:mrat.activate")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DETONATE], 20, ClientUtils.localize("gui.securitycraft:mrat.detonate")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DEFUSE], ClientUtils.localize("gui.securitycraft:mrat.defuse")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][ACTIVATE], ClientUtils.localize("gui.securitycraft:mrat.activate")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DETONATE], ClientUtils.localize("gui.securitycraft:mrat.detonate")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -116,9 +116,9 @@ public class MineRemoteAccessToolScreen extends Screen{
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], 20, ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
-					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
 		}
