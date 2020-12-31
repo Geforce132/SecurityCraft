@@ -25,7 +25,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
-	private IntOption searchRadius = new IntOption(this, "searchRadius", 3, 1, 20, 1, true);
+	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];

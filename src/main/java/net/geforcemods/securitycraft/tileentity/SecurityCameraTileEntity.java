@@ -13,15 +13,14 @@ import net.minecraft.util.Direction;
 
 public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
-	private final double CAMERA_SPEED = 0.0180D;
 	public double cameraRotation = 0.0D;
 	public boolean addToRotation = true;
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
-	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", CAMERA_SPEED, 0.0100D, 0.0250D, 0.001D);
+	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.0180D, 0.0100D, 0.0250D, 0.001D);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption(this, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
 	public SecurityCameraTileEntity()
 	{
