@@ -9,6 +9,7 @@
 - New: The Whitelist Module can now be used in the Scanner Door
 - New: Adding a whitelist module to a Reinforced Hopper will allow whitelisted players to access the hopper and use it to extract items out of their own blocks
 - New: Customization option to change how long the Retinal Scanner emits a redstone signal when it has been activated
+- New: Customization option to change the player search radius of the Username Logger
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
@@ -24,6 +25,7 @@
 - Removed: Configuration option "portableRadarSearchRadius"
 - Removed: Configuration option "portableRadarDelay"
 - Removed: Configuration option "motionActivatedLightSearchRadius"
+- Removed: Configuration option "usernameLoggerSearchRadius"
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 

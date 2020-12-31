@@ -813,8 +813,6 @@
 	"config.securitycraft:fiveMinAutoShutoff.tooltip": "Si LookingGlass est installé, les affichages de surveillance doivent s’éteindre pour économiser les ressources après que 5 minutes se soient écoulées depuis son activation ?",
 	"config.securitycraft:useLookingGlass": "Utilisez LookingGlass pour l’affichage des caméras ?",
 	"config.securitycraft:useLookingGlass.tooltip": "SecurityCraft devrait-il utiliser LookingGlass pour visualiser les caméras? \\n\\nAutomatiquement réglé sur « faux » si LookingGlass n’est pas installé.",
-	"config.securitycraft:usernameLoggerSearchRadius": "Rayon de recherche de l'enregistreur de nom d'utilisateur :",
-	"config.securitycraft:usernameLoggerSearchRadius.tooltip": "À partir de combien de blocs de distance l'enregistreur de nom d'utilisateur peut-il détecter les joueurs ?",
 	"config.securitycraft:laserBlockRange": "Portée du laser :",
 	"config.securitycraft:laserBlockRange.tooltip": "À partir de combien de blocs de distance un bloc laser peut-il se connecter à un autre bloc laser ?",
 	"config.securitycraft:alarmTickDelay": "Délai entre les sonnaries d'alarme (en secondes) :",
