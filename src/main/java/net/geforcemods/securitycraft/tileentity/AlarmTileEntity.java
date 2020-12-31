@@ -15,7 +15,8 @@ import net.minecraft.world.server.ServerWorld;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
 
-	private IntConfigOption range = new IntConfigOption(this, "range", 17, 0, 1, true);
+	private IntOption range = new IntOption(this, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
+	private IntOption delay = new IntOption(this, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
@@ -40,7 +41,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 				}
 
-				te.setCooldown((ConfigHandler.SERVER.alarmTickDelay.get() * 20));
+				te.setCooldown(delay.get() * 20);
 				world.setBlockState(pos, world.getBlockState(pos).with(AlarmBlock.FACING, world.getBlockState(pos).get(AlarmBlock.FACING)), 2);
 				world.setTileEntity(pos, te);
 			}
@@ -97,20 +98,6 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[]{ range };
-	}
-
-	private static class IntConfigOption extends IntOption
-	{
-		public IntConfigOption(CustomizableTileEntity te, String optionName, Integer value, Integer min, Integer increment, boolean s)
-		{
-			super(te, optionName, value, min, 0, increment, s);
-		}
-
-		@Override
-		public Integer getMax()
-		{
-			return ConfigHandler.SERVER.maxAlarmRange.get();
-		}
+		return new Option[]{ range, delay };
 	}
 }
