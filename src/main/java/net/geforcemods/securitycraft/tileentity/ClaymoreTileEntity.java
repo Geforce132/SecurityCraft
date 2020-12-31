@@ -54,13 +54,13 @@ public class ClaymoreTileEntity extends SecurityCraftTileEntity{
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == Direction.NORTH)
-				area = area.contract(-0, -0, ConfigHandler.CONFIG.claymoreRange.get());
+				area = area.contract(-0, -0, ConfigHandler.SERVER.claymoreRange.get());
 			else if(dir == Direction.SOUTH)
-				area = area.contract(-0, -0, -ConfigHandler.CONFIG.claymoreRange.get());
+				area = area.contract(-0, -0, -ConfigHandler.SERVER.claymoreRange.get());
 			else if(dir == Direction.EAST)
-				area = area.contract(-ConfigHandler.CONFIG.claymoreRange.get(), -0, -0);
+				area = area.contract(-ConfigHandler.SERVER.claymoreRange.get(), -0, -0);
 			else if(dir == Direction.WEST)
-				area = area.contract(ConfigHandler.CONFIG.claymoreRange.get(), -0, -0);
+				area = area.contract(ConfigHandler.SERVER.claymoreRange.get(), -0, -0);
 
 			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> iterator = entities.iterator();

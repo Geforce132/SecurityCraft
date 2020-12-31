@@ -68,7 +68,8 @@ public class SecurityCraft {
 
 		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHandler.CONFIG_SPEC);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);

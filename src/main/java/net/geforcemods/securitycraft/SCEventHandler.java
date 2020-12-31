@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +29,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
+import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
@@ -64,11 +64,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -90,27 +88,9 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
-	public static HashMap<String, String> tipsWithLink = new HashMap<>();
-
-	static
-	{
-		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
-		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
-		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
-	}
-
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!ConfigHandler.CONFIG.sayThanksMessage.get())
-			return;
-
-		String tipKey = getRandomTip();
-		ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.VERSION) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ");
-
-		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
-
-		event.getPlayer().sendMessage(message);
+		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)event.getPlayer()), new SendTip());
 	}
 
 	@SubscribeEvent
@@ -485,7 +465,7 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent event) {
-		if(ConfigHandler.CONFIG.allowCodebreakerItem.get())
+		if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 		{
 			World world = event.getPlayer().world;
 			TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
@@ -496,7 +476,7 @@ public class SCEventHandler {
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.CONFIG.allowCodebreakerItem.get());
+					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.SERVER.allowCodebreakerItem.get());
 				else return true;
 			}
 		}
@@ -504,20 +484,7 @@ public class SCEventHandler {
 		return false;
 	}
 
-	private static String getRandomTip(){
-		String[] tips = {
-				"messages.securitycraft:tip.scHelp",
-				"messages.securitycraft:tip.trello",
-				"messages.securitycraft:tip.patreon",
-				"messages.securitycraft:tip.discord",
-				"messages.securitycraft:tip.scserver"
-		};
-
-		return tips[new Random().nextInt(tips.length)];
-	}
-
 	private static boolean isOwnableBlock(Block block, TileEntity tileEntity){
 		return (tileEntity instanceof OwnableTileEntity || tileEntity instanceof IOwnable || block instanceof OwnableBlock);
 	}
-
 }

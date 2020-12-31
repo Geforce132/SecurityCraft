@@ -148,7 +148,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 	}
 
 	private GameProfile updateGameProfile(GameProfile input) {
-		if (ConfigHandler.CONFIG.retinalScannerFace.get() && input != null && !StringUtils.isNullOrEmpty(input.getName())) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && input != null && !StringUtils.isNullOrEmpty(input.getName())) {
 			if (input.isComplete() && input.getProperties().containsKey("textures"))
 				return input;
 			else if (profileCache != null && sessionService != null) {

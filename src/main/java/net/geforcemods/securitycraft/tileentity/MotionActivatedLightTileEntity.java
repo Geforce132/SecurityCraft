@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
-	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", ConfigHandler.CONFIG.motionActivatedLightSearchRadius.get(), 5.0D, 20.0D, 5.0D);
+	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", ConfigHandler.SERVER.motionActivatedLightSearchRadius.get(), 5.0D, 20.0D, 5.0D);
 
 	public MotionActivatedLightTileEntity()
 	{

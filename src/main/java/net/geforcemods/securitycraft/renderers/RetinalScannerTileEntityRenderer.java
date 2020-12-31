@@ -97,7 +97,7 @@ public class RetinalScannerTileEntityRenderer extends TileEntityRenderer<Retinal
 
 	private ResourceLocation getSkinTexture(@Nullable GameProfile profile) {
 		ResourceLocation resourcelocation = DefaultPlayerSkin.getDefaultSkinLegacy();
-		if (ConfigHandler.CONFIG.retinalScannerFace.get() && profile != null) {
+		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null) {
 			Minecraft minecraft = Minecraft.getInstance();
 			Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(profile);
 			if (map.containsKey(Type.SKIN)) {

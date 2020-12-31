@@ -265,7 +265,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 	private void checkAndDestroyFields(IWorld world, BlockPos pos, BiFunction<BlockPos,Integer,BlockPos> posModifier)
 	{
-		for(int i = 0; i < ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
+		for(int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++)
 		{
 			BlockPos modifiedPos = posModifier.apply(pos, i);
 

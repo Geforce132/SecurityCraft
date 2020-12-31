@@ -54,7 +54,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 	@Override
 	public float getBlockHardness(BlockState blockState, IBlockReader world, BlockPos pos)
 	{
-		return !ConfigHandler.CONFIG.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
+		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getBlockHardness(blockState, world, pos);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
 			world.destroyBlock(pos, false);
-			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 			cart.remove();
 		}
 	}
@@ -90,7 +90,7 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
 		{
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ConfigHandler.CONFIG.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity) null, pos.getX(), pos.up().getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 4.0F : 8.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 		}
 	}
 

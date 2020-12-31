@@ -24,7 +24,7 @@ public final class ToggleMinesCondition implements ICondition
 	@Override
 	public boolean test()
 	{
-		return ConfigHandler.CONFIG.ableToCraftMines.get();
+		return ConfigHandler.SERVER.ableToCraftMines.get();
 	}
 
 	@Override

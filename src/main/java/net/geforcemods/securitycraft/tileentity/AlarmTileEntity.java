@@ -37,10 +37,10 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 
 				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 				{
-					player.func_213823_a(SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.CONFIG.alarmSoundVolume.get().floatValue(), 1.0F);
+					player.func_213823_a(SCSounds.ALARM.event, SoundCategory.BLOCKS, ConfigHandler.CLIENT.alarmSoundVolume.get().floatValue(), 1.0F);
 				}
 
-				te.setCooldown((ConfigHandler.CONFIG.alarmTickDelay.get() * 20));
+				te.setCooldown((ConfigHandler.SERVER.alarmTickDelay.get() * 20));
 				world.setBlockState(pos, world.getBlockState(pos).with(AlarmBlock.FACING, world.getBlockState(pos).get(AlarmBlock.FACING)), 2);
 				world.setTileEntity(pos, te);
 			}
@@ -110,7 +110,7 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 		@Override
 		public Integer getMax()
 		{
-			return ConfigHandler.CONFIG.maxAlarmRange.get();
+			return ConfigHandler.SERVER.maxAlarmRange.get();
 		}
 	}
 }
