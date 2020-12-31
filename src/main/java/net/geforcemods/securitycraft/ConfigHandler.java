@@ -57,7 +57,6 @@ public class ConfigHandler {
 		public BooleanValue smallerMineExplosion;
 		public BooleanValue mineExplodesWhenInCreative;
 		public IntValue laserBlockRange;
-		public IntValue alarmTickDelay;
 		public IntValue claymoreRange;
 		public IntValue imsRange;
 		public IntValue inventoryScannerRange;
@@ -148,11 +147,6 @@ public class ConfigHandler {
 					.translation("config.securitycraft:laserBlockRange")
 					.comment("From how many blocks away can a laser block connect to another laser block?")
 					.defineInRange("laserBlockRange", 5, 0, Integer.MAX_VALUE);
-
-			alarmTickDelay = builder
-					.translation("config.securitycraft:alarmTickDelay")
-					.comment("If an alarm is activated, how many seconds in-between alarm sounds effects?")
-					.defineInRange("alarmTickDelay", 2, 0, Integer.MAX_VALUE);
 
 			claymoreRange = builder
 					.translation("config.securitycraft:claymoreRange")
