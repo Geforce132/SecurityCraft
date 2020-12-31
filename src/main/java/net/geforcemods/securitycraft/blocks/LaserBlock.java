@@ -52,7 +52,7 @@ public class LaserBlock extends DisguisableBlock {
 		{
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			inner: for(int i = 1; i <= ConfigHandler.CONFIG.laserBlockRange.get(); i++)
+			inner: for(int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 				BlockState offsetState = world.getBlockState(offsetPos);
@@ -101,7 +101,7 @@ public class LaserBlock extends DisguisableBlock {
 		{
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
 
-			for(int i = 1; i <= ConfigHandler.CONFIG.laserBlockRange.get(); i++)
+			for(int i = 1; i <= ConfigHandler.SERVER.laserBlockRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 				BlockState state = world.getBlockState(offsetPos);

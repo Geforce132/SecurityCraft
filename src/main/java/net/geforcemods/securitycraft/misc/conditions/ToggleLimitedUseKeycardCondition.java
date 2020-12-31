@@ -24,7 +24,7 @@ public final class ToggleLimitedUseKeycardCondition implements ICondition
 	@Override
 	public boolean test()
 	{
-		return ConfigHandler.CONFIG.ableToCraftLUKeycard.get();
+		return ConfigHandler.SERVER.ableToCraftLUKeycard.get();
 	}
 
 	@Override

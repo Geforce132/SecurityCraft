@@ -50,7 +50,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid){
 		if(!world.isRemote)
-			if(player != null && player.isCreative() && !ConfigHandler.CONFIG.mineExplodesWhenInCreative.get())
+			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
 				explode(world, pos);
@@ -94,10 +94,10 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	public void explode(World world, BlockPos pos) {
 		world.destroyBlock(pos, false);
 
-		if(ConfigHandler.CONFIG.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+		if(ConfigHandler.SERVER.smallerMineExplosion.get())
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, ConfigHandler.CONFIG.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 
 	}
 

@@ -24,7 +24,7 @@ public final class ToggleKeycard2Condition implements ICondition
 	@Override
 	public boolean test()
 	{
-		return ConfigHandler.CONFIG.ableToCraftKeycard2.get();
+		return ConfigHandler.SERVER.ableToCraftKeycard2.get();
 	}
 
 	@Override

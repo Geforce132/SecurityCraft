@@ -290,7 +290,6 @@ public class ClientProxy implements IProxy
 			}
 		}
 
-		boolean tintBlocks = ConfigHandler.CONFIG.reinforcedBlockTint.get();
 		int noTint = 0xFFFFFF;
 		int crystalQuartzTint = 0x15B3A2;
 		int reinforcedCrystalQuartzTint = 0x0E7063;
@@ -305,6 +304,8 @@ public class ClientProxy implements IProxy
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			if(world == null || pos == null)
 				return tint;
+
+			boolean tintBlocks = ConfigHandler.SERVER.reinforcedBlockTint.get();
 
 			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !state.get(ReinforcedSnowyDirtBlock.SNOWY))
 			{
@@ -323,6 +324,8 @@ public class ClientProxy implements IProxy
 				return noTint;
 		}, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+			boolean tintBlocks = ConfigHandler.SERVER.reinforcedBlockTint.get();
+
 			if(item == SCContent.REINFORCED_GRASS_BLOCK.get())
 			{
 				if(tintIndex == 0)

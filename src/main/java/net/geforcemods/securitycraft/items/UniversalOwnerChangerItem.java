@@ -75,7 +75,7 @@ public class UniversalOwnerChangerItem extends Item
 
 			if(isDefault)
 			{
-				if(ConfigHandler.CONFIG.allowBlockClaim.get())
+				if(ConfigHandler.SERVER.allowBlockClaim.get())
 					newOwner = player.getName().getFormattedText();
 				else
 				{

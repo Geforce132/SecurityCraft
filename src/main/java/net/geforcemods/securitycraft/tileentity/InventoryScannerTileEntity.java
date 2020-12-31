@@ -302,7 +302,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		{
 			Direction facing = getBlockState().get(InventoryScannerBlock.FACING);
 
-			for(int i = 0; i <= ConfigHandler.CONFIG.inventoryScannerRange.get(); i++)
+			for(int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++)
 			{
 				BlockPos offsetPos = pos.offset(facing, i);
 				BlockState state = world.getBlockState(offsetPos);

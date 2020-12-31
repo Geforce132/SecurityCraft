@@ -36,7 +36,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class SecurityCameraEntity extends Entity{
 
-	private final double CAMERA_SPEED = ConfigHandler.CONFIG.cameraSpeed.get();
+	private final double CAMERA_SPEED = ConfigHandler.CLIENT.cameraSpeed.get();
 	public int blockPosX;
 	public int blockPosY;
 	public int blockPosZ;
