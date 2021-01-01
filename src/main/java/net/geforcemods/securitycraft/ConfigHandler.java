@@ -88,10 +88,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:alarmTickDelay")
 	public static int alarmTickDelay = 2;
 
-	@Name("Alarm sound volume:")
-	@LangKey("config.securitycraft:alarmSoundVolume")
-	public static float alarmSoundVolume = 0.3F;
-
 	@Name("Portable radar delay (seconds):")
 	@LangKey("config.securitycraft:portableRadarDelay")
 	public static int portableRadarDelay = 4;
