@@ -84,10 +84,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:alarmTickDelay")
 	public static int alarmTickDelay = 2;
 
-	@Name("Portable radar delay (seconds):")
-	@LangKey("config.securitycraft:portableRadarDelay")
-	public static int portableRadarDelay = 4;
-
 	@Name("Claymore range:")
 	@LangKey("config.securitycraft:claymoreRange")
 	public static int claymoreRange = 5;
