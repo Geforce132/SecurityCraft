@@ -72,10 +72,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:checkForUpdates")
 	public static boolean checkForUpdates =true;
 
-	@Name("Username logger search radius:")
-	@LangKey("config.securitycraft:usernameLoggerSearchRadius")
-	public static int usernameLoggerSearchRadius = 3;
-
 	@Name("Laser range:")
 	@LangKey("config.securitycraft:laserBlockRange")
 	public static int laserBlockRange = 5;

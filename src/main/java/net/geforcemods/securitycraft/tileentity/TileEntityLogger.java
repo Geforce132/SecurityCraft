@@ -3,8 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
 import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityLogger extends TileEntityDisguisable {
 
+	private OptionInt searchRadius = new OptionInt(this, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -36,7 +38,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 	}
 
 	public void logPlayers(){
-		double range = ConfigHandler.usernameLoggerSearchRadius;
+		int range = searchRadius.get();
 
 		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
 		List<?> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area);
@@ -119,4 +121,9 @@ public class TileEntityLogger extends TileEntityDisguisable {
 			SecurityCraft.network.sendToAll(new PacketCClearLogger(pos));
 	}
 
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{searchRadius};
+	}
 }

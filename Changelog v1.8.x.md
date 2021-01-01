@@ -9,6 +9,7 @@
 - New: The Whitelist Module can now be used in the Scanner Door
 - New: Adding a whitelist module to a Reinforced Hopper will allow whitelisted players to access the hopper and use it to extract items out of their own blocks
 - New: Customization option to change how long the Retinal Scanner emits a redstone signal when it has been activated
+- New: Customization option to change the player search radius of the Username Logger
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
@@ -26,6 +27,7 @@
 - Removed: Configuration option "motionActivatedLightSearchRadius". This is already a per-block option
 - Removed: Configuration option "portableRadarDelay". This is already a per-block option
 - Removed: Configuration option "portableRadarSearchRadius". This is already a per-block option
+- Removed: Configuration option "usernameLoggerSearchRadius". This is now a per-block option
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
