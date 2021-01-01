@@ -106,10 +106,6 @@ public class ConfigHandler
 	@RangeInt(min=1)
 	public static int maxAlarmRange = 100;
 
-	@Name("Motion-activated light range:")
-	@LangKey("config.securitycraft:motionLightSearchRadius")
-	public static double motionActivatedLightSearchRadius = 5.0D;
-
 	@Name("Allow claiming unowned blocks?")
 	@LangKey("config.securitycraft:allowBlockClaim")
 	public static boolean allowBlockClaim = false;
