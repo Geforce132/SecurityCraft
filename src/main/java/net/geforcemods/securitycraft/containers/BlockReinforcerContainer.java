@@ -87,14 +87,14 @@ public class BlockReinforcerContainer extends Container
 
 			slotStackCopy = slotStack.copy();
 
-			if(id <= fixSlot(1))
+			if(id >= 36)
 			{
-				if(!mergeItemStack(slotStack, fixSlot(1), fixSlot(38), true))
+				if(!mergeItemStack(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if(id > 1)
-				if(!mergeItemStack(slotStack, 0, fixSlot(2), false))
+			else if(id < 36)
+				if(!mergeItemStack(slotStack, 36, fixSlot(38), false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)

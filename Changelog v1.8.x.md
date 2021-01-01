@@ -26,13 +26,13 @@
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
 - Fix: Slider tooltips overlap sliders when changing their value (affects Projector, block customization, ...)
 - Removed: Configuration option "alarmSoundVolume"
-- Removed: Configuration option "alarmTickDelay"
-- Removed: Configuration option "claymoreRange"
-- Removed: Configuration option "imsRange"
-- Removed: Configuration option "motionActivatedLightSearchRadius"
-- Removed: Configuration option "portableRadarDelay"
-- Removed: Configuration option "portableRadarSearchRadius"
-- Removed: Configuration option "usernameLoggerSearchRadius"
+- Removed: Configuration option "alarmTickDelay" This is now a per-block option
+- Removed: Configuration option "claymoreRange" This is now a per-block option
+- Removed: Configuration option "imsRange". This is now a per-block option
+- Removed: Configuration option "motionActivatedLightSearchRadius". This is already a per-block option
+- Removed: Configuration option "portableRadarDelay". This is already a per-block option
+- Removed: Configuration option "portableRadarSearchRadius". This is already a per-block option
+- Removed: Configuration option "usernameLoggerSearchRadius". This is now a per-block option
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
