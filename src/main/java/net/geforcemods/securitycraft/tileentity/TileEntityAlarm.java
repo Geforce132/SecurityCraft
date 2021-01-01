@@ -13,8 +13,8 @@ import net.minecraft.util.SoundCategory;
 
 public class TileEntityAlarm extends CustomizableSCTE {
 
-	public OptionInt range = new OptionInt(this, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
-	private OptionInt delay = new OptionInt(this, "delay", 2, 1, 30, 1, true);
+	public OptionInt range = new OptionInt(this::getPos, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
+	private OptionInt delay = new OptionInt(this::getPos, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 

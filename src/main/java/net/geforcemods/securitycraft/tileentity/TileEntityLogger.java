@@ -17,7 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityLogger extends TileEntityDisguisable {
 
-	private OptionInt searchRadius = new OptionInt(this, "searchRadius", 3, 1, 20, 1, true);
+	private OptionInt searchRadius = new OptionInt(this::getPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];

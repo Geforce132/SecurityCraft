@@ -680,8 +680,6 @@ config.securitycraft:useLookingGlass=Utilisez de LookingGlass pour l’affichage
 config.securitycraft:useLookingGlass.tooltip=SecurityCraft devrait-il utiliser de LookingGlass pour visualiser les caméras? \n\nAutomatiquement réglé sur "false" si un LookingGlass n’est pas installé.
 config.securitycraft:laserBlocRange=Portée du Laser:
 config.securitycraft:laserBlocRange.tooltip=À partir de combien de blocs de distance un bloc laser peut-il se connecter à un autre bloc laser?
-config.securitycraft:claymoreRange=Portée de la mine à détecteur:
-config.securitycraft:claymoreRange.tooltip=À partir de combien de blocs la mine peut-elle être déclenchée ?
 config.securitycraft:imsRange=I.M.S. portée:
 config.securitycraft:imsRange.tooltip=À combien de blocs le S.M.I. peut détecter les joueurs?
 config.securitycraft:sayThanksMessage=Afficher un message de ‘conseil’ à l’apparition?
@@ -753,6 +751,8 @@ option.securitycraft:inventoryScanner.horizontal=Horizontale: #
 option.securitycraft:inventoryScanner.horizontal.description=Les champs crée par ce scanner d’inventaire doivent-ils être horizontaux ?
 option.securitycraft:secretSign.isSecret=Secret : #
 option.securitycraft:secretSign.isSecret.description= Le texte du panneau secret doit-il être visible par seuls le propriétaire et les joueurs sur liste blanche ?
+option.securitycraft:claymore.range=Portée : #
+option.securitycraft:claymore.range.description=À partir de combien de blocs de distance la mine à détecteur peut-elle être déclenchée ?
 
 securitycraft.subtitle.alarm=Sonnerie d‘alarme
 securitycraft.subtitle.electrified=Entité électrocuté

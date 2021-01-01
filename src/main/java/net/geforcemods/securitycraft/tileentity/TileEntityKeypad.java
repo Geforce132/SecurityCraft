@@ -31,7 +31,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 		}
 	};
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
-	private OptionInt signalLength = new OptionInt(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	/**
 	 * Writes a tile entity to NBT.

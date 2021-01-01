@@ -22,7 +22,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	private boolean shutDown = false;
 	private OptionDouble rotationSpeedOption = new OptionDouble("rotationSpeed", CAMERA_SPEED, 0.0100D, 0.0250D, 0.001D);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
-	private OptionDouble customRotationOption = new OptionDouble(this, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private OptionDouble customRotationOption = new OptionDouble(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
 	@Override
 	public void update(){

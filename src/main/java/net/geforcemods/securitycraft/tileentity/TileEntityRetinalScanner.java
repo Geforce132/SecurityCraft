@@ -41,7 +41,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 	private static final Logger LOGGER = LogManager.getLogger();
 	private OptionBoolean activatedByEntities = new OptionBoolean("activatedByEntities", false);
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
-	private OptionInt signalLength = new OptionInt(this, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 	private GameProfile ownerProfile;
 	private static PlayerProfileCache profileCache;
 	private static MinecraftSessionService sessionService;

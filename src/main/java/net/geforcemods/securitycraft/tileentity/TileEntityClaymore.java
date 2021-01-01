@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.api.TileEntitySCTE;
+import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.mines.BlockClaymore;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -19,8 +21,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityClaymore extends TileEntitySCTE{
-
+public class TileEntityClaymore extends CustomizableSCTE
+{
+	private OptionInt range = new OptionInt(this::getPos, "range", 5, 1, 10, 1, true);
 	private double entityX = -1D;
 	private double entityY = -1D;
 	private double entityZ = -1D;
@@ -48,13 +51,13 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == EnumFacing.NORTH)
-				area = area.contract(-0, -0, ConfigHandler.claymoreRange);
+				area = area.contract(-0, -0, range.get());
 			else if(dir == EnumFacing.SOUTH)
-				area = area.contract(-0, -0, -ConfigHandler.claymoreRange);
+				area = area.contract(-0, -0, -range.get());
 			else if(dir == EnumFacing.EAST)
-				area = area.contract(-ConfigHandler.claymoreRange, -0, -0);
+				area = area.contract(-range.get(), -0, -0);
 			else if(dir == EnumFacing.WEST)
-				area = area.contract(ConfigHandler.claymoreRange, -0, -0);
+				area = area.contract(range.get(), -0, -0);
 
 			List<?> entities = getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> iterator = entities.iterator();
@@ -88,6 +91,7 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	public NBTTagCompound writeToNBT(NBTTagCompound tag)
 	{
 		super.writeToNBT(tag);
+		writeOptions(tag);
 		tag.setInteger("cooldown", cooldown);
 		tag.setDouble("entityX", entityX);
 		tag.setDouble("entityY", entityY);
@@ -103,6 +107,8 @@ public class TileEntityClaymore extends TileEntitySCTE{
 	{
 		super.readFromNBT(tag);
 
+		readOptions(tag);
+
 		if (tag.hasKey("cooldown"))
 			cooldown = tag.getInteger("cooldown");
 
@@ -116,4 +122,15 @@ public class TileEntityClaymore extends TileEntitySCTE{
 			entityZ = tag.getDouble("entityZ");
 	}
 
+	@Override
+	public Option<?>[] customOptions()
+	{
+		return new Option[]{range};
+	}
+
+	@Override
+	public EnumModuleType[] acceptedModules()
+	{
+		return new EnumModuleType[0];
+	}
 }

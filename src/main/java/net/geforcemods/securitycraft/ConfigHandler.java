@@ -76,10 +76,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:laserBlockRange")
 	public static int laserBlockRange = 5;
 
-	@Name("Claymore range:")
-	@LangKey("config.securitycraft:claymoreRange")
-	public static int claymoreRange = 5;
-
 	@Name("IMS range:")
 	@LangKey("config.securitycraft:imsRange")
 	public static int imsRange = 12;

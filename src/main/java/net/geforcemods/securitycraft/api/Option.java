@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
@@ -7,6 +9,7 @@ import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * A class that allows blocks that have
@@ -160,7 +163,7 @@ public abstract class Option<T> {
 	 */
 	public static class OptionInt extends Option<Integer> implements ISlider{
 		private boolean slider;
-		private CustomizableSCTE tileEntity;
+		private Supplier<BlockPos> pos;
 
 		public OptionInt(String optionName, Integer value) {
 			super(optionName, value);
@@ -172,10 +175,10 @@ public abstract class Option<T> {
 			slider = false;
 		}
 
-		public OptionInt(CustomizableSCTE te, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
+		public OptionInt(Supplier<BlockPos> pos, String optionName, Integer value, Integer min, Integer max, Integer increment, boolean s) {
 			super(optionName, value, min, max, increment);
 			slider = s;
-			tileEntity = te;
+			this.pos = pos;
 		}
 
 		@Override
@@ -235,7 +238,7 @@ public abstract class Option<T> {
 		@Override
 		public void onMouseRelease(int id)
 		{
-			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, get()));
+			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(pos.get(), id, get()));
 		}
 	}
 
@@ -244,7 +247,7 @@ public abstract class Option<T> {
 	 */
 	public static class OptionDouble extends Option<Double> implements ISlider{
 		private boolean slider;
-		private CustomizableSCTE tileEntity;
+		private Supplier<BlockPos> pos;
 
 		public OptionDouble(String optionName, Double value) {
 			super(optionName, value);
@@ -256,10 +259,10 @@ public abstract class Option<T> {
 			slider = false;
 		}
 
-		public OptionDouble(CustomizableSCTE te, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
+		public OptionDouble(Supplier<BlockPos> pos, String optionName, Double value, Double min, Double max, Double increment, boolean s) {
 			super(optionName, value, min, max, increment);
 			slider = s;
-			tileEntity = te;
+			this.pos = pos;
 		}
 
 		@Override
@@ -319,7 +322,7 @@ public abstract class Option<T> {
 		@Override
 		public void onMouseRelease(int id)
 		{
-			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(tileEntity.getPos(), id, get()));
+			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(pos.get(), id, get()));
 		}
 	}
 
