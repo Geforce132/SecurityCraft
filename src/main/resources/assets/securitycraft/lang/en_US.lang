@@ -728,8 +728,6 @@ config.securitycraft:useLookingGlass=Use LookingGlass for viewing cameras?
 config.securitycraft:useLookingGlass.tooltip=Should SecurityCraft use LookingGlass for viewing cameras?\n\nAutomatically gets set to "false" if LookingGlass is not installed.
 config.securitycraft:laserBlockRange=Laser range:
 config.securitycraft:laserBlockRange.tooltip=From how many blocks away can a laser block connect to another laser block?
-config.securitycraft:imsRange=I.M.S. range:
-config.securitycraft:imsRange.tooltip=How many blocks away can the I.M.S. detect players from?
 config.securitycraft:sayThanksMessage=Display a 'tip' message at spawn?
 config.securitycraft:sayThanksMessage.tooltip=Should a 'tip' message be sent to player when joining a world?
 config.securitycraft:debuggingMode=Is debug mode? (not recommended!)
@@ -813,6 +811,8 @@ option.securitycraft:usernameLogger.searchRadius=Search radius: #
 option.securitycraft:usernameLogger.searchRadius.description=The range in blocks in which the username logger searches for players.
 option.securitycraft:claymore.range=Range: #
 option.securitycraft:claymore.range.description=From how many blocks can the claymore be tripped from?
+option.securitycraft:ims.range=Range: #
+option.securitycraft:ims.range.description=How many blocks away can the I.M.S. detect potential targets from?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

@@ -12,6 +12,7 @@
 - New: Customization option to change the player search radius of the Username Logger
 - New: Customization option to change the length of the pause between alarm sounds
 - New: Customization option to change the range of blocks in which the Claymore can be tripped
+- New: Customization option to change the range of blocks in which the I.M.S. can find potential targets
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
@@ -28,6 +29,7 @@
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
 - Removed: Configuration option "debug". It was unused
+- Removed: Configuration option "imsRange". This is now a per-block option
 - Removed: Configuration option "motionActivatedLightSearchRadius". This is already a per-block option
 - Removed: Configuration option "portableRadarDelay". This is already a per-block option
 - Removed: Configuration option "portableRadarSearchRadius". This is already a per-block option

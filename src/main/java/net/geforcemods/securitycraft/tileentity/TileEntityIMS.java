@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.Iterator;
 import java.util.List;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.mines.BlockIMS;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -25,6 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityIMS extends CustomizableSCTE {
 
+	private OptionInt range = new OptionInt(this::getPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
@@ -51,9 +52,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		boolean launchedMine = false;
 
 		if(bombsRemaining > 0){
-			double range = ConfigHandler.imsRange;
-
-			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
+			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e));
 			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> playerIterator = players.iterator();
@@ -229,7 +228,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	@Override
 	public Option<?>[] customOptions() {
-		return null;
+		return new Option[]{range};
 	}
 
 	public static enum EnumIMSTargetingMode {

@@ -76,10 +76,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:laserBlockRange")
 	public static int laserBlockRange = 5;
 
-	@Name("IMS range:")
-	@LangKey("config.securitycraft:imsRange")
-	public static int imsRange = 12;
-
 	@Name("Camera Speed when not using LookingGlass:")
 	@LangKey("config.securitycraft:cameraSpeed")
 	@RequiresMcRestart
