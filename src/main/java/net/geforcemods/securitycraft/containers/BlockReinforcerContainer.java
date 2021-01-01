@@ -26,13 +26,6 @@ public class BlockReinforcerContainer extends Container
 
 		blockReinforcer = inventory.getCurrentItem();
 		this.isLvl1 = isLvl1;
-		addSlot(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
-
-		if(!isLvl1)
-			addSlot(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
-		else
-			unreinforcingSlot = null;
-
 		//main player inventory
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
@@ -41,6 +34,13 @@ public class BlockReinforcerContainer extends Container
 		//player hotbar
 		for(int i = 0; i < 9; i++)
 			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
+
+		addSlot(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
+
+		if(!isLvl1)
+			addSlot(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
+		else
+			unreinforcingSlot = null;
 	}
 
 	@Override
@@ -87,14 +87,14 @@ public class BlockReinforcerContainer extends Container
 
 			slotStackCopy = slotStack.copy();
 
-			if(id <= fixSlot(1))
+			if(id >= 36)
 			{
-				if(!mergeItemStack(slotStack, fixSlot(1), fixSlot(38), true))
+				if(!mergeItemStack(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 				slot.onSlotChange(slotStack, slotStackCopy);
 			}
-			else if(id > 1)
-				if(!mergeItemStack(slotStack, 0, fixSlot(2), false))
+			else if(id < 36)
+				if(!mergeItemStack(slotStack, 36, fixSlot(38), false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
