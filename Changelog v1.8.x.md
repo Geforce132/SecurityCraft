@@ -23,6 +23,7 @@
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "debug". It was unused
+- Removed: Configuration option "portableRadarSearchRadius". This is already a per-block option
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 

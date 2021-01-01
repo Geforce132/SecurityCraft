@@ -23,7 +23,7 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", ConfigHandler.portableRadarSearchRadius, 5.0D, 50.0D, 5.0D);
+	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", 25.0D, 5.0D, 50.0D, 5.0D);
 	private OptionInt searchDelayOption = new OptionInt("searchDelay", ConfigHandler.portableRadarDelay, 4, 10, 1);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);

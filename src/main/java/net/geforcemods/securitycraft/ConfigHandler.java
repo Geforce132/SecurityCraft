@@ -72,10 +72,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:checkForUpdates")
 	public static boolean checkForUpdates =true;
 
-	@Name("Portable radar search radius:")
-	@LangKey("config.securitycraft:portableRadarSearchRadius")
-	public static double portableRadarSearchRadius = 25.0D;
-
 	@Name("Username logger search radius:")
 	@LangKey("config.securitycraft:usernameLoggerSearchRadius")
 	public static int usernameLoggerSearchRadius = 3;
