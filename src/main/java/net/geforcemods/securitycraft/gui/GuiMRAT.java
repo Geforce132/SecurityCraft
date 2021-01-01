@@ -97,10 +97,10 @@ public class GuiMRAT extends GuiContainer{
 						buttons[i][DEFUSE].enabled = active && defusable;
 						buttons[i][ACTIVATE].enabled = !active && defusable;
 						buttons[i][DETONATE].enabled = active;
-						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], 20, ClientUtils.localize("gui.securitycraft:mrat.defuse")));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], 20, ClientUtils.localize("gui.securitycraft:mrat.activate")));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], 20, ClientUtils.localize("gui.securitycraft:mrat.detonate")));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], ClientUtils.localize("gui.securitycraft:mrat.defuse")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], ClientUtils.localize("gui.securitycraft:mrat.activate")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], ClientUtils.localize("gui.securitycraft:mrat.detonate")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -111,9 +111,9 @@ public class GuiMRAT extends GuiContainer{
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new StringHoverChecker(buttons[i][j], 20, ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
-					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
 		}

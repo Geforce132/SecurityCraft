@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -23,7 +24,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.HoverChecker;
 
 public class GuiCameraMonitor extends GuiContainer {
 
@@ -94,7 +94,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			if((view = views.get(camID - 1)) != null) {
 				if(view.dimension != Minecraft.getMinecraft().player.dimension) {
-					hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
+					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
@@ -108,7 +108,7 @@ public class GuiCameraMonitor extends GuiContainer {
 				}
 
 				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().world.getTileEntity(view.getLocation());
-				hoverCheckers[button.id - 1] = new HoverChecker(button, 20);
+				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
 			{

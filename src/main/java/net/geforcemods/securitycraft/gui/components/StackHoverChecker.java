@@ -1,15 +1,14 @@
 package net.geforcemods.securitycraft.gui.components;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.client.config.HoverChecker;
 
 public class StackHoverChecker extends HoverChecker
 {
 	private ItemStack stack;
 
-	public StackHoverChecker(int top, int bottom, int left, int right, int threshold, ItemStack stack)
+	public StackHoverChecker(int top, int bottom, int left, int right, ItemStack stack)
 	{
-		super(top, bottom, left, right, threshold);
+		super(top, bottom, left, right);
 		this.stack = stack;
 	}
 

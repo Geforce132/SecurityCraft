@@ -107,7 +107,7 @@ public class GuiSRAT extends GuiContainer {
 							int nameWidth = fontRenderer.getStringWidth(sentry.getCustomNameTag());
 							int nameX = guiLeft + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
 							int nameY = guiTop + (i % 6) * 30 + 7;
-							StringHoverChecker posTooltipText = new StringHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, 20, line);
+							StringHoverChecker posTooltipText = new StringHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
 
 							names[i] = sentry.getCustomNameTag();
 							hoverCheckers.add(posTooltipText);
@@ -118,9 +118,9 @@ public class GuiSRAT extends GuiContainer {
 						guiButtons[i][UNBIND].enabled = true;
 						((TogglePictureButton)guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
 						((TogglePictureButton)guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 						foundSentry = true;
 					}
 					else {
@@ -132,9 +132,9 @@ public class GuiSRAT extends GuiContainer {
 				}
 				else {
 					for (int j = 0; j < 2; j++) {
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], 20, ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
-					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
 		}
@@ -149,9 +149,9 @@ public class GuiSRAT extends GuiContainer {
 			addButton(guiButtonsGlobal[j]);
 		}
 
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], 20, Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], 20, ClientUtils.localize("gui.securitycraft:srat.unbind")));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 	}
 
 	/**

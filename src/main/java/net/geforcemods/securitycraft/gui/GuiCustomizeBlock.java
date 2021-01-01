@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
+import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
@@ -24,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.client.config.HoverChecker;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -68,7 +68,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 			descriptionButtons[i] = new GuiPictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRender, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
 			buttonList.add(descriptionButtons[i]);
-			hoverCheckers[i] = new HoverChecker(descriptionButtons[i], 20);
+			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 
 		TileEntity te = moduleInv.getTileEntity();
@@ -96,7 +96,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 				}
 
 				buttonList.add(optionButtons[i]);
-				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i], 20);
+				hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
 			}
 		}
 

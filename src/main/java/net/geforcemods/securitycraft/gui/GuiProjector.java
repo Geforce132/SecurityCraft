@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
+import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncProjector;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -11,7 +12,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.HoverChecker;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,9 +56,9 @@ public class GuiProjector extends GuiContainer implements ISlider {
 		addButton(projectionRange);
 		addButton(projectionOffset);
 
-		hoverCheckers[0] = new HoverChecker(projectionWidth, 20);
-		hoverCheckers[1] = new HoverChecker(projectionRange, 20);
-		hoverCheckers[2] = new HoverChecker(projectionOffset, 20);
+		hoverCheckers[0] = new HoverChecker(projectionWidth);
+		hoverCheckers[1] = new HoverChecker(projectionRange);
+		hoverCheckers[2] = new HoverChecker(projectionOffset);
 	}
 
 	@Override
