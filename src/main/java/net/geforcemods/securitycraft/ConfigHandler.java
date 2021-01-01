@@ -76,10 +76,6 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:laserBlockRange")
 	public static int laserBlockRange = 5;
 
-	@Name("Delay between alarm sounds (seconds):")
-	@LangKey("config.securitycraft:alarmTickDelay")
-	public static int alarmTickDelay = 2;
-
 	@Name("Claymore range:")
 	@LangKey("config.securitycraft:claymoreRange")
 	public static int claymoreRange = 5;

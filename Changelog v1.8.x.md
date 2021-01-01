@@ -10,6 +10,7 @@
 - New: Adding a whitelist module to a Reinforced Hopper will allow whitelisted players to access the hopper and use it to extract items out of their own blocks
 - New: Customization option to change how long the Retinal Scanner emits a redstone signal when it has been activated
 - New: Customization option to change the player search radius of the Username Logger
+- New: Customization option to change the length of the pause between alarm sounds
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
@@ -23,6 +24,7 @@
 - Fix: Some recipes don't get displayed correctly in the SecurityCraft Manual
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
 - Removed: Configuration option "alarmSoundVolume"
+- Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "debug". It was unused
 - Removed: Configuration option "motionActivatedLightSearchRadius". This is already a per-block option
 - Removed: Configuration option "portableRadarDelay". This is already a per-block option

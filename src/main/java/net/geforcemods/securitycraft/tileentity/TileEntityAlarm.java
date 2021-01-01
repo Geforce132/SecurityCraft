@@ -13,7 +13,8 @@ import net.minecraft.util.SoundCategory;
 
 public class TileEntityAlarm extends CustomizableSCTE {
 
-	public OptionIntConfig range = new OptionIntConfig(this, "range", 17, 0, 1, true);
+	public OptionInt range = new OptionInt(this, "range", 17, 0, ConfigHandler.maxAlarmRange, 1, true);
+	private OptionInt delay = new OptionInt(this, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
@@ -31,7 +32,7 @@ public class TileEntityAlarm extends CustomizableSCTE {
 				world.playSound(player, player.getPosition(), SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 			}
 
-			te.setCooldown((ConfigHandler.alarmTickDelay * 20));
+			te.setCooldown(delay.get() * 20);
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
 			world.setTileEntity(pos, te);
 		}
@@ -87,20 +88,6 @@ public class TileEntityAlarm extends CustomizableSCTE {
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[]{ range };
-	}
-
-	public static class OptionIntConfig extends OptionInt
-	{
-		public OptionIntConfig(CustomizableSCTE te, String optionName, Integer value, Integer min, Integer increment, boolean s)
-		{
-			super(te, optionName, value, min, 0, increment, s);
-		}
-
-		@Override
-		public Integer getMax()
-		{
-			return ConfigHandler.maxAlarmRange;
-		}
+		return new Option[]{ range, delay };
 	}
 }
