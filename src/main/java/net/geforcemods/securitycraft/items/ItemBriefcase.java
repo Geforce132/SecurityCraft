@@ -48,21 +48,7 @@ public class ItemBriefcase extends Item {
 			return EnumActionResult.SUCCESS;
 		}
 
-		if(hand == EnumHand.MAIN_HAND)
-		{
-			if(world.isRemote) {
-				if(!stack.hasTagCompound()) {
-					stack.setTagCompound(new NBTTagCompound());
-					ClientUtils.syncItemNBT(stack);
-				}
-
-				if(!stack.getTagCompound().hasKey("passcode"))
-					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_CODE_SETUP_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-				else
-					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-			}
-		}
-
+		handle(stack, world, player, hand);
 		return EnumActionResult.FAIL;
 	}
 
@@ -70,6 +56,12 @@ public class ItemBriefcase extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
+		handle(stack, world, player, hand);
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
+	}
+
+	private void handle(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
+	{
 		if(world.isRemote && hand == EnumHand.MAIN_HAND) {
 			if(!stack.hasTagCompound()) {
 				stack.setTagCompound(new NBTTagCompound());
@@ -81,8 +73,6 @@ public class ItemBriefcase extends Item {
 			else
 				player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_INSERT_CODE_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 		}
-
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
 	@Override
