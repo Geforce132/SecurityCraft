@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
@@ -24,6 +25,14 @@ public class OwnableBlock extends Block {
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+
+		if (stack.hasDisplayName()) {
+			TileEntity te = world.getTileEntity(pos);
+			
+			if (te instanceof INameable && ((INameable)te).canBeNamed()) {
+				((INameable)te).setCustomSCName(stack.getDisplayName());
+			}
+		}
 	}
 
 	@Override
