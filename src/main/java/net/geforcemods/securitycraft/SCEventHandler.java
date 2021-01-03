@@ -37,6 +37,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -139,15 +140,16 @@ public class SCEventHandler {
 
 				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG) && event.getPlayer().inventory.getCurrentItem().hasDisplayName()){
 					event.setCanceled(true);
+					event.setCancellationResult(ActionResultType.SUCCESS);
 
 					for(String character : new String[]{"(", ")"})
 						if(event.getPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText()).replace("#c", character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getPlayer().inventory.getCurrentItem().getDisplayName().getFormattedText()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomSCName().equals(event.getPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomSCName().getFormattedText()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomSCName().getFormattedText()), TextFormatting.RED);
 						return;
 					}
 
@@ -155,6 +157,7 @@ public class SCEventHandler {
 						event.getPlayer().inventory.getCurrentItem().shrink(1);
 
 					((INameable) tileEntity).setCustomSCName(event.getPlayer().inventory.getCurrentItem().getDisplayName());
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
 					return;
 				}
 			}

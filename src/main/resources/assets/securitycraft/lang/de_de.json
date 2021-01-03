@@ -668,6 +668,7 @@
 	"messages.securitycraft:command.sc.usage": "Verwendung: /sc connect ODER /sc disconnect ODER /sc contact ODER /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "Der Name dieses Blocks ist schon '#n'.",
 	"messages.securitycraft:naming.error": "Du kannst diesen Block nicht '#n' nennen, da der Name den nicht erlaubten Character '#c' enthält.",
+	"messages.securitycraft:naming.named": "Dieser Block wurde zu '%s' umbenannt.",
 	"messages.securitycraft:thanks": "Danke, dass du SecurityCraft # nutzt!",
 	"messages.securitycraft:tip": "Tipp:",
 	"messages.securitycraft:tip.scHelp": "Schreibe /sc help, um das Rezept der SecurityCraft Anleitung zu bekommen. Diese zeigt dir Informationen zu SecurityCraft Blöcken und Items.",
