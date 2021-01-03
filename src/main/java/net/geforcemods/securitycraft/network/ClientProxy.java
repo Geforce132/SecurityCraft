@@ -59,6 +59,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -354,6 +355,19 @@ public class ClientProxy implements IProxy
 
 			return noTint;
 		}, SCContent.CAGE_TRAP.get(), SCContent.INVENTORY_SCANNER.get(), SCContent.KEYCARD_READER.get(), SCContent.KEYPAD.get(), SCContent.LASER_BLOCK.get(), SCContent.PROJECTOR.get(), SCContent.RETINAL_SCANNER.get(), SCContent.USERNAME_LOGGER.get());
+		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+			if(tintIndex == 0)
+			{
+				IDyeableArmorItem item = ((IDyeableArmorItem)stack.getItem());
+
+				if(item.hasColor(stack))
+					return item.getColor(stack);
+				else
+					return 0x333333;
+			}
+			else
+				return -1;
+		}, SCContent.BRIEFCASE.get());
 	}
 
 	private int mixTints(int tint1, int tint2)
