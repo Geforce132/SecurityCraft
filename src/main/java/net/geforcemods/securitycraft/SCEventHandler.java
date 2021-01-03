@@ -225,12 +225,12 @@ public class SCEventHandler {
 
 					for(String character : new String[]{"(", ")"})
 						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), "Naming", ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
 						return;
 					}
 
@@ -238,6 +238,7 @@ public class SCEventHandler {
 						event.getEntityPlayer().inventory.getCurrentItem().shrink(1);
 
 					((INameable) tileEntity).setCustomName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
+					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomName()), TextFormatting.RED);
 					return;
 				}
 
