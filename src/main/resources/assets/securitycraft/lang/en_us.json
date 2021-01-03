@@ -723,6 +723,7 @@
 	"messages.securitycraft:command.sc.usage": "Usage: /sc connect OR /sc disconnect OR /sc contact OR /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "This block's name already matches '%s'.",
 	"messages.securitycraft:naming.error": "You cannot name this block '%1$s', as the name contains the invalid character '%2$s'.",
+	"messages.securitycraft:naming.named": "This block has been renamed to '%s'.",
 	"messages.securitycraft:thanks": "Thanks for using SecurityCraft %1$s! %2$s %3$s ",
 	"messages.securitycraft:tip": "Tip:",
 	"messages.securitycraft:tip.scHelp": "Typing /sc help will give you the recipe for the SecurityCraft manual, which will display help info for SecurityCraft blocks/items.",

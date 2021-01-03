@@ -46,8 +46,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
@@ -144,15 +144,16 @@ public class SCEventHandler {
 
 				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG) && event.getPlayer().inventory.getCurrentItem().hasDisplayName()){
 					event.setCanceled(true);
+					event.setCancellationResult(ActionResultType.SUCCESS);
 
 					for(String character : new String[]{"(", ")"})
 						if(event.getPlayer().inventory.getCurrentItem().getDisplayName().getString().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), new StringTextComponent("Naming"), ClientUtils.localize("messages.securitycraft:naming.error", event.getPlayer().inventory.getCurrentItem().getDisplayName(), character), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.error", event.getPlayer().inventory.getCurrentItem().getDisplayName(), character), TextFormatting.RED);
 							return;
 						}
 
 					if(((INameable) tileEntity).getCustomSCName().equals(event.getPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), new StringTextComponent("Naming"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
 						return;
 					}
 
@@ -160,6 +161,7 @@ public class SCEventHandler {
 						event.getPlayer().inventory.getCurrentItem().shrink(1);
 
 					((INameable) tileEntity).setCustomSCName(event.getPlayer().inventory.getCurrentItem().getDisplayName());
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
 					return;
 				}
 			}

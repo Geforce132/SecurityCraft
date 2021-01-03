@@ -723,6 +723,7 @@
 	"messages.securitycraft:command.sc.usage": "Verwendung: /sc connect ODER /sc disconnect ODER /sc contact ODER /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "Der Name dieses Blocks ist schon '%s'.",
 	"messages.securitycraft:naming.error": "Du kannst diesen Block nicht '%1$s' nennen, da der Name den nicht erlaubten Character '%2$sc' enthält.",
+	"messages.securitycraft:naming.named": "Dieser Block wurde zu '%s' umbenannt.",
 	"messages.securitycraft:thanks": "Danke, dass du SecurityCraft %1$s nutzt! %2$s %3$s ",
 	"messages.securitycraft:tip": "Tipp:",
 	"messages.securitycraft:tip.scHelp": "Schreibe /sc help, um das Rezept der SecurityCraft Anleitung zu bekommen. Diese zeigt dir Informationen zu SecurityCraft Blöcken und Items.",
