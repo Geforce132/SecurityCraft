@@ -6,8 +6,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.OpenGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -24,7 +26,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BriefcaseItem extends Item {
+public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
 	public BriefcaseItem(Item.Properties properties)
 	{
@@ -38,6 +40,9 @@ public class BriefcaseItem extends Item {
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, Hand hand) {
+		if(world.getBlockState(pos).getBlock() == Blocks.CAULDRON) //don't open the briefcase when a cauldron is rightclicked for removing the dye
+			return ActionResultType.SUCCESS;
+
 		if(world.isRemote && hand == Hand.MAIN_HAND) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
