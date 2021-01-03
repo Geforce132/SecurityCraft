@@ -43,18 +43,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		if(world.getBlockState(pos).getBlock() == Blocks.CAULDRON) //don't open the briefcase when a cauldron is rightclicked for removing the dye
 			return ActionResultType.SUCCESS;
 
-		if(world.isRemote && hand == Hand.MAIN_HAND) {
-			if(!stack.hasTag()) {
-				stack.setTag(new CompoundNBT());
-				ClientUtils.syncItemNBT(stack);
-			}
-
-			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), world.getDimension().getType().getId(), player.getPosition(), stack.getDisplayName()));
-			else
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.getPosition(), stack.getDisplayName()));
-		}
-
+		handle(stack, world, player, hand);
 		return ActionResultType.FAIL;
 	}
 
@@ -62,6 +51,12 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
+		handle(stack, world, player, hand);
+		return ActionResult.resultPass(stack);
+	}
+
+	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand)
+	{
 		if(world.isRemote && hand == Hand.MAIN_HAND) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
@@ -73,8 +68,6 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 			else
 				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), world.getDimension().getType().getId(), player.getPosition(), stack.getDisplayName()));
 		}
-
-		return ActionResult.resultPass(stack);
 	}
 
 	@Override
