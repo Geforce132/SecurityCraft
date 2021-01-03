@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.ModelBlockMine;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
@@ -410,6 +411,7 @@ public class ClientProxy implements IProxy {
 		}
 
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase)stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
 	}
 
 	private int mixTints(int tint1, int tint2)

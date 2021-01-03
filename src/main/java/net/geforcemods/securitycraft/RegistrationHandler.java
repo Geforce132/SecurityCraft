@@ -35,6 +35,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWalls;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
+import net.geforcemods.securitycraft.misc.DyeBriefcaseRecipe;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
@@ -96,6 +97,7 @@ import net.minecraft.init.PotionTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
@@ -491,6 +493,12 @@ public class RegistrationHandler
 				return new Owner(value.getName(), value.getUUID());
 			}
 		}).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "owner")));
+	}
+
+	@SubscribeEvent
+	public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
+	{
+		event.getRegistry().register(new DyeBriefcaseRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
 	}
 
 	@SideOnly(Side.CLIENT)
