@@ -545,7 +545,6 @@ messages.securitycraft:cageTrap.captured=#player a été capturé à #location.
 messages.securitycraft:frame.rightclick=RClic droit avec un moniteur associé pour le voir.
 messages.securitycraft:command.sc.usage=Usage: /sc connect OU /sc disconnect OU /sc contact OU /sc resume
 messages.securitycraft:naming.alreadyMatches=Le nom de ce bloc correspond déjà ’#n’.
-messages.securitycraft:naming.error=Vous ne pouvez pas nommer ce bloc ’#n’, car le nom contient le caractère non valide ’#c’.
 messages.securitycraft:thanks=Merci d‘avoir utilisé SecurityCraft #!
 messages.securitycraft:tip=Conseil:
 messages.securitycraft:tip.scHelp=Tapez /sc help vous donnera la recette pour le manuel SecurityCraft, qui affichera des informations d’aide pour les blocs / objets SecurityCraft.

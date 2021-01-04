@@ -223,12 +223,6 @@ public class SCEventHandler {
 				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG) && event.getEntityPlayer().inventory.getCurrentItem().hasDisplayName()){
 					event.setCanceled(true);
 
-					for(String character : new String[]{"(", ")"})
-						if(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName().contains(character)) {
-							PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.error").replace("#n", event.getEntityPlayer().inventory.getCurrentItem().getDisplayName()).replace("#c", character), TextFormatting.RED);
-							return;
-						}
-
 					if(((INameable) tileEntity).getCustomName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
 						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches").replace("#n", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
 						return;
