@@ -657,7 +657,6 @@
 	"messages.securitycraft:frame.rightclick": "Haz clic derecho con un monitor vinculado para ver.",
 	"messages.securitycraft:command.sc.usage": "Usa: /sc connect O /sc disconnect O /sc contact O /sc resume.",
 	"messages.securitycraft:naming.alreadyMatches": "El nombre de este bloque ya coincide con \"#n\".",
-	"messages.securitycraft:naming.error": "No puedes nombrar a este bloque \"#n\" porque contiene el carácter no válido \"#c\".",
 	"messages.securitycraft:thanks": "¡Gracias por usar SecurityCraft, #!",
 	"messages.securitycraft:tip": "Consejo:",
 	"messages.securitycraft:tip.scHelp": "Escribe /sc help para obtener un manual de SecurityCraft, que te mostrará información de ayuda sobre los bloques y objetos de SecurityCraft.",
