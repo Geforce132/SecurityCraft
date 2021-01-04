@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockPortableRadar extends BlockContainer {
+public class BlockPortableRadar extends BlockOwnable {
 
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
@@ -54,22 +54,6 @@ public class BlockPortableRadar extends BlockContainer {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
-	}
-
-	/**
-	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
-	 */
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		super.onBlockPlacedBy(world, pos, state, placer, stack);
-
-		if (!world.isRemote && stack.hasDisplayName()) {
-			TileEntity te = world.getTileEntity(pos);
-
-			if (te instanceof TileEntityPortableRadar && ((TileEntityPortableRadar)te).canBeNamed()) {
-				((TileEntityPortableRadar)te).setCustomName(stack.getDisplayName());
-			}
-		}
 	}
 
 	@Override

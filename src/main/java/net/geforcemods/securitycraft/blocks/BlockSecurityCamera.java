@@ -38,7 +38,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockSecurityCamera extends BlockContainer{
+public class BlockSecurityCamera extends BlockOwnable{
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -57,22 +57,6 @@ public class BlockSecurityCamera extends BlockContainer{
 		if(state.getValue(FACING) == EnumFacing.DOWN)
 			return EnumBlockRenderType.MODEL;
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-	}
-
-	/**
-	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
-	 */
-	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		super.onBlockPlacedBy(world, pos, state, placer, stack);
-
-		if (!world.isRemote && stack.hasDisplayName()) {
-			TileEntity te = world.getTileEntity(pos);
-
-			if (te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).canBeNamed()) {
-				((TileEntitySecurityCamera)te).setCustomName(stack.getDisplayName());
-			}
-		}
 	}
 
 	@Override
