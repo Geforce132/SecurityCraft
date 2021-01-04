@@ -666,7 +666,6 @@
 	"messages.securitycraft:frame.rightclick": "Rightclick with a bound monitor to view it.",
 	"messages.securitycraft:command.sc.usage": "Usage: /sc connect OR /sc disconnect OR /sc contact OR /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "This block's name already matches '#n'.",
-	"messages.securitycraft:naming.error": "You cannot name this block '#n', as the name contains the invalid character '#c'.",
 	"messages.securitycraft:naming.named": "This block has been renamed to '%s'.",
 	"messages.securitycraft:thanks": "Thanks for using SecurityCraft #!",
 	"messages.securitycraft:tip": "Tip:",
