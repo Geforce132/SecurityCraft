@@ -30,6 +30,7 @@
 - Fix: Rightclicking a block while attempting to remove a Briefcase's code does not remove the code
 - Fix: Slider tooltips overlap sliders when changing their value (affects Projector, block customization, ...)
 - Fix: Reinforced Light Gray Stained Glass/Stained Glass Panes/Terracotta have faulty recipes (Thanks shroomdog27!)
+- Fix: The names of nameable SecurityCraft blocks cannot contain braces
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

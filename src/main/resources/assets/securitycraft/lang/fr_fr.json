@@ -720,7 +720,6 @@
 	"messages.securitycraft:frame.rightclick": "Clic droit avec un moniteur de caméra lié pour le voir.",
 	"messages.securitycraft:command.sc.usage": "Usage: /sc connect OU /sc disconnect OU /sc contact OU /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "Le nom de ce bloc correspond déjà ’%s’.",
-	"messages.securitycraft:naming.error": "Vous ne pouvez pas nommer ce bloc ’%1$s’, car le nom contient le caractère non valide ’%2$s’.",
 	"messages.securitycraft:thanks": "Merci pour l’utilisation de SecurityCraft %1$s ! %2$s %3$s ",
 	"messages.securitycraft:tip": "Conseil :",
 	"messages.securitycraft:tip.scHelp": "Tapez /sc help vous donnera la recette pour le manuel SecurityCraft, qui affichera des informations d’aide pour les blocs / objets SecurityCraft.",

@@ -719,7 +719,6 @@
 	"messages.securitycraft:frame.rightclick": "Clicca col tasto destro tenendo uno schermo collegato per vederlo.",
 	"messages.securitycraft:command.sc.usage": "Utilizzo: /sc connect OPPURE /sc disconnect OPPURE /sc contact OPPURE /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "Il nome di questo blocco corrisponde già a '%s'.",
-	"messages.securitycraft:naming.error": "Non puoi chiamare questo blocco '%1$s', perché il nome contiene %2$s (carattere non valido).",
 	"messages.securitycraft:thanks": "Grazie per usare la SecurityCraft %1$s! %2$s %3$s ",
 	"messages.securitycraft:tip": "Consiglio:",
 	"messages.securitycraft:tip.scHelp": "Scrivendo /sc help potrai vedere come craftare il manuale della SecurityCraft, il quale fornisce informazioni per gli oggetti e i blocchi della mod.",

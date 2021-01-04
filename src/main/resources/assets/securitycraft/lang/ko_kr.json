@@ -644,7 +644,6 @@
 	"messages.securitycraft:frame.rightclick": "바인딩된 모니터로 마우스 오른쪽 버튼을 클릭하여 봅니다.",
 	"messages.securitycraft:command.sc.usage": "사용법: /sc 연결 또는 /sc 연결 해제 또는 /sc 연락처 또는 /sc 다시 시작",
 	"messages.securitycraft:naming.alreadyMatches": "이 블록의 이름이 이미 '%s'과(와) 일치합니다.",
-	"messages.securitycraft:naming.error": "이름에 잘못된 문자 '%2$s'가 포함되어 있으므로 이 블록의 이름을 '%1$s'으로 지정할 수 없습니다.",
 	"messages.securitycraft:thanks": "세큐리티크래프트 %1$s를 사용해 주셔서 감사합니다! %2$s %3$s ",
 	"messages.securitycraft:tip": "사용법:",
 	"messages.securitycraft:tip.scHelp": "/sc help를 입력하면 세큐리티크래프트 블록/아이템에 대한 도움말 정보가 표시되는 세큐리티크래프트 설명서가 제공됩니다.",
