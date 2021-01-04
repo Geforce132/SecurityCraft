@@ -14,6 +14,7 @@
 - New: Customization option to change the range of blocks in which the Claymore can be tripped
 - New: Customization option to change the range of blocks in which the I.M.S. can find potential targets
 - New: Briefcases can now be dyed the same way as leather armor
+- New: Nameable SecurityCraft blocks and Sentries will keep the custom name of their item form when placed
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 

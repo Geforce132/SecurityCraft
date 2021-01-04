@@ -3,12 +3,15 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityPortableRadar;
+import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -51,6 +54,22 @@ public class BlockPortableRadar extends BlockContainer {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		return new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.45F, 0.7F);
+	}
+
+	/**
+	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
+	 */
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+
+		if (!world.isRemote && stack.hasDisplayName()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof TileEntityPortableRadar && ((TileEntityPortableRadar)te).canBeNamed()) {
+				((TileEntityPortableRadar)te).setCustomName(stack.getDisplayName());
+			}
+		}
 	}
 
 	@Override

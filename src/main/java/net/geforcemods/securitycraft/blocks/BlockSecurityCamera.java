@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Iterator;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -23,6 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -55,6 +57,22 @@ public class BlockSecurityCamera extends BlockContainer{
 		if(state.getValue(FACING) == EnumFacing.DOWN)
 			return EnumBlockRenderType.MODEL;
 		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	}
+
+	/**
+	 * Called by ItemBlocks after a block is set in the world, to allow post-place logic
+	 */
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+
+		if (!world.isRemote && stack.hasDisplayName()) {
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof TileEntitySecurityCamera && ((TileEntitySecurityCamera)te).canBeNamed()) {
+				((TileEntitySecurityCamera)te).setCustomName(stack.getDisplayName());
+			}
+		}
 	}
 
 	@Override
