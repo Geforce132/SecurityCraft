@@ -19,7 +19,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
-	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.0180D, 0.0100D, 0.0250D, 0.001D);
+	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
 	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
