@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.blocks.IronFenceBlock;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
@@ -97,6 +98,7 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
+import net.geforcemods.securitycraft.items.KeypadDoorItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.ReinforcedDoorItem;
@@ -122,6 +124,7 @@ import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
@@ -199,6 +202,7 @@ public class SCContent
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(propDisguisable(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(propDisguisable(Material.IRON)));
 	@HasManualPage public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL).setLightLevel(state -> state.get(KeypadFurnaceBlock.OPEN) && state.get(KeypadFurnaceBlock.LIT) ? 13 : 0)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable(Material.IRON).tickRandomly().sound(SoundType.METAL)));
 	public static final RegistryObject<Block> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop()));
@@ -626,6 +630,7 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 5));
 	@HasManualPage public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.groupSCTechnical)));
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
+	@HasManualPage public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new KeypadDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 3));
 	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
@@ -716,6 +721,8 @@ public class SCContent
 	public static TileEntityType<ReinforcedHopperTileEntity> teTypeReinforcedHopper;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")
 	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
+	@ObjectHolder(SecurityCraft.MODID + ":keypad_door")
+	public static TileEntityType<KeypadDoorTileEntity> teTypeKeypadDoor;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")

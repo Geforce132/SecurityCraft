@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
-import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
+import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
@@ -112,7 +112,7 @@ public class UniversalBlockRemoverItem extends Item
 			}
 			else
 			{
-				if((block instanceof ReinforcedDoorBlock || block instanceof ScannerDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
+				if((block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
 					pos = pos.down();
 
 				if(block == SCContent.INVENTORY_SCANNER.get())

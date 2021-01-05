@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "securitycraft:door_indestructible_iron_item"
+    },
+    {
+      "item": "securitycraft:keypad"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:keypad_door_item"
+  }
+}

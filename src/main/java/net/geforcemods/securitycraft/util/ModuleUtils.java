@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
+import net.geforcemods.securitycraft.tileentity.SpecialDoorTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -134,6 +135,23 @@ public class ModuleUtils{
 		}else if(te instanceof SecretSignTileEntity) {
 			if(module == ModuleType.WHITELIST && ((SecretSignTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
+		}
+		if(te instanceof SpecialDoorTileEntity){
+			SpecialDoorTileEntity door = (SpecialDoorTileEntity)te;
+
+			if(module == ModuleType.WHITELIST && door.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){
+				if(door.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+
+				return true;
+			}
+
+			if(module == ModuleType.BLACKLIST && door.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getString().toLowerCase())){
+				if(door.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+
+				return true;
+			}
 		}
 
 		return false;

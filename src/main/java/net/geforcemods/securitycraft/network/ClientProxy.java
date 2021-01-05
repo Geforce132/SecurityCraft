@@ -190,6 +190,7 @@ public class ClientProxy implements IProxy
 		RenderTypeLookup.setRenderLayer(SCContent.INVENTORY_SCANNER_FIELD.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.KEYCARD_READER.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD.get(), cutout);
+		RenderTypeLookup.setRenderLayer(SCContent.KEYPAD_DOOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.LASER_BLOCK.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.LASER_FIELD.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);

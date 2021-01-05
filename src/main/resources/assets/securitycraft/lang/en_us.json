@@ -401,7 +401,6 @@
 	"block.securitycraft.secret_dark_oak_sign": "Secret Dark Oak Sign",
 	"block.securitycraft.secret_crimson_sign": "Secret Crimson Sign",
 	"block.securitycraft.secret_warped_sign": "Secret Warped Sign",
-
 	"block.securitycraft.reinforced_observer": "Reinforced Observer",
 	"block.securitycraft.gold_mine": "Gold Ore Mine",
 	"block.securitycraft.iron_mine": "Iron Ore Mine",
@@ -415,6 +414,7 @@
 	"block.securitycraft.ancient_debris_mine": "Ancient Debris Mine",
 	"block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
 	"block.securitycraft.reinforced_hopper": "Reinforced Hopper",
+	"block.securitycraft.keypad_door": "Keypad Door",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -462,6 +462,7 @@
 	"item.securitycraft.secret_warped_sign_item": "Secret Warped Sign",
 	"item.securitycraft.sentry": "Sentry",
 	"item.securitycraft.crystal_quartz_item": "Crystal Quartz",
+	"item.securitycraft.keypad_door_item": "Keypad Door",
 
 	"entity.securitycraft.sentry": "Sentry",
 	"entity.securitycraft.bullet": "Bullet",
@@ -525,7 +526,7 @@
 
 	"help.securitycraft.codebreaker.info": "The codebreaker can crack any keypad, password-protected chest, or password-protected furnace's code by rightclicking on it. (5 uses with a 2/3 chance of it working)",
 	"help.securitycraft.door_indestructible_iron_item.info": "The reinforced iron door is the same as the vanilla iron door, except it is unbreakable. It can only be opened by Keypads, Inventory Scanners, etc. The owner of the door can use the universal block remover to break it down.",
-	"help.securitycraft.scanner_door_item.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it, but has to be closed manually.",
+	"help.securitycraft.scanner_door_item.info": "The Scanner Door acts like a Retinal Scanner combined with a Reinforced Iron Door, where the owner looks at the top to open it.",
 	"help.securitycraft.universal_block_remover.info": "The universal block remover is used to destroy \"reinforced\" blocks by rightclicking it. Only the person who placed the block down can destroy it.",
 	"help.securitycraft.keycard_lv1.info": "The keycards are used with the keycard reader. There are six keycards, level 1, 2, 3, 4, and 5 cards, and a limited use card that is equivalent to a level 5 card that can only be used five times in Survival mode.",
 	"help.securitycraft.keycard_lv2.info": "The keycards are used with the keycard reader. There are six keycards, level 1, 2, 3, 4, and 5 cards, and a limited use card that is equivalent to a level 5 card that can only be used five times in Survival mode.",
@@ -560,6 +561,7 @@
 	"help.securitycraft.secret_sign_item.info": "The Secret Sign works like a vanilla sign, with the slight difference that only the owner of the sign and whitelisted players can interact with, and view the text on it. Make sure noone can break the block it's placed on!",
 	"help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
+	"help.securitycraft.keypad_door_item.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",
@@ -856,6 +858,8 @@
 	"module.securitycraft.secret_warped_sign.whitelist_module.description": "Adding a whitelist module to a Secret Sign will allow whitelisted players to interact with, and view the text on it.",
 	"module.securitycraft.scanner_door.whitelist_module.description": "Adding the whitelist module to a scanner door will allow players to use the scanner door even if they aren't the player who placed down the block.",
 	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Adding the whitelist module to a reinforced hopper will allow whitelisted players to access the hopper's contents and extract out of their own password-protected chests/furnaces/... using this hopper.",
+	"module.securitycraft.keypad_door.whitelist_module.description": "Adding a whitelist module to a keypad door will allow players to use the block without knowing the code.",
+	"module.securitycraft.keypad_door.blacklist_module.description": "Adding a blacklist module to a keypad door will ban players from interacting with the block.",
 
 	"config.securitycraft:isCodebreakerAllowed": "Is codebreaker allowed?",
 	"config.securitycraft:isCodebreakerAllowed.tooltip": "Can the codebreaker be used?",
@@ -984,6 +988,10 @@
 	"option.securitycraft.claymore.range.description": "From how many blocks can the claymore be tripped from?",
 	"option.securitycraft.ims.range": "Range: %s",
 	"option.securitycraft.ims.range.description": "How many blocks away can the I.M.S. detect potential targets from?",
+	"option.securitycraft.keypad_door.sendMessage": "Message: %s",
+	"option.securitycraft.keypad_door.sendMessage.description": "Does this keypad door send a message upon activation (when using whitelist/blacklist modules)?",
+	"option.securitycraft.keypad_door.signalLength": "Signal length: %s",
+	"option.securitycraft.keypad_door.signalLength.description": "How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",
