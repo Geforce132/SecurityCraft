@@ -15,6 +15,7 @@
 - New: Customization option to change the range of blocks in which the I.M.S. can find potential targets
 - New: Briefcases can now be dyed the same way as leather armor
 - New: Nameable SecurityCraft blocks and Sentries will keep the custom name of their item form when placed
+- New: Customization option to change the time the Scanner Door will stay open before it closes again (set to 0 to disable)
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
