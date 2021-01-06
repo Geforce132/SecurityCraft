@@ -20,7 +20,7 @@ public class TileEntitySecurityCamera extends CustomizableSCTE implements IEMPAf
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
 	private boolean shutDown = false;
-	private OptionDouble rotationSpeedOption = new OptionDouble("rotationSpeed", CAMERA_SPEED, 0.0100D, 0.0250D, 0.001D);
+	private OptionDouble rotationSpeedOption = new OptionDouble(this::getPos, "rotationSpeed", CAMERA_SPEED, 0.01D, 0.025D, 0.001D, true);
 	private OptionBoolean shouldRotateOption = new OptionBoolean("shouldRotate", true);
 	private OptionDouble customRotationOption = new OptionDouble(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 

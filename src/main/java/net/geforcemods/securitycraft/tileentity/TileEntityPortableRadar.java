@@ -22,8 +22,8 @@ import net.minecraft.util.text.TextFormatting;
 
 public class TileEntityPortableRadar extends CustomizableSCTE {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", 25.0D, 5.0D, 50.0D, 5.0D);
-	private OptionInt searchDelayOption = new OptionInt("searchDelay", 4, 4, 10, 1);
+	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 25.0D, 5.0D, 50.0D, 1.0D, true);
+	private OptionInt searchDelayOption = new OptionInt(this::getPos, "searchDelay", 4, 4, 10, 1, true);
 	private OptionBoolean repeatMessageOption = new OptionBoolean("repeatMessage", true);
 	private OptionBoolean enabledOption = new OptionBoolean("enabled", true);
 	private boolean shouldSendNewMessage = true;

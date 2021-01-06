@@ -16,6 +16,7 @@
 - New: Briefcases can now be dyed the same way as leather armor
 - New: Nameable SecurityCraft blocks and Sentries will keep the custom name of their item form when placed
 - Change: Reinforced Hoppers can no longer be accessed by anyone
+- Change: Some customizable options have been adapted to allow for finer control
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
 - Fix: The Disguise Module does not accept some modded blocks

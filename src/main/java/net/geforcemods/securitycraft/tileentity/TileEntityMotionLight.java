@@ -15,7 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class TileEntityMotionLight extends CustomizableSCTE {
 
-	private OptionDouble searchRadiusOption = new OptionDouble("searchRadius", 5.0D, 5.0D, 20.0D, 5.0D);
+	private OptionDouble searchRadiusOption = new OptionDouble(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 
 	@Override
 	public boolean attackEntity(Entity entity) {
