@@ -51,7 +51,7 @@ public class ReinforcedDoorItem extends Item
 			int offsetZ = angleFacing.getZOffset();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
-			if(!placeDoor(world, pos, angleFacing, SCContent.REINFORCED_DOOR.get(), flag))
+			if(!placeDoor(world, pos, angleFacing, SCContent.REINFORCED_DOOR.get(), flag, ctx))
 				return ActionResultType.FAIL;
 
 			SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
@@ -73,11 +73,11 @@ public class ReinforcedDoorItem extends Item
 			return ActionResultType.FAIL;
 	}
 
-	public boolean placeDoor(World world, BlockPos pos, Direction facing, Block door, boolean isRightHinge) //naming might not be entirely correct, but it's giving a rough idea
+	public boolean placeDoor(World world, BlockPos pos, Direction facing, Block door, boolean isRightHinge, ItemUseContext ctx) //naming might not be entirely correct, but it's giving a rough idea
 	{
 		BlockPos posAbove = pos.up();
 
-		if(!world.getBlockState(posAbove).isAir(world, posAbove))
+		if(!world.getBlockState(posAbove).isReplaceable(new BlockItemUseContext(ctx)))
 			return false;
 
 		BlockPos left = pos.offset(facing.rotateY());
