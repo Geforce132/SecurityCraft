@@ -234,7 +234,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MYCELIUM.get());
 		getBuilder(BlockTags.CARPETS).add(SCTags.Blocks.REINFORCED_CARPETS);
-		getBuilder(BlockTags.DOORS).add(SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
+		getBuilder(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		getBuilder(BlockTags.FENCES).add(SCContent.IRON_FENCE.get());
 		getBuilder(BlockTags.IMPERMEABLE).add(
 				SCContent.REINFORCED_GLASS.get(),

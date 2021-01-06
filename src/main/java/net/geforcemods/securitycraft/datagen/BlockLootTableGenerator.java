@@ -63,9 +63,9 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.INVENTORY_SCANNER);
 		putStandardBlockLootTable(SCContent.IRON_FENCE);
 		putMineLootTable(SCContent.IRON_ORE_MINE);
-		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.KEYCARD_READER);
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
+		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.FRAME);
 		putStandardBlockLootTable(SCContent.KEYPAD_FURNACE);
 		putStandardBlockLootTable(SCContent.KEYPAD);
@@ -79,6 +79,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.PROTECTO);
 		putMineLootTable(SCContent.QUARTZ_ORE_MINE);
 		putMineLootTable(SCContent.REDSTONE_ORE_MINE);
+		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.REINFORCED_FENCEGATE);
 		putStandardBlockLootTable(SCContent.REINFORCED_IRON_TRAPDOOR);
 		putStandardBlockLootTable(SCContent.REINFORCED_HOPPER);
