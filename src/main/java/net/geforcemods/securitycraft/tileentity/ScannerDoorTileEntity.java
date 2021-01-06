@@ -1,13 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.ArrayList;
-
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
-import net.geforcemods.securitycraft.api.LinkedAction;
-import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
-import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -18,17 +11,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
-public class ScannerDoorTileEntity extends CustomizableTileEntity
+public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 {
-	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 0, 0, 400, 5, true); //20 seconds max
-
 	public ScannerDoorTileEntity()
 	{
 		super(SCContent.teTypeScannerDoor);
@@ -66,64 +53,8 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 			if(open && length > 0)
 				world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
 
-			if(open && sendMessage.get())
+			if(open && sendsMessages())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName().getFormattedText()), TextFormatting.GREEN);
-		}
-	}
-
-	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module)
-	{
-		super.onModuleInserted(stack, module);
-		handleModule(stack, module, false);
-	}
-
-	@Override
-	public void onModuleRemoved(ItemStack stack, ModuleType module)
-	{
-		super.onModuleRemoved(stack, module);
-		handleModule(stack, module, true);
-	}
-
-	private void handleModule(ItemStack stack, ModuleType module, boolean removed)
-	{
-		DoubleBlockHalf myHalf = getBlockState().get(DoorBlock.HALF);
-		BlockPos otherPos;
-
-		if(myHalf == DoubleBlockHalf.UPPER)
-			otherPos = getPos().down();
-		else
-			otherPos = getPos().up();
-
-		BlockState other = world.getBlockState(otherPos);
-
-		if(other.get(DoorBlock.HALF) != myHalf)
-		{
-			TileEntity otherTe = world.getTileEntity(otherPos);
-
-			if(otherTe instanceof ScannerDoorTileEntity)
-			{
-				ScannerDoorTileEntity otherDoorTe = (ScannerDoorTileEntity)otherTe;
-
-				if(!removed && !otherDoorTe.hasModule(module))
-					otherDoorTe.insertModule(stack);
-				else if(removed && otherDoorTe.hasModule(module))
-					otherDoorTe.removeModule(module);
-			}
-		}
-	}
-
-	@Override
-	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableTileEntity> excludedTEs)
-	{
-		if(action == LinkedAction.OPTION_CHANGED)
-		{
-			Option<?> option = (Option<?>)parameters[0];
-
-			if(option.getName().equals(sendMessage.getName()))
-				sendMessage.copy(option);
-			else if(option.getName().equals(signalLength.getName()))
-				signalLength.copy(option);
 		}
 	}
 
@@ -140,13 +71,8 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 	}
 
 	@Override
-	public Option<?>[] customOptions()
+	public int defaultSignalLength()
 	{
-		return new Option[]{ sendMessage, signalLength };
-	}
-
-	public int getSignalLength()
-	{
-		return signalLength.get();
+		return 0;
 	}
 }

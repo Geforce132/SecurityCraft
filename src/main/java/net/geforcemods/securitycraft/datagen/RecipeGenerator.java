@@ -530,6 +530,11 @@ public class RecipeGenerator extends RecipeProvider
 		.addIngredient(SCContent.REINFORCED_CRYSTAL_QUARTZ.get())
 		.addCriterion("has_reinforced_crystal_quartz", hasItem(SCContent.REINFORCED_CRYSTAL_QUARTZ.get()))
 		.build(consumer);
+		ShapelessRecipeBuilder.shapelessRecipe(SCContent.KEYPAD_DOOR_ITEM.get())
+		.addIngredient(SCContent.REINFORCED_DOOR_ITEM.get())
+		.addIngredient(SCContent.KEYPAD.get())
+		.addCriterion("has_reinforced_door", hasItem(SCContent.REINFORCED_DOOR_ITEM.get()))
+		.build(consumer);
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.REINFORCED_ANDESITE.get(), 2)
 		.addIngredient(SCContent.REINFORCED_DIORITE.get())
 		.addIngredient(SCTags.Items.REINFORCED_COBBLESTONE)

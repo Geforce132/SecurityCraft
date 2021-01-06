@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.block.Block;
 
-public class ScannerDoorItem extends SpecialDoorItem
+public class KeypadDoorItem extends SpecialDoorItem
 {
-	public ScannerDoorItem(Properties properties)
+	public KeypadDoorItem(Properties properties)
 	{
 		super(properties);
 	}
@@ -13,6 +13,6 @@ public class ScannerDoorItem extends SpecialDoorItem
 	@Override
 	public Block getDoorBlock()
 	{
-		return SCContent.SCANNER_DOOR.get();
+		return SCContent.KEYPAD_DOOR.get();
 	}
 }
