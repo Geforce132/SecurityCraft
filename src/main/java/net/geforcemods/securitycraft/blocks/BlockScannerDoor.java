@@ -85,6 +85,17 @@ public class BlockScannerDoor extends BlockDoor implements ITileEntityProvider
 	}
 
 	@Override
+	public void updateTick(World world, BlockPos pos, IBlockState state, Random random)
+	{
+		IBlockState upperState = world.getBlockState(pos);
+		IBlockState lowerState = world.getBlockState(pos.down());
+
+		world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, false), 3);
+		world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, false), 3);
+		world.playEvent(null, 1011, pos, 0);
+	}
+
+	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
 		super.breakBlock(world, pos, state);

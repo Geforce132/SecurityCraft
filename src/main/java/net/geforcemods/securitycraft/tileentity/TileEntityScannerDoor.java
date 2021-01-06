@@ -2,10 +2,12 @@ package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -25,6 +27,7 @@ import net.minecraft.util.text.TextFormatting;
 public class TileEntityScannerDoor extends CustomizableSCTE
 {
 	private OptionBoolean sendMessage = new OptionBoolean("sendMessage", true);
+	private OptionInt signalLength = new OptionInt(this::getPos, "signalLength", 0, 0, 400, 5, true); //20 seconds max
 
 	@Override
 	public void entityViewed(EntityLivingBase entity)
@@ -49,11 +52,15 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 			}
 
 			boolean open = !BlockUtils.getBlockProperty(world, pos.down(), BlockDoor.OPEN);
+			int length = getSignalLength();
 
 			world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN)), 3);
 			world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, !lowerState.getValue(BlockDoor.OPEN)), 3);
 			world.markBlockRangeForRenderUpdate(pos.down(), pos);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
+
+			if(open && length > 0)
+				world.scheduleUpdate(pos, SCContent.scannerDoor, length);
 
 			if(open && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName()), TextFormatting.GREEN);
@@ -106,7 +113,14 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	protected void onLinkedBlockAction(EnumLinkedAction action, Object[] parameters, ArrayList<CustomizableSCTE> excludedTEs)
 	{
 		if(action == EnumLinkedAction.OPTION_CHANGED)
-			sendMessage.copy((Option<?>)parameters[0]);
+		{
+			Option<?> option = (Option<?>)parameters[0];
+
+			if(option.getName().equals(sendMessage.getName()))
+				sendMessage.copy(option);
+			else if(option.getName().equals(signalLength.getName()))
+				signalLength.copy(option);
+		}
 	}
 
 	@Override
@@ -124,6 +138,11 @@ public class TileEntityScannerDoor extends CustomizableSCTE
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[]{ sendMessage };
+		return new Option[]{ sendMessage, signalLength };
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.get();
 	}
 }

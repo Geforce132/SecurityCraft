@@ -783,6 +783,8 @@ option.securitycraft:retinalScanner.signalLength=Signal length: #
 option.securitycraft:retinalScanner.signalLength.description=How long should the redstone signal upon successful activation be? (In ticks, 20 ticks = 1 second)
 option.securitycraft:scannerDoor.sendMessage=Message: #
 option.securitycraft:scannerDoor.sendMessage.description=Does this scanner door send a message upon activation?
+option.securitycraft:scannerDoor.signalLength=Time until closing: #
+option.securitycraft:scannerDoor.signalLength.description=How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
 option.securitycraft:alarm.range=Range: #
 option.securitycraft:alarm.range.description=How many blocks away can the alarm sound be heard?
 option.securitycraft:alarm.delay=Delay: #
