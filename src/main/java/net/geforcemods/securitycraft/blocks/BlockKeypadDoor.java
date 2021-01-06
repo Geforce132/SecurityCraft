@@ -52,7 +52,7 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 		world.markBlockRangeForRenderUpdate(pos, pos);
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypadDoor, false);
 
-		if(signalLength > 0)
+		if(open && signalLength > 0)
 			world.scheduleUpdate(pos, SCContent.keypadDoor, signalLength);
 	}
 
