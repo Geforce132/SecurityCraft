@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -26,6 +27,7 @@ import net.minecraft.util.text.TextFormatting;
 public class ScannerDoorTileEntity extends CustomizableTileEntity
 {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
+	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 0, 0, 400, 5, true); //20 seconds max
 
 	public ScannerDoorTileEntity()
 	{
@@ -55,10 +57,14 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 			}
 
 			boolean open = !BlockUtils.getBlockProperty(world, pos.down(), DoorBlock.OPEN);
+			int length = getSignalLength();
 
 			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN)), 3);
 			world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN)), 3);
 			world.playEvent(null, open ? 1005 : 1011, pos, 0);
+
+			if(open && length > 0)
+				world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
 
 			if(open && sendMessage.get())
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName().getFormattedText()), TextFormatting.GREEN);
@@ -111,7 +117,14 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 	protected void onLinkedBlockAction(LinkedAction action, Object[] parameters, ArrayList<CustomizableTileEntity> excludedTEs)
 	{
 		if(action == LinkedAction.OPTION_CHANGED)
-			sendMessage.copy((Option<?>)parameters[0]);
+		{
+			Option<?> option = (Option<?>)parameters[0];
+
+			if(option.getName().equals(sendMessage.getName()))
+				sendMessage.copy(option);
+			else if(option.getName().equals(signalLength.getName()))
+				signalLength.copy(option);
+		}
 	}
 
 	@Override
@@ -129,6 +142,11 @@ public class ScannerDoorTileEntity extends CustomizableTileEntity
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[]{ sendMessage };
+		return new Option[]{ sendMessage, signalLength };
+	}
+
+	public int getSignalLength()
+	{
+		return signalLength.get();
 	}
 }

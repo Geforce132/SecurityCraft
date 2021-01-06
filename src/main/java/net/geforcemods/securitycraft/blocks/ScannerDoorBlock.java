@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Random;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
@@ -17,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ScannerDoorBlock extends DoorBlock
@@ -92,6 +95,17 @@ public class ScannerDoorBlock extends DoorBlock
 				}
 			}
 		}
+	}
+
+	@Override
+	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
+	{
+		BlockState upperState = world.getBlockState(pos);
+		BlockState lowerState = world.getBlockState(pos.down());
+
+		world.setBlockState(pos, upperState.with(DoorBlock.OPEN, false), 3);
+		world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, false), 3);
+		world.playEvent(null, 1011, pos, 0);
 	}
 
 	@Override
