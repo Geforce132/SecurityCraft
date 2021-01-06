@@ -18,6 +18,7 @@
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
+- Change: Some customizable options have been adapted to allow for finer control
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 - Fix: Removing the block under a Sentry does not remove the Sentry in numerous cases

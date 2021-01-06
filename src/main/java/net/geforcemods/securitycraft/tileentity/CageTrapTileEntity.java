@@ -6,12 +6,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 
 public class CageTrapTileEntity extends DisguisableTileEntity {
 
-	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false) {
-		@Override
-		public void toggle() {
-			setValue(!get());
-		}
-	};
+	private BooleanOption shouldCaptureMobsOption = new BooleanOption("captureMobs", false);
 
 	public CageTrapTileEntity()
 	{
