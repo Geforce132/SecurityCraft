@@ -43,10 +43,14 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	}
 
 	public static void activate(World world, BlockPos pos, BlockState state, int signalLength){
-		world.playEvent(null, 1005, pos, 0);
-		world.setBlockState(pos, state.with(OPEN, true));
+		boolean open = !state.get(OPEN);
+
+		world.playEvent(null, open ? 1005 : 1011, pos, 0);
+		world.setBlockState(pos, state.with(OPEN, open));
 		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD_DOOR.get());
-		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);
+
+		if(open && signalLength > 0)
+			world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD_DOOR.get(), signalLength);
 	}
 
 	@Override
