@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.blocks.BlockIronFence;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
+import net.geforcemods.securitycraft.blocks.BlockKeypadDoor;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockLaserField;
@@ -100,6 +101,7 @@ import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemCodebreaker;
 import net.geforcemods.securitycraft.items.ItemKeyPanel;
 import net.geforcemods.securitycraft.items.ItemKeycardBase;
+import net.geforcemods.securitycraft.items.ItemKeypadDoor;
 import net.geforcemods.securitycraft.items.ItemMineRemoteAccessTool;
 import net.geforcemods.securitycraft.items.ItemModifiedBucket;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -246,6 +248,7 @@ public class SetupHandler
 		SCContent.reinforcedLever = new BlockReinforcedLever().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_lever").setTranslationKey("securitycraft:reinforced_lever");
 		SCContent.reinforcedHopper = new BlockReinforcedHopper().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hopper").setTranslationKey("securitycraft:reinforced_hopper");
 		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
+		SCContent.keypadDoor = new BlockKeypadDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
 	}
 
 	public static void setupMines()
@@ -312,5 +315,6 @@ public class SetupHandler
 		SCContent.secretSignItem = new ItemSecretSign().setRegistryName("secret_sign_item").setTranslationKey("securitycraft:secretSignItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.sentry = new ItemSentry().setRegistryName("sentry").setTranslationKey("securitycraft:sentry").setCreativeTab(SecurityCraft.tabSCTechnical);
 		SCContent.crystalQuartzItem = new Item().setRegistryName("crystal_quartz_item").setTranslationKey("securitycraft:crystalQuartzItem").setCreativeTab(SecurityCraft.tabSCDecoration);
+		SCContent.keypadDoorItem = new ItemKeypadDoor().setRegistryName("keypad_door_item").setTranslationKey("securitycraft:keypad_door_item").setCreativeTab(SecurityCraft.tabSCDecoration);
 	}
 }

@@ -284,6 +284,7 @@ tile.securitycraft:reinforced_lever.name=Verstärkter Hebel
 tile.securitycraft:reinforced_hopper.name=Verstärkter Trichter
 tile.securitycraft:projector.name=Projektor
 tile.securitycraft:secret_sign.name=Geheimes Schild
+tile.securitycraft:keypad_door.name=Nummernschloss-Tür
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -323,6 +324,7 @@ item.securitycraft:scannerDoorItem.name=Scannertür
 item.securitycraft:secretSignItem.name=Geheimes Schild
 item.securitycraft:sentry.name=Geschütz
 item.securitycraft:crystalQuartzItem.name=Kristallquartz
+item.securitycraft:keypad_door_item.name=Nummernschloss-Tür
 
 entity.securitycraft:sentry.name=Geschütz
 entity.securitycraft:bullet.name=Kugel
@@ -398,7 +400,7 @@ help.securitycraft:projector.info=Der Projektor projiziert holographische Versio
 
 help.securitycraft:codebreaker.info=Der Codebrecher kann jedes Nummernschloss, jede Passwort gesicherte Truhe und jeden Passwort gesicherten Ofen durch einen Rechtsklick knacken. (5 Nutzungen mit einer Chance von 2/3, dass er funktioniert)
 help.securitycraft:doorIndestructibleIronItem.info=Die verstärkte Eisentür ist wie eine normale Eisentür, jedoch kann sie nur von dem Besitzer mit einem Universellen Blockentferner entfernt und durch Nummernschlösser, Inventarscanner, etc. geöffnet werden.
-help.securitycraft:scannerDoorItem.info=Die Scannertür verhält sich wie der Augenscanner, aber sie öffnet sich von selbst, wenn man den oberen Teil anschaut. Sie muss manuell wieder geschlossen werden.
+help.securitycraft:scannerDoorItem.info=Die Scannertür verhält sich wie der Augenscanner. Sie öffnet sich von selbst, wenn man den oberen Teil anschaut.
 help.securitycraft:universalBlockRemover.info=Der Universelle Blockentferner wird benutzt, um verstärkte Blöcke durch einen Rechtsklick zu entfernen. Nur der Spieler, der den Block platziert hat, kann ihn auch entfernen.
 help.securitycraft:keycards.info=Die Schlüsselkarten werden im Schlüsselkartenleser benutzt. Es gibt 6 Karten: Level 1, Level 2, Level 3, Level 4, Level 5 und eine begrenzt nutzbare Karte, die der Level 5 Karte gleich ist, aber im Überlebensmodus nur fünfmal benutzt werden kann.
 help.securitycraft:keycardLV1.info=Die Schlüsselkarten werden im Schlüsselkartenleser benutzt. Es gibt 6 Karten: Level 1, Level 2, Level 3, Level 4, Level 5 und eine begrenzt nutzbare Karte, die der Level 5 Karte gleich ist, aber im Überlebensmodus nur fünfmal benutzt werden kann.
@@ -434,6 +436,7 @@ help.securitycraft:universalKeyChanger.info=Der Universelle Passwortwechsler erl
 help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das Vanilla-Schild, mit dem Unterschied, dass nur der Besitzer und gewhitelistete Spieler den Text lesen und mit dem Schild interagieren können. Stelle sicher, dass keiner den Block, an dem das Schild ist, zerstören kann!
 help.securitycraft:sentry.info=Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen), und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es.
 help.securitycraft:crystalQuartzItem.info=Kristallquartz wird benutzt, um Kristallquartz-Blöcke herzustellen.
+help.securitycraft:keypad_door_item.info=Die Nummernschloss-Tür verhält sich wie ein Nummernschloss. Um die Tür zu öffnen, muss man den korrekten Code eingeben.
 
 gui.securitycraft:scManual.disabled=Deaktiviert
 gui.securitycraft:scManual.intro.1=Anfangen mit SecurityCraft
@@ -699,6 +702,8 @@ module.securitycraft:projector.disguiseModule.description=Wenn ein Tarnmodul zu 
 module.securitycraft:secret_sign.whitelistModule.description=Ein Whitelist-Modul in einem Geheimen Schild erlaubt es gewhitelisteten Spielern, dessen Text zu sehen und mit dem Schild zu interagieren.
 module.securitycraft:scannerDoor.whitelistModule.description=Ein Whitelist-Modul in einer Scannertür erlaubt gewhitelisteten Spielern, die Scannertür zu nutzen, wenn sie nicht der Besitzer sind.
 module.securitycraft:reinforced_hopper.whitelistModule.description=Ein Whitelist-Modul in einem verstärkten Trichter erlaubt gewhitelisteten Spielern, den Trichter zu benutzen, sowie ihn zum Extrahieren von Items aus ihren Passwort gesicherten Truhen/Öfen/... zu verwenden.
+module.securitycraft:keypad_door.whitelistModule.description=Ein Whitelist-Modul in einer Nummernschloss-Tür erlaubt gewhitelisteten Spielern, die Tür zu aktivieren, ohne den Code zu kennen.
+module.securitycraft:keypad_door.blacklistModule.description=Ein Blacklist-Modul in einer Nummernschloss-Tür verhindert, dass geblacklistete Spieler mit der Tür interagieren können.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?
@@ -817,6 +822,10 @@ option.securitycraft:claymore.range=Reichweite: #
 option.securitycraft:claymore.range.description=Von wie vielen Blöcken entfernt kann die Claymore aktiviert werden?
 option.securitycraft:ims.range=Reichweite: #
 option.securitycraft:ims.range.description=Von wie vielen Blöcken aus kann das I.M.S. mögliche Ziele aufstöbern?
+option.securitycraft:keypad_door.sendMessage=Nachricht: #
+option.securitycraft:keypad_door.sendMessage.description=Sendet diese Nummernschloss-Tür eine Nachricht, wenn sie aktiviert wird?
+option.securitycraft:keypad_door.signalLength=Dauer zum Schließen: #
+option.securitycraft:keypad_door.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag

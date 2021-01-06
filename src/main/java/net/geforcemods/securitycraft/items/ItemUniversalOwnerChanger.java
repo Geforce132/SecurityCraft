@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
-import net.geforcemods.securitycraft.blocks.BlockScannerDoor;
+import net.geforcemods.securitycraft.blocks.BlockSpecialDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -88,14 +88,14 @@ public class ItemUniversalOwnerChanger extends Item
 			boolean door = false;
 			boolean updateTop = true;
 
-			if(BlockUtils.getBlock(world, pos) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos) instanceof BlockScannerDoor)
+			if(BlockUtils.getBlock(world, pos) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos) instanceof BlockSpecialDoor)
 			{
 				door = true;
 				((IOwnable)world.getTileEntity(pos)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-				if(BlockUtils.getBlock(world, pos.up()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.up()) instanceof BlockScannerDoor)
+				if(BlockUtils.getBlock(world, pos.up()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.up()) instanceof BlockSpecialDoor)
 					((IOwnable)world.getTileEntity(pos.up())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-				else if(BlockUtils.getBlock(world, pos.down()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.down()) instanceof BlockScannerDoor)
+				else if(BlockUtils.getBlock(world, pos.down()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.down()) instanceof BlockSpecialDoor)
 				{
 					((IOwnable)world.getTileEntity(pos.down())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 					updateTop = false;

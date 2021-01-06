@@ -16,6 +16,7 @@
 - New: Briefcases can now be dyed the same way as leather armor
 - New: Nameable SecurityCraft blocks and Sentries will keep the custom name of their item form when placed
 - New: Customization option to change the time the Scanner Door will stay open before it closes again (set to 0 to disable)
+- New: Keypad door
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: Some customizable options have been adapted to allow for finer control
 - Fix: Trophy Systems shoot bullets of their owner's sentries

@@ -40,6 +40,7 @@ public class SCContent
 	public static Block keycardReader;
 	public static Block keypad;
 	public static Block keypadChest;
+	public static Block keypadDoor;
 	public static Block keypadFurnace;
 	public static Block lapisOreMine;
 	public static Block laserBlock;
@@ -165,6 +166,7 @@ public class SCContent
 	public static Item keycardLvl3;
 	public static Item keycardLvl4;
 	public static Item keycardLvl5;
+	public static Item keypadDoorItem;
 	public static Item keyPanel;
 	public static Item limitedUseKeycard;
 	public static Item reinforcedDoorItem;

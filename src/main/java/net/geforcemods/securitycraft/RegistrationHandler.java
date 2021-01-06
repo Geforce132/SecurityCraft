@@ -75,6 +75,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityIronFence;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypadDoor;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
@@ -265,6 +266,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedLever);
 		registerBlock(event, SCContent.reinforcedHopper);
 		registerBlock(event, SCContent.projector);
+		event.getRegistry().register(SCContent.keypadDoor);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
@@ -346,6 +348,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.secretSignItem);
 		registerItem(event, SCContent.sentry, "Henzoid");
 		registerItem(event, SCContent.crystalQuartzItem);
+		registerItem(event, SCContent.keypadDoorItem);
 
 		SecurityCraft.proxy.registerVariants();
 		//clear unused memory
@@ -386,6 +389,7 @@ public class RegistrationHandler
 		GameRegistry.registerTileEntity(TileEntityReinforcedHopper.class, new ResourceLocation("securitycraft:reinforced_hopper"));
 		GameRegistry.registerTileEntity(TileEntityProjector.class, new ResourceLocation("securitycraft:projector"));
 		GameRegistry.registerTileEntity(TileEntityIronFence.class, new ResourceLocation("securitycraft:iron_fence"));
+		GameRegistry.registerTileEntity(TileEntityKeypadDoor.class, new ResourceLocation("securitycraft:keypad_door"));
 	}
 
 	@SubscribeEvent
@@ -758,6 +762,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedLever), 0, new ModelResourceLocation("securitycraft:reinforced_lever", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.reinforcedHopper), 0, new ModelResourceLocation("securitycraft:reinforced_hopper", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.projector), 0, new ModelResourceLocation("securitycraft:projector", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.keypadDoor), 0, new ModelResourceLocation("securitycraft:keypad_door", "inventory"));
 
 		//items
 		ModelLoader.setCustomModelResourceLocation(SCContent.codebreaker, 0, new ModelResourceLocation("securitycraft:codebreaker", "inventory"));
@@ -798,6 +803,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.secretSignItem, 0, new ModelResourceLocation("securitycraft:secret_sign_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.sentry, 0, new ModelResourceLocation("securitycraft:sentry", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.crystalQuartzItem, 0, new ModelResourceLocation("securitycraft:crystal_quartz_item", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.keypadDoorItem, 0, new ModelResourceLocation("securitycraft:keypad_door_item", "inventory"));
 
 		//mines
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(SCContent.mine), 0, new ModelResourceLocation("securitycraft:mine", "inventory"));
