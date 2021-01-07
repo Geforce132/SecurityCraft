@@ -160,4 +160,9 @@ public class SecurityCraft {
 	{
 		return registeredExtractionBlocks;
 	}
+
+	public static String getVersion()
+	{
+		return Loader.instance().activeModContainer().getVersion();
+	}
 }

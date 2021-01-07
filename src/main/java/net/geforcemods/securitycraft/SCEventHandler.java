@@ -74,6 +74,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.common.ForgeVersion.Status;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -91,6 +93,7 @@ import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -104,23 +107,23 @@ public class SCEventHandler {
 
 	public SCEventHandler()
 	{
-		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
 		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
+		tipsWithLink.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
 	}
 
 	@SubscribeEvent
 	public void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!ConfigHandler.sayThanksMessage || !event.player.getEntityWorld().isRemote)
+		if(!ConfigHandler.sayThanksMessage)
 			return;
 
 		String tipKey = getRandomTip();
 		ITextComponent message;
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.VERSION) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey) + " ").appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 		else
-			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.VERSION) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
+			message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks").replace("#", SecurityCraft.getVersion()) + " " + ClientUtils.localize("messages.securitycraft:tip") + " " + ClientUtils.localize(tipKey));
 
 		event.player.sendMessage(message);
 	}
@@ -739,13 +742,18 @@ public class SCEventHandler {
 
 	private String getRandomTip(){
 		String[] tips = {
-				"messages.tip.scHelp",
-				"messages.tip.trello",
-				"messages.tip.patreon",
-				"messages.tip.discord",
-				"messages.tip.scserver"
+				"messages.securitycraft:tip.scHelp",
+				"messages.securitycraft:tip.patreon",
+				"messages.securitycraft:tip.discord",
+				"messages.securitycraft:tip.scserver",
+				"messages.securitycraft:tip.outdated"
 		};
 
-		return tips[new Random().nextInt(tips.length)];
+		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
+	}
+
+	private static boolean isOutdated()
+	{
+		return ForgeVersion.getResult(Loader.instance().activeModContainer()).status == Status.OUTDATED;
 	}
 }
