@@ -17,22 +17,13 @@ import groovy.json.JsonSlurper
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.0"
+version = "v1.8.20.2"
 group= "net.geforcemods.securitycraft"
 archivesBaseName = "securitycraft"
 
 sourceCompatibility = targetCompatibility = "1.8"
 compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
-}
-
-processResources { 
-    //minify json resources
-    doLast {
-        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
-            File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-        }
-    }
 }
 
 minecraft {
@@ -72,15 +63,21 @@ dependencies {
 processResources
 {
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
 
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version
     }
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+    
+    //minify json resources
+    doLast {
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+        }
     }
 }
