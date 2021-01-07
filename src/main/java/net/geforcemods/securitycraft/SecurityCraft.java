@@ -49,8 +49,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @EventBusSubscriber(modid=SecurityCraft.MODID, bus=Bus.MOD)
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
-	//********************************* This is v1.8.20.2 for MC 1.15.2!
-	public static final String VERSION = "v1.8.20.2";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "1.0";
@@ -155,5 +153,10 @@ public class SecurityCraft {
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
 	{
 		return registeredExtractionBlocks;
+	}
+
+	public static String getVersion()
+	{
+		return ModList.get().getModContainerById(MODID).get().getModInfo().getVersion().getQualifier();
 	}
 }

@@ -42,6 +42,7 @@
 - Removed: Configuration option "portableRadarSearchRadius". This is already a per-block option
 - Removed: Configuration option "usernameLoggerSearchRadius". This is now a per-block option
 - Misc.: The minimum required Forge version is 31.2.10
+- Misc.: The messages sent on joining a world have been updated to remove outdated messages, improve existing ones, and add one notifying the user of an outdated mod version
 
 --------------------------Changelog for v1.8.20.2 of SecurityCraft--------------------------
 
