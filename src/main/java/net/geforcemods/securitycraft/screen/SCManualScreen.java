@@ -37,6 +37,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -64,8 +65,11 @@ public class SCManualScreen extends Screen {
 	private int startX = -1;
 	private boolean update = false;
 	private List<ITextProperties> subpages = new ArrayList<>();
+	private List<IReorderingProcessor> author = new ArrayList<>();
 	private int currentSubpage = 0;
 	private final int subpageLength = 1285;
+	private final TranslationTextComponent intro1 = ClientUtils.localize("gui.securitycraft:scManual.intro.1");
+	private final TranslationTextComponent intro2 = ClientUtils.localize("gui.securitycraft:scManual.intro.2");
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -136,11 +140,15 @@ public class SCManualScreen extends Screen {
 			if(designedBy != null && !designedBy.isEmpty())
 				font.func_238418_a_(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.func_243248_b(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
+			font.func_243248_b(matrix, intro2, width / 2 - font.getStringPropertyWidth(intro2) / 2, 142, 0);
 
-			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+			for(int i = 0; i < author.size(); i++)
+			{
+				IReorderingProcessor text = author.get(i);
+
+				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 155 + 10 * i, 0);
+			}
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
@@ -306,6 +314,12 @@ public class SCManualScreen extends Screen {
 			recipe = null;
 			buttons.get(2).visible = false;
 			buttons.get(3).visible = false;
+
+			if(I18n.hasKey("gui.securitycraft:scManual.author"))
+				author = font.trimStringToWidth(ClientUtils.localize("gui.securitycraft:scManual.author"), 175);
+			else
+				author.clear();
+
 			return;
 		}
 
