@@ -13,6 +13,9 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.VersionChecker;
+import net.minecraftforge.fml.VersionChecker.Status;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SendTip
@@ -21,9 +24,9 @@ public class SendTip
 
 	static
 	{
-		tipsWithLink.put("trello", "https://trello.com/b/dbCNZwx0/securitycraft");
 		tipsWithLink.put("patreon", "https://www.patreon.com/Geforce");
 		tipsWithLink.put("discord", "https://discord.gg/U8DvBAW");
+		tipsWithLink.put("outdated", "https://www.curseforge.com/minecraft/mc-mods/security-craft/files/all");
 	}
 
 	public SendTip() {}
@@ -45,12 +48,12 @@ public class SendTip
 				.append(new StringTextComponent("SecurityCraft").mergeStyle(TextFormatting.GOLD))
 				.append(new StringTextComponent("] "))
 				.append(ClientUtils.localize("messages.securitycraft:thanks",
-						SecurityCraft.VERSION,
+						SecurityCraft.getVersion(),
 						ClientUtils.localize("messages.securitycraft:tip"),
 						ClientUtils.localize(tipKey)));
 
 		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2]))); //appendSibling
+			message = message.append(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
 		SecurityCraft.proxy.getClientPlayer().sendMessage(message, Util.DUMMY_UUID);
 	}
@@ -59,12 +62,17 @@ public class SendTip
 	{
 		String[] tips = {
 				"messages.securitycraft:tip.scHelp",
-				"messages.securitycraft:tip.trello",
 				"messages.securitycraft:tip.patreon",
 				"messages.securitycraft:tip.discord",
-				"messages.securitycraft:tip.scserver"
+				"messages.securitycraft:tip.scserver",
+				"messages.securitycraft:tip.outdated"
 		};
 
-		return tips[new Random().nextInt(tips.length)];
+		return tips[new Random().nextInt(isOutdated() ? tips.length : tips.length - 1)];
+	}
+
+	private static boolean isOutdated()
+	{
+		return VersionChecker.getResult(ModList.get().getModContainerById(SecurityCraft.MODID).get().getModInfo()).status == Status.OUTDATED;
 	}
 }
