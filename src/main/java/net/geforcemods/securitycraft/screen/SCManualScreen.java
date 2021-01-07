@@ -60,6 +60,8 @@ public class SCManualScreen extends Screen {
 	private List<String> subpages = new ArrayList<>();
 	private int currentSubpage = 0;
 	private final int subpageLength = 1285;
+	private final String intro1 = ClientUtils.localize("gui.securitycraft:scManual.intro.1");
+	private final String intro2 = ClientUtils.localize("gui.securitycraft:scManual.intro.2");
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -130,11 +132,16 @@ public class SCManualScreen extends Screen {
 			if(designedBy != null && !designedBy.isEmpty())
 				font.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.1"), startX + 39, 27, 0);
-			font.drawString(ClientUtils.localize("gui.securitycraft:scManual.intro.2"), startX + 60, 159, 0);
+			font.drawString(intro1, width / 2 - font.getStringWidth(intro1) / 2, 22, 0);
+			font.drawString(intro2, width / 2 - font.getStringWidth(intro2) / 2, 142, 0);
+
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.author"), startX + 65, 170, 0);
+			{
+				String text = ClientUtils.localize("gui.securitycraft:scManual.author");
+
+				font.drawSplitString(text, width / 2 - 175 / 2, 155, 175, 0);
+			}
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
