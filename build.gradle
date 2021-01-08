@@ -94,10 +94,7 @@ minecraft {
 	}
 }
 
-repositories {  
-    maven { // HWYLA
-		url "http://maven.tehnut.info"
-	}
+repositories {
 	maven { // TOP
 		name 'tterrag maven'
 		url "http://maven.tterrag.com/"
@@ -106,16 +103,19 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    maven {
+    	url "https://cursemaven.com/"
+    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.15.2-31.2.41'
     
-	compileOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2:api")
-	runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:1.10.8-B72_1.15.2")
+	implementation fg.deobf("curse.maven:hwyla-253449:2880071") //only the api jar because the normal one is incompatible with the forge version SecurityCraft is using
     implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.15:1.15-2.0.0-3")
 	compileOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4:api")
 	runtimeOnly fg.deobf("mezz.jei:jei-1.15.2:6.0.0.4")
+	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:2935743") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev so it's commented out
 }
 
 jar {

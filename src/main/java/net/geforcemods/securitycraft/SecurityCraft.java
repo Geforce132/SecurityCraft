@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
+import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
@@ -88,6 +89,10 @@ public class SecurityCraft {
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
 		InterModComms.sendTo(MODID, IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
+
+		if(ModList.get().isLoaded("lycanitesmobs"))
+			InterModComms.sendTo(MODID, IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat::new);
+
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
 
