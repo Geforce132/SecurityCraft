@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.api.IAttackTargetCheck;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
@@ -58,7 +59,9 @@ public class SecurityCraft {
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
 	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
+	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
+	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
 
 	public SecurityCraft()
 	{
@@ -97,6 +100,7 @@ public class SecurityCraft {
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event){ //stage 4
 		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock)msg.getMessageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_SENTRY_ATTACK_TARGET_MSG)).forEach(msg -> registeredSentryAttackTargetChecks.add((IAttackTargetCheck)msg.getMessageSupplier().get()));
 
 		for(Field field : SCContent.class.getFields())
 		{
@@ -148,6 +152,11 @@ public class SecurityCraft {
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
 	{
 		return registeredExtractionBlocks;
+	}
+
+	public static List<IAttackTargetCheck> getRegisteredSentryAttackTargetChecks()
+	{
+		return registeredSentryAttackTargetChecks;
 	}
 
 	public static String getVersion()
