@@ -19,8 +19,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class ProjectorTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider {
 
-	public static final int MIN_WIDTH = 1;
-	public static final int MAX_WIDTH = 10;
+	public static final int MIN_WIDTH = 1; //also for height
+	public static final int MAX_WIDTH = 10; //also for height
 	public static final int MIN_RANGE = 1;
 	public static final int MAX_RANGE = 30;
 	public static final int MIN_OFFSET = -10;
@@ -29,10 +29,12 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	public static final int RENDER_DISTANCE = 100;
 
 	private int projectionWidth = 1;
+	private int projectionHeight = 1;
 	private int projectionRange = 5;
 	private int projectionOffset = 0;
 	public boolean activatedByRedstone = false;
 	public boolean active = false;
+	private boolean horizontal = false;
 
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 
@@ -52,18 +54,12 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 		super.write(tag);
 
 		tag.putInt("width", projectionWidth);
+		tag.putInt("height", projectionHeight);
 		tag.putInt("range", projectionRange);
 		tag.putInt("offset", projectionOffset);
-		activatedByRedstone = hasModule(ModuleType.REDSTONE);
 		tag.putBoolean("active", active);
-
-		if(!isEmpty())
-		{
-			CompoundNBT itemTag = new CompoundNBT();
-			projectedBlock.write(itemTag);
-			tag.put("storedItem", itemTag);
-		}
-
+		tag.putBoolean("horizontal", horizontal);
+		tag.put("storedItem", projectedBlock.write(new CompoundNBT()));
 		return tag;
 	}
 
@@ -72,22 +68,14 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	{
 		super.read(state, tag);
 
-		if(tag.contains("width"))
-			projectionWidth = tag.getInt("width");
-
-		if(tag.contains("range"))
-			projectionRange = tag.getInt("range");
-
-		if(tag.contains("offset"))
-			projectionOffset = tag.getInt("offset");
-
+		projectionWidth = tag.getInt("width");
+		projectionHeight = tag.getInt("height");
+		projectionRange = tag.getInt("range");
+		projectionOffset = tag.getInt("offset");
 		activatedByRedstone = hasModule(ModuleType.REDSTONE);
-
-		if(tag.contains("active"))
-			active = tag.getBoolean("active");
-
-		if(tag.contains("storedItem"))
-			projectedBlock = ItemStack.read(tag.getCompound("storedItem"));
+		active = tag.getBoolean("active");
+		horizontal = tag.getBoolean("horizontal");
+		projectedBlock = ItemStack.read(tag.getCompound("storedItem"));
 	}
 
 	public int getProjectionWidth()
@@ -98,6 +86,16 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	public void setProjectionWidth(int width)
 	{
 		projectionWidth = width;
+	}
+
+	public int getProjectionHeight()
+	{
+		return projectionHeight;
+	}
+
+	public void setProjectionHeight(int projectionHeight)
+	{
+		this.projectionHeight = projectionHeight;
 	}
 
 	public int getProjectionRange()
@@ -128,6 +126,16 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	public void setActivatedByRedstone(boolean redstone)
 	{
 		activatedByRedstone = redstone;
+	}
+
+	public boolean isHorizontal()
+	{
+		return horizontal;
+	}
+
+	public void setHorizontal(boolean horizontal)
+	{
+		this.horizontal = horizontal;
 	}
 
 	public boolean isActive()
@@ -183,8 +191,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		// return new TranslationTextComponent(SCContent.PROJECTOR.get().getTranslationKey());
-		return new TranslationTextComponent("Projector");
+		return new TranslationTextComponent(SCContent.PROJECTOR.get().getTranslationKey());
 	}
 
 	@Override
