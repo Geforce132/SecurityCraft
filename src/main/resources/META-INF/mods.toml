@@ -1,7 +1,7 @@
 modLoader="javafml" #mandatory
 loaderVersion="[34,)" #mandatory
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
-displayURL="http://minecraft.curseforge.com/projects/security-craft"
+displayURL="https://discord.gg/U8DvBAW"
 logoFile="scLogo.png"
 credits="Thanks to all of you guys for your support!"
 authors="Geforce132, bl4ckscor3"
@@ -13,14 +13,7 @@ version="${version}" #mandatory
 displayName="SecurityCraft" #mandatory
 updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 description='''
-Adds a load of things to keep your house safe with.
-If you like this mod, hit the green arrow
-in the corner of the forum thread!
-
-Please visit the URL above for help.
-
-
-Message of the update: Finally! Cameras!
+Adds a load of things to keep your house safe with and defend yourself from attackers.
 ''' #mandatory
 
 [[dependencies.securitycraft]]
