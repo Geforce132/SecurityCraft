@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
+import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -87,6 +88,9 @@ public class SecurityCraft {
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
 		FMLInterModComms.sendFunctionMessage(MODID, IMC_EXTRACTION_BLOCK_MSG, BlockReinforcedHopper.ExtractionBlock.class.getName());
+
+		if(Loader.isModLoaded("lycanitesmobs"))
+			FMLInterModComms.sendFunctionMessage(MODID, IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat.class.getName());
 
 		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();

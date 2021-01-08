@@ -56,6 +56,7 @@ dependencies {
 	deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
     compileOnly curse.resolve("cyclic", "2883487")
     compileOnly curse.resolve("icbm-classic", "2918052")
+    compileOnly curse.resolve("lycanites-mobs", "2935745")
     runtime 'mezz.jei:jei_1.12.2:4.16.1.302'
     deobfProvided 'mezz.jei:jei_1.12.2:4.16.1.302:api'
 }
