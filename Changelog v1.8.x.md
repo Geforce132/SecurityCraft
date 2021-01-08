@@ -34,6 +34,7 @@
 - Fix: Slider tooltips overlap sliders when changing their value (affects Projector, block customization, ...)
 - Fix: The names of nameable SecurityCraft blocks cannot contain braces
 - Fix: Inventory Scanner does not drop stored items when broken
+- Fix: Projector does not drop its contained block when broken
 - Fix: Sentry does not attack hostile mobs from Lycanites Mobs
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
