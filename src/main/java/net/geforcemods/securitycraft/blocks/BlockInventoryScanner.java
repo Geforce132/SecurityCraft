@@ -20,6 +20,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -195,6 +196,19 @@ public class BlockInventoryScanner extends BlockDisguisable {
 				}
 			}
 		}
+
+		TileEntity tile = world.getTileEntity(pos);
+
+		if(tile instanceof TileEntityInventoryScanner)
+		{
+			TileEntityInventoryScanner te = (TileEntityInventoryScanner)tile;
+
+			for(int i = 10; i < te.getSizeInventory(); i++) //first 10 slots (0-9) are the prohibited slots
+			{
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), te.getContents().get(i));
+			}
+		}
+
 
 		if(connectedScanner != null)
 		{
