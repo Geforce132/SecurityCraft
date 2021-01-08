@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import net.geforcemods.securitycraft.api.IAttackTargetCheck;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -59,7 +60,9 @@ public class SecurityCraft {
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
+	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
+	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
@@ -116,6 +119,15 @@ public class SecurityCraft {
 				else
 					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient extraction block information.", msg.getSender()));
 			}
+			else if(msg.key.equals(IMC_SENTRY_ATTACK_TARGET_MSG))
+			{
+				Optional<Function<Object,IAttackTargetCheck>> value = msg.getFunctionValue(Object.class, IAttackTargetCheck.class);
+
+				if(value.isPresent())
+					registeredSentryAttackTargetChecks.add(value.get().apply(null));
+				else
+					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient sentry attack target information.", msg.getSender()));
+			}
 		}
 	}
 
@@ -143,6 +155,11 @@ public class SecurityCraft {
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
 	{
 		return registeredExtractionBlocks;
+	}
+
+	public static List<IAttackTargetCheck> getRegisteredSentryAttackTargetChecks()
+	{
+		return registeredSentryAttackTargetChecks;
 	}
 
 	public static String getVersion()

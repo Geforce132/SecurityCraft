@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -94,7 +95,13 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 
 	public boolean isSupportedTarget(EntityLivingBase potentialTarget)
 	{
-		return (potentialTarget instanceof EntityMob || potentialTarget instanceof EntityFlying || potentialTarget instanceof EntitySlime || potentialTarget instanceof EntityShulker || potentialTarget instanceof EntityDragon) && potentialTarget.deathTime == 0;
+		return potentialTarget.deathTime == 0 &&
+				(potentialTarget instanceof EntityMob ||
+						potentialTarget instanceof EntityFlying ||
+						potentialTarget instanceof EntitySlime ||
+						potentialTarget instanceof EntityShulker ||
+						potentialTarget instanceof EntityDragon ||
+						SecurityCraft.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
 	}
 
 	@Override
