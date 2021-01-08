@@ -13,8 +13,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class TileEntityProjector extends TileEntityDisguisable implements IInventory {
 
-	public static final int MIN_WIDTH = 1;
-	public static final int MAX_WIDTH = 10;
+	public static final int MIN_WIDTH = 1; //also for height
+	public static final int MAX_WIDTH = 10; //also for height
 	public static final int MIN_RANGE = 1;
 	public static final int MAX_RANGE = 30;
 	public static final int MIN_OFFSET = -10;
@@ -23,10 +23,12 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public static final int RENDER_DISTANCE = 100;
 
 	private int projectionWidth = 1;
+	private int projectionHeight = 1;
 	private int projectionRange = 5;
 	private int projectionOffset = 0;
 	public boolean activatedByRedstone = false;
 	public boolean active = false;
+	private boolean horizontal = false;
 
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 
@@ -41,18 +43,12 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		super.writeToNBT(tag);
 
 		tag.setInteger("width", projectionWidth);
+		tag.setInteger("height", projectionHeight);
 		tag.setInteger("range", projectionRange);
 		tag.setInteger("offset", projectionOffset);
-		activatedByRedstone = hasModule(EnumModuleType.REDSTONE);
 		tag.setBoolean("active", active);
-
-		if(!isEmpty())
-		{
-			NBTTagCompound itemTag = new NBTTagCompound();
-			projectedBlock.writeToNBT(itemTag);
-			tag.setTag("storedItem", itemTag);
-		}
-
+		tag.setBoolean("horizontal", horizontal);
+		tag.setTag("storedItem", projectedBlock.writeToNBT(new NBTTagCompound()));
 		return tag;
 	}
 
@@ -61,22 +57,14 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	{
 		super.readFromNBT(tag);
 
-		if(tag.hasKey("width"))
-			projectionWidth = tag.getInteger("width");
-
-		if(tag.hasKey("range"))
-			projectionRange = tag.getInteger("range");
-
-		if(tag.hasKey("offset"))
-			projectionOffset = tag.getInteger("offset");
-
+		projectionWidth = tag.getInteger("width");
+		projectionHeight = tag.getInteger("height");
+		projectionRange = tag.getInteger("range");
+		projectionOffset = tag.getInteger("offset");
 		activatedByRedstone = hasModule(EnumModuleType.REDSTONE);
-
-		if(tag.hasKey("active"))
-			active = tag.getBoolean("active");
-
-		if(tag.hasKey("storedItem"))
-			projectedBlock = new ItemStack(tag.getCompoundTag("storedItem"));
+		active = tag.getBoolean("active");
+		horizontal = tag.getBoolean("horizontal");
+		projectedBlock = new ItemStack(tag.getCompoundTag("storedItem"));
 	}
 
 	public int getProjectionWidth()
@@ -89,6 +77,16 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		projectionWidth = width;
 	}
 
+	public int getProjectionHeight()
+	{
+		return projectionHeight;
+	}
+
+	public void setProjectionHeight(int projectionHeight)
+	{
+		this.projectionHeight = projectionHeight;
+	}
+	
 	public int getProjectionRange()
 	{
 		return projectionRange;
@@ -119,6 +117,16 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 		activatedByRedstone = redstone;
 	}
 
+	public boolean isHorizontal()
+	{
+		return horizontal;
+	}
+
+	public void setHorizontal(boolean horizontal)
+	{
+		this.horizontal = horizontal;
+	}
+	
 	public boolean isActive()
 	{
 		return activatedByRedstone ? active : true;

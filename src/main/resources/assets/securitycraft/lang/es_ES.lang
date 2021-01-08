@@ -524,11 +524,11 @@ gui.securitycraft:blockPocketManager.assemble=Auto-ensamblar
 gui.securitycraft:blockPocketManager.outline.show=Mostrar contorno
 gui.securitycraft:blockPocketManager.outline.hide=Ocultar contorno
 gui.securitycraft:blockPocketManager.youNeed=Necesitas:
-gui.securitycraft:projector.width=Ancho: #
+gui.securitycraft:projector.width=Ancho: %s
 gui.securitycraft:projector.width.description=La anchura y altura de la proyección.
-gui.securitycraft:projector.range=Rango: #
+gui.securitycraft:projector.range=Rango: %s
 gui.securitycraft:projector.range.description=Cómo de lejos de sí mismo el proyector proyectará los bloques.
-gui.securitycraft:projector.offset=Desplazamiento: #
+gui.securitycraft:projector.offset=Desplazamiento: %s
 gui.securitycraft:projector.offset.description=El desplazamiento horizontal de la proyección.
 
 messages.securitycraft:bugReport=Por favor, reporta bugs en el canal #bugreport de nuestro server de Discord. Lee las normas antes, por favor
