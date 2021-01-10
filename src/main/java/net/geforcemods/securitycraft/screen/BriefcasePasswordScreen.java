@@ -75,7 +75,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText(), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText()) / 2, 6, 4210752);
 	}
 
 	@Override

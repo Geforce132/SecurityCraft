@@ -54,12 +54,12 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String localized = ClientUtils.localize("gui.securitycraft:logger.logged");
+		String localized = ClientUtils.localize("gui.securitycraft:logger.logged").getFormattedText();
 
 		font.drawString(localized, xSize / 2 - font.getStringWidth(localized) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
-			renderTooltip(ClientUtils.localize("gui.securitycraft:editModule.clear"), mouseX - guiLeft, mouseY - guiTop);
+			renderTooltip(ClientUtils.localize("gui.securitycraft:editModule.clear").getFormattedText(), mouseX - guiLeft, mouseY - guiTop);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
-						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+						String localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
 
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(tileEntity.uuids[slotIndex], mouseX, mouseY);

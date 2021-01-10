@@ -79,16 +79,14 @@ public class ClientUtils{
 	 * @param params The parameters to insert into the String ala String.format
 	 * @return The localized String
 	 */
-	public static String localize(String key, Object... params)
+	public static TranslationTextComponent localize(String key, Object... params)
 	{
 		for(int i = 0; i < params.length; i++)
 		{
-			if(params[i] instanceof TranslationTextComponent)
-				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getFormatArgs());
-			else if(params[i] instanceof BlockPos)
+			if(params[i] instanceof BlockPos)
 				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
 		}
 
-		return new TranslationTextComponent(key, params).getFormattedText();
+		return new TranslationTextComponent(key, params);
 	}
 }

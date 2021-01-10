@@ -136,21 +136,21 @@ public class ModuleItem extends Item{
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + "")));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).getFormattedText()));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + "")));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText()));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + "")));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText()));
 
 			if(getNumberOfAddons() > 0 && !getAddons(stack.getTag()).isEmpty()) {
 				list.add(new StringTextComponent(" "));
 
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":"));
+				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":"));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + ClientUtils.localize(addon.getTranslationKey())));
+					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + ClientUtils.localize(addon.getTranslationKey()).getFormattedText()));
 			}
 		}
 	}

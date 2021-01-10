@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
@@ -65,15 +66,23 @@ public class PlayerUtils{
 			return (ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	public static void sendMessageToPlayer(PlayerEntity player, String prefix, String text, TextFormatting color){
-		player.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text));
+	public static void sendMessageToPlayer(PlayerEntity player, ITextComponent prefix, ITextComponent text, TextFormatting color){
+		player.sendMessage(new StringTextComponent("[" + color)
+				.appendSibling(prefix)
+				.appendSibling(new StringTextComponent(TextFormatting.WHITE + "] "))
+				.appendSibling(text));
 	}
 
 	/**
 	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p>
 	 */
-	public static void sendMessageEndingWithLink(ICommandSource sender, String prefix, String text, String link, TextFormatting color){
-		sender.sendMessage(new StringTextComponent("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
+	public static void sendMessageEndingWithLink(ICommandSource sender, ITextComponent prefix, ITextComponent text, String link, TextFormatting color){
+		sender.sendMessage(new StringTextComponent("[" + color)
+				.appendSibling(prefix)
+				.appendSibling(new StringTextComponent(TextFormatting.WHITE + "] "))
+				.appendSibling(text)
+				.appendSibling(new StringTextComponent(": "))
+				.appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 
 	/**

@@ -109,7 +109,7 @@ public class UniversalOwnerChangerItem extends Item
 			if(door)
 				world.getServer().getPlayerList().sendPacketToAllPlayers(((OwnableTileEntity)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
 
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 			return ActionResultType.SUCCESS;
 		}
 
@@ -137,7 +137,7 @@ public class UniversalOwnerChangerItem extends Item
 
 					briefcase.getTag().putString("owner", newOwner);
 					briefcase.getTag().putString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed").replace("#", newOwner), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 					return ActionResult.newResult(ActionResultType.SUCCESS, ownerChanger);
 				}
 				else

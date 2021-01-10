@@ -74,7 +74,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (briefcase.hasTag() && briefcase.getTag().contains("owner"))
-			tooltip.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner"))));
+			tooltip.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).getFormattedText()));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {

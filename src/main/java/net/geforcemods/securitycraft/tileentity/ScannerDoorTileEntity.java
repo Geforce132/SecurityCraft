@@ -39,7 +39,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 
 			if(!getOwner().isOwner(player) && (!hasModule(ModuleType.WHITELIST) || !ModuleUtils.getPlayersFromModule(getModule(ModuleType.WHITELIST)).contains(player.getName().getFormattedText().toLowerCase())))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner").replace("#", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
@@ -54,7 +54,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 				world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello").replace("#", player.getName().getFormattedText()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
 		}
 	}
 

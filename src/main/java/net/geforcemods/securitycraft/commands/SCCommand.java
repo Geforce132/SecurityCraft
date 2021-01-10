@@ -15,7 +15,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.ForgeHooks;
 
 public class SCCommand {
 	public static void register(CommandDispatcher<CommandSource> dispatcher)
@@ -30,7 +29,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> connect()
 	{
 		return Commands.literal("connect").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[" + TextFormatting.GREEN + "IRC" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:irc.connected") + " ").appendSibling(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))));
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("IRC"), ClientUtils.localize("messages.securitycraft:irc.connected"), SendTip.tipsWithLink.get("discord"), TextFormatting.GREEN);
 			return 0;
 		});
 	}
@@ -49,7 +48,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> bug()
 	{
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), "SecurityCraft", ClientUtils.localize("messages.securitycraft:bugReport"), "https://discord.gg/U8DvBAW", TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
 			return 0;
 		});
 	}

@@ -102,10 +102,10 @@ public class MineRemoteAccessToolScreen extends Screen{
 						guiButtons[i][DEFUSE].active = active && defusable;
 						guiButtons[i][ACTIVATE].active = !active && defusable;
 						guiButtons[i][DETONATE].active = active;
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DEFUSE], ClientUtils.localize("gui.securitycraft:mrat.defuse")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][ACTIVATE], ClientUtils.localize("gui.securitycraft:mrat.activate")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DETONATE], ClientUtils.localize("gui.securitycraft:mrat.detonate")));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DEFUSE], ClientUtils.localize("gui.securitycraft:mrat.defuse").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][ACTIVATE], ClientUtils.localize("gui.securitycraft:mrat.activate").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][DETONATE], ClientUtils.localize("gui.securitycraft:mrat.detonate").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -116,9 +116,9 @@ public class MineRemoteAccessToolScreen extends Screen{
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange").getFormattedText()));
 					}
-					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 				}
 			}
 		}
@@ -134,7 +134,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
-		String mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
+		String mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()).getFormattedText();
 		font.drawString(mratName, startX + xSize / 2 - font.getStringWidth(mratName), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
@@ -143,9 +143,9 @@ public class MineRemoteAccessToolScreen extends Screen{
 			String line;
 
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = ClientUtils.localize("gui.securitycraft:mrat.notBound");
+				line = ClientUtils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
 			else
-				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").getFormattedText().replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
 
 			font.drawString(line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
 		}

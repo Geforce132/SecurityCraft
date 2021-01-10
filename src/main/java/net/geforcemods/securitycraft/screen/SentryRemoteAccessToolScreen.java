@@ -121,9 +121,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][UNBIND].active = true;
 						((TogglePictureButton)guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
 						((TogglePictureButton)guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 						foundSentry = true;
 					}
 					else {
@@ -135,9 +135,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				}
 				else {
 					for (int j = 0; j < 2; j++) {
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange").getFormattedText()));
 					}
-					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 				}
 			}
 		}
@@ -152,9 +152,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			addButton(guiButtonsGlobal[j]);
 		}
 
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2"), ClientUtils.localize("gui.securitycraft:srat.mode1"), ClientUtils.localize("gui.securitycraft:srat.mode3"))));
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1"), ClientUtils.localize("gui.securitycraft:srat.targets2"), ClientUtils.localize("gui.securitycraft:srat.targets3"))));
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 	}
 
 	@Override
@@ -162,21 +162,21 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	{
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
-		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
+		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll").getFormattedText();
 
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		blit(startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(mouseX, mouseY, partialTicks);
-		font.drawString(ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.drawString(ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()).getFormattedText(), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
 			String line;
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = ClientUtils.localize("gui.securitycraft:srat.notBound");
+				line = ClientUtils.localize("gui.securitycraft:srat.notBound").getFormattedText();
 			else if(names[i] != null)
 				line = names[i].getFormattedText();
 			else

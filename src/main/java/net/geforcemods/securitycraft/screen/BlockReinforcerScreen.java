@@ -42,14 +42,14 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
-		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
+		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title").getFormattedText();
 
 		font.drawString(ubr, (xSize - font.getStringWidth(ubr)) / 2, 5, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(0).isEmpty())
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 25, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 25, 4210752);
 			GuiUtils.drawItemStackToGui(container.reinforcingSlot.getOutput(), 116, 20, false);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
@@ -58,7 +58,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 
 		if(!isLvl1 && !inv.get(1).isEmpty())
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output"), 50, 50, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 50, 4210752);
 			GuiUtils.drawItemStackToGui(container.unreinforcingSlot.getOutput(), 116, 46, false);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)

@@ -45,10 +45,10 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	{
 		super.init();
 
-		addButton(toggleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 - 30, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
-		addButton(sizeButton = new ClickButton(1, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 - 60, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size), this::sizeButtonClicked));
-		addButton(assembleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 + 33, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
-		addButton(outlineButton = new ClickButton(0, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 57, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")), this::outlineButtonClicked));
+		addButton(toggleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 - 30, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText(), this::toggleButtonClicked));
+		addButton(sizeButton = new ClickButton(1, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 - 60, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText(), this::sizeButtonClicked));
+		addButton(assembleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 + 33, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText(), this::assembleButtonClicked));
+		addButton(outlineButton = new ClickButton(0, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 57, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText(), this::outlineButtonClicked));
 
 		if(!te.getOwner().isOwner(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = false;
@@ -59,13 +59,13 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
+		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()).getFormattedText();
 
 		font.drawString(translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
 
 		if (!te.enabled)
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed"), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed")) / 2, 83, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText(), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText()) / 2, 83, 4210752);
 
 			font.drawString((size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
 			GuiUtils.drawItemStackToGui(BLOCK_POCKET_WALL, 25, 96, false);
@@ -110,7 +110,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			feedback = te.enableMultiblock();
 
 			if(feedback != null)
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize(feedback.getKey(), feedback.getFormatArgs()), TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA);
 		}
 
 		Minecraft.getInstance().player.closeScreen();
@@ -124,7 +124,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			size = 5;
 
 		te.size = size;
-		button.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size));
+		button.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText());
 	}
 
 	public void assembleButtonClicked(ClickButton button)
@@ -135,7 +135,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 		feedback = te.autoAssembleMultiblock(Minecraft.getInstance().player);
 
 		if(feedback != null)
-			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize(feedback.getKey(), feedback.getFormatArgs()), TextFormatting.DARK_AQUA);
+			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA);
 
 		Minecraft.getInstance().player.closeScreen();
 	}
@@ -143,6 +143,6 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	public void outlineButtonClicked(ClickButton button)
 	{
 		te.toggleOutline();
-		outlineButton.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")));
+		outlineButton.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")).getFormattedText());
 	}
 }

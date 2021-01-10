@@ -84,9 +84,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 				if(option instanceof ISlider && option.isSlider())
 				{
 					if(option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option);
+						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option);
 					else if(option instanceof IntOption)
-						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option);
+						optionButtons[i] = new NamedSlider((ClientUtils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option);
 
 					optionButtons[i].setFGColor(14737632);
 				}
@@ -143,9 +143,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
+		String s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey()).getFormattedText();
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -170,17 +170,17 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	private String getModuleDescription(int buttonID) {
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
-		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey()) + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
+		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey()).getFormattedText() + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription).getFormattedText();
 	}
 
 	private String getOptionDescription(int buttonID) {
 		String optionDescription = "option" + blockName + "." +  ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
 
-		return ClientUtils.localize(optionDescription);
+		return ClientUtils.localize(optionDescription).getFormattedText();
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return (ClientUtils.localize("option" + blockName + "." + option.getName()) + " ").replace("#", option.toString());
+		return (ClientUtils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString());
 	}
 
 	public List<Rectangle2d> getGuiExtraAreas()
