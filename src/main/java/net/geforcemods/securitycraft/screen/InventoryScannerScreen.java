@@ -28,8 +28,8 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		tileEntity = container.te;
 		owns = tileEntity.getOwner().isOwner(inv.player);
 		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
-		storageString = ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
-		redstoneString = ClientUtils.localize("gui.securitycraft:invScan.emit_redstone", ClientUtils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(ModuleType.REDSTONE) ? "yes" : "no")));
+		storageString = ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
+		redstoneString = ClientUtils.localize("gui.securitycraft:invScan.emit_redstone", ClientUtils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(ModuleType.REDSTONE) ? "yes" : "no"))).getFormattedText();
 
 		if(hasStorageModule)
 			xSize = 236;
@@ -70,12 +70,12 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		font.drawString("Prohibited Items", 8, 6, 4210752);
-		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin")) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view")), 112, 6, 4210752);
+		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
 			font.drawString("Storage", 183, 6, 4210752);
 
-		font.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
+		font.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 93, 4210752);
 	}
 
 	@Override

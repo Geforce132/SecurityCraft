@@ -49,7 +49,7 @@ public class BaseKeycardItem extends Item{
 				stack.getTag().putInt("Uses", 5);
 			}
 
-			list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:keycard.uses") + " " + stack.getTag().getInt("Uses")));
+			list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:keycard.uses").getFormattedText() + " " + stack.getTag().getInt("Uses")));
 
 		}
 	}

@@ -43,11 +43,11 @@ public class EditModuleScreen extends Screen
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, "");
-		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
-		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
-		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
-		addButton(pasteButton = new ClickButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
-		addButton(clearButton = new ClickButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
+		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add").getFormattedText(), this::actionPerformed));
+		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove").getFormattedText(), this::actionPerformed));
+		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy").getFormattedText(), this::actionPerformed));
+		addButton(pasteButton = new ClickButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste").getFormattedText(), this::actionPerformed));
+		addButton(clearButton = new ClickButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear").getFormattedText(), this::actionPerformed));
 		addButton(clearButton);
 
 		addButton.active = false;
@@ -86,7 +86,7 @@ public class EditModuleScreen extends Screen
 		super.render(mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 		inputField.render(mouseX, mouseY, partialTicks);
-		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, startY + 6, width, 4210752);
+		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule").getFormattedText(), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule").getFormattedText()) / 2, startY + 6, width, 4210752);
 	}
 
 	@Override

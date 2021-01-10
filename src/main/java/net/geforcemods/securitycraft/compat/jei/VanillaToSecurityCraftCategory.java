@@ -26,7 +26,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory
 	@Override
 	public String getTitle()
 	{
-		return ClientUtils.localize("jei.securitycraft.category.reinforcing");
+		return ClientUtils.localize("jei.securitycraft.category.reinforcing").getFormattedText();
 	}
 
 	@Override

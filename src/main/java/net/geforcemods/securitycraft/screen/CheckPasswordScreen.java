@@ -35,7 +35,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public CheckPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()).getFormattedText();
 	}
 
 	@Override

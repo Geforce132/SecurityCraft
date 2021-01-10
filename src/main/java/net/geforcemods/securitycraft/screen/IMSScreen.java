@@ -43,10 +43,10 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
+		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey()).getFormattedText();
 
 		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target"), xSize / 2 - 78, 30, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target").getFormattedText(), xSize / 2 - 78, 30, 4210752);
 	}
 
 	@Override
@@ -70,11 +70,11 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private void updateButtonText() {
 		if(targetMode == IMSTargetingMode.PLAYERS)
-			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
+			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players").getFormattedText());
 		else if(targetMode == IMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers").getFormattedText());
 		else if(targetMode == IMSTargetingMode.MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile"));
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile").getFormattedText());
 	}
 
 }

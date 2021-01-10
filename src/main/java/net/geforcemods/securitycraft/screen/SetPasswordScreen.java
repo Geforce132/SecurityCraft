@@ -35,14 +35,14 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()).getFormattedText();
 	}
 
 	@Override
 	public void init(){
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
+		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText(), this::actionPerformed));
 
 		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
 
@@ -75,7 +75,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		String setup = ClientUtils.localize("gui.securitycraft:password.setup");
+		String setup = ClientUtils.localize("gui.securitycraft:password.setup").getFormattedText();
 		String combined = blockName + " " + setup;
 
 		if(font.getStringWidth(combined) < xSize - 10)
@@ -140,7 +140,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	private void updateButtonText(){
-		saveAndContinueButton.setMessage(!isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"));
+		saveAndContinueButton.setMessage(!isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText());
 	}
 
 	protected void actionPerformed(ClickButton button){

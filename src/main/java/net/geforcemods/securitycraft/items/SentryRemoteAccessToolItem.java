@@ -81,10 +81,10 @@ public class SentryRemoteAccessToolItem extends Item {
 
 					stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.bound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
 				}else{
 					removeTagFromItemAndUpdate(stack, pos2, player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.unbound").replace("#", Utils.getFormattedCoordinates(pos2)), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
 				}
 			}
 			else
@@ -116,7 +116,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
 						nameToShow = sentries.get(0).getCustomName().getFormattedText();
 					else
-						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry") + " " + i;
+						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry").getFormattedText() + " " + i;
 
 					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos)));
 				}
