@@ -613,7 +613,7 @@
 	"messages.securitycraft:portableRadar.withName": "%1$s está cerca de tu radar portátil llamado %2$s.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s está cerca de tu radar portátil en %2$s.",
 	"messages.securitycraft:codebreakerDisabled": "El descifrador de contraseñas se ha desactivado en el archivo de configuración.",
-	"messages.securitycraft:keycardReader.required": "Nivel de seguridad requerido: #r. Tu tarjeta de acceso es de nivel #c.",
+	"messages.securitycraft:keycardReader.required": "Nivel de seguridad requerido: %1$s. Tu tarjeta de acceso es de nivel %2$s.",
 	"messages.securitycraft:keycardReader.notSet": "¡Nivel de seguridad no establecido!",
 	"messages.securitycraft:invScan.notConnected": "¡No está conectado con otro bloque de escáner de inventario!",
 	"messages.securitycraft:module.manager": "Administrador de módulos",
