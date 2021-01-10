@@ -35,14 +35,14 @@ public class GuiSetPassword extends GuiContainer {
 	public GuiSetPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
-		blockName = ClientUtils.localize(block.getTranslationKey() + ".name");
+		blockName = ClientUtils.localize(block.getTranslationKey() + ".name").getFormattedText();
 	}
 
 	@Override
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode")));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText()));
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
 
@@ -75,7 +75,7 @@ public class GuiSetPassword extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		String setup = ClientUtils.localize("gui.securitycraft:password.setup");
+		String setup = ClientUtils.localize("gui.securitycraft:password.setup").getFormattedText();
 		String combined = blockName + " " + setup;
 
 		if(fontRenderer.getStringWidth(combined) < xSize - 10)
@@ -125,7 +125,7 @@ public class GuiSetPassword extends GuiContainer {
 	}
 
 	private void updateButtonText(){
-		saveAndContinueButton.displayString = !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode");
+		saveAndContinueButton.displayString = !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText();
 	}
 
 	@Override

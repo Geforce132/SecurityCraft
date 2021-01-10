@@ -9,6 +9,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
@@ -68,8 +70,11 @@ public class PlayerUtils{
 			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	public static void sendMessageToPlayer(EntityPlayer player, String prefix, String text, TextFormatting color){
-		player.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text));
+	public static void sendMessageToPlayer(EntityPlayer player, ITextComponent prefix, ITextComponent text, TextFormatting color){
+		player.sendMessage(new TextComponentString("[")
+				.appendSibling(prefix.setStyle(new Style().setColor(color)))
+				.appendSibling(new TextComponentString(TextFormatting.WHITE + "] "))
+				.appendSibling(text));
 	}
 
 	/**
@@ -77,8 +82,13 @@ public class PlayerUtils{
 	 *
 	 * Args: sender, prefix, text, link, color.
 	 */
-	public static void sendMessageEndingWithLink(ICommandSender sender, String prefix, String text, String link, TextFormatting color){
-		sender.sendMessage(new TextComponentString("[" + color + prefix + TextFormatting.WHITE + "] " + text + ": ").appendSibling(ForgeHooks.newChatWithLinks(link)));
+	public static void sendMessageEndingWithLink(ICommandSender sender, ITextComponent prefix, ITextComponent text, String link, TextFormatting color){
+		sender.sendMessage(new TextComponentString("[")
+				.appendSibling(prefix.setStyle(new Style().setColor(color)))
+				.appendSibling(new TextComponentString(TextFormatting.WHITE + "] "))
+				.appendSibling(text)
+				.appendSibling(new TextComponentString(": "))
+				.appendSibling(ForgeHooks.newChatWithLinks(link)));
 	}
 
 	/**

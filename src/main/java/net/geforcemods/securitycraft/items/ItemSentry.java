@@ -48,7 +48,7 @@ public class ItemSentry extends Item
 				entity.setCustomNameTag(stack.getDisplayName());
 
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()) + ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey()), TextFormatting.DARK_RED);
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), TextFormatting.DARK_RED);
 
 			if(!player.isCreative())
 				player.getHeldItem(hand).shrink(1);

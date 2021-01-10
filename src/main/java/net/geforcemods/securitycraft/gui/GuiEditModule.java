@@ -41,11 +41,11 @@ public class GuiEditModule extends GuiContainer
 
 		Keyboard.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, width / 2 - 50, height / 2 - 65, 110, 15);
-		buttonList.add(addButton = new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add")));
-		buttonList.add(removeButton = new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove")));
-		buttonList.add(copyButton = new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy")));
-		buttonList.add(pasteButton = new GuiButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste")));
-		buttonList.add(clearButton = new GuiButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear")));
+		buttonList.add(addButton = new GuiButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add").getFormattedText()));
+		buttonList.add(removeButton = new GuiButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove").getFormattedText()));
+		buttonList.add(copyButton = new GuiButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
+		buttonList.add(pasteButton = new GuiButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
+		buttonList.add(clearButton = new GuiButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
 
 		addButton.enabled = false;
 		removeButton.enabled = false;
@@ -84,7 +84,7 @@ public class GuiEditModule extends GuiContainer
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule")) / 2, 6, xSize, 4210752);
+		fontRenderer.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule").getFormattedText()) / 2, 6, xSize, 4210752);
 	}
 
 	/**

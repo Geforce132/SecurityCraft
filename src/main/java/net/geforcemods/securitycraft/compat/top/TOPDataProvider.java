@@ -62,13 +62,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 			else if(blockState.getBlock() instanceof BlockFakeLavaBase)
 			{
 				item = new ItemStack(Items.LAVA_BUCKET);
-				labelText = ClientUtils.localize("tile.lava.name");
+				labelText = ClientUtils.localize("tile.lava.name").getFormattedText();
 				edited = true;
 			}
 			else if(blockState.getBlock() instanceof BlockFakeWaterBase)
 			{
 				item = new ItemStack(Items.WATER_BUCKET);
-				labelText = ClientUtils.localize("tile.water.name");
+				labelText = ClientUtils.localize("tile.water.name").getFormattedText();
 				edited = true;
 			}
 			else if(blockState.getBlock() instanceof IOverlayDisplay)
@@ -111,17 +111,17 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				TileEntity te = world.getTileEntity(data.getPos());
 
 				if(te instanceof IOwnable)
-					probeInfo.vertical().text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner") + " " + ((IOwnable) te).getOwner().getName());
+					probeInfo.vertical().text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((IOwnable) te).getOwner().getName());
 
 				//if the te is ownable, show modules only when it's owned, otherwise always show
 				if(te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
 				{
 					if(!((IModuleInventory)te).getInsertedModules().isEmpty())
 					{
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getFormattedText());
 
 						for(EnumModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(module.getTranslationKey()));
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(module.getTranslationKey()).getFormattedText());
 					}
 				}
 
@@ -129,13 +129,13 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				{
 					String password = ((IPasswordProtected) te).getPassword();
 
-					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:password") + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet")));
+					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 				}
 
 				if(te instanceof INameable && ((INameable) te).canBeNamed()){
 					String name = ((INameable) te).getCustomName();
 
-					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName") + " " + (((INameable) te).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet")));
+					probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:customName").getFormattedText() + " " + (((INameable) te).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet").getFormattedText()));
 				}
 			}
 		});
@@ -152,23 +152,23 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 					EntitySentry sentry = (EntitySentry)entity;
 					EnumSentryMode mode = sentry.getMode();
 
-					probeInfo.text(TextFormatting.GRAY + (ClientUtils.localize("waila.securitycraft:owner") + " " + ((EntitySentry) entity).getOwner().getName()));
+					probeInfo.text(TextFormatting.GRAY + (ClientUtils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((EntitySentry) entity).getOwner().getName()));
 
 					if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 					{
-						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped"));
+						probeInfo.text(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getFormattedText());
 
 						if(!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()));
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()).getFormattedText());
 
 						if(!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()));
+							probeInfo.text(TextFormatting.GRAY + "- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 					}
 
-					String modeDescription = ClientUtils.localize(mode.getModeKey());
+					String modeDescription = ClientUtils.localize(mode.getModeKey()).getFormattedText();
 
 					if(mode != EnumSentryMode.IDLE)
-						modeDescription += " - " + ClientUtils.localize(mode.getTargetKey());
+						modeDescription += " - " + ClientUtils.localize(mode.getTargetKey()).getFormattedText();
 
 					probeInfo.text(TextFormatting.GRAY + modeDescription);
 				}

@@ -102,13 +102,13 @@ public class ItemModule extends Item{
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable"));
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable").getFormattedText());
 		else
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable"));
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable").getFormattedText());
 
 		if(nbtCanBeModified && stack.getTagCompound() != null && !stack.getTagCompound().isEmpty()) {
 			list.add(" ");
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players") + ":");
+			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":");
 
 			for(int i = 1; i <= MAX_PLAYERS; i++)
 				if(!stack.getTagCompound().getString("Player" + i).isEmpty())
@@ -117,21 +117,21 @@ public class ItemModule extends Item{
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems").replace("#blocks", numberOfBlockAddons + "").replace("#items", numberOfItemAddons + ""));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons , numberOfItemAddons).getFormattedText());
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items").replace("#", numberOfItemAddons + ""));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText());
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks").replace("#", numberOfBlockAddons + ""));
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText());
 
 			if(getNumberOfAddons() > 0 && !getAddons(stack.getTagCompound()).isEmpty()) {
 				list.add(" ");
 
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added") + ":");
+				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":");
 
 				for(ItemStack addon : getAddons(stack.getTagCompound()))
-					list.add("- " + ClientUtils.localize(addon.getTranslationKey() + ".name"));
+					list.add("- " + ClientUtils.localize(addon.getTranslationKey() + ".name").getFormattedText());
 			}
 		}
 	}

@@ -80,7 +80,7 @@ public class ItemBriefcase extends Item {
 	public void addInformation(ItemStack briefcase, World world, List<String> tooltip, ITooltipFlag flag)
 	{
 		if (briefcase.hasTagCompound() && briefcase.getTagCompound().hasKey("owner"))
-			tooltip.add(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTagCompound().getString("owner")));
+			tooltip.add(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTagCompound().getString("owner")).getFormattedText());
 	}
 
 	public boolean hasColor(ItemStack stack)

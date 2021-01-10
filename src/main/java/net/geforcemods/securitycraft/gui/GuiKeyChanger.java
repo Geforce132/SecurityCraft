@@ -41,7 +41,7 @@ public class GuiKeyChanger extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm")));
+		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText()));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
@@ -77,9 +77,9 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:universalKeyChanger.name")) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode")) / 2, 25, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode")) / 2, 65, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText()) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText()) / 2, 25, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText()) / 2, 65, 4210752);
 	}
 
 	@Override

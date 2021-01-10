@@ -70,7 +70,7 @@ public class GuiBriefcase extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode"), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode")) / 2, 6, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText()) / 2, 6, 4210752);
 	}
 
 	@Override

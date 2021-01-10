@@ -232,7 +232,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue((int)slider.getValue());
-			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()) + " ").replace("#", toString());
+			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override
@@ -316,7 +316,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()) + " ").replace("#", toString());
+			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override

@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
 {
-	protected static final String OUTPUT_TEXT = ClientUtils.localize("gui.securitycraft:blockReinforcer.output");
+	protected static final String OUTPUT_TEXT = ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText();
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final int yOffset;

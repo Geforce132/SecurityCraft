@@ -54,7 +54,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 
 		moduleInv = te;
 		blockName = tlKey.substring(5);
-		title = ClientUtils.localize(tlKey + ".name");
+		title = ClientUtils.localize(tlKey + ".name").getFormattedText();
 	}
 
 	@Override
@@ -83,9 +83,9 @@ public class GuiCustomizeBlock extends GuiContainer{
 				if(option instanceof ISlider && option.isSlider())
 				{
 					if(option instanceof OptionDouble)
-						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).get(), true, true, (ISlider)option);
+						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionDouble)option).getMin(), ((OptionDouble)option).getMax(), ((OptionDouble)option).get(), true, true, (ISlider)option);
 					else if(option instanceof OptionInt)
-						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt)option).getMin(), ((OptionInt)option).getMax(), ((OptionInt)option).get(), true, true, (ISlider)option);
+						optionButtons[i] = new GuiSlider((ClientUtils.localize("option." + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString()), blockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((OptionInt)option).getMin(), ((OptionInt)option).getMax(), ((OptionInt)option).get(), true, true, (ISlider)option);
 
 					optionButtons[i].packedFGColour = 14737632;
 				}
@@ -131,7 +131,7 @@ public class GuiCustomizeBlock extends GuiContainer{
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -159,17 +159,17 @@ public class GuiCustomizeBlock extends GuiContainer{
 	private String getModuleDescription(int buttonID) {
 		String moduleDescription = "module." + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft:", "") + ".description";
 
-		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey() + ".name") + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription);
+		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey() + ".name").getFormattedText() + ":" + TextFormatting.RESET + "\n\n" + ClientUtils.localize(moduleDescription).getFormattedText();
 	}
 
 	private String getOptionDescription(int buttonID) {
 		String optionDescription = "option." + blockName + "." + ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getMaxNumberOfModules()].getName() + ".description";
 
-		return ClientUtils.localize(optionDescription);
+		return ClientUtils.localize(optionDescription).getFormattedText();
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return (ClientUtils.localize("option." + blockName + "." + option.getName()) + " ").replace("#", option.toString());
+		return (ClientUtils.localize("option." + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString());
 	}
 
 	public List<Rectangle> getGuiExtraAreas()

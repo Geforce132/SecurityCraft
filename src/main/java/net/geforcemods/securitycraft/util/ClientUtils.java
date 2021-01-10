@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -77,16 +76,14 @@ public class ClientUtils{
 	 * @param params The parameters to insert into the String ala String.format
 	 * @return The localized String
 	 */
-	public static String localize(String key, Object... params)
+	public static TextComponentTranslation localize(String key, Object... params)
 	{
 		for(int i = 0; i < params.length; i++)
 		{
-			if(params[i] instanceof TextComponentTranslation)
-				params[i] = localize(((TextComponentTranslation)params[i]).getKey(), ((TextComponentTranslation)params[i]).getFormatArgs());
-			else if(params[i] instanceof BlockPos)
+			if(params[i] instanceof BlockPos)
 				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
 		}
 
-		return String.format(I18n.translateToLocal(key), params);
+		return new TextComponentTranslation(key, params);
 	}
 }
