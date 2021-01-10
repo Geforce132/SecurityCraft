@@ -617,7 +617,7 @@
 	"messages.securitycraft:portableRadar.withName": "%1$s è vicino a %2$s (radar portatile).",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s è vicino al tuo radar portatile a %2$s.",
 	"messages.securitycraft:codebreakerDisabled": "Il decrittatore è stato disabilitato dal file di configurazione.",
-	"messages.securitycraft:keycardReader.required": "Livello di sicurezza richiesto: #r - Livello di sicurezza della tua tessera magnetica: #c",
+	"messages.securitycraft:keycardReader.required": "Livello di sicurezza richiesto: %1$s - Livello di sicurezza della tua tessera magnetica: %2$s",
 	"messages.securitycraft:keycardReader.notSet": "Livello di sicurezza non impostato!",
 	"messages.securitycraft:invScan.notConnected": "Questo scanner non è connesso ad un altro!",
 	"messages.securitycraft:module.manager": "Gestore moduli",

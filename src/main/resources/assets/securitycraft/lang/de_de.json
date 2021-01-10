@@ -629,7 +629,7 @@
 	"messages.securitycraft:portableRadar.withName": "%1$s ist in der Nähe deines tragbaren Radars namens %2$s.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s ist in der Nähe deines tragbaren Radars bei %2$s.",
 	"messages.securitycraft:codebreakerDisabled": "Der Codebrecher wurde in der Konfigurations-Datei deaktiviert.",
-	"messages.securitycraft:keycardReader.required": "Benötigter Sicherheitslevel: #r - Sicherheitslevel deiner Schlüsselkarte: #c",
+	"messages.securitycraft:keycardReader.required": "Benötigter Sicherheitslevel: %1$s - Sicherheitslevel deiner Schlüsselkarte: %2$s",
 	"messages.securitycraft:keycardReader.notSet": "Sicherheitslevel nicht gesetzt!",
 	"messages.securitycraft:invScan.notConnected": "Dieser Block ist nicht mit einem anderen Inventarscanner verbunden!",
 	"messages.securitycraft:module.manager": "Modulmanager",

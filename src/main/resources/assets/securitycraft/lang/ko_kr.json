@@ -600,7 +600,7 @@
 	"messages.securitycraft:portableRadar.withName": "%1$s는 %2$s이라는 이름의 휴대용 레이더 근처에 있습니다.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s는 %2$s에서 휴대용 레이더 근처에 있습니다.",
 	"messages.securitycraft:codebreakerDisabled": "구성 파일을 통해 코드브레이커가 비활성화되었습니다.",
-	"messages.securitycraft:keycardReader.required": "필요한 보안 수준: #r - 키카드 수준: #c",
+	"messages.securitycraft:keycardReader.required": "필요한 보안 수준: %1$s - 키카드 수준: %2$s",
 	"messages.securitycraft:keycardReader.notSet": "보안 수준이 설정되지 않았습니다!",
 	"messages.securitycraft:invScan.notConnected": "다른 인벤토리 감지기 블록에 연결되어 있지 않습니다!",
 	"messages.securitycraft:module.manager": "모듈 매니저",
