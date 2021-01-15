@@ -36,9 +36,9 @@ public class GuiInventoryScanner extends GuiContainer {
 				.appendSibling(ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")))).getFormattedText();
 
 		if(hasStorageModule)
-			xSize = 236;
+			xSize = 246;
 		else
-			xSize = 176;
+			xSize = 190;
 
 		ySize = 196;
 	}
@@ -54,7 +54,7 @@ public class GuiInventoryScanner extends GuiContainer {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
-		fontRenderer.drawSplitString(infoString, guiLeft + 8, guiTop + 40, 160, 4210752);
+		fontRenderer.drawSplitString(infoString, guiLeft + 8, guiTop + 40, 170, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderToolTip(getSlotUnderMouse().getStack(), mouseX, mouseY);
@@ -76,9 +76,9 @@ public class GuiInventoryScanner extends GuiContainer {
 		fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 183, 18, 4210752);
+			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 188, 18, 4210752);
 
-		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 93, 4210752);
+		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 15, ySize - 93, 4210752);
 	}
 
 	@Override
