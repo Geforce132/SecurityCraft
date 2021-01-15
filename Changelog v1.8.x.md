@@ -23,7 +23,7 @@
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
 - Change: Some customizable options have been adapted to allow for finer control
-- API: Added hook for mods to alter if/when the Sentry can attack their entities. For more info, see IAttackTargetCheck
+- API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
 - Fix: Sentry Remote Access Tool tooltip shows incorrectly
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
@@ -40,6 +40,8 @@
 - Fix: SecurityCraft's doors cannot be placed underwater
 - Fix: Inventory Scanner does not drop stored items when broken
 - Fix: Projector does not drop its contained block when broken
+- Fix: Some text in the Inventory Scanner's GUI is not translated
+- Fix: Some text in the Inventory Scanner's GUI may not display correctly when using certain languages
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
