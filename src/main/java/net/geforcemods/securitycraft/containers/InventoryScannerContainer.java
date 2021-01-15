@@ -23,20 +23,24 @@ public class InventoryScannerContainer extends Container {
 		te = (InventoryScannerTileEntity)world.getTileEntity(pos);
 		numRows = te.getSizeInventory() / 9;
 
+		//prohibited items
 		for(int i = 0; i < 10; i++)
-			addSlot(new OwnerRestrictedSlot(te, te, i, (4 + (i * 17)), 16, true));
+			addSlot(new OwnerRestrictedSlot(te, te, i, (6 + (i * 18)), 16, true));
 
+		//inventory scanner storage
 		if(te.getOwner().isOwner(inventory.player) && te.hasModule(ModuleType.STORAGE))
 			for(int i = 0; i < 9; i++)
 				for(int j = 0; j < 3; j++)
-					addSlot(new Slot(te, 10 + ((i * 3) + j), 177 + (j * 18), 29 + i * 18));
+					addSlot(new Slot(te, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
 
+		//inventory
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				addSlot(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 115 + i * 18));
+				addSlot(new Slot(inventory, j + i * 9 + 9, 15 + j * 18, 115 + i * 18));
 
+		//hotbar
 		for(int i = 0; i < 9; i++)
-			addSlot(new Slot(inventory, i, 8 + i * 18, 173));
+			addSlot(new Slot(inventory, i, 15 + i * 18, 173));
 	}
 
 	/**
