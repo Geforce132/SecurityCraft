@@ -36,9 +36,9 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 				.append(ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))));
 
 		if(hasStorageModule)
-			xSize = 236;
+			xSize = 246;
 		else
-			xSize = 176;
+			xSize = 190;
 
 		ySize = 196;
 	}
@@ -54,7 +54,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(matrix, mouseX, mouseY, partialTicks);
 		RenderSystem.disableLighting();
 
-		font.func_238418_a_(infoString, guiLeft + 8, guiTop + 40, 160, 4210752);
+		font.func_238418_a_(infoString, guiLeft + 8, guiTop + 40, 170, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
@@ -76,9 +76,9 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.storage"), 183, 18, 4210752);
+			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
 
-		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 93, 4210752);
+		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 15, ySize - 93, 4210752);
 	}
 
 	@Override
