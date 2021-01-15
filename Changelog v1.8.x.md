@@ -39,6 +39,8 @@
 - Fix: Projector does not drop its contained block when broken
 - Fix: Sentry does not attack hostile mobs from Lycanites Mobs
 - Fix: Some messages don't get translated when playing on a server
+- Fix: Some text in the Inventory Scanner's GUI is not translated
+- Fix: Some text in the Inventory Scanner's GUI may not display correctly when using certain languages
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
