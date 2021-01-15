@@ -21,15 +21,16 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	private InventoryScannerTileEntity tileEntity;
 	private boolean owns = false;
 	private boolean hasStorageModule = false;
-	private String storageString, redstoneString;
+	private String infoString;
 
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		tileEntity = container.te;
 		owns = tileEntity.getOwner().isOwner(inv.player);
 		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
-		storageString = ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
-		redstoneString = ClientUtils.localize("gui.securitycraft:invScan.emit_redstone", ClientUtils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(ModuleType.REDSTONE) ? "yes" : "no"))).getFormattedText();
+		infoString = ClientUtils.localize("gui.securitycraft:invScan.emit_redstone", ClientUtils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(ModuleType.REDSTONE) ? "yes" : "no")))
+				.appendText("\n\n")
+				.appendSibling(ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")))).getFormattedText();
 
 		if(hasStorageModule)
 			xSize = 236;
@@ -50,8 +51,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(mouseX, mouseY, partialTicks);
 		GlStateManager.disableLighting();
 
-		font.drawString(redstoneString, guiLeft + 5, guiTop + 40, 4210752);
-		font.drawString(storageString, guiLeft + 5, guiTop + 50, 4210752);
+		font.drawSplitString(infoString, guiLeft + 8, guiTop + 40, 160, 4210752);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
@@ -69,11 +69,11 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		font.drawString("Prohibited Items", 8, 6, 4210752);
+		font.drawString(ClientUtils.localize("gui.securitycraft:invScan.prohibitedItems").getFormattedText(), 8, 6, 4210752);
 		font.drawString(tileEntity.getOwner().isOwner(minecraft.player) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.drawString("Storage", 183, 6, 4210752);
+			font.drawString(ClientUtils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 183, 18, 4210752);
 
 		font.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 93, 4210752);
 	}
