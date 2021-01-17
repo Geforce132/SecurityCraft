@@ -72,9 +72,6 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 		if(tag.contains("cooldown"))
 			cooldown = tag.getInt("cooldown");
-
-		if (tag.contains("solidifyField"))
-			solidifyField.setValue(tag.getBoolean("solidifyField"));
 	}
 
 	@Override
@@ -94,7 +91,6 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 		tag.put("Items", list);
 		tag.putInt("cooldown", cooldown);
-		tag.putBoolean("solidifyField", solidifyField.get());
 		return tag;
 	}
 
