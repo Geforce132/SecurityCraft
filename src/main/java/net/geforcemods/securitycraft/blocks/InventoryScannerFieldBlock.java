@@ -91,57 +91,36 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = te.hasModule(ModuleType.STORAGE);
+		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
 
-		if(te.hasModule(ModuleType.REDSTONE))
-		{
-			redstoneLoop(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule);
-			redstoneLoop(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule);
-			redstoneLoop(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule);
-		}
+		if ((!hasRedstoneModule && !hasStorageModule) || te.getOwner().isOwner(player))
+			return;
 
-		if(hasStorageModule && !te.getOwner().isOwner(player))
-		{
-			checkLoop(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule);
-			checkLoop(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule);
-			checkLoop(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule);
-		}
+		loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static void redstoneLoop(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule)
-	{
+	private static void loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		for(int i = 1; i <= inventory.size(); i++)
 		{
 			ItemStack itemStackChecking = inventory.get(i - 1);
 
 			if(!itemStackChecking.isEmpty())
 			{
-				if((hasSmartModule && areItemStacksEqual(itemStackChecking, stack) && ItemStack.areItemStackTagsEqual(itemStackChecking, stack))
-						|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()) || checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule))
+				if(areItemsEqual(itemStackChecking, stack, hasSmartModule))
 				{
-					updateInventoryScannerPower(te);
-				}
-			}
-		}
-	}
-
-	private static void checkLoop(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule)
-	{
-		for(int i = 1; i <= inventory.size(); i++)
-		{
-			ItemStack itemStackChecking = inventory.get(i - 1);
-
-			if(!itemStackChecking.isEmpty())
-			{
-				checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule);
-
-				if((hasSmartModule && areItemStacksEqual(itemStackChecking, stack) && ItemStack.areItemStackTagsEqual(itemStackChecking, stack))
-						|| (!hasSmartModule && itemStackChecking.getItem() == stack.getItem()))
-				{
-					if(hasStorageModule)
+					if(hasStorageModule) {
 						te.addItemToStorage(inventory.get(i - 1));
+						inventory.set(i - 1, ItemStack.EMPTY);
+					}
 
-					inventory.set(i - 1, ItemStack.EMPTY);
+					if (hasRedstoneModule) {
+						updateInventoryScannerPower(te);
+					}
 				}
+
+				checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 			}
 		}
 	}
@@ -150,52 +129,55 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
 		boolean hasStorageModule = te.hasModule(ModuleType.STORAGE);
+		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
 
-		if(te.hasModule(ModuleType.REDSTONE))
+		if (!hasRedstoneModule && !hasStorageModule)
+			return;
+
+		if(areItemsEqual(entity.getItem(), stack, hasSmartModule))
 		{
-			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
-					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()) || checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule))
-			{
+			if (hasStorageModule) {
+				te.addItemToStorage(entity.getItem());
+				entity.remove();
+			}
+
+			if (hasRedstoneModule) {
 				updateInventoryScannerPower(te);
 			}
 		}
 
-		if(hasStorageModule)
-		{
-			checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule);
-
-			if((hasSmartModule && areItemStacksEqual(entity.getItem(), stack) && ItemStack.areItemStackTagsEqual(entity.getItem(), stack))
-					|| (!hasSmartModule && entity.getItem().getItem() == stack.getItem()))
-			{
-				if(hasStorageModule)
-					te.addItemToStorage(entity.getItem());
-
-				entity.remove();
-			}
-		}
+		checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule) {
-		boolean deletedItem = false;
-
+	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if(item != null) {
 			if(!item.isEmpty() && item.getTag() != null && Block.getBlockFromItem(item.getItem()) instanceof ShulkerBoxBlock) {
 				ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
 
 				for(int i = 0; i < list.size(); i++) {
 					ItemStack itemInChest = ItemStack.read(list.getCompound(i));
-					if((hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck) && ItemStack.areItemStackTagsEqual(itemInChest, stackToCheck)) || (!hasSmartModule && areItemStacksEqual(itemInChest, stackToCheck))) {
-						list.remove(i);
-						deletedItem = true;
 
-						if(hasStorageModule)
+					if(areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
+						if(hasStorageModule) {
 							te.addItemToStorage(itemInChest);
+							list.remove(i);
+						}
+
+						if (hasRedstoneModule) {
+							updateInventoryScannerPower(te);
+						}
+
+						return true;
 					}
 				}
 			}
 		}
+		return false;
+	}
 
-		return deletedItem;
+	private static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean hasSmartModule) {
+		return (hasSmartModule && areItemStacksEqual(firstItemStack, secondItemStack) && ItemStack.areItemStackTagsEqual(firstItemStack, secondItemStack))
+				|| (!hasSmartModule && firstItemStack.getItem() == secondItemStack.getItem());
 	}
 
 	private static void updateInventoryScannerPower(InventoryScannerTileEntity te)
