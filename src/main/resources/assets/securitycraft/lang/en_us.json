@@ -909,6 +909,8 @@
 	"option.securitycraft.keypad_furnace.sendMessage.description": "Does this furnace send a message upon activation (when using whitelist/blacklist modules)?",
 	"option.securitycraft.inventory_scanner.horizontal": "Horizontal: #",
 	"option.securitycraft.inventory_scanner.horizontal.description": "Should the inventory scanner fields created by this scanner be horizontal?",
+	"option.securitycraft.inventory_scanner.solidifyField": "Solidify Fields: #",
+	"option.securitycraft.inventory_scanner.solidifyField.description": "Should the inventory scanner's fields solidify when a prohibited item is detected?",
 	"option.securitycraft.secret_sign.isSecret": "Secret: #",
 	"option.securitycraft.secret_sign.isSecret.description": "Should the text of the secret sign only be visible to the owner and whitelisted players?",
 	"option.securitycraft.secret_spruce_sign.isSecret": "Secret: #",

@@ -33,6 +33,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class InventoryScannerTileEntity extends DisguisableTileEntity implements IInventory, INamedContainerProvider{
 
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
+	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
@@ -291,35 +292,40 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	@Override
 	public void onOptionChanged(Option<?> option)
 	{
-		if(!option.getName().equals("horizontal"))
-			return;
+		if(option.getName().equals("horizontal")) {
+			BooleanOption bo = (BooleanOption)option;
 
-		BooleanOption bo = (BooleanOption)option;
+			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
-
-		if(connectedScanner != null)
-		{
-			Direction facing = getBlockState().get(InventoryScannerBlock.FACING);
-
-			for(int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++)
+			if(connectedScanner != null)
 			{
-				BlockPos offsetPos = pos.offset(facing, i);
-				BlockState state = world.getBlockState(offsetPos);
-				Block block = state.getBlock();
+				Direction facing = getBlockState().get(InventoryScannerBlock.FACING);
 
-				if(block == SCContent.INVENTORY_SCANNER_FIELD.get())
-					world.setBlockState(offsetPos, state.with(InventoryScannerFieldBlock.HORIZONTAL, bo.get()));
-				else if(!state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
-					break;
-				else if(block == SCContent.INVENTORY_SCANNER.get() && state.get(InventoryScannerBlock.FACING) == facing.getOpposite())
-					break;
+				for(int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++)
+				{
+					BlockPos offsetPos = pos.offset(facing, i);
+					BlockState state = world.getBlockState(offsetPos);
+					Block block = state.getBlock();
+
+					if(block == SCContent.INVENTORY_SCANNER_FIELD.get())
+						world.setBlockState(offsetPos, state.with(InventoryScannerFieldBlock.HORIZONTAL, bo.get()));
+					else if(!state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
+						break;
+					else if(block == SCContent.INVENTORY_SCANNER.get() && state.get(InventoryScannerBlock.FACING) == facing.getOpposite())
+						break;
+				}
+
+				connectedScanner.setHorizontal(bo.get());
 			}
 
-			connectedScanner.setHorizontal(bo.get());
+			world.setBlockState(pos, getBlockState().with(InventoryScannerBlock.HORIZONTAL, bo.get()));
 		}
+		else if (option.getName().equals("solidifyField")) {
+			BooleanOption bo = (BooleanOption)option;
+			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-		world.setBlockState(pos, getBlockState().with(InventoryScannerBlock.HORIZONTAL, bo.get()));
+			connectedScanner.setSolidifyField(bo.get());
+		}
 	}
 
 	public void setHorizontal(boolean isHorizontal)
@@ -328,10 +334,19 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		world.setBlockState(pos, getBlockState().with(InventoryScannerBlock.HORIZONTAL, isHorizontal));
 	}
 
+	public boolean doesFieldSolidify() {
+		return solidifyField.get();
+	}
+
+	public void setSolidifyField(boolean shouldSolidify) {
+		solidifyField.setValue(shouldSolidify);
+		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3); //sync option change to client
+	}
+
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[] {horizontal};
+		return new Option[] {horizontal, solidifyField};
 	}
 
 	@Override
