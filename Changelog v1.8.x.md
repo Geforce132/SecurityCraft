@@ -42,6 +42,7 @@
 - Fix: Some text in the Inventory Scanner's GUI is not translated
 - Fix: Some text in the Inventory Scanner's GUI may not display correctly when using certain languages
 - Fix: Prohibited Items slots in the Inventory Scanner's GUI are overlapping
+- Fix: Prohibited Items in Shulker Boxes get destroyed by the Inventory Scanner when a redstone module is equipped
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
