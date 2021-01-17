@@ -54,8 +54,35 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState blockState, IBlockReader world, BlockPos pos, ISelectionContext ctx)
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx)
 	{
+		if (ctx.getEntity() == null)
+			return VoxelShapes.empty();
+
+		World world = ctx.getEntity().getEntityWorld();
+		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		Entity entity = ctx.getEntity();
+
+		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
+			if (entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity)) {
+				if (ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, ModuleType.WHITELIST))
+					return VoxelShapes.empty();
+
+				for (int i = 0; i < 10; i++) {
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty())
+						if (checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+							return getShape(state, world, pos, ctx);
+				}
+			}
+			else if (entity instanceof ItemEntity) {
+				for (int i = 0; i < 10; i++) {
+					if (!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
+						if (checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), false))
+							return getShape(state, world, pos, ctx);
+				}
+			}
+		}
+
 		return VoxelShapes.empty();
 	}
 
@@ -70,7 +97,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 	{
 		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
 
-		if(connectedScanner == null)
+		if(connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
 		if(entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity))
@@ -81,7 +108,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			for(int i = 0; i < 10; i++)
 			{
 				if(!connectedScanner.getStackInSlotCopy(i).isEmpty())
-					checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
+					checkInventory((PlayerEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
 		else if(entity instanceof ItemEntity)
@@ -89,26 +116,26 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			for(int i = 0; i < 10; i++)
 			{
 				if(!connectedScanner.getStackInSlotCopy(i).isEmpty() && !((ItemEntity)entity).getItem().isEmpty())
-					checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i));
+					checkItemEntity((ItemEntity)entity, connectedScanner, connectedScanner.getStackInSlotCopy(i), true);
 			}
 		}
 	}
 
-	public static void checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack)
+	public static boolean checkInventory(PlayerEntity player, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
-		boolean hasStorageModule = te.hasModule(ModuleType.STORAGE);
-		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
+		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
+		boolean hasRedstoneModule = allowInteraction && te.hasModule(ModuleType.REDSTONE);
 
-		if ((!hasRedstoneModule && !hasStorageModule) || te.getOwner().isOwner(player))
-			return;
+		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || te.getOwner().isOwner(player))
+			return false;
 
-		loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
-		loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
-		loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return loopInventory(player.inventory.mainInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
+				loopInventory(player.inventory.armorInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule) ||
+				loopInventory(player.inventory.offHandInventory, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
-	private static void loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+	private static boolean loopInventory(NonNullList<ItemStack> inventory, ItemStack stack, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		for(int i = 1; i <= inventory.size(); i++)
 		{
 			ItemStack itemStackChecking = inventory.get(i - 1);
@@ -125,21 +152,26 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 					if (hasRedstoneModule) {
 						updateInventoryScannerPower(te);
 					}
+
+					return true;
 				}
 
-				checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+				if (checkForShulkerBox(itemStackChecking, stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule))
+					return true;
 			}
 		}
+
+		return false;
 	}
 
-	public static void checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack)
+	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerTileEntity te, ItemStack stack, boolean allowInteraction)
 	{
 		boolean hasSmartModule = te.hasModule(ModuleType.SMART);
-		boolean hasStorageModule = te.hasModule(ModuleType.STORAGE);
-		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
+		boolean hasStorageModule = allowInteraction && te.hasModule(ModuleType.STORAGE);
+		boolean hasRedstoneModule = allowInteraction && te.hasModule(ModuleType.REDSTONE);
 
-		if (!hasRedstoneModule && !hasStorageModule)
-			return;
+		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
+			return false;
 
 		if(areItemsEqual(entity.getItem(), stack, hasSmartModule))
 		{
@@ -151,9 +183,11 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 			if (hasRedstoneModule) {
 				updateInventoryScannerPower(te);
 			}
+
+			return true;
 		}
 
-		checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
+		return checkForShulkerBox(entity.getItem(), stack, te, hasSmartModule, hasStorageModule, hasRedstoneModule);
 	}
 
 	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerTileEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
@@ -179,6 +213,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 				}
 			}
 		}
+
 		return false;
 	}
 
