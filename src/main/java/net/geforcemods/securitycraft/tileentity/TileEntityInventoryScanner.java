@@ -26,6 +26,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 public class TileEntityInventoryScanner extends TileEntityDisguisable implements IInventory{
 
 	private OptionBoolean horizontal = new OptionBoolean("horizontal", false);
+	private OptionBoolean solidifyField = new OptionBoolean("solidifyField", false);
 	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean isProvidingPower;
@@ -285,36 +286,42 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 	@Override
 	public void onOptionChanged(Option<?> option)
 	{
-		if(!option.getName().equals("horizontal"))
-			return;
+		if(option.getName().equals("horizontal")) {
+			OptionBoolean bo = (OptionBoolean)option;
 
-		OptionBoolean bo = (OptionBoolean)option;
+			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+			IBlockState thisState = world.getBlockState(pos);
 
-		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
-		IBlockState thisState = world.getBlockState(pos);
-
-		if(connectedScanner != null)
-		{
-			EnumFacing facing = thisState.getValue(BlockInventoryScanner.FACING);
-
-			for(int i = 0; i <= ConfigHandler.inventoryScannerRange; i++)
+			if(connectedScanner != null)
 			{
-				BlockPos offsetPos = pos.offset(facing, i);
-				Block block = BlockUtils.getBlock(world, offsetPos);
-				IBlockState state = world.getBlockState(offsetPos);
+				EnumFacing facing = thisState.getValue(BlockInventoryScanner.FACING);
 
-				if(block == SCContent.inventoryScannerField)
-					world.setBlockState(offsetPos, state.withProperty(BlockInventoryScannerField.HORIZONTAL, bo.get()));
-				else if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
-					break;
-				else if(block == SCContent.inventoryScanner && state.getValue(BlockInventoryScanner.FACING) == facing.getOpposite())
-					break;
+				for(int i = 0; i <= ConfigHandler.inventoryScannerRange; i++)
+				{
+					BlockPos offsetPos = pos.offset(facing, i);
+					Block block = BlockUtils.getBlock(world, offsetPos);
+					IBlockState state = world.getBlockState(offsetPos);
+
+					if(block == SCContent.inventoryScannerField)
+						world.setBlockState(offsetPos, state.withProperty(BlockInventoryScannerField.HORIZONTAL, bo.get()));
+					else if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+						break;
+					else if(block == SCContent.inventoryScanner && state.getValue(BlockInventoryScanner.FACING) == facing.getOpposite())
+						break;
+				}
+
+				connectedScanner.setHorizontal(bo.get());
 			}
 
-			connectedScanner.setHorizontal(bo.get());
+			world.setBlockState(pos, thisState.withProperty(BlockInventoryScanner.HORIZONTAL, bo.get()));
 		}
 
-		world.setBlockState(pos, thisState.withProperty(BlockInventoryScanner.HORIZONTAL, bo.get()));
+		else if (option.getName().equals("solidifyField")) {
+			OptionBoolean bo = (OptionBoolean)option;
+			TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
+
+			connectedScanner.setSolidifyField(bo.get());
+		}
 	}
 
 	public void setHorizontal(boolean isHorizontal)
@@ -323,10 +330,21 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, isHorizontal));
 	}
 
+	public boolean doesFieldSolidify() {
+		return solidifyField.get();
+	}
+
+	public void setSolidifyField(boolean shouldSolidify) {
+		IBlockState state = world.getBlockState(pos);
+
+		solidifyField.setValue(shouldSolidify);
+		world.notifyBlockUpdate(pos, state, state, 3); //sync option change to client
+	}
+
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[] {horizontal};
+		return new Option[] {horizontal, solidifyField};
 	}
 
 	@Override

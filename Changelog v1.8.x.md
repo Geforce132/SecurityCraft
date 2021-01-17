@@ -19,6 +19,7 @@
 - New: Keypad door
 - New: The Projector can now project horizontally
 - New: The height of a Projector's projection can now be changed
+- New: Customization option to allow Inventory Scanner fields to solidify when a prohibited item is detected
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: Some customizable options have been adapted to allow for finer control
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
