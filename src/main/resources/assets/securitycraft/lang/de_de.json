@@ -970,6 +970,8 @@
 	"option.securitycraft.keypad_furnace.sendMessage.description": "Sendet dieser Ofen eine Nachricht, wenn er aktiviert wird (bei Nutzung von Whitelist/Blacklist Modulen)?",
 	"option.securitycraft.inventory_scanner.horizontal": "Horizontal: %s",
 	"option.securitycraft.inventory_scanner.horizontal.description": "Sollen die Inventarscannerfelder von diesem Inventarscanner horizontal sein?",
+	"option.securitycraft.inventory_scanner.solidifyField": "Felder verfestigen: %s",
+	"option.securitycraft.inventory_scanner.solidifyField.description": "Sollen sich die Inventarscannerfelder von diesem Inventarscanner verfestigen, wenn ein unerlaubtes Item erkannt wird?",
 	"option.securitycraft.secret_sign.isSecret": "Geheim: %s",
 	"option.securitycraft.secret_sign.isSecret.description": "Soll der Text des geheimen Schildes nur für den Besitzer und gewhitelistete Spieler sichtbar sein?",
 	"option.securitycraft.secret_spruce_sign.isSecret": "Geheim: %s",
