@@ -94,10 +94,7 @@ minecraft {
 	}
 }
 
-repositories {  
-    maven { // HWYLA
-		url "http://maven.tehnut.info"
-	}
+repositories { 
 	maven { // TOP
 		name 'tterrag maven'
 		url "http://maven.tterrag.com/"
@@ -106,6 +103,9 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    maven {
+    	url "https://cursemaven.com/"
+    }
 }
 
 dependencies {
@@ -113,7 +113,7 @@ dependencies {
     
 	implementation fg.deobf("mezz.jei:jei-1.16.4:7.6.0.57")
 	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.0.3-beta-6")
-    implementation fg.deobf("mcp.mobius.waila:Hwyla:1.10.11-B78_1.16.2")
+    implementation fg.deobf("curse.maven:hwyla-253449:3033593")
 }
 
 jar {
