@@ -46,6 +46,7 @@
 - Fix: Prohibited Items in Shulker Boxes get destroyed by the Inventory Scanner when a redstone module is equipped
 - Fix: The custom name of Password-protected Chests doesn't show up at the top of the chest's screen
 - Fix: The default name of the Password-protected Chest's screen doesn't get translated
+- Fix: Large Password-protected Chests have the wrong label at the top of their screen
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

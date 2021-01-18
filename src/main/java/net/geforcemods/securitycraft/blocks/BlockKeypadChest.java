@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +27,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
 public class BlockKeypadChest extends BlockChest implements IPasswordConvertible {
@@ -86,6 +88,57 @@ public class BlockKeypadChest extends BlockChest implements IPasswordConvertible
 		if (tileentitychest != null)
 			tileentitychest.updateContainingBlockInfo();
 
+	}
+
+	@Override
+	public ILockableContainer getContainer(World world, BlockPos pos, boolean allowBlocking) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (!(te instanceof TileEntityKeypadChest))
+		{
+			return null;
+		}
+		else
+		{
+			ILockableContainer container = (TileEntityChest)te;
+
+			if (!allowBlocking && isBlocked(world, pos))
+			{
+				return null;
+			}
+			else
+			{
+				for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+				{
+					BlockPos blockpos = pos.offset(facing);
+					Block block = world.getBlockState(blockpos).getBlock();
+
+					if (block == this)
+					{
+						if (!allowBlocking && isBlocked(world, blockpos)) // Forge: fix MC-99321
+						{
+							return null;
+						}
+
+						TileEntity otherTE = world.getTileEntity(blockpos);
+
+						if (otherTE instanceof TileEntityKeypadChest)
+						{
+							if (facing != EnumFacing.WEST && facing != EnumFacing.NORTH)
+							{
+								container = new InventoryLargeChest("gui.securitycraft:keypadChestDouble", container, (TileEntityChest)otherTE);
+							}
+							else
+							{
+								container = new InventoryLargeChest("gui.securitycraft:keypadChestDouble", (TileEntityChest)otherTE, container);
+							}
+						}
+					}
+				}
+
+				return container;
+			}
+		}
 	}
 
 	/**
