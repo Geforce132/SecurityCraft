@@ -55,7 +55,9 @@ sourceSets {
 
 minecraft {
     mappings channel: 'stable', version: '56-1.14.3'
-	
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
     runs {
         client {
             workingDirectory project.file('run/client')
