@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Optional;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -13,6 +16,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.DoubleSidedInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.ChestContainer;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -20,6 +28,7 @@ import net.minecraft.state.properties.ChestType;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -27,12 +36,46 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible {
+
+	private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> CONTAINER_MERGER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
+		public Optional<INamedContainerProvider> func_225539_a_(final ChestTileEntity chest1, final ChestTileEntity chest2) {
+			final IInventory chestInventory = new DoubleSidedInventory(chest1, chest2);
+			return Optional.of(new INamedContainerProvider() {
+				public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
+					if (chest1.canOpen(player) && chest2.canOpen(player)) {
+						chest1.fillWithLoot(inventory.player);
+						chest2.fillWithLoot(inventory.player);
+						return ChestContainer.createGeneric9X6(id, inventory, chestInventory);
+					} else {
+						return null;
+					}
+				}
+
+				public ITextComponent getDisplayName() {
+					if (chest1.hasCustomName()) {
+						return chest1.getDisplayName();
+					} else {
+						return chest2.hasCustomName() ? chest2.getDisplayName() : ClientUtils.localize("block.securitycraft.keypad_chest_double");
+					}
+				}
+			});
+		}
+
+		public Optional<INamedContainerProvider> func_225538_a_(ChestTileEntity te) {
+			return Optional.of(te);
+		}
+
+		public Optional<INamedContainerProvider> func_225537_b_() {
+			return Optional.empty();
+		}
+	};
 
 	public KeypadChestBlock(Block.Properties properties){
 		super(properties, () -> SCContent.teTypeKeypadChest);
@@ -98,6 +141,11 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 		if (ChestTileEntity != null)
 			ChestTileEntity.updateContainingBlockInfo();
 
+	}
+
+	@Override
+	public INamedContainerProvider getContainer(BlockState state, World world, BlockPos pos) {
+		return this.combine(state, world, pos, false).apply(CONTAINER_MERGER).orElse(null);
 	}
 
 	/**
