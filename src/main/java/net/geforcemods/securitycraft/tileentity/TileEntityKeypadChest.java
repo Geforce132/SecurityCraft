@@ -122,7 +122,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public String getName()
 	{
-		return "Protected chest";
+		return this.hasCustomName() ? this.customName : "tile.securitycraft:keypadChest.name";
 	}
 
 	@Override
