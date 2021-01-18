@@ -122,12 +122,12 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	/**
-	 * Returns the name of the inventory
+	 * Returns the default name of the inventory
 	 */
 	@Override
-	public ITextComponent getName()
+	public ITextComponent getDefaultName()
 	{
-		return new StringTextComponent("Protected chest");
+		return ClientUtils.localize("block.securitycraft.keypad_chest");
 	}
 
 	@Override
