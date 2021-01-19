@@ -2,9 +2,9 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
+import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.renderer.GlStateManager;
@@ -46,9 +46,9 @@ public class TileEntityKeypadChestRenderer extends TileEntitySpecialRenderer<Til
 			Block block = te.getBlockType();
 			meta = te.getBlockMetadata();
 
-			if (block instanceof BlockChest && meta == 0)
+			if (block instanceof BlockKeypadChest)
 			{
-				((BlockChest)block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
+				((BlockKeypadChest)block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
 				meta = te.getBlockMetadata();
 			}
 

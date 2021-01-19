@@ -82,3 +82,9 @@ processResources
         }
     }
 }
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'securitycraft_at.cfg'
+    }
+}

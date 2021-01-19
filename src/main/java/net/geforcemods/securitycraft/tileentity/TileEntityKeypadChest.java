@@ -287,6 +287,44 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		owner.set(uuid, name);
 	}
 
+	@Override
+	protected TileEntityChest getAdjacentChest(EnumFacing side)
+	{
+		BlockPos blockpos = pos.offset(side);
+
+		if(isChestAt(blockpos))
+		{
+			TileEntity te = world.getTileEntity(blockpos);
+
+			if(te instanceof TileEntityKeypadChest)
+			{
+				TileEntityKeypadChest tileentitychest = (TileEntityKeypadChest)te;
+
+				tileentitychest.setNeighbor(this, side.getOpposite());
+				return tileentitychest;
+			}
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean isChestAt(BlockPos pos)
+	{
+		return world != null && world.getBlockState(pos).getBlock() instanceof BlockKeypadChest;
+	}
+
+	@Override
+	public void closeInventory(EntityPlayer player)
+	{
+		if(!player.isSpectator() && getBlockType() instanceof BlockKeypadChest)
+		{
+			--numPlayersUsing;
+			world.addBlockEvent(pos, getBlockType(), 1, numPlayersUsing);
+			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
+		}
+	}
+
 	public boolean isBlocked()
 	{
 		Block east = BlockUtils.getBlock(getWorld(), getPos().east());

@@ -47,6 +47,7 @@
 - Fix: The custom name of Password-protected Chests doesn't show up at the top of the chest's screen
 - Fix: The default name of the Password-protected Chest's screen doesn't get translated
 - Fix: Large Password-protected Chests have the wrong label at the top of their screen
+- Fix: Password-protected Chests can connect to vanilla chests, causing visual glitches
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
