@@ -360,7 +360,6 @@ public class BlockKeypadChest extends BlockContainer implements IPasswordConvert
 
 		if (te != null)
 			te.updateContainingBlockInfo();
-
 	}
 
 	@Override

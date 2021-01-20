@@ -28,6 +28,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -346,6 +347,12 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public boolean isSingleBlocked()
 	{
 		return BlockKeypadChest.isBlocked(getWorld(), getPos());
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox()
+	{
+		return new AxisAlignedBB(pos.add(-1, 0, -1), pos.add(2, 2, 2));
 	}
 
 	@Override
