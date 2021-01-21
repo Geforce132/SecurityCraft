@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
+import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
@@ -79,6 +80,9 @@ public class SecurityCraft {
 	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
+
+		if(ModList.get().isLoaded("quark"))
+			QuarkCompat.registerChestConversions();
 
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
