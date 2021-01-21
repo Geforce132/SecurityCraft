@@ -225,7 +225,7 @@ public class BlockReinforcerContainer extends Container
 		@Override
 		public void onSlotChanged()
 		{
-			ItemStack stack = itemInventory.getStackInSlot(slotNumber);
+			ItemStack stack = itemInventory.getStackInSlot(slotNumber % 2);
 
 			if(!stack.isEmpty())
 			{
