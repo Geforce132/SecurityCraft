@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -40,6 +41,10 @@ public class SecurityCraftAPI
 		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock)msg.getMessageSupplier().get()));
 		event.getIMCStream(s -> s.equals(IMC_PASSWORD_CONVERTIBLE_MSG)).forEach(msg -> registeredPasswordConvertibles.add((IPasswordConvertible)msg.getMessageSupplier().get()));
 		event.getIMCStream(s -> s.equals(IMC_SENTRY_ATTACK_TARGET_MSG)).forEach(msg -> registeredSentryAttackTargetChecks.add((IAttackTargetCheck)msg.getMessageSupplier().get()));
+
+		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
+		registeredPasswordConvertibles = Collections.unmodifiableList(registeredPasswordConvertibles);
+		registeredSentryAttackTargetChecks = Collections.unmodifiableList(registeredSentryAttackTargetChecks);
 	}
 
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
