@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -108,7 +108,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 						potentialTarget instanceof SlimeEntity ||
 						potentialTarget instanceof ShulkerEntity ||
 						potentialTarget instanceof EnderDragonEntity ||
-						SecurityCraft.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
+						SecurityCraftAPI.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
 	}
 
 	@Override

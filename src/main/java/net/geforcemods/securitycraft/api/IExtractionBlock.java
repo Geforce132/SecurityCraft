@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 /**
  * Defines a block that can extract from a password-protected chest and furnace.
- * Call <pre>InterModComms.sendTo("securitycraft", "registerExtractionBlock", ClassThatImplementsIExtractionBlock::new);</pre>
+ * Call <pre>InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ClassThatImplementsIExtractionBlock::new);</pre>
  * during InterModEnqueueEvent to register this with SecurityCraft.
  *
  * @author bl4ckscor3

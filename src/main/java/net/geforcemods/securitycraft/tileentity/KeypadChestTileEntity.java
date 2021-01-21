@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
@@ -138,7 +139,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 			BlockPos offsetPos = pos.offset(side);
 			BlockState offsetState = world.getBlockState(offsetPos);
 
-			for(IExtractionBlock extractionBlock : SecurityCraft.getRegisteredExtractionBlocks())
+			for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
 			{
 				if(offsetState.getBlock() == extractionBlock.getBlock())
 				{

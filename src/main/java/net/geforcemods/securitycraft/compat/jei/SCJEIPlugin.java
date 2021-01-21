@@ -11,6 +11,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.minecraft.block.Block;
@@ -27,7 +28,7 @@ public class SCJEIPlugin implements IModPlugin
 	public void registerRecipes(IRecipeRegistration registration)
 	{
 		registration.addIngredientInfo(new ItemStack(SCContent.ADMIN_TOOL.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
-		SecurityCraft.getRegisteredPasswordConvertibles().forEach(pc -> {
+		SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
 			Block original = pc.getOriginalBlock();
 
 			//3rd party mods should handle this themselves
