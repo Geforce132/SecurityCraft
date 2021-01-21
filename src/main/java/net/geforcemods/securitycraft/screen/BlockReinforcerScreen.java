@@ -49,7 +49,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 		font.func_243248_b(matrix, ubr, (xSize - font.getStringPropertyWidth(ubr)) / 2, 5, 4210752);
 		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 
-		if(!inv.get(0).isEmpty())
+		if(!inv.get(36).isEmpty())
 		{
 			font.func_243248_b(matrix, output, 50, 25, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
@@ -59,7 +59,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 				renderTooltip(matrix, container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
 		}
 
-		if(!isLvl1 && !inv.get(1).isEmpty())
+		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
 			font.func_243248_b(matrix, output, 50, 50, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
