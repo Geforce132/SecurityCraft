@@ -21,6 +21,16 @@ public class QuarkCompat
 	private static Block acaciaChest;
 	@ObjectHolder("quark:dark_oak_chest")
 	private static Block darkOakChest;
+	@ObjectHolder("quark:bamboo_chest")
+	private static Block bambooChest;
+	@ObjectHolder("quark:driftwood_chest")
+	private static Block driftwoodChest;
+	@ObjectHolder("quark:poise_chest")
+	private static Block poiseChest;
+	@ObjectHolder("quark:willow_chest")
+	private static Block willowChest;
+	@ObjectHolder("quark:wisteria_chest")
+	private static Block wisteriaChest;
 
 	public static void registerChestConversions()
 	{
@@ -64,6 +74,41 @@ public class QuarkCompat
 			public Block getOriginalBlock()
 			{
 				return darkOakChest;
+			}
+		});
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
+			@Override
+			public Block getOriginalBlock()
+			{
+				return bambooChest;
+			}
+		});
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
+			@Override
+			public Block getOriginalBlock()
+			{
+				return driftwoodChest;
+			}
+		});
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
+			@Override
+			public Block getOriginalBlock()
+			{
+				return poiseChest;
+			}
+		});
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
+			@Override
+			public Block getOriginalBlock()
+			{
+				return willowChest;
+			}
+		});
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, () -> new KeypadChestBlock.Convertible() {
+			@Override
+			public Block getOriginalBlock()
+			{
+				return wisteriaChest;
 			}
 		});
 	}
