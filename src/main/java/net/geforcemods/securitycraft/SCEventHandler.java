@@ -7,12 +7,12 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -143,9 +143,9 @@ public class SCEventHandler {
 
 				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL))
 				{
-					for(Block pc : IPasswordConvertible.BLOCKS)
+					for(IPasswordConvertible pc : SecurityCraft.getRegisteredPasswordConvertibles())
 					{
-						if(((IPasswordConvertible)pc).getOriginalBlock() == block)
+						if(pc.getOriginalBlock() == block)
 						{
 							event.setUseBlock(Result.DENY);
 							event.setUseItem(Result.ALLOW);

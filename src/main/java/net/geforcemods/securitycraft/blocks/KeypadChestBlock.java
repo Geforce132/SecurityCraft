@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
@@ -38,13 +39,15 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible {
+public class KeypadChestBlock extends ChestBlock {
 
 	private static final ChestBlock.InventoryFactory<INamedContainerProvider> field_220110_j = new ChestBlock.InventoryFactory<INamedContainerProvider>() {
+		@Override
 		public INamedContainerProvider forDouble(final ChestTileEntity chest1, final ChestTileEntity chest2) {
 			final IInventory chestInventory = new DoubleSidedInventory(chest1, chest2);
-			
+
 			return new INamedContainerProvider() {
+				@Override
 				public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
 					if (chest1.canOpen(player) && chest2.canOpen(player)) {
 						chest1.fillWithLoot(inventory.player);
@@ -55,6 +58,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 					}
 				}
 
+				@Override
 				public ITextComponent getDisplayName() {
 					if (chest1.hasCustomName()) {
 						return chest1.getDisplayName();
@@ -65,6 +69,7 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 			};
 		}
 
+		@Override
 		public INamedContainerProvider forSingle(ChestTileEntity te) {
 			return te;
 		}
@@ -163,45 +168,6 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	}
 
 	@Override
-	public Block getOriginalBlock()
-	{
-		return Blocks.CHEST;
-	}
-
-	@Override
-	public boolean convert(PlayerEntity player, World world, BlockPos pos)
-	{
-		BlockState state = world.getBlockState(pos);
-		Direction facing = state.get(FACING);
-		ChestType type = state.get(TYPE);
-
-		convertChest(player, world, pos, facing, type);
-
-		if(type != ChestType.SINGLE)
-		{
-			BlockPos newPos = pos.offset(getDirectionToAttached(state));
-			BlockState newState = world.getBlockState(newPos);
-			Direction newFacing = newState.get(FACING);
-			ChestType newType = newState.get(TYPE);
-
-			convertChest(player, world, newPos, newFacing, newType);
-		}
-
-		return true;
-	}
-
-	private void convertChest(PlayerEntity player, World world, BlockPos pos, Direction facing, ChestType type)
-	{
-		ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos);
-		CompoundNBT tag = chest.write(new CompoundNBT());
-
-		chest.clear();
-		world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
-		((ChestTileEntity)world.getTileEntity(pos)).read(tag);
-	}
-
-	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		return state.with(FACING, rot.rotate(state.get(FACING)));
@@ -211,5 +177,47 @@ public class KeypadChestBlock extends ChestBlock implements IPasswordConvertible
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		return state.rotate(mirror.toRotation(state.get(FACING)));
+	}
+
+	public static class Convertible implements IPasswordConvertible
+	{
+		@Override
+		public Block getOriginalBlock()
+		{
+			return Blocks.CHEST;
+		}
+
+		@Override
+		public boolean convert(PlayerEntity player, World world, BlockPos pos)
+		{
+			BlockState state = world.getBlockState(pos);
+			Direction facing = state.get(FACING);
+			ChestType type = state.get(TYPE);
+
+			convertChest(player, world, pos, facing, type);
+
+			if(type != ChestType.SINGLE)
+			{
+				BlockPos newPos = pos.offset(getDirectionToAttached(state));
+				BlockState newState = world.getBlockState(newPos);
+				Direction newFacing = newState.get(FACING);
+				ChestType newType = newState.get(TYPE);
+
+				convertChest(player, world, newPos, newFacing, newType);
+			}
+
+			return true;
+		}
+
+		private void convertChest(PlayerEntity player, World world, BlockPos pos, Direction facing, ChestType type)
+		{
+			ChestTileEntity chest = (ChestTileEntity)world.getTileEntity(pos);
+			CompoundNBT tag = chest.write(new CompoundNBT());
+
+			chest.clear();
+			world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
+			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
+			((ChestTileEntity)world.getTileEntity(pos)).read(tag);
+		}
 	}
 }

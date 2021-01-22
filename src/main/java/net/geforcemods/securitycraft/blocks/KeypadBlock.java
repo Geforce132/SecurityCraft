@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
@@ -30,7 +31,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class KeypadBlock extends DisguisableBlock implements IPasswordConvertible {
+public class KeypadBlock extends DisguisableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -137,20 +138,6 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	}
 
 	@Override
-	public Block getOriginalBlock()
-	{
-		return SCContent.FRAME.get();
-	}
-
-	@Override
-	public boolean convert(PlayerEntity player, World world, BlockPos pos)
-	{
-		world.setBlockState(pos, SCContent.KEYPAD.get().getDefaultState().with(KeypadBlock.FACING, world.getBlockState(pos).get(FrameBlock.FACING)).with(KeypadBlock.POWERED, false));
-		((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());
-		return true;
-	}
-
-	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
 		return state.with(FACING, rot.rotate(state.get(FACING)));
@@ -160,5 +147,22 @@ public class KeypadBlock extends DisguisableBlock implements IPasswordConvertibl
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		return state.rotate(mirror.toRotation(state.get(FACING)));
+	}
+
+	public static class Convertible implements IPasswordConvertible
+	{
+		@Override
+		public Block getOriginalBlock()
+		{
+			return SCContent.FRAME.get();
+		}
+
+		@Override
+		public boolean convert(PlayerEntity player, World world, BlockPos pos)
+		{
+			world.setBlockState(pos, SCContent.KEYPAD.get().getDefaultState().with(KeypadBlock.FACING, world.getBlockState(pos).get(FrameBlock.FACING)).with(KeypadBlock.POWERED, false));
+			((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());
+			return true;
+		}
 	}
 }
