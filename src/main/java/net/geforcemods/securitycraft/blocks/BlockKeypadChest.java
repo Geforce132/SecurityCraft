@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.function.Function;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -41,7 +44,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
-public class BlockKeypadChest extends BlockContainer implements IPasswordConvertible
+public class BlockKeypadChest extends BlockContainer
 {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	protected static final AxisAlignedBB NORTH_CHEST_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0D, 0.9375D, 0.875D, 0.9375D);
@@ -483,56 +486,6 @@ public class BlockKeypadChest extends BlockContainer implements IPasswordConvert
 	}
 
 	@Override
-	public Block getOriginalBlock()
-	{
-		return Blocks.CHEST;
-	}
-
-	@Override
-	public boolean convert(EntityPlayer player, World world, BlockPos pos)
-	{
-		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-		EnumFacing doubleFacing = getDoubleChestFacing(world, pos);
-
-		convertChest(player, world, pos, facing);
-
-		if(doubleFacing != EnumFacing.UP)
-		{
-			BlockPos newPos = pos.offset(doubleFacing);
-
-			convertChest(player, world, newPos, world.getBlockState(newPos).getValue(FACING));
-		}
-
-		return true;
-	}
-
-	private void convertChest(EntityPlayer player, World world, BlockPos pos, EnumFacing facing)
-	{
-		TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
-		NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
-
-		chest.clear();
-		world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
-		((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
-
-	}
-
-	private EnumFacing getDoubleChestFacing(World world, BlockPos pos)
-	{
-		if(world.getBlockState(pos).getBlock() instanceof BlockChest)
-		{
-			for(EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
-			{
-				if(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockChest)
-					return facing;
-			}
-		}
-
-		return EnumFacing.UP;
-	}
-
-	@Override
 	public boolean hasComparatorInputOverride(IBlockState state)
 	{
 		return true;
@@ -589,5 +542,63 @@ public class BlockKeypadChest extends BlockContainer implements IPasswordConvert
 	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis)
 	{
 		return !isDoubleChest(world, pos) && super.rotateBlock(world, pos, axis);
+	}
+
+	public static class Convertible implements Function<Object,IPasswordConvertible>, IPasswordConvertible
+	{
+		@Override
+		public IPasswordConvertible apply(Object o)
+		{
+			return this;
+		}
+
+		@Override
+		public Block getOriginalBlock()
+		{
+			return Blocks.CHEST;
+		}
+
+		@Override
+		public boolean convert(EntityPlayer player, World world, BlockPos pos)
+		{
+			EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+			EnumFacing doubleFacing = getDoubleChestFacing(world, pos);
+
+			convertChest(player, world, pos, facing);
+
+			if(doubleFacing != EnumFacing.UP)
+			{
+				BlockPos newPos = pos.offset(doubleFacing);
+
+				convertChest(player, world, newPos, world.getBlockState(newPos).getValue(FACING));
+			}
+
+			return true;
+		}
+
+		private void convertChest(EntityPlayer player, World world, BlockPos pos, EnumFacing facing)
+		{
+			TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
+			NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
+
+			chest.clear();
+			world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
+			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
+			((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
+		}
+
+		private EnumFacing getDoubleChestFacing(World world, BlockPos pos)
+		{
+			if(world.getBlockState(pos).getBlock() instanceof BlockChest)
+			{
+				for(EnumFacing facing : EnumFacing.Plane.HORIZONTAL)
+				{
+					if(world.getBlockState(pos.offset(facing)).getBlock() instanceof BlockChest)
+						return facing;
+				}
+			}
+
+			return EnumFacing.UP;
+		}
 	}
 }

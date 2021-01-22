@@ -5,7 +5,7 @@ import net.minecraft.entity.Entity;
 /**
  * Defines a callback that the Sentry checks before trying to attack an entity.
  * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", "registerSentryAttackTargetCheck", "your.package.ClassThatImplementsIAttackTargetCheck");</pre>
- * during InterModEnqueueEvent to register this with SecurityCraft.
+ * during FMLInitializationEvent to register this with SecurityCraft.<br>
  * Do note, that you also need to implement Function<Object,IAttackTargetCheck> on the class that you send via IMC. You can just return <code>this</code>
  * in the apply method. The Object argument is unused and will always be null.
  *

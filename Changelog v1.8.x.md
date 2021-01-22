@@ -23,6 +23,7 @@
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: Some customizable options have been adapted to allow for finer control
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
+- API: Added hook for mods to add a way to have their own blocks be convertible to password-protected variants. For more info, see IPasswordConvertible
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: I.M.S. GUI sometimes has faulty text 
 - Fix: The Disguise Module does not accept some modded blocks

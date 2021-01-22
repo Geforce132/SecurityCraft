@@ -8,6 +8,10 @@ import java.util.function.Function;
 
 import net.geforcemods.securitycraft.api.IAttackTargetCheck;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.blocks.BlockKeypad;
+import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
+import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.commands.CommandSC;
@@ -62,8 +66,10 @@ public class SecurityCraft {
 	public static CreativeTabs tabSCDecoration = new CreativeTabSCDecoration();
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
 	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
+	private static List<IPasswordConvertible> registeredPasswordConvertibles = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
 	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
+	public static final String IMC_PASSWORD_CONVERTIBLE_MSG = "registerPasswordConvertible";
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event){
@@ -88,6 +94,9 @@ public class SecurityCraft {
 		FMLInterModComms.sendMessage("waila", "register", "net.geforcemods.securitycraft.compat.waila.WailaDataProvider.callbackRegister");
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "net.geforcemods.securitycraft.compat.top.TOPDataProvider");
 		FMLInterModComms.sendFunctionMessage(MODID, IMC_EXTRACTION_BLOCK_MSG, BlockReinforcedHopper.ExtractionBlock.class.getName());
+		FMLInterModComms.sendFunctionMessage(MODID, IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypad.Convertible.class.getName());
+		FMLInterModComms.sendFunctionMessage(MODID, IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadChest.Convertible.class.getName());
+		FMLInterModComms.sendFunctionMessage(MODID, IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadFurnace.Convertible.class.getName());
 
 		if(Loader.isModLoaded("lycanitesmobs"))
 			FMLInterModComms.sendFunctionMessage(MODID, IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat.class.getName());
@@ -132,6 +141,15 @@ public class SecurityCraft {
 				else
 					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient sentry attack target information.", msg.getSender()));
 			}
+			else if(msg.key.equals(IMC_PASSWORD_CONVERTIBLE_MSG))
+			{
+				Optional<Function<Object,IPasswordConvertible>> value = msg.getFunctionValue(Object.class, IPasswordConvertible.class);
+
+				if(value.isPresent())
+					registeredPasswordConvertibles.add(value.get().apply(null));
+				else
+					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient password convertible information.", msg.getSender()));
+			}
 		}
 	}
 
@@ -164,6 +182,11 @@ public class SecurityCraft {
 	public static List<IAttackTargetCheck> getRegisteredSentryAttackTargetChecks()
 	{
 		return registeredSentryAttackTargetChecks;
+	}
+
+	public static List<IPasswordConvertible> getRegisteredPasswordConvertibles()
+	{
+		return registeredPasswordConvertibles;
 	}
 
 	public static String getVersion()

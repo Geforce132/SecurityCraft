@@ -10,10 +10,10 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
-import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
@@ -193,9 +193,9 @@ public class SCEventHandler {
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel))
 				{
-					for(Block pc : IPasswordConvertible.BLOCKS)
+					for(IPasswordConvertible pc : SecurityCraft.getRegisteredPasswordConvertibles())
 					{
-						if(((IPasswordConvertible)pc).getOriginalBlock() == block)
+						if(pc.getOriginalBlock() == block)
 						{
 							event.setUseBlock(Result.DENY);
 							event.setUseItem(Result.ALLOW);

@@ -1,8 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.function.Function;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
@@ -32,7 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvertible {
+public class BlockKeypadFurnace extends BlockOwnable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool OPEN = PropertyBool.create("open");
@@ -142,26 +145,6 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	}
 
 	@Override
-	public Block getOriginalBlock()
-	{
-		return Blocks.FURNACE;
-	}
-
-	@Override
-	public boolean convert(EntityPlayer player, World world, BlockPos pos)
-	{
-		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
-		TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
-		NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
-
-		furnace.clear();
-		world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
-		((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
-		return true;
-	}
-
-	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot)
 	{
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
@@ -171,5 +154,34 @@ public class BlockKeypadFurnace extends BlockOwnable implements IPasswordConvert
 	public IBlockState withMirror(IBlockState state, Mirror mirror)
 	{
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
+	}
+
+	public static class Convertible implements Function<Object,IPasswordConvertible>, IPasswordConvertible
+	{
+		@Override
+		public IPasswordConvertible apply(Object o)
+		{
+			return this;
+		}
+
+		@Override
+		public Block getOriginalBlock()
+		{
+			return Blocks.FURNACE;
+		}
+
+		@Override
+		public boolean convert(EntityPlayer player, World world, BlockPos pos)
+		{
+			EnumFacing facing = world.getBlockState(pos).getValue(FACING);
+			TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
+			NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
+
+			furnace.clear();
+			world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
+			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
+			((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
+			return true;
+		}
 	}
 }

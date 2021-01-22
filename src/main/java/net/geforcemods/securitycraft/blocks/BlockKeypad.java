@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
@@ -28,7 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockKeypad extends BlockDisguisable implements IPasswordConvertible {
+public class BlockKeypad extends BlockDisguisable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
@@ -172,20 +174,6 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 	}
 
 	@Override
-	public Block getOriginalBlock()
-	{
-		return SCContent.frame;
-	}
-
-	@Override
-	public boolean convert(EntityPlayer player, World world, BlockPos pos)
-	{
-		world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
-		((IOwnable) world.getTileEntity(pos)).getOwner().set(((IOwnable)world.getTileEntity(pos)).getOwner());
-		return true;
-	}
-
-	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot)
 	{
 		return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
@@ -195,5 +183,28 @@ public class BlockKeypad extends BlockDisguisable implements IPasswordConvertibl
 	public IBlockState withMirror(IBlockState state, Mirror mirror)
 	{
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
+	}
+
+	public static class Convertible implements Function<Object,IPasswordConvertible>, IPasswordConvertible
+	{
+		@Override
+		public IPasswordConvertible apply(Object o)
+		{
+			return this;
+		}
+
+		@Override
+		public Block getOriginalBlock()
+		{
+			return SCContent.frame;
+		}
+
+		@Override
+		public boolean convert(EntityPlayer player, World world, BlockPos pos)
+		{
+			world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
+			((IOwnable) world.getTileEntity(pos)).getOwner().set(((IOwnable)world.getTileEntity(pos)).getOwner());
+			return true;
+		}
 	}
 }
