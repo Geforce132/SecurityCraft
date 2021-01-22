@@ -25,13 +25,6 @@ public class ContainerBlockReinforcer extends Container
 	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory, boolean isLvl1)
 	{
 		blockReinforcer = player.inventory.getCurrentItem();
-		this.isLvl1 = isLvl1;
-		addSlotToContainer(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
-
-		if(!isLvl1)
-			addSlotToContainer(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
-		else
-			unreinforcingSlot = null;
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -41,6 +34,14 @@ public class ContainerBlockReinforcer extends Container
 		//player hotbar
 		for(int i = 0; i < 9; i++)
 			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+
+		this.isLvl1 = isLvl1;
+		addSlotToContainer(reinforcingSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20, true));
+
+		if(!isLvl1)
+			addSlotToContainer(unreinforcingSlot = new SlotBlockReinforcer(itemInventory, 1, 26, 45, false));
+		else
+			unreinforcingSlot = null;
 	}
 
 	@Override
@@ -221,7 +222,7 @@ public class ContainerBlockReinforcer extends Container
 		@Override
 		public void onSlotChanged()
 		{
-			ItemStack stack = itemInventory.getStackInSlot(slotNumber);
+			ItemStack stack = itemInventory.getStackInSlot(slotNumber % 2);
 
 			if(!stack.isEmpty())
 			{

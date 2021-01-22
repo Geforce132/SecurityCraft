@@ -43,7 +43,7 @@ public class GuiBlockReinforcer extends GuiContainer
 		fontRenderer.drawString(ubr, (xSize - fontRenderer.getStringWidth(ubr)) / 2, 5, 4210752);
 		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 
-		if(!inv.get(0).isEmpty())
+		if(!inv.get(36).isEmpty())
 		{
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 25, 4210752);
 			GuiUtils.drawItemStackToGui(container.reinforcingSlot.getOutput(), 116, 20, false);
@@ -52,7 +52,7 @@ public class GuiBlockReinforcer extends GuiContainer
 				renderToolTip(container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
 		}
 
-		if(!isLvl1 && !inv.get(1).isEmpty())
+		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
 			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 50, 4210752);
 			GuiUtils.drawItemStackToGui(container.unreinforcingSlot.getOutput(), 116, 46, false);
