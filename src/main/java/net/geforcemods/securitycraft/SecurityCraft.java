@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.commands.CommandSC;
 import net.geforcemods.securitycraft.compat.cyclic.CyclicCompat;
 import net.geforcemods.securitycraft.compat.icbmclassic.ICBMClassicEMPCompat;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
+import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -81,6 +82,9 @@ public class SecurityCraft {
 
 		if(Loader.isModLoaded("lycanitesmobs"))
 			FMLInterModComms.sendFunctionMessage(MODID, SecurityCraftAPI.IMC_SENTRY_ATTACK_TARGET_MSG, LycanitesMobsCompat.class.getName());
+
+		if(Loader.isModLoaded("quark"))
+			QuarkCompat.registerChestConversion();
 
 		if(ConfigHandler.checkForUpdates) {
 			NBTTagCompound vcUpdateTag = VersionUpdateChecker.getNBTTagCompound();
