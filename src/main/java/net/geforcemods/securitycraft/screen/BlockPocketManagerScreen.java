@@ -128,7 +128,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 	public void assembleButtonClicked(ClickButton button)
 	{
-		TranslationTextComponent feedback;
+		ITextComponent feedback;
 
 		te.size = size;
 		feedback = te.autoAssembleMultiblock(Minecraft.getInstance().player);

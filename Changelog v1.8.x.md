@@ -25,6 +25,7 @@
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
 - Change: Some customizable options have been adapted to allow for finer control
+- Change: Make Block Pocket auto-assemble function more verbose
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
 - API: Added hook for mods to add a way to have their own blocks be convertible to password-protected variants. For more info, see IPasswordConvertible
 - API: Inter mod communications related code has been moved to the SecurityCraftAPI class
