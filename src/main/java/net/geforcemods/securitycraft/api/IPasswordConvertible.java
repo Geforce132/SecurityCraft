@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 /**
  * Defines a block that can be converted to a password-protected variant by rightclicking it with a Key Panel.
- * Call <pre>InterModComms.sendTo("securitycraft", "registerPasswordConvertible", ClassThatImplementsIPasswordConvertible::new);</pre>
+ * Call <pre>InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, ClassThatImplementsIPasswordConvertible::new);</pre>
  * during InterModEnqueueEvent to register this with SecurityCraft.
  * <p>
  * - If you are converting a chest into a password-protected chest, you can extend {@link KeypadChestBlock.Convertible}.<br>
