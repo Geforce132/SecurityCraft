@@ -762,7 +762,7 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "Ungültiger Block \"%2$s\" an Position %1$s! (Erwartet: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" blockiert den nötigen Platz an Position %1$s!",
 	"messages.securitycraft:blockpocket.unowned": "Du besitzt den Block \"%2$s\" an Position %1$s nicht!",
-	"messages.securitycraft:blockpocket.notEnoughItems": "Du hast nicht genug Blöcke, um eine Blocktasche dieser Größe aufzubauen!",
+	"messages.securitycraft:blockpocket.notEnoughItems": "Du hast nicht genug Blöcke, um eine Blocktasche dieser Größe aufzubauen! Benötigt: %s",
 	"messages.securitycraft:blockpocket.activated": "Blocktasche aktiviert!",
 	"messages.securitycraft:blockpocket.deactivated": "Blocktasche deaktiviert!",
 	"messages.securitycraft:blockpocket.assembled": "Blocktasche aufgebaut!",

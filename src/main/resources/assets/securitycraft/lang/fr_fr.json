@@ -744,7 +744,7 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "Type de bloc non valide \"%2$s\" à la position %1$s ! (Attendu : \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" bloque l'espace à la position %1$s !",
 	"messages.securitycraft:blockpocket.unowned": "Vous ne possédez pas le bloc \"%2$s\" à la position %1$s !",
-	"messages.securitycraft:blockpocket.notEnoughItems": "Vous n’avez pas assez d’objets pour assembler une poche bloc de cette taille !",
+	"messages.securitycraft:blockpocket.notEnoughItems": "Vous n’avez pas assez d’objets pour assembler une poche bloc de cette taille ! %s",
 	"messages.securitycraft:blockpocket.activated": "Poche bloc activaté !",
 	"messages.securitycraft:blockpocket.deactivated": "Poche bloc désactivaté !",
 	"messages.securitycraft:blockpocket.assembled": "Poche bloc assemblée !",

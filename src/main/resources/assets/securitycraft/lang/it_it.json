@@ -743,7 +743,7 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "Blocco non valido \"%2$s\" a %1$s! (Previsto: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" sta bloccando lo spazio a %1$s!",
 	"messages.securitycraft:blockpocket.unowned": "Non possiedi il blocco \"%2$s\" alla posizione %1$s!",
-	"messages.securitycraft:blockpocket.notEnoughItems": "Non hai abbastanza materiale da assemblare un blocco tascabile di quella dimensione!",
+	"messages.securitycraft:blockpocket.notEnoughItems": "Non hai abbastanza materiale da assemblare un blocco tascabile di quella dimensione! %s",
 	"messages.securitycraft:blockpocket.assembled": "Blocco tascabile assemblato!",
 
 	"jei.securitycraft.category.reinforcing": "Blocchi rinforzati",
