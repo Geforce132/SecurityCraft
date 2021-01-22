@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -63,6 +64,10 @@ public class SecurityCraftAPI
 					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient password convertible information.", msg.getSender()));
 			}
 		}
+
+		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
+		registeredPasswordConvertibles = Collections.unmodifiableList(registeredPasswordConvertibles);
+		registeredSentryAttackTargetChecks = Collections.unmodifiableList(registeredSentryAttackTargetChecks);
 	}
 
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
