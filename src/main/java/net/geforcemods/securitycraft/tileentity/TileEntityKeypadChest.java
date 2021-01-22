@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.inventory.InsertOnlyDoubleChestHandler;
@@ -134,7 +135,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState state = world.getBlockState(offsetPos);
 
-			for(IExtractionBlock extractionBlock : SecurityCraft.getRegisteredExtractionBlocks())
+			for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
 			{
 				if(state.getBlock() == extractionBlock.getBlock())
 				{

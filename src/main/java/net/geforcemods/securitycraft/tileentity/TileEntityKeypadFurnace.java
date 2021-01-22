@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.gui.GuiHandler;
@@ -505,7 +506,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState state = world.getBlockState(offsetPos);
 
-			for(IExtractionBlock extractionBlock : SecurityCraft.getRegisteredExtractionBlocks())
+			for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
 			{
 				if(state.getBlock() == extractionBlock.getBlock())
 				{

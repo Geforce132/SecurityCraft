@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 /**
  * Defines a block that can be converted to a password-protected variant by rightclicking it with a Key Panel.
- * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", "registerPasswordConvertible", "your.package.ClassThatImplementsIPasswordConvertible");</pre>
+ * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, "your.package.ClassThatImplementsIPasswordConvertible");</pre>
  * during FMLInitializationEvent to register this with SecurityCraft.<br>
  * Do note, that you also need to implement Function<Object,IPasswordConvertible> on the class that you send via IMC. You can just return <code>this</code>
  * in the apply method. The Object argument is unused and will always be null.

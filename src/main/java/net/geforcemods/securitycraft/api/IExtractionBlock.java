@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 /**
  * Defines a block that can extract from a password-protected chest and furnace.
- * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", "registerExtractionBlock", "your.package.ClassThatImplementsIExtractionBlock");</pre>
+ * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, "your.package.ClassThatImplementsIExtractionBlock");</pre>
  * during FMLInitializationEvent to register this with SecurityCraft.<br>
  * Do note, that you also need to implement Function<Object,IExtractionBlock> on the class that you send via IMC. You can just return <code>this</code>
  * in the apply method. The Object argument is unused and will always be null.

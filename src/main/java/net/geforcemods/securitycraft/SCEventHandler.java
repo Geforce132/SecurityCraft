@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -193,7 +194,7 @@ public class SCEventHandler {
 
 				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel))
 				{
-					for(IPasswordConvertible pc : SecurityCraft.getRegisteredPasswordConvertibles())
+					for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
 					{
 						if(pc.getOriginalBlock() == block)
 						{

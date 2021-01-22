@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -101,7 +101,7 @@ public class EntityAITargetNearestPlayerOrMob extends EntityAINearestAttackableT
 						potentialTarget instanceof EntitySlime ||
 						potentialTarget instanceof EntityShulker ||
 						potentialTarget instanceof EntityDragon ||
-						SecurityCraft.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
+						SecurityCraftAPI.getRegisteredSentryAttackTargetChecks().stream().anyMatch(check -> check.canAttack(potentialTarget)));
 	}
 
 	@Override

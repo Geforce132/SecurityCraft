@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -20,7 +21,7 @@ public class ItemKeyPanel extends Item {
 		if(!world.isRemote){
 			ItemStack stack = player.getHeldItem(hand);
 
-			SecurityCraft.getRegisteredPasswordConvertibles().forEach(pc -> {
+			SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
 				if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
 				{
 					if(pc.convert(player, world, pos))
