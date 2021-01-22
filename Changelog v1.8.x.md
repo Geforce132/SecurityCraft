@@ -26,6 +26,7 @@
 - Change: Some customizable options have been adapted to allow for finer control
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
 - API: Added hook for mods to add a way to have their own blocks be convertible to password-protected variants. For more info, see IPasswordConvertible
+- API: Inter mod communications related code has been moved to the SecurityCraftAPI class
 - Fix: Trophy Systems shoot bullets of their owner's sentries
 - Fix: Modules sometimes do not get synched to a linked block (e.g. Laser Block, Inventory Scanner)
 - Fix: Removing the block under a Sentry does not remove the Sentry in numerous cases

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -28,7 +29,7 @@ public class KeyPanelItem extends Item {
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
-			SecurityCraft.getRegisteredPasswordConvertibles().forEach(pc -> {
+			SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
 				if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
 				{
 					if(pc.convert(player, world, pos))
