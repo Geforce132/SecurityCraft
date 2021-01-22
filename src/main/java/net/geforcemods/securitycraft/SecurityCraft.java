@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.api.IAttackTargetCheck;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
@@ -61,8 +62,10 @@ public class SecurityCraft {
 	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
 	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
+	private static List<IPasswordConvertible> registeredPasswordConvertibles = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
 	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
+	public static final String IMC_PASSWORD_CONVERTIBLE_MSG = "registerPasswordConvertible";
 
 	public SecurityCraft()
 	{
@@ -106,6 +109,7 @@ public class SecurityCraft {
 	public static void onInterModProcess(InterModProcessEvent event){ //stage 4
 		event.getIMCStream(s -> s.equals(IMC_EXTRACTION_BLOCK_MSG)).forEach(msg -> registeredExtractionBlocks.add((IExtractionBlock)msg.getMessageSupplier().get()));
 		event.getIMCStream(s -> s.equals(IMC_SENTRY_ATTACK_TARGET_MSG)).forEach(msg -> registeredSentryAttackTargetChecks.add((IAttackTargetCheck)msg.getMessageSupplier().get()));
+		event.getIMCStream(s -> s.equals(IMC_PASSWORD_CONVERTIBLE_MSG)).forEach(msg -> registeredPasswordConvertibles.add((IPasswordConvertible)msg.getMessageSupplier().get()));
 
 		for(Field field : SCContent.class.getFields())
 		{
@@ -167,6 +171,11 @@ public class SecurityCraft {
 	public static List<IAttackTargetCheck> getRegisteredSentryAttackTargetChecks()
 	{
 		return registeredSentryAttackTargetChecks;
+	}
+
+	public static List<IPasswordConvertible> getRegisteredPasswordConvertibles()
+	{
+		return registeredPasswordConvertibles;
 	}
 
 	public static String getVersion()

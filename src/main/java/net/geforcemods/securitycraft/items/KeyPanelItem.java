@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -29,10 +28,10 @@ public class KeyPanelItem extends Item {
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(!world.isRemote){
-			IPasswordConvertible.BLOCKS.forEach(pc -> {
-				if(BlockUtils.getBlock(world, pos) == ((IPasswordConvertible)pc).getOriginalBlock())
+			SecurityCraft.getRegisteredPasswordConvertibles().forEach(pc -> {
+				if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
 				{
-					if(((IPasswordConvertible)pc).convert(player, world, pos))
+					if(pc.convert(player, world, pos))
 					{
 						if(!player.isCreative())
 							stack.shrink(1);
@@ -41,9 +40,8 @@ public class KeyPanelItem extends Item {
 					}
 				}
 			});
-			return ActionResultType.SUCCESS;
 		}
 
-		return ActionResultType.FAIL;
+		return ActionResultType.SUCCESS;
 	}
 }
