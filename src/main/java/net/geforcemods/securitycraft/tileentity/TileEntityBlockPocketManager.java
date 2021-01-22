@@ -30,6 +30,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -225,7 +228,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	 * @param player The player that opened the screen, used to check if the player is in creative or not
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public TextComponentTranslation autoAssembleMultiblock(EntityPlayer player)
+	public ITextComponent autoAssembleMultiblock(EntityPlayer player)
 	{
 		if(!enabled) //multiblock assembling in three steps
 		{
@@ -417,7 +420,34 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 				}
 
 				if(chiseledNeeded > chiseledFound || pillarsNeeded > pillarsFound || wallsNeeded > wallsFound)
-					return new TextComponentTranslation("messages.securitycraft:blockpocket.notEnoughItems");
+				{
+					TextComponentTranslation text = new TextComponentTranslation("messages.securitycraft:blockpocket.notEnoughItems");
+					TextComponentString missing = new TextComponentString("");
+
+					if(chiseledNeeded > chiseledFound)
+						missing.appendSibling(new TextComponentString((chiseledNeeded - chiseledFound) + " ").setStyle(new Style().setColor(TextFormatting.GRAY)))
+						.appendSibling(ClientUtils.localize("tile.securitycraft:reinforcedCrystalQuartz_chiseled.name"));
+
+					if(pillarsNeeded > pillarsFound)
+					{
+						if(!missing.getSiblings().isEmpty())
+							missing.appendText(" | ");
+
+						missing.appendSibling(new TextComponentString((pillarsNeeded - pillarsFound) + " ").setStyle(new Style().setColor(TextFormatting.GRAY)))
+						.appendSibling(ClientUtils.localize("tile.securitycraft:reinforcedCrystalQuartz_pillar.name"));
+					}
+
+					if(wallsNeeded > wallsFound)
+					{
+						if(!missing.getSiblings().isEmpty())
+							missing.appendText(" | ");
+
+						missing.appendSibling(new TextComponentString((wallsNeeded - wallsFound) + " ").setStyle(new Style().setColor(TextFormatting.GRAY)))
+						.appendSibling(ClientUtils.localize(SCContent.blockPocketWall.getTranslationKey() + ".name"));
+					}
+
+					return text.appendSibling(missing);
+				}
 
 				for(int i = 1; i <= inventory.size(); i++) //actually take out the items that are used for assembling the BP
 				{

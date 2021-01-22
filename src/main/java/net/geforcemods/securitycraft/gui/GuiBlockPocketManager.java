@@ -14,6 +14,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
@@ -128,7 +129,7 @@ public class GuiBlockPocketManager extends GuiContainer
 		}
 		else if(button.id == assembleButton.id)
 		{
-			TextComponentTranslation feedback;
+			ITextComponent feedback;
 
 			te.size = size;
 			feedback = te.autoAssembleMultiblock(Minecraft.getMinecraft().player);
