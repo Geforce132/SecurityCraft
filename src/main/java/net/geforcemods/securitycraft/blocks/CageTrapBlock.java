@@ -22,14 +22,17 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.EntitySelectionContext;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -121,6 +124,46 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName(ownerName), ClientUtils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cageTrap.captured", entity.getName(), pos), TextFormatting.BLACK);
 			}
 		}
+	}
+
+	@Override
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	{
+		if(!world.isRemote)
+		{
+			ItemStack stack = player.getHeldItem(hand);
+
+			if(stack.getItem() == SCContent.WIRE_CUTTERS.get())
+			{
+				if(!state.get(DEACTIVATED))
+				{
+					world.setBlockState(pos, state.with(DEACTIVATED, true));
+
+					if(!player.isCreative())
+						stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return true;
+				}
+			}
+			else if(stack.getItem() == Items.REDSTONE)
+			{
+				if(state.get(DEACTIVATED))
+				{
+					world.setBlockState(pos, state.with(DEACTIVATED, false));
+
+					if(!player.isCreative())
+						stack.shrink(1);
+
+					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
