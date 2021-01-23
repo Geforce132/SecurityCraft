@@ -21,6 +21,7 @@
 - New: The height of a Projector's projection can now be changed
 - New: Customization option to allow Inventory Scanner fields to solidify when a prohibited item is detected
 - New: Quark's wooden chests can now be converted to Password-protected Chests
+- New: Wire Cutters can now deactivate a Cage Trap. Use Redstone to reactivate it
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
