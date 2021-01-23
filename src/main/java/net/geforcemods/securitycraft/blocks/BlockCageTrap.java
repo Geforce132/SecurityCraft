@@ -27,6 +27,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -151,6 +152,45 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 					PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName(ownerName), ClientUtils.localize("tile.securitycraft:cageTrap.name"), ClientUtils.localize("messages.securitycraft:cageTrap.captured", entity.getName(), pos), TextFormatting.BLACK);
 			}
 		}
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+	{
+		if(!world.isRemote)
+		{
+			ItemStack stack = player.getHeldItem(hand);
+
+			if(stack.getItem() == SCContent.wireCutters)
+			{
+				if(!state.getValue(DEACTIVATED))
+				{
+					world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
+
+					if(!player.isCreative())
+						stack.damageItem(1, player);
+
+					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return true;
+				}
+			}
+			else if(stack.getItem() == Items.REDSTONE)
+			{
+				if(state.getValue(DEACTIVATED))
+				{
+					world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
+
+					if(!player.isCreative())
+						stack.shrink(1);
+
+					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
