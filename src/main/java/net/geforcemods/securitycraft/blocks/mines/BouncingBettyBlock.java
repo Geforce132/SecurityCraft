@@ -74,13 +74,29 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IIntersectable
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {
-		BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
+	public boolean activateMine(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+
+		if(state.get(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.with(DEACTIVATED, false));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {
-		BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
+	public boolean defuseMine(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+
+		if(!state.get(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.with(DEACTIVATED, true));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

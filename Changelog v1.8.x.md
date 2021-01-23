@@ -22,6 +22,7 @@
 - New: Customization option to allow Inventory Scanner fields to solidify when a prohibited item is detected
 - New: Quark's wooden chests can now be converted to Password-protected Chests
 - New: Wire Cutters can now deactivate a Cage Trap. Use Redstone to reactivate it
+- New: Sounds when defusing/arming mines
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
@@ -54,6 +55,9 @@
 - Fix: The custom name of Password-protected Chests doesn't show up at the top of the chest's screen
 - Fix: The default name of the Password-protected Chest's screen doesn't get translated
 - Fix: Large Password-protected Chests have the wrong label at the top of their screen
+- Fix: Defusing/arming some mines does not decrease the durability of the wire cutters/flint and steel
+- Fix: Defusing some mines decreases the durability of the wire cutters when in creative mode
+- Fix: Attempting to defusing some mines despite them already being defused, decreases the durability of the wire cutters
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

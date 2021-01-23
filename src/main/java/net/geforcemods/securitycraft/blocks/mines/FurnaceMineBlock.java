@@ -85,10 +85,16 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {}
+	public boolean activateMine(World world, BlockPos pos)
+	{
+		return false;
+	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {}
+	public boolean defuseMine(World world, BlockPos pos)
+	{
+		return false;
+	}
 
 	@Override
 	public void explode(World world, BlockPos pos) {
