@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -82,6 +83,13 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.REDSTONE_ORE_MINE);
 		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.REINFORCED_FENCEGATE);
+		lootTables.put(SCContent.REINFORCED_IRON_BARS,
+				LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(SCContent.REINFORCED_IRON_BARS.get())
+								.acceptCondition(TileEntityNBTCondition.builder().equals("canDrop", true)))
+						.acceptCondition(SurvivesExplosion.builder())));
 		putStandardBlockLootTable(SCContent.REINFORCED_IRON_TRAPDOOR);
 		putStandardBlockLootTable(SCContent.REINFORCED_HOPPER);
 		putStandardBlockLootTable(SCContent.RETINAL_SCANNER);
