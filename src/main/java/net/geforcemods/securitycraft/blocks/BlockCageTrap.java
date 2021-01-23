@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -144,6 +145,9 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 
 					if(te instanceof IOwnable)
 						((IOwnable)te).getOwner().set(o);
+
+					if(te instanceof TileEntityReinforcedIronBars)
+						((TileEntityReinforcedIronBars)te).setCanDrop(false);
 				});
 				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
