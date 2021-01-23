@@ -54,6 +54,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassPathBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIceBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLanternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
@@ -128,6 +129,7 @@ import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
+import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
@@ -472,7 +474,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_DIORITE_SLAB = BLOCKS.register("reinforced_diorite_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.DIORITE_SLAB));
 	//ordered by vanilla decoration blocks creative tab order
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(Material.WEB).doesNotBlockMovement(), Blocks.COBWEB));
-	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedPaneBlock(prop(Material.IRON).sound(SoundType.METAL), Blocks.IRON_BARS));
+	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedIronBarsBlock(prop(Material.IRON).sound(SoundType.METAL), Blocks.IRON_BARS));
 	@OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_GLASS_PANE = BLOCKS.register("reinforced_glass_pane", () -> new ReinforcedPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), Blocks.GLASS_PANE));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_COBBLESTONE_WALL = BLOCKS.register("reinforced_cobblestone_wall", () -> new ReinforcedWallBlock(prop(), Blocks.COBBLESTONE_WALL));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE_WALL = BLOCKS.register("reinforced_mossy_cobblestone_wall", () -> new ReinforcedWallBlock(prop(), Blocks.MOSSY_COBBLESTONE_WALL));
@@ -657,6 +659,8 @@ public class SCContent
 	public static TileEntityType<ProjectorTileEntity> teTypeProjector;
 	@ObjectHolder(SecurityCraft.MODID + ":keypad_door")
 	public static TileEntityType<KeypadDoorTileEntity> teTypeKeypadDoor;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_iron_bars")
+	public static TileEntityType<ReinforcedIronBarsTileEntity> teTypeReinforcedIronBars;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
