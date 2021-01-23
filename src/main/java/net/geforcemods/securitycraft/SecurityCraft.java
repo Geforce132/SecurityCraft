@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
+import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.network.IProxy;
 import net.geforcemods.securitycraft.network.ServerProxy;
@@ -20,6 +21,8 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.loot.LootConditionType;
+import net.minecraft.loot.conditions.LootConditionManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -56,6 +59,7 @@ public class SecurityCraft {
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
 	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
+	public static final LootConditionType TILE_ENTITY_NBT_LOOT_CONDITION = LootConditionManager.register(SecurityCraft.MODID + ":tile_entity_nbt", new TileEntityNBTCondition.Serializer());
 
 	public SecurityCraft()
 	{
