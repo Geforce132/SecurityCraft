@@ -17,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion.Mode;
@@ -37,18 +39,27 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 				return false;
 
 			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-				defuseMine(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
-				return false;
+				if(defuseMine(world, pos))
+				{
+					if(!player.isCreative())
+						player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
 			}
 
 			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
-				activateMine(world, pos);
-				return false;
+				if(activateMine(world, pos))
+				{
+					if(!player.isCreative())
+						player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -95,21 +106,29 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos)
+	public boolean activateMine(World world, BlockPos pos)
 	{
 		TileEntity te = world.getTileEntity(pos);
 
 		if(te instanceof TrackMineTileEntity && !((TrackMineTileEntity)te).isActive())
+		{
 			((TrackMineTileEntity)te).activate();
+			return true;
+		}
+		else return false;
 	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos)
+	public boolean defuseMine(World world, BlockPos pos)
 	{
 		TileEntity te = world.getTileEntity(pos);
 
 		if(te instanceof TrackMineTileEntity && ((TrackMineTileEntity)te).isActive())
+		{
 			((TrackMineTileEntity)te).deactivate();
+			return true;
+		}
+		else return false;
 	}
 
 	@Override

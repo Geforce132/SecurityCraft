@@ -24,6 +24,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -76,15 +78,23 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
 		if(!world.isRemote)
-			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.WIRE_CUTTERS.get()){
-				world.setBlockState(pos, SCContent.CLAYMORE.get().getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, true));
-				return true;
-			}else if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				world.setBlockState(pos, SCContent.CLAYMORE.get().getDefaultState().with(FACING, state.get(FACING)).with(DEACTIVATED, false));
-				return true;
+			if(!state.get(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == SCContent.WIRE_CUTTERS.get()){
+				world.setBlockState(pos, state.with(DEACTIVATED, true));
+
+				if(!player.isCreative())
+					player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			}else if(state.get(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
+				world.setBlockState(pos, state.with(DEACTIVATED, false));
+
+				if(!player.isCreative())
+					player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -125,15 +135,29 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
+	public boolean activateMine(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+
+		if(state.get(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.with(DEACTIVATED, false));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
+	public boolean defuseMine(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+
+		if(!state.get(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.with(DEACTIVATED, true));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

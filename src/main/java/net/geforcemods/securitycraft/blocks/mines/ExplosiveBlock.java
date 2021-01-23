@@ -11,6 +11,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -40,14 +42,27 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 				return false;
 
 			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-				defuseMine(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
-				return false;
+				if(defuseMine(world, pos))
+				{
+					if(!player.isCreative())
+						player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
+
+				return true;
 			}
 
 			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
-				activateMine(world, pos);
-				return false;
+				if(activateMine(world, pos))
+				{
+					if(!player.isCreative())
+						player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
+
+				return true;
 			}
 
 			if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))

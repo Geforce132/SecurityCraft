@@ -23,16 +23,18 @@ public interface IExplosive {
 	 *
 	 * @param world The world your block is in.
 	 * @param pos Your block's position.
+	 * @return true if the mine was activated, false otherwise
 	 */
-	public void activateMine(World world, BlockPos pos);
+	public boolean activateMine(World world, BlockPos pos);
 
 	/**
 	 * Defuse your active mine.
 	 *
 	 * @param world The world your block is in.
 	 * @param pos Your block's position.
+	 * @return true if the mine was defused, false otherwise
 	 */
-	public void defuseMine(World world, BlockPos pos);
+	public boolean defuseMine(World world, BlockPos pos);
 
 	/**
 	 * Is your mine currently active?
