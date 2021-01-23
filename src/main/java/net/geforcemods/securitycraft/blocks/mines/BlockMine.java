@@ -109,15 +109,29 @@ public class BlockMine extends BlockExplosive {
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
+	public boolean activateMine(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getValue(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
+	public boolean defuseMine(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+
+		if(!state.getValue(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override

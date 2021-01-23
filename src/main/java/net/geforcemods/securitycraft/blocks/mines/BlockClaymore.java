@@ -16,12 +16,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -87,15 +89,23 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(!world.isRemote)
-			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
-				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, true));
-				return true;
-			}else if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				world.setBlockState(pos, SCContent.claymore.getDefaultState().withProperty(FACING, state.getValue(FACING)).withProperty(DEACTIVATED, false));
-				return true;
+			if(!state.getValue(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
+				world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
+
+				if(!player.isCreative())
+					player.inventory.getCurrentItem().damageItem(1, player);
+
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			}else if(state.getValue(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
+				world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
+
+				if(!player.isCreative())
+					player.inventory.getCurrentItem().damageItem(1, player);
+
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -131,15 +141,29 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
+	public boolean activateMine(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getValue(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
+	public boolean defuseMine(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+
+		if(!state.getValue(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
