@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -93,15 +92,29 @@ public class MineBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void activateMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, false);
+	public boolean activateMine(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+
+		if(state.get(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.with(DEACTIVATED, false));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
-	public void defuseMine(World world, BlockPos pos) {
-		if(!world.isRemote)
-			BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
+	public boolean defuseMine(World world, BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+
+		if(!state.get(DEACTIVATED))
+		{
+			world.setBlockState(pos, state.with(DEACTIVATED, true));
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
