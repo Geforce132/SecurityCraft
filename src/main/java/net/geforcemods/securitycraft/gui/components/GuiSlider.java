@@ -182,7 +182,9 @@ public class GuiSlider extends GuiButtonExt
 	public void mouseReleased(int mouseX, int mouseY)
 	{
 		dragging = false;
-		parent.onMouseRelease(id);
+
+		if(parent != null)
+			parent.onMouseRelease(id);
 	}
 
 	public int getValueInt()
@@ -193,6 +195,11 @@ public class GuiSlider extends GuiButtonExt
 	public double getValue()
 	{
 		return sliderValue * (maxValue - minValue) + minValue;
+	}
+
+	public void setValue(double newValue)
+	{
+		sliderValue = (newValue - minValue) / (maxValue - minValue);
 	}
 
 	public static interface ISlider

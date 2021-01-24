@@ -17,14 +17,16 @@ public class PacketSSyncBlockPocketManager implements IMessage
 	private BlockPos pos;
 	private int size;
 	private boolean showOutline;
+	private int autoBuildOffset;
 
 	public PacketSSyncBlockPocketManager(){}
 
-	public PacketSSyncBlockPocketManager(BlockPos pos, int size, boolean showOutline)
+	public PacketSSyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset)
 	{
 		this.pos = pos;
 		this.size = size;
 		this.showOutline = showOutline;
+		this.autoBuildOffset = autoBuildOffset;
 	}
 
 	@Override
@@ -33,6 +35,7 @@ public class PacketSSyncBlockPocketManager implements IMessage
 		pos = BlockPos.fromLong(buf.readLong());
 		size = ByteBufUtils.readVarInt(buf, 5);
 		showOutline = buf.readBoolean();
+		autoBuildOffset = ByteBufUtils.readVarInt(buf, 5);
 	}
 
 	@Override
@@ -41,6 +44,7 @@ public class PacketSSyncBlockPocketManager implements IMessage
 		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeVarInt(buf, size, 5);
 		buf.writeBoolean(showOutline);
+		ByteBufUtils.writeVarInt(buf, autoBuildOffset, 5);
 	}
 
 	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSyncBlockPocketManager, IMessage>
@@ -60,6 +64,7 @@ public class PacketSSyncBlockPocketManager implements IMessage
 
 					bpm.size = message.size;
 					bpm.showOutline = message.showOutline;
+					bpm.autoBuildOffset = message.autoBuildOffset;
 					world.notifyBlockUpdate(pos, state, state, 2);
 				}
 			});

@@ -19,25 +19,26 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 	@Override
 	public void render(TileEntityBlockPocketManager te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
 	{
-		// The code below draws the outline border of a block pocket (centered at the manager).
+		// The code below draws the outline border of a block pocket.
 
 		if(!te.showOutline)
 			return;
 
 		EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockBlockPocketManager.FACING);
+		int offset = facing == EnumFacing.NORTH || facing == EnumFacing.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
 		int size = te.size;
 		int half = (size-1)/2;
-		int leftX = -half;
-		int rightX = half+1;
+		int leftX = -half + offset;
+		int rightX = half + 1 + offset;
 		int frontZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? 0 : 1;
-		int backZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? size : 1-size;
+		int backZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? size : 1 - size + offset;
 
 		if(facing == EnumFacing.EAST || facing == EnumFacing.WEST) //x- and z-values get switched when the manager's EnumFacing is west or east
 		{
 			leftX = frontZ;
 			rightX = backZ;
-			frontZ = -half;
-			backZ = half + 1;
+			frontZ = -half + offset;
+			backZ = half + 1 + offset;
 		}
 
 		BufferBuilder builder = Tessellator.getInstance().getBuffer();

@@ -23,6 +23,7 @@
 - New: Quark's wooden chests can now be converted to Password-protected Chests
 - New: Wire Cutters can now deactivate a Cage Trap. Use Redstone to reactivate it
 - New: Sounds when defusing/arming mines
+- New: An offset can now be set before automatically building a Block Pocket, removing the restriction that the Block Pocket Manager has to be in the middle
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: Some customizable options have been adapted to allow for finer control
 - Change: Make Block Pocket auto-assemble function more verbose

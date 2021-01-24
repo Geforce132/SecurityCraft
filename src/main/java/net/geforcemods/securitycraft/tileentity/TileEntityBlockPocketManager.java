@@ -43,6 +43,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 2);
 	public boolean enabled = false;
 	public boolean showOutline = false;
+	public int autoBuildOffset = 0;
 	public int size = 5;
 	private List<BlockPos> blocks = new ArrayList<>();
 	private List<BlockPos> walls = new ArrayList<>();
@@ -241,7 +242,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			final EnumFacing back = left.rotateY();
 			final BlockPos startingPos;
 			final int lowest = 0;
-			final int half = (size - 1) / 2;
+			final int half = (size - 1) / 2 - autoBuildOffset;
 			final int highest = size - 1;
 			BlockPos pos = getPos().toImmutable();
 			int xi = lowest;
@@ -779,6 +780,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		tag.setBoolean("BlockPocketEnabled", enabled);
 		tag.setBoolean("ShowOutline", showOutline);
 		tag.setInteger("Size", size);
+		tag.setInteger("AutoBuildOffset", autoBuildOffset);
 
 		for(int i = 0; i < blocks.size(); i++)
 		{
@@ -807,6 +809,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		enabled = tag.getBoolean("BlockPocketEnabled");
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInteger("Size");
+		autoBuildOffset = tag.getInteger("AutoBuildOffset");
 
 		while(tag.hasKey("BlocksList" + i))
 		{
