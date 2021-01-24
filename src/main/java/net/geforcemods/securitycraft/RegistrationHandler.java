@@ -55,6 +55,7 @@ import net.geforcemods.securitycraft.network.server.SetExplosiveState;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
+import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
@@ -297,6 +298,7 @@ public class RegistrationHandler
 		SecurityCraft.channel.registerMessage(index++, SyncProjector.class, SyncProjector::encode, SyncProjector::decode, SyncProjector::onMessage);
 		SecurityCraft.channel.registerMessage(index++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::decode, AssembleBlockPocket::onMessage);
 		SecurityCraft.channel.registerMessage(index++, SendTip.class, SendTip::encode, SendTip::decode, SendTip::onMessage);
+		SecurityCraft.channel.registerMessage(index++, SyncBlockPocketManager.class, SyncBlockPocketManager::encode, SyncBlockPocketManager::decode, SyncBlockPocketManager::onMessage);
 	}
 
 	@SubscribeEvent

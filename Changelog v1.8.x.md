@@ -58,6 +58,7 @@
 - Fix: Defusing/arming some mines does not decrease the durability of the wire cutters/flint and steel
 - Fix: Defusing some mines decreases the durability of the wire cutters when in creative mode
 - Fix: Attempting to defusing some mines despite them already being defused, decreases the durability of the wire cutters
+- Fix: Size and show outline settings of a Block Pocket Manager don't get synchronized to other players
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

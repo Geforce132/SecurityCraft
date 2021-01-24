@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -18,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer>
 {
@@ -125,6 +128,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 		te.size = size;
 		button.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText());
+		sync();
 	}
 
 	public void assembleButtonClicked(ClickButton button)
@@ -144,5 +148,11 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	{
 		te.toggleOutline();
 		outlineButton.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")).getFormattedText());
+		sync();
+	}
+
+	private void sync()
+	{
+		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline));
 	}
 }
