@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -20,17 +21,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer>
 {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
 	public BlockPocketManagerTileEntity te;
 	private int size = 5;
 	private Button toggleButton;
 	private Button sizeButton;
 	private Button assembleButton;
 	private Button outlineButton;
+	private GuiSlider offsetSlider;
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.BLOCK_POCKET_WALL.get());
 	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
@@ -41,6 +44,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 		te = (BlockPocketManagerTileEntity)container.te;
 		size = te.size;
+		ySize = 194;
 	}
 
 	@Override
@@ -48,15 +52,17 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	{
 		super.init();
 
-		addButton(toggleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 - 30, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText(), this::toggleButtonClicked));
-		addButton(sizeButton = new ClickButton(1, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 - 60, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText(), this::sizeButtonClicked));
-		addButton(assembleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 + 33, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText(), this::assembleButtonClicked));
-		addButton(outlineButton = new ClickButton(0, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 57, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText(), this::outlineButtonClicked));
+		addButton(toggleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 - 40, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText(), this::toggleButtonClicked));
+		addButton(sizeButton = new ClickButton(1, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 - 70, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText(), this::sizeButtonClicked));
+		addButton(assembleButton = new ClickButton(2, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 + 23, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText(), this::assembleButtonClicked));
+		addButton(outlineButton = new ClickButton(3, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 47, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText(), this::outlineButtonClicked));
+		addButton(offsetSlider = new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 71, 120, 20, ClientUtils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), "", (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, null, this::offsetSliderReleased));
+		offsetSlider.updateSlider();
 
 		if(!te.getOwner().isOwner(Minecraft.getInstance().player))
-			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = false;
+			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active  = offsetSlider.active = false;
 		else
-			sizeButton.active = assembleButton.active = !te.enabled;
+			sizeButton.active = assembleButton.active = offsetSlider.active = !te.enabled;
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 		font.drawString(translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
 
-		if (!te.enabled)
+		if(!te.enabled)
 		{
 			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText(), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText()) / 2, 83, 4210752);
 
@@ -93,12 +99,22 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
 		renderBackground();
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize);
+		blit(startX, startY, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button)
+	{
+		if(offsetSlider.dragging)
+			offsetSlider.mouseReleased(mouseX, mouseY, button);
+
+		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	public void toggleButtonClicked(ClickButton button)
@@ -121,12 +137,29 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 	public void sizeButtonClicked(ClickButton button)
 	{
+		int newOffset;
+		int newMin;
+		int newMax;
+
 		size += 4;
 
 		if(size > 25)
 			size = 5;
 
+		newMin = (-size + 2) / 2;
+		newMax = (size - 2) / 2;
+
+		if(te.autoBuildOffset > 0)
+			newOffset = Math.min(te.autoBuildOffset, newMax);
+		else
+			newOffset = Math.max(te.autoBuildOffset, newMin);
+
 		te.size = size;
+		offsetSlider.minValue = newMin;
+		offsetSlider.maxValue = newMax;
+		te.autoBuildOffset = newOffset;
+		offsetSlider.setValue(newOffset);
+		offsetSlider.updateSlider();
 		button.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText());
 		sync();
 	}
@@ -151,8 +184,14 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 		sync();
 	}
 
+	public void offsetSliderReleased(GuiSlider slider)
+	{
+		te.autoBuildOffset = slider.getValueInt();
+		sync();
+	}
+
 	private void sync()
 	{
-		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline));
+		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline, te.autoBuildOffset));
 	}
 }

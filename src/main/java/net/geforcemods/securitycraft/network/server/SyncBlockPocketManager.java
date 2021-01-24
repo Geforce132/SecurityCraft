@@ -15,14 +15,16 @@ public class SyncBlockPocketManager
 	private BlockPos pos;
 	private int size;
 	private boolean showOutline;
+	private int autoBuildOffset;
 
 	public SyncBlockPocketManager() {}
 
-	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline)
+	public SyncBlockPocketManager(BlockPos pos, int size, boolean showOutline, int autoBuildOffset)
 	{
 		this.pos = pos;
 		this.size = size;
 		this.showOutline = showOutline;
+		this.autoBuildOffset = autoBuildOffset;
 	}
 
 	public void toBytes(PacketBuffer buf)
@@ -30,6 +32,7 @@ public class SyncBlockPocketManager
 		buf.writeBlockPos(pos);
 		buf.writeVarInt(size);
 		buf.writeBoolean(showOutline);
+		buf.writeVarInt(autoBuildOffset);
 	}
 
 	public void fromBytes(PacketBuffer buf)
@@ -37,6 +40,7 @@ public class SyncBlockPocketManager
 		pos = buf.readBlockPos();
 		size = buf.readVarInt();
 		showOutline = buf.readBoolean();
+		autoBuildOffset = buf.readVarInt();
 	}
 
 	public static void encode(SyncBlockPocketManager message, PacketBuffer packet)
@@ -66,6 +70,7 @@ public class SyncBlockPocketManager
 
 				bpm.size = message.size;
 				bpm.showOutline = message.showOutline;
+				bpm.autoBuildOffset = message.autoBuildOffset;
 				world.notifyBlockUpdate(pos, state, state, 2);
 			}
 		});

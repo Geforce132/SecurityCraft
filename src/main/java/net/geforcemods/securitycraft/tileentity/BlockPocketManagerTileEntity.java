@@ -49,6 +49,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public boolean enabled = false;
 	public boolean showOutline = false;
 	public int size = 5;
+	public int autoBuildOffset = 0;
 	private List<BlockPos> blocks = new ArrayList<>();
 	private List<BlockPos> walls = new ArrayList<>();
 	private List<BlockPos> floor = new ArrayList<>();
@@ -242,13 +243,13 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(world.isRemote)
 				SecurityCraft.channel.sendToServer(new AssembleBlockPocket(this, size));
 
-			final Direction managerFacing = world.getBlockState(pos).get(BlockPocketManagerBlock.FACING);
+			final Direction managerFacing = getBlockState().get(BlockPocketManagerBlock.FACING);
 			final Direction left = managerFacing.rotateY();
 			final Direction right = left.getOpposite();
 			final Direction back = left.rotateY();
 			final BlockPos startingPos;
 			final int lowest = 0;
-			final int half = (size - 1) / 2;
+			final int half = (size - 1) / 2 - autoBuildOffset;
 			final int highest = size - 1;
 			BlockPos pos = getPos().toImmutable();
 			int xi = lowest;
@@ -786,6 +787,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		tag.putBoolean("BlockPocketEnabled", enabled);
 		tag.putBoolean("ShowOutline", showOutline);
 		tag.putInt("Size", size);
+		tag.putInt("AutoBuildOffset", autoBuildOffset);
 
 		for(int i = 0; i < blocks.size(); i++)
 		{
@@ -814,6 +816,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		enabled = tag.getBoolean("BlockPocketEnabled");
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInt("Size");
+		autoBuildOffset = tag.getInt("AutoBuildOffset");
 
 		while(tag.contains("BlocksList" + i))
 		{
