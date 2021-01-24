@@ -25,7 +25,7 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 	@Override
 	public void render(BlockPocketManagerTileEntity te, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
 	{
-		// The code below draws the outline border of a block pocket (centered at the manager).
+		// The code below draws the outline border of a block pocket.
 
 		if(!te.showOutline)
 			return;
@@ -33,19 +33,20 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 		Matrix4f positionMatrix = matrix.getLast().getMatrix();
 		Direction facing = te.getBlockState().get(BlockPocketManagerBlock.FACING);
 		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
+		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
 		int size = te.size;
 		int half = (size - 1) / 2;
-		int leftX = -half;
-		int rightX = half + 1;
+		int leftX = -half + offset;
+		int rightX = half + 1 + offset;
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
-		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1-size;
+		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1 - size;
 
 		if(facing == Direction.EAST || facing == Direction.WEST) //x- and z-values get switched when the manager's direction is west or east
 		{
 			leftX = frontZ;
 			rightX = backZ;
-			frontZ = -half;
-			backZ = half + 1;
+			frontZ = -half + offset;
+			backZ = half + 1 + offset;
 		}
 
 		//bottom lines
