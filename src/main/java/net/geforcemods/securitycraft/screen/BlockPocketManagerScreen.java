@@ -127,6 +127,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 		te.size = size;
 		button.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size));
+		sync();
 	}
 
 	public void assembleButtonClicked(ClickButton button)
@@ -146,5 +147,11 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	{
 		te.toggleOutline();
 		outlineButton.setMessage(ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")));
+		sync();
+	}
+
+	private void sync()
+	{
+		SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline));
 	}
 }
