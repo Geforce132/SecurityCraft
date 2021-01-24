@@ -1,0 +1,75 @@
+package net.geforcemods.securitycraft.network.packets;
+
+import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
+import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+
+public class PacketSSyncBlockPocketManager implements IMessage
+{
+	private BlockPos pos;
+	private int size;
+	private boolean showOutline;
+
+	public PacketSSyncBlockPocketManager(){}
+
+	public PacketSSyncBlockPocketManager(BlockPos pos, int size, boolean showOutline)
+	{
+		this.pos = pos;
+		this.size = size;
+		this.showOutline = showOutline;
+	}
+
+	@Override
+	public void fromBytes(ByteBuf buf)
+	{
+		pos = BlockPos.fromLong(buf.readLong());
+		size = ByteBufUtils.readVarInt(buf, 5);
+		showOutline = buf.readBoolean();
+	}
+
+	@Override
+	public void toBytes(ByteBuf buf)
+	{
+		buf.writeLong(pos.toLong());
+		ByteBufUtils.writeVarInt(buf, size, 5);
+		buf.writeBoolean(showOutline);
+	}
+
+	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSyncBlockPocketManager, IMessage>
+	{
+		@Override
+		public IMessage onMessage(PacketSSyncBlockPocketManager message, MessageContext ctx)
+		{
+			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
+				BlockPos pos = message.pos;
+				World world = ctx.getServerHandler().player.world;
+				TileEntity te = world.getTileEntity(pos);
+
+				if(world.isBlockLoaded(pos) && te instanceof TileEntityBlockPocketManager)
+				{
+					TileEntityBlockPocketManager bpm = (TileEntityBlockPocketManager)te;
+					IBlockState state = world.getBlockState(pos);
+
+					bpm.size = message.size;
+					bpm.showOutline = message.showOutline;
+					world.notifyBlockUpdate(pos, state, state, 2);
+				}
+			});
+
+			return null;
+		}
+	}
+
+	public enum DataType
+	{
+		WIDTH, HEIGHT, RANGE, OFFSET, HORIZONTAL, INVALID;
+	}
+}

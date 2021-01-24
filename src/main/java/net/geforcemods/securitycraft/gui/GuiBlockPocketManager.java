@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.gui;
 import java.io.IOException;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
+import net.geforcemods.securitycraft.network.packets.PacketSSyncBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -126,6 +128,7 @@ public class GuiBlockPocketManager extends GuiContainer
 
 			te.size = size;
 			button.displayString = ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText();
+			sync();
 		}
 		else if(button.id == assembleButton.id)
 		{
@@ -141,9 +144,14 @@ public class GuiBlockPocketManager extends GuiContainer
 		}
 		else if(button.id == outlineButton.id)
 		{
-
 			te.toggleOutline();
 			outlineButton.displayString = ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")).getFormattedText();
+			sync();
 		}
+	}
+
+	private void sync()
+	{
+		SecurityCraft.network.sendToServer(new PacketSSyncBlockPocketManager(te.getPos(), te.size, te.showOutline));
 	}
 }

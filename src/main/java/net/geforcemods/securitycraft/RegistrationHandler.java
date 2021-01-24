@@ -54,6 +54,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSOpenGui;
 import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
 import net.geforcemods.securitycraft.network.packets.PacketSSetCameraRotation;
 import net.geforcemods.securitycraft.network.packets.PacketSSetPassword;
+import net.geforcemods.securitycraft.network.packets.PacketSSyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncProjector;
 import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
 import net.geforcemods.securitycraft.network.packets.PacketSToggleOption;
@@ -456,6 +457,7 @@ public class RegistrationHandler
 		network.registerMessage(PacketSetSentryMode.Handler.class, PacketSetSentryMode.class, 29, Side.SERVER);
 		network.registerMessage(PacketSAssembleBlockPocket.Handler.class, PacketSAssembleBlockPocket.class, 30, Side.SERVER);
 		network.registerMessage(PacketSSyncProjector.Handler.class, PacketSSyncProjector.class, 31, Side.SERVER);
+		network.registerMessage(PacketSSyncBlockPocketManager.Handler.class, PacketSSyncBlockPocketManager.class, 32, Side.SERVER);
 	}
 
 	@SubscribeEvent
