@@ -19,26 +19,16 @@ public class ClearLoggerServer
 		this.pos = pos;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(ClearLoggerServer message, PacketBuffer buf)
 	{
-		buf.writeBlockPos(pos);
+		buf.writeBlockPos(message.pos);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		pos = buf.readBlockPos();
-	}
-
-	public static void encode(ClearLoggerServer message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static ClearLoggerServer decode(PacketBuffer packet)
+	public static ClearLoggerServer decode(PacketBuffer buf)
 	{
 		ClearLoggerServer message = new ClearLoggerServer();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
 		return message;
 	}
 

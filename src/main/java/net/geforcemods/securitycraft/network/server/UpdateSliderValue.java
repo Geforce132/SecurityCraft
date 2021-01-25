@@ -29,27 +29,25 @@ public class UpdateSliderValue {
 	}
 
 	public void toBytes(ByteBuf buf) {
-		buf.writeLong(pos.toLong());
-		buf.writeInt(id);
-		buf.writeDouble(value);
 	}
 
 	public void fromBytes(ByteBuf buf) {
-		pos = BlockPos.fromLong(buf.readLong());
-		id = buf.readInt();
-		value = buf.readDouble();
 	}
 
-	public static void encode(UpdateSliderValue message, PacketBuffer packet)
+	public static void encode(UpdateSliderValue message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeBlockPos(message.pos);
+		buf.writeInt(message.id);
+		buf.writeDouble(message.value);
 	}
 
-	public static UpdateSliderValue decode(PacketBuffer packet)
+	public static UpdateSliderValue decode(PacketBuffer buf)
 	{
 		UpdateSliderValue message = new UpdateSliderValue();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
+		message.id = buf.readInt();
+		message.value = buf.readDouble();
 		return message;
 	}
 

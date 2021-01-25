@@ -30,38 +30,29 @@ public class UpdateTEOwnable
 		this.tag = tag;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(UpdateTEOwnable message, PacketBuffer buf)
 	{
-		buf.writeLong(pos.toLong());
-		buf.writeString(name);
-		buf.writeString(uuid);
-		buf.writeBoolean(customizable);
+		buf.writeLong(message.pos.toLong());
+		buf.writeString(message.name);
+		buf.writeString(message.uuid);
+		buf.writeBoolean(message.customizable);
 
-		if(customizable)
-			buf.writeCompoundTag(tag);
+		if(message.customizable)
+			buf.writeCompoundTag(message.tag);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		pos = BlockPos.fromLong(buf.readLong());
-		name = buf.readString(Integer.MAX_VALUE / 4);
-		uuid = buf.readString(Integer.MAX_VALUE / 4);
-		customizable = buf.readBoolean();
-
-		if(customizable)
-			tag = buf.readCompoundTag();
-	}
-
-	public static void encode(UpdateTEOwnable message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static UpdateTEOwnable decode(PacketBuffer packet)
+	public static UpdateTEOwnable decode(PacketBuffer buf)
 	{
 		UpdateTEOwnable message = new UpdateTEOwnable();
 
-		message.fromBytes(packet);
+		message.pos = BlockPos.fromLong(buf.readLong());
+		message.name = buf.readString(Integer.MAX_VALUE / 4);
+		message.uuid = buf.readString(Integer.MAX_VALUE / 4);
+		message.customizable = buf.readBoolean();
+
+		if(message.customizable)
+			message.tag = buf.readCompoundTag();
+
 		return message;
 	}
 
