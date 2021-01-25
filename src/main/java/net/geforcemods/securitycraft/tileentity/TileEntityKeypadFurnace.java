@@ -16,8 +16,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,14 +23,11 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.SlotFurnaceFuel;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
@@ -121,10 +116,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack)
 	{
-		boolean areStacksEqual = !stack.isEmpty() && stack.isItemEqual(furnaceItemStacks.get(index)) && ItemStack.areItemStackTagsEqual(stack, furnaceItemStacks.get(index));
+		ItemStack furnaceStack = furnaceItemStacks.get(index);
+		boolean areStacksEqual = !stack.isEmpty() && stack.isItemEqual(furnaceStack) && ItemStack.areItemStackTagsEqual(stack, furnaceStack);
 		furnaceItemStacks.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
+		if (stack.getCount() > getInventoryStackLimit())
 			stack.setCount(getInventoryStackLimit());
 
 		if (index == 0 && !areStacksEqual)
@@ -169,7 +165,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		furnaceBurnTime = tag.getShort("BurnTime");
 		cookTime = tag.getShort("CookTime");
 		totalCookTime = tag.getShort("CookTimeTotal");
-		currentItemBurnTime = getItemBurnTime(furnaceItemStacks.get(1));
+		currentItemBurnTime = TileEntityFurnace.getItemBurnTime(furnaceItemStacks.get(1));
 		passcode = tag.getString("passcode");
 
 		if (tag.hasKey("CustomName", 8))
@@ -245,44 +241,46 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public void update()
 	{
-		boolean isBurning = this.isBurning();
+		boolean wasBurning = isBurning();
 		boolean shouldMarkDirty = false;
 
-		if (this.isBurning())
+		if(isBurning())
 			--furnaceBurnTime;
 
-		if (!world.isRemote)
+		if(!world.isRemote)
 		{
-			if (!this.isBurning() && (furnaceItemStacks.get(1).isEmpty() || furnaceItemStacks.get(0).isEmpty()))
+			ItemStack fuelStack = furnaceItemStacks.get(1);
+
+			if(!isBurning() && (fuelStack.isEmpty() || furnaceItemStacks.get(0).isEmpty()))
 			{
-				if (!this.isBurning() && cookTime > 0)
+				if(!isBurning() && cookTime > 0)
 					cookTime = MathHelper.clamp(cookTime - 2, 0, totalCookTime);
 			}
 			else
 			{
-				if (!this.isBurning() && canSmelt())
+				if(!isBurning() && canSmelt())
 				{
-					currentItemBurnTime = furnaceBurnTime = getItemBurnTime(furnaceItemStacks.get(1));
+					currentItemBurnTime = furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuelStack);
 
-					if (this.isBurning())
+					if(isBurning())
 					{
 						shouldMarkDirty = true;
 
-						if (!furnaceItemStacks.get(1).isEmpty())
+						if(!fuelStack.isEmpty())
 						{
-							furnaceItemStacks.get(1).shrink(1);
+							fuelStack.shrink(1);
 
-							if (furnaceItemStacks.get(1).getCount() == 0)
-								furnaceItemStacks.set(1, furnaceItemStacks.get(1).getItem().getContainerItem(furnaceItemStacks.get(1)));
+							if(fuelStack.getCount() == 0)
+								furnaceItemStacks.set(1, fuelStack.getItem().getContainerItem(fuelStack));
 						}
 					}
 				}
 
-				if (this.isBurning() && canSmelt())
+				if(isBurning() && canSmelt())
 				{
 					++cookTime;
 
-					if (cookTime == totalCookTime)
+					if(cookTime == totalCookTime)
 					{
 						cookTime = 0;
 						totalCookTime = getTotalCookTime();
@@ -294,11 +292,11 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 					cookTime = 0;
 			}
 
-			if (isBurning != this.isBurning())
+			if(wasBurning != isBurning())
 				shouldMarkDirty = true;
 		}
 
-		if (shouldMarkDirty)
+		if(shouldMarkDirty)
 			markDirty();
 	}
 
@@ -309,77 +307,50 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	private boolean canSmelt()
 	{
-		if (furnaceItemStacks.get(0).isEmpty())
+		if(furnaceItemStacks.get(0).isEmpty())
 			return false;
 		else
 		{
 			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
-			if (smeltResult.isEmpty()) return false;
-			if (furnaceItemStacks.get(2).isEmpty()) return true;
-			if (!furnaceItemStacks.get(2).isItemEqual(smeltResult)) return false;
-			int result = furnaceItemStacks.get(2).getCount() + smeltResult.getCount();
-			return result <= getInventoryStackLimit() && result <= furnaceItemStacks.get(2).getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+
+			if(smeltResult.isEmpty())
+				return false;
+
+			ItemStack outputStack = furnaceItemStacks.get(2);
+
+			if(outputStack.isEmpty())
+				return true;
+			else if(!outputStack.isItemEqual(smeltResult))
+				return false;
+
+			int resultAmount = outputStack.getCount() + smeltResult.getCount();
+
+			return resultAmount <= getInventoryStackLimit() && resultAmount <= outputStack.getMaxStackSize();
 		}
 	}
 
 	public void smeltItem()
 	{
-		if (canSmelt())
+		if(canSmelt())
 		{
-			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(furnaceItemStacks.get(0));
+			ItemStack fuelStack = furnaceItemStacks.get(0);
+			ItemStack inputStack = furnaceItemStacks.get(1);
+			ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(fuelStack);
+			ItemStack outputStack = furnaceItemStacks.get(2);
 
-			if (furnaceItemStacks.get(2).isEmpty())
+			if(outputStack.isEmpty())
 				furnaceItemStacks.set(2, smeltResult.copy());
-			else if (furnaceItemStacks.get(2).getItem() == smeltResult.getItem())
-				furnaceItemStacks.get(2).grow(smeltResult.getCount()); // Forge BugFix: Results may have multiple items
+			else if(outputStack.getItem() == smeltResult.getItem())
+				outputStack.grow(smeltResult.getCount());
 
-			if (furnaceItemStacks.get(0).getItem() == Item.getItemFromBlock(Blocks.SPONGE) && furnaceItemStacks.get(0).getMetadata() == 1 && !furnaceItemStacks.get(1).isEmpty() && furnaceItemStacks.get(1).getItem() == Items.BUCKET)
+			if(fuelStack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && fuelStack.getMetadata() == 1 && !inputStack.isEmpty() && inputStack.getItem() == Items.BUCKET)
 				furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
 
-			furnaceItemStacks.get(0).shrink(1);
+			fuelStack.shrink(1);
 
-			if (furnaceItemStacks.get(0).getCount() <= 0)
+			if(fuelStack.getCount() <= 0)
 				furnaceItemStacks.set(0, ItemStack.EMPTY);
 		}
-	}
-
-	public static int getItemBurnTime(ItemStack stack)
-	{
-		if (stack.isEmpty())
-			return 0;
-		else
-		{
-			Item item = stack.getItem();
-
-			if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.AIR)
-			{
-				Block block = Block.getBlockFromItem(item);
-
-				if (block == Blocks.WOODEN_SLAB)
-					return 150;
-
-				if (block.getMaterial(block.getDefaultState()) == Material.WOOD)
-					return 300;
-
-				if (block == Blocks.COAL_BLOCK)
-					return 16000;
-			}
-
-			if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
-			if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
-			if (item instanceof ItemHoe && ((ItemHoe)item).getMaterialName().equals("WOOD")) return 200;
-			if (item == Items.STICK) return 100;
-			if (item == Items.COAL) return 1600;
-			if (item == Items.LAVA_BUCKET) return 20000;
-			if (item == Item.getItemFromBlock(Blocks.SAPLING)) return 100;
-			if (item == Items.BLAZE_ROD) return 2400;
-			return net.minecraftforge.fml.common.registry.GameRegistry.getFuelValue(stack);
-		}
-	}
-
-	public static boolean isItemFuel(ItemStack stack)
-	{
-		return getItemBurnTime(stack) > 0;
 	}
 
 	@Override
@@ -407,7 +378,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack)
 	{
-		return index == 2 ? false : (index != 1 ? true : isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack));
+		return index != 2 && (index != 1 || (TileEntityFurnace.isItemFuel(stack) || SlotFurnaceFuel.isBucket(stack) && furnaceItemStacks.get(1).getItem() != Items.BUCKET));
 	}
 
 	@Override
