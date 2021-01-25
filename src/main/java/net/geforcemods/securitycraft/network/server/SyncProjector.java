@@ -24,36 +24,29 @@ public class SyncProjector {
 		this.dataType = dataType;
 	}
 
-	public void toBytes(PacketBuffer buf) {
-		buf.writeBlockPos(pos);
-		buf.writeEnumValue(dataType);
-
-		if(dataType == DataType.HORIZONTAL)
-			buf.writeBoolean(data == 1);
-		else
-			buf.writeVarInt(data);
-	}
-
-	public void fromBytes(PacketBuffer buf) {
-		pos = buf.readBlockPos();
-		dataType = buf.readEnumValue(DataType.class);
-
-		if(dataType == DataType.HORIZONTAL)
-			data = buf.readBoolean() ? 1 : 0;
-		else
-			data = buf.readVarInt();
-	}
-
-	public static void encode(SyncProjector message, PacketBuffer packet)
+	public static void encode(SyncProjector message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeBlockPos(message.pos);
+		buf.writeEnumValue(message.dataType);
+
+		if(message.dataType == DataType.HORIZONTAL)
+			buf.writeBoolean(message.data == 1);
+		else
+			buf.writeVarInt(message.data);
 	}
 
-	public static SyncProjector decode(PacketBuffer packet)
+	public static SyncProjector decode(PacketBuffer buf)
 	{
 		SyncProjector message = new SyncProjector();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
+		message.dataType = buf.readEnumValue(DataType.class);
+
+		if(message.dataType == DataType.HORIZONTAL)
+			message.data = buf.readBoolean() ? 1 : 0;
+		else
+			message.data = buf.readVarInt();
+
 		return message;
 	}
 

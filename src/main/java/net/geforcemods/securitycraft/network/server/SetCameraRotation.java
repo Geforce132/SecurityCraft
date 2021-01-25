@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -21,26 +20,18 @@ public class SetCameraRotation {
 		rotationPitch = pitch;
 	}
 
-	public void fromBytes(ByteBuf buf) {
-		rotationYaw = buf.readFloat();
-		rotationPitch = buf.readFloat();
-	}
-
-	public void toBytes(ByteBuf buf) {
-		buf.writeFloat(rotationYaw);
-		buf.writeFloat(rotationPitch);
-	}
-
-	public static void encode(SetCameraRotation message, PacketBuffer packet)
+	public static void encode(SetCameraRotation message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeFloat(message.rotationYaw);
+		buf.writeFloat(message.rotationPitch);
 	}
 
-	public static SetCameraRotation decode(PacketBuffer packet)
+	public static SetCameraRotation decode(PacketBuffer buf)
 	{
 		SetCameraRotation message = new SetCameraRotation();
 
-		message.fromBytes(packet);
+		message.rotationYaw = buf.readFloat();
+		message.rotationPitch = buf.readFloat();
 		return message;
 	}
 

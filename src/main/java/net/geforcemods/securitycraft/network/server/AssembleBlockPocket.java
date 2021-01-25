@@ -21,28 +21,18 @@ public class AssembleBlockPocket
 		this.size = size;
 	}
 
-	public void fromBytes(PacketBuffer buf)
+	public static void encode(AssembleBlockPocket message, PacketBuffer buf)
 	{
-		pos = BlockPos.fromLong(buf.readLong());
-		size = buf.readInt();
+		buf.writeLong(message.pos.toLong());
+		buf.writeInt(message.size);
 	}
 
-	public void toBytes(PacketBuffer buf)
-	{
-		buf.writeLong(pos.toLong());
-		buf.writeInt(size);
-	}
-
-	public static void encode(AssembleBlockPocket message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static AssembleBlockPocket decode(PacketBuffer packet)
+	public static AssembleBlockPocket decode(PacketBuffer buf)
 	{
 		AssembleBlockPocket message = new AssembleBlockPocket();
 
-		message.fromBytes(packet);
+		message.pos = BlockPos.fromLong(buf.readLong());
+		message.size = buf.readInt();
 		return message;
 	}
 

@@ -26,30 +26,22 @@ public class CheckPassword {
 		password = code;
 	}
 
-	public void toBytes(PacketBuffer buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeString(password);
-	}
-
-	public void fromBytes(PacketBuffer buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		password = buf.readString(Integer.MAX_VALUE / 4);
-	}
-
-	public static void encode(CheckPassword message, PacketBuffer packet)
+	public static void encode(CheckPassword message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.x);
+		buf.writeInt(message.y);
+		buf.writeInt(message.z);
+		buf.writeString(message.password);
 	}
 
-	public static CheckPassword decode(PacketBuffer packet)
+	public static CheckPassword decode(PacketBuffer buf)
 	{
 		CheckPassword message = new CheckPassword();
 
-		message.fromBytes(packet);
+		message.x = buf.readInt();
+		message.y = buf.readInt();
+		message.z = buf.readInt();
+		message.password = buf.readString(Integer.MAX_VALUE / 4);
 		return message;
 	}
 

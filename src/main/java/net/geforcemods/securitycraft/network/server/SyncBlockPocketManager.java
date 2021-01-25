@@ -27,32 +27,22 @@ public class SyncBlockPocketManager
 		this.autoBuildOffset = autoBuildOffset;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(SyncBlockPocketManager message, PacketBuffer buf)
 	{
-		buf.writeBlockPos(pos);
-		buf.writeVarInt(size);
-		buf.writeBoolean(showOutline);
-		buf.writeVarInt(autoBuildOffset);
+		buf.writeBlockPos(message.pos);
+		buf.writeVarInt(message.size);
+		buf.writeBoolean(message.showOutline);
+		buf.writeVarInt(message.autoBuildOffset);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		pos = buf.readBlockPos();
-		size = buf.readVarInt();
-		showOutline = buf.readBoolean();
-		autoBuildOffset = buf.readVarInt();
-	}
-
-	public static void encode(SyncBlockPocketManager message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static SyncBlockPocketManager decode(PacketBuffer packet)
+	public static SyncBlockPocketManager decode(PacketBuffer buf)
 	{
 		SyncBlockPocketManager message = new SyncBlockPocketManager();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
+		message.size = buf.readVarInt();
+		message.showOutline = buf.readBoolean();
+		message.autoBuildOffset = buf.readVarInt();
 		return message;
 	}
 

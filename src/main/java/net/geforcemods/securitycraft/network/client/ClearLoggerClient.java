@@ -6,9 +6,6 @@ import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class ClearLoggerClient
@@ -22,36 +19,20 @@ public class ClearLoggerClient
 		this.pos = pos;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(ClearLoggerClient message, PacketBuffer buf)
 	{
-		buf.writeBlockPos(pos);
+		buf.writeBlockPos(message.pos);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		pos = buf.readBlockPos();
-	}
-
-	public static void encode(ClearLoggerClient message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static ClearLoggerClient decode(PacketBuffer packet)
+	public static ClearLoggerClient decode(PacketBuffer buf)
 	{
 		ClearLoggerClient message = new ClearLoggerClient();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
 		return message;
 	}
 
 	public static void onMessage(ClearLoggerClient message, Supplier<NetworkEvent.Context> ctx)
-	{
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> handleMessage(message, ctx));
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void handleMessage(ClearLoggerClient message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
 			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);

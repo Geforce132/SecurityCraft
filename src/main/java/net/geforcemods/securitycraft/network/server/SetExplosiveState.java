@@ -24,30 +24,22 @@ public class SetExplosiveState{
 		this.state = state;
 	}
 
-	public void fromBytes(PacketBuffer buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		state = buf.readString(Integer.MAX_VALUE / 4);
-	}
-
-	public void toBytes(PacketBuffer buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeString(state);
-	}
-
-	public static void encode(SetExplosiveState message, PacketBuffer packet)
+	public static void encode(SetExplosiveState message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.x);
+		buf.writeInt(message.y);
+		buf.writeInt(message.z);
+		buf.writeString(message.state);
 	}
 
-	public static SetExplosiveState decode(PacketBuffer packet)
+	public static SetExplosiveState decode(PacketBuffer buf)
 	{
 		SetExplosiveState message = new SetExplosiveState();
 
-		message.fromBytes(packet);
+		message.x = buf.readInt();
+		message.y = buf.readInt();
+		message.z = buf.readInt();
+		message.state = buf.readString(Integer.MAX_VALUE / 4);
 		return message;
 	}
 

@@ -29,29 +29,27 @@ public class MountCamera {
 	}
 
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(id);
 	}
 
 	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		id = buf.readInt();
 	}
 
-	public static void encode(MountCamera message, PacketBuffer packet)
+	public static void encode(MountCamera message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.x);
+		buf.writeInt(message.y);
+		buf.writeInt(message.z);
+		buf.writeInt(message.id);
 	}
 
-	public static MountCamera decode(PacketBuffer packet)
+	public static MountCamera decode(PacketBuffer buf)
 	{
 		MountCamera message = new MountCamera();
 
-		message.fromBytes(packet);
+		message.x = buf.readInt();
+		message.y = buf.readInt();
+		message.z = buf.readInt();
+		message.id = buf.readInt();
 		return message;
 	}
 

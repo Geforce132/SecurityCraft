@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -38,26 +37,16 @@ public class RequestTEOwnableUpdate
 		pos = p;
 	}
 
-	public void toBytes(ByteBuf buf)
+	public static void encode(RequestTEOwnableUpdate message, PacketBuffer buf)
 	{
-		buf.writeLong(pos.toLong());
+		buf.writeBlockPos(message.pos);
 	}
 
-	public void fromBytes(ByteBuf buf)
-	{
-		pos = BlockPos.fromLong(buf.readLong());
-	}
-
-	public static void encode(RequestTEOwnableUpdate message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static RequestTEOwnableUpdate decode(PacketBuffer packet)
+	public static RequestTEOwnableUpdate decode(PacketBuffer buf)
 	{
 		RequestTEOwnableUpdate message = new RequestTEOwnableUpdate();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
 		return message;
 	}
 

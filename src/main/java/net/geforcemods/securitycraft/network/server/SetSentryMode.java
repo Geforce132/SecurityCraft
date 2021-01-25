@@ -23,28 +23,18 @@ public class SetSentryMode
 		this.mode = mode;
 	}
 
-	public void fromBytes(PacketBuffer buf)
+	public static void encode(SetSentryMode message, PacketBuffer buf)
 	{
-		pos = buf.readBlockPos();
-		mode = buf.readInt();
+		buf.writeBlockPos(message.pos);
+		buf.writeInt(message.mode);
 	}
 
-	public void toBytes(PacketBuffer buf)
-	{
-		buf.writeBlockPos(pos);
-		buf.writeInt(mode);
-	}
-
-	public static void encode(SetSentryMode message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static SetSentryMode decode(PacketBuffer packet)
+	public static SetSentryMode decode(PacketBuffer buf)
 	{
 		SetSentryMode message = new SetSentryMode();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
+		message.mode = buf.readInt();
 		return message;
 	}
 

@@ -30,26 +30,18 @@ public class OpenGui {
 		this.name = name;
 	}
 
-	public void toBytes(PacketBuffer buf) {
-		buf.writeResourceLocation(id);
-		buf.writeTextComponent(name);
-	}
-
-	public void fromBytes(PacketBuffer buf) {
-		id = buf.readResourceLocation();
-		name = buf.readTextComponent();
-	}
-
-	public static void encode(OpenGui message, PacketBuffer packet)
+	public static void encode(OpenGui message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeResourceLocation(message.id);
+		buf.writeTextComponent(message.name);
 	}
 
-	public static OpenGui decode(PacketBuffer packet)
+	public static OpenGui decode(PacketBuffer buf)
 	{
 		OpenGui message = new OpenGui();
 
-		message.fromBytes(packet);
+		message.id = buf.readResourceLocation();
+		message.name = buf.readTextComponent();
 		return message;
 	}
 

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -12,7 +11,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class ToggleBlockPocketManager
 {
 	private BlockPos pos;
-	private int dimension, size;
+	private int size;
 	private boolean enabling;
 
 	public ToggleBlockPocketManager() {}
@@ -24,32 +23,20 @@ public class ToggleBlockPocketManager
 		this.size = size;
 	}
 
-	public void fromBytes(ByteBuf buf)
+	public static void encode(ToggleBlockPocketManager message, PacketBuffer buf)
 	{
-		pos = BlockPos.fromLong(buf.readLong());
-		dimension = buf.readInt();
-		enabling = buf.readBoolean();
-		size = buf.readInt();
+		buf.writeLong(message.pos.toLong());
+		buf.writeBoolean(message.enabling);
+		buf.writeInt(message.size);
 	}
 
-	public void toBytes(ByteBuf buf)
-	{
-		buf.writeLong(pos.toLong());
-		buf.writeInt(dimension);
-		buf.writeBoolean(enabling);
-		buf.writeInt(size);
-	}
-
-	public static void encode(ToggleBlockPocketManager message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static ToggleBlockPocketManager decode(PacketBuffer packet)
+	public static ToggleBlockPocketManager decode(PacketBuffer buf)
 	{
 		ToggleBlockPocketManager message = new ToggleBlockPocketManager();
 
-		message.fromBytes(packet);
+		message.pos = BlockPos.fromLong(buf.readLong());
+		message.enabling = buf.readBoolean();
+		message.size = buf.readInt();
 		return message;
 	}
 

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
@@ -22,28 +21,20 @@ public class GivePotionEffect {
 		this.amplifier = amplifier;
 	}
 
-	public void fromBytes(ByteBuf buf) {
-		potionID = buf.readInt();
-		duration = buf.readInt();
-		amplifier = buf.readInt();
-	}
-
-	public void toBytes(ByteBuf buf) {
-		buf.writeInt(potionID);
-		buf.writeInt(duration);
-		buf.writeInt(amplifier);
-	}
-
-	public static void encode(GivePotionEffect message, PacketBuffer packet)
+	public static void encode(GivePotionEffect message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.potionID);
+		buf.writeInt(message.duration);
+		buf.writeInt(message.amplifier);
 	}
 
-	public static GivePotionEffect decode(PacketBuffer packet)
+	public static GivePotionEffect decode(PacketBuffer buf)
 	{
 		GivePotionEffect message = new GivePotionEffect();
 
-		message.fromBytes(packet);
+		message.potionID = buf.readInt();
+		message.duration = buf.readInt();
+		message.amplifier = buf.readInt();
 		return message;
 	}
 

@@ -24,26 +24,18 @@ public class UpdateNBTTagOnServer {
 		}
 	}
 
-	public void fromBytes(PacketBuffer buf) {
-		stackTag = buf.readCompoundTag();
-		itemName = buf.readString(Integer.MAX_VALUE / 4);
-	}
-
-	public void toBytes(PacketBuffer buf) {
-		buf.writeCompoundTag(stackTag);
-		buf.writeString(itemName);
-	}
-
-	public static void encode(UpdateNBTTagOnServer message, PacketBuffer packet)
+	public static void encode(UpdateNBTTagOnServer message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeCompoundTag(message.stackTag);
+		buf.writeString(message.itemName);
 	}
 
-	public static UpdateNBTTagOnServer decode(PacketBuffer packet)
+	public static UpdateNBTTagOnServer decode(PacketBuffer buf)
 	{
 		UpdateNBTTagOnServer message = new UpdateNBTTagOnServer();
 
-		message.fromBytes(packet);
+		message.stackTag = buf.readCompoundTag();
+		message.itemName = buf.readString(Integer.MAX_VALUE / 4);
 		return message;
 	}
 

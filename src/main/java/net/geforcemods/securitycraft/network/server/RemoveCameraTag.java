@@ -20,28 +20,18 @@ public class RemoveCameraTag
 		camID = cid;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(RemoveCameraTag message, PacketBuffer buf)
 	{
-		buf.writeItemStack(heldItem);
-		buf.writeInt(camID);
+		buf.writeItemStack(message.heldItem);
+		buf.writeInt(message.camID);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		heldItem = buf.readItemStack();
-		camID = buf.readInt();
-	}
-
-	public static void encode(RemoveCameraTag message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static RemoveCameraTag decode(PacketBuffer packet)
+	public static RemoveCameraTag decode(PacketBuffer buf)
 	{
 		RemoveCameraTag message = new RemoveCameraTag();
 
-		message.fromBytes(packet);
+		message.heldItem = buf.readItemStack();
+		message.camID = buf.readInt();
 		return message;
 	}
 
