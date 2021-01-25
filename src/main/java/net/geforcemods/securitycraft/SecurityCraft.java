@@ -53,7 +53,7 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 	public static SecurityCraft instance;
-	public static final String PROTOCOL_VERSION = "1.0";
+	public static final String PROTOCOL_VERSION = "2";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
 	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();

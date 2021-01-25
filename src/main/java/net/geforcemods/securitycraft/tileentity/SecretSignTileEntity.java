@@ -132,6 +132,6 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	public void onLoad()
 	{
 		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos(), getWorld().getDimension().getType().getId()));
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos()));
 	}
 }

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,32 +27,24 @@ public class SetKeycardLevel {
 		this.exactCard  = exactCard;
 	}
 
-	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(level);
-		buf.writeBoolean(exactCard);
-	}
-
-	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		level = buf.readInt();
-		exactCard = buf.readBoolean();
-	}
-
-	public static void encode(SetKeycardLevel message, PacketBuffer packet)
+	public static void encode(SetKeycardLevel message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.x);
+		buf.writeInt(message.y);
+		buf.writeInt(message.z);
+		buf.writeInt(message.level);
+		buf.writeBoolean(message.exactCard);
 	}
 
-	public static SetKeycardLevel decode(PacketBuffer packet)
+	public static SetKeycardLevel decode(PacketBuffer buf)
 	{
 		SetKeycardLevel message = new SetKeycardLevel();
 
-		message.fromBytes(packet);
+		message.x = buf.readInt();
+		message.y = buf.readInt();
+		message.z = buf.readInt();
+		message.level = buf.readInt();
+		message.exactCard = buf.readBoolean();
 		return message;
 	}
 

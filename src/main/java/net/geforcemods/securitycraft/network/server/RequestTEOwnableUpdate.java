@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -17,7 +16,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class RequestTEOwnableUpdate
 {
 	private BlockPos pos;
-	private int dimension;
 
 	public RequestTEOwnableUpdate() {}
 
@@ -27,42 +25,28 @@ public class RequestTEOwnableUpdate
 	 */
 	public RequestTEOwnableUpdate(OwnableTileEntity te)
 	{
-		this(te.getPos(), te.getWorld().dimension.getType().getId());
+		this(te.getPos());
 	}
 
 	/**
 	 * Initializes this packet
 	 * @param p The position of the tile entity
-	 * @param dim The dimension it is in
 	 */
-	public RequestTEOwnableUpdate(BlockPos p, int dim)
+	public RequestTEOwnableUpdate(BlockPos p)
 	{
 		pos = p;
-		dimension = dim;
 	}
 
-	public void toBytes(ByteBuf buf)
+	public static void encode(RequestTEOwnableUpdate message, PacketBuffer buf)
 	{
-		buf.writeLong(pos.toLong());
-		buf.writeInt(dimension);
+		buf.writeBlockPos(message.pos);
 	}
 
-	public void fromBytes(ByteBuf buf)
-	{
-		pos = BlockPos.fromLong(buf.readLong());
-		dimension = buf.readInt();
-	}
-
-	public static void encode(RequestTEOwnableUpdate message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static RequestTEOwnableUpdate decode(PacketBuffer packet)
+	public static RequestTEOwnableUpdate decode(PacketBuffer buf)
 	{
 		RequestTEOwnableUpdate message = new RequestTEOwnableUpdate();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
 		return message;
 	}
 

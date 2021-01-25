@@ -21,43 +21,29 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class OpenGui {
 
 	private ResourceLocation id;
-	private int dimId;
 	private BlockPos pos;
 	private ITextComponent name;
 
 	public OpenGui(){}
 
-	public OpenGui(ResourceLocation id, int dimId, BlockPos pos, ITextComponent name){
+	public OpenGui(ResourceLocation id, BlockPos pos, ITextComponent name){
 		this.id = id;
-		this.dimId = dimId;
 		this.pos = pos;
 		this.name = name;
 	}
 
-	public void toBytes(PacketBuffer buf) {
-		buf.writeResourceLocation(id);
-		buf.writeInt(dimId);
-		buf.writeBlockPos(pos);
-		buf.writeTextComponent(name);
-	}
-
-	public void fromBytes(PacketBuffer buf) {
-		id = buf.readResourceLocation();
-		dimId = buf.readInt();
-		pos = buf.readBlockPos();
-		name = buf.readTextComponent();
-	}
-
-	public static void encode(OpenGui message, PacketBuffer packet)
+	public static void encode(OpenGui message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeResourceLocation(message.id);
+		buf.writeTextComponent(message.name);
 	}
 
-	public static OpenGui decode(PacketBuffer packet)
+	public static OpenGui decode(PacketBuffer buf)
 	{
 		OpenGui message = new OpenGui();
 
-		message.fromBytes(packet);
+		message.id = buf.readResourceLocation();
+		message.name = buf.readTextComponent();
 		return message;
 	}
 

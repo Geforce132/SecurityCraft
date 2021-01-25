@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -25,30 +24,22 @@ public class ToggleOption {
 		this.id = id;
 	}
 
-	public void toBytes(ByteBuf buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeInt(id);
-	}
-
-	public void fromBytes(ByteBuf buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		id = buf.readInt();
-	}
-
-	public static void encode(ToggleOption message, PacketBuffer packet)
+	public static void encode(ToggleOption message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.x);
+		buf.writeInt(message.y);
+		buf.writeInt(message.z);
+		buf.writeInt(message.id);
 	}
 
-	public static ToggleOption decode(PacketBuffer packet)
+	public static ToggleOption decode(PacketBuffer buf)
 	{
 		ToggleOption message = new ToggleOption();
 
-		message.fromBytes(packet);
+		message.x = buf.readInt();
+		message.y = buf.readInt();
+		message.z = buf.readInt();
+		message.id = buf.readInt();
 		return message;
 	}
 

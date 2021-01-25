@@ -24,35 +24,28 @@ public class UpdateNBTTagOnClient{
 		}
 	}
 
-	public void fromBytes(PacketBuffer buf) {
-		stackTag = buf.readCompoundTag();
-		itemName = buf.readString(Integer.MAX_VALUE / 4);
-	}
-
-	public void toBytes(PacketBuffer buf) {
-		buf.writeCompoundTag(stackTag);
-		buf.writeString(itemName);
-	}
-
-	public static void encode(UpdateNBTTagOnClient message, PacketBuffer packet)
+	public static void encode(UpdateNBTTagOnClient message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeCompoundTag(message.stackTag);
+		buf.writeString(message.itemName);
 	}
 
-	public static UpdateNBTTagOnClient decode(PacketBuffer packet)
+	public static UpdateNBTTagOnClient decode(PacketBuffer buf)
 	{
 		UpdateNBTTagOnClient message = new UpdateNBTTagOnClient();
 
-		message.fromBytes(packet);
+		message.stackTag = buf.readCompoundTag();
+		message.itemName = buf.readString(Integer.MAX_VALUE / 4);
 		return message;
 	}
 
-	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx) {
-		if(!Minecraft.getInstance().player.inventory.getCurrentItem().isEmpty() && Minecraft.getInstance().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName)){
-			Minecraft.getInstance().player.inventory.getCurrentItem().setTag(message.stackTag);
-		}
+	public static void onMessage(UpdateNBTTagOnClient message, Supplier<NetworkEvent.Context> ctx)
+	{
+		ctx.get().enqueueWork(() -> {
+			if(!Minecraft.getInstance().player.inventory.getCurrentItem().isEmpty() && Minecraft.getInstance().player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName))
+				Minecraft.getInstance().player.inventory.getCurrentItem().setTag(message.stackTag);
+		});
 
 		ctx.get().setPacketHandled(true);
 	}
-
 }

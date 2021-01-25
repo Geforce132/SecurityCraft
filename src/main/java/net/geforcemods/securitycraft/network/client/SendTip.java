@@ -39,16 +39,20 @@ public class SendTip
 
 	public static void onMessage(SendTip packet, Supplier<NetworkEvent.Context> ctx)
 	{
-		if(!ConfigHandler.CLIENT.sayThanksMessage.get())
-			return;
+		ctx.get().enqueueWork(() -> {
+			if(!ConfigHandler.CLIENT.sayThanksMessage.get())
+				return;
 
-		String tipKey = getRandomTip();
-		ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getFormattedText() + " " + ClientUtils.localize("messages.securitycraft:tip").getFormattedText() + " " + ClientUtils.localize(tipKey).getFormattedText() + " ");
+	    	String tipKey = getRandomTip();
+	    	ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getFormattedText() + " " + ClientUtils.localize("messages.securitycraft:tip").getFormattedText() + " " + ClientUtils.localize(tipKey).getFormattedText() + " ");
 
-		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+	    	if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
+	    		message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
 
-		SecurityCraft.proxy.getClientPlayer().sendMessage(message);
+            SecurityCraft.proxy.getClientPlayer().sendMessage(message);
+		});
+
+		ctx.get().setPacketHandled(true);
 	}
 
 	private static String getRandomTip()

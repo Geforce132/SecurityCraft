@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.List;
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.CreatureEntity;
@@ -14,8 +13,8 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class InitSentryAnimation
 {
-	public BlockPos pos;
-	public boolean animate, animateUpwards;
+	private BlockPos pos;
+	private boolean animate, animateUpwards;
 
 	public InitSentryAnimation() {}
 
@@ -26,42 +25,34 @@ public class InitSentryAnimation
 		this.animateUpwards = animateUpwards;
 	}
 
-	public void fromBytes(ByteBuf buf)
+	public static void encode(InitSentryAnimation message, PacketBuffer buf)
 	{
-		pos = BlockPos.fromLong(buf.readLong());
-		animate = buf.readBoolean();
-		animateUpwards = buf.readBoolean();
+		buf.writeLong(message.pos.toLong());
+		buf.writeBoolean(message.animate);
+		buf.writeBoolean(message.animateUpwards);
 	}
 
-	public void toBytes(ByteBuf buf)
-	{
-		buf.writeLong(pos.toLong());
-		buf.writeBoolean(animate);
-		buf.writeBoolean(animateUpwards);
-	}
-
-	public static void encode(InitSentryAnimation message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static InitSentryAnimation decode(PacketBuffer packet)
+	public static InitSentryAnimation decode(PacketBuffer buf)
 	{
 		InitSentryAnimation message = new InitSentryAnimation();
 
-		message.fromBytes(packet);
+		message.pos = BlockPos.fromLong(buf.readLong());
+		message.animate = buf.readBoolean();
+		message.animateUpwards = buf.readBoolean();
 		return message;
 	}
 
 	public static void onMessage(InitSentryAnimation message, Supplier<NetworkEvent.Context> ctx)
 	{
-		List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
+		ctx.get().enqueueWork(() -> {
+			List<CreatureEntity> sentries = Minecraft.getInstance().world.<CreatureEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
 
-		if(!sentries.isEmpty())
-		{
-			((SentryEntity)sentries.get(0)).animateUpwards = message.animateUpwards;
-			((SentryEntity)sentries.get(0)).animate = message.animate;
-		}
+			if(!sentries.isEmpty())
+			{
+				((SentryEntity)sentries.get(0)).animateUpwards = message.animateUpwards;
+				((SentryEntity)sentries.get(0)).animate = message.animate;
+			}
+		});
 
 		ctx.get().setPacketHandled(true);
 	}

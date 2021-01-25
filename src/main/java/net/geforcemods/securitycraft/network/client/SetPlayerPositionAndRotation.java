@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -24,39 +23,30 @@ public class SetPlayerPositionAndRotation{
 		rotationPitch = pitch;
 	}
 
-	public void fromBytes(ByteBuf buf) {
-		x = buf.readDouble();
-		y = buf.readDouble();
-		z = buf.readDouble();
-		rotationYaw = buf.readFloat();
-		rotationPitch = buf.readFloat();
-	}
-
-	public void toBytes(ByteBuf buf) {
-		buf.writeDouble(x);
-		buf.writeDouble(y);
-		buf.writeDouble(z);
-		buf.writeFloat(rotationYaw);
-		buf.writeFloat(rotationPitch);
-	}
-
-	public static void encode(SetPlayerPositionAndRotation message, PacketBuffer packet)
+	public static void encode(SetPlayerPositionAndRotation message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeDouble(message.x);
+		buf.writeDouble(message.y);
+		buf.writeDouble(message.z);
+		buf.writeFloat(message.rotationYaw);
+		buf.writeFloat(message.rotationPitch);
 	}
 
-	public static SetPlayerPositionAndRotation decode(PacketBuffer packet)
+	public static SetPlayerPositionAndRotation decode(PacketBuffer buf)
 	{
 		SetPlayerPositionAndRotation message = new SetPlayerPositionAndRotation();
 
-		message.fromBytes(packet);
+		message.x = buf.readDouble();
+		message.y = buf.readDouble();
+		message.z = buf.readDouble();
+		message.rotationYaw = buf.readFloat();
+		message.rotationPitch = buf.readFloat();
 		return message;
 	}
 
 	public static void onMessage(SetPlayerPositionAndRotation message, Supplier<NetworkEvent.Context> ctx)
 	{
-		Minecraft.getInstance().player.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);
+		ctx.get().enqueueWork(() -> Minecraft.getInstance().player.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch));
 		ctx.get().setPacketHandled(true);
 	}
-
 }

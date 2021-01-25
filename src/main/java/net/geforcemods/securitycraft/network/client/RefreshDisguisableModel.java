@@ -8,9 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RefreshDisguisableModel
@@ -28,40 +25,24 @@ public class RefreshDisguisableModel
 		this.stack = stack;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(RefreshDisguisableModel message, PacketBuffer buf)
 	{
-		buf.writeBlockPos(pos);
-		buf.writeBoolean(insert);
-		buf.writeItemStack(stack);
+		buf.writeBlockPos(message.pos);
+		buf.writeBoolean(message.insert);
+		buf.writeItemStack(message.stack);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		pos = buf.readBlockPos();
-		insert = buf.readBoolean();
-		stack = buf.readItemStack();
-	}
-
-	public static void encode(RefreshDisguisableModel message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static RefreshDisguisableModel decode(PacketBuffer packet)
+	public static RefreshDisguisableModel decode(PacketBuffer buf)
 	{
 		RefreshDisguisableModel message = new RefreshDisguisableModel();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
+		message.insert = buf.readBoolean();
+		message.stack = buf.readItemStack();
 		return message;
 	}
 
 	public static void onMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
-	{
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> handleMessage(message, ctx));
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	public static void handleMessage(RefreshDisguisableModel message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
 			DisguisableTileEntity te = (DisguisableTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);

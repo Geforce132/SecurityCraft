@@ -27,28 +27,18 @@ public class SetCameraPowered
 		this.powered = powered;
 	}
 
-	public void toBytes(PacketBuffer buf)
+	public static void encode(SetCameraPowered message, PacketBuffer buf)
 	{
-		buf.writeBlockPos(pos);
-		buf.writeBoolean(powered);
+		buf.writeBlockPos(message.pos);
+		buf.writeBoolean(message.powered);
 	}
 
-	public void fromBytes(PacketBuffer buf)
-	{
-		pos = buf.readBlockPos();
-		powered = buf.readBoolean();
-	}
-
-	public static void encode(SetCameraPowered message, PacketBuffer packet)
-	{
-		message.toBytes(packet);
-	}
-
-	public static SetCameraPowered decode(PacketBuffer packet)
+	public static SetCameraPowered decode(PacketBuffer buf)
 	{
 		SetCameraPowered message = new SetCameraPowered();
 
-		message.fromBytes(packet);
+		message.pos = buf.readBlockPos();
+		message.powered = buf.readBoolean();
 		return message;
 	}
 

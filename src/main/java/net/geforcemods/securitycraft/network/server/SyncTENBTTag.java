@@ -25,30 +25,22 @@ public class SyncTENBTTag {
 		this.tag = tag;
 	}
 
-	public void fromBytes(PacketBuffer buf) {
-		x = buf.readInt();
-		y = buf.readInt();
-		z = buf.readInt();
-		tag = buf.readCompoundTag();
-	}
-
-	public void toBytes(PacketBuffer buf) {
-		buf.writeInt(x);
-		buf.writeInt(y);
-		buf.writeInt(z);
-		buf.writeCompoundTag(tag);
-	}
-
-	public static void encode(SyncTENBTTag message, PacketBuffer packet)
+	public static void encode(SyncTENBTTag message, PacketBuffer buf)
 	{
-		message.toBytes(packet);
+		buf.writeInt(message.x);
+		buf.writeInt(message.y);
+		buf.writeInt(message.z);
+		buf.writeCompoundTag(message.tag);
 	}
 
-	public static SyncTENBTTag decode(PacketBuffer packet)
+	public static SyncTENBTTag decode(PacketBuffer buf)
 	{
 		SyncTENBTTag message = new SyncTENBTTag();
 
-		message.fromBytes(packet);
+		message.x = buf.readInt();
+		message.y = buf.readInt();
+		message.z = buf.readInt();
+		message.tag = buf.readCompoundTag();
 		return message;
 	}
 
