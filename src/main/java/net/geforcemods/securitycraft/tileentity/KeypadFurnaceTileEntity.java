@@ -151,6 +151,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	{
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
+			if(side == null)
+				return EMPTY_INVENTORY.cast();
+
 			BlockPos offsetPos = pos.offset(side);
 			BlockState offsetState = world.getBlockState(offsetPos);
 
