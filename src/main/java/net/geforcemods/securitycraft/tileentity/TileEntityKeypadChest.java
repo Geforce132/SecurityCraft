@@ -132,6 +132,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	{
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 		{
+			if(facing == null)
+				return (T) EMPTY_INVENTORY;
+
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState state = world.getBlockState(offsetPos);
 
