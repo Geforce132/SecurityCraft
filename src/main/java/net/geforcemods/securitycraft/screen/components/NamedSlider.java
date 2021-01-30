@@ -48,7 +48,7 @@ public class NamedSlider extends GuiSlider
 	{
 		if(visible)
 		{
-			int offset = (isHovered() ? 2 : 1) * 20;
+			int offset = (isHovered() && active ? 2 : 1) * 20;
 
 			if(dragging)
 			{
