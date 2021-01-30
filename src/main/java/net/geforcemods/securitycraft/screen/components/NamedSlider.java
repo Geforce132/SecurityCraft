@@ -61,7 +61,7 @@ public class NamedSlider extends Slider
 	{
 		if(visible)
 		{
-			int offset = (isHovered() ? 2 : 1) * 20;
+			int offset = (isHovered() && active ? 2 : 1) * 20;
 
 			if(dragging)
 			{
