@@ -62,6 +62,7 @@
 - Fix: Size and show outline settings of a Block Pocket Manager don't get synchronized to other players
 - Fix: Crash involving capabilities of Password-protected Chests/Furnaces
 - Fix: Sliders (e.g. in the Projector or the customization screens) give no feedback when the player hovers their mouse over them
+- Fix: Tile Entity data does not get properly synchronized in some cases
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

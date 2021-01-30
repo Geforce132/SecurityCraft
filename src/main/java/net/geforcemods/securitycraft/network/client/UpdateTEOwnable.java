@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,17 +15,17 @@ public class UpdateTEOwnable
 	private BlockPos pos;
 	private String name;
 	private String uuid;
-	private boolean customizable;
+	private boolean syncTag;
 	private CompoundNBT tag;
 
 	public UpdateTEOwnable() {}
 
-	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean customizable, CompoundNBT tag)
+	public UpdateTEOwnable(BlockPos pos, String name, String uuid, boolean syncTag, CompoundNBT tag)
 	{
 		this.pos = pos;
 		this.name = name;
 		this.uuid = uuid;
-		this.customizable = customizable;
+		this.syncTag = syncTag;
 		this.tag = tag;
 	}
 
@@ -35,9 +34,9 @@ public class UpdateTEOwnable
 		buf.writeLong(message.pos.toLong());
 		buf.writeString(message.name);
 		buf.writeString(message.uuid);
-		buf.writeBoolean(message.customizable);
+		buf.writeBoolean(message.syncTag);
 
-		if(message.customizable)
+		if(message.syncTag)
 			buf.writeCompoundTag(message.tag);
 	}
 
@@ -48,9 +47,9 @@ public class UpdateTEOwnable
 		message.pos = BlockPos.fromLong(buf.readLong());
 		message.name = buf.readString(Integer.MAX_VALUE / 4);
 		message.uuid = buf.readString(Integer.MAX_VALUE / 4);
-		message.customizable = buf.readBoolean();
+		message.syncTag = buf.readBoolean();
 
-		if(message.customizable)
+		if(message.syncTag)
 			message.tag = buf.readCompoundTag();
 
 		return message;
@@ -66,8 +65,8 @@ public class UpdateTEOwnable
 
 			((IOwnable)te).setOwner(message.uuid, message.name);
 
-			if(message.customizable)
-				((CustomizableTileEntity)te).read(message.tag);
+			if(message.syncTag)
+				te.read(message.tag);
 		});
 
 		ctx.get().setPacketHandled(true);
