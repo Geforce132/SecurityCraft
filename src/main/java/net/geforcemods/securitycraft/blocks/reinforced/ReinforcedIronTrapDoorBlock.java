@@ -9,9 +9,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.properties.Half;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -42,6 +47,25 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		BlockState blockstate = this.getDefaultState();
+		IFluidState fluidstate = ctx.getWorld().getFluidState(ctx.getPos());
+		Direction direction = ctx.getFace();
+
+		if (!ctx.replacingClickedOnBlock() && direction.getAxis().isHorizontal()) {
+			blockstate = blockstate.with(HORIZONTAL_FACING, direction).with(HALF, ctx.getHitVec().y - (double)ctx.getPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
+		} else {
+			blockstate = blockstate.with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite()).with(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
+		}
+
+		if (BlockUtils.hasActiveSCBlockNextTo(ctx.getWorld(), ctx.getPos())) {
+			blockstate = blockstate.with(OPEN, true).with(POWERED, true);
+		}
+
+		return blockstate.with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
 	}
 
 	@Override

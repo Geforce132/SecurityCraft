@@ -95,7 +95,7 @@ public class ReinforcedDoorItem extends Item
 		else
 			isRightHinge = true;
 
-		boolean isAnyPowered = world.isBlockPowered(pos) || world.isBlockPowered(posAbove);
+		boolean isAnyPowered = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, posAbove);
 		BlockState state = door.getDefaultState().with(ReinforcedDoorBlock.FACING, facing).with(ReinforcedDoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(ReinforcedDoorBlock.OPEN, isAnyPowered);
 
 		world.setBlockState(pos, state.with(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
