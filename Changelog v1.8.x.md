@@ -62,6 +62,7 @@
 - Fix: Attempting to defuse some mines despite them already being defused, decreases the durability of the wire cutters
 - Fix: Size and show outline settings of a Block Pocket Manager don't get synchronized to other players
 - Fix: Crash involving capabilities of Password-protected Chests/Furnaces
+- Fix: SecurityCraft's Doors and the Reinforced Trapdoor are open when placed while powered by redstone
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

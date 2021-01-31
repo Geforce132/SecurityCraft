@@ -11,6 +11,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -37,6 +38,29 @@ public class BlockReinforcedIronTrapDoor extends BlockTrapDoor implements ITileE
 			world.markBlockRangeForRenderUpdate(pos, pos);
 			playSound((EntityPlayer)null, world, pos, hasActiveSCBlock);
 		}
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		IBlockState state = this.getDefaultState();
+
+		if (facing.getAxis().isHorizontal())
+		{
+			state = state.withProperty(FACING, facing).withProperty(OPEN, false);
+			state = state.withProperty(HALF, hitY > 0.5F ? BlockTrapDoor.DoorHalf.TOP : BlockTrapDoor.DoorHalf.BOTTOM);
+		}
+		else
+		{
+			state = state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
+			state = state.withProperty(HALF, facing == EnumFacing.UP ? BlockTrapDoor.DoorHalf.BOTTOM : BlockTrapDoor.DoorHalf.TOP);
+		}
+
+		if (BlockUtils.hasActiveSCBlockNextTo(world, pos))
+		{
+			state = state.withProperty(OPEN, true);
+		}
+
+		return state;
 	}
 
 	@Override
