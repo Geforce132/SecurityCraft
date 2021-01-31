@@ -64,6 +64,7 @@
 - Fix: Sliders (e.g. in the Projector or the customization screens) give no feedback when the player hovers their mouse over them
 - Fix: Tile Entity data does not get properly synchronized in some cases
 - Fix: SecurityCraft's Doors and the Reinforced Trapdoor are open when placed while powered by redstone
+- Fix: Reinforced Doors sometimes drop an item when broken in Creative mode
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
