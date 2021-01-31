@@ -89,21 +89,22 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		DoubleBlockHalf doubleblockhalf = state.get(HALF);
-		BlockPos blockpos = doubleblockhalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		if (blockstate.getBlock() == this && blockstate.get(HALF) != doubleblockhalf) {
-			worldIn.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
-			worldIn.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
-			ItemStack itemstack = player.getHeldItemMainhand();
-			if (!worldIn.isRemote && !player.isCreative()) {
-				Block.spawnDrops(state, worldIn, pos, (TileEntity)null, player, itemstack);
-				Block.spawnDrops(blockstate, worldIn, blockpos, (TileEntity)null, player, itemstack);
+	public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+		if (!world.isRemote && player.isCreative()) {
+			DoubleBlockHalf doubleblockhalf = state.get(HALF);
+
+			if (doubleblockhalf == DoubleBlockHalf.UPPER) {
+				BlockPos blockpos = pos.down();
+				BlockState blockstate = world.getBlockState(blockpos);
+
+				if (blockstate.getBlock() == state.getBlock() && blockstate.get(HALF) == DoubleBlockHalf.LOWER) {
+					world.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 35);
+					world.playEvent(player, 2001, blockpos, Block.getStateId(blockstate));
+				}
 			}
 		}
 
-		super.onBlockHarvested(worldIn, pos, state, player);
+		super.onBlockHarvested(world, pos, state, player);
 	}
 
 	@Override
