@@ -646,7 +646,6 @@
 	"messages.securitycraft:srat.cantBind": "No puedes vincular una torreta que no te pertenece.",
 	"messages.securitycraft:srat.bound": "Torreta en %s vinculada al control remoto.",
 	"messages.securitycraft:srat.unbound": "Torreta en %s desvinculada del control remoto.",
-	"messages.securitycraft:universalBlockModifier.cantModify": "\"",
 	"messages.securitycraft:universalOwnerChanger.noName": "Tienes que darle el nombre del nuevo propietario a este objeto. Usa un yunque para hacerlo.",
 	"messages.securitycraft:universalOwnerChanger.cantChange": "Este bloque no puede tener propietario. Haz clic derecho en un bloque de SecurityCraft apropiado.",
 	"messages.securitycraft:universalOwnerChanger.notOwned": "Este bloque no es tuyo, no puedes cambiar su propietario.",
