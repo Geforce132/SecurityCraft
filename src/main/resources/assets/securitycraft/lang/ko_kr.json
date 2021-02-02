@@ -633,7 +633,6 @@
 	"messages.securitycraft:srat.cantBind": "자기 소유가 아닌 보초는 바인딩할 수 없습니다.",
 	"messages.securitycraft:srat.bound": "%s의 보초를 원격 접속기에 경계합니다.",
 	"messages.securitycraft:srat.unbound": "원격 접속기에서 %s에서 보초의 바인딩을 해제합니다.",
-	"messages.securitycraft:universalBlockModifier.cantModify": "\"",
 	"messages.securitycraft:universalOwnerChanger.noName": "이 아이템에 새 블록 소유자의 이름을 지정해야 합니다. 모루를 사용하여 이름을 바꿉니다.",
 	"messages.securitycraft:universalOwnerChanger.cantChange": "이 블록은 소유자를 포함할 수 없습니다. 적절한 세큐리티크래프트 블록을 마우스 오른쪽 버튼으로 클릭하세요.",
 	"messages.securitycraft:universalOwnerChanger.notOwned": "이 블록은 사용자의 블록이 아니므로 소유자를 변경할 수 없습니다.",
