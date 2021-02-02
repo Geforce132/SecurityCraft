@@ -533,7 +533,6 @@ messages.securitycraft:srat.noSlots=Il n’y a plus d’emplacements vides pour 
 messages.securitycraft:srat.cantBind=Vous ne pouvez pas associer une sentinelle qui ne vous appartient pas.
 messages.securitycraft:srat.bound=Association de la sentinelle à %s à l’outil d’accès à distance.
 messages.securitycraft:srat.unbound=issociation de la sentinelle à %s de l’outil d’accès à distance.
-messages.securitycraft:universalBlockModifier.cantModify="
 messages.securitycraft:universalOwnerChanger.noName=Vous devez donner à cet élément le nom du nouveau propriétaire du bloc. Utilisez une enclume pour le renommer.
 messages.securitycraft:universalOwnerChanger.cantChange=Ce bloc ne peut pas contenir de propriétaire. Veuillez cliquer avec le bouton droit sur un bloc SecurityCraft approprié.
 messages.securitycraft:universalOwnerChanger.notOwned=Ce n’est pas votre bloc, vous ne pouvez pas changer de propriétaire.

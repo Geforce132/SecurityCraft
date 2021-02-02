@@ -583,7 +583,6 @@ messages.securitycraft:srat.noSlots=There are no more empty slots to bind this s
 messages.securitycraft:srat.cantBind=You can't bind a sentry that doesn't belong to you.
 messages.securitycraft:srat.bound=Bound the sentry at %s to the remote access tool.
 messages.securitycraft:srat.unbound=Unbound the sentry at %s from the remote access tool.
-messages.securitycraft:universalBlockModifier.cantModify="
 messages.securitycraft:universalOwnerChanger.noName=You need to give this item the name of the new block owner. Use an anvil to rename it.
 messages.securitycraft:universalOwnerChanger.cantChange=This block cannot hold an owner. Please rightclick an appropriate SecurityCraft block.
 messages.securitycraft:universalOwnerChanger.notOwned=This is not your block, you cannot change its owner.
