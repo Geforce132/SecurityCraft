@@ -24,12 +24,14 @@
 - New: Wire Cutters can now deactivate a Cage Trap. Use Redstone to reactivate it
 - New: Sounds when defusing/arming mines
 - New: An offset can now be set before automatically building a Block Pocket, removing the restriction that the Block Pocket Manager has to be in the middle
+- New: The Storage Module can now be used in the Block Pocket Manager for auto-assembling the Block Pocket
 - Change: Reinforced Hoppers can no longer be accessed by anyone
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
 - Change: Some customizable options have been adapted to allow for finer control
 - Change: Make Block Pocket auto-assemble function more verbose
 - Change: Reinforced Iron Bars spawned by a Cage Trap no longer drop
+- Change: Auto-assembling the Block Pocket now only works if the proper building materials are provided in the Block Pocket Manager's inventory (added via a Storage Module)
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
 - API: Added hook for mods to add a way to have their own blocks be convertible to password-protected variants. For more info, see IPasswordConvertible
 - API: Inter mod communications related code has been moved to the SecurityCraftAPI class
