@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class Utils {
@@ -19,8 +20,8 @@ public class Utils {
 		return line.substring(0, line.length() - 1);
 	}
 
-	public static String getFormattedCoordinates(BlockPos pos){
-		return "X: " + pos.getX() + " Y: " + pos.getY() + " Z: " + pos.getZ();
+	public static TranslationTextComponent getFormattedCoordinates(BlockPos pos){
+		return new TranslationTextComponent("messages.securitycraft:formattedCoordinates", pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public static void setISinTEAppropriately(World world, BlockPos pos, NonNullList<ItemStack> contents)
