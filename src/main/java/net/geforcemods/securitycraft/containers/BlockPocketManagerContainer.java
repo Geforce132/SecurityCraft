@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -55,6 +56,38 @@ public class BlockPocketManagerContainer extends Container
 				}
 			});
 		}
+	}
+
+	@Override
+	public ItemStack transferStackInSlot(PlayerEntity player, int index)
+	{
+		ItemStack copy = ItemStack.EMPTY;
+		Slot slot = inventorySlots.get(index);
+
+		if(slot != null && slot.getHasStack())
+		{
+			ItemStack slotStack = slot.getStack();
+
+			copy = slotStack.copy();
+
+			if(index >= 36) //block pocket manager slots
+			{
+				if(!mergeItemStack(slotStack, 0, 36, true))
+					return ItemStack.EMPTY;
+			}
+			else if(index >= 0 && index <= 35) //main inventory and hotbar
+			{
+				if(!mergeItemStack(slotStack, 36, inventorySlots.size(), false))
+					return ItemStack.EMPTY;
+			}
+
+			if(slotStack.isEmpty())
+				slot.putStack(ItemStack.EMPTY);
+			else
+				slot.onSlotChanged();
+		}
+
+		return copy;
 	}
 
 	@Override
