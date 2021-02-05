@@ -55,9 +55,12 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	private Slider offsetSlider;
 	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
 	private TextHoverChecker assembleHoverChecker;
-	private int wallsNeeded = (size - 2) * (size - 2) * 6;
-	private int pillarsNeeded = (size - 2) * 12 - 1;
-	private final int chiseledNeeded = 8;
+	private int wallsNeededOverall = (size - 2) * (size - 2) * 6;
+	private int pillarsNeededOverall = (size - 2) * 12 - 1;
+	private final int chiseledNeededOverall = 8;
+	private int wallsStillNeeded;
+	private int pillarsStillNeeded;
+	private int chiseledStillNeeded;
 
 	public BlockPocketManagerScreen(BlockPocketManagerContainer container, PlayerInventory inv, ITextComponent name)
 	{
@@ -94,14 +97,8 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active  = offsetSlider.active = false;
 		else
 		{
-			calculatedStoredMaterials();
-
-			int walls = wallsNeeded - materialCounts[0];
-			int pillars = pillarsNeeded - materialCounts[1];
-			int chiseled = chiseledNeeded - materialCounts[2];
-
+			updateMaterialInformation(true);
 			sizeButton.active = offsetSlider.active = !te.enabled;
-			assembleButton.active = minecraft.player.isCreative() || (!te.enabled && storage && walls <= 0 && pillars <= 0 && chiseled <= 0	);
 		}
 
 		if(!storage)
@@ -137,34 +134,26 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			{
 				font.func_243248_b(matrix, youNeed, xSize / 2 - font.getStringPropertyWidth(youNeed) / 2, 83, 4210752);
 
-				font.drawString(matrix, wallsNeeded + "", 42, 100, 4210752);
+				font.drawString(matrix, wallsNeededOverall + "", 42, 100, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
 
-				font.drawString(matrix, pillarsNeeded + "", 94, 100, 4210752);
+				font.drawString(matrix, pillarsNeededOverall + "", 94, 100, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
-				font.drawString(matrix, chiseledNeeded + "", 147, 100, 4210752);
+				font.drawString(matrix, chiseledNeededOverall + "", 147, 100, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 			}
 			else
 			{
-				int walls = wallsNeeded - materialCounts[0];
-				int pillars = pillarsNeeded - materialCounts[1];
-				int chiseled = chiseledNeeded - materialCounts[2];
-
-				//the assemble button should always be active when the player is in creative mode
-				if(!minecraft.player.isCreative())
-					assembleButton.active = walls <= 0 && pillars <= 0 && chiseled <= 0;
-
 				font.func_243248_b(matrix, youNeed, 169 + 87 / 2 - font.getStringPropertyWidth(youNeed) / 2, ySize - 83, 4210752);
 
-				font.drawString(matrix, Math.max(0, walls) + "", 192, ySize - 66, 4210752);
+				font.drawString(matrix, Math.max(0, wallsStillNeeded) + "", 192, ySize - 66, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 175, ySize - 70);
 
-				font.drawString(matrix, Math.max(0, pillars) + "", 192, ySize - 44, 4210752);
+				font.drawString(matrix, Math.max(0, pillarsStillNeeded) + "", 192, ySize - 44, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, ySize - 48);
 
-				font.drawString(matrix, Math.max(0, chiseled) + "", 192, ySize - 22, 4210752);
+				font.drawString(matrix, Math.max(0, chiseledStillNeeded) + "", 192, ySize - 22, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26);
 			}
 		}
@@ -212,7 +201,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		super.handleMouseClick(slot, slotId, mouseButton, type);
 		//every time items are added/removed, the mouse is clicking a slot and these values are recomputed
 		//not the best place, as this code will run when an empty slot is clicked while not holding any item, but it's good enough
-		calculatedStoredMaterials();
+		updateMaterialInformation(true);
 	}
 
 	@Override
@@ -224,28 +213,39 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
-	private void calculatedStoredMaterials()
+	private void updateMaterialInformation(boolean recalculateStoredStacks)
 	{
-		materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
+		if(recalculateStoredStacks)
+		{
+			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
 
-		te.getStorageHandler().ifPresent(handler -> {
-			for(int i = 0; i < handler.getSlots(); i++)
-			{
-				ItemStack stack = handler.getStackInSlot(i);
-
-				if(stack.getItem() instanceof BlockItem)
+			te.getStorageHandler().ifPresent(handler -> {
+				for(int i = 0; i < handler.getSlots(); i++)
 				{
-					Block block = ((BlockItem)stack.getItem()).getBlock();
+					ItemStack stack = handler.getStackInSlot(i);
 
-					if(block == SCContent.BLOCK_POCKET_WALL.get())
-						materialCounts[0] += stack.getCount();
-					else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-						materialCounts[1] += stack.getCount();
-					else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-						materialCounts[2] += stack.getCount();
+					if(stack.getItem() instanceof BlockItem)
+					{
+						Block block = ((BlockItem)stack.getItem()).getBlock();
+
+						if(block == SCContent.BLOCK_POCKET_WALL.get())
+							materialCounts[0] += stack.getCount();
+						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
+							materialCounts[1] += stack.getCount();
+						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
+							materialCounts[2] += stack.getCount();
+					}
 				}
-			}
-		});
+			});
+		}
+
+		wallsNeededOverall = (size - 2) * (size - 2) * 6;
+		pillarsNeededOverall = (size - 2) * 12 - 1;
+		wallsStillNeeded = wallsNeededOverall - materialCounts[0];
+		pillarsStillNeeded = pillarsNeededOverall - materialCounts[1];
+		chiseledStillNeeded = chiseledNeededOverall - materialCounts[2];
+		//the assemble button should always be active when the player is in creative mode
+		assembleButton.active = minecraft.player.isCreative() || (!te.enabled && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0);
 	}
 
 	public void toggleButtonClicked(ClickButton button)
@@ -285,8 +285,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		else
 			newOffset = Math.max(te.autoBuildOffset, newMin);
 
-		wallsNeeded = (size - 2) * (size - 2) * 6;
-		pillarsNeeded = (size - 2) * 12 - 1;
+		updateMaterialInformation(false);
 		te.size = size;
 		offsetSlider.minValue = newMin;
 		offsetSlider.maxValue = newMax;
