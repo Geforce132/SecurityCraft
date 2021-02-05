@@ -677,7 +677,7 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "¡Bloque inválido \"%2$s\" en la posición %1$s! (Esperado: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" está bloqueando el espacio en la posición %1$s!",
 	"messages.securitycraft:blockpocket.unowned": "¡No eres propietario del bloque \"%2$s\" en %1$s!",
-	"messages.securitycraft:blockpocket.notEnoughItems": "¡No tienes suficientes bloques para ensamblar un bolsillo de bloques de ese tamaño! %s",
+	"messages.securitycraft:blockpocket.notEnoughItems": "¡No tienes suficientes bloques para ensamblar un bolsillo de bloques de ese tamaño!",
 	"messages.securitycraft:blockpocket.activated": "¡Bolsillo de bloques activado!",
 	"messages.securitycraft:blockpocket.deactivated": "¡Bolsillo de bloques desactivado!",
 	"messages.securitycraft:blockpocket.assembled": "¡Bolsillo de bloques ensamblado!",

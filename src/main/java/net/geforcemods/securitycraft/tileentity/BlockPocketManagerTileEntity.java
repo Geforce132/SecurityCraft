@@ -40,8 +40,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -391,62 +389,12 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
 
-			//Step 2: if the player isn't in creative, it is checked if the are enough items to build the BP in the manager's inventory. If so, they're removed
+			//Step 2: if the player isn't in creative, take out the items that are used for assembling the BP. If there aren't enough items, the assemble button in the screen is turned off
 			if(!player.isCreative())
 			{
-				int chiseledFound = 0;
-				int pillarsFound = 0;
-				int wallsFound = 0;
 				NonNullList<ItemStack> inventory = storage;
 
 				for(int i = 1; i <= inventory.size(); i++)
-				{
-					ItemStack stackToCheck = inventory.get(i - 1);
-
-					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof BlockItem)
-					{
-						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
-
-						if(block == SCContent.BLOCK_POCKET_WALL.get())
-							wallsFound += stackToCheck.getCount();
-						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-							chiseledFound += stackToCheck.getCount();
-						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-							pillarsFound += stackToCheck.getCount();
-					}
-				}
-
-				if(chiseledNeeded > chiseledFound || pillarsNeeded > pillarsFound || wallsNeeded > wallsFound)
-				{
-					TranslationTextComponent text = new TranslationTextComponent("messages.securitycraft:blockpocket.notEnoughItems");
-					StringTextComponent missing = new StringTextComponent("");
-
-					if(chiseledNeeded > chiseledFound)
-						missing.append(new StringTextComponent((chiseledNeeded - chiseledFound) + " ").setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)))
-						.append(ClientUtils.localize(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get().getTranslationKey()));
-
-					if(pillarsNeeded > pillarsFound)
-					{
-						if(!missing.getSiblings().isEmpty())
-							missing.appendString(" | ");
-
-						missing.append(new StringTextComponent((pillarsNeeded - pillarsFound) + " ").setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)))
-						.append(ClientUtils.localize(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getTranslationKey()));
-					}
-
-					if(wallsNeeded > wallsFound)
-					{
-						if(!missing.getSiblings().isEmpty())
-							missing.appendString(" | ");
-
-						missing.append(new StringTextComponent((wallsNeeded - wallsFound) + " ").setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)))
-						.append(ClientUtils.localize(SCContent.BLOCK_POCKET_WALL.get().getTranslationKey()));
-					}
-
-					return text.append(missing);
-				}
-
-				for(int i = 1; i <= inventory.size(); i++) //actually take out the items that are used for assembling the BP
 				{
 					ItemStack stackToCheck = inventory.get(i - 1);
 
@@ -518,7 +466,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			yi = lowest;
 			zi = lowest;
 
-			while(yi < size) //Step 3: placing the blocks and giving them the right owner
+			//Step 3: placing the blocks and giving them the right owner
+			while(yi < size)
 			{
 				while(zi < size)
 				{

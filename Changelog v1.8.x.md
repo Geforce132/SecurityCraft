@@ -29,7 +29,6 @@
 - Change: The configuration option "sayThanksMessage" has been moved to the client configuration
 - Change: The configuration option "cameraSpeed" has been moved to the client configuration
 - Change: Some customizable options have been adapted to allow for finer control
-- Change: Make Block Pocket auto-assemble function more verbose
 - Change: Reinforced Iron Bars spawned by a Cage Trap no longer drop
 - Change: If not in creative mode, auto-assembling the Block Pocket now only works if the proper building materials are provided in the Block Pocket Manager's inventory (accessible by adding a Storage Module)
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck

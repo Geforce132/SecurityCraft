@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.Arrays;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -19,6 +21,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -90,8 +94,14 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active  = offsetSlider.active = false;
 		else
 		{
+			calculatedStoredMaterials();
+
+			int walls = wallsNeeded - materialCounts[0];
+			int pillars = pillarsNeeded - materialCounts[1];
+			int chiseled = chiseledNeeded - materialCounts[2];
+
 			sizeButton.active = offsetSlider.active = !te.enabled;
-			assembleButton.active = minecraft.player.isCreative() || (!te.enabled && storage);
+			assembleButton.active = minecraft.player.isCreative() || (!te.enabled && storage && walls <= 0 && pillars <= 0 && chiseled <= 0	);
 		}
 
 		if(!storage)
@@ -107,7 +117,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + ySize - 27, guiTop + ySize - 9, guiLeft + 174, guiLeft + 191);
 		}
 
-		assembleHoverChecker = new TextHoverChecker(assembleButton, ClientUtils.localize("gui.securitycraft:blockPocketManager.needStorageModule"));
+		assembleHoverChecker = new TextHoverChecker(assembleButton, Arrays.asList(ClientUtils.localize("gui.securitycraft:blockPocketManager.needStorageModule"), ClientUtils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
 	}
 
 	@Override
@@ -138,15 +148,23 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			}
 			else
 			{
+				int walls = wallsNeeded - materialCounts[0];
+				int pillars = pillarsNeeded - materialCounts[1];
+				int chiseled = chiseledNeeded - materialCounts[2];
+
+				//the assemble button should always be active when the player is in creative mode
+				if(!minecraft.player.isCreative())
+					assembleButton.active = walls <= 0 && pillars <= 0 && chiseled <= 0;
+
 				font.func_243248_b(matrix, youNeed, 169 + 87 / 2 - font.getStringPropertyWidth(youNeed) / 2, ySize - 83, 4210752);
 
-				font.drawString(matrix, Math.max(0, wallsNeeded - materialCounts[0]) + "", 192, ySize - 66, 4210752);
+				font.drawString(matrix, Math.max(0, walls) + "", 192, ySize - 66, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 175, ySize - 70);
 
-				font.drawString(matrix, Math.max(0, pillarsNeeded - materialCounts[1]) + "", 192, ySize - 44, 4210752);
+				font.drawString(matrix, Math.max(0, pillars) + "", 192, ySize - 44, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, ySize - 48);
 
-				font.drawString(matrix, Math.max(0, chiseledNeeded - materialCounts[2]) + "", 192, ySize - 22, 4210752);
+				font.drawString(matrix, Math.max(0, chiseled) + "", 192, ySize - 22, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26);
 			}
 		}
@@ -166,8 +184,13 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			}
 		}
 
-		if(assembleHoverChecker.checkHover(mouseX, mouseY) && !storage && !assembleButton.active && !te.enabled)
-			GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
+		if(assembleHoverChecker.checkHover(mouseX, mouseY) && !assembleButton.active && !te.enabled)
+		{
+			if(!storage)
+				GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, font);
+			else
+				GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY, width, height, -1, font);
+		}
 	}
 
 	@Override
@@ -183,12 +206,28 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	}
 
 	@Override
+	protected void handleMouseClick(Slot slot, int slotId, int mouseButton, ClickType type)
+	{
+		//the super call needs to be before calculating the stored materials, as it is responsible for putting the stack inside the slot
+		super.handleMouseClick(slot, slotId, mouseButton, type);
+		//every time items are added/removed, the mouse is clicking a slot and these values are recomputed
+		//not the best place, as this code will run when an empty slot is clicked while not holding any item, but it's good enough
+		calculatedStoredMaterials();
+	}
+
+	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button)
 	{
 		if(offsetSlider.dragging)
 			offsetSlider.mouseReleased(mouseX, mouseY, button);
 
-		//not the best place for this, but every time items are added/removed, the mouse is released and these values are recomputed
+		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
+	private void calculatedStoredMaterials()
+	{
+		materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
+
 		te.getStorageHandler().ifPresent(handler -> {
 			for(int i = 0; i < handler.getSlots(); i++)
 			{
@@ -207,8 +246,6 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 				}
 			}
 		});
-
-		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
 	public void toggleButtonClicked(ClickButton button)

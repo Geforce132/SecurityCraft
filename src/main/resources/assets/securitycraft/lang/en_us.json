@@ -761,7 +761,7 @@
 	"messages.securitycraft:blockpocket.invalidBlock": "Invalid block \"%2$s\" at position %1$s! (Expected: \"%3$s\")",
 	"messages.securitycraft:blockpocket.blockInWay": "\"%2$s\" is blocking the space at position %1$s!",
 	"messages.securitycraft:blockpocket.unowned": "You do not own the block \"%2$s\" at position %1$s!",
-	"messages.securitycraft:blockpocket.notEnoughItems": "You don't have enough items to assemble a Block Pocket of that size! Missing: %s",
+	"messages.securitycraft:blockpocket.notEnoughItems": "You don't have enough items to assemble a Block Pocket of this size!",
 	"messages.securitycraft:blockpocket.activated": "Block Pocket activated!",
 	"messages.securitycraft:blockpocket.deactivated": "Block Pocket deactivated!",
 	"messages.securitycraft:blockpocket.assembled": "Block Pocket assembled!",
