@@ -81,7 +81,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		int width = storage ? 123 : xSize;
 		int widgetWidth = storage ? 110 : 120;
 		int widgetOffset = widgetWidth / 2;
-		int[] yOffset = storage ? new int[]{-71, -95, -47, -23, 1} : new int[]{-40, -70, 23, 47, 71};
+		int[] yOffset = storage ? new int[]{-76, -100, -52, -28, -4} : new int[]{-40, -70, 23, 47, 71};
 
 		addButton(toggleButton = new ClickButton(0, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")), this::toggleButtonClicked));
 		addButton(sizeButton = new ClickButton(1, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size), this::sizeButtonClicked));
