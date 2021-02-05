@@ -86,7 +86,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		else
 		{
 			sizeButton.active = offsetSlider.active = !te.enabled;
-			assembleButton.active = !te.enabled && storage;
+			assembleButton.active = minecraft.player.isCreative() || (!te.enabled && storage);
 		}
 
 		if(!storage)
