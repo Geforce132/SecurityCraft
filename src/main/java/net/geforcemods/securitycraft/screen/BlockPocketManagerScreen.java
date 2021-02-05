@@ -27,6 +27,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -169,19 +170,25 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 				font.drawString(matrix, Math.max(0, chiseledNeeded - materialCounts[2]) + "", 192, ySize - 22, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26);
 			}
-
-			for(StackHoverChecker shc : hoverCheckers)
-			{
-				if(shc.checkHover(mouseX, mouseY))
-				{
-					renderTooltip(matrix, shc.getStack(), mouseX - guiLeft, mouseY - guiTop);
-					return;
-				}
-			}
-
-			if(assembleHoverChecker.checkHover(mouseX, mouseY) && !storage && !assembleButton.active && !te.enabled)
-				renderTooltip(matrix, assembleHoverChecker.getName(), mouseX - guiLeft, mouseY - guiTop);
 		}
+	}
+
+	@Override
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	{
+		super.render(matrix, mouseX, mouseY, partialTicks);
+
+		for(StackHoverChecker shc : hoverCheckers)
+		{
+			if(shc.checkHover(mouseX, mouseY))
+			{
+				renderTooltip(matrix, shc.getStack(), mouseX, mouseY);
+				return;
+			}
+		}
+
+		if(assembleHoverChecker.checkHover(mouseX, mouseY) && !storage && !assembleButton.active && !te.enabled)
+			GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
 	}
 
 	@Override

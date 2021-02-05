@@ -665,7 +665,7 @@
 	"gui.securitycraft:blockPocketManager.outline.show": "Show Outline",
 	"gui.securitycraft:blockPocketManager.outline.hide": "Hide Outline",
 	"gui.securitycraft:blockPocketManager.youNeed": "You need:",
-	"gui.securitycraft:blockPocketManager.needStorageModule": "A Storage Module is needed to enable automatic assembly of the Block Pocket",
+	"gui.securitycraft:blockPocketManager.needStorageModule": "A Storage Module is needed to enable automatic assembly of the Block Pocket.",
 	"gui.securitycraft:projector.width": "Width: %s",
 	"gui.securitycraft:projector.width.description": "The width of the projection.",
 	"gui.securitycraft:projector.height": "Height: %s",
