@@ -11,16 +11,17 @@ import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
+import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ItemStackHelper;
@@ -42,11 +43,15 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider
 {
 	public static final int RENDER_DISTANCE = 100;
-
 	public boolean enabled = false;
 	public boolean showOutline = false;
 	public int size = 5;
@@ -54,6 +59,9 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	private List<BlockPos> blocks = new ArrayList<>();
 	private List<BlockPos> walls = new ArrayList<>();
 	private List<BlockPos> floor = new ArrayList<>();
+	protected NonNullList<ItemStack> storage = NonNullList.withSize(56, ItemStack.EMPTY);
+	private LazyOptional<IItemHandler> storageHandler;
+	private LazyOptional<IItemHandler> insertOnlyHandler;
 
 	public BlockPocketManagerTileEntity()
 	{
@@ -382,13 +390,13 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
 
-			//Step 2: if the player isn't in creative, it is checked if they have enough items to build the BP. If so, they're removed
+			//Step 2: if the player isn't in creative, it is checked if the are enough items to build the BP in the manager's inventory. If so, they're removed
 			if(!player.isCreative())
 			{
 				int chiseledFound = 0;
 				int pillarsFound = 0;
 				int wallsFound = 0;
-				NonNullList<ItemStack> inventory = player.inventory.mainInventory;
+				NonNullList<ItemStack> inventory = storage;
 
 				for(int i = 1; i <= inventory.size(); i++)
 				{
@@ -398,28 +406,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 					{
 						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
 
-						if(block instanceof ShulkerBoxBlock && stackToCheck.hasTag()) //there has to be a check for shulker boxes, otherwise the huge BPs that take 4000 blocks to build couldn't be auto-assembled due to lack of inventory space
-						{
-							NonNullList<ItemStack> contents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-
-							ItemStackHelper.loadAllItems(stackToCheck.getTag().getCompound("BlockEntityTag"), contents);
-
-							for(ItemStack boxStack : contents)
-							{
-								if(!(boxStack.getItem() instanceof BlockItem))
-									continue;
-
-								block = ((BlockItem)boxStack.getItem()).getBlock();
-
-								if(block == SCContent.BLOCK_POCKET_WALL.get())
-									wallsFound += boxStack.getCount();
-								else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-									chiseledFound += boxStack.getCount();
-								else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-									pillarsFound += boxStack.getCount();
-							}
-						}
-						else if(block == SCContent.BLOCK_POCKET_WALL.get())
+						if(block == SCContent.BLOCK_POCKET_WALL.get())
 							wallsFound += stackToCheck.getCount();
 						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
 							chiseledFound += stackToCheck.getCount();
@@ -467,79 +454,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
 						int count = stackToCheck.getCount();
 
-						if(block instanceof ShulkerBoxBlock && stackToCheck.hasTag())
-						{
-							CompoundNBT stackTag = stackToCheck.getTag();
-							CompoundNBT blockEntityTag = stackTag.getCompound("BlockEntityTag");
-							NonNullList<ItemStack> contents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-
-							ItemStackHelper.loadAllItems(blockEntityTag, contents);
-
-							for(int j = 0; j < contents.size(); j++)
-							{
-								ItemStack boxStack = contents.get(j);
-
-								if(!(boxStack.getItem() instanceof BlockItem))
-									continue;
-
-								block = ((BlockItem)boxStack.getItem()).getBlock();
-								count = boxStack.getCount();
-
-								if(block == SCContent.BLOCK_POCKET_WALL.get())
-								{
-									if(count <= wallsNeeded)
-									{
-										contents.set(j, ItemStack.EMPTY);
-										wallsNeeded -= count;
-									}
-									else
-									{
-										while(wallsNeeded != 0)
-										{
-											boxStack.shrink(1);
-											wallsNeeded--;
-										}
-									}
-								}
-								else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-								{
-									if(count <= chiseledNeeded)
-									{
-										contents.set(j, ItemStack.EMPTY);
-										chiseledNeeded -= count;
-									}
-									else
-									{
-										while(chiseledNeeded != 0)
-										{
-											boxStack.shrink(1);
-											chiseledNeeded--;
-										}
-									}
-								}
-								else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-								{
-									if(count <= pillarsNeeded)
-									{
-										contents.set(j, ItemStack.EMPTY);
-										pillarsNeeded -= count;
-									}
-									else
-									{
-										while(pillarsNeeded != 0)
-										{
-											boxStack.shrink(1);
-											pillarsNeeded--;
-										}
-									}
-								}
-							}
-
-							ItemStackHelper.saveAllItems(blockEntityTag, contents);
-							stackTag.put("BlockEntityTag", blockEntityTag);
-							stackToCheck.setTag(stackTag);
-						} //shulker box end
-						else if(block == SCContent.BLOCK_POCKET_WALL.get())
+						if(block == SCContent.BLOCK_POCKET_WALL.get())
 						{
 							if(count <= wallsNeeded)
 							{
@@ -757,6 +672,14 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	}
 
 	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
+	{
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return BlockUtils.getProtectedCapability(side, this, () -> getStorageHandler(), () -> getInsertOnlyHandler()).cast();
+		else return super.getCapability(cap, side);
+	}
+
+	@Override
 	public void onTileEntityDestroyed()
 	{
 		super.onTileEntityDestroyed();
@@ -789,6 +712,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		tag.putBoolean("ShowOutline", showOutline);
 		tag.putInt("Size", size);
 		tag.putInt("AutoBuildOffset", autoBuildOffset);
+		ItemStackHelper.saveAllItems(tag, storage);
 
 		for(int i = 0; i < blocks.size(); i++)
 		{
@@ -818,6 +742,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInt("Size");
 		autoBuildOffset = tag.getInt("AutoBuildOffset");
+		ItemStackHelper.loadAllItems(tag, storage);
 
 		while(tag.contains("BlocksList" + i))
 		{
@@ -847,7 +772,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	{
 		return new ModuleType[] {
 				ModuleType.DISGUISE,
-				ModuleType.WHITELIST
+				ModuleType.WHITELIST,
+				ModuleType.STORAGE
 		};
 	}
 
@@ -860,7 +786,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new GenericTEContainer(SCContent.cTypeBlockPocketManager, windowId, world, pos);
+		return new BlockPocketManagerContainer(windowId, world, pos, inv);
 	}
 
 	@Override
@@ -873,5 +799,49 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public AxisAlignedBB getRenderBoundingBox()
 	{
 		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
+	}
+
+	public LazyOptional<IItemHandler> getStorageHandler()
+	{
+		if(storageHandler == null)
+		{
+			storageHandler = LazyOptional.of(() -> new ItemStackHandler(storage) {
+				@Override
+				public boolean isItemValid(int slot, ItemStack stack)
+				{
+					return BlockPocketManagerTileEntity.isItemValid(stack);
+				}
+			});
+		}
+
+		return storageHandler;
+	}
+
+	private LazyOptional<IItemHandler> getInsertOnlyHandler()
+	{
+		if(insertOnlyHandler == null)
+		{
+			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyItemStackHandler(storage) {
+				@Override
+				public boolean isItemValid(int slot, ItemStack stack)
+				{
+					return BlockPocketManagerTileEntity.isItemValid(stack);
+				}
+			});
+		}
+
+		return insertOnlyHandler;
+	}
+
+	public static boolean isItemValid(ItemStack stack)
+	{
+		if(stack.getItem() instanceof BlockItem)
+		{
+			Block block = ((BlockItem)stack.getItem()).getBlock();
+
+			return block == SCContent.BLOCK_POCKET_WALL.get() || block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() || block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get();
+		}
+
+		return false;
 	}
 }

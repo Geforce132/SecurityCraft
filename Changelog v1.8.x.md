@@ -62,7 +62,7 @@
 - Fix: Size and show outline settings of a Block Pocket Manager don't get synchronized to other players
 - Fix: Crash involving capabilities of Password-protected Chests/Furnaces
 - Fix: Sliders (e.g. in the Projector or the customization screens) give no feedback when the player hovers their mouse over them
-- Fix: Tile Entity data does not get properly synchronized in some cases
+- Fix: Tile Entity data does not get synchronized properly in some cases
 - Fix: SecurityCraft's Doors and the Reinforced Trapdoor are open when placed while powered by redstone
 - Fix: Reinforced Doors sometimes drop an item when broken in Creative mode
 - Removed: Configuration option "alarmSoundVolume"
