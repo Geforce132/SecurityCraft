@@ -17,6 +17,7 @@ public class BlockPocketManagerContainer extends Container
 {
 	public BlockPocketManagerTileEntity te;
 	public final boolean storage;
+	public final boolean isOwner;
 
 	public BlockPocketManagerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory)
 	{
@@ -27,7 +28,8 @@ public class BlockPocketManagerContainer extends Container
 		if(tile instanceof BlockPocketManagerTileEntity)
 			te = (BlockPocketManagerTileEntity)tile;
 
-		storage = te != null && te.hasModule(ModuleType.STORAGE);
+		isOwner = te.getOwner().isOwner(inventory.player);
+		storage = te != null && te.hasModule(ModuleType.STORAGE) && isOwner;
 
 		if(storage)
 		{

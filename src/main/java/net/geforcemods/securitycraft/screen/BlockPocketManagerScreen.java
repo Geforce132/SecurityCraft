@@ -45,6 +45,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	private final TranslationTextComponent blockPocketManager = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey());
 	private final TranslationTextComponent youNeed = ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed");
 	private final boolean storage;
+	private final boolean isOwner;
 	private final int[] materialCounts = new int[3];
 	public BlockPocketManagerTileEntity te;
 	private int size = 5;
@@ -68,6 +69,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 
 		te = container.te;
 		size = te.size;
+		isOwner = container.isOwner;
 		storage = container.storage;
 
 		if(storage)
@@ -128,7 +130,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			renderHoveredTooltip(matrix, mouseX - guiLeft, mouseY - guiTop);
 		}
 
-		if(!te.enabled)
+		if(!te.enabled && isOwner)
 		{
 			if(!storage)
 			{
@@ -173,7 +175,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			}
 		}
 
-		if(assembleHoverChecker.checkHover(mouseX, mouseY) && !assembleButton.active && !te.enabled)
+		if(!te.enabled && isOwner && !assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY))
 		{
 			if(!storage)
 				GuiUtils.drawHoveringText(matrix, assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, font);
@@ -245,7 +247,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		pillarsStillNeeded = pillarsNeededOverall - materialCounts[1];
 		chiseledStillNeeded = chiseledNeededOverall - materialCounts[2];
 		//the assemble button should always be active when the player is in creative mode
-		assembleButton.active = minecraft.player.isCreative() || (!te.enabled && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0);
+		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!te.enabled && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
 	}
 
 	public void toggleButtonClicked(ClickButton button)
