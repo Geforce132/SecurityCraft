@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
@@ -604,12 +606,12 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		}
 	}
 
-	private String getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
+	private TranslationTextComponent getFormattedRelativeCoordinates(BlockPos pos, Direction managerFacing) {
 		BlockPos difference = pos.subtract(this.pos);
-		StringBuilder relativePos = new StringBuilder();
-		int offsetBehind = 0;
-		int offsetLeft = 0;
+		int offsetLeft;
+		int offsetBehind;
 		int offsetAbove = difference.getY();
+		List<TranslationTextComponent> components = Lists.newArrayList();
 
 		switch (managerFacing) {
 			case NORTH:
@@ -628,22 +630,25 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				offsetBehind = -difference.getX();
 				offsetLeft = difference.getZ();
 				break;
+			default: throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
 		}
 
-		if (offsetLeft > 0)
-			relativePos.append(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft).getString());
-		else if (offsetLeft < 0)
-			relativePos.append(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft).getString());
+		if (offsetLeft > 0) {
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
+		}
+		else if (offsetLeft < 0) {
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
+		}
 
 		if (offsetBehind > 0) {
-			relativePos.append(relativePos.toString().isEmpty() ? "" : " + ").append(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind).getString());
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
 		}
 
 		if (offsetAbove > 0) {
-			relativePos.append(relativePos.toString().isEmpty() ? "" : " + ").append(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove).getString());
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
 		}
 
-		return relativePos.toString();
+		return ClientUtils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
 	}
 
 	public void toggleOutline()
