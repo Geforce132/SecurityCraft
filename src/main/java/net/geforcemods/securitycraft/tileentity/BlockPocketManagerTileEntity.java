@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
@@ -93,11 +94,22 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			int xi = lowest;
 			int yi = lowest;
 			int zi = lowest;
+			int offset = 0;
 
-			while(world.getBlockState(pos = pos.offset(left)).getBlock() instanceof IBlockPocket) //find the bottom left corner
-				;
+			if (!(world.getBlockState(pos.offset(left)).getBlock() instanceof IBlockPocket)) { //when the block left of the manager is not a Block Pocket block (so the manager was just placed down), take the autoBuildOffset
+				pos = pos.offset(left, offset = -autoBuildOffset + (size / 2));
+			}
+			else {
+				for (int i = 1; i < size - 1; i++) { //find the bottom left corner
+					if (!(world.getBlockState(pos.offset(left, i)).getBlock() instanceof ReinforcedRotatedCrystalQuartzPillar)) {
+						pos = pos.offset(left, offset = i);
+						break;
+					}
+				}
+				if (offset == 0) //when the bottom left corner couldn't be evaluated, take the autoBuildOffset
+					pos = pos.offset(left, offset = -autoBuildOffset + (size / 2));
+			}
 
-			pos = pos.offset(right); //pos got offset one too far (which made the while loop above stop) so it needs to be corrected
 			startingPos = pos.toImmutable();
 
 			//looping through cube level by level
@@ -241,7 +253,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 	/**
 	 * Auto-assembles the Block Pocket for a player.
-	 * First it makes sure that the space isn't occupied, then it checks the inventory of the player for the required items, then it places the blocks.
+	 * First it makes sure that the space isn't occupied, then it checks its inventory for the required items, then it places the blocks.
 	 * @param player The player that opened the screen, used to check if the player is in creative or not
 	 * @return The feedback message. null if none should be sent.
 	 */
