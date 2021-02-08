@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
@@ -42,6 +43,29 @@ public class BlockPocketManagerBlock extends OwnableBlock
 		}
 
 		return true;
+	}
+
+	@Override
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	{
+		if(world.isRemote || state.getBlock() == newState.getBlock())
+			return;
+
+		TileEntity tile = world.getTileEntity(pos);
+
+		if(tile instanceof BlockPocketManagerTileEntity)
+		{
+			BlockPocketManagerTileEntity te = (BlockPocketManagerTileEntity)tile;
+
+			te.getStorageHandler().ifPresent(handler -> {
+				for(int i = 0; i < handler.getSlots(); i++)
+				{
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
+				}
+			});
+		}
+
+		super.onReplaced(state, world, pos, newState, isMoving);
 	}
 
 	@Override

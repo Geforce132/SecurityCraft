@@ -73,6 +73,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -706,7 +707,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
 	public static ContainerType<GenericTEContainer> cTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
-	public static ContainerType<GenericTEContainer> cTypeBlockPocketManager;
+	public static ContainerType<BlockPocketManagerContainer> cTypeBlockPocketManager;
 
 	private static final Block.Properties prop()
 	{

@@ -145,7 +145,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
 			else
-				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").getFormattedText().replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").getFormattedText().replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText());
 
 			font.drawString(line, startX + xSize / 2 - font.getStringWidth(line) + 25, startY + i * 30 + 13, 4210752);
 		}

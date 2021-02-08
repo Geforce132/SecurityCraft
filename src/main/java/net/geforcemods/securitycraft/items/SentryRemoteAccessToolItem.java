@@ -118,7 +118,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					else
 						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry").getFormattedText() + " " + i;
 
-					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos)));
+					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 				}
 			}
 			else

@@ -3,12 +3,15 @@ package net.geforcemods.securitycraft.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -38,8 +41,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils{
+	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private static final List<Block> PRESSURE_PLATES = Arrays.asList(new Block[] {
 			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
@@ -64,9 +71,6 @@ public class BlockUtils{
 		return Block.hasSolidSide(world.getBlockState(pos), world, pos, side);
 	}
 
-	/**
-	 * Updates a block and notify's neighboring blocks of a change.
-	 */
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
 			world.getPendingBlockTicks().scheduleTick(pos, block, delay);
@@ -247,5 +251,26 @@ public class BlockUtils{
 		}
 
 		return false;
+	}
+
+	public static LazyOptional<?> getProtectedCapability(Direction side, TileEntity te, Supplier<LazyOptional<?>> extractionPermittedHandler, Supplier<LazyOptional<?>> insertOnlyHandler)
+	{
+		if(side == null)
+			return EMPTY_INVENTORY;
+
+		BlockPos offsetPos = te.getPos().offset(side);
+		BlockState offsetState = te.getWorld().getBlockState(offsetPos);
+
+		for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
+		{
+			if(offsetState.getBlock() == extractionBlock.getBlock())
+			{
+				if(!extractionBlock.canExtract((IOwnable)te, te.getWorld(), offsetPos, offsetState))
+					return EMPTY_INVENTORY;
+				else return extractionPermittedHandler.get();
+			}
+		}
+
+		return insertOnlyHandler.get();
 	}
 }
