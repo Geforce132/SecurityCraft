@@ -230,6 +230,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			this.walls = sides;
 			this.floor = floor;
 			enabled = true;
+			this.autoBuildOffset = -offset + (size / 2);
 
 			for(BlockPos blockPos : blocks)
 			{
