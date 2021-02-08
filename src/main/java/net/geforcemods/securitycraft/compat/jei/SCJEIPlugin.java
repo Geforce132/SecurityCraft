@@ -11,10 +11,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -28,13 +26,9 @@ public class SCJEIPlugin implements IModPlugin
 	public void registerRecipes(IRecipeRegistration registration)
 	{
 		registration.addIngredientInfo(new ItemStack(SCContent.ADMIN_TOOL.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
-		SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
-			Block original = pc.getOriginalBlock();
-
-			//3rd party mods should handle this themselves
-			if(original.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-				registration.addIngredientInfo(new ItemStack(original), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + original.getRegistryName().getPath());
-		});
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD.get().getRegistryName().getPath());
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_CHEST.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_CHEST.get().getRegistryName().getPath());
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_FURNACE.get().getRegistryName().getPath());
 		registration.addRecipes(IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.entrySet().stream().map(entry -> new ReinforcerRecipe(entry.getKey(), entry.getValue())).collect(Collectors.toList()), VTS_ID);
 		registration.addRecipes(IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.entrySet().stream().map(entry -> new ReinforcerRecipe(entry.getValue(), entry.getKey())).collect(Collectors.toList()), STV_ID);
 	}
