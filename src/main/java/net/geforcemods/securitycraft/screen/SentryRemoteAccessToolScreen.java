@@ -109,7 +109,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 						if(sentry.hasCustomName())
 						{
-							StringTextComponent line = new StringTextComponent(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+							TranslationTextComponent line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 							int nameWidth = font.getStringPropertyWidth(sentry.getCustomName());
 							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
 							int nameY = startY + (i % 6) * 30 + 7;
@@ -182,7 +182,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else if(names[i] != null)
 				line = new StringTextComponent(names[i].getString());
 			else
-				line = new StringTextComponent(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
 			font.func_243248_b(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}

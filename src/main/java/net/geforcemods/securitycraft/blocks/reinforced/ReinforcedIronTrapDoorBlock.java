@@ -56,7 +56,7 @@ public class ReinforcedIronTrapDoorBlock extends TrapDoorBlock implements IReinf
 		Direction direction = ctx.getFace();
 
 		if (!ctx.replacingClickedOnBlock() && direction.getAxis().isHorizontal()) {
-			blockstate = blockstate.with(HORIZONTAL_FACING, direction).with(HALF, ctx.getHitVec().y - (double)ctx.getPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
+			blockstate = blockstate.with(HORIZONTAL_FACING, direction).with(HALF, ctx.getHitVec().y - ctx.getPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
 		} else {
 			blockstate = blockstate.with(HORIZONTAL_FACING, ctx.getPlacementHorizontalFacing().getOpposite()).with(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
 		}
