@@ -12,10 +12,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -31,13 +29,9 @@ public class SCJEIPlugin implements IModPlugin
 		List<ReinforcerRecipe> recipes = IReinforcedBlock.BLOCKS.stream().map(block -> new ReinforcerRecipe(((IReinforcedBlock)block).getVanillaBlock(), block)).collect(Collectors.toList());
 
 		registration.addIngredientInfo(new ItemStack(SCContent.ADMIN_TOOL.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.admin_tool");
-		SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
-			Block original = pc.getOriginalBlock();
-
-			//3rd party mods should handle this themselves
-			if(original.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-				registration.addIngredientInfo(new ItemStack(original), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + original.getRegistryName().getPath());
-		});
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD.get().getRegistryName().getPath());
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_CHEST.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_CHEST.get().getRegistryName().getPath());
+		registration.addIngredientInfo(new ItemStack(SCContent.KEYPAD_FURNACE.get()), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + SCContent.KEYPAD_FURNACE.get().getRegistryName().getPath());
 		registration.addRecipes(recipes, VTS_ID);
 		registration.addRecipes(recipes, STV_ID);
 	}
