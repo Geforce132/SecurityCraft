@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Defines a block that can extract from a password-protected chest and furnace.
+ * Defines a block that can extract from a Password-protected Chest, Password-protected Furnace, and Block Pocket Manager.
  * Call <pre>InterModComms.sendTo("securitycraft", SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ClassThatImplementsIExtractionBlock::new);</pre>
  * during InterModEnqueueEvent to register this with SecurityCraft.
  *

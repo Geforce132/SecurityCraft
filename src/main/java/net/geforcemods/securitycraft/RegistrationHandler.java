@@ -7,6 +7,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -260,7 +261,7 @@ public class RegistrationHandler
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeIMS, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "ims")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeycardSetup, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "keycard_setup")));
 		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeKeyChanger, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "key_changer")));
-		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new GenericTEContainer(SCContent.cTypeBlockPocketManager, windowId, inv.player.world, data.readBlockPos())).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
+		event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) -> new BlockPocketManagerContainer(windowId, inv.player.world, data.readBlockPos(), inv)).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "block_pocket_manager")));
 	}
 
 	public static void registerPackets()

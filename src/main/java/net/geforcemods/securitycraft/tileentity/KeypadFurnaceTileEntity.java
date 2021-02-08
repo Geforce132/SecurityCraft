@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
-import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -11,7 +10,6 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
@@ -37,7 +35,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -48,11 +45,9 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implements IPasswordProtected, INamedContainerProvider, IOwnable, INameable, IModuleInventory, ICustomizable
 {
-	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
 	private LazyOptional<IItemHandler> insertOnlyHandler;
 	private Owner owner = new Owner();
 	private String passcode;
@@ -150,25 +145,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
-			if(side == null)
-				return EMPTY_INVENTORY.cast();
-
-			BlockPos offsetPos = pos.offset(side);
-			BlockState offsetState = world.getBlockState(offsetPos);
-
-			for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
-			{
-				if(offsetState.getBlock() == extractionBlock.getBlock())
-				{
-					if(!extractionBlock.canExtract(this, world, offsetPos, offsetState))
-						return EMPTY_INVENTORY.cast();
-					else return super.getCapability(cap, side);
-				}
-			}
-
-			return getInsertOnlyHandler().cast();
-		}
+			return BlockUtils.getProtectedCapability(side, this, () -> super.getCapability(cap, side), () -> getInsertOnlyHandler()).cast();
 		else return super.getCapability(cap, side);
 	}
 

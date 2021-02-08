@@ -1,31 +1,49 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.Arrays;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.containers.BlockPocketManagerContainer;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
+import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
+import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer>
+public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManagerContainer>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
+	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
+	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.BLOCK_POCKET_WALL.get());
+	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
+	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
+	private final String blockPocketManager = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()).getFormattedText();
+	private final String youNeed = ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText();
+	private final boolean storage;
+	private final boolean isOwner;
+	private final int[] materialCounts = new int[3];
 	public BlockPocketManagerTileEntity te;
 	private int size = 5;
 	private Button toggleButton;
@@ -33,17 +51,28 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	private Button assembleButton;
 	private Button outlineButton;
 	private Slider offsetSlider;
-	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.BLOCK_POCKET_WALL.get());
-	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
-	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
+	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
+	private StringHoverChecker assembleHoverChecker;
+	private int wallsNeededOverall = (size - 2) * (size - 2) * 6;
+	private int pillarsNeededOverall = (size - 2) * 12 - 1;
+	private final int chiseledNeededOverall = 8;
+	private int wallsStillNeeded;
+	private int pillarsStillNeeded;
+	private int chiseledStillNeeded;
 
-	public BlockPocketManagerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name)
+	public BlockPocketManagerScreen(BlockPocketManagerContainer container, PlayerInventory inv, ITextComponent name)
 	{
 		super(container, inv, name);
 
-		te = (BlockPocketManagerTileEntity)container.te;
+		te = container.te;
 		size = te.size;
-		ySize = 194;
+		isOwner = container.isOwner;
+		storage = container.storage;
+
+		if(storage)
+			xSize = 256;
+
+		ySize = !storage ? 194 : 240;
 	}
 
 	@Override
@@ -51,47 +80,113 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 	{
 		super.init();
 
-		addButton(toggleButton = new ClickButton(0, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 - 40, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText(), this::toggleButtonClicked));
-		addButton(sizeButton = new ClickButton(1, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 - 70, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText(), this::sizeButtonClicked));
-		addButton(assembleButton = new ClickButton(2, guiLeft + xSize / 2 - 45, guiTop + ySize / 2 + 23, 90, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText(), this::assembleButtonClicked));
-		addButton(outlineButton = new ClickButton(3, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 47, 120, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText(), this::outlineButtonClicked));
-		addButton(offsetSlider = new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + xSize / 2 - 60, guiTop + ySize / 2 + 71, 120, 20, ClientUtils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), "", (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, null, this::offsetSliderReleased));
+		int width = storage ? 123 : xSize;
+		int widgetWidth = storage ? 110 : 120;
+		int widgetOffset = widgetWidth / 2;
+		int[] yOffset = storage ? new int[]{-76, -100, -52, -28, -4} : new int[]{-40, -70, 23, 47, 71};
+
+		addButton(toggleButton = new ClickButton(0, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText(), this::toggleButtonClicked));
+		addButton(sizeButton = new ClickButton(1, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText(), this::sizeButtonClicked));
+		addButton(assembleButton = new ClickButton(2, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[2], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText(), this::assembleButtonClicked));
+		addButton(outlineButton = new ClickButton(3, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText(), this::outlineButtonClicked));
+		addButton(offsetSlider = new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), "", (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, null, this::offsetSliderReleased));
 		offsetSlider.updateSlider();
 
 		if(!te.getOwner().isOwner(Minecraft.getInstance().player))
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active  = offsetSlider.active = false;
 		else
-			sizeButton.active = assembleButton.active = offsetSlider.active = !te.enabled;
+		{
+			updateMaterialInformation(true);
+			sizeButton.active = offsetSlider.active = !te.enabled;
+		}
+
+		if(!storage)
+		{
+			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, guiTop + 93, guiTop + 113, guiLeft + 23, guiLeft + 43);
+			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, guiTop + 93, guiTop + 113, guiLeft + 75, guiLeft + 95);
+			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + 93, guiTop + 113, guiLeft + 128, guiLeft + 148);
+		}
+		else
+		{
+			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, guiTop + ySize - 73, guiTop + ySize - 54, guiLeft + 174, guiLeft + 191);
+			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, guiTop + ySize - 50, guiTop + ySize - 31, guiLeft + 174, guiLeft + 191);
+			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + ySize - 27, guiTop + ySize - 9, guiLeft + 174, guiLeft + 191);
+		}
+
+		assembleHoverChecker = new StringHoverChecker(assembleButton, Arrays.asList(ClientUtils.localize("gui.securitycraft:blockPocketManager.needStorageModule").getFormattedText(), ClientUtils.localize("messages.securitycraft:blockpocket.notEnoughItems").getFormattedText()));
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String translation = ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()).getFormattedText();
+		font.drawString(blockPocketManager, (storage ? 123 : xSize) / 2 - font.getStringWidth(blockPocketManager) / 2, 6, 4210752);
 
-		font.drawString(translation, xSize / 2 - font.getStringWidth(translation) / 2, 6, 4210752);
-
-		if(!te.enabled)
+		if(storage)
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText(), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText()) / 2, 83, 4210752);
+			font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
+			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
+		}
 
-			font.drawString((size - 2) * (size - 2) * 6 + "", 42, 100, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
+		if(!te.enabled && isOwner)
+		{
+			if(!storage)
+			{
+				font.drawString(youNeed, xSize / 2 - font.getStringWidth(youNeed) / 2, 83, 4210752);
 
-			font.drawString((size - 2) * 12 - 1 + "", 94, 100, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
+				font.drawString(wallsNeededOverall + "", 42, 100, 4210752);
+				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
 
-			font.drawString("8", 147, 100, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
+				font.drawString(pillarsNeededOverall + "", 94, 100, 4210752);
+				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 77, 96);
 
-			if(mouseX >= guiLeft + 23 && mouseX < guiLeft + 48 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(BLOCK_POCKET_WALL, mouseX - guiLeft, mouseY - guiTop);
+				font.drawString(chiseledNeededOverall + "", 147, 100, 4210752);
+				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 130, 96);
 
-			if(mouseX >= guiLeft + 75 && mouseX < guiLeft + 100 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(REINFORCED_CRYSTAL_QUARTZ_PILLAR, mouseX - guiLeft, mouseY - guiTop);
+				if(mouseX >= guiLeft + 23 && mouseX < guiLeft + 48 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
+					renderTooltip(BLOCK_POCKET_WALL, mouseX - guiLeft, mouseY - guiTop);
 
-			if(mouseX >= guiLeft + 128 && mouseX < guiLeft + 153 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
-				renderTooltip(REINFORCED_CHISELED_CRYSTAL_QUARTZ, mouseX - guiLeft, mouseY - guiTop);
+				if(mouseX >= guiLeft + 75 && mouseX < guiLeft + 100 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
+					renderTooltip(REINFORCED_CRYSTAL_QUARTZ_PILLAR, mouseX - guiLeft, mouseY - guiTop);
+
+				if(mouseX >= guiLeft + 128 && mouseX < guiLeft + 153 && mouseY >= guiTop + 93 && mouseY < guiTop + 115)
+					renderTooltip(REINFORCED_CHISELED_CRYSTAL_QUARTZ, mouseX - guiLeft, mouseY - guiTop);
+			}
+			else
+			{
+				font.drawString(youNeed, 169 + 87 / 2 - font.getStringWidth(youNeed) / 2, ySize - 83, 4210752);
+
+				font.drawString(Math.max(0, wallsStillNeeded) + "", 192, ySize - 66, 4210752);
+				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 175, ySize - 70);
+
+				font.drawString(Math.max(0, pillarsStillNeeded) + "", 192, ySize - 44, 4210752);
+				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CRYSTAL_QUARTZ_PILLAR, 175, ySize - 48);
+
+				font.drawString(Math.max(0, chiseledStillNeeded) + "", 192, ySize - 22, 4210752);
+				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26);
+			}
+		}
+	}
+
+	@Override
+	public void render(int mouseX, int mouseY, float partialTicks)
+	{
+		super.render(mouseX, mouseY, partialTicks);
+
+		for(StackHoverChecker shc : hoverCheckers)
+		{
+			if(shc.checkHover(mouseX, mouseY))
+			{
+				renderTooltip(shc.getStack(), mouseX, mouseY);
+				return;
+			}
+		}
+
+		if(!te.enabled && isOwner && !assembleButton.active && assembleHoverChecker.checkHover(mouseX, mouseY))
+		{
+			if(!storage)
+				GuiUtils.drawHoveringText(assembleHoverChecker.getLines().subList(0, 1), mouseX, mouseY, width, height, -1, font);
+			else
+				GuiUtils.drawHoveringText(assembleHoverChecker.getLines().subList(1, 2), mouseX, mouseY, width, height, -1, font);
 		}
 	}
 
@@ -103,8 +198,18 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(storage ? TEXTURE_STORAGE : TEXTURE);
 		blit(startX, startY, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	protected void handleMouseClick(Slot slot, int slotId, int mouseButton, ClickType type)
+	{
+		//the super call needs to be before calculating the stored materials, as it is responsible for putting the stack inside the slot
+		super.handleMouseClick(slot, slotId, mouseButton, type);
+		//every time items are added/removed, the mouse is clicking a slot and these values are recomputed
+		//not the best place, as this code will run when an empty slot is clicked while not holding any item, but it's good enough
+		updateMaterialInformation(true);
 	}
 
 	@Override
@@ -114,6 +219,42 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 			offsetSlider.mouseReleased(mouseX, mouseY, button);
 
 		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
+
+	private void updateMaterialInformation(boolean recalculateStoredStacks)
+	{
+		if(recalculateStoredStacks)
+		{
+			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
+
+			te.getStorageHandler().ifPresent(handler -> {
+				for(int i = 0; i < handler.getSlots(); i++)
+				{
+					ItemStack stack = handler.getStackInSlot(i);
+
+					if(stack.getItem() instanceof BlockItem)
+					{
+						Block block = ((BlockItem)stack.getItem()).getBlock();
+
+						if(block == SCContent.BLOCK_POCKET_WALL.get())
+							materialCounts[0] += stack.getCount();
+						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
+							materialCounts[1] += stack.getCount();
+						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
+							materialCounts[2] += stack.getCount();
+					}
+				}
+			});
+		}
+
+		wallsNeededOverall = (size - 2) * (size - 2) * 6;
+		pillarsNeededOverall = (size - 2) * 12 - 1;
+		wallsStillNeeded = wallsNeededOverall - materialCounts[0];
+		pillarsStillNeeded = pillarsNeededOverall - materialCounts[1];
+		chiseledStillNeeded = chiseledNeededOverall - materialCounts[2];
+		//the assemble button should always be active when the player is in creative mode
+		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!te.enabled && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
 	}
 
 	public void toggleButtonClicked(ClickButton button)
@@ -153,6 +294,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<GenericTEContainer
 		else
 			newOffset = Math.max(te.autoBuildOffset, newMin);
 
+		updateMaterialInformation(false);
 		te.size = size;
 		offsetSlider.minValue = newMin;
 		offsetSlider.maxValue = newMax;
