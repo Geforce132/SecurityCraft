@@ -54,11 +54,14 @@ import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -167,6 +170,27 @@ public class SCEventHandler {
 
 			if(!sentries.isEmpty())
 				event.setCanceled(sentries.get(0).func_230254_b_(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLeftClickBlock(LeftClickBlock event) {
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onAttackEntity(AttackEntityEvent event) {
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onEntityInteracted(EntityInteract event) {
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer())) {
+			event.setCanceled(true);
 		}
 	}
 
