@@ -314,7 +314,7 @@ public class SecurityCameraEntity extends Entity{
 
 	public void zoomIn()
 	{
-		zoomAmount = Math.min(zoomAmount - 0.1F, 2.0F);
+		zoomAmount = Math.max(zoomAmount - 0.1F, 0.1F);
 
 		if(!zooming)
 			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
@@ -322,7 +322,7 @@ public class SecurityCameraEntity extends Entity{
 
 	public void zoomOut()
 	{
-		zoomAmount = Math.max(zoomAmount + 0.1F, -0.5F);
+		zoomAmount = Math.min(zoomAmount + 0.1F, 1.5F);
 
 		if(!zooming)
 			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
