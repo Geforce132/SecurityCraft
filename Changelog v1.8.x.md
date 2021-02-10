@@ -64,6 +64,7 @@
 - Fix: Crash involving capabilities of Password-protected Chests/Furnaces
 - Fix: SecurityCraft's Doors and the Reinforced Trapdoor are open when placed while powered by redstone
 - Fix: Players mounted to cameras are able to break blocks and hit/interact with entities
+- Fix: The camera's zoom can't be decreased when increased for too long (and vice versa)
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
