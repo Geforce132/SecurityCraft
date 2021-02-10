@@ -8,19 +8,17 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.server.GivePotionEffect;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.Effect;
@@ -29,9 +27,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class SecurityCameraEntity extends Entity{
@@ -52,7 +51,6 @@ public class SecurityCameraEntity extends Entity{
 	private int toggleLightCooldown = 0;
 	private boolean shouldProvideNightVision = false;
 	private float zoomAmount = 1F;
-	private String playerViewingName = null;
 	private boolean zooming = false;
 
 	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world){
@@ -71,7 +69,6 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseYaw = player.rotationYaw;
 		cameraUsePitch = player.rotationPitch;
 		this.id = id;
-		playerViewingName = player.getName().getString();
 		setPosition(x + 0.5D, y, z + 0.5D);
 
 		TileEntity te = world.getTileEntity(getPosition());
@@ -91,7 +88,6 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseYaw = camera.cameraUseYaw;
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
-		playerViewingName = camera.playerViewingName;
 		setPosition(x + 0.5D, y, z + 0.5D);
 
 		TileEntity te = world.getTileEntity(getPosition());
@@ -354,14 +350,13 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public void remove(){
-		super.remove();
-
-		if(playerViewingName != null && PlayerUtils.isPlayerOnline(playerViewingName)){
-			PlayerEntity player = PlayerUtils.getPlayerFromName(playerViewingName);
-			player.setPositionAndUpdate(cameraUseX, cameraUseY, cameraUseZ);
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SetPlayerPositionAndRotation(cameraUseX, cameraUseY, cameraUseZ, cameraUseYaw, cameraUsePitch));
-		}
+	public Vector3d func_230268_c_(LivingEntity livingEntity) //getPositionAfterDismount
+	{
+		livingEntity.rotationYaw = cameraUseYaw % 360.0F;
+		livingEntity.rotationPitch = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
+		livingEntity.prevRotationYaw = livingEntity.rotationYaw;
+		livingEntity.prevRotationPitch = livingEntity.rotationPitch;
+		return new Vector3d(cameraUseX, cameraUseY, cameraUseZ);
 	}
 
 	@Override
@@ -370,9 +365,6 @@ public class SecurityCameraEntity extends Entity{
 	@Override
 	public void writeAdditional(CompoundNBT tag){
 		tag.putInt("CameraID", id);
-
-		if(playerViewingName != null)
-			tag.putString("playerName", playerViewingName);
 
 		if(cameraUseX != 0.0D)
 			tag.putDouble("cameraUseX", cameraUseX);
@@ -393,9 +385,6 @@ public class SecurityCameraEntity extends Entity{
 	@Override
 	public void readAdditional(CompoundNBT tag){
 		id = tag.getInt("CameraID");
-
-		if(tag.contains("playerName"))
-			playerViewingName = tag.getString("playerName");
 
 		if(tag.contains("cameraUseX"))
 			cameraUseX = tag.getDouble("cameraUseX");
