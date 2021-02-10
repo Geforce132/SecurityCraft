@@ -517,7 +517,7 @@
 	"gui.securitycraft:scManual.recipe.keycard_lv5": "Disabled",
 	"gui.securitycraft:scManual.recipe.limited_use_keycard": "Disabled",
 	"gui.securitycraft:scManual.intro.1": "Getting started with SecurityCraft",
-	"gui.securitycraft:scManual.intro.2": "by Geforce and bl4ckscor3",
+	"gui.securitycraft:scManual.intro.2": "by Geforce, bl4ckscor3, and Redstone_Dubstep",
 	"gui.securitycraft:scManual.ownableBlock": "Ownable: This block is resistant to explosions, and can only be broken by the player who placed it down using the Universal Block Remover.",
 	"gui.securitycraft:scManual.passwordProtectedBlock": "Password protected: This block can only be used if a password set by the owner is correctly entered.",
 	"gui.securitycraft:scManual.viewActivatedBlock": "View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.",
