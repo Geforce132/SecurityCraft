@@ -513,7 +513,7 @@
 	"gui.securitycraft:scManual.recipe.keycard_lv5": "Désactivé",
 	"gui.securitycraft:scManual.recipe.limited_use_keycard": "Désactivé",
 	"gui.securitycraft:scManual.intro.1": "Premiers pas avec SecurityCraft",
-	"gui.securitycraft:scManual.intro.2": "par Geforce et bl4ckscor3",
+	"gui.securitycraft:scManual.intro.2": "par Geforce, bl4ckscor3, et Redstone_Dubstep",
 	"gui.securitycraft:scManual.ownableBlock": "Propriétaire: ce bloc résiste aux explosions et ne peut être cassé que par le joueur qui l’a déposé à l’aide du déplaceur de blocs universel.",
 	"gui.securitycraft:scManual.passwordProtectedBlock": "Protégé par un code d'accès : Ce bloc ne peut être utilisé que si un code d'accès à été défini par le propriétaire est correctement saisi.",
 	"gui.securitycraft:scManual.viewActivatedBlock": "Affichage activé: ce bloc peut être activé en le survolant avec votre curseur lorsque vous êtes à portée.",
