@@ -395,7 +395,8 @@ help.securitycraft:crystalQuartzItem.info=Le cristal de quartz est utilisé pour
 
 gui.securitycraft:scManual.disabled=Désactivé
 gui.securitycraft:scManual.intro.1=Démarrer avec SecurityCraft
-gui.securitycraft:scManual.intro.2=par Geforce et bl4ckscor3
+gui.securitycraft:scManual.intro.2=par Geforce, bl4ckscor3, et Redstone_Dubstep
+gui.securitycraft:scManual.author=Traduit par TheCrazyFreezee, marminot, et supercat95
 gui.securitycraft:scManual.ownableBlock=Propriétaire: ce bloc résiste aux explosions et ne peut être cassé que par le joueur qui l’a déposé à l’aide du Déplaceur De bloc universel.
 gui.securitycraft:scManual.passwordProtectedBlock=Protégé par Mot de passe : ce bloc ne peut être utilisé que si un mot de passe défini par le propriétaire est correctement entré.
 gui.securitycraft:scManual.viewActivatedBlock=Affichage activé: ce bloc peut être activé en le survolant avec votre curseur lorsque vous êtes à portée.
