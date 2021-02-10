@@ -84,9 +84,12 @@ import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -254,6 +257,29 @@ public class SCEventHandler {
 				event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onLeftClickBlock(LeftClickBlock event) {
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
+			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.FAIL);
+		}
+	}
+
+	@SubscribeEvent
+	public void onAttackEntity(AttackEntityEvent event) {
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public void onEntityInteracted(EntityInteract event) {
+		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
+			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.FAIL);
 		}
 	}
 
