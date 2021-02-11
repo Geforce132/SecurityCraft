@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
@@ -625,7 +623,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		int offsetLeft;
 		int offsetBehind;
 		int offsetAbove = difference.getY();
-		List<TranslationTextComponent> components = Lists.newArrayList();
+		List<TranslationTextComponent> components = new ArrayList<>();
 
 		switch (managerFacing) {
 			case NORTH:
