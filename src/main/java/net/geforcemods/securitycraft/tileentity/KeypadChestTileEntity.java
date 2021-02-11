@@ -92,18 +92,9 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-
-		if (tag.contains("passcode"))
-			if(tag.getInt("passcode") != 0)
-				passcode = String.valueOf(tag.getInt("passcode"));
-			else
-				passcode = tag.getString("passcode");
-
-		if (tag.contains("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.contains("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
+		passcode = tag.getString("passcode");
+		owner.setOwnerName(tag.getString("owner"));
+		owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override

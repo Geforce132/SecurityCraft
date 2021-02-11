@@ -55,11 +55,8 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	public void read(CompoundNBT tag){
 		super.read(tag);
 
-		if (tag.contains("passLV"))
-			passLV = tag.getInt("passLV");
-
-		if (tag.contains("requiresExactKeycard"))
-			requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
+		passLV = tag.getInt("passLV");
+		requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
 
 	}
 

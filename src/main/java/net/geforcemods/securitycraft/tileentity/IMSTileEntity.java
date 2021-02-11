@@ -211,14 +211,9 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	public void read(CompoundNBT tag){
 		super.read(tag);
 
-		if (tag.contains("bombsRemaining"))
-			bombsRemaining = tag.getInt("bombsRemaining");
-
-		if (tag.contains("targetingOption"))
-			targetingOption = IMSTargetingMode.values()[tag.getInt("targetingOption")];
-
-		if (tag.contains("updateBombCount"))
-			updateBombCount = tag.getBoolean("updateBombCount");
+		bombsRemaining = tag.getInt("bombsRemaining");
+		targetingOption = IMSTargetingMode.values()[tag.getInt("targetingOption")];
+		updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
 	public void setBombsRemaining(int bombsRemaining) {
