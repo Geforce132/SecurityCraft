@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
@@ -281,6 +282,22 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 		if(connectedScanner != null && connectedScanner.hasModule(module))
 			connectedScanner.removeModule(module);
+
+		if(module == ModuleType.STORAGE)
+		{
+			for(int i = 10; i < getSizeInventory(); i++) //first 10 slots (0-9) are the prohibited slots
+			{
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), getContents().get(i));
+			}
+
+			if(connectedScanner != null)
+			{
+				for(int i = 0; i < connectedScanner.getContents().size(); i++)
+				{
+					connectedScanner.getContents().set(i, ItemStack.EMPTY);
+				}
+			}
+		}
 	}
 
 	@Override

@@ -27,6 +27,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -711,6 +712,15 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 		if(enabled && module == ModuleType.DISGUISE)
 			setWalls(true);
+		else if(module == ModuleType.STORAGE)
+		{
+			getStorageHandler().ifPresent(handler -> {
+				for(int i = 0; i < handler.getSlots(); i++)
+				{
+					InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
+				}
+			});
+		}
 	}
 
 	@Override
