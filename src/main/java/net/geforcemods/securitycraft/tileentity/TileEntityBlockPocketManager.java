@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockQuartz.EnumType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -707,6 +708,15 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 		if(enabled && module == EnumModuleType.DISGUISE)
 			setWalls(true);
+		else if(module == EnumModuleType.STORAGE)
+		{
+			IItemHandler handler = getStorageHandler();
+
+			for(int i = 0; i < handler.getSlots(); i++)
+			{
+				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
+			}
+		}
 	}
 
 	@Override

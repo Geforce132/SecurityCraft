@@ -209,7 +209,6 @@ public class BlockInventoryScanner extends BlockDisguisable {
 			}
 		}
 
-
 		if(connectedScanner != null)
 		{
 			for(int i = 0; i < connectedScanner.getContents().size(); i++)

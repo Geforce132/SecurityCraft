@@ -29,6 +29,7 @@
 - Change: Some customizable options have been adapted to allow for finer control
 - Change: Reinforced Iron Bars spawned by a Cage Trap no longer drop
 - Change: If not in creative mode, auto-assembling the Block Pocket now only works if the proper building materials are provided in the Block Pocket Manager's inventory (accessible by adding a Storage Module)
+- Change: Removing a Storage Module from an Inventory Scanner or Block Pocket Manager will now drop the contents of the block
 - API: Added hook for mods to alter if the Sentry can attack their entities. For more info, see IAttackTargetCheck
 - API: Added hook for mods to add a way to have their own blocks be convertible to password-protected variants. For more info, see IPasswordConvertible
 - API: Inter mod communications related code has been moved to the SecurityCraftAPI class
