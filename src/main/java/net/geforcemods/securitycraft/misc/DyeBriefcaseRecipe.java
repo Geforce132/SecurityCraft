@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.minecraft.inventory.InventoryCrafting;
@@ -20,7 +19,7 @@ public class DyeBriefcaseRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 	public boolean matches(InventoryCrafting inv, World world)
 	{
 		ItemStack stack = ItemStack.EMPTY;
-		List<ItemStack> list = Lists.<ItemStack>newArrayList();
+		List<ItemStack> list = new ArrayList<>();
 
 		for (int i = 0; i < inv.getSizeInventory(); ++i)
 		{
