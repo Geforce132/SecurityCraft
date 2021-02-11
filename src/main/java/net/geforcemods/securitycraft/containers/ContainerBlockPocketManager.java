@@ -40,9 +40,9 @@ public class ContainerBlockPocketManager extends Container
 			IItemHandler storage = te.getStorageHandler();
 			int slotId = 0;
 
-			for(int x = 0; x < 7; x++)
+			for(int y = 0; y < 8; y++)
 			{
-				for(int y = 0; y < 8; y++)
+				for(int x = 0; x < 7; x++)
 				{
 					addSlotToContainer(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
 				}
