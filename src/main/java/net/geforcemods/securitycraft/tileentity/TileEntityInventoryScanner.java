@@ -58,8 +58,7 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 				inventoryContents.set(slot, new ItemStack(stackTag));
 		}
 
-		if(tag.hasKey("cooldown"))
-			cooldown = tag.getInteger("cooldown");
+		cooldown = tag.getInteger("cooldown");
 	}
 
 	@Override

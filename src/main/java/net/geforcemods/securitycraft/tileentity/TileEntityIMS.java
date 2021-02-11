@@ -194,15 +194,9 @@ public class TileEntityIMS extends CustomizableSCTE {
 	@Override
 	public void readFromNBT(NBTTagCompound tag){
 		super.readFromNBT(tag);
-
-		if (tag.hasKey("bombsRemaining"))
-			bombsRemaining = tag.getInteger("bombsRemaining");
-
-		if (tag.hasKey("targetingOption"))
-			targetingOption = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
-
-		if (tag.hasKey("updateBombCount"))
-			updateBombCount = tag.getBoolean("updateBombCount");
+		bombsRemaining = tag.getInteger("bombsRemaining");
+		targetingOption = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
+		updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
 	public int getBombsRemaining() {

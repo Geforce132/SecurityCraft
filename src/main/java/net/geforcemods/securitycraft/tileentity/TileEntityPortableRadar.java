@@ -89,12 +89,8 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-
-		if (tag.hasKey("shouldSendNewMessage"))
-			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
-
-		if (tag.hasKey("lastPlayerName"))
-			lastPlayerName = tag.getString("lastPlayerName");
+		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
+		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
 	public boolean shouldSendMessage(EntityPlayer player) {

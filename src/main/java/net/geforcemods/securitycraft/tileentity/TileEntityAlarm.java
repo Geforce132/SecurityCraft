@@ -58,12 +58,8 @@ public class TileEntityAlarm extends CustomizableSCTE {
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-
-		if (tag.hasKey("cooldown"))
-			cooldown = tag.getInteger("cooldown");
-
-		if (tag.hasKey("isPowered"))
-			isPowered = tag.getBoolean("isPowered");
+		cooldown = tag.getInteger("cooldown");
+		isPowered = tag.getBoolean("isPowered");
 
 	}
 

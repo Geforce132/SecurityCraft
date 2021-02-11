@@ -32,7 +32,6 @@ import net.minecraft.server.management.PlayerProfileCache;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 
@@ -123,8 +122,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-		if(tag.hasKey("ownerProfile", Constants.NBT.TAG_COMPOUND))
-			ownerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag("ownerProfile"));
+		ownerProfile = NBTUtil.readGameProfileFromNBT(tag.getCompoundTag("ownerProfile"));
 	}
 
 	@Nullable

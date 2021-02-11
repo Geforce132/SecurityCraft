@@ -378,47 +378,23 @@ public class EntitySecurityCamera extends Entity{
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag){
 		tag.setInteger("CameraID", id);
-
-		if(playerViewingName != null)
-			tag.setString("playerName", playerViewingName);
-
-		if(cameraUseX != 0.0D)
-			tag.setDouble("cameraUseX", cameraUseX);
-
-		if(cameraUseY != 0.0D)
-			tag.setDouble("cameraUseY", cameraUseY);
-
-		if(cameraUseZ != 0.0D)
-			tag.setDouble("cameraUseZ", cameraUseZ);
-
-		if(cameraUseYaw != 0.0D)
-			tag.setDouble("cameraUseYaw", cameraUseYaw);
-
-		if(cameraUsePitch != 0.0D)
-			tag.setDouble("cameraUsePitch", cameraUsePitch);
+		tag.setString("playerName", playerViewingName);
+		tag.setDouble("cameraUseX", cameraUseX);
+		tag.setDouble("cameraUseY", cameraUseY);
+		tag.setDouble("cameraUseZ", cameraUseZ);
+		tag.setDouble("cameraUseYaw", cameraUseYaw);
+		tag.setDouble("cameraUsePitch", cameraUsePitch);
 	}
 
 	@Override
 	public void readEntityFromNBT(NBTTagCompound tag){
 		id = tag.getInteger("CameraID");
-
-		if(tag.hasKey("playerName"))
-			playerViewingName = tag.getString("playerName");
-
-		if(tag.hasKey("cameraUseX"))
-			cameraUseX = tag.getDouble("cameraUseX");
-
-		if(tag.hasKey("cameraUseY"))
-			cameraUseY = tag.getDouble("cameraUseY");
-
-		if(tag.hasKey("cameraUseZ"))
-			cameraUseZ = tag.getDouble("cameraUseZ");
-
-		if(tag.hasKey("cameraUseYaw"))
-			cameraUseYaw = tag.getFloat("cameraUseYaw");
-
-		if(tag.hasKey("cameraUsePitch"))
-			cameraUsePitch = tag.getFloat("cameraUsePitch");
+		playerViewingName = tag.getString("playerName");
+		cameraUseX = tag.getDouble("cameraUseX");
+		cameraUseY = tag.getDouble("cameraUseY");
+		cameraUseZ = tag.getDouble("cameraUseZ");
+		cameraUseYaw = tag.getFloat("cameraUseYaw");
+		cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 
 }

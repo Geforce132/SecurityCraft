@@ -38,13 +38,8 @@ public class TileEntityReinforcedHopper extends TileEntityHopper implements IOwn
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-
-		if (tag.hasKey("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.hasKey("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
-
+		owner.setOwnerName(tag.getString("owner"));
+		owner.setOwnerUUID(tag.getString("ownerUUID"));
 		modules = readModuleInventory(tag);
 	}
 

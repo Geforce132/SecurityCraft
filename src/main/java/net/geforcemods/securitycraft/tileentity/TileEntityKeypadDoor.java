@@ -36,12 +36,7 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 	public void readFromNBT(NBTTagCompound tag)
 	{
 		super.readFromNBT(tag);
-
-		if (tag.hasKey("passcode"))
-			if(tag.getInteger("passcode") != 0)
-				passcode = String.valueOf(tag.getInteger("passcode"));
-			else
-				passcode = tag.getString("passcode");
+		passcode = tag.getString("passcode");
 	}
 
 	@Override

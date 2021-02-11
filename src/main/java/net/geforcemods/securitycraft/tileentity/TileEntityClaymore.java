@@ -108,18 +108,10 @@ public class TileEntityClaymore extends CustomizableSCTE
 		super.readFromNBT(tag);
 
 		readOptions(tag);
-
-		if (tag.hasKey("cooldown"))
-			cooldown = tag.getInteger("cooldown");
-
-		if (tag.hasKey("entityX"))
-			entityX = tag.getDouble("entityX");
-
-		if (tag.hasKey("entityY"))
-			entityY = tag.getDouble("entityY");
-
-		if (tag.hasKey("entityZ"))
-			entityZ = tag.getDouble("entityZ");
+		cooldown = tag.getInteger("cooldown");
+		entityX = tag.getDouble("entityX");
+		entityY = tag.getDouble("entityY");
+		entityZ = tag.getDouble("entityZ");
 	}
 
 	@Override

@@ -42,12 +42,8 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 	@Override
 	public void readFromNBT(NBTTagCompound tag){
 		super.readFromNBT(tag);
-
-		if (tag.hasKey("passLV"))
-			passLV = tag.getInteger("passLV");
-
-		if (tag.hasKey("requiresExactKeycard"))
-			requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
+		passLV = tag.getInteger("passLV");
+		requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
 
 	}
 

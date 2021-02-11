@@ -53,12 +53,8 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-
-		if (tag.hasKey("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.hasKey("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.setOwnerName(tag.getString("owner"));
+		owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override

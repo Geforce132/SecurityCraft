@@ -167,9 +167,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 		totalCookTime = tag.getShort("CookTimeTotal");
 		currentItemBurnTime = TileEntityFurnace.getItemBurnTime(furnaceItemStacks.get(1));
 		passcode = tag.getString("passcode");
-
-		if (tag.hasKey("CustomName", 8))
-			furnaceCustomName = tag.getString("CustomName");
+		furnaceCustomName = tag.getString("CustomName");
 	}
 
 	@Override
