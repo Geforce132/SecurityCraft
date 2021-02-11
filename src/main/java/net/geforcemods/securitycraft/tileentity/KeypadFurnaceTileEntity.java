@@ -92,7 +92,6 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		owner.setOwnerUUID(tag.getString("ownerUUID"));
 		passcode = tag.getString("passcode");
 		furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
-
 	}
 
 	@Override
