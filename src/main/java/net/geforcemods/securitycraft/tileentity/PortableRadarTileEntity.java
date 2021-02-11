@@ -107,11 +107,8 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 	{
 		super.read(state, tag);
 
-		if (tag.contains("shouldSendNewMessage"))
-			shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
-
-		if (tag.contains("lastPlayerName"))
-			lastPlayerName = tag.getString("lastPlayerName");
+		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
+		lastPlayerName = tag.getString("lastPlayerName");
 	}
 
 	public boolean shouldSendMessage(PlayerEntity player) {

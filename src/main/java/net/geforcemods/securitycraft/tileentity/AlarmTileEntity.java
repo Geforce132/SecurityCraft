@@ -72,11 +72,8 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	{
 		super.read(state, tag);
 
-		if (tag.contains("cooldown"))
-			cooldown = tag.getInt("cooldown");
-
-		if (tag.contains("isPowered"))
-			isPowered = tag.getBoolean("isPowered");
+		cooldown = tag.getInt("cooldown");
+		isPowered = tag.getBoolean("isPowered");
 
 	}
 

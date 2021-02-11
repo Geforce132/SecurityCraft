@@ -40,7 +40,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -77,9 +76,8 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 		if(passcode != null && !passcode.isEmpty())
 			tag.putString("passcode", passcode);
 
-		if(tag.contains("CustomName", Constants.NBT.TAG_STRING))
-			furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
-
+		if(hasCustomSCName())
+			tag.putString("CustomName", furnaceCustomName.getString());
 		return tag;
 	}
 
@@ -90,18 +88,11 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
+		owner.setOwnerName(tag.getString("owner"));
+		owner.setOwnerUUID(tag.getString("ownerUUID"));
+		passcode = tag.getString("passcode");
+		furnaceCustomName = new StringTextComponent(tag.getString("CustomName"));
 
-		if(tag.contains("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if(tag.contains("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
-
-		if(tag.contains("passcode"))
-			passcode = tag.getString("passcode");
-
-		if(hasCustomSCName())
-			tag.putString("CustomName", furnaceCustomName.getString());
 	}
 
 	@Override

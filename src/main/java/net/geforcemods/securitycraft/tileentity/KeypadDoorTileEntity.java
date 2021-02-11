@@ -49,11 +49,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	{
 		super.read(state, tag);
 
-		if (tag.contains("passcode"))
-			if(tag.getInt("passcode") != 0)
-				passcode = String.valueOf(tag.getInt("passcode"));
-			else
-				passcode = tag.getString("passcode");
+		passcode = tag.getString("passcode");
 	}
 
 	@Override

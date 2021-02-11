@@ -112,18 +112,10 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 		super.read(state, tag);
 
 		readOptions(tag);
-
-		if (tag.contains("cooldown"))
-			cooldown = tag.getInt("cooldown");
-
-		if (tag.contains("entityX"))
-			entityX = tag.getDouble("entityX");
-
-		if (tag.contains("entityY"))
-			entityY = tag.getDouble("entityY");
-
-		if (tag.contains("entityZ"))
-			entityZ = tag.getDouble("entityZ");
+		cooldown = tag.getInt("cooldown");
+		entityX = tag.getDouble("entityX");
+		entityY = tag.getDouble("entityY");
+		entityZ = tag.getDouble("entityZ");
 	}
 
 	@Override

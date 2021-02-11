@@ -64,12 +64,8 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
-
-		if (tag.contains("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if (tag.contains("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
+		owner.setOwnerName(tag.getString("owner"));
+		owner.setOwnerUUID(tag.getString("ownerUUID"));
 	}
 
 	@Override

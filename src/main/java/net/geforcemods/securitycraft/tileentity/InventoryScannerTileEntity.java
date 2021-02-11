@@ -70,8 +70,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 				inventoryContents.set(slot, ItemStack.read(stackTag));
 		}
 
-		if(tag.contains("cooldown"))
-			cooldown = tag.getInt("cooldown");
+		cooldown = tag.getInt("cooldown");
 	}
 
 	@Override

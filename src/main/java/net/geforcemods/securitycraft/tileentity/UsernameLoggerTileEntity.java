@@ -111,14 +111,9 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 		for(int i = 0; i < players.length; i++)
 		{
-			if(tag.contains("player" + i))
-				players[i] = tag.getString("player" + i);
-
-			if(tag.contains("uuid" + i))
-				uuids[i] = tag.getString("uuid" + i);
-
-			if(tag.contains("timestamp" + i))
-				timestamps[i] = tag.getLong("timestamp" + i);
+			players[i] = tag.getString("player" + i);
+			uuids[i] = tag.getString("uuid" + i);
+			timestamps[i] = tag.getLong("timestamp" + i);
 		}
 	}
 
