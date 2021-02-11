@@ -19,7 +19,7 @@ public interface IExtractionBlock
 	/**
 	 * The protected block uses this to check if this block can extract items
 	 *
-	 * @param te The tile entity of tje protected block
+	 * @param te The tile entity of the protected block
 	 * @param world The world that the protected block is in
 	 * @param pos The position of the block that is trying to extract items
 	 * @param state The state of the block that is trying to extract items
