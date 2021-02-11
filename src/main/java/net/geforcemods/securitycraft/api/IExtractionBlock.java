@@ -15,10 +15,10 @@ import net.minecraft.world.World;
 public interface IExtractionBlock
 {
 	/**
-	 * The password-protected chest/furnace use this to check if this block can extract items
+	 * The protected block uses this to check if this block can extract items
 	 *
-	 * @param te The password-protected chest/furnace
-	 * @param world The world that the password-protected chest/furnace is in
+	 * @param te The tile entity of the protected block
+	 * @param world The world that the protected block is in
 	 * @param pos The position of the block that is trying to extract items
 	 * @param state The state of the block that is trying to extract items
 	 * @return true if extraction is possible, false otherwise
