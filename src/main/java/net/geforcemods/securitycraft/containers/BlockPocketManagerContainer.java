@@ -49,9 +49,9 @@ public class BlockPocketManagerContainer extends Container
 			te.getStorageHandler().ifPresent(storage -> {
 				int slotId = 0;
 
-				for(int x = 0; x < 7; x++)
+				for(int y = 0; y < 8; y++)
 				{
-					for(int y = 0; y < 8; y++)
+					for(int x = 0; x < 7; x++)
 					{
 						addSlot(new SlotItemHandler(storage, slotId++, 124 + x * 18, 8 + y * 18));
 					}
