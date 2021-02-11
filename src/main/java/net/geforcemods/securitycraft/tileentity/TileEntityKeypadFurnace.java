@@ -2,12 +2,10 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
-import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
 import net.geforcemods.securitycraft.gui.GuiHandler;
@@ -31,7 +29,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
@@ -42,11 +39,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable {
 
-	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private IItemHandler insertOnlyHandler;
 	private static final int[] slotsTop = new int[] {0};
 	private static final int[] slotsBottom = new int[] {2, 1};
@@ -471,25 +466,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
-			if(facing == null)
-				return (T) EMPTY_INVENTORY;
-
-			BlockPos offsetPos = pos.offset(facing);
-			IBlockState state = world.getBlockState(offsetPos);
-
-			for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
-			{
-				if(state.getBlock() == extractionBlock.getBlock())
-				{
-					if(!extractionBlock.canExtract(this, world, offsetPos, state))
-						return (T) EMPTY_INVENTORY;
-					else return super.getCapability(capability, facing);
-				}
-			}
-
-			return (T) getInsertOnlyHandler();
-		}
+			return (T)BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
 		else return super.getCapability(capability, facing);
 	}
 

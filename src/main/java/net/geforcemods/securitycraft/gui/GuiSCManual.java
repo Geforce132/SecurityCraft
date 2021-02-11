@@ -365,7 +365,7 @@ public class GuiSCManual extends GuiScreen {
 						break outer;
 
 					if(recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
-						hoverCheckers.add(new StackHoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16, recipe.get((i * 3) + j).getMatchingStacks()[0]));
+						hoverCheckers.add(new StackHoverChecker(recipe.get((i * 3) + j).getMatchingStacks()[0], 144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16));
 				}
 			}
 		}

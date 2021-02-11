@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Defines a block that can extract from a password-protected chest and furnace.
+ * Defines a block that can extract from a Password-protected Chest, Password-protected Furnace, and Block Pocket Manager.
  * Call <pre>FMLInterModComms.sendFunctionMessage("securitycraft", SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, "your.package.ClassThatImplementsIExtractionBlock");</pre>
  * during FMLInitializationEvent to register this with SecurityCraft.<br>
  * Do note, that you also need to implement Function<Object,IExtractionBlock> on the class that you send via IMC. You can just return <code>this</code>
@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 public interface IExtractionBlock
 {
 	/**
-	 * The password-protected chest/furnace use this to check if this block can extract items
+	 * The protected block uses this to check if this block can extract items
 	 *
-	 * @param te The password-protected chest/furnace
-	 * @param world The world that the password-protected chest/furnace is in
+	 * @param te The tile entity of tje protected block
+	 * @param world The world that the protected block is in
 	 * @param pos The position of the block that is trying to extract items
 	 * @param state The state of the block that is trying to extract items
 	 * @return true if extraction is possible, false otherwise

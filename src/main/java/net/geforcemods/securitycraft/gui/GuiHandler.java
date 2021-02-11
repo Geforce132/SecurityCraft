@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.containers.ContainerBlockPocketManager;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
 import net.geforcemods.securitycraft.containers.ContainerBriefcase;
 import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
@@ -108,7 +109,9 @@ public class GuiHandler implements IGuiHandler {
 			case MODULES:
 				return new ContainerGeneric(player.inventory, te);
 			case BLOCK_POCKET_MANAGER:
-				return new ContainerGeneric(player.inventory, te);
+				if(te instanceof TileEntityBlockPocketManager)
+					return new ContainerBlockPocketManager(player.inventory, (TileEntityBlockPocketManager)te);
+				return null;
 			case PROJECTOR:
 				if(te instanceof TileEntityProjector)
 					return new ContainerProjector(player.inventory, (TileEntityProjector)te);
@@ -185,7 +188,7 @@ public class GuiHandler implements IGuiHandler {
 				return null;
 			case BLOCK_POCKET_MANAGER:
 				if(te instanceof TileEntityBlockPocketManager)
-					return new GuiBlockPocketManager((TileEntityBlockPocketManager)te);
+					return new GuiBlockPocketManager(player.inventory, (TileEntityBlockPocketManager)te);
 				return null;
 			case PROJECTOR:
 				if(te instanceof TileEntityProjector)

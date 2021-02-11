@@ -135,7 +135,7 @@ public class GuiMRAT extends GuiContainer{
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 				line = ClientUtils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
 			else
-				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations").getFormattedText().replace("#location", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])));
+				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).getFormattedText();
 
 			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}

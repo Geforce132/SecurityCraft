@@ -11,14 +11,15 @@ import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;
+import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.packets.PacketSAssembleBlockPocket;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockQuartz.EnumType;
-import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
@@ -31,10 +32,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityBlockPocketManager extends CustomizableSCTE
 {
@@ -48,6 +51,9 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	private List<BlockPos> blocks = new ArrayList<>();
 	private List<BlockPos> walls = new ArrayList<>();
 	private List<BlockPos> floor = new ArrayList<>();
+	protected NonNullList<ItemStack> storage = NonNullList.withSize(56, ItemStack.EMPTY);
+	private IItemHandler storageHandler;
+	private IItemHandler insertOnlyHandler;
 
 	/**
 	 * Enables the block pocket
@@ -74,11 +80,25 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			int xi = lowest;
 			int yi = lowest;
 			int zi = lowest;
+			int offset = 0;
 
-			while(world.getBlockState(pos = pos.offset(left)).getBlock() instanceof BlockReinforcedCrystalQuartz) //find the bottom left corner
-				;
+			if(!(world.getBlockState(pos.offset(left)).getBlock() instanceof BlockReinforcedCrystalQuartz)) //when the block left of the manager is not a Block Pocket block (so the manager was just placed down), take the autoBuildOffset
+				pos = pos.offset(left, offset = -autoBuildOffset + (size / 2));
+			else
+			{
+				for(int i = 1; i < size - 1; i++) //find the bottom left corner
+				{
+					if(!(world.getBlockState(pos.offset(left, i)).getValue(BlockReinforcedCrystalQuartz.VARIANT).getMetadata() >= 2)) //pillars
+					{
+						pos = pos.offset(left, offset = i);
+						break;
+					}
+				}
 
-			pos = pos.offset(right); //pos got offset one too far (which made the while loop above stop) so it needs to be corrected
+				if(offset == 0) //when the bottom left corner couldn't be evaluated, take the autoBuildOffset
+					pos = pos.offset(left, offset = -autoBuildOffset + (size / 2));
+			}
+
 			startingPos = pos.toImmutable();
 
 			//looping through cube level by level
@@ -108,7 +128,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							{
 								if(!(currentState.getBlock() instanceof BlockReinforcedCrystalQuartz) || currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != EnumType.CHISELED)
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CHISELED_CRYSTAL_QUARTZ.getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CHISELED_CRYSTAL_QUARTZ.getTranslationKey() + ".name"));
 							}
 							//checking the sides parallel to the block pocket manager
 							else if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
@@ -118,10 +138,10 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 								if(currentState.getBlock() instanceof BlockReinforcedCrystalQuartz)
 								{
 									if(currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != typeToCheckFor)
-										return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+										return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 								}
 								else
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
 							}
 							//checking the sides orthogonal to the block pocket manager
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
@@ -131,16 +151,16 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 								if(currentState.getBlock() instanceof BlockReinforcedCrystalQuartz)
 								{
 									if(currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != typeToCheckFor)
-										return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+										return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 								}
 								else
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
 							}
 							//checking the middle plane
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
 
 								floor.add(currentPos);
 								sides.add(currentPos);
@@ -152,10 +172,10 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							if(currentState.getBlock() instanceof BlockReinforcedCrystalQuartz)
 							{
 								if(currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != EnumType.LINES_Y)
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock.rotation", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 							}
 							else
-								return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
+								return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(REINFORCED_CRYSTAL_QUARTZ_PILLAR.getTranslationKey() + ".name"));
 						}
 						//checking the walls
 						else if(yi > lowest && yi < highest)
@@ -164,7 +184,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
 
 								sides.add(currentPos);
 							}
@@ -172,7 +192,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.invalidBlock", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"), new TextComponentTranslation(SCContent.blockPocketWall.getTranslationKey() + ".name"));
 
 								sides.add(currentPos);
 							}
@@ -181,7 +201,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 						TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(currentPos);
 
 						if(!getOwner().owns(te))
-							return new TextComponentTranslation("messages.securitycraft:blockpocket.unowned", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+							return new TextComponentTranslation("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 						else
 							blocks.add(currentPos);
 
@@ -202,6 +222,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			this.walls = sides;
 			this.floor = floor;
 			enabled = true;
+			autoBuildOffset = -offset + (size / 2);
 
 			for(BlockPos blockPos : blocks)
 			{
@@ -225,7 +246,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 	/**
 	 * Auto-assembles the Block Pocket for a player.
-	 * First it makes sure that the space isn't occupied, then it checks the inventory of the player for the required items, then it places the blocks.
+	 * First it makes sure that the space isn't occupied, then it checks its inventory for the required items, then it places the blocks.
 	 * @param player The player that opened the screen, used to check if the player is in creative or not
 	 * @return The feedback message. null if none should be sent.
 	 */
@@ -281,7 +302,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							{
 								if(!(currentState.getBlock() instanceof BlockReinforcedCrystalQuartz && currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) == EnumType.CHISELED) && !(currentState.getMaterial().isReplaceable()))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 								if(currentState.getMaterial().isReplaceable())
 									chiseledNeeded++;
@@ -292,7 +313,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 								EnumType typeToCheckFor = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_X : EnumType.LINES_Z;
 
 								if(!isReinforcedCrystalQuartzPillar(currentState) && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() instanceof BlockReinforcedCrystalQuartz && currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != typeToCheckFor))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 								if(currentState.getMaterial().isReplaceable())
 									pillarsNeeded++;
@@ -303,7 +324,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 								EnumType typeToCheckFor = managerFacing == EnumFacing.NORTH || managerFacing == EnumFacing.SOUTH ? EnumType.LINES_Z : EnumType.LINES_X;
 
 								if(!isReinforcedCrystalQuartzPillar(currentState) && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() instanceof BlockReinforcedCrystalQuartz && currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != typeToCheckFor))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 								if(currentState.getMaterial().isReplaceable())
 									pillarsNeeded++;
@@ -312,7 +333,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall) && !(currentState.getMaterial().isReplaceable()))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 								if(currentState.getMaterial().isReplaceable())
 									wallsNeeded++;
@@ -322,7 +343,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 						else if(yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 						{
 							if(!isReinforcedCrystalQuartzPillar(currentState) && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() instanceof BlockReinforcedCrystalQuartz && currentState.getValue(BlockReinforcedCrystalQuartz.VARIANT) != EnumType.LINES_Y))
-								return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+								return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 							if(currentState.getMaterial().isReplaceable())
 								pillarsNeeded++;
@@ -334,7 +355,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall) && !(currentState.getMaterial().isReplaceable()))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 								if(currentState.getMaterial().isReplaceable())
 									wallsNeeded++;
@@ -343,7 +364,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
 								if(!(currentState.getBlock() instanceof BlockBlockPocketWall) && !(currentState.getMaterial().isReplaceable()))
-									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+									return new TextComponentTranslation("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 
 								if(currentState.getMaterial().isReplaceable())
 									wallsNeeded++;
@@ -355,7 +376,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 							TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(currentPos);
 
 							if(!getOwner().owns(te))
-								return new TextComponentTranslation("messages.securitycraft:blockpocket.unowned", currentPos, new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
+								return new TextComponentTranslation("messages.securitycraft:blockpocket.unowned", getFormattedRelativeCoordinates(currentPos, managerFacing), new TextComponentTranslation(currentState.getBlock().getItem(world, currentPos, currentState).getTranslationKey() + ".name"));
 						}
 
 						xi++;
@@ -374,13 +395,10 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TextComponentTranslation("messages.securitycraft:blockpocket.alreadyAssembled");
 
-			//Step 2: if the player isn't in creative, it is checked if they have enough items to build the BP. If so, they're removed
+			//Step 2: if the player isn't in creative, take out the items that are used for assembling the BP. If there aren't enough items, the assemble button in the screen is turned off
 			if(!player.isCreative())
 			{
-				int chiseledFound = 0;
-				int pillarsFound = 0;
-				int wallsFound = 0;
-				NonNullList<ItemStack> inventory = player.inventory.mainInventory;
+				NonNullList<ItemStack> inventory = storage;
 
 				for(int i = 1; i <= inventory.size(); i++)
 				{
@@ -389,149 +407,9 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof ItemBlock)
 					{
 						Block block = ((ItemBlock)stackToCheck.getItem()).getBlock();
-
-						if(block instanceof BlockShulkerBox && stackToCheck.hasTagCompound()) //there has to be a check for shulker boxes, otherwise the huge BPs that take 4000 blocks to build couldn't be auto-assembled due to lack of inventory space
-						{
-							NonNullList<ItemStack> contents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-
-							ItemStackHelper.loadAllItems(stackToCheck.getTagCompound().getCompoundTag("BlockEntityTag"), contents);
-
-							for(ItemStack boxStack : contents)
-							{
-								if(!(boxStack.getItem() instanceof ItemBlock))
-									continue;
-
-								block = ((ItemBlock)boxStack.getItem()).getBlock();
-
-								if(block == SCContent.blockPocketWall)
-									wallsFound += boxStack.getCount();
-								else if(block == SCContent.reinforcedCrystalQuartz && boxStack.getMetadata() == 1)
-									chiseledFound += boxStack.getCount();
-								else if(block == SCContent.reinforcedCrystalQuartz && boxStack.getMetadata() == 2)
-									pillarsFound += boxStack.getCount();
-							}
-						}
-						else if(block == SCContent.blockPocketWall)
-							wallsFound += stackToCheck.getCount();
-						else if(block == SCContent.reinforcedCrystalQuartz && stackToCheck.getMetadata() == 1)
-							chiseledFound += stackToCheck.getCount();
-						else if(block == SCContent.reinforcedCrystalQuartz && stackToCheck.getMetadata() == 2)
-							pillarsFound += stackToCheck.getCount();
-					}
-				}
-
-				if(chiseledNeeded > chiseledFound || pillarsNeeded > pillarsFound || wallsNeeded > wallsFound)
-				{
-					TextComponentTranslation text = new TextComponentTranslation("messages.securitycraft:blockpocket.notEnoughItems");
-					TextComponentString missing = new TextComponentString("");
-
-					if(chiseledNeeded > chiseledFound)
-						missing.appendSibling(new TextComponentString((chiseledNeeded - chiseledFound) + " ").setStyle(new Style().setColor(TextFormatting.GRAY)))
-						.appendSibling(ClientUtils.localize("tile.securitycraft:reinforcedCrystalQuartz_chiseled.name"));
-
-					if(pillarsNeeded > pillarsFound)
-					{
-						if(!missing.getSiblings().isEmpty())
-							missing.appendText(" | ");
-
-						missing.appendSibling(new TextComponentString((pillarsNeeded - pillarsFound) + " ").setStyle(new Style().setColor(TextFormatting.GRAY)))
-						.appendSibling(ClientUtils.localize("tile.securitycraft:reinforcedCrystalQuartz_pillar.name"));
-					}
-
-					if(wallsNeeded > wallsFound)
-					{
-						if(!missing.getSiblings().isEmpty())
-							missing.appendText(" | ");
-
-						missing.appendSibling(new TextComponentString((wallsNeeded - wallsFound) + " ").setStyle(new Style().setColor(TextFormatting.GRAY)))
-						.appendSibling(ClientUtils.localize(SCContent.blockPocketWall.getTranslationKey() + ".name"));
-					}
-
-					return text.appendSibling(missing);
-				}
-
-				for(int i = 1; i <= inventory.size(); i++) //actually take out the items that are used for assembling the BP
-				{
-					ItemStack stackToCheck = inventory.get(i - 1);
-
-					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof ItemBlock)
-					{
-						Block block = ((ItemBlock)stackToCheck.getItem()).getBlock();
 						int count = stackToCheck.getCount();
 
-						if(block instanceof BlockShulkerBox && stackToCheck.hasTagCompound())
-						{
-							NBTTagCompound stackTag = stackToCheck.getTagCompound();
-							NBTTagCompound blockEntityTag = stackTag.getCompoundTag("BlockEntityTag");
-							NonNullList<ItemStack> contents = NonNullList.<ItemStack>withSize(27, ItemStack.EMPTY);
-
-							ItemStackHelper.loadAllItems(blockEntityTag, contents);
-
-							for(int j = 0; j < contents.size(); j++)
-							{
-								ItemStack boxStack = contents.get(j);
-
-								if(!(boxStack.getItem() instanceof ItemBlock))
-									continue;
-
-								block = ((ItemBlock)boxStack.getItem()).getBlock();
-								count = boxStack.getCount();
-
-								if(block == SCContent.blockPocketWall)
-								{
-									if(count <= wallsNeeded)
-									{
-										contents.set(j, ItemStack.EMPTY);
-										wallsNeeded -= count;
-									}
-									else
-									{
-										while(wallsNeeded != 0)
-										{
-											boxStack.shrink(1);
-											wallsNeeded--;
-										}
-									}
-								}
-								else if(block == SCContent.reinforcedCrystalQuartz && boxStack.getMetadata() == 1)
-								{
-									if(count <= chiseledNeeded)
-									{
-										contents.set(j, ItemStack.EMPTY);
-										chiseledNeeded -= count;
-									}
-									else
-									{
-										while(chiseledNeeded != 0)
-										{
-											boxStack.shrink(1);
-											chiseledNeeded--;
-										}
-									}
-								}
-								else if(block == SCContent.reinforcedCrystalQuartz && boxStack.getMetadata() == 2)
-								{
-									if(count <= pillarsNeeded)
-									{
-										contents.set(j, ItemStack.EMPTY);
-										pillarsNeeded -= count;
-									}
-									else
-									{
-										while(pillarsNeeded != 0)
-										{
-											boxStack.shrink(1);
-											pillarsNeeded--;
-										}
-									}
-								}
-							}
-
-							ItemStackHelper.saveAllItems(blockEntityTag, contents);
-							stackTag.setTag("BlockEntityTag", blockEntityTag);
-							stackToCheck.setTagCompound(stackTag);
-						} //shulker box end
-						else if(block == SCContent.blockPocketWall)
+						if(block == SCContent.blockPocketWall)
 						{
 							if(count <= wallsNeeded)
 							{
@@ -594,7 +472,8 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			yi = lowest;
 			zi = lowest;
 
-			while(yi < size) //Step 3: placing the blocks and giving them the right owner
+			//Step 3: placing the blocks and giving them the right owner
+			while(yi < size)
 			{
 				while(zi < size)
 				{
@@ -732,6 +611,48 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		}
 	}
 
+	private TextComponentTranslation getFormattedRelativeCoordinates(BlockPos pos, EnumFacing managerFacing)
+	{
+		BlockPos difference = pos.subtract(this.pos);
+		int offsetLeft;
+		int offsetBehind;
+		int offsetAbove = difference.getY();
+		List<TextComponentTranslation> components = new ArrayList<>();
+
+		switch (managerFacing) {
+			case NORTH:
+				offsetBehind = difference.getZ();
+				offsetLeft = difference.getX();
+				break;
+			case SOUTH:
+				offsetBehind = -difference.getZ();
+				offsetLeft = -difference.getX();
+				break;
+			case WEST:
+				offsetBehind = difference.getX();
+				offsetLeft = -difference.getZ();
+				break;
+			case EAST:
+				offsetBehind = -difference.getX();
+				offsetLeft = difference.getZ();
+				break;
+			default: throw new IllegalArgumentException("Invalid Block Pocket Manager direction: " + managerFacing.name());
+		}
+
+		if(offsetLeft > 0)
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
+		else if(offsetLeft < 0)
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
+
+		if(offsetBehind > 0)
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
+
+		if(offsetAbove > 0)
+			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
+
+		return ClientUtils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
+	}
+
 	public void toggleOutline()
 	{
 		showOutline = !showOutline;
@@ -746,6 +667,20 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			if(state.getBlock() instanceof BlockBlockPocketWall)
 				world.setBlockState(pos, state.withProperty(BlockBlockPocketWall.SEE_THROUGH, seeThrough));
 		}
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> cap, EnumFacing side)
+	{
+		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T)BlockUtils.getProtectedCapability(side, this, () -> getStorageHandler(), () -> getInsertOnlyHandler());
+		else return super.getCapability(cap, side);
 	}
 
 	@Override
@@ -781,6 +716,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		tag.setBoolean("ShowOutline", showOutline);
 		tag.setInteger("Size", size);
 		tag.setInteger("AutoBuildOffset", autoBuildOffset);
+		ItemStackHelper.saveAllItems(tag, storage);
 
 		for(int i = 0; i < blocks.size(); i++)
 		{
@@ -810,6 +746,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		showOutline = tag.getBoolean("ShowOutline");
 		size = tag.getInteger("Size");
 		autoBuildOffset = tag.getInteger("AutoBuildOffset");
+		ItemStackHelper.loadAllItems(tag, storage);
 
 		while(tag.hasKey("BlocksList" + i))
 		{
@@ -839,7 +776,8 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	{
 		return new EnumModuleType[] {
 				EnumModuleType.DISGUISE,
-				EnumModuleType.WHITELIST
+				EnumModuleType.WHITELIST,
+				EnumModuleType.STORAGE
 		};
 	}
 
@@ -864,5 +802,49 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			return type == EnumType.LINES_X || type == EnumType.LINES_Y || type == EnumType.LINES_Z;
 		}
 		else return false;
+	}
+
+	public IItemHandler getStorageHandler()
+	{
+		if(storageHandler == null)
+		{
+			storageHandler = new ItemStackHandler(storage) {
+				@Override
+				public boolean isItemValid(int slot, ItemStack stack)
+				{
+					return TileEntityBlockPocketManager.isItemValid(stack);
+				}
+			};
+		}
+
+		return storageHandler;
+	}
+
+	private IItemHandler getInsertOnlyHandler()
+	{
+		if(insertOnlyHandler == null)
+		{
+			insertOnlyHandler = new InsertOnlyItemStackHandler(storage) {
+				@Override
+				public boolean isItemValid(int slot, ItemStack stack)
+				{
+					return TileEntityBlockPocketManager.isItemValid(stack);
+				}
+			};
+		}
+
+		return insertOnlyHandler;
+	}
+
+	public static boolean isItemValid(ItemStack stack)
+	{
+		if(stack.getItem() instanceof ItemBlock)
+		{
+			Block block = ((ItemBlock)stack.getItem()).getBlock();
+
+			return block == SCContent.blockPocketWall || (block == SCContent.reinforcedCrystalQuartz && stack.getMetadata() >= 1);
+		}
+
+		return false;
 	}
 }

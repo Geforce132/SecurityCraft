@@ -2,14 +2,12 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
-import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.inventory.InsertOnlyDoubleChestHandler;
@@ -36,11 +34,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
-	private static final EmptyHandler EMPTY_INVENTORY = new EmptyHandler();
 	private InsertOnlyDoubleChestHandler insertOnlyHandler;
 	private String passcode;
 	private Owner owner = new Owner();
@@ -122,25 +118,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
 	{
 		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-		{
-			if(facing == null)
-				return (T) EMPTY_INVENTORY;
-
-			BlockPos offsetPos = pos.offset(facing);
-			IBlockState state = world.getBlockState(offsetPos);
-
-			for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
-			{
-				if(state.getBlock() == extractionBlock.getBlock())
-				{
-					if(!extractionBlock.canExtract(this, world, offsetPos, state))
-						return (T) EMPTY_INVENTORY;
-					else return super.getCapability(capability, facing);
-				}
-			}
-
-			return (T) getInsertOnlyHandler();
-		}
+			return (T)BlockUtils.getProtectedCapability(facing, this, () -> super.getCapability(capability, facing), () -> getInsertOnlyHandler());
 		else return super.getCapability(capability, facing);
 	}
 

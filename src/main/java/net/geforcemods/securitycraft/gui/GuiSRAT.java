@@ -103,7 +103,7 @@ public class GuiSRAT extends GuiContainer {
 
 						if(sentry.hasCustomName())
 						{
-							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+							String line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
 							int nameWidth = fontRenderer.getStringWidth(sentry.getCustomNameTag());
 							int nameX = guiLeft + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
 							int nameY = guiTop + (i % 6) * 30 + 7;
@@ -172,7 +172,7 @@ public class GuiSRAT extends GuiContainer {
 			else if(names[i] != null)
 				line = names[i];
 			else
-				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
+				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).getFormattedText();
 
 			fontRenderer.drawString(line, xSize / 4 - fontRenderer.getStringWidth(line) + 35 + (i / 6) * xSize / 2, (i % 6) * 30 + 13, 4210752);
 		}

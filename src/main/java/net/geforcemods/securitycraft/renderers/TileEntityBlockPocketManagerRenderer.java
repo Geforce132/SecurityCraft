@@ -31,7 +31,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 		int leftX = -half + offset;
 		int rightX = half + 1 + offset;
 		int frontZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? 0 : 1;
-		int backZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? size : 1 - size + offset;
+		int backZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? size : 1 - size;
 
 		if(facing == EnumFacing.EAST || facing == EnumFacing.WEST) //x- and z-values get switched when the manager's EnumFacing is west or east
 		{

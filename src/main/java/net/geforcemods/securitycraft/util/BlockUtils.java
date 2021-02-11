@@ -3,9 +3,12 @@ package net.geforcemods.securitycraft.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
@@ -29,10 +32,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils{
 	private static final List<Block> PRESSURE_PLATES = Arrays.asList(SCContent.reinforcedStonePressurePlate, SCContent.reinforcedWoodenPressurePlate);
 	private static final List<Block> BUTTONS = Arrays.asList(SCContent.reinforcedStoneButton, SCContent.reinforcedWoodenButton);
+	private static final IItemHandler EMPTY_INVENTORY = new EmptyHandler();
 
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
 		if(shouldUpdate)
@@ -87,9 +93,6 @@ public class BlockUtils{
 		return world.getBlockState(pos).getValue(property);
 	}
 
-	/**
-	 * returns an AABB with corners x1, y1, z1 and x2, y2, z2
-	 */
 	public static AxisAlignedBB fromBounds(double x1, double y1, double z1, double x2, double y2, double z2)
 	{
 		double d6 = Math.min(x1, x2);
@@ -172,5 +175,26 @@ public class BlockUtils{
 		}
 
 		return false;
+	}
+
+	public static <T> T getProtectedCapability(EnumFacing side, TileEntity te, Supplier<T> extractionPermittedHandler, Supplier<T> insertOnlyHandler)
+	{
+		if(side == null)
+			return (T)EMPTY_INVENTORY;
+
+		BlockPos offsetPos = te.getPos().offset(side);
+		IBlockState offsetState = te.getWorld().getBlockState(offsetPos);
+
+		for(IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks())
+		{
+			if(offsetState.getBlock() == extractionBlock.getBlock())
+			{
+				if(!extractionBlock.canExtract((IOwnable)te, te.getWorld(), offsetPos, offsetState))
+					return (T)EMPTY_INVENTORY;
+				else return extractionPermittedHandler.get();
+			}
+		}
+
+		return insertOnlyHandler.get();
 	}
 }
