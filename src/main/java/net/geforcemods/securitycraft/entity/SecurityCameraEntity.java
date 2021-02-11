@@ -370,47 +370,23 @@ public class SecurityCameraEntity extends Entity{
 	@Override
 	public void writeAdditional(CompoundNBT tag){
 		tag.putInt("CameraID", id);
-
-		if(playerViewingName != null)
-			tag.putString("playerName", playerViewingName);
-
-		if(cameraUseX != 0.0D)
-			tag.putDouble("cameraUseX", cameraUseX);
-
-		if(cameraUseY != 0.0D)
-			tag.putDouble("cameraUseY", cameraUseY);
-
-		if(cameraUseZ != 0.0D)
-			tag.putDouble("cameraUseZ", cameraUseZ);
-
-		if(cameraUseYaw != 0.0D)
-			tag.putDouble("cameraUseYaw", cameraUseYaw);
-
-		if(cameraUsePitch != 0.0D)
-			tag.putDouble("cameraUsePitch", cameraUsePitch);
+		tag.putString("playerName", playerViewingName);
+		tag.putDouble("cameraUseX", cameraUseX);
+		tag.putDouble("cameraUseY", cameraUseY);
+		tag.putDouble("cameraUseZ", cameraUseZ);
+		tag.putDouble("cameraUseYaw", cameraUseYaw);
+		tag.putDouble("cameraUsePitch", cameraUsePitch);
 	}
 
 	@Override
 	public void readAdditional(CompoundNBT tag){
 		id = tag.getInt("CameraID");
-
-		if(tag.contains("playerName"))
-			playerViewingName = tag.getString("playerName");
-
-		if(tag.contains("cameraUseX"))
-			cameraUseX = tag.getDouble("cameraUseX");
-
-		if(tag.contains("cameraUseY"))
-			cameraUseY = tag.getDouble("cameraUseY");
-
-		if(tag.contains("cameraUseZ"))
-			cameraUseZ = tag.getDouble("cameraUseZ");
-
-		if(tag.contains("cameraUseYaw"))
-			cameraUseYaw = tag.getFloat("cameraUseYaw");
-
-		if(tag.contains("cameraUsePitch"))
-			cameraUsePitch = tag.getFloat("cameraUsePitch");
+		playerViewingName = tag.getString("playerName");
+		cameraUseX = tag.getDouble("cameraUseX");
+		cameraUseY = tag.getDouble("cameraUseY");
+		cameraUseZ = tag.getDouble("cameraUseZ");
+		cameraUseYaw = tag.getFloat("cameraUseYaw");
+		cameraUsePitch = tag.getFloat("cameraUsePitch");
 	}
 
 	@Override

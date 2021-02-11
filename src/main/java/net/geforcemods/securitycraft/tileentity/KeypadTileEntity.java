@@ -68,11 +68,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	{
 		super.read(tag);
 
-		if (tag.contains("passcode"))
-			if(tag.getInt("passcode") != 0)
-				passcode = String.valueOf(tag.getInt("passcode"));
-			else
-				passcode = tag.getString("passcode");
+		passcode = tag.getString("passcode");
 	}
 
 	@Override

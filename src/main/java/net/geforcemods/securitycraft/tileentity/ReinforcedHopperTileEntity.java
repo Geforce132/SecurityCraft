@@ -77,12 +77,8 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 		if(!checkLootAndRead(tag))
 			ItemStackHelper.loadAllItems(tag, inventory);
 
-		if(tag.contains("owner"))
-			owner.setOwnerName(tag.getString("owner"));
-
-		if(tag.contains("ownerUUID"))
-			owner.setOwnerUUID(tag.getString("ownerUUID"));
-
+		owner.setOwnerName(tag.getString("owner"));
+		owner.setOwnerUUID(tag.getString("ownerUUID"));
 		transferCooldown = tag.getInt("TransferCooldown");
 		modules = readModuleInventory(tag);
 	}
