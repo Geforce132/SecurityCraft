@@ -10,9 +10,7 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
@@ -29,13 +27,9 @@ public class SCJEIPlugin implements IModPlugin
 
 		registry.addAdvancedGuiHandlers(new SlotMover());
 		registry.addIngredientInfo(new ItemStack(SCContent.adminTool), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.adminTool");
-		SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
-			Block original = pc.getOriginalBlock();
-
-			//3rd party mods should handle this themselves
-			if(original.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-				registry.addIngredientInfo(new ItemStack(original), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe." + original.getRegistryName().getPath());
-		});
+		registry.addIngredientInfo(new ItemStack(SCContent.keypad), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad");
+		registry.addIngredientInfo(new ItemStack(SCContent.keypadChest), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_chest");
+		registry.addIngredientInfo(new ItemStack(SCContent.keypadFurnace), VanillaTypes.ITEM, "gui.securitycraft:scManual.recipe.keypad_furnace");
 		IReinforcedBlock.BLOCKS.forEach(rb -> {
 			IReinforcedBlock reinforcedBlock = (IReinforcedBlock)rb;
 
