@@ -77,12 +77,10 @@ public class EntityBouncingBetty extends Entity {
 			motionY *= -0.5D;
 		}
 
-		if (fuse-- <= 0)
+		if (!world.isRemote && fuse-- <= 0)
 		{
 			setDead();
-
-			if (!world.isRemote)
-				explode();
+			explode();
 		}
 		else
 			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX, posY + 0.5D, posZ, 0.0D, 0.0D, 0.0D);

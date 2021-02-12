@@ -69,6 +69,7 @@
 - Fix: The camera's zoom can't be decreased when increased for too long (and vice versa)
 - Fix: The Block Pocket Manager can sometimes allow to activate block pockets that aren't built correctly
 - Fix: Block Pocket Manager outline color is incorrect
+- Fix: Bouncing Betty is invisible after being tripped
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option
