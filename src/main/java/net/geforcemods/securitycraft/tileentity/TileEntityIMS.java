@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
@@ -13,7 +12,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,104 +47,48 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
 	private void launchMine() {
-		boolean launchedMine = false;
-
 		if(bombsRemaining > 0){
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
-			List<?> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e));
-			List<?> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e));
-			Iterator<?> playerIterator = players.iterator();
-			Iterator<?> mobIterator = mobs.iterator();
+			EntityLivingBase target = null;
 
-			// targets players and mobs
-			while(targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS && mobIterator.hasNext()){
-				EntityLivingBase entity = (EntityLivingBase) mobIterator.next();
-				int launchHeight = getLaunchHeight();
+			if((targetingOption == EnumIMSTargetingMode.MOBS || targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS))
+			{
+				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(PlayerUtils.isPlayerMountedOnCamera(entity))
-					continue;
-
-				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
-					continue;
-				if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase()))
-					continue;
-
-				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
-
-				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
-
-				if(!world.isRemote)
-					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
-
-				bombsRemaining--;
-				launchedMine = true;
-				updateBombCount = true;
-				break;
+				if(!mobs.isEmpty())
+					target = mobs.get(0);
 			}
 
-			// Targets only hostile mobs
-			while(!launchedMine && targetingOption == EnumIMSTargetingMode.MOBS && mobIterator.hasNext()){
-				EntityMob entity = (EntityMob) mobIterator.next();
-				int launchHeight = getLaunchHeight();
+			if(target == null && (targetingOption == EnumIMSTargetingMode.PLAYERS  || targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS))
+			{
+				List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
-					continue;
-				if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase()))
-					continue;
-
-				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
-
-				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
-
-				if(!world.isRemote)
-					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
-
-				bombsRemaining--;
-				launchedMine = true;
-				updateBombCount = true;
-				break;
+				if(!players.isEmpty())
+					target = players.get(0);
 			}
 
-			// Targets only other players
-			while(!launchedMine && targetingOption == EnumIMSTargetingMode.PLAYERS && playerIterator.hasNext()){
-				EntityPlayer entity = (EntityPlayer) playerIterator.next();
+			if (target != null) {
 				int launchHeight = getLaunchHeight();
+				double targetX = target.posX - (pos.getX() + 0.5D);
+				double targetY = target.getEntityBoundingBox().minY + target.height / 2.0F - (pos.getY() + 1.25D);
+				double targetZ = target.posZ - (pos.getZ() + 0.5D);
 
-				if((entity != null && getOwner().isOwner((entity))) || PlayerUtils.isPlayerMountedOnCamera(entity))
-					continue;
-				if(WorldUtils.isPathObstructed(world, pos.getX() + 0.5D, pos.getY() + (((launchHeight - 1) / 3) + 0.5D), pos.getZ() + 0.5D, entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ))
-					continue;
-				if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName()))
-					continue;
+				this.spawnMine(target, targetX, targetY, targetZ, launchHeight);
 
-				double targetX = entity.posX - (pos.getX() + 0.5D);
-				double targetY = entity.getEntityBoundingBox().minY + entity.height / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = entity.posZ - (pos.getZ() + 0.5D);
-
-				this.spawnMine(entity, targetX, targetY, targetZ, launchHeight);
-
-				if(!world.isRemote)
-					world.playSound((EntityPlayer) null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+				if (!world.isRemote)
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
-				break;
 			}
 		}
 	}
 
-	/**
-	 * Spawn a mine at the correct position on the IMS model.
-	 */
-	private void spawnMine(EntityPlayer target, double x, double y, double z, int launchHeight){
-		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
-		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
-
-		world.spawnEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
+	public boolean canAttackEntity(EntityLivingBase entity)
+	{
+		return entity != null
+				&& (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((EntityPlayer)entity).isCreative()) //PlayerEntity checks
+				&& !(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase())); //checks for all entities
 	}
 
 	/**
