@@ -934,7 +934,7 @@
 	"option.securitycraft.ims.range": "Raggio: #",
 	"option.securitycraft.ims.range.description": "Da quanti blocchi di distanza può rilevare potenziali bersagli l'S.M.I.?",
 	"option.securitycraft.username_logger.searchRadius": "Raggio di ricerca: #",
-	"option.securitycraft.username_logge.searchRadius.description": "Il raggio in blocchi nel quale l'autenticatore per nome utente cerca i giocatori.",
+	"option.securitycraft.username_logger.searchRadius.description": "Il raggio in blocchi nel quale l'autenticatore per nome utente cerca i giocatori.",
 	"option.securitycraft.scanner_door.signalLength": "Tempo prima di chiudersi: #",
 	"option.securitycraft.scanner_door.signalLength.description": "Quanto dovrebbe stare aperta la porta? (In tick, 20 tick = 1 secondo. Imposta a 0 per far rimanere aperta la porta)",
 	"option.securitycraft.keypad_door.sendMessage": "Messaggio: #",
