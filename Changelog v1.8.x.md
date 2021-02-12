@@ -72,6 +72,7 @@
 - Fix: Players mounted to cameras are able to break blocks and hit/interact with entities
 - Fix: The camera's zoom can't be decreased when increased for too long (and vice versa)
 - Fix: Switching cameras while being mounted to a camera does not work
+- Fix: Bouncing Betty is invisible after being tripped
 - Removed: Configuration option "alarmSoundVolume"
 - Removed: Configuration option "alarmTickDelay" This is now a per-block option
 - Removed: Configuration option "claymoreRange" This is now a per-block option

@@ -70,12 +70,10 @@ public class BouncingBettyEntity extends Entity {
 		if (onGround)
 			setMotion(getMotion().mul(0.699999988079071D, 0.699999988079071D, -0.5D));
 
-		if (fuse-- <= 0)
+		if (!world.isRemote && fuse-- <= 0)
 		{
 			remove();
-
-			if (!world.isRemote)
-				explode();
+			explode();
 		}
 		else if(world.isRemote)
 			world.addParticle(ParticleTypes.SMOKE, false, getPosX(), getPosY() + 0.5D, getPosZ(), 0.0D, 0.0D, 0.0D);
