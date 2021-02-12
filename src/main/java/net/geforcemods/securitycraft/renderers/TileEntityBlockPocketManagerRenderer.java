@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.blocks.BlockBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -27,7 +28,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 		EnumFacing facing = te.getWorld().getBlockState(te.getPos()).getValue(BlockBlockPocketManager.FACING);
 		int offset = facing == EnumFacing.NORTH || facing == EnumFacing.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
 		int size = te.size;
-		int half = (size-1)/2;
+		int half = (size - 1) / 2;
 		int leftX = -half + offset;
 		int rightX = half + 1 + offset;
 		int frontZ = facing == EnumFacing.NORTH || facing == EnumFacing.WEST ? 0 : 1;
@@ -49,6 +50,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 		GlStateManager.glLineWidth(2F);
 		GlStateManager.disableTexture2D();
 		GlStateManager.disableLighting();
+		Minecraft.getMinecraft().entityRenderer.disableLightmap();
 		builder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 		//bottom points
 		builder.pos(leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
@@ -73,6 +75,7 @@ public class TileEntityBlockPocketManagerRenderer extends TileEntitySpecialRende
 		builder.pos(leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
 		Tessellator.getInstance().draw();
 		GlStateManager.enableLighting();
+		Minecraft.getMinecraft().entityRenderer.enableLightmap();
 		GlStateManager.enableTexture2D();
 		GlStateManager.popMatrix();
 	}
