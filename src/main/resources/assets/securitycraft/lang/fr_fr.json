@@ -937,7 +937,7 @@
 	"option.securitycraft.ims.range": "Portée : #",
 	"option.securitycraft.ims.range.description": "À partir de combien de blocs la S.M.I. peut détecter des cibles potentielles ?",
 	"option.securitycraft.username_logger.searchRadius": "Rayon de recherche : #",
-	"option.securitycraft.username_logge.searchRadius.description": "La portée en blocs dans laquelle l'enregistreur de nom d'utilisateur cherche pour des joueurs.",
+	"option.securitycraft.username_logger.searchRadius.description": "La portée en blocs dans laquelle l'enregistreur de nom d'utilisateur cherche pour des joueurs.",
 	"option.securitycraft.keypad_door.sendMessage": "Message : #",
 	"option.securitycraft.keypad_door.sendMessage.description": "Cette porte de clavier à code envoie-t-elle une message lors de l'activation (en utilisant des modules blancs/noirs) ?",
 	"option.securitycraft.keypad_door.signalLength": "Largeur du signal : #",
