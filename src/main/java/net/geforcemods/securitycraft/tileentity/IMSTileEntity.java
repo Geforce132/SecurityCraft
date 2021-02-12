@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.tileentity;
 
-import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -64,34 +63,24 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
 	private void launchMine() {
-		boolean launchedMine = false;
-
 		if(bombsRemaining > 0){
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
-			List<?> players = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e));
-			List<?> mobs = world.getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e));
-			Iterator<?> playerIterator = players.iterator();
-			Iterator<?> mobIterator = mobs.iterator();
 			LivingEntity target = null;
 
-			// Target hostile mobs
-			while((targetingOption == IMSTargetingMode.MOBS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS) && mobIterator.hasNext()){
-				MonsterEntity monster = (MonsterEntity) mobIterator.next();
+			if((targetingOption == IMSTargetingMode.MOBS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS))
+			{
+				List<MonsterEntity> mobs = world.<MonsterEntity>getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(canAttackEntity(monster)) {
-					target = monster;
-					break;
-				}
+				if(!mobs.isEmpty())
+					target = mobs.get(0);
 			}
 
-			// Target players
-			while(target == null && (targetingOption == IMSTargetingMode.PLAYERS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS) && playerIterator.hasNext()){
-				PlayerEntity player = (PlayerEntity) playerIterator.next();
+			if(target == null && (targetingOption == IMSTargetingMode.PLAYERS  || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS))
+			{
+				List<PlayerEntity> players = world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
-				if(canAttackEntity(player)) {
-					target = player;
-					break;
-				}
+				if(!players.isEmpty())
+					target = players.get(0);
 			}
 
 			if (target != null) {
@@ -103,7 +92,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				this.spawnMine(target, targetX, targetY, targetZ, launchHeight);
 
 				if (!world.isRemote)
-					world.playSound((PlayerEntity)null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
