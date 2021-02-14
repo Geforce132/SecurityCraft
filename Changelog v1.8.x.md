@@ -1,8 +1,6 @@
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
-**Disclaimer:
-1. Due to the new sentry modes, your sentries will not behave as in the previous mod version. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked!
-2. If you have placed Sentries above water, lava, or other liquids, they will pop off!**
+**READ BEFORE UPDATING TO THIS VERSION: Due to the new sentry modes, your sentries will not behave as in previous mod versions. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked! Do note, that due to an additional fix regarding the Sentry, Sentries placed above water, lava, or other liquids will be removed and dropped as an item!**
 
 - New: Sentries now have more modes. They can now attack only players, only hostile mobs, or both, and can be either always active, camouflaged, or idle
 - New: Hovering over a Sentry's name in the Sentry Remote Access Tool now shows the Sentry's position
@@ -156,7 +154,7 @@
 
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
-**DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.**
+**READ BEFORE UPDATING TO THIS VERSION: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.**
 
 - New: The Reinforced Hopper is now the only block that can pull out of Password-protected Chests and Furnaces. The owner of both blocks needs to be the same, or the hopper needs to be owned by a whitelisted player
 - New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace (including customization options to turn off the messages)
