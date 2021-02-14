@@ -1,6 +1,6 @@
 {
-	"version": "v1.8.20.2",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3109601",
-	"fileName": "[1.15.2] SecurityCraft v1.8.20.2",
-	"changelog": "Nether update content, lots of small features, tons of fixes."
+	"version": "v1.8.21",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3203503",
+	"fileName": "[1.15.2] SecurityCraft v1.8.21",
+	"changelog": "Sentry & Block Pocket Manager overhaul, configuration file restructure, other new features, lots of fixes."
 }
