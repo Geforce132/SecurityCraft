@@ -1,19 +1,17 @@
 modLoader="javafml" #mandatory
 loaderVersion="[31,)" #mandatory
-issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
-displayURL="https://discord.gg/U8DvBAW"
 logoFile="scLogo.png"
-credits="Thanks to all of you guys for your support!"
-authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
 
 [[mods]] #mandatory
-modId="securitycraft" #mandatory
-version="${version}" #mandatory
-displayName="SecurityCraft" #mandatory
-updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
-description='''
-Adds a load of things to keep your house safe with and defend yourself from attackers.
-''' #mandatory
+	modId="securitycraft" #mandatory
+	version="${version}" #mandatory
+	displayName="SecurityCraft" #mandatory
+	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
+	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.''' #mandatory
+	issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
+	displayURL="https://discord.gg/U8DvBAW"
+	credits="Thanks to all of you guys for your support!"
+	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
 
 [[dependencies.securitycraft]]
     modId="forge"

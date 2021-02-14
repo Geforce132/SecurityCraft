@@ -1,6 +1,6 @@
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
-**Disclaimer:
+**READ BEFORE UPDATING TO THIS VERSION:
 1. Due to the new sentry modes, your sentries will not behave as in previous mod versions. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked! Do note, that due to an additional fix regarding the Sentry, Sentries placed above water, lava, or other liquids will be removed and dropped as an item!
 2. Your SecurityCraft config will reset! This is because the mod's configuration file has been split up into client and server configs, and some config options have been removed in favor of ingame per-block configuration (accessible by rightclicking the block with a Universal Block Modifier). Read the changelog below for details. If a configuration option is not mentioned, it has simply been moved to the server config. The server configuration can be found in the "serverconfig" folder within your world folder. The client configuration can still be found in the normal "config" folder. You can find your old configuration in the "config/securitycraft-common.toml" file.**
 
@@ -155,7 +155,7 @@
 
 --------------------------Changelog for v1.8.19 of SecurityCraft--------------------------
 
-**DISCLAIMER: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.**
+**READ BEFORE UPDATING TO THIS VERSION: The backend of the module system has been rewritten. Despite thoroughly testing it, there might still be issues we missed. Always backup your world before updating! If you find issues, please report them to us.**
 
 - New: The Reinforced Hopper is now the only block that can pull out of Password-protected Chests and Furnaces. The owner of both blocks needs to be the same, or the hopper needs to be owned by a whitelisted player
 - New: White-/Blacklist Modules now work for the Password-protected Chest and Furnace (including customization options to turn off the messages)
@@ -192,7 +192,7 @@
 
 --------------------------Changelog for v1.8.18 of SecurityCraft--------------------------
 
-**DISCLAIMER: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!**
+**READ BEFORE UPDATING TO THIS VERSION: The Password-protected Furnace has been rewritten in this update. Please be aware that older Password-protected Furnaces may break. Backup your world before updating!**
 
 - New: More reinforced block recipes for parity with vanilla (Thanks Redstone_Dubstep!)
 - New: Fake Water/Lava Buckets can now be properly used in dispensers
