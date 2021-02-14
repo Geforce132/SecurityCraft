@@ -51,7 +51,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			EntityLivingBase target = null;
 
-			if((targetingOption == EnumIMSTargetingMode.MOBS || targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS))
+			if(targetingOption == EnumIMSTargetingMode.MOBS || targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
 			{
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 

@@ -16,7 +16,7 @@
 - New: Briefcases can now be dyed the same way as leather armor
 - New: Nameable SecurityCraft blocks and Sentries will keep the custom name of their item form when placed
 - New: Customization option to change the time the Scanner Door will stay open before it closes again (set to 0 to disable)
-- New: Keypad door
+- New: Keypad Door
 - New: The Projector can now project horizontally
 - New: The height of a Projector's projection can now be changed
 - New: Customization option to allow Inventory Scanner fields to solidify when a prohibited item is detected
