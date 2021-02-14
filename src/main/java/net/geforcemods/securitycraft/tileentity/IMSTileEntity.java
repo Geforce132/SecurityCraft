@@ -67,7 +67,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			LivingEntity target = null;
 
-			if((targetingOption == IMSTargetingMode.MOBS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS))
+			if(targetingOption == IMSTargetingMode.MOBS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS)
 			{
 				List<MonsterEntity> mobs = world.<MonsterEntity>getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
