@@ -1,6 +1,6 @@
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
-**Disclaimer:
+**READ BEFORE UPDATING TO THIS VERSION:
 1. Due to the new sentry modes, your sentries will not behave as in previous mod versions. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked! Do note, that due to an additional fix regarding the Sentry, Sentries placed above water, lava, or other liquids will be removed and dropped as an item!
 2. Your SecurityCraft config will reset! This is because the mod's configuration file has been split up into client and server configs, and some config options have been removed in favor of ingame per-block configuration (accessible by rightclicking the block with a Universal Block Modifier). Read the changelog below for details. If a configuration option is not mentioned, it has simply been moved to the server config. The server configuration can be found in the "serverconfig" folder within your world folder. The client configuration can still be found in the normal "config" folder. You can find your old configuration in the "config/securitycraft-common.toml" file.**
 
