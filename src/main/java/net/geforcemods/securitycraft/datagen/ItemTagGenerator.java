@@ -2,16 +2,18 @@ package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ItemTagGenerator extends ItemTagsProvider
 {
-	protected ItemTagGenerator(DataGenerator dataGenerator, BlockTagsProvider blockTagsProvider)
+	protected ItemTagGenerator(DataGenerator dataGenerator, BlockTagsProvider blockTagsProvider, ExistingFileHelper existingFileHelper)
 	{
-		super(dataGenerator, blockTagsProvider);
+		super(dataGenerator, blockTagsProvider, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override

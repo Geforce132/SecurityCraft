@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.datagen;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.FluidTagsProvider;
 import net.minecraft.tags.FluidTags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
-//func_240522_a_ = getBuilder
-//func_240534_a_ = add
 public class FluidTagGenerator extends FluidTagsProvider
 {
-	public FluidTagGenerator(DataGenerator generator)
+	public FluidTagGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper)
 	{
-		super(generator);
+		super(generator, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override
