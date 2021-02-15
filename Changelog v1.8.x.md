@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.21.1 of SecurityCraft--------------------------
+
+- Fix: Converting chests and furnaces to Password-protected Chests/Furnaces does not set the owner correctly
+
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
 **READ BEFORE UPDATING TO THIS VERSION:
