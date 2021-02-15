@@ -222,8 +222,8 @@ public class KeypadChestBlock extends ChestBlock {
 
 			chest.clear();
 			world.setBlockState(pos, SCContent.KEYPAD_CHEST.get().getDefaultState().with(FACING, facing).with(TYPE, type));
-			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getString());
 			((ChestTileEntity)world.getTileEntity(pos)).read(world.getBlockState(pos), tag);
+			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getString());
 		}
 	}
 }
