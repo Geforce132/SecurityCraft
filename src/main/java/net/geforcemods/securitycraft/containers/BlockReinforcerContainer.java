@@ -64,12 +64,26 @@ public class BlockReinforcerContainer extends Container
 
 		if(!itemInventory.getStackInSlot(0).isEmpty())
 		{
+			if (itemInventory.getStackInSlot(0).getCount() > reinforcingSlot.output.getCount()) { //if there's more in the slot than the reinforcer can reinforce (due to durability)
+				ItemStack overflowStack = itemInventory.getStackInSlot(0).copy();
+
+				overflowStack.setCount(itemInventory.getStackInSlot(0).getCount() - reinforcingSlot.output.getCount());
+				player.dropItem(overflowStack, false);
+			}
+
 			player.dropItem(reinforcingSlot.output, false);
 			blockReinforcer.damageItem(reinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
 		}
 
 		if(!isLvl1 && !itemInventory.getStackInSlot(1).isEmpty())
 		{
+			if (itemInventory.getStackInSlot(1).getCount() > unreinforcingSlot.output.getCount()) {
+				ItemStack overflowStack = itemInventory.getStackInSlot(1).copy();
+
+				overflowStack.setCount(itemInventory.getStackInSlot(1).getCount() - unreinforcingSlot.output.getCount());
+				player.dropItem(overflowStack, false);
+			}
+
 			player.dropItem(unreinforcingSlot.output, false);
 			blockReinforcer.damageItem(unreinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
 		}
@@ -210,9 +224,7 @@ public class BlockReinforcerContainer extends Container
 			if(!itemInventory.getStackInSlot((slotNumber + 1) % 2).isEmpty())
 				return false;
 
-			return (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).containsKey(Block.getBlockFromItem(stack.getItem())) &&
-					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-						blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
+			return (reinforce ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).containsKey(Block.getBlockFromItem(stack.getItem()));
 		}
 
 		@Override
@@ -227,7 +239,7 @@ public class BlockReinforcerContainer extends Container
 				if(block != null)
 				{
 					output = new ItemStack(block);
-					output.setCount(stack.getCount());
+					output.setCount(Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
 				}
 			}
 		}
