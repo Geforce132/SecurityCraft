@@ -62,11 +62,11 @@ public class GuiIMS extends GuiContainer{
 
 	private void updateButtonText() {
 		if(targetMode == EnumIMSTargetingMode.PLAYERS)
-			targetButton.displayString = ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players").getFormattedText();
+			targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText();
 		else if(targetMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers").getFormattedText();
+			targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText();
 		else if(targetMode == EnumIMSTargetingMode.MOBS)
-			targetButton.displayString = ClientUtils.localize("gui.securitycraft:ims.hostile").getFormattedText();
+			targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText();
 	}
 
 }
