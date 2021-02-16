@@ -537,8 +537,6 @@
 	"gui.securitycraft:scManual.recipe.reinforced_crystal_quartz": "Creato dai normali blocchi di quarzo cristallino modificati con un rinforza-blocchi universale.",
 	"gui.securitycraft:scManual.reinforced": "Blocchi rinforzati",
 	"gui.securitycraft:scManual.designedBy": "Progettato da: %s",
-	"gui.securitycraft:ims.hostileAndPlayers": "Mob ostili e giocatori",
-	"gui.securitycraft:ims.hostile": "Mob ostili",
 	"gui.securitycraft:ims.target": "Bersaglio:",
 	"gui.securitycraft:invScan.emit_redstone": "Emetti redstone sugli oggetti cercati: %s",
 	"gui.securitycraft:invScan.check_inv": "Immagazzina oggetti trovati: %s",
