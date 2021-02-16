@@ -590,6 +590,7 @@
 	"gui.securitycraft:scManual.recipe.sc_manual": "The SecurityCraft Manual is only available via the creative inventory or by typing \"/sc help\" (without quotes).",
 	"gui.securitycraft:scManual.reinforced": "Reinforced Blocks",
 	"gui.securitycraft:scManual.designedBy": "Designed by: %s",
+	"gui.securitycraft:ims.players": "Players",
 	"gui.securitycraft:ims.hostileAndPlayers": "Hostile mobs & players",
 	"gui.securitycraft:ims.hostile": "Hostile mobs",
 	"gui.securitycraft:ims.target": "Target:",

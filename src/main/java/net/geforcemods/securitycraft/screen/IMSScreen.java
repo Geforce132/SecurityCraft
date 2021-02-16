@@ -73,7 +73,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private void updateButtonText() {
 		if(targetMode == IMSTargetingMode.PLAYERS)
-			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players"));
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.players"));
 		else if(targetMode == IMSTargetingMode.PLAYERS_AND_MOBS)
 			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers"));
 		else if(targetMode == IMSTargetingMode.MOBS)
