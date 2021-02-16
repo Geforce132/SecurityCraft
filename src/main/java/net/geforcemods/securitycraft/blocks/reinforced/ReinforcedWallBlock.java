@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
@@ -11,9 +10,7 @@ import net.minecraft.block.WallBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -46,12 +43,6 @@ public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock
 				.with(WALL_HEIGHT_SOUTH, vanillaState.get(WALL_HEIGHT_SOUTH))
 				.with(WALL_HEIGHT_WEST, vanillaState.get(WALL_HEIGHT_WEST))
 				.with(WATERLOGGED, vanillaState.get(WATERLOGGED));
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 
 	@Override
