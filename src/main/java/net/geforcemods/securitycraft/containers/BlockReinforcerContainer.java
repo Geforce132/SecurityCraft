@@ -65,12 +65,26 @@ public class BlockReinforcerContainer extends Container
 
 		if(!itemInventory.getStackInSlot(0).isEmpty())
 		{
+			if (itemInventory.getStackInSlot(0).getCount() > reinforcingSlot.output.getCount()) { //if there's more in the slot than the reinforcer can reinforce (due to durability)
+				ItemStack overflowStack = itemInventory.getStackInSlot(0).copy();
+
+				overflowStack.setCount(itemInventory.getStackInSlot(0).getCount() - reinforcingSlot.output.getCount());
+				player.dropItem(overflowStack, false);
+			}
+
 			player.dropItem(reinforcingSlot.output, false);
 			blockReinforcer.damageItem(reinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
 		}
 
 		if(!isLvl1 && !itemInventory.getStackInSlot(1).isEmpty())
 		{
+			if (itemInventory.getStackInSlot(1).getCount() > unreinforcingSlot.output.getCount()) {
+				ItemStack overflowStack = itemInventory.getStackInSlot(1).copy();
+
+				overflowStack.setCount(itemInventory.getStackInSlot(1).getCount() - unreinforcingSlot.output.getCount());
+				player.dropItem(overflowStack, false);
+			}
+
 			player.dropItem(unreinforcingSlot.output, false);
 			blockReinforcer.damageItem(unreinforcingSlot.output.getCount(), player, p -> p.sendBreakAnimation(p.getActiveHand()));
 		}
@@ -211,16 +225,12 @@ public class BlockReinforcerContainer extends Container
 			if(!itemInventory.getStackInSlot((slotNumber + 1) % 2).isEmpty())
 				return false;
 
-			boolean validBlock = IReinforcedBlock.BLOCKS.stream().anyMatch(reinforcedBlock -> {
+			return IReinforcedBlock.BLOCKS.stream().anyMatch(reinforcedBlock -> {
 				if(reinforce)
 					return stack.getItem().equals(((IReinforcedBlock)reinforcedBlock).getVanillaBlock().asItem());
 				else
 					return stack.getItem().equals(reinforcedBlock.asItem());
 			});
-
-			return validBlock &&
-					(blockReinforcer.getMaxDamage() == 0 ? true : //lvl3
-						blockReinforcer.getMaxDamage() - blockReinforcer.getDamage() >= stack.getCount() + (getHasStack() ? getStack().getCount() : 0)); //disallow putting in items that can't be handled by the ubr
 		}
 
 		@Override
@@ -237,13 +247,13 @@ public class BlockReinforcerContainer extends Container
 					if(reinforce && reinforcedBlock.getVanillaBlock() == Block.getBlockFromItem(stack.getItem()))
 					{
 						output = new ItemStack(block);
-						output.setCount(stack.getCount());
+						output.setCount(Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
 						return;
 					}
 					else if(!reinforce && reinforcedBlock == Block.getBlockFromItem(stack.getItem()))
 					{
 						output = new ItemStack(reinforcedBlock.getVanillaBlock());
-						output.setCount(stack.getCount());
+						output.setCount(Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
 						return;
 					}
 				}
