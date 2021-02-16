@@ -17,7 +17,9 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.item.Item;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.ConstantRange;
 import net.minecraft.world.storage.loot.ItemLootEntry;
@@ -30,6 +32,8 @@ import net.minecraft.world.storage.loot.conditions.BlockStateProperty;
 import net.minecraft.world.storage.loot.conditions.EntityHasProperty;
 import net.minecraft.world.storage.loot.conditions.Inverted;
 import net.minecraft.world.storage.loot.conditions.SurvivesExplosion;
+import net.minecraft.world.storage.loot.functions.ExplosionDecay;
+import net.minecraft.world.storage.loot.functions.SetCount;
 
 public class BlockLootTableGenerator implements IDataProvider
 {
@@ -55,7 +59,7 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.COBBLESTONE_MINE);
 		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ);
 		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_PILLAR);
-		putStandardBlockLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
+		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 		putMineLootTable(SCContent.DIAMOND_ORE_MINE);
 		putMineLootTable(SCContent.DIRT_MINE);
 		putMineLootTable(SCContent.EMERALD_ORE_MINE);
@@ -149,6 +153,19 @@ public class BlockLootTableGenerator implements IDataProvider
 						.addEntry(ItemLootEntry.builder(mine.get()))
 						.acceptCondition(SurvivesExplosion.builder())
 						.acceptCondition(Inverted.builder(EntityHasProperty.builder(EntityTarget.THIS)))));
+	}
+
+	protected final void putSlabLootTable(Supplier<Block> slab)
+	{
+		lootTables.put(slab, LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(slab.get())
+								.acceptFunction(SetCount.builder(ConstantRange.of(2))
+										.acceptCondition(BlockStateProperty.builder(slab.get())
+												.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
+														.withProp(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE))))
+								.acceptFunction(ExplosionDecay.builder()))));
 	}
 
 	@Override
