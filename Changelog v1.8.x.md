@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
+
+- Fix: An ItemStack cannot be put into the Universal Block Reinforcer's Slots if the stack's count is larger than the Reinforcer's durability
+
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
 **READ BEFORE UPDATING TO THIS VERSION: Due to the new sentry modes, your sentries will not behave as in previous mod versions. Make sure to set them to the correct mode again, otherwise they will attack something you don't want to be attacked! Do note, that due to an additional fix regarding the Sentry, Sentries placed above water, lava, or other liquids will be removed and dropped as an item!**
