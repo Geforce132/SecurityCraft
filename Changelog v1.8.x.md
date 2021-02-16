@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
 - Fix: Double Crystal Quartz Slab does not drop two slab items
+- Fix: An ItemStack cannot be put into the Universal Block Reinforcer's Slots if the stack's count is larger than the Reinforcer's durability
 
 --------------------------Changelog for v1.8.21.1 of SecurityCraft--------------------------
 
