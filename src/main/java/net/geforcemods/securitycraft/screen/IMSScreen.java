@@ -70,11 +70,11 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private void updateButtonText() {
 		if(targetMode == IMSTargetingMode.PLAYERS)
-			targetButton.setMessage(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players").getFormattedText());
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText());
 		else if(targetMode == IMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostileAndPlayers").getFormattedText());
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText());
 		else if(targetMode == IMSTargetingMode.MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:ims.hostile").getFormattedText());
+			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText());
 	}
 
 }

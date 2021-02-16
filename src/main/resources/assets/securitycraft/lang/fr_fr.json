@@ -536,8 +536,6 @@
 	"gui.securitycraft:scManual.reinforced": "Blocs renforcés",
 	"gui.securitycraft:scManual.designedBy": "Conçu par: %s",
 	"gui.securitycraft:scManual.author": "Traduit par TheCrazyFreezee, marminot, et supercat95",
-	"gui.securitycraft:ims.hostileAndPlayers": "Mobs hostiles & joueurs",
-	"gui.securitycraft:ims.hostile": "Mobs hostiles",
 	"gui.securitycraft:ims.target": "Cible :",
 	"gui.securitycraft:invScan.emit_redstone": "Emettre redstone quand des choses sont trouvés : %s",
 	"gui.securitycraft:invScan.check_inv": "Stocker les choses trouvés : %s",
