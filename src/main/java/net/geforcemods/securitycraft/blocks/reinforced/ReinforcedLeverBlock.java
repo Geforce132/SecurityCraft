@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
-
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
@@ -13,11 +11,9 @@ import net.minecraft.block.LeverBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
@@ -53,12 +49,6 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState().with(FACE, vanillaState.get(FACE)).with(HORIZONTAL_FACING, vanillaState.get(HORIZONTAL_FACING)).with(POWERED, vanillaState.get(POWERED));
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 
 	@Override

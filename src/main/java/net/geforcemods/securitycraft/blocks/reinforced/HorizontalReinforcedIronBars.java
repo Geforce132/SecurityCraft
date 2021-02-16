@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -16,13 +14,11 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -125,12 +121,6 @@ public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState().with(WATERLOGGED, vanillaState.get(SlabBlock.WATERLOGGED));
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
 - Fix: Double Crystal Quartz Slab does not drop two slab items
+- Misc.: All of SecurityCraft's blocks now have loot tables
 
 --------------------------Changelog for v1.8.21.1 of SecurityCraft--------------------------
 

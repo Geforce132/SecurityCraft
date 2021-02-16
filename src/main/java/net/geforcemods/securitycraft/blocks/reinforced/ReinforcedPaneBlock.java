@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
-
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.Block;
@@ -13,10 +11,8 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -81,11 +77,5 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new OwnableTileEntity();
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 }

@@ -13,9 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
@@ -97,12 +95,6 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState();
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 
 	@Override

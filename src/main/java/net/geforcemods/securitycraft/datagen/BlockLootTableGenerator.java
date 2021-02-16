@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.datagen;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -9,8 +10,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDoorBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
+import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -24,6 +28,7 @@ import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTableManager;
+import net.minecraft.loot.StandaloneLootEntry;
 import net.minecraft.loot.conditions.BlockStateProperty;
 import net.minecraft.loot.conditions.EntityHasProperty;
 import net.minecraft.loot.conditions.Inverted;
@@ -34,6 +39,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.RegistryObject;
 
 public class BlockLootTableGenerator implements IDataProvider
 {
@@ -48,6 +54,26 @@ public class BlockLootTableGenerator implements IDataProvider
 
 	private void addTables()
 	{
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+				{
+					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
+
+					if(obj.get() instanceof ReinforcedSlabBlock)
+						putSlabLootTable(obj);
+					else
+						putStandardBlockLootTable(obj);
+				}
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
 		putStandardBlockLootTable(SCContent.ALARM);
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putStandardBlockLootTable(SCContent.BLOCK_POCKET_MANAGER);
@@ -68,6 +94,24 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.GOLD_ORE_MINE);
 		putMineLootTable(SCContent.GILDED_BLACKSTONE_MINE);
 		putMineLootTable(SCContent.GRAVEL_MINE);
+
+		StandaloneLootEntry.Builder<?> imsLootEntryBuilder = ItemLootEntry.builder(SCContent.BOUNCING_BETTY.get());
+
+		for(int i = 0; i <= 4; i++)
+		{
+			if(i == 1) //default
+				continue;
+
+			imsLootEntryBuilder.acceptFunction(SetCount.builder(ConstantRange.of(i))
+					.acceptCondition(BlockStateProperty.builder(SCContent.IMS.get())
+							.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
+									.withIntProp(IMSBlock.MINES, i))));
+		}
+
+		lootTables.put(SCContent.IMS, LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(imsLootEntryBuilder)));
 		putStandardBlockLootTable(SCContent.INVENTORY_SCANNER);
 		putStandardBlockLootTable(SCContent.IRON_FENCE);
 		putMineLootTable(SCContent.IRON_ORE_MINE);

@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -16,7 +15,6 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext.Builder;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
@@ -26,7 +24,6 @@ import net.minecraft.state.properties.SlabType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -179,14 +176,6 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 			default:
 				return false;
 		}
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		if(state.get(TYPE) == SlabType.DOUBLE)
-			return NonNullList.from(ItemStack.EMPTY, new ItemStack(this), new ItemStack(this));
-		else return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 
 	@Override
