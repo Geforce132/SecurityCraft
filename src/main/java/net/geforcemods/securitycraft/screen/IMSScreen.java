@@ -38,7 +38,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addButton(targetButton = new ClickButton(0, width / 2 - 38, height / 2 - 58, 120, 20, "", this::actionPerformed));
+		addButton(targetButton = new ClickButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
 		updateButtonText();
 	}
 
@@ -49,7 +49,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
 
 		font.func_243248_b(matrix, imsName, xSize / 2 - font.getStringPropertyWidth(imsName) / 2, 6, 4210752);
-		font.func_243248_b(matrix, target, xSize / 2 - 78, 30, 4210752);
+		font.func_243248_b(matrix, target, xSize / 2 - font.getStringPropertyWidth(target) / 2, 30, 4210752);
 	}
 
 	@Override
@@ -72,12 +72,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	private void updateButtonText() {
-		if(targetMode == IMSTargetingMode.PLAYERS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets3"));
-		else if(targetMode == IMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets1"));
-		else if(targetMode == IMSTargetingMode.MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets2"));
+		targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)));
 	}
 
 }
