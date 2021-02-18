@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -11,13 +10,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BreakableBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -91,11 +87,5 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState();
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 }

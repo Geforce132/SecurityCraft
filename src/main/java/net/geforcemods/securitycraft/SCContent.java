@@ -229,8 +229,8 @@ public class SCContent
 	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_SIGN = BLOCKS.register("secret_dark_oak_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.DARK_OAK));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(Material.IRON)));
 	@RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> STAIRS_CRYSTAL_QUARTZ = BLOCKS.register("crystal_quartz_stairs", () -> new StairsBlock(() -> CRYSTAL_QUARTZ.get().getDefaultState(), Block.Properties.from(CRYSTAL_QUARTZ.get())));
-	@OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.IRON, 0.7F).doesNotBlockMovement().sound(SoundType.METAL)));
-	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.TECHNICAL) public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.IRON, 0.7F).doesNotBlockMovement().sound(SoundType.METAL)));
+	@HasManualPage @RegisterItemBlock(SCItemGroup.TECHNICAL) public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(prop(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new LoggerBlock(propDisguisable()));
 	@HasManualPage @OwnableTE @RegisterItemBlock(SCItemGroup.EXPLOSIVES) public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.MISCELLANEOUS, 1.0F)));
 	public static final RegistryObject<Block> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).doesNotBlockMovement(), FAKE_WATER));

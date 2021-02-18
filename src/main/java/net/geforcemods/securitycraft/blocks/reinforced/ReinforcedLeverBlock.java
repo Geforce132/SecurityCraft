@@ -14,15 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.List;
 
 public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock {
 
@@ -53,12 +49,6 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState().with(FACE, vanillaState.get(FACE)).with(HORIZONTAL_FACING, vanillaState.get(HORIZONTAL_FACING)).with(POWERED, vanillaState.get(POWERED));
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 
 	@Override

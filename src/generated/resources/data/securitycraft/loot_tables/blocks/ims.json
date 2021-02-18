@@ -1,0 +1,68 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "securitycraft:ims",
+                  "properties": {
+                    "mines": "0"
+                  }
+                }
+              ],
+              "count": 0
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "securitycraft:ims",
+                  "properties": {
+                    "mines": "2"
+                  }
+                }
+              ],
+              "count": 2
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "securitycraft:ims",
+                  "properties": {
+                    "mines": "3"
+                  }
+                }
+              ],
+              "count": 3
+            },
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "securitycraft:ims",
+                  "properties": {
+                    "mines": "4"
+                  }
+                }
+              ],
+              "count": 4
+            }
+          ],
+          "name": "securitycraft:bouncing_betty"
+        }
+      ]
+    }
+  ]
+}
