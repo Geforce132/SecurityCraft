@@ -23,11 +23,6 @@ public @interface RegisterItemBlock
 	 */
 	SCItemGroup value() default SCItemGroup.TECHNICAL;
 
-	/**
-	 * @return true if the block should be ignored during automatic loot table generation. In this case, the loot table data gen has to be added manually
-	 */
-	boolean ignoreDataGen() default false;
-
 	public static enum SCItemGroup
 	{
 		TECHNICAL, EXPLOSIVES, DECORATION;

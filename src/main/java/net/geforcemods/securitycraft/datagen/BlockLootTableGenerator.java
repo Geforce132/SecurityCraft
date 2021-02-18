@@ -69,7 +69,7 @@ public class BlockLootTableGenerator implements IDataProvider
 					else
 						putStandardBlockLootTable(obj);
 				}
-				else if(field.isAnnotationPresent(RegisterItemBlock.class) && !field.getAnnotation(RegisterItemBlock.class).ignoreDataGen())
+				else if(field.isAnnotationPresent(RegisterItemBlock.class))
 				{
 					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
 
