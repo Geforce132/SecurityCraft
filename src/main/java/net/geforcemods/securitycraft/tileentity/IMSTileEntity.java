@@ -84,12 +84,14 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			}
 
 			if (target != null) {
+				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
+				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
 				int launchHeight = getLaunchHeight();
-				double targetX = target.getPosX() - (pos.getX() + 0.5D);
-				double targetY = target.getBoundingBox().minY + target.getHeight() / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = target.getPosZ() - (pos.getZ() + 0.5D);
+				double accelerationX = target.getPosX() - pos.getX();
+				double accelerationY = target.getBoundingBox().minY + target.getHeight() / 2.0F - pos.getY() - launchHeight;
+				double accelerationZ = target.getPosZ() - pos.getZ();
 
-				this.spawnMine(target, targetX, targetY, targetZ, launchHeight);
+				world.addEntity(new IMSBombEntity(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight));
 
 				if (!world.isRemote)
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -108,17 +110,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	}
 
 	/**
-	 * Spawn a mine at the correct position on the IMS model.
-	 */
-	private void spawnMine(LivingEntity target, double x, double y, double z, int launchHeight){
-		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
-		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
-
-		world.addEntity(new IMSBombEntity(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
-	}
-
-	/**
-	 * Returns the amount of ticks the {@link IMSBombEntity} should float in the air before firing at an entity.
+	 * Returns the amount of blocks the {@link IMSBombEntity} should move up before firing at an entity.
 	 */
 	private int getLaunchHeight() {
 		int height;
@@ -133,7 +125,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				break;
 		}
 
-		return height * 3;
+		return height;
 	}
 
 	/**
