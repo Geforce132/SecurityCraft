@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -22,7 +21,6 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -30,7 +28,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -131,16 +128,6 @@ public class IMSBlock extends OwnableBlock {
 			world.addParticle(ParticleTypes.FLAME, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 			world.addParticle(ParticleTypes.FLAME, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 		}
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
-	{
-		int mines = state.get(MINES);
-
-		if(mines != 0)
-			return NonNullList.from(ItemStack.EMPTY, new ItemStack(SCContent.BOUNCING_BETTY.get(), mines));
-		else return super.getDrops(state, builder);
 	}
 
 	@Override

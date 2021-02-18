@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
@@ -15,11 +13,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext.Builder;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedObserverBlock extends ObserverBlock implements IReinforcedBlock
@@ -45,12 +41,6 @@ public class ReinforcedObserverBlock extends ObserverBlock implements IReinforce
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
 		return getDefaultState().with(FACING, vanillaState.get(FACING)).with(POWERED, vanillaState.get(POWERED));
-	}
-
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder)
-	{
-		return NonNullList.from(ItemStack.EMPTY, new ItemStack(this));
 	}
 
 	@Override
