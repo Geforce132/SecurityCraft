@@ -34,7 +34,7 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public void attackFailed() {
-		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.MOTION_ACTIVATED_LIGHT.get() && BlockUtils.getBlockProperty(getWorld(), getPos(), MotionActivatedLightBlock.LIT))
+		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.MOTION_ACTIVATED_LIGHT.get() && getBlockState().get(MotionActivatedLightBlock.LIT))
 			MotionActivatedLightBlock.toggleLight(world, pos, getOwner(), false);
 	}
 

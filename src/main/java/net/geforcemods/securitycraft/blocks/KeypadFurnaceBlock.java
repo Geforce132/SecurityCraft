@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -131,8 +130,9 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	}
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){
-		if(!BlockUtils.getBlockProperty(world, pos, KeypadFurnaceBlock.OPEN))
-			BlockUtils.setBlockProperty(world, pos, KeypadFurnaceBlock.OPEN, true);
+		BlockState state = world.getBlockState(pos);
+		if(!state.get(KeypadFurnaceBlock.OPEN))
+			world.setBlockState(pos, state.with(KeypadFurnaceBlock.OPEN, true));
 
 		if(player instanceof ServerPlayerEntity)
 		{

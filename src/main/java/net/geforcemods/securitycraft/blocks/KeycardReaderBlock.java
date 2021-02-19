@@ -87,7 +87,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	}
 
 	public static void activate(World world, BlockPos pos, int signalLength){
-		BlockUtils.setBlockProperty(world, pos, POWERED, true);
+		world.setBlockState(pos, world.getBlockState(pos).with(POWERED, true));
 		world.notifyNeighborsOfStateChange(pos, SCContent.KEYCARD_READER.get());
 		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYCARD_READER.get(), signalLength);
 	}
@@ -95,7 +95,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	@Override
 	public void tick(BlockState state, World world, BlockPos pos, Random random){
 		if(!world.isRemote){
-			BlockUtils.setBlockProperty(world, pos, POWERED, false);
+			world.setBlockState(pos, state.with(POWERED, false));
 			world.notifyNeighborsOfStateChange(pos, SCContent.KEYCARD_READER.get());
 		}
 	}

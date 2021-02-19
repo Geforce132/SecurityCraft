@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
@@ -31,7 +30,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 			if(!world.isRemote)
 				((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, entity.posX, entity.posY, entity.posZ, false));
 
-			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);
+			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
 			return true;
 		}
 
@@ -42,10 +41,10 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	public boolean canAttack() {
 		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
 
-		if(canAttack && !BlockUtils.getBlockProperty(world, pos, ProtectoBlock.ACTIVATED))
-			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, true);
-		else if(!canAttack && BlockUtils.getBlockProperty(world, pos, ProtectoBlock.ACTIVATED))
-			BlockUtils.setBlockProperty(world, pos, ProtectoBlock.ACTIVATED, false);
+		if(canAttack && !getBlockState().get(ProtectoBlock.ACTIVATED))
+			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
+		else if(!canAttack && getBlockState().get(ProtectoBlock.ACTIVATED))
+			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
 
 		return canAttack;
 	}
