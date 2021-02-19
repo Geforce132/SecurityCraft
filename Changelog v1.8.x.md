@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
 - Fix: An ItemStack cannot be put into the Universal Block Reinforcer's Slots if the stack's count is larger than the Reinforcer's durability
+- Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

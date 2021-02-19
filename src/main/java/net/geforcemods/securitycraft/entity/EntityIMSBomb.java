@@ -3,42 +3,28 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
 public class EntityIMSBomb extends EntityFireball {
 
-	private String playerName = null;
-	private EntityLivingBase targetMob = null;
-
-	public int ticksFlying = 0;
-	private int launchHeight;
-	public boolean launching = true;
+	private int ticksFlying = 0;
+	private int launchTime;
+	private boolean launching = true;
 
 	public EntityIMSBomb(World world){
 		super(world);
 		setSize(0.25F, 0.3F);
 	}
 
-	public EntityIMSBomb(World world, EntityPlayer targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(world, x, y, z, targetX, targetY, targetZ);
-		playerName = targetEntity.getName();
-		launchHeight = height;
+	public EntityIMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height){
+		super(world, x, y, z, accelerationX, accelerationY, accelerationZ);
 		setSize(0.25F, 0.3F);
-	}
-
-	public EntityIMSBomb(World world, EntityLivingBase targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(world, x, y, z, targetX, targetY, targetZ);
-		targetMob = targetEntity;
-		launchHeight = height;
-		setSize(0.25F, 0.3F);
+		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 	}
 
 	@Override
@@ -47,49 +33,47 @@ public class EntityIMSBomb extends EntityFireball {
 			super.onUpdate();
 			return;
 		}
-
-		if(ticksFlying < launchHeight){
-			motionY = 0.35F;
-			ticksFlying++;
-			move(MoverType.SELF, motionX, motionY, motionZ);
-		}
 		else
-			setTarget();
-	}
+		{
+			if(ticksFlying == 0)
+				motionY = 0.35F;
 
-	public void setTarget() {
-		if(playerName != null && PlayerUtils.isPlayerOnline(playerName)){
-			EntityPlayer target = PlayerUtils.getPlayerFromName(playerName);
-
-			double targetX = target.posX - posX;
-			double targetY = target.getEntityBoundingBox().minY + target.height / 2.0F - (posY + 1.25D);
-			double targetZ = target.posZ - posZ;
-			EntityIMSBomb imsBomb = new EntityIMSBomb(world, target, posX, posY, posZ, targetX, targetY, targetZ, 0);
-
-			imsBomb.launching = false;
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(imsBomb));
-			setDead();
-		}else if(targetMob != null && !targetMob.isDead){
-			double targetX = targetMob.posX - posX;
-			double targetY = targetMob.getEntityBoundingBox().minY + targetMob.height / 2.0F - (posY + 1.25D);
-			double targetZ = targetMob.posZ - posZ;
-			EntityIMSBomb imsBomb = new EntityIMSBomb(world, targetMob, posX, posY, posZ, targetX, targetY, targetZ, 0);
-
-			imsBomb.launching = false;
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(imsBomb));
-			setDead();
+			//move up before homing onto target
+			if(ticksFlying++ < launchTime)
+				move(MoverType.SELF, motionX, motionY, motionZ);
+			else
+			{
+				motionX = motionY = motionZ = 0.0F;
+				launching = false;
+			}
 		}
-		else
-			setDead();
 	}
 
 	@Override
 	protected void onImpact(RayTraceResult result){
-		if(!world.isRemote)
-			if(result.typeOfHit == Type.BLOCK && BlockUtils.getBlock(world, result.getBlockPos()) != SCContent.ims){
-				world.newExplosion(this, result.getBlockPos().getX(), result.getBlockPos().getY() + 1D, result.getBlockPos().getZ(), 7F, ConfigHandler.shouldSpawnFire, true);
-				setDead();
-			}
+		if(!world.isRemote && result.typeOfHit == Type.BLOCK && BlockUtils.getBlock(world, result.getBlockPos()) != SCContent.ims){
+			world.newExplosion(this, result.getBlockPos().getX(), result.getBlockPos().getY() + 1D, result.getBlockPos().getZ(), 7F, ConfigHandler.shouldSpawnFire, true);
+			setDead();
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag)
+	{
+		super.writeToNBT(tag);
+		tag.setInteger("launchTime", launchTime);
+		tag.setInteger("ticksFlying", ticksFlying);
+		tag.setBoolean("launching", launching);
+		return tag;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag)
+	{
+		super.readFromNBT(tag);
+		launchTime = tag.getInteger("launchTime");
+		ticksFlying = tag.getInteger("ticksFlying");
+		launching = tag.getBoolean("launching");
 	}
 
 	@Override

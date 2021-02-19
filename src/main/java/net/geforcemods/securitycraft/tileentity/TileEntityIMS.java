@@ -47,7 +47,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	 * Create a bounding box around the IMS, and fire a mine if a mob or player is found.
 	 */
 	private void launchMine() {
-		if(bombsRemaining > 0){
+		if(bombsRemaining > 0 && !world.isRemote){
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			EntityLivingBase target = null;
 
@@ -68,16 +68,15 @@ public class TileEntityIMS extends CustomizableSCTE {
 			}
 
 			if (target != null) {
+				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
+				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
 				int launchHeight = getLaunchHeight();
-				double targetX = target.posX - (pos.getX() + 0.5D);
-				double targetY = target.getEntityBoundingBox().minY + target.height / 2.0F - (pos.getY() + 1.25D);
-				double targetZ = target.posZ - (pos.getZ() + 0.5D);
+				double accelerationX = target.posX - pos.getX();
+				double accelerationY = target.getEntityBoundingBox().minY + target.height / 2.0F - pos.getY() - launchHeight;
+				double accelerationZ = target.posZ - pos.getZ();
 
-				this.spawnMine(target, targetX, targetY, targetZ, launchHeight);
-
-				if (!world.isRemote)
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
-
+				world.spawnEntity(new EntityIMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight));
+				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 				bombsRemaining--;
 				updateBombCount = true;
 			}
@@ -92,17 +91,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	}
 
 	/**
-	 * Spawn a mine at the correct position on the IMS model.
-	 */
-	private void spawnMine(EntityLivingBase target, double x, double y, double z, int launchHeight){
-		double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
-		double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
-
-		world.spawnEntity(new EntityIMSBomb(world, target, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, x, y, z, launchHeight));
-	}
-
-	/**
-	 * Returns the amount of ticks the {@link EntityIMSBomb} should float in the air before firing at an entity.
+	 * Returns the amount of blocks the {@link EntityIMSBomb} should move up before firing at an entity.
 	 */
 	private int getLaunchHeight() {
 		int height;
@@ -113,7 +102,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 			else
 				break;
 
-		return height * 3;
+		return height;
 	}
 
 	/**
