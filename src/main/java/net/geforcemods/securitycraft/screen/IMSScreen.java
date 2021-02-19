@@ -69,7 +69,6 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	private void updateButtonText() {
-		System.out.println(targetMode);
 		targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText());
 	}
 
