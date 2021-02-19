@@ -3,14 +3,12 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -20,74 +18,65 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class IMSBombEntity extends AbstractFireballEntity {
 
-	private String playerName = null;
-	private LivingEntity targetMob = null;
-	public int ticksFlying = 0;
-	private int launchHeight;
-	public boolean launching = true;
+	private int ticksFlying = 0;
+	private int launchTime;
+	private boolean launching = true;
 
 	public IMSBombEntity(EntityType<IMSBombEntity> type, World world){
 		super(SCContent.eTypeImsBomb, world);
 	}
 
-	public IMSBombEntity(World world, PlayerEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(SCContent.eTypeImsBomb, x, y, z, targetX, targetY, targetZ, world);
-		playerName = targetEntity.getName().getFormattedText();
-		launchHeight = height;
-	}
-
-	public IMSBombEntity(World world, LivingEntity targetEntity, double x, double y, double z, double targetX, double targetY, double targetZ, int height){
-		super(SCContent.eTypeImsBomb, x, y, z, targetX, targetY, targetZ, world);
-		targetMob = targetEntity;
-		launchHeight = height;
+	public IMSBombEntity(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height){
+		super(SCContent.eTypeImsBomb, x, y, z, accelerationX, accelerationY, accelerationZ, world);
+		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 	}
 
 	@Override
 	public void tick(){
-		if(!launching){
+		if(!launching)
 			super.tick();
-			return;
-		}
+		else
+		{
+			if(ticksFlying == 0)
+				setMotion(getMotion().x, 0.33F, getMotion().z);
 
-		if(ticksFlying < launchHeight){
-			setMotion(getMotion().x, 0.35F, getMotion().z);
-			ticksFlying++;
-			move(MoverType.SELF, getMotion());
-		}else
-			setTarget();
-	}
-
-	public void setTarget() {
-		if(playerName != null && PlayerUtils.isPlayerOnline(playerName)){
-			PlayerEntity target = PlayerUtils.getPlayerFromName(playerName);
-
-			double targetX = target.getPosX() - getPosX();
-			double targetY = target.getBoundingBox().minY + target.getHeight() / 2.0F - (getPosY() + 1.25D);
-			double targetZ = target.getPosZ() - getPosZ();
-			IMSBombEntity imsBomb = new IMSBombEntity(world, target, getPosX(), getPosY(), getPosZ(), targetX, targetY, targetZ, 0);
-
-			imsBomb.launching = false;
-			WorldUtils.addScheduledTask(world, () -> world.addEntity(imsBomb));
-			remove();
-		}else if(targetMob != null && !targetMob.removed){
-			double targetX = targetMob.getPosX() - getPosX();
-			double targetY = targetMob.getBoundingBox().minY + targetMob.getHeight() / 2.0F - (getPosY() + 1.25D);
-			double targetZ = targetMob.getPosZ() - getPosZ();
-			IMSBombEntity imsBomb = new IMSBombEntity(world, targetMob, getPosX(), getPosY(), getPosZ(), targetX, targetY, targetZ, 0);
-
-			imsBomb.launching = false;
-			WorldUtils.addScheduledTask(world, () -> world.addEntity(imsBomb));
-			remove();
+			//move up before homing onto target
+			if(ticksFlying++ < launchTime)
+				move(MoverType.SELF, getMotion());
+			else
+			{
+				setMotion(0.0D, 0.0D, 0.0D);
+				launching = false;
+			}
 		}
 	}
 
 	@Override
 	protected void onImpact(RayTraceResult result){
-		if(!world.isRemote)
-			if(result.getType() == Type.BLOCK && BlockUtils.getBlock(world, ((BlockRayTraceResult)result).getPos()) != SCContent.IMS.get()){
-				world.createExplosion(this, ((BlockRayTraceResult)result).getPos().getX(), ((BlockRayTraceResult)result).getPos().getY() + 1D, ((BlockRayTraceResult)result).getPos().getZ(), 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
-				remove();
-			}
+		if(!world.isRemote && result.getType() == Type.BLOCK && BlockUtils.getBlock(world, ((BlockRayTraceResult)result).getPos()) != SCContent.IMS.get()){
+			BlockPos impactPos = ((BlockRayTraceResult)result).getPos();
+
+			world.createExplosion(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+			remove();
+		}
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT tag)
+	{
+		super.writeAdditional(tag);
+		tag.putInt("launchTime", launchTime);
+		tag.putInt("ticksFlying", ticksFlying);
+		tag.putBoolean("launching", launching);
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT tag)
+	{
+		super.readAdditional(tag);
+		launchTime = tag.getInt("launchTime");
+		ticksFlying = tag.getInt("ticksFlying");
+		launching = tag.getBoolean("launching");
 	}
 
 	@Override
