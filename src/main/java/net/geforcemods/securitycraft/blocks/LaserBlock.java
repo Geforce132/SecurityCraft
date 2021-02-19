@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -163,7 +162,7 @@ public class LaserBlock extends DisguisableBlock {
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		if (!world.isRemote && state.get(POWERED))
-			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
+			world.setBlockState(pos, state.with(POWERED, false));
 	}
 
 	@Override

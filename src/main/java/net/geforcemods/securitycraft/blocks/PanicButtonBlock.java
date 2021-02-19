@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -59,7 +58,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	{
 		boolean newPowered = !state.get(POWERED);
 
-		BlockUtils.setBlockProperty(world, pos, POWERED, newPowered, true);
+		world.setBlockState(pos, state.with(POWERED, newPowered));
 		playSound(player, world, pos, newPowered);
 
 		if(state.get(FACE) == AttachFace.WALL)

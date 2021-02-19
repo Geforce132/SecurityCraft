@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -107,7 +108,7 @@ public class SecurityCameraEntity extends Entity{
 		{
 			rotationPitch = 30F;
 
-			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
+			Direction facing = world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).get(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.NORTH)
 				rotationYaw = 180F;
@@ -246,8 +247,10 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewLeft() {
-		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).hasProperty(SecurityCameraBlock.FACING)) {
-			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
+		BlockState state = world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())));
+
+		if(state.hasProperty(SecurityCameraBlock.FACING)) {
+			Direction facing = state.get(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
 			{
@@ -278,8 +281,10 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	public void moveViewRight(){
-		if(world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()))).hasProperty(SecurityCameraBlock.FACING)) {
-			Direction facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())), SecurityCameraBlock.FACING);
+		BlockState state = world.getBlockState(BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ())));
+
+		if(state.hasProperty(SecurityCameraBlock.FACING)) {
+			Direction facing = state.get(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
 			{
@@ -328,7 +333,7 @@ public class SecurityCameraEntity extends Entity{
 		BlockPos pos = BlockUtils.toPos((int) Math.floor(getPosX()), (int) getPosY(), (int) Math.floor(getPosZ()));
 
 		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
-			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.POWERED)));
+			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).get(SecurityCameraBlock.POWERED)));
 	}
 
 	public void enableNightVision() {

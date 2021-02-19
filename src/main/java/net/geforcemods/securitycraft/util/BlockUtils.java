@@ -7,10 +7,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
-import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
@@ -21,22 +18,13 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
-import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.Property;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
@@ -90,91 +78,6 @@ public class BlockUtils{
 
 	public static Block getBlock(World world, int x, int y, int z){
 		return world.getBlockState(toPos(x, y, z)).getBlock();
-	}
-
-	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value) {
-		setBlockProperty(world, pos, property, value, false);
-	}
-
-	public static void setBlockProperty(World world, BlockPos pos, BooleanProperty property, boolean value, boolean retainOldTileEntity) {
-		BlockState state = world.getBlockState(pos);
-
-		if(!state.hasProperty(property))
-			return;
-
-		if(retainOldTileEntity){
-			CompoundNBT modules = null;
-			String password = "";
-			Owner owner = null;
-			int cooldown = -1;
-
-			if(world.getTileEntity(pos) instanceof IModuleInventory)
-				modules = ((IModuleInventory) world.getTileEntity(pos)).writeModuleInventory(new CompoundNBT());
-
-			if(world.getTileEntity(pos) instanceof OwnableTileEntity && ((OwnableTileEntity) world.getTileEntity(pos)).getOwner() != null)
-				owner = ((OwnableTileEntity) world.getTileEntity(pos)).getOwner();
-
-			if(world.getTileEntity(pos) instanceof KeypadTileEntity && ((KeypadTileEntity) world.getTileEntity(pos)).getPassword() != null)
-				password = ((KeypadTileEntity) world.getTileEntity(pos)).getPassword();
-
-			if(world.getTileEntity(pos) instanceof KeypadFurnaceTileEntity && ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).getPassword() != null)
-				password = ((KeypadFurnaceTileEntity) world.getTileEntity(pos)).getPassword();
-
-			if(world.getTileEntity(pos) instanceof KeypadChestTileEntity && ((KeypadChestTileEntity) world.getTileEntity(pos)).getPassword() != null)
-				password = ((KeypadChestTileEntity) world.getTileEntity(pos)).getPassword();
-
-			if(world.getTileEntity(pos) instanceof PortableRadarTileEntity && ((PortableRadarTileEntity) world.getTileEntity(pos)).getAttackCooldown() != 0)
-				cooldown = ((PortableRadarTileEntity) world.getTileEntity(pos)).getAttackCooldown();
-
-			TileEntity tileEntity = world.getTileEntity(pos);
-			world.setBlockState(pos, state.with(property, value));
-			world.setTileEntity(pos, tileEntity);
-
-			if(modules != null)
-				((IModuleInventory) world.getTileEntity(pos)).readModuleInventory(modules);
-
-			if(owner != null)
-				((OwnableTileEntity) world.getTileEntity(pos)).getOwner().set(owner);
-
-			if(!password.isEmpty() && world.getTileEntity(pos) instanceof KeypadTileEntity)
-				((KeypadTileEntity) world.getTileEntity(pos)).setPassword(password);
-
-			if(!password.isEmpty() && world.getTileEntity(pos) instanceof KeypadFurnaceTileEntity)
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).setPassword(password);
-
-			if(!password.isEmpty() && world.getTileEntity(pos) instanceof KeypadChestTileEntity)
-				((KeypadChestTileEntity) world.getTileEntity(pos)).setPassword(password);
-
-			if(cooldown != -1 && world.getTileEntity(pos) instanceof PortableRadarTileEntity)
-				((PortableRadarTileEntity) world.getTileEntity(pos)).setAttackCooldown(cooldown);
-		}
-		else
-			world.setBlockState(pos, state.with(property, value));
-	}
-
-	public static void setBlockProperty(World world, BlockPos pos, IntegerProperty property, int value) {
-		BlockState state = world.getBlockState(pos);
-
-		if(state.hasProperty(property))
-			world.setBlockState(pos, state.with(property, value));
-	}
-
-	public static <T extends Comparable<T>> T getBlockProperty(World world, BlockPos pos, Property<T> property){
-		return world.getBlockState(pos).get(property);
-	}
-
-	/**
-	 * returns an AABB with corners x1, y1, z1 and x2, y2, z2
-	 */
-	public static AxisAlignedBB fromBounds(double x1, double y1, double z1, double x2, double y2, double z2)
-	{
-		double d6 = Math.min(x1, x2);
-		double d7 = Math.min(y1, y2);
-		double d8 = Math.min(z1, z2);
-		double d9 = Math.max(x1, x2);
-		double d10 = Math.max(y1, y2);
-		double d11 = Math.max(z1, z2);
-		return new AxisAlignedBB(d6, d7, d8, d9, d10, d11);
 	}
 
 	public static BlockPos toPos(int x, int y, int z){

@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -60,7 +59,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
 		if (!world.isRemote && state.get(POWERED))
-			BlockUtils.setBlockProperty(world, pos, POWERED, false);
+			world.setBlockState(pos, state.with(POWERED, false));
 	}
 
 	/**

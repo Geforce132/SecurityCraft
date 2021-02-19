@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -47,10 +46,10 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		super.tick();
 
 		if(!world.isRemote && updateBombCount){
-			int mineCount = BlockUtils.getBlockProperty(world, pos, IMSBlock.MINES);
+			int mineCount = getBlockState().get(IMSBlock.MINES);
 
 			if(!(mineCount - 1 < 0 || mineCount > 4))
-				BlockUtils.setBlockProperty(world, pos, IMSBlock.MINES, BlockUtils.getBlockProperty(world, pos, IMSBlock.MINES) - 1);
+				world.setBlockState(pos, getBlockState().with(IMSBlock.MINES, mineCount - 1));
 
 			updateBombCount = false;
 		}
@@ -64,7 +63,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 */
 	private void launchMine() {
 		if(bombsRemaining > 0){
-			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
+			AxisAlignedBB area = new AxisAlignedBB(pos).grow(range.get());
 			LivingEntity target = null;
 
 			if(targetingOption == IMSTargetingMode.MOBS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS)

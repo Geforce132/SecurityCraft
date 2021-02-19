@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -137,26 +136,32 @@ public class AlarmBlock extends OwnableBlock {
 	}
 
 	private void playSoundAndUpdate(World world, BlockPos pos){
-		if(world.getBlockState(pos).getBlock() != SCContent.ALARM.get() || !(world.getTileEntity(pos) instanceof AlarmTileEntity)) return;
+		BlockState state = world.getBlockState(pos);
 
-		if(world.getRedstonePowerFromNeighbors(pos) > 0){
-			boolean isPowered = ((AlarmTileEntity) world.getTileEntity(pos)).isPowered();
+		if(state.getBlock() != SCContent.ALARM.get())
+			return;
 
-			if(!isPowered){
-				Owner owner = ((AlarmTileEntity) world.getTileEntity(pos)).getOwner();
-				BlockUtils.setBlockProperty(world, pos, LIT, true);
-				((AlarmTileEntity) world.getTileEntity(pos)).getOwner().set(owner);
-				((AlarmTileEntity) world.getTileEntity(pos)).setPowered(true);
-			}
+		TileEntity tile = world.getTileEntity(pos);
 
-		}else{
-			boolean isPowered = ((AlarmTileEntity) world.getTileEntity(pos)).isPowered();
+		if(tile instanceof AlarmTileEntity)
+		{
+			AlarmTileEntity te = (AlarmTileEntity)tile;
 
-			if(isPowered){
-				Owner owner = ((AlarmTileEntity) world.getTileEntity(pos)).getOwner();
-				BlockUtils.setBlockProperty(world, pos, LIT, false);
-				((AlarmTileEntity) world.getTileEntity(pos)).getOwner().set(owner);
-				((AlarmTileEntity) world.getTileEntity(pos)).setPowered(false);
+			if(world.getRedstonePowerFromNeighbors(pos) > 0){
+				boolean isPowered = te.isPowered();
+
+				if(!isPowered){
+					world.setBlockState(pos, state.with(LIT, true));
+					te.setPowered(true);
+				}
+
+			}else{
+				boolean isPowered = te.isPowered();
+
+				if(isPowered){
+					world.setBlockState(pos, state.with(LIT, false));
+					te.setPowered(false);
+				}
 			}
 		}
 	}

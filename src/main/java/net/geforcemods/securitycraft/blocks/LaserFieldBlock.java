@@ -60,16 +60,17 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 				for(int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++)
 				{
 					BlockPos offsetPos = pos.offset(facing, i);
-					Block block = world.getBlockState(offsetPos).getBlock();
+					BlockState offsetState = world.getBlockState(offsetPos);
+					Block offsetBlock = offsetState.getBlock();
 
-					if(block == SCContent.LASER_BLOCK.get() && !BlockUtils.getBlockProperty(world, offsetPos, LaserBlock.POWERED))
+					if(offsetBlock == SCContent.LASER_BLOCK.get() && !offsetState.get(LaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
 						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, ModuleType.WHITELIST).contains(((LivingEntity) entity).getName().getString().toLowerCase()))
 							return;
 
-						BlockUtils.setBlockProperty(world, offsetPos, LaserBlock.POWERED, true, true);
+						world.setBlockState(offsetPos, offsetState.with(LaserBlock.POWERED, true));
 						world.notifyNeighborsOfStateChange(offsetPos, SCContent.LASER_BLOCK.get());
 						world.getPendingBlockTicks().scheduleTick(offsetPos, SCContent.LASER_BLOCK.get(), 50);
 

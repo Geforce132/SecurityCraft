@@ -57,24 +57,14 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	public static void toggleLight(World world, BlockPos pos, Owner owner, boolean isLit) {
 		if(!world.isRemote)
 		{
-			if(isLit)
-			{
-				BlockUtils.setBlockProperty(world, pos, LIT, true);
+			world.setBlockState(pos, world.getBlockState(pos).with(LIT, isLit));
 
-				if(((IOwnable) world.getTileEntity(pos)) != null)
-					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
+			TileEntity te = world.getTileEntity(pos);
 
-				BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
-			}
-			else
-			{
-				BlockUtils.setBlockProperty(world, pos, LIT, false);
+			if(te instanceof IOwnable)
+				((IOwnable) te).setOwner(owner.getUUID(), owner.getName());
 
-				if(((IOwnable) world.getTileEntity(pos)) != null)
-					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
-
-				BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
-			}
+			BlockUtils.updateAndNotify(world, pos, SCContent.MOTION_ACTIVATED_LIGHT.get(), 1, false);
 		}
 	}
 
