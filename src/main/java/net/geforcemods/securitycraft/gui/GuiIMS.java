@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMode;
@@ -13,6 +14,8 @@ import net.minecraft.util.ResourceLocation;
 public class GuiIMS extends GuiContainer{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final String imsName = ClientUtils.localize(SCContent.ims.getTranslationKey() + ".name").getFormattedText();
+	private final String target = ClientUtils.localize("gui.securitycraft:ims.target").getFormattedText();
 	private TileEntityIMS tileEntity;
 	private GuiButton targetButton;
 	private EnumIMSTargetingMode targetMode;
@@ -27,7 +30,7 @@ public class GuiIMS extends GuiContainer{
 	public void initGui(){
 		super.initGui();
 
-		buttonList.add(targetButton = new GuiButton(0, width / 2 - 38, height / 2 - 58, 120, 20, ""));
+		buttonList.add(targetButton = new GuiButton(0, width / 2 - 75, height / 2 - 38, 150, 20, ""));
 		updateButtonText();
 	}
 
@@ -36,8 +39,8 @@ public class GuiIMS extends GuiContainer{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(ClientUtils.localize("tile.securitycraft:ims.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("tile.securitycraft:ims.name").getFormattedText()) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:ims.target").getFormattedText(), xSize / 2 - 78, 30, 4210752);
+		fontRenderer.drawString(imsName, xSize / 2 - fontRenderer.getStringWidth(imsName) / 2, 6, 4210752);
+		fontRenderer.drawString(target, xSize / 2 - fontRenderer.getStringWidth(target) / 2, 30, 4210752);
 	}
 
 	@Override
@@ -61,12 +64,7 @@ public class GuiIMS extends GuiContainer{
 	}
 
 	private void updateButtonText() {
-		if(targetMode == EnumIMSTargetingMode.PLAYERS)
-			targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText();
-		else if(targetMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText();
-		else if(targetMode == EnumIMSTargetingMode.MOBS)
-			targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText();
+		targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText();
 	}
 
 }
