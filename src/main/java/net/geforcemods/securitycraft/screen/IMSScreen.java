@@ -19,6 +19,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private final String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey()).getFormattedText();
+	private final String target = ClientUtils.localize("gui.securitycraft:ims.target").getFormattedText();
 
 	private IMSTileEntity tileEntity;
 	private ClickButton targetButton;
@@ -34,7 +36,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addButton(targetButton = new ClickButton(0, width / 2 - 38, height / 2 - 58, 120, 20, "", this::actionPerformed));
+		addButton(targetButton = new ClickButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
 		updateButtonText();
 	}
 
@@ -43,10 +45,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		String imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey()).getFormattedText();
-
 		font.drawString(imsName, xSize / 2 - font.getStringWidth(imsName) / 2, 6, 4210752);
-		font.drawString(ClientUtils.localize("gui.securitycraft:ims.target").getFormattedText(), xSize / 2 - 78, 30, 4210752);
+		font.drawString(target, xSize / 2 - font.getStringWidth(target) / 2, 30, 4210752);
 	}
 
 	@Override
@@ -69,12 +69,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	private void updateButtonText() {
-		if(targetMode == IMSTargetingMode.PLAYERS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText());
-		else if(targetMode == IMSTargetingMode.PLAYERS_AND_MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText());
-		else if(targetMode == IMSTargetingMode.MOBS)
-			targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText());
+		System.out.println(targetMode);
+		targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText());
 	}
 
 }
