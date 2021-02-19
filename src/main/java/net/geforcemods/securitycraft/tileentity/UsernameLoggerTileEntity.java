@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,7 +52,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	public void logPlayers(){
 		int range = searchRadius.get();
 
-		AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range, range, range);
+		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range);
 		List<?> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area);
 		Iterator<?> iterator = entities.iterator();
 

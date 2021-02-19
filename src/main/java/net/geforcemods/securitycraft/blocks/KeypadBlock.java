@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -63,7 +62,7 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	public static void activate(World world, BlockPos pos, int signalLength){
-		BlockUtils.setBlockProperty(world, pos, POWERED, true);
+		world.setBlockState(pos, world.getBlockState(pos).with(POWERED, true));
 		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 		world.getPendingBlockTicks().scheduleTick(pos, SCContent.KEYPAD.get(), signalLength);
 	}
@@ -71,7 +70,7 @@ public class KeypadBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
-		BlockUtils.setBlockProperty(world, pos, POWERED, false);
+		world.setBlockState(pos, state.with(POWERED, false));
 		world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 	}
 

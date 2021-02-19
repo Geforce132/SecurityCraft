@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -234,9 +235,11 @@ public class SCClientEventHandler
 			mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
 		}
 
-		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && !te.hasModule(ModuleType.REDSTONE))
+		BlockState state = world.getBlockState(pos);
+
+		if((state.getWeakPower(world, pos, state.get(SecurityCameraBlock.FACING)) == 0) && !te.hasModule(ModuleType.REDSTONE))
 			gui.blit(12, 2, 104, 0, 12, 12);
-		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
+		else if((state.getWeakPower(world, pos, state.get(SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
 			Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(REDSTONE, 10, 0);

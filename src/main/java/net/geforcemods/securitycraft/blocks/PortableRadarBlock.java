@@ -49,11 +49,13 @@ public class PortableRadarBlock extends OwnableBlock {
 	}
 
 	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {
-		if(par5 && !world.getBlockState(pos).get(POWERED)){
-			BlockUtils.setBlockProperty(world, pos, POWERED, true, true);
+		BlockState state = world.getBlockState(pos);
+
+		if(par5 && !state.get(POWERED)){
+			world.setBlockState(pos, state.with(POWERED, true));
 			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
-		}else if(!par5 && world.getBlockState(pos).get(POWERED)){
-			BlockUtils.setBlockProperty(world, pos, POWERED, false, true);
+		}else if(!par5 && state.get(POWERED)){
+			world.setBlockState(pos, state.with(POWERED, false));
 			BlockUtils.updateAndNotify(world, pos, BlockUtils.getBlock(world, pos), 1, false);
 		}
 	}

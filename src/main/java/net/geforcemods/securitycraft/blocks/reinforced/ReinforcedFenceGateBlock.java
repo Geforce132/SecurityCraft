@@ -49,7 +49,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(BlockUtils.getBlockProperty(world, pos, OPEN))
+		if(world.getBlockState(pos).get(OPEN))
 			return;
 
 		if(entity instanceof ItemEntity)

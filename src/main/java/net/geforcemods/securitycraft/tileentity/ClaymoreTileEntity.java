@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
@@ -53,8 +52,8 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 				return;
 			}
 
-			Direction dir = BlockUtils.getBlockProperty(getWorld(), getPos(), ClaymoreBlock.FACING);
-			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+			Direction dir = getBlockState().get(ClaymoreBlock.FACING);
+			AxisAlignedBB area = new AxisAlignedBB(pos);
 
 			if(dir == Direction.NORTH)
 				area = area.contract(-0, -0, range.get());

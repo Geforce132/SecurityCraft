@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -43,7 +42,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 				return;
 			}
 
-			boolean open = !BlockUtils.getBlockProperty(world, pos.down(), DoorBlock.OPEN);
+			boolean open = !lowerState.get(DoorBlock.OPEN);
 			int length = getSignalLength();
 
 			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN)), 3);

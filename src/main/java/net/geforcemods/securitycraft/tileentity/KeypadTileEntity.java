@@ -33,7 +33,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 		public void toggle() {
 			super.toggle();
 
-			BlockUtils.setBlockProperty(world, pos, KeypadBlock.POWERED, get());
+			world.setBlockState(pos, getBlockState().with(KeypadBlock.POWERED, get()));
 			world.notifyNeighborsOfStateChange(pos, SCContent.KEYPAD.get());
 		}
 	};
@@ -128,7 +128,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
 		if(isCodebreakerDisabled)
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else if(!BlockUtils.getBlockProperty(world, pos, KeypadBlock.POWERED)) {
+		else if(!blockState.get(KeypadBlock.POWERED)) {
 			activate(player);
 			return true;
 		}
