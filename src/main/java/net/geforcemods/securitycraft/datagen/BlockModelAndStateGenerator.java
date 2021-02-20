@@ -68,14 +68,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))});
 	}
 
-	public void furnaceMine(Block vanillaBlock, Block block)
-	{
-		String baseName = block.getRegistryName().toString();
-		ModelFile model = cubeAll(baseName, blockTexture(vanillaBlock));
-
-		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(model)});
-	}
-
 	public void reinforcedWallBlock(Block block)
 	{
 		reinforcedWallBlock(block, block.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
