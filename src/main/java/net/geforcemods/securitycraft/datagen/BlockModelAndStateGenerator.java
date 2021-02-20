@@ -91,14 +91,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		});
 	}
 
-	public void furnaceMine(Block vanillaBlock, Block block)
-	{
-		String baseName = block.getRegistryName().toString();
-		ModelFile model = models().cubeAll(baseName, blockTexture(vanillaBlock));
-
-		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(model)});
-	}
-
 	public void reinforcedWallBlock(Block block)
 	{
 		reinforcedWallBlock(block, block.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));

@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.minecraft.item.ItemStack;
 
 /**
  * Simple enum that is supposed to be used in conjunction with {@link CustomizableTileEntity}.
@@ -35,12 +34,6 @@ public enum ModuleType {
 
 	public String getTranslationKey() {
 		return getItem().getTranslationKey();
-	}
-
-	public static ModuleType getModuleFromStack(ItemStack stack) {
-		if(stack.getItem() instanceof ModuleItem)
-			return ((ModuleItem)stack.getItem()).getModuleType();
-		else return null;
 	}
 
 }

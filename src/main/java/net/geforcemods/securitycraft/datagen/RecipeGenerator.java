@@ -1186,11 +1186,6 @@ public class RecipeGenerator extends RecipeProvider
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 	}
 
-	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result, int amount, List<Ingredient> ingredients, CriterionInstance criterion, ICondition condition)
-	{
-		addShapelessConditionalRecipe(consumer, input, result, amount, "", ingredients, criterion, condition);
-	}
-
 	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result, int amount, String group, List<Ingredient> ingredients, CriterionInstance criterion, ICondition condition)
 	{
 		ShapelessRecipeBuilder.Result recipe;

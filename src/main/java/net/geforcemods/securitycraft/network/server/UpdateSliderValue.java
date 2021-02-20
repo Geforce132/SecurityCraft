@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.Option;
@@ -26,12 +25,6 @@ public class UpdateSliderValue {
 		this.pos = pos;
 		this.id = id;
 		value = v;
-	}
-
-	public void toBytes(ByteBuf buf) {
-	}
-
-	public void fromBytes(ByteBuf buf) {
 	}
 
 	public static void encode(UpdateSliderValue message, PacketBuffer buf)

@@ -18,24 +18,6 @@ public class NamedSlider extends Slider
 	private String blockName;
 	private Consumer<NamedSlider> consumer;
 
-	public NamedSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
-	{
-		super(xPos, yPos, width, height, new StringTextComponent(prefix), new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
-
-		setMessage(new StringTextComponent(initialString));
-		blockName = bN;
-		this.id = id;
-	}
-
-	public NamedSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, String suf, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
-	{
-		super(xPos, yPos, width, height, new StringTextComponent(prefix), new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
-
-		setMessage(new StringTextComponent(initialString));
-		blockName = bN;
-		this.id = id;
-	}
-
 	public NamedSlider(ITextComponent initialString, ITextComponent bN, int id, int xPos, int yPos, int width, int height, ITextComponent prefix, String suf, int minVal, int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par, Consumer<NamedSlider> method)
 	{
 		super(xPos, yPos, width, height, prefix, new StringTextComponent(suf), minVal, maxVal, currentVal, showDec, drawStr, b -> {}, par);
