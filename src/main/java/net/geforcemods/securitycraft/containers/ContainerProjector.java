@@ -12,12 +12,8 @@ public class ContainerProjector extends Container {
 
 	public static final int SIZE = 1;
 
-	public TileEntityProjector te;
-
 	public ContainerProjector(InventoryPlayer inventory, TileEntityProjector te)
 	{
-		this.te = te;
-
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; ++x)
 				addSlotToContainer(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 59));

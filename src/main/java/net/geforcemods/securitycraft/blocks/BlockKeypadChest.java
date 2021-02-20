@@ -268,48 +268,6 @@ public class BlockKeypadChest extends BlockContainer
 		return state;
 	}
 
-	public IBlockState correctFacing(World world, BlockPos pos, IBlockState state)
-	{
-		EnumFacing facing = null;
-
-		for(EnumFacing horizontalFacing : EnumFacing.Plane.HORIZONTAL)
-		{
-			IBlockState offsetState = world.getBlockState(pos.offset(horizontalFacing));
-
-			if(offsetState.getBlock() == this)
-				return state;
-
-			if(offsetState.isFullBlock())
-			{
-				if(facing != null)
-				{
-					facing = null;
-					break;
-				}
-
-				facing = horizontalFacing;
-			}
-		}
-
-		if(facing != null)
-			return state.withProperty(FACING, facing.getOpposite());
-		else
-		{
-			facing = state.getValue(FACING);
-
-			if(world.getBlockState(pos.offset(facing)).isFullBlock())
-				facing = facing.getOpposite();
-
-			if(world.getBlockState(pos.offset(facing)).isFullBlock())
-				facing = facing.rotateY();
-
-			if(world.getBlockState(pos.offset(facing)).isFullBlock())
-				facing = facing.getOpposite();
-
-			return state.withProperty(FACING, facing);
-		}
-	}
-
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos)
 	{

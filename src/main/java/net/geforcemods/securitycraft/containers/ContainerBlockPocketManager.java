@@ -12,13 +12,11 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBlockPocketManager extends Container
 {
-	public TileEntityBlockPocketManager te;
 	public final boolean storage;
 	public final boolean isOwner;
 
 	public ContainerBlockPocketManager(InventoryPlayer inventory, TileEntityBlockPocketManager te)
 	{
-		this.te = te;
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(EnumModuleType.STORAGE) && isOwner;
 

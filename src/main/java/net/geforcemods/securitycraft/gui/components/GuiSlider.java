@@ -36,7 +36,6 @@ public class GuiSlider extends GuiButtonExt
 {
 	/** The value of this slider control. */
 	public double sliderValue;
-	public String dispString = "";
 	/** Is this slider control being dragged. */
 	public boolean dragging = false;
 	public boolean showDecimal = true;
@@ -49,11 +48,6 @@ public class GuiSlider extends GuiButtonExt
 	private String blockName;
 	public String prefix;
 
-	public GuiSlider(int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean showDec, boolean drawStr)
-	{
-		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, width, height, prefix, minVal, maxVal, currentVal, showDec, drawStr, null);
-	}
-
 	public GuiSlider(String initialString, String bN, int id, int xPos, int yPos, int width, int height, String prefix, int minVal,int maxVal, int currentVal, boolean showDec, boolean drawStr, @Nullable ISlider par)
 	{
 		this(initialString, bN, id, xPos, yPos, width, height, prefix, (double)minVal, (double)maxVal, (double)currentVal, showDec, drawStr, par);
@@ -64,7 +58,6 @@ public class GuiSlider extends GuiButtonExt
 		super(id, xPos, yPos, width, height, prefix);
 		minValue = minVal;
 		maxValue = maxVal;
-		dispString = prefix;
 		parent = par;
 		showDecimal = showDec;
 		blockName = bN;
@@ -88,11 +81,6 @@ public class GuiSlider extends GuiButtonExt
 		drawString = drawStr;
 		if(!drawString)
 			displayString = "";
-	}
-
-	public GuiSlider(int id, int xPos, int yPos, String displayStr, double minVal, double maxVal, double currentVal, ISlider par)
-	{
-		this("whyareyoudoingthis", "seriouslywhy", id, xPos, yPos, 150, 20, displayStr, minVal, maxVal, currentVal, true, true, par);
 	}
 
 	/**

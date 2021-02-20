@@ -72,9 +72,4 @@ public class PacketSSyncBlockPocketManager implements IMessage
 			return null;
 		}
 	}
-
-	public enum DataType
-	{
-		WIDTH, HEIGHT, RANGE, OFFSET, HORIZONTAL, INVALID;
-	}
 }

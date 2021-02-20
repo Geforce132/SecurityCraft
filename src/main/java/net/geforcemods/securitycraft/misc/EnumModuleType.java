@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -42,12 +41,6 @@ public enum EnumModuleType {
 
 	public String getRegistryPath() {
 		return registryPath;
-	}
-
-	public static EnumModuleType getModuleFromStack(ItemStack stack) {
-		if(stack.getItem() instanceof ItemModule)
-			return ((ItemModule)stack.getItem()).getModuleType();
-		else return null;
 	}
 
 	public static void refresh() {

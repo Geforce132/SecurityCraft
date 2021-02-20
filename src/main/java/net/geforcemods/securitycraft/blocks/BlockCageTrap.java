@@ -264,11 +264,5 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 
 			pos.setPos(origin); //reset the mutable block pos for the next usage
 		}
-
-		@FunctionalInterface
-		public interface TriFunction<T,U,V,R>
-		{
-			R apply(T t, U u, V v);
-		}
 	}
 }

@@ -28,11 +28,6 @@ public class BlockOwnable extends BlockContainer {
 			setSoundType(SoundType.STONE);
 	}
 
-	public BlockOwnable(Material material, EnumBlockRenderType renderType) {
-		this(material);
-		this.renderType = renderType;
-	}
-
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
