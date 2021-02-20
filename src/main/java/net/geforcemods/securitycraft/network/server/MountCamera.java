@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -26,12 +25,6 @@ public class MountCamera {
 		this.y = y;
 		this.z = z;
 		this.id = id;
-	}
-
-	public void toBytes(ByteBuf buf) {
-	}
-
-	public void fromBytes(ByteBuf buf) {
 	}
 
 	public static void encode(MountCamera message, PacketBuffer buf)

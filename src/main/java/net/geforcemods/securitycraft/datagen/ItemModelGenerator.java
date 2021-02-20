@@ -96,11 +96,6 @@ public class ItemModelGenerator extends ItemModelProvider
 				.texture("west", sideTexture);
 	}
 
-	public ItemModelBuilder simpleParent(Block block)
-	{
-		return simpleParent(block.getRegistryName());
-	}
-
 	public ItemModelBuilder simpleParent(ResourceLocation name)
 	{
 		return parent(name.toString(), modLoc(BLOCK_FOLDER + "/" + name.getPath()));
