@@ -13,10 +13,12 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,6 +35,7 @@ import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.DrawHighlightEvent;
@@ -206,6 +209,8 @@ public class SCClientEventHandler
 	private static void drawCameraOverlay(Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World world, BlockPos pos) {
 		SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getTileEntity(pos);
 		int timeY = 25;
+		GameSettings settings = Minecraft.getInstance().gameSettings;
+		String lookAround = settings.keyBindForward.getLocalizedName().toUpperCase() + settings.keyBindLeft.getLocalizedName().toUpperCase() + settings.keyBindBack.getLocalizedName().toUpperCase() + settings.keyBindRight.getLocalizedName().toUpperCase() + " - " + ClientUtils.localize("gui.securitycraft:camera.lookAround").getFormattedText();
 
 		if(te.hasCustomSCName())
 		{
@@ -216,7 +221,8 @@ public class SCClientEventHandler
 		}
 
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(ClientUtils.getFormattedMinecraftTime(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(ClientUtils.getFormattedMinecraftTime()) - 8, timeY, 16777215);
-		Minecraft.getInstance().fontRenderer.drawStringWithShadow(Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
+		Minecraft.getInstance().fontRenderer.drawStringWithShadow(lookAround, resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
+		Minecraft.getInstance().fontRenderer.drawStringWithShadow(settings.keyBindSneak.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(settings.keyBindSneak.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.exit").getFormattedText()) - 8, resolution.getScaledHeight() - 70, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + KeyBindings.cameraZoomOut.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(KeyBindings.cameraZoomIn.getLocalizedName() + "/" + ClientUtils.localize(KeyBindings.cameraZoomOut.getTranslationKey()).getFormattedText() + " - " + ClientUtils.localize("gui.securitycraft:camera.zoom").getFormattedText()) - 8, resolution.getScaledHeight() - 60, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(KeyBindings.cameraActivateNightVision.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(KeyBindings.cameraActivateNightVision.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.activateNightVision").getFormattedText()) - 8, resolution.getScaledHeight() - 50, 16777215);
 		Minecraft.getInstance().fontRenderer.drawStringWithShadow(KeyBindings.cameraEmitRedstone.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText(), resolution.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(KeyBindings.cameraEmitRedstone.getLocalizedName() + " - " + ClientUtils.localize("gui.securitycraft:camera.toggleRedstone").getFormattedText()) - 8, resolution.getScaledHeight() - 40, te.hasModule(ModuleType.REDSTONE) ? 16777215 : 16724855);

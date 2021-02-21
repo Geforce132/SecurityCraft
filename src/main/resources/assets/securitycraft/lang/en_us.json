@@ -580,6 +580,7 @@
 	"gui.securitycraft:srat.outOfRange": "Sentry out of range",
 	"gui.securitycraft:password.invalidCode": "Invalid code!",
 	"gui.securitycraft:password.setup": "setup",
+	"gui.securitycraft:camera.lookAround": "Look around",
 	"gui.securitycraft:camera.activateNightVision": "Activate night vision",
 	"gui.securitycraft:camera.exit": "Exit Camera",
 	"gui.securitycraft:camera.toggleRedstone": "Toggle redstone signal",
@@ -621,7 +622,6 @@
 	"gui.securitycraft:projector.horizontal": "Horizontal projection",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
-	"messages.securitycraft:securityCamera.mounted": "You are now mounted to a camera. Use the %1$s%2$s%3$s%4$s keys to move the camera's view, and the %5$s/%6$s buttons to zoom in and out.",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",
 	"messages.securitycraft:retinalScanner.notOwner": "Sorry, you cannot use this scanner. It is owned by %s.",
 	"messages.securitycraft:portableRadar.withName": "%1$s is near your portable radar named %2$s.",

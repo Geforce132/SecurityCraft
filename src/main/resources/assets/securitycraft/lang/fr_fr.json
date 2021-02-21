@@ -622,7 +622,6 @@
 	"gui.securitycraft:projector.horizontal": "La projection horizontale",
 
 	"messages.securitycraft:bugReport": "S'il vous plait, signaler des bogues dans la salon #bugreport de notre serveur Discord. Lire les règles en avance, s'il vous plait",
-	"messages.securitycraft:securityCamera.mounted": "Vous êtes maintenant connectés sur une caméra. Utilisez les touches %1$s%2$s%3$s%4$s pour déplacer la vue de la caméra et les boutons %5$s/%6$s pour zoomer et dézoomer.",
 	"messages.securitycraft:retinalScanner.hello": "Salut %s.",
 	"messages.securitycraft:retinalScanner.notOwner": "Je suis désolé, vous ne pouvez pas utiliser ce scanner. Il appartient à %s.",
 	"messages.securitycraft:portableRadar.withName": "%1$s est près de votre radar portable nommé %2$s.",
