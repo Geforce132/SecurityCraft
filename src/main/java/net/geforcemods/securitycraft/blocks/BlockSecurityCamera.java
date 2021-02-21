@@ -5,11 +5,8 @@ import java.util.Iterator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -17,7 +14,6 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,7 +27,6 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -118,9 +113,6 @@ public class BlockSecurityCamera extends BlockOwnable{
 	}
 
 	public void mountCamera(World world, int x, int y, int z, int id, EntityPlayer player){
-		if(world.isRemote && player.getRidingEntity() == null)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:securityCamera.name"), ClientUtils.localize("messages.securitycraft:securityCamera.mounted", KeyBinding.getDisplayString("key.forward").get().toUpperCase(), KeyBinding.getDisplayString("key.left").get().toUpperCase(), KeyBinding.getDisplayString("key.back").get().toUpperCase(), KeyBinding.getDisplayString("key.right").get().toUpperCase(), KeyBindings.cameraZoomIn.getDisplayName(), KeyBindings.cameraZoomOut.getDisplayName()), TextFormatting.GREEN);
-
 		if(player.getRidingEntity() instanceof EntitySecurityCamera){
 			EntitySecurityCamera dummyEntity = new EntitySecurityCamera(world, x, y, z, id, (EntitySecurityCamera) player.getRidingEntity());
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(dummyEntity));

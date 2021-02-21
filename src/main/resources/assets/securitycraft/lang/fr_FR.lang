@@ -504,7 +504,6 @@ gui.securitycraft:projector.horizontal=La projection horizontale
 gui.securitycraft:keypadChestDouble=Grand coffre protégé par mot de passe
 
 messages.securitycraft:bugReport=Vous pouvez signaler un plantage ou un bug en utilisant ce formulaire GoogleDocs
-messages.securitycraft:securityCamera.mounted=Vous êtes maintenant connectés sur une caméra. Utilisez les touches %1$s%2$s%3$s%4$s pour déplacer la vue de la caméra et les boutons %5$s/%6$s pour zoomer et dézoomer.
 messages.securitycraft:retinalScanner.hello=Bonjour %s.
 messages.securitycraft:retinalScanner.notOwner=Je suis désolé, vous ne pouvez pas utiliser ce scanner. Il appartient à %s.
 messages.securitycraft:portableRadar.withName=%1$s est près de votre radar portable nommé %2$s.
