@@ -637,6 +637,7 @@
 	"gui.securitycraft:srat.outOfRange": "Geschütz außer Reichweite",
 	"gui.securitycraft:password.invalidCode": "Ungültiger Code!",
 	"gui.securitycraft:password.setup": "aufsetzen",
+	"gui.securitycraft:camera.lookAround": "%1$s%2$s%3$s%4$s - Herumschauen",
 	"gui.securitycraft:camera.activateNightVision": "%s - Nachtsicht aktivieren",
 	"gui.securitycraft:camera.exit": "%s - Kamera verlassen",
 	"gui.securitycraft:camera.toggleRedstone": "%s - Redstonesignal ein-/ausschalten",
@@ -678,7 +679,6 @@
 	"gui.securitycraft:projector.horizontal": "Horizontale Projektion",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
-	"messages.securitycraft:securityCamera.mounted": "Du bist nun in einer Kamera. Nutze %1$s%2$s%3$s%4$s, um dich umzusehen, und die %5$s/%6$s Knöpfe, um heran- und herauszuzoomen.",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
 	"messages.securitycraft:retinalScanner.notOwner": "Entschuldigung, du kannst diesen Scanner nicht benutzen. Er gehört %s.",
 	"messages.securitycraft:portableRadar.withName": "%1$s ist in der Nähe deines tragbaren Radars namens %2$s.",

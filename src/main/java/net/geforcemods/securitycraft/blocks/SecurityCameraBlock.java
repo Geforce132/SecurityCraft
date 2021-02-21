@@ -4,21 +4,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
-import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.GameSettings;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -124,19 +117,6 @@ public class SecurityCameraBlock extends OwnableBlock{
 	}
 
 	public void mountCamera(World world, int x, int y, int z, int id, PlayerEntity player){
-		if(world.isRemote && player.getRidingEntity() == null)
-		{
-			GameSettings settings = Minecraft.getInstance().gameSettings;
-
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SECURITY_CAMERA.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:securityCamera.mounted",
-					settings.keyBindForward.func_238171_j_(),
-					settings.keyBindLeft.func_238171_j_(),
-					settings.keyBindBack.func_238171_j_(),
-					settings.keyBindRight.func_238171_j_(),
-					KeyBindings.cameraZoomIn.func_238171_j_(),
-					KeyBindings.cameraZoomOut.func_238171_j_()), TextFormatting.GREEN);
-		}
-
 		if(player.getRidingEntity() instanceof SecurityCameraEntity){
 			SecurityCameraEntity dummyEntity = new SecurityCameraEntity(world, x, y, z, id, (SecurityCameraEntity) player.getRidingEntity());
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(dummyEntity));

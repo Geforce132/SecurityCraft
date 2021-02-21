@@ -594,7 +594,6 @@
 	"gui.securitycraft:blockPocketManager.size": "크기: %sx%sx%s",
 
 	"messages.securitycraft:bugReport": "이 GoogleDocs 양식을 사용하여 충돌 또는 버그를 보고할 수 있습니다.",
-	"messages.securitycraft:securityCamera.mounted": "이제 카메라에 장착됩니다. %1$s%2$s%3$s%4$s 키를 사용하여 카메라 보기를 이동하고%5$s/%6$s 버튼을 사용하여 확대/축소합니다.",
 	"messages.securitycraft:retinalScanner.hello": "%s님 안녕하세요.",
 	"messages.securitycraft:retinalScanner.notOwner": "죄송합니다. 이 감지기는 사용할 수 없습니다. 그것은%s의 소유입니다.",
 	"messages.securitycraft:portableRadar.withName": "%1$s는%2$s이라는 이름의 휴대용 레이더 근처에 있습니다.",

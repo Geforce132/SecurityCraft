@@ -212,6 +212,7 @@ public class SCClientEventHandler
 		GameSettings settings = Minecraft.getInstance().gameSettings;
 		SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getTileEntity(pos);
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
+		ITextComponent lookAround = ClientUtils.localize("gui.securitycraft:camera.lookAround", settings.keyBindForward.func_238171_j_(), settings.keyBindLeft.func_238171_j_(), settings.keyBindBack.func_238171_j_(), settings.keyBindRight.func_238171_j_());
 		ITextComponent exit = ClientUtils.localize("gui.securitycraft:camera.exit", settings.keyBindSneak.func_238171_j_());
 		ITextComponent zoom = ClientUtils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.func_238171_j_(), KeyBindings.cameraZoomOut.func_238171_j_());
 		ITextComponent nightVision = ClientUtils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
@@ -230,6 +231,7 @@ public class SCClientEventHandler
 
 		font.drawStringWithShadow(matrix, time, resolution.getScaledWidth() - font.getStringWidth(time) - 8, timeY, 16777215);
 		//drawStringWithShadow
+		font.func_243246_a(matrix, lookAround, resolution.getScaledWidth() - font.getStringPropertyWidth(lookAround) - 8, resolution.getScaledHeight() - 80, 16777215);
 		font.func_243246_a(matrix, exit, resolution.getScaledWidth() - font.getStringPropertyWidth(exit) - 8, resolution.getScaledHeight() - 70, 16777215);
 		font.func_243246_a(matrix, zoom, resolution.getScaledWidth() - font.getStringPropertyWidth(zoom) - 8, resolution.getScaledHeight() - 60, 16777215);
 		font.func_243246_a(matrix, nightVision, resolution.getScaledWidth() - font.getStringPropertyWidth(nightVision) - 8, resolution.getScaledHeight() - 50, 16777215);

@@ -607,7 +607,6 @@
 	"gui.securitycraft:projector.offset.description": "El desplazamiento horizontal de la proyección.",
 
 	"messages.securitycraft:bugReport": "Por favor, reporta bugs en el canal #bugreport de nuestro server de Discord. Lee las normas antes, por favor",
-	"messages.securitycraft:securityCamera.mounted": "Ahora estás en una cámara. Usa las teclas %1$s%2$s%3$s%4$s para mover la cámara. Aumenta o aleja con %5$s y %6$s.",
 	"messages.securitycraft:retinalScanner.hello": "Hola, %s.",
 	"messages.securitycraft:retinalScanner.notOwner": "Lo sentimos, no puedes usar este escáner. Es de %s.",
 	"messages.securitycraft:portableRadar.withName": "%1$s está cerca de tu radar portátil llamado %2$s.",
