@@ -126,10 +126,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	public void reinforcedPaneBlock(PaneBlock block)
 	{
 		String name = name(block);
-		ResourceLocation noPane = modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", ""));
 
-		paneBlock(block, noPane, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
-		itemModels().getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", noPane);
+		paneBlock(block, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
 	}
 
 	public void reinforcedWallBlock(Block block)
@@ -154,28 +152,19 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	}
 
 	@Override
-	public void simpleBlock(Block block)
-	{
-		String name = name(block);
-
-		super.simpleBlock(block);
-		itemModels().withExistingParent(name, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name));
-	}
-
-	@Override
 	public String getName()
 	{
 		return "SecurityCraft Block States/Models";
-	}
-
-	private String name(Block block)
-	{
-		return block.getRegistryName().getPath();
 	}
 
 	@Override
 	public SCBlockModelProvider models()
 	{
 		return scModels;
+	}
+
+	private String name(Block block)
+	{
+		return block.getRegistryName().getPath();
 	}
 }
