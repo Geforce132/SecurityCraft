@@ -5,6 +5,7 @@
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
 - Misc.: All of SecurityCraft's blocks now have loot tables
+- Misc.: Added data generators for more blockstates and models and renamed some textures along the way. This will break resourcepacks
 
 --------------------------Changelog for v1.8.21.1 of SecurityCraft--------------------------
 

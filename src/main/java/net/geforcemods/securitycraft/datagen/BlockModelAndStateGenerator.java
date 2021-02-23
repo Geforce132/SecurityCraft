@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -7,8 +8,12 @@ import com.google.common.collect.ImmutableMap;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
+import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.PaneBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.WallHeight;
 import net.minecraft.data.DataGenerator;
@@ -16,7 +21,6 @@ import net.minecraft.state.EnumProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -24,6 +28,7 @@ import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.RegistryObject;
 
 public class BlockModelAndStateGenerator extends BlockStateProvider
 {
@@ -32,15 +37,42 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 			Direction.NORTH, BlockStateProperties.WALL_HEIGHT_NORTH,
 			Direction.SOUTH, BlockStateProperties.WALL_HEIGHT_SOUTH,
 			Direction.WEST, BlockStateProperties.WALL_HEIGHT_WEST);
+	private final SCBlockModelProvider scModels;
 
 	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper)
 	{
 		super(gen, SecurityCraft.MODID, exFileHelper);
+
+		scModels = new SCBlockModelProvider(gen, exFileHelper);
 	}
 
 	@Override
 	protected void registerStatesAndModels()
 	{
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+				{
+					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
+					Block block = obj.get();
+
+					if(block instanceof ReinforcedStainedGlassBlock)
+						simpleBlock(block);
+					else if(block instanceof ReinforcedStainedGlassPaneBlock)
+						reinforcedPaneBlock((PaneBlock)block);
+				}
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		simpleBlock(SCContent.REINFORCED_GLASS.get());
+		reinforcedPaneBlock((PaneBlock)SCContent.REINFORCED_GLASS_PANE.get());
+
 		reinforcedWallBlock(SCContent.REINFORCED_COBBLESTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
@@ -91,6 +123,15 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		});
 	}
 
+	public void reinforcedPaneBlock(PaneBlock block)
+	{
+		String name = name(block);
+		ResourceLocation noPane = modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", ""));
+
+		paneBlock(block, noPane, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
+		itemModels().getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", noPane);
+	}
+
 	public void reinforcedWallBlock(Block block)
 	{
 		reinforcedWallBlock(block, block.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
@@ -100,41 +141,41 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	{
 		ResourceLocation texture = new ResourceLocation("block/" + textureName);
 		String baseName = block.getRegistryName().toString();
-		ModelFile post = reinforcedWallPost(baseName + "_post", texture);
-		ModelFile side = reinforcedWallSide(baseName + "_side", texture, false);
-		ModelFile sideTall = reinforcedWallSide(baseName + "_side_tall", texture, true);
+		ModelFile post = models().reinforcedWallPost(baseName + "_post", texture);
+		ModelFile side = models().reinforcedWallSide(baseName + "_side", texture, false);
+		ModelFile sideTall = models().reinforcedWallSide(baseName + "_side_tall", texture, true);
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block)
 				.part().modelFile(post).addModel()
 				.condition(WallBlock.UP, true).end();
 
 		fourWayWallHeight(builder, side, WallHeight.LOW);
 		fourWayWallHeight(builder, sideTall, WallHeight.TALL);
-		reinforcedWallInventory(baseName + "_inventory", texture);
+		models().reinforcedWallInventory(baseName + "_inventory", texture);
 	}
 
-	public BlockModelBuilder reinforcedWallPost(String name, ResourceLocation wall)
+	@Override
+	public void simpleBlock(Block block)
 	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_post"), "wall", wall);
-	}
+		String name = name(block);
 
-	public BlockModelBuilder reinforcedWallSide(String name, ResourceLocation wall, boolean tall)
-	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_side" + (tall ? "_tall" : "")), "wall", wall);
-	}
-
-	public BlockModelBuilder reinforcedWallInventory(String name, ResourceLocation wall)
-	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", wall);
-	}
-
-	public BlockModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture)
-	{
-		return models().getBuilder(name).parent(new UncheckedModelFile(parent)).texture(textureKey, texture);
+		super.simpleBlock(block);
+		itemModels().withExistingParent(name, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name));
 	}
 
 	@Override
 	public String getName()
 	{
 		return "SecurityCraft Block States/Models";
+	}
+
+	private String name(Block block)
+	{
+		return block.getRegistryName().getPath();
+	}
+
+	@Override
+	public SCBlockModelProvider models()
+	{
+		return scModels;
 	}
 }
