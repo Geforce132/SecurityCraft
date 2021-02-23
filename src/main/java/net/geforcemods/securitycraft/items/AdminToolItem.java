@@ -37,7 +37,7 @@ public class AdminToolItem extends Item {
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
 
-		if(world.isRemote && ConfigHandler.SERVER.allowAdminTool.get()) {
+		if(ConfigHandler.SERVER.allowAdminTool.get()) {
 			IFormattableTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
 
 			if(!player.isCreative())
@@ -80,7 +80,7 @@ public class AdminToolItem extends Item {
 
 					for(int i = 0; i < 4; i++)
 					{
-						ITextProperties text = ((SecretSignTileEntity)te).getText(i);
+						ITextProperties text = ((SecretSignTileEntity)te).signText[i];
 
 						if(text instanceof IFormattableTextComponent)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, (IFormattableTextComponent)text, TextFormatting.DARK_PURPLE);
