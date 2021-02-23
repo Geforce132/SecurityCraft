@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "securitycraft:block/reinforced_blue_stained_glass"
+  }
+}

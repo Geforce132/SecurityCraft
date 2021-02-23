@@ -17,11 +17,12 @@ public class DataGenRegistrar
 	public static void onGatherData(GatherDataEvent event)
 	{
 		DataGenerator generator = event.getGenerator();
+		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.EMPTY_LIST, false);
 
 		generator.addProvider(new BlockLootTableGenerator(generator));
-		generator.addProvider(new BlockModelAndStateGenerator(generator, event.getExistingFileHelper()));
+		generator.addProvider(new BlockModelAndStateGenerator(generator, existingFileHelper));
 		generator.addProvider(new BlockTagGenerator(generator));
-		generator.addProvider(new ItemModelGenerator(generator, new ExistingFileHelper(Collections.EMPTY_LIST, false)));
+		generator.addProvider(new ItemModelGenerator(generator, existingFileHelper));
 		generator.addProvider(new FluidTagGenerator(generator));
 		generator.addProvider(new ItemTagGenerator(generator));
 		generator.addProvider(new RecipeGenerator(generator));
