@@ -1,15 +1,27 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "group": "securitycraft:block_mines",
-  "ingredients": [
+  "type": "forge:conditional",
+  "recipes": [
     {
-      "item": "minecraft:gilded_blackstone"
-    },
-    {
-      "item": "securitycraft:mine"
+      "conditions": [
+        {
+          "type": "securitycraft:toggle_mines"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "group": "securitycraft:block_mines",
+        "ingredients": [
+          {
+            "item": "minecraft:gilded_blackstone"
+          },
+          {
+            "item": "securitycraft:mine"
+          }
+        ],
+        "result": {
+          "item": "securitycraft:gilded_blackstone_mine"
+        }
+      }
     }
-  ],
-  "result": {
-    "item": "securitycraft:gilded_blackstone_mine"
-  }
+  ]
 }
