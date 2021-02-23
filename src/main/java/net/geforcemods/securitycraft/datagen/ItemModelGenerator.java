@@ -1,7 +1,12 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.lang.reflect.Field;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
+import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -11,6 +16,8 @@ import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
+import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.fml.RegistryObject;
 
 public class ItemModelGenerator extends ItemModelProvider
 {
@@ -22,6 +29,30 @@ public class ItemModelGenerator extends ItemModelProvider
 	@Override
 	protected void registerModels()
 	{
+		for(Field field : SCContent.class.getFields())
+		{
+			try
+			{
+				if(field.isAnnotationPresent(Reinforced.class))
+				{
+					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
+					Block block = obj.get();
+
+					if(block instanceof ReinforcedStainedGlassBlock)
+						simpleParent(block);
+					else if(block instanceof ReinforcedStainedGlassPaneBlock)
+						reinforcedPane(block);
+				}
+			}
+			catch(IllegalArgumentException | IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		simpleParent(SCContent.REINFORCED_GLASS.get());
+		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
+
 		reinforcedWallInventory(SCContent.REINFORCED_COBBLESTONE_WALL.get(), Blocks.COBBLESTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(), Blocks.MOSSY_COBBLESTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
@@ -63,6 +94,13 @@ public class ItemModelGenerator extends ItemModelProvider
 		blockMine(Blocks.STONE, SCContent.STONE_MINE.get());
 	}
 
+	public ItemModelBuilder reinforcedPane(Block block)
+	{
+		String name = name(block);
+
+		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")));
+	}
+
 	public ItemModelBuilder reinforcedWallInventory(Block block, Block vanillaBlock)
 	{
 		return reinforcedWallInventory(block, vanillaBlock.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
@@ -96,9 +134,11 @@ public class ItemModelGenerator extends ItemModelProvider
 				.texture("west", sideTexture);
 	}
 
-	public ItemModelBuilder simpleParent(ResourceLocation name)
+	public ItemModelBuilder simpleParent(Block block)
 	{
-		return parent(name.toString(), modLoc(BLOCK_FOLDER + "/" + name.getPath()));
+		String name = name(block);
+
+		return parent(name, modLoc(BLOCK_FOLDER + "/" + name));
 	}
 
 	public ItemModelBuilder parent(String name, ResourceLocation parent)
@@ -110,5 +150,10 @@ public class ItemModelGenerator extends ItemModelProvider
 	public String getName()
 	{
 		return "SecurityCraft Item Models";
+	}
+
+	private String name(Block block)
+	{
+		return block.getRegistryName().getPath();
 	}
 }

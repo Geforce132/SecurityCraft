@@ -108,10 +108,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	public void reinforcedPaneBlock(ReinforcedPaneBlock block)
 	{
 		String name = name(block);
-		ResourceLocation noPane = modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", ""));
 
-		reinforcedPaneBlock(block, block.getRegistryName().toString(), noPane, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
-		itemModels().getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", noPane);
+		reinforcedPaneBlock(block, block.getRegistryName().toString(), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
 	}
 
 	public void reinforcedPaneBlock(ReinforcedPaneBlock block, String name, ResourceLocation pane, ResourceLocation edge)
@@ -153,15 +151,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 
 		fourWayMultipart(builder, side);
 		models().reinforcedWallInventory(baseName + "_inventory", texture);
-	}
-
-	@Override
-	public void simpleBlock(Block block)
-	{
-		String name = name(block);
-
-		super.simpleBlock(block);
-		itemModels().withExistingParent(name, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name));
 	}
 
 	@Override
