@@ -102,6 +102,8 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	 */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+		super.onBlockPlacedBy(world, pos, state, entity, stack);
+
 		if(world.isRemote)
 			return;
 

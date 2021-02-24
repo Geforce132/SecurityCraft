@@ -16,7 +16,6 @@ public class BlockReinforcedIce extends BlockReinforcedIceBase
 		super(mat, a, sound, vB);
 	}
 
-
 	@Override
 	public boolean isOpaqueCube(IBlockState state)
 	{

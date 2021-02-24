@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
+import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -43,6 +44,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class BlockKeypadChest extends BlockContainer
 {
@@ -196,6 +198,9 @@ public class BlockKeypadChest extends BlockContainer
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(southPos)).getPassword());
 		else if(world.getTileEntity(northPos) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(northPos)).getOwner().isOwner((EntityPlayer) entity))
 			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(northPos)).getPassword());
+
+		if(isPlayer)
+			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)entity));
 	}
 
 	public IBlockState checkForSurroundingChests(World world, BlockPos pos, IBlockState state)

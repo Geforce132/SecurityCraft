@@ -3,6 +3,7 @@
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
+- Fix: Placing blocks using tools of other mods (like Better Builder's Wands) does not set the owner correctly
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

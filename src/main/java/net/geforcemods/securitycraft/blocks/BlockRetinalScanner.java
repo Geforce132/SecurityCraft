@@ -43,6 +43,8 @@ public class BlockRetinalScanner extends BlockDisguisable {
 	 */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase entity, ItemStack stack){
+		super.onBlockPlacedBy(world, pos, state, entity, stack);
+
 		IBlockState north = world.getBlockState(pos.north());
 		IBlockState south = world.getBlockState(pos.south());
 		IBlockState west = world.getBlockState(pos.west());
