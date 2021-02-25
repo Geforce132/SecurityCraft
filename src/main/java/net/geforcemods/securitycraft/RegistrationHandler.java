@@ -35,6 +35,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStone;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedStoneBrick;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWalls;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
+import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.misc.DyeBriefcaseRecipe;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -300,7 +301,7 @@ public class RegistrationHandler
 		for(Block block : blockPages)
 		{
 			if(block == SCContent.reinforcedStone)
-				SecurityCraft.instance.manualPages.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
+				ItemSCManual.PAGES.add(new SCManualPage(Item.getItemFromBlock(block), "help.securitycraft:reinforced.info"));
 			else
 			{
 				SCManualPage page = new SCManualPage(Item.getItemFromBlock(block), "help." + block.getTranslationKey().substring(5) + ".info", blockConfigValues.getOrDefault(block, true));
@@ -308,7 +309,7 @@ public class RegistrationHandler
 				if(blocksDesignedBy.containsKey(block))
 					page.setDesignedBy(blocksDesignedBy.get(block));
 
-				SecurityCraft.instance.manualPages.add(page);
+				ItemSCManual.PAGES.add(page);
 			}
 		}
 
@@ -935,7 +936,7 @@ public class RegistrationHandler
 
 		event.getRegistry().register(item);
 		page.setDesignedBy(designedBy);
-		SecurityCraft.instance.manualPages.add(page);
+		ItemSCManual.PAGES.add(page);
 	}
 
 	/**
@@ -948,7 +949,7 @@ public class RegistrationHandler
 
 		event.getRegistry().register(item);
 		page.setDesignedBy(designedBy);
-		SecurityCraft.instance.manualPages.add(page);
+		ItemSCManual.PAGES.add(page);
 	}
 
 	/**
@@ -964,6 +965,6 @@ public class RegistrationHandler
 		for(int i = 0; i < recipeItems.size(); i++)
 			recipeItems.set(i, Ingredient.fromStacks(customRecipe[i]));
 
-		SecurityCraft.instance.manualPages.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", recipeItems));
+		ItemSCManual.PAGES.add(new SCManualPage(item, "help." + item.getTranslationKey().substring(5) + ".info", recipeItems));
 	}
 }

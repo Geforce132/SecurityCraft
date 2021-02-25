@@ -7,7 +7,6 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -18,6 +17,7 @@ import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
+import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -81,7 +81,7 @@ public class GuiSCManual extends GuiScreen {
 		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
 		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
-		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+		ItemSCManual.PAGES.sort((page1, page2) -> {
 			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey()).getFormattedText();
 			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey()).getFormattedText();
 
@@ -102,7 +102,7 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage == -1)
 			mc.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(recipe != null || ItemSCManual.PAGES.get(currentPage).isRecipeDisabled())
 			mc.getTextureManager().bindTexture(infoBookTexture);
 		else
 			mc.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -110,14 +110,14 @@ public class GuiSCManual extends GuiScreen {
 		this.drawTexturedModalRect(startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+			if(ItemSCManual.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
 				fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced").getFormattedText(), startX + 39, 27, 0, false);
 			else
-				fontRenderer.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey() + ".name").getFormattedText(), startX + 39, 27, 0, false);
+				fontRenderer.drawString(ClientUtils.localize(ItemSCManual.PAGES.get(currentPage).getItem().getTranslationKey() + ".name").getFormattedText(), startX + 39, 27, 0, false);
 
 			fontRenderer.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
-			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
+			String designedBy = ItemSCManual.PAGES.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
 				fontRenderer.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 180, 75, 0);
@@ -141,12 +141,12 @@ public class GuiSCManual extends GuiScreen {
 			if(subpages.size() > 1)
 				fontRenderer.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			fontRenderer.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+			fontRenderer.drawString((currentPage + 1) + "/" + ItemSCManual.PAGES.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
-			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemToGui(item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof ItemBlock));
+			Item item = ItemSCManual.PAGES.get(currentPage).getItem();
+			GuiUtils.drawItemToGui(item, startX + 19, 22, !(ItemSCManual.PAGES.get(currentPage).getItem() instanceof ItemBlock));
 
 			mc.getTextureManager().bindTexture(infoBookIcons);
 
@@ -268,7 +268,7 @@ public class GuiSCManual extends GuiScreen {
 	{
 		currentPage++;
 
-		if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
+		if(currentPage > ItemSCManual.PAGES.size() - 1)
 			currentPage = -1;
 
 		updateRecipeAndIcons();
@@ -279,7 +279,7 @@ public class GuiSCManual extends GuiScreen {
 		currentPage--;
 
 		if(currentPage < -1)
-			currentPage = SecurityCraft.instance.manualPages.size() - 1;
+			currentPage = ItemSCManual.PAGES.size() - 1;
 
 		updateRecipeAndIcons();
 	}
@@ -311,7 +311,7 @@ public class GuiSCManual extends GuiScreen {
 
 		hoverCheckers.clear();
 
-		SCManualPage page = SecurityCraft.instance.manualPages.get(currentPage);
+		SCManualPage page = ItemSCManual.PAGES.get(currentPage);
 
 		if(page.hasCustomRecipe())
 			recipe = page.getRecipe();
