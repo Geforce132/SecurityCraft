@@ -10,7 +10,8 @@ public enum SCSounds {
 	CAMERASNAP("securitycraft:camerasnap"),
 	TASERFIRED("securitycraft:taserfire"),
 	ELECTRIFIED("securitycraft:electrified"),
-	LOCK("securitycraft:lock");
+	LOCK("securitycraft:lock"),
+	PING("securitycraft:ping");
 
 	public final String path;
 	public final ResourceLocation location;

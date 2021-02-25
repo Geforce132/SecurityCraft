@@ -416,6 +416,7 @@
 	"block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
 	"block.securitycraft.reinforced_hopper": "Reinforced Hopper",
 	"block.securitycraft.keypad_door": "Keypad Door",
+	"block.securitycraft.sonic_security_system": "Sonic Security System",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -464,6 +465,7 @@
 	"item.securitycraft.sentry": "Sentry",
 	"item.securitycraft.crystal_quartz_item": "Crystal Quartz",
 	"item.securitycraft.keypad_door_item": "Keypad Door",
+	"item.securitycraft.sonic_security_system_item": "Sonic Security System",
 
 	"entity.securitycraft.sentry": "Sentry",
 	"entity.securitycraft.bullet": "Bullet",
@@ -770,6 +772,11 @@
 	"messages.securitycraft:blockpocket.activated": "Block Pocket activated!",
 	"messages.securitycraft:blockpocket.deactivated": "Block Pocket deactivated!",
 	"messages.securitycraft:blockpocket.assembled": "Block Pocket assembled!",
+	"messages.securitycraft:sonic_security_system.blocked": "The Sonic Security System cannot be placed here as there is a block in the way.",
+	"messages.securitycraft:sonic_security_system.notLinked": "Not linked with a block yet. Please right-click a compatible SecurityCraft block with this item in your hand while sneaking first.",
+	"messages.securitycraft:sonic_security_system.blockLinked": "Linked with the %1$s at %2$s.",
+	"messages.securitycraft:sonic_security_system.blockUnlinked": "Unlinked from the %1$s at %2$s.",
+	"messages.securitycraft:sonic_security_system.locked": "This %s is being locked by a Sonic Security System!",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
 
@@ -801,6 +808,7 @@
 	"tooltip.securitycraft:module.itemAddons.added": "Added:",
 	"tooltip.securitycraft:briefcase.owner": "Owner: %s",
 	"tooltip.securitycraft:keycard.uses": "Uses remaining:",
+	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Linked to %s blocks.",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",
@@ -1006,6 +1014,8 @@
 	"option.securitycraft.keypad_door.sendMessage.description": "Does this keypad door send a message upon activation (when using whitelist/blacklist modules)?",
 	"option.securitycraft.keypad_door.signalLength": "Signal length: %s",
 	"option.securitycraft.keypad_door.signalLength.description": "How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)",
+	"option.securitycraft.sonic_security_system.isSilent": "Silent mode: %s",
+	"option.securitycraft.sonic_security_system.isSilent.description": "Silences the ping sound emitted by the Sonic Security System.",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

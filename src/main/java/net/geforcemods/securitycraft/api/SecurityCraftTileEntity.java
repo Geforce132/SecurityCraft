@@ -2,8 +2,11 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -13,6 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
@@ -29,16 +33,17 @@ import net.minecraft.util.text.StringTextComponent;
  * like the protecto. Everything can be overridden for easy customization
  * or use as an API.
  *
- * @version 1.1.3
+ * @version 1.2.0
  *
  * @author Geforce
  */
-public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameable {
+public class SecurityCraftTileEntity extends OwnableTileEntity implements ITickableTileEntity, INameable, ILockable {
 
 	protected boolean intersectsEntities = false;
 	protected boolean viewActivated = false;
 	private boolean attacks = false;
 	private boolean canBeNamed = false;
+	private boolean canBeLocked = false;
 	private ITextComponent customName = new StringTextComponent("name");
 	private double attackRange = 0.0D;
 	private int viewCooldown = 0;
@@ -198,6 +203,7 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 		tag.putBoolean("viewActivated", viewActivated);
 		tag.putBoolean("attacks", attacks);
 		tag.putBoolean("canBeNamed", canBeNamed);
+		tag.putBoolean("canBeLocked", canBeLocked);
 		tag.putDouble("attackRange", attackRange);
 		tag.putInt("attackCooldown", attackCooldown);
 		tag.putInt("ticksBetweenAttacks", ticksBetweenAttacks);
@@ -224,6 +230,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 
 		if (tag.contains("canBeNamed"))
 			canBeNamed = tag.getBoolean("canBeNamed");
+
+		if (tag.contains("canBeLocked"))
+			canBeLocked = tag.getBoolean("canBeLocked");
 
 		if (tag.contains("attackRange"))
 			attackRange = tag.getDouble("attackRange");
@@ -411,6 +420,51 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	@Override
 	public boolean canBeNamed() {
 		return canBeNamed;
+	}
+
+	/**
+	 * Enables the Sonic Security System to lock this TileEntity
+	 */
+	public SecurityCraftTileEntity lockable() {
+		canBeLocked = true;
+		return this;
+	}
+
+	@Override
+	public boolean canBeLocked() {
+		return canBeLocked;
+	}
+
+	// NOTE: this will probably be moved over to SonicSecuritySystemTileEntity so that
+	// other TileEntities do not have to add their own searching method first
+	@Override
+	public boolean isLocked() {
+
+		if(!canBeLocked())
+			return false;
+
+		/* 
+		 * TODO Possibly too resource-intensive for wide search areas if the SSS's range
+		 * is able to be changed through a config option?
+		 */
+		AxisAlignedBB searchBox = new AxisAlignedBB(pos);
+		searchBox = searchBox.grow(SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE); //TODO double-check to be sure this is the correct function to use and not expand()
+
+		List<BlockPos> blocksToSearch = BlockPos.getAllInBox(searchBox).map(BlockPos::toImmutable).collect(Collectors.toList());
+
+		for(BlockPos searchingPos : blocksToSearch) 
+		{
+			if(world.getBlockState(searchingPos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get()) 
+			{
+				SonicSecuritySystemTileEntity te = ((SonicSecuritySystemTileEntity) world.getTileEntity(searchingPos));
+
+				// If the found SSS is within range, linked to this block, and active, return true
+				if(te.isActive() && te.isLinkedToBlock(pos) && BlockUtils.getDistanceBetweenBlocks(searchingPos, pos) <= SonicSecuritySystemTileEntity.MAX_RANGE)
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 }

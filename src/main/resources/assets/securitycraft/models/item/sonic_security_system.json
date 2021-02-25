@@ -1,0 +1,19 @@
+{
+    "parent": "builtin/entity",
+    "display": {
+		"ground": {
+			"translation": [0, 3, 0]
+		},
+		"gui": {
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"head": {
+			"rotation": [0, -180, 0],
+			"translation": [0, 14.5, 0]
+		},
+		"fixed": {
+			"rotation": [0, -180, 0],
+			"translation": [0, 0, -1]
+		}
+	}
+}
