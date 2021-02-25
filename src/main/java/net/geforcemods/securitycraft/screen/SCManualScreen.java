@@ -9,7 +9,6 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -17,6 +16,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
@@ -91,7 +91,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		updateRecipeAndIcons();
-		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+		SCManualItem.PAGES.sort((page1, page2) -> {
 			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey()).getFormattedText();
 			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey()).getFormattedText();
 
@@ -112,7 +112,7 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage == -1)
 			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(recipe != null || SCManualItem.PAGES.get(currentPage).isRecipeDisabled())
 			minecraft.getTextureManager().bindTexture(infoBookTexture);
 		else
 			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -120,14 +120,14 @@ public class SCManualScreen extends Screen {
 		this.blit(startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
+			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
 				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced").getFormattedText(), startX + 39, 27, 0);
 			else
-				font.drawString(ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()).getFormattedText(), startX + 39, 27, 0);
+				font.drawString(ClientUtils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()).getFormattedText(), startX + 39, 27, 0);
 
 			font.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
-			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
+			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
 				font.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 180, 75, 0);
@@ -152,12 +152,12 @@ public class SCManualScreen extends Screen {
 			if(subpages.size() > 1)
 				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			font.drawString((currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+			font.drawString((currentPage + 1) + "/" + SCManualItem.PAGES.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
-			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
-			GuiUtils.drawItemToGui(item, startX + 19, 22, !(SecurityCraft.instance.manualPages.get(currentPage).getItem() instanceof BlockItem));
+			Item item = SCManualItem.PAGES.get(currentPage).getItem();
+			GuiUtils.drawItemToGui(item, startX + 19, 22, !(SCManualItem.PAGES.get(currentPage).getItem() instanceof BlockItem));
 
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
@@ -269,7 +269,7 @@ public class SCManualScreen extends Screen {
 	{
 		currentPage++;
 
-		if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
+		if(currentPage > SCManualItem.PAGES.size() - 1)
 			currentPage = -1;
 
 		updateRecipeAndIcons();
@@ -280,7 +280,7 @@ public class SCManualScreen extends Screen {
 		currentPage--;
 
 		if(currentPage < -1)
-			currentPage = SecurityCraft.instance.manualPages.size() - 1;
+			currentPage = SCManualItem.PAGES.size() - 1;
 
 		updateRecipeAndIcons();
 	}
@@ -312,7 +312,7 @@ public class SCManualScreen extends Screen {
 			return;
 		}
 
-		SCManualPage page = SecurityCraft.instance.manualPages.get(currentPage);
+		SCManualPage page = SCManualItem.PAGES.get(currentPage);
 
 		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 		{
