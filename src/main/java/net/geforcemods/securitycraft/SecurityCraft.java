@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
@@ -13,6 +12,7 @@ import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
+import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -52,10 +52,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
-	public static SecurityCraft instance;
 	public static final String PROTOCOL_VERSION = "2";
 	public static SimpleChannel channel = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
-	public ArrayList<SCManualPage> manualPages = new ArrayList<>();
 	public static ItemGroup groupSCTechnical = new SCTechnicalGroup();
 	public static ItemGroup groupSCMine = new SCExplosivesGroup();
 	public static ItemGroup groupSCDecoration = new SCDecorationGroup();
@@ -64,7 +62,6 @@ public class SecurityCraft {
 	{
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		instance = this;
 		MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
@@ -140,7 +137,7 @@ public class SecurityCraft {
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());
 
-					instance.manualPages.add(page);
+					SCManualItem.PAGES.add(page);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
