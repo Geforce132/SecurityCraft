@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -12,6 +16,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
 public class SCManualItem extends Item {
+
+	public static final List<SCManualPage> PAGES = new ArrayList<>();
 
 	public SCManualItem(Item.Properties properties){
 		super(properties);
@@ -26,13 +32,13 @@ public class SCManualItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
-		if(par1ItemStack.getTag() == null){
+	public void inventoryTick(ItemStack stack, World world, Entity entity, int slotIndex, boolean isSelected){
+		if(stack.getTag() == null){
 			ListNBT bookPages = new ListNBT();
 
-			par1ItemStack.setTagInfo("pages", bookPages);
-			par1ItemStack.setTagInfo("author", StringNBT.valueOf("Geforce"));
-			par1ItemStack.setTagInfo("title", StringNBT.valueOf("SecurityCraft"));
+			stack.setTagInfo("pages", bookPages);
+			stack.setTagInfo("author", StringNBT.valueOf("Geforce"));
+			stack.setTagInfo("title", StringNBT.valueOf("SecurityCraft"));
 		}
 	}
 
