@@ -150,7 +150,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 					}
 
 					ClientUtils.syncItemNBT(briefcase);
-					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), minecraft.player.getPosition(), getTitle()));
+					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
 				}
 		}
 	}

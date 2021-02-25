@@ -21,14 +21,12 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class OpenGui {
 
 	private ResourceLocation id;
-	private BlockPos pos;
 	private ITextComponent name;
 
 	public OpenGui(){}
 
-	public OpenGui(ResourceLocation id, BlockPos pos, ITextComponent name){
+	public OpenGui(ResourceLocation id, ITextComponent name){
 		this.id = id;
-		this.pos = pos;
 		this.name = name;
 	}
 
@@ -51,8 +49,8 @@ public class OpenGui {
 	{
 		ctx.get().enqueueWork(() -> {
 			ResourceLocation id = message.id;
-			BlockPos pos = message.pos;
 			ServerPlayerEntity player = ctx.get().getSender();
+			BlockPos pos = player.getPosition();
 
 			if(id.equals(SCContent.cTypeBriefcaseInventory.getRegistryName()))
 			{
