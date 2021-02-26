@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +47,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				if(hasModule(EnumModuleType.WHITELIST))
 					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(e.getName().toLowerCase());
 
-				return e != owner && isNotWhitelisted && !e.isSpectator();
+				return e != owner && isNotWhitelisted && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if(hasModule(EnumModuleType.REDSTONE))
