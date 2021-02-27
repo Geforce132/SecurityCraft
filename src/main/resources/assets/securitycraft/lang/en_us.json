@@ -710,7 +710,7 @@
 	"messages.securitycraft:cameraMonitor.rightclickToView": "Rightclick a security camera to view it.",
 	"messages.securitycraft:mrat.noSlots": "There are no more empty slots to bind this mine to!",
 	"messages.securitycraft:mrat.cantBind": "You can't bind a mine that doesn't belong to you.",
-	"messages.securitycraft:mrat.bound": "Bound the mine at %sto the remote access tool.",
+	"messages.securitycraft:mrat.bound": "Bound the mine at %s to the remote access tool.",
 	"messages.securitycraft:mrat.unbound": "Unbound the mine at %s from the remote access tool.",
 	"messages.securitycraft:srat.noSlots": "There are no more empty slots to bind this sentry to!",
 	"messages.securitycraft:srat.cantBind": "You can't bind a sentry that doesn't belong to you.",
