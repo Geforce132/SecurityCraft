@@ -134,6 +134,10 @@ public class BlockLootTableGenerator implements IDataProvider
 		putStandardBlockLootTable(SCContent.SECRET_WARPED_WALL_SIGN);
 		putStandardBlockLootTable(SCContent.SECURITY_CAMERA);
 		putStandardBlockLootTable(SCContent.STAIRS_CRYSTAL_QUARTZ);
+		lootTables.put(SCContent.SONIC_SECURITY_SYSTEM, LootTable.builder()
+				.addLootPool(LootPool.builder()
+						.rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get()))));
 	}
 
 	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)

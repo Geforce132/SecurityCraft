@@ -565,6 +565,7 @@
 	"help.securitycraft.sentry.info": "The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.",
 	"help.securitycraft.crystal_quartz_item.info": "Crystal Quartz is used to craft Crystal Quartz blocks.",
 	"help.securitycraft.keypad_door_item.info": "The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.",
+	"help.securitycraft.sonic_security_system_item.info": "The Sonic Security System, inspired by the similarly-named device in the game \"Metroid Prime 2: Echoes\", is able to lock certain SecurityCraft blocks and prevent them from being used or interacted with.",
 
 	"gui.securitycraft:scManual.disabled": "Disabled",
 	"gui.securitycraft:scManual.recipe.keycard_lv1": "Disabled",

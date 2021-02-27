@@ -83,8 +83,9 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 	}
 	
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state)
+	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
 	{
+		// TODO have the dropped item retain the linked blocks
 		return new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 	}
 	

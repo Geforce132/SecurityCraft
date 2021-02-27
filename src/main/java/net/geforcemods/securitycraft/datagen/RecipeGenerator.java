@@ -527,6 +527,16 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', SCContent.REINFORCED_GLASS.get())
 		.addCriterion("has_glass", hasItem(Tags.Items.GLASS))
 		.build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+		.patternLine(" RD")
+		.patternLine(" S ")
+		.patternLine(" I ")
+		.key('R', SCContent.PORTABLE_RADAR.get())
+		.key('D', Items.BOWL)
+		.key('S', Items.STICK)
+		.key('I', Blocks.IRON_BLOCK)
+		.addCriterion("has_stick", hasItem(Tags.Items.RODS_WOODEN))
+		.build(consumer);
 
 		//shapeless recipes
 		ShapelessRecipeBuilder.shapelessRecipe(SCContent.BLOCK_POCKET_WALL.get())

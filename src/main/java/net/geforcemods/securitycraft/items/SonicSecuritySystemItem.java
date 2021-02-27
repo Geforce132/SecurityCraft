@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.SoundType;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -34,7 +36,7 @@ public class SonicSecuritySystemItem extends Item {
 	{
 		super(properties);
 	}
-	
+
 	@Override
 	public ActionResultType onItemUse(ItemUseContext ctx)
 	{
@@ -50,12 +52,12 @@ public class SonicSecuritySystemItem extends Item {
 			{
 				boolean isOwner = world.getTileEntity(pos) instanceof IOwnable && ((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player);
 				boolean isLockable = world.getTileEntity(pos) instanceof ILockable && ((ILockable) world.getTileEntity(pos)).canBeLocked();
-				
+
 				if(isLockable && isOwner)
 				{
 					if(stack.getTag() == null)
 						stack.setTag(new CompoundNBT());
-					
+
 					// Remove a block from the tag if it was already linked to.
 					// If not, link to it
 					if(isAdded(stack.getTag(), pos))
@@ -69,7 +71,7 @@ public class SonicSecuritySystemItem extends Item {
 						addLinkedBlock(stack.getTag(), pos);
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
 					}
-					
+
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
 					return ActionResultType.SUCCESS;
@@ -81,7 +83,7 @@ public class SonicSecuritySystemItem extends Item {
 				if(stack.hasTag() && hasLinkedBlock(stack.getTag()))
 				{
 					pos = pos.offset(facing);
-					
+
 					if(!world.isAirBlock(pos))
 					{
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.blocked"), TextFormatting.DARK_RED);
@@ -92,11 +94,13 @@ public class SonicSecuritySystemItem extends Item {
 						SonicSecuritySystemTileEntity te = new SonicSecuritySystemTileEntity();
 						te.getOwner().set(player.getUniqueID().toString(), player.getName().getString());
 						te.transferPositionsFromItem(stack.getTag());
-						
+
 						world.setBlockState(pos, SCContent.SONIC_SECURITY_SYSTEM.get().getDefaultState().with(SonicSecuritySystemBlock.FACING, player.getHorizontalFacing().getOpposite()));
 						world.setTileEntity(pos, te);
 						((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).sync();
-						
+
+						world.playSound(null, pos, SoundType.METAL.getPlaceSound(), SoundCategory.BLOCKS, SoundType.METAL.volume, SoundType.METAL.pitch);
+
 						if(!player.isCreative())
 							stack.shrink(1);
 					}
@@ -108,10 +112,10 @@ public class SonicSecuritySystemItem extends Item {
 				}
 			}
 		}
-		
+
 		return ActionResultType.SUCCESS;
 	}
-	
+
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
@@ -125,7 +129,7 @@ public class SonicSecuritySystemItem extends Item {
 		if(numOfLinkedBlocks > 0)
 			tooltip.add(ClientUtils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks));
 	}
-	
+
 	/**
 	 * Adds the given position to the item's NBT tag
 	 */
@@ -140,21 +144,21 @@ public class SonicSecuritySystemItem extends Item {
 		{
 			if(!tag.contains("LinkedBlocks"))
 				tag.put("LinkedBlocks", new CompoundNBT());
-			
+
 			if(!tag.getCompound("LinkedBlocks").contains("block" + i))
 			{
 				CompoundNBT newNBT = new CompoundNBT();
-				
+
 				newNBT.putInt("x", pos.getX());
 				newNBT.putInt("y", pos.getY());
 				newNBT.putInt("z", pos.getZ());
 
 				tag.getCompound("LinkedBlocks").put("block" + i, newNBT);
 				break;
-			}			
+			}
 		}
 	}
-	
+
 	/**
 	 * Removes the given position from the item's NBT tag
 	 */
@@ -162,7 +166,7 @@ public class SonicSecuritySystemItem extends Item {
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return;
-		
+
 		for(int i = 0; i < SonicSecuritySystemTileEntity.MAX_RANGE; i++)
 		{
 			if(tag.getCompound("LinkedBlocks").contains("block" + i))
@@ -170,7 +174,7 @@ public class SonicSecuritySystemItem extends Item {
 				int x = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("x");
 				int y = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("y");
 				int z = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("z");
-				
+
 				BlockPos linkedBlockPos = new BlockPos(x, y, z);
 
 				if(linkedBlockPos.equals(pos))
@@ -178,7 +182,7 @@ public class SonicSecuritySystemItem extends Item {
 			}
 		}
 	}
-	
+
 	/**
 	 * If a position has already been added to this item's tag
 	 */
@@ -186,7 +190,7 @@ public class SonicSecuritySystemItem extends Item {
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return false;
-		
+
 		for(int i = 0; i < SonicSecuritySystemTileEntity.MAX_RANGE; i++)
 		{
 			if(tag.getCompound("LinkedBlocks").contains("block" + i))
@@ -196,15 +200,15 @@ public class SonicSecuritySystemItem extends Item {
 				int z = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("z");
 
 				BlockPos linkedBlockPos = new BlockPos(x, y, z);
-				
+
 				if(linkedBlockPos.equals(pos))
 					return true;
-			}			
+			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * If this item is linked to at least one block
 	 */
@@ -212,13 +216,13 @@ public class SonicSecuritySystemItem extends Item {
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return false;
-		
+
 		for(int i = 0; i < SonicSecuritySystemTileEntity.MAX_RANGE; i++)
 		{
 			if(tag.getCompound("LinkedBlocks").contains("block" + i))
 				return true;
 		}
-		
+
 		return false;
 	}
 
