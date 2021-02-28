@@ -4,9 +4,14 @@ import java.lang.reflect.Field;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.util.RegisterItemBlock;
+import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -36,8 +41,7 @@ public class ItemModelGenerator extends ItemModelProvider
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
 				{
-					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
-					Block block = obj.get();
+					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
 					if(block instanceof ReinforcedStainedGlassBlock)
 						simpleParent(block);
@@ -45,6 +49,15 @@ public class ItemModelGenerator extends ItemModelProvider
 						reinforcedPane(block);
 					else if(block instanceof ReinforcedStairsBlock)
 						simpleParent(block);
+					else if(block instanceof ReinforcedWallBlock)
+						reinforcedWallInventory(block, ((IReinforcedBlock)block).getVanillaBlock());
+				}
+				else if(field.isAnnotationPresent(RegisterItemBlock.class) && field.getAnnotation(RegisterItemBlock.class).value() == SCItemGroup.EXPLOSIVES)
+				{
+					Block block = ((RegistryObject<Block>)field.get(null)).get();
+
+					if(block instanceof BaseFullMineBlock)
+						blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -53,26 +66,6 @@ public class ItemModelGenerator extends ItemModelProvider
 			}
 		}
 
-		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
-		simpleParent(SCContent.REINFORCED_GLASS.get());
-		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
-		reinforcedWallInventory(SCContent.REINFORCED_COBBLESTONE_WALL.get(), Blocks.COBBLESTONE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(), Blocks.MOSSY_COBBLESTONE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
-		reinforcedWallInventory(SCContent.REINFORCED_PRISMARINE_WALL.get(), Blocks.PRISMARINE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_RED_SANDSTONE_WALL.get(), Blocks.RED_SANDSTONE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");
-		reinforcedWallInventory(SCContent.REINFORCED_GRANITE_WALL.get(), Blocks.GRANITE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_STONE_BRICK_WALL.get(), "stone_bricks");
-		reinforcedWallInventory(SCContent.REINFORCED_NETHER_BRICK_WALL.get(), "nether_bricks");
-		reinforcedWallInventory(SCContent.REINFORCED_ANDESITE_WALL.get(), Blocks.ANDESITE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(), "red_nether_bricks");
-		reinforcedWallInventory(SCContent.REINFORCED_SANDSTONE_WALL.get(), Blocks.SANDSTONE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
-		reinforcedWallInventory(SCContent.REINFORCED_DIORITE_WALL.get(), Blocks.DIORITE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_BLACKSTONE_WALL.get(), Blocks.BLACKSTONE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(), Blocks.POLISHED_BLACKSTONE_WALL);
-		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
 
 		//gui block mine model
 		getBuilder("template_block_mine")
@@ -85,22 +78,17 @@ public class ItemModelGenerator extends ItemModelProvider
 		.element().from(0, 0, 0).to(16, 16, 16).face(Direction.UP).cullface(Direction.UP).texture("#overlay").end().end();
 
 		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get(), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_side"), mcLoc(BLOCK_FOLDER + "/ancient_debris_top"));
-		blockMine(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
-		blockMine(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
-		blockMine(Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
-		blockMine(Blocks.DIRT, SCContent.DIRT_MINE.get());
-		blockMine(Blocks.EMERALD_ORE, SCContent.EMERALD_ORE_MINE.get());
 		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
-		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
-		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
-		blockMine(Blocks.GILDED_BLACKSTONE, SCContent.GILDED_BLACKSTONE_MINE.get());
-		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
-		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
-		blockMine(Blocks.NETHER_GOLD_ORE, SCContent.NETHER_GOLD_ORE_MINE.get());
-		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
-		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
-		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());
-		blockMine(Blocks.STONE, SCContent.STONE_MINE.get());
+		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
+		simpleParent(SCContent.REINFORCED_GLASS.get());
+		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
+		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_STONE_BRICK_WALL.get(), "stone_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_NETHER_BRICK_WALL.get(), "nether_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(), "red_nether_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
+		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
 	}
 
 	public ItemModelBuilder reinforcedPane(Block block)

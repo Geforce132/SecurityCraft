@@ -8,9 +8,13 @@ import com.google.common.collect.ImmutableMap;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
+import net.geforcemods.securitycraft.util.RegisterItemBlock;
+import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -60,8 +64,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 			{
 				if(field.isAnnotationPresent(Reinforced.class))
 				{
-					RegistryObject<Block> obj = ((RegistryObject<Block>)field.get(null));
-					Block block = obj.get();
+					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
 					if(block instanceof ReinforcedStainedGlassBlock)
 						simpleBlock(block);
@@ -69,6 +72,15 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 						reinforcedPaneBlock((PaneBlock)block);
 					else if(block instanceof ReinforcedStairsBlock)
 						reinforcedStairsBlock(block);
+					else if(block instanceof ReinforcedWallBlock)
+						reinforcedWallBlock(block);
+				}
+				else if(field.isAnnotationPresent(RegisterItemBlock.class) && field.getAnnotation(RegisterItemBlock.class).value() == SCItemGroup.EXPLOSIVES)
+				{
+					Block block = ((RegistryObject<Block>)field.get(null)).get();
+
+					if(block instanceof BaseFullMineBlock)
+						blockMine(((BaseFullMineBlock)block).getBlockDisguisedAs(), block);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -76,6 +88,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 				e.printStackTrace();
 			}
 		}
+
+		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
+		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
 		reinforcedPaneBlock((PaneBlock)SCContent.REINFORCED_GLASS_PANE.get());
@@ -106,41 +121,13 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		reinforcedStairsBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
 		reinforcedStairsBlock(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), "quartz_block_side", "quartz_block_top");
 
-		reinforcedWallBlock(SCContent.REINFORCED_COBBLESTONE_WALL.get());
-		reinforcedWallBlock(SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
-		reinforcedWallBlock(SCContent.REINFORCED_PRISMARINE_WALL.get());
-		reinforcedWallBlock(SCContent.REINFORCED_RED_SANDSTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");
-		reinforcedWallBlock(SCContent.REINFORCED_GRANITE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_STONE_BRICK_WALL.get(), "stone_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_NETHER_BRICK_WALL.get(), "nether_bricks");
-		reinforcedWallBlock(SCContent.REINFORCED_ANDESITE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(), "red_nether_bricks");
-		reinforcedWallBlock(SCContent.REINFORCED_SANDSTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
-		reinforcedWallBlock(SCContent.REINFORCED_DIORITE_WALL.get());
-		reinforcedWallBlock(SCContent.REINFORCED_BLACKSTONE_WALL.get());
-		reinforcedWallBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
-
-		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
-		blockMine(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE.get());
-		blockMine(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE.get());
-		blockMine(Blocks.DIAMOND_ORE, SCContent.DIAMOND_ORE_MINE.get());
-		blockMine(Blocks.DIRT, SCContent.DIRT_MINE.get());
-		blockMine(Blocks.EMERALD_ORE, SCContent.EMERALD_ORE_MINE.get());
-		horizontalBlock(SCContent.FURNACE_MINE.get(), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_side"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_front"), new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/furnace_top"));
-		blockMine(Blocks.GRAVEL, SCContent.GRAVEL_MINE.get());
-		blockMine(Blocks.GOLD_ORE, SCContent.GOLD_ORE_MINE.get());
-		blockMine(Blocks.GILDED_BLACKSTONE, SCContent.GILDED_BLACKSTONE_MINE.get());
-		blockMine(Blocks.IRON_ORE, SCContent.IRON_ORE_MINE.get());
-		blockMine(Blocks.LAPIS_ORE, SCContent.LAPIS_ORE_MINE.get());
-		blockMine(Blocks.NETHER_GOLD_ORE, SCContent.NETHER_GOLD_ORE_MINE.get());
-		blockMine(Blocks.NETHER_QUARTZ_ORE, SCContent.QUARTZ_ORE_MINE.get());
-		blockMine(Blocks.REDSTONE_ORE, SCContent.REDSTONE_ORE_MINE.get());
-		blockMine(Blocks.SAND, SCContent.SAND_MINE.get());
-		blockMine(Blocks.STONE, SCContent.STONE_MINE.get());
 	}
 
 	public void blockMine(Block vanillaBlock, Block block)
@@ -241,6 +228,17 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	public String getName()
 	{
 		return "SecurityCraft Block States/Models";
+	}
+
+	@Override
+	public MultiPartBlockStateBuilder getMultipartBuilder(Block b)
+	{
+		//because some blocks' states get set twice (once during scanning SCContent, then actually generating the proper model),
+		//and the super method checking if the state has already been generated, and erroring if so, the key has to be removed so it can be remade
+		if(registeredBlocks.containsKey(b))
+			registeredBlocks.remove(b);
+
+		return super.getMultipartBuilder(b);
 	}
 
 	@Override
