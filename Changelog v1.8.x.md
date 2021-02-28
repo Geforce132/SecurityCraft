@@ -5,6 +5,7 @@
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
 - Fix: Placing blocks using tools of other mods (like Better Builder's Wands) does not set the owner correctly
 - Fix: Portable Radar does not respect the "respect_invisibility" config option
+- Fix: I.M.S. attacks players in spectator mode
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

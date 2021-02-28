@@ -86,7 +86,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public boolean canAttackEntity(EntityLivingBase entity)
 	{
 		return entity != null
-				&& (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((EntityPlayer)entity).isCreative()) //PlayerEntity checks
+				&& (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((EntityPlayer)entity).isCreative() && !((EntityPlayer)entity).isSpectator()) //PlayerEntity checks
 				&& !(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase())); //checks for all entities
 	}
 
