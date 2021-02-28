@@ -6,6 +6,7 @@
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
 - Fix: Briefcases cannot be opened
 - Fix: Portable Radar does not respect the "respect_invisibility" config option
+- Fix: I.M.S. attacks players in spectator mode
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures along the way. This will break resourcepacks
 
