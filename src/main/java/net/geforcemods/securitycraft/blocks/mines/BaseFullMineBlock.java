@@ -156,5 +156,4 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	public boolean shouldShowSCInfo(World world, BlockState state, BlockPos pos) {
 		return false;
 	}
-
 }
