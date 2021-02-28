@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_outer_stairs",
+  "textures": {
+    "side": "minecraft:block/quartz_block_side",
+    "bottom": "minecraft:block/quartz_block_top",
+    "top": "minecraft:block/quartz_block_top"
+  }
+}

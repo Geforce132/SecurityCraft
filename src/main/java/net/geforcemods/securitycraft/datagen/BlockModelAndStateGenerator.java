@@ -10,15 +10,19 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.WallHeight;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.Half;
+import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -27,6 +31,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
@@ -62,6 +67,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 						simpleBlock(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
 						reinforcedPaneBlock((PaneBlock)block);
+					else if(block instanceof ReinforcedStairsBlock)
+						reinforcedStairsBlock(block);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -72,6 +79,32 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
 		reinforcedPaneBlock((PaneBlock)SCContent.REINFORCED_GLASS_PANE.get());
+
+		reinforcedStairsBlock(SCContent.REINFORCED_PURPUR_STAIRS.get(), "purpur_block");
+		reinforcedStairsBlock(SCContent.REINFORCED_OAK_STAIRS.get(), "oak_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_BRICK_STAIRS.get(), "bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_STONE_BRICK_STAIRS.get(), "stone_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_NETHER_BRICK_STAIRS.get(), "nether_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_SANDSTONE_STAIRS.get(), "sandstone", "sandstone_bottom", "sandstone_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_SPRUCE_STAIRS.get(), "spruce_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_BIRCH_STAIRS.get(), "birch_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_JUNGLE_STAIRS.get(), "jungle_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_CRIMSON_STAIRS.get(), "crimson_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_WARPED_STAIRS.get(), "warped_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_ACACIA_STAIRS.get(), "acacia_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_DARK_OAK_STAIRS.get(), "dark_oak_planks");
+		reinforcedStairsBlock(SCContent.REINFORCED_PRISMARINE_BRICK_STAIRS.get(), "prismarine_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_RED_SANDSTONE_STAIRS.get(), "red_sandstone", "red_sandstone_bottom", "red_sandstone_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS.get(), "red_sandstone_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS.get(), "mossy_stone_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_END_STONE_BRICK_STAIRS.get(), "end_stone_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_SMOOTH_SANDSTONE_STAIRS.get(), "sandstone_top");
+		reinforcedStairsBlock(SCContent.REINFORCED_SMOOTH_QUARTZ_STAIRS.get(), "quartz_block_bottom");
+		reinforcedStairsBlock(SCContent.REINFORCED_RED_NETHER_BRICK_STAIRS.get(), "red_nether_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS.get(), "polished_blackstone_bricks");
+		reinforcedStairsBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
+		reinforcedStairsBlock(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), "quartz_block_side", "quartz_block_top");
 
 		reinforcedWallBlock(SCContent.REINFORCED_COBBLESTONE_WALL.get());
 		reinforcedWallBlock(SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get());
@@ -123,6 +156,59 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		});
 	}
 
+	public void reinforcedStairsBlock(Block block)
+	{
+		reinforcedStairsBlock(block, name(block).replace("reinforced_", "").replace("_stairs", ""));
+	}
+
+	public void reinforcedStairsBlock(Block block, String textureName)
+	{
+		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textureName);
+
+		reinforcedStairsBlock(block, block.getRegistryName().toString(), textureLocation, textureLocation, textureLocation);
+	}
+
+	public void reinforcedStairsBlock(Block block, String side, String end)
+	{
+		ResourceLocation textureLocationEnd = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + end);
+
+		reinforcedStairsBlock(block, block.getRegistryName().toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), textureLocationEnd, textureLocationEnd);
+	}
+
+	public void reinforcedStairsBlock(Block block, String side, String bottom, String top)
+	{
+		reinforcedStairsBlock(block, block.getRegistryName().toString(), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + bottom), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + top));
+	}
+
+	public void reinforcedStairsBlock(Block block, String baseName, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
+	{
+		ModelFile stairs = models().reinforcedStairs(baseName, side, bottom, top);
+		ModelFile stairsInner = models().reinforcedStairsInner(baseName + "_inner", side, bottom, top);
+		ModelFile stairsOuter = models().reinforcedStairsOuter(baseName + "_outer", side, bottom, top);
+
+		getVariantBuilder(block).forAllStatesExcept(state -> {
+			Direction facing = state.get(StairsBlock.FACING);
+			Half half = state.get(StairsBlock.HALF);
+			StairsShape shape = state.get(StairsBlock.SHAPE);
+			int yRot = (int)facing.rotateY().getHorizontalAngle();
+
+			if(shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT)
+				yRot += 270;
+
+			if(shape != StairsShape.STRAIGHT && half == Half.TOP)
+				yRot += 90;
+
+			yRot %= 360;
+
+			return ConfiguredModel.builder()
+					.modelFile(shape == StairsShape.STRAIGHT ? stairs : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? stairsInner : stairsOuter)
+					.rotationX(half == Half.BOTTOM ? 0 : 180)
+					.rotationY(yRot)
+					.uvLock(yRot != 0 || half == Half.TOP)
+					.build();
+		}, StairsBlock.WATERLOGGED);
+	}
+
 	public void reinforcedPaneBlock(PaneBlock block)
 	{
 		String name = name(block);
@@ -132,12 +218,12 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 
 	public void reinforcedWallBlock(Block block)
 	{
-		reinforcedWallBlock(block, block.getRegistryName().getPath().replace("reinforced_", "").replace("_wall", ""));
+		reinforcedWallBlock(block, name(block).replace("reinforced_", "").replace("_wall", ""));
 	}
 
 	public void reinforcedWallBlock(Block block, String textureName)
 	{
-		ResourceLocation texture = new ResourceLocation("block/" + textureName);
+		ResourceLocation texture = new ResourceLocation(ModelProvider.BLOCK_FOLDER + "/" + textureName);
 		String baseName = block.getRegistryName().toString();
 		ModelFile post = models().reinforcedWallPost(baseName + "_post", texture);
 		ModelFile side = models().reinforcedWallSide(baseName + "_side", texture, false);
@@ -155,6 +241,17 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	public String getName()
 	{
 		return "SecurityCraft Block States/Models";
+	}
+
+	@Override
+	public VariantBlockStateBuilder getVariantBuilder(Block b)
+	{
+		//because some blocks' states get set twice (once during scanning SCContent, then actually generating the proper model),
+		//and the super method checking if the state has already been generated, and erroring if so, the key has to be removed so it can be remade
+		if(registeredBlocks.containsKey(b))
+			registeredBlocks.remove(b);
+
+		return super.getVariantBuilder(b);
 	}
 
 	@Override
