@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -42,6 +43,8 @@ public class ItemModelGenerator extends ItemModelProvider
 						simpleParent(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
 						reinforcedPane(block);
+					else if(block instanceof ReinforcedStairsBlock)
+						simpleParent(block);
 				}
 			}
 			catch(IllegalArgumentException | IllegalAccessException e)
@@ -50,9 +53,9 @@ public class ItemModelGenerator extends ItemModelProvider
 			}
 		}
 
+		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
-
 		reinforcedWallInventory(SCContent.REINFORCED_COBBLESTONE_WALL.get(), Blocks.COBBLESTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(), Blocks.MOSSY_COBBLESTONE_WALL);
 		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
