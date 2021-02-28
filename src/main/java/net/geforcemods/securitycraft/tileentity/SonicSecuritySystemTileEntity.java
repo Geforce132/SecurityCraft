@@ -15,13 +15,13 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 
 public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
-	
+
 	// The delay between each ping sound in ticks
 	private final static int DELAY = 100;
-	
+
 	// How far away can this SSS reach (possibly a config option?)
 	public final static int MAX_RANGE = 30;
-	
+
 	// How many blocks can be linked to a SSS (another config option?)
 	private final int MAX_LINKED_BLOCKS = 30;
 
@@ -30,35 +30,35 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 
 	private int cooldown = DELAY;
 	public float radarRotationDegrees = 0;
-	
+
 	// A list containing all of the blocks that this SSS is linked to
 	private ArrayList<BlockPos> linkedBlocks = new ArrayList<BlockPos>();
-	
+
 	// Is this SSS active? Not used yet but will be in the future to allow
 	// the player to disable the SSS
 	private boolean isActive = true;
-	
+
 	public SonicSecuritySystemTileEntity()
 	{
 		super(SCContent.teTypeSonicSecuritySystem);
 	}
-	
+
 	@Override
 	public void tick()
 	{
-		if(!world.isRemote) 
+		if(!world.isRemote)
 		{
 			// If this SSS isn't linked to any blocks, return as no sound should
 			// be emitted and no blocks need to be removed
 			if(!isLinkedToBlock())
 				return;
-			
+
 			if(cooldown > 0)
 			{
 				cooldown--;
 			}
 			else
-			{	
+			{
 				// TODO: should the SSS automatically forget the positions of linked blocks
 				// if they are broken?
 				ArrayList<BlockPos> blocksToRemove = new ArrayList<BlockPos>();
@@ -67,7 +67,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 					if(!(world.getTileEntity(linkedBlockPos) instanceof ILockable))
 						blocksToRemove.add(linkedBlockPos);
 				}
-				
+
 				// This delinking part is in a separate loop to prevent a ConcurrentModificationException
 				for(BlockPos posToRemove : blocksToRemove)
 				{
@@ -82,36 +82,43 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 				cooldown = DELAY;
 			}
 		}
-		else 
+		else
 		{
 			// Turn the radar dish slightly
 			radarRotationDegrees += 0.15;
-			
+
 			if(radarRotationDegrees >= 360)
 				radarRotationDegrees = 0;
 		}
 	}
-	
+
 	@Override
 	public CompoundNBT write(CompoundNBT tag)
 	{
 		super.write(tag);
-		
+
+		// If there are blocks to save but the tag doesn't have a CompoundNBT
+		// to store them in, create one (shouldn't be needed)
+		if(linkedBlocks.size() > 0 && !tag.contains("LinkedBlocks"))
+		{
+			tag.put("LinkedBlocks", new CompoundNBT());
+		}
+
 		// Write each linked block's position to the SSS's tag
 		for(int i = 0; i < linkedBlocks.size(); i++)
 		{
 			BlockPos linkedBlockPos = linkedBlocks.get(i);
-			
+
 			int x = 0, y = 0, z = 0;
 			boolean foundBlock = false;
 			for(int j = 0; j < MAX_LINKED_BLOCKS; j++)
 			{
-				if(tag.contains("linkedBlock" + j))
+				if(tag.getCompound("LinkedBlocks").contains("block" + j))
 				{
-					x = tag.getCompound("linkedBlock" + j).getInt("x");
-					y = tag.getCompound("linkedBlock" + j).getInt("y");
-					z = tag.getCompound("linkedBlock" + j).getInt("z");
-					
+					x = tag.getCompound("LinkedBlocks").getCompound("block" + j).getInt("x");
+					y = tag.getCompound("LinkedBlocks").getCompound("block" + j).getInt("y");
+					z = tag.getCompound("LinkedBlocks").getCompound("block" + j).getInt("z");
+
 					// The position is already saved to the tag, don't need to add it again
 					if(!(x == 0 && y == 0 && z == 0) && linkedBlockPos.equals(new BlockPos(x, y, z)))
 					{
@@ -120,20 +127,20 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 					}
 				}
 			}
-			
+
 			// If the position is not already saved in the tag, add it
 			if(!foundBlock)
 			{
 				for(int j = 0; j < MAX_LINKED_BLOCKS; j++)
 				{
-					if(!tag.contains("linkedBlock" + j))
+					if(!tag.getCompound("LinkedBlocks").contains("block" + j))
 					{
 						CompoundNBT newNBT = new CompoundNBT();
 						newNBT.putInt("x", linkedBlockPos.getX());
 						newNBT.putInt("y", linkedBlockPos.getY());
 						newNBT.putInt("z", linkedBlockPos.getZ());
 
-						tag.put("linkedBlock" + j, newNBT);
+						tag.getCompound("LinkedBlocks").put("block" + j, newNBT);
 					}
 				}
 			}
@@ -149,17 +156,20 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	{
 		super.read(state, tag);
 
-		// Read each saved position and add it to the linkedBlocks list
-		for(int i = 0; i < MAX_LINKED_BLOCKS; i++)
+		if(tag.contains("LinkedBlocks"))
 		{
-			if(tag.contains("linkedBlock" + i))
+			// Read each saved position and add it to the linkedBlocks list
+			for(int i = 0; i < MAX_LINKED_BLOCKS; i++)
 			{
-				int x = tag.getCompound("linkedBlock" + i).getInt("x");
-				int y = tag.getCompound("linkedBlock" + i).getInt("y");
-				int z = tag.getCompound("linkedBlock" + i).getInt("z");
+				if(tag.getCompound("LinkedBlocks").contains("block" + i))
+				{
+					int x = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("x");
+					int y = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("y");
+					int z = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("z");
 
-				BlockPos linkedBlockPos = new BlockPos(x, y, z);
-				linkedBlocks.add(linkedBlockPos);
+					BlockPos linkedBlockPos = new BlockPos(x, y, z);
+					linkedBlocks.add(linkedBlockPos);
+				}
 			}
 		}
 
@@ -168,13 +178,12 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 
 	/**
 	 * Copies the positions over from the SSS item's tag into this TileEntity.
-	 * I know that the tag structures are different right now, I'll fix that :P
 	 */
 	public void transferPositionsFromItem(CompoundNBT itemTag)
 	{
 		if(itemTag == null || !itemTag.contains("LinkedBlocks"))
 			return;
-		
+
 		for(int i = 0; i < MAX_LINKED_BLOCKS; i++)
 		{
 			CompoundNBT linkedBlock = itemTag.getCompound("LinkedBlocks");
@@ -184,7 +193,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 				int x = linkedBlock.getCompound("block" + i).getInt("x");
 				int y = linkedBlock.getCompound("block" + i).getInt("y");
 				int z = linkedBlock.getCompound("block" + i).getInt("z");
-				
+
 				BlockPos linkedBlockPos = new BlockPos(x, y, z);
 
 				// If the block has not already been linked with, add it to the list
@@ -194,7 +203,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 				}
 			}
 		}
-		
+
 		sync();
 	}
 
@@ -205,7 +214,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	{
 		return !linkedBlocks.isEmpty();
 	}
-	
+
 	/**
 	 * @return If this Sonic Security System is linked to a block at a specific position
 	 */
@@ -213,13 +222,13 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	{
 		if(linkedBlocks.isEmpty())
 			return false;
-		
+
 		for(int i = 0; i < linkedBlocks.size(); i++)
 		{
 			if(linkedBlocks.get(i).equals(linkedBlockPos))
 				return true;
 		}
-		
+
 		return false;
 	}
 
@@ -230,7 +239,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	{
 		if(linkedBlocks.isEmpty())
 			return;
-		
+
 		for(int i = 0; i < linkedBlocks.size(); i++)
 		{
 			if(linkedBlocks.get(i).equals(linkedBlockPos))
@@ -240,7 +249,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		if(shouldSync)
 			sync();
 	}
-	
+
 	/**
 	 * Delinks this Sonic Security System from all other blocks
 	 */
@@ -258,7 +267,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		isActive = !isActive;
 		sync();
 	}
-	
+
 	/**
 	 * @return Is this Sonic Security System active?
 	 */
@@ -268,13 +277,13 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public ModuleType[] acceptedModules() 
+	public ModuleType[] acceptedModules()
 	{
 		return new ModuleType[]{};
 	}
 
 	@Override
-	public Option<?>[] customOptions() 
+	public Option<?>[] customOptions()
 	{
 		return new Option[] { isSilent };
 	}

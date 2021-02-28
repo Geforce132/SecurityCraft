@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -138,6 +139,13 @@ public class SCEventHandler {
 						}
 					}
 
+					return;
+				}
+
+				if(tileEntity instanceof ILockable && ((ILockable) tileEntity).isLocked() && ((ILockable) tileEntity).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
+				{
+					event.setCanceled(true);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(block.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.locked", ClientUtils.localize(block.getTranslationKey())), TextFormatting.DARK_RED);
 					return;
 				}
 

@@ -25,7 +25,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class SonicSecuritySystemBlock extends OwnableBlock {
-	
+
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.makeCuboidShape(5.5, 11, 5.5, 10.5, 16, 10.5),
 			Block.makeCuboidShape(7.5, 13, 7.5, 8.5, 14, 9.5),
@@ -36,28 +36,28 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public SonicSecuritySystemBlock(Properties properties) 
+	public SonicSecuritySystemBlock(Properties properties)
 	{
 		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
-	
+
 	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
 		return false;
 	}
-	
+
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
 		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
 	}
-	
+
 	@Override
 	public BlockRenderType getRenderType(BlockState state)
 	{
 		return BlockRenderType.MODEL;
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext context)
 	{
@@ -81,16 +81,16 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 	{
 		return state.rotate(mirror.toRotation(state.get(FACING)));
 	}
-	
+
 	@Override
 	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
 	{
 		// TODO have the dropped item retain the linked blocks
 		return new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 	}
-	
+
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) 
+	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
 		return new SonicSecuritySystemTileEntity();
 	}

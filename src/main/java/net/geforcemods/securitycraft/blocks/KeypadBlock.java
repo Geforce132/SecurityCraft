@@ -3,13 +3,11 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -29,7 +27,6 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -54,13 +51,6 @@ public class KeypadBlock extends DisguisableBlock {
 		{
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 				return ActionResultType.FAIL;
-
-			// TODO just a test to show how the SSS could potentially work
-			if(((ILockable) world.getTileEntity(pos)).isLocked())
-			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.locked", ClientUtils.localize(getTranslationKey())), TextFormatting.DARK_RED);
-				return ActionResultType.FAIL;
-			}
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
 				activate(world, pos, ((KeypadTileEntity)world.getTileEntity(pos)).getSignalLength());

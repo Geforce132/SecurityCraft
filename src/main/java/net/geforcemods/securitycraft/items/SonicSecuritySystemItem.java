@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
@@ -32,7 +33,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SonicSecuritySystemItem extends Item {
 
-	public SonicSecuritySystemItem(Properties properties) 
+	public SonicSecuritySystemItem(Properties properties)
 	{
 		super(properties);
 	}
@@ -50,8 +51,9 @@ public class SonicSecuritySystemItem extends Item {
 			// If the player is sneaking, add/remove positions from the item when right-clicking a lockable block
 			if(player.isSneaking())
 			{
-				boolean isOwner = world.getTileEntity(pos) instanceof IOwnable && ((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player);
-				boolean isLockable = world.getTileEntity(pos) instanceof ILockable && ((ILockable) world.getTileEntity(pos)).canBeLocked();
+				TileEntity te = world.getTileEntity(pos);
+				boolean isOwner = te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner(player);
+				boolean isLockable = te instanceof ILockable && ((ILockable) te).canBeLocked();
 
 				if(isLockable && isOwner)
 				{
@@ -66,7 +68,7 @@ public class SonicSecuritySystemItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
-					else 
+					else
 					{
 						addLinkedBlock(stack.getTag(), pos);
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.blockLinked", world.getBlockState(pos).getBlock().getTranslatedName(), pos), TextFormatting.GREEN);
@@ -88,7 +90,7 @@ public class SonicSecuritySystemItem extends Item {
 					{
 						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.blocked"), TextFormatting.DARK_RED);
 					}
-					else 
+					else
 					{
 						// Set up a new TileEntity and add it to the block once it's placed
 						SonicSecuritySystemTileEntity te = new SonicSecuritySystemTileEntity();
@@ -105,7 +107,7 @@ public class SonicSecuritySystemItem extends Item {
 							stack.shrink(1);
 					}
 				}
-				else 
+				else
 				{
 					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.notLinked"), TextFormatting.DARK_RED);
 					return ActionResultType.FAIL;
@@ -133,13 +135,13 @@ public class SonicSecuritySystemItem extends Item {
 	/**
 	 * Adds the given position to the item's NBT tag
 	 */
-	private void addLinkedBlock(CompoundNBT tag, BlockPos pos) 
+	private void addLinkedBlock(CompoundNBT tag, BlockPos pos)
 	{
 		// If the position was already added, return
 		if(isAdded(tag, pos))
 			return;
 
-		// Find the next available position in the tag for the block and add it 
+		// Find the next available position in the tag for the block and add it
 		for(int i = 0; i < SonicSecuritySystemTileEntity.MAX_RANGE; i++)
 		{
 			if(!tag.contains("LinkedBlocks"))
@@ -162,7 +164,7 @@ public class SonicSecuritySystemItem extends Item {
 	/**
 	 * Removes the given position from the item's NBT tag
 	 */
-	private void removeLinkedBlock(CompoundNBT tag, BlockPos pos) 
+	private void removeLinkedBlock(CompoundNBT tag, BlockPos pos)
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return;
@@ -186,7 +188,7 @@ public class SonicSecuritySystemItem extends Item {
 	/**
 	 * If a position has already been added to this item's tag
 	 */
-	private boolean isAdded(CompoundNBT tag, BlockPos pos) 
+	private boolean isAdded(CompoundNBT tag, BlockPos pos)
 	{
 		if(!tag.contains("LinkedBlocks"))
 			return false;
