@@ -16,6 +16,23 @@ public class SCBlockModelProvider extends BlockModelProvider
 		super(generator, SecurityCraft.MODID, existingFileHelper);
 	}
 
+	public BlockModelBuilder reinforcedColumn(String name, String side, String end)
+	{
+		return withExistingParent(name, modLoc(BLOCK_FOLDER + "/reinforced_column"))
+				.texture("side", mcLoc(BLOCK_FOLDER + "/" + side))
+				.texture("end", mcLoc(BLOCK_FOLDER + "/" + end));
+	}
+
+	public BlockModelBuilder reinforcedSlab(String name, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
+	{
+		return sideBottomTop(name, modLoc(BLOCK_FOLDER + "/reinforced_slab"), side, bottom, top);
+	}
+
+	public BlockModelBuilder reinforcedSlabTop(String name, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
+	{
+		return sideBottomTop(name, modLoc(BLOCK_FOLDER + "/reinforced_slab_top"), side, bottom, top);
+	}
+
 	public BlockModelBuilder reinforcedStairs(String name, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
 	{
 		return sideBottomTop(name, modLoc(BLOCK_FOLDER + "/reinforced_stairs"), side, bottom, top);
