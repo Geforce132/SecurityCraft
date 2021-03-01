@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_slab",
+  "textures": {
+    "side": "block/mossy_stone_bricks",
+    "bottom": "block/mossy_stone_bricks",
+    "top": "block/mossy_stone_bricks"
+  }
+}

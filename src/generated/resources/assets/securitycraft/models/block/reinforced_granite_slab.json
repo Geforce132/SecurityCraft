@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_slab",
+  "textures": {
+    "side": "block/granite",
+    "bottom": "block/granite",
+    "top": "block/granite"
+  }
+}

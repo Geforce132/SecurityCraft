@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
@@ -43,12 +44,10 @@ public class ItemModelGenerator extends ItemModelProvider
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
-					if(block instanceof ReinforcedStainedGlassBlock)
+					if(block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
 						simpleParent(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
 						reinforcedPane(block);
-					else if(block instanceof ReinforcedStairsBlock)
-						simpleParent(block);
 					else if(block instanceof ReinforcedWallBlock)
 						reinforcedWallInventory(block, ((IReinforcedBlock)block).getVanillaBlock());
 				}
@@ -77,6 +76,7 @@ public class ItemModelGenerator extends ItemModelProvider
 		.element().from(0, 0, 0).to(16, 16, 16).face(Direction.UP).cullface(Direction.UP).texture("#overlay").end().end();
 
 		blockMine(Blocks.FURNACE, SCContent.FURNACE_MINE.get(), mcLoc(BLOCK_FOLDER + "/furnace_side"), mcLoc(BLOCK_FOLDER + "/furnace_front"), mcLoc(BLOCK_FOLDER + "/furnace_top"));
+		simpleParent(SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.STAIRS_CRYSTAL_QUARTZ.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
