@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
@@ -19,6 +20,7 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PaneBlock;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.WallHeight;
@@ -26,6 +28,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
+import net.minecraft.state.properties.SlabType;
 import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -66,7 +69,9 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
-					if(block instanceof ReinforcedStainedGlassBlock)
+					if(block instanceof ReinforcedSlabBlock)
+						reinforcedSlabBlock(block);
+					else if(block instanceof ReinforcedStainedGlassBlock)
 						simpleBlock(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
 						reinforcedPaneBlock((PaneBlock)block);
@@ -94,6 +99,46 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
 		reinforcedPaneBlock((PaneBlock)SCContent.REINFORCED_GLASS_PANE.get());
+
+		models().reinforcedColumn("reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
+
+		reinforcedSlabBlock(SCContent.REINFORCED_OAK_SLAB.get(), "reinforced_planks_oak", "oak_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_SPRUCE_SLAB.get(), "reinforced_planks_spruce", "spruce_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_BIRCH_SLAB.get(), "reinforced_planks_birch", "birch_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_JUNGLE_SLAB.get(), "reinforced_planks_jungle", "jungle_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_ACACIA_SLAB.get(), "reinforced_planks_acacia", "acacia_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_DARK_OAK_SLAB.get(), "reinforced_planks_dark_oak", "dark_oak_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_CRIMSON_SLAB.get(), "reinforced_crimson_planks", "crimson_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_WARPED_SLAB.get(), "reinforced_warped_planks", "warped_planks");
+		reinforcedSlabBlock(SCContent.REINFORCED_NORMAL_STONE_SLAB.get(), "reinforced_stone", "stone");
+		reinforcedSlabBlock(SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(), "reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
+		reinforcedSlabBlock(SCContent.REINFORCED_SANDSTONE_SLAB.get(), "reinforced_sandstone_normal", "sandstone", "sandstone_bottom", "sandstone_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_CUT_SANDSTONE_SLAB.get(), "reinforced_sandstone_smooth", "cut_sandstone", "sandstone_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_BRICK_SLAB.get(), "reinforced_brick", "bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_STONE_BRICK_SLAB.get(), "reinforced_stone_brick_default", "stone_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_NETHER_BRICK_SLAB.get(), "reinforced_nether_brick", "nether_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_QUARTZ_SLAB.get(), "reinforced_quartz_default", "quartz_block_side", "quartz_block_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(), "reinforced_red_sandstone_default", "red_sandstone", "red_sandstone_bottom", "red_sandstone_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB.get(), "reinforced_red_sandstone_smooth", "cut_red_sandstone", "red_sandstone_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_PURPUR_SLAB.get(), "reinforced_purpur_default", "purpur_block");
+		reinforcedSlabBlock(SCContent.REINFORCED_PRISMARINE_SLAB.get(), "reinforced_prismarine_default", "prismarine");
+		reinforcedSlabBlock(SCContent.REINFORCED_PRISMARINE_BRICK_SLAB.get(), "reinforced_prismarine_bricks", "prismarine_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_DARK_PRISMARINE_SLAB.get(), "reinforced_prismarine_dark", "dark_prismarine");
+		reinforcedSlabBlock(SCContent.REINFORCED_POLISHED_GRANITE_SLAB.get(), "reinforced_stone_smooth_granite", "polished_granite");
+		reinforcedSlabBlock(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB.get(), "reinforced_smooth_red_sandstone", "red_sandstone_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get(), "reinforced_stone_brick_mossy", "mossy_stone_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_POLISHED_DIORITE_SLAB.get(), "reinforced_stone_smooth_diorite", "polished_diorite");
+		reinforcedSlabBlock(SCContent.REINFORCED_END_STONE_BRICK_SLAB.get(), "reinforced_end_stone_bricks", "end_stone_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB.get(), "reinforced_smooth_sandstone", "sandstone_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_SMOOTH_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom");
+		reinforcedSlabBlock(SCContent.REINFORCED_GRANITE_SLAB.get(), "reinforced_stone_granite", "granite");
+		reinforcedSlabBlock(SCContent.REINFORCED_ANDESITE_SLAB.get(), "reinforced_stone_andesite", "andesite");
+		reinforcedSlabBlock(SCContent.REINFORCED_RED_NETHER_BRICK_SLAB.get(), "reinforced_red_nether_brick", "red_nether_bricks");
+		reinforcedSlabBlock(SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get(), "reinforced_stone_smooth_andesite", "polished_andesite");
+		reinforcedSlabBlock(SCContent.REINFORCED_DIORITE_SLAB.get(), "reinforced_stone_diorite", "diorite");
+		reinforcedSlabBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB.get(), "reinforced_polished_blackstone_bricks", "polished_blackstone_bricks");
+		reinforcedSlabBlock(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_default", "quartz_block_side", "quartz_block_top");
+		reinforcedSlabBlock(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_default", "quartz_block_side", "quartz_block_top");
 
 		reinforcedStairsBlock(SCContent.REINFORCED_PURPUR_STAIRS.get(), "purpur_block");
 		reinforcedStairsBlock(SCContent.REINFORCED_OAK_STAIRS.get(), "oak_planks");
@@ -143,14 +188,52 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		});
 	}
 
+	public void reinforcedSlabBlock(Block block)
+	{
+		String name = name(block).replace("_slab", "");
+
+		reinforcedSlabBlock(block, name, name.replace("reinforced_", ""));
+	}
+
+	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String texture)
+	{
+		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + texture);
+
+		reinforcedSlabBlock(block, name(block), modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), textureLocation, textureLocation, textureLocation);
+	}
+
+	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String side, String end)
+	{
+		ResourceLocation endTextureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + end);
+
+		reinforcedSlabBlock(block, name(block),  modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), endTextureLocation, endTextureLocation);
+	}
+
+	public void reinforcedSlabBlock(Block block, String doubleSlabModel, String side, String bottom, String top)
+	{
+		reinforcedSlabBlock(block, name(block), modLoc(ModelProvider.BLOCK_FOLDER + "/" + doubleSlabModel), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + side), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + bottom), mcLoc(ModelProvider.BLOCK_FOLDER + "/" + top));
+	}
+
+	public void reinforcedSlabBlock(Block block, String baseName, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top)
+	{
+		ModelFile bottomModel = models().reinforcedSlab(baseName, side, bottom, top);
+		ModelFile topModel = models().reinforcedSlabTop(baseName + "_top", side, bottom, top);
+		ModelFile doubleSlabModel = models().getExistingFile(doubleSlab);
+
+		getVariantBuilder(block)
+		.partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottomModel))
+		.partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(topModel))
+		.partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubleSlabModel));
+	}
+
 	public void reinforcedStairsBlock(Block block)
 	{
 		reinforcedStairsBlock(block, name(block).replace("reinforced_", "").replace("_stairs", ""));
 	}
 
-	public void reinforcedStairsBlock(Block block, String textureName)
+	public void reinforcedStairsBlock(Block block, String texture)
 	{
-		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textureName);
+		ResourceLocation textureLocation = mcLoc(ModelProvider.BLOCK_FOLDER + "/" + texture);
 
 		reinforcedStairsBlock(block, block.getRegistryName().toString(), textureLocation, textureLocation, textureLocation);
 	}

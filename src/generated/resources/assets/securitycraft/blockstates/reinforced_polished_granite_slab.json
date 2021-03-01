@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "securitycraft:block/reinforced_polished_granite_slab_top"
+    },
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_polished_granite_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_stone_smooth_granite"
+    }
+  }
+}
