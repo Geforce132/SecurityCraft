@@ -7,6 +7,7 @@
 - Fix: Briefcases cannot be opened
 - Fix: Portable Radar does not respect the "respect_invisibility" config option
 - Fix: I.M.S. attacks players in spectator mode
+- Fix: Reinforced (Stained) Glass is see-through
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
