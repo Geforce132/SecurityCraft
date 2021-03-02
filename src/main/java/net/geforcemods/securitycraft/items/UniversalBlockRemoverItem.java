@@ -44,9 +44,6 @@ public class UniversalBlockRemoverItem extends Item
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		if(ctx.getWorld().isRemote)
-			return ActionResultType.FAIL;
-
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		BlockState state = world.getBlockState(pos);
@@ -87,28 +84,32 @@ public class UniversalBlockRemoverItem extends Item
 						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, te);
 				}
 
-				world.destroyBlock(pos, true);
-				LaserBlock.destroyAdjacentLasers(world, pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+				if (!world.isRemote) {
+					world.destroyBlock(pos, true);
+					LaserBlock.destroyAdjacentLasers(world, pos);
+					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+				}
 			}
 			else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(pos).get(CageTrapBlock.DEACTIVATED))
 			{
 				BlockPos originalPos = pos;
 				BlockPos middlePos = originalPos.up(4);
 
-				new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable().setPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
-					TileEntity te = w.getTileEntity(p);
+				if (!world.isRemote) {
+					new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable().setPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+						TileEntity te = w.getTileEntity(p);
 
-					if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
-					{
-						Block b = w.getBlockState(p).getBlock();
+						if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
+						{
+							Block b = w.getBlockState(p).getBlock();
 
-						if(b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
-							w.destroyBlock(p, false);
-					}
-				});
+							if(b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
+								w.destroyBlock(p, false);
+						}
+					});
 
-				world.destroyBlock(originalPos, false);
+					world.destroyBlock(originalPos, false);
+				}
 			}
 			else
 			{
@@ -123,9 +124,11 @@ public class UniversalBlockRemoverItem extends Item
 						te.getInventory().clear();
 				}
 
-				world.destroyBlock(pos, true);
-				world.removeTileEntity(pos);
-				player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+				if (!world.isRemote) {
+					world.destroyBlock(pos, true);
+					world.removeTileEntity(pos);
+					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+				}
 			}
 
 			return ActionResultType.SUCCESS;

@@ -63,7 +63,7 @@ public class DisguiseModuleContainer extends Container {
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player)
 	{
-		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
+		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() == SCContent.DISGUISE_MODULE.get())))
 			return ItemStack.EMPTY;
 
 		return super.slotClick(slot, dragType, clickType, player);

@@ -2,16 +2,15 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class UpdateNBTTagOnServer {
 
-	private CompoundNBT stackTag;
-	private String itemName;
+	private ItemStack stack;
 
 	public UpdateNBTTagOnServer(){
 
@@ -19,23 +18,20 @@ public class UpdateNBTTagOnServer {
 
 	public UpdateNBTTagOnServer(ItemStack stack){
 		if(!stack.isEmpty() && stack.getTag() != null){
-			stackTag = stack.getTag();
-			itemName = stack.getTranslationKey();
+			this.stack = stack;
 		}
 	}
 
 	public static void encode(UpdateNBTTagOnServer message, PacketBuffer buf)
 	{
-		buf.writeCompoundTag(message.stackTag);
-		buf.writeString(message.itemName);
+		buf.writeItemStack(message.stack);
 	}
 
 	public static UpdateNBTTagOnServer decode(PacketBuffer buf)
 	{
 		UpdateNBTTagOnServer message = new UpdateNBTTagOnServer();
 
-		message.stackTag = buf.readCompoundTag();
-		message.itemName = buf.readString(Integer.MAX_VALUE / 4);
+		message.stack = buf.readItemStack();
 		return message;
 	}
 
@@ -43,8 +39,11 @@ public class UpdateNBTTagOnServer {
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			if(!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem().getTranslationKey().equals(message.itemName))
-				player.inventory.getCurrentItem().setTag(message.stackTag);
+			if(PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {
+				ItemStack stack = PlayerUtils.getSelectedItemStack(player, message.stack.getItem());
+
+				stack.setTag(message.stack.getTag());
+			}
 		});
 
 		ctx.get().setPacketHandled(true);

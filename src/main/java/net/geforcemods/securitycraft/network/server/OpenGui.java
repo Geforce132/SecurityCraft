@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -58,7 +59,7 @@ public class OpenGui {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 					{
-						return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(player.inventory.getCurrentItem()));
+						return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
 					}
 
 					@Override

@@ -41,7 +41,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -69,6 +68,7 @@ import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
@@ -118,59 +118,58 @@ public class SCEventHandler {
 			return;
 		}
 
-		if(event.getHand() == Hand.MAIN_HAND)
-		{
-			World world = event.getWorld();
+		World world = event.getWorld();
 
-			if(!world.isRemote){
-				TileEntity tileEntity = world.getTileEntity(event.getPos());
-				BlockState state  = world.getBlockState(event.getPos());
-				Block block = state.getBlock();
+		if(!world.isRemote){
+			TileEntity tileEntity = world.getTileEntity(event.getPos());
+			BlockState state  = world.getBlockState(event.getPos());
+			Block block = state.getBlock();
 
-				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL))
+			if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.KEY_PANEL, event.getHand()))
+			{
+				for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
 				{
-					for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
+					if(pc.getOriginalBlock() == block)
 					{
-						if(pc.getOriginalBlock() == block)
-						{
-							event.setUseBlock(Result.DENY);
-							event.setUseItem(Result.ALLOW);
-						}
+						event.setUseBlock(Result.DENY);
+						event.setUseItem(Result.ALLOW);
 					}
-
-					return;
 				}
 
-				if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.CODEBREAKER) && handleCodebreaking(event)) {
-					event.setCanceled(true);
-					return;
-				}
-
-				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG) && event.getPlayer().inventory.getCurrentItem().hasDisplayName()){
-					event.setCanceled(true);
-					event.setCancellationResult(ActionResultType.SUCCESS);
-
-					if(((INameable) tileEntity).getCustomSCName().equals(event.getPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
-						return;
-					}
-
-					if(!event.getPlayer().isCreative())
-						event.getPlayer().inventory.getCurrentItem().shrink(1);
-
-					((INameable) tileEntity).setCustomSCName(event.getPlayer().inventory.getCurrentItem().getDisplayName());
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
-					return;
-				}
+				return;
 			}
 
-			//outside !world.isRemote for properly checking the interaction
-			//all the sentry functionality for when the sentry is diguised
-			List<SentryEntity> sentries = world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+			if(PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.CODEBREAKER, event.getHand()) && handleCodebreaking(event)) {
+				event.setCanceled(true);
+				return;
+			}
 
-			if(!sentries.isEmpty())
-				event.setCanceled(sentries.get(0).func_230254_b_(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
+			if(tileEntity instanceof INameable && ((INameable)tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getHeldItem(event.getHand()).hasDisplayName()){
+				ItemStack nametag = event.getPlayer().getHeldItem(event.getHand());
+
+				event.setCanceled(true);
+				event.setCancellationResult(ActionResultType.SUCCESS);
+
+				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getDisplayName())) {
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+					return;
+				}
+
+				if(!event.getPlayer().isCreative())
+					nametag.shrink(1);
+
+				((INameable) tileEntity).setCustomSCName(nametag.getDisplayName());
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+				return;
+			}
 		}
+
+		//outside !world.isRemote for properly checking the interaction
+		//all the sentry functionality for when the sentry is diguised
+		List<SentryEntity> sentries = world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+
+		if(!sentries.isEmpty())
+			event.setCanceled(sentries.get(0).func_230254_b_(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
 	}
 
 	@SubscribeEvent
@@ -289,7 +288,7 @@ public class SCEventHandler {
 	{
 		if(event.getPlayer() != null)
 		{
-			Item held = event.getPlayer().getHeldItemMainhand().getItem();
+			Item held = event.getPlayer().getHeldItemMainhand().isEmpty() ? event.getPlayer().getHeldItemMainhand().getItem() : event.getPlayer().getHeldItemOffhand().getItem();
 
 			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 			{

@@ -15,6 +15,7 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -95,8 +96,9 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	protected void actionPerformed(ClickButton button) {
 		if(button.id == 8)
 		{
-			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE)) {
-				CompoundNBT nbt = Minecraft.getInstance().player.inventory.getCurrentItem().getTag();
+			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
+				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
+				CompoundNBT nbt = briefcase.getTag();
 				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
 
 				if(nbt.getString("passcode").equals(code)) {

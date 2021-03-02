@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -79,24 +80,27 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
-			if(!state.get(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == SCContent.WIRE_CUTTERS.get()){
-				world.setBlockState(pos, state.with(DEACTIVATED, true));
+		ItemStack stack = player.getHeldItem(hand);
 
-				if(!player.isCreative())
-					player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+		if(!state.get(DEACTIVATED) && stack.getItem() == SCContent.WIRE_CUTTERS.get()){
+			world.setBlockState(pos, state.with(DEACTIVATED, true));
 
-				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			}else if(state.get(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				world.setBlockState(pos, state.with(DEACTIVATED, false));
+			if(!player.isCreative())
+				stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
-				if(!player.isCreative())
-					player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+			world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return ActionResultType.SUCCESS;
+		}else if(state.get(DEACTIVATED) && stack.getItem() == Items.FLINT_AND_STEEL){
+			world.setBlockState(pos, state.with(DEACTIVATED, false));
 
-				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			}
+			if(!player.isCreative())
+				stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
-		return ActionResultType.SUCCESS;
+			world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			return ActionResultType.SUCCESS;
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override

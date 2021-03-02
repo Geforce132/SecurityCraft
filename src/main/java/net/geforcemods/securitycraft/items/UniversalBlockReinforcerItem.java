@@ -50,7 +50,8 @@ public class UniversalBlockReinforcerItem extends Item
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
-		return super.onItemRightClick(world, player, hand);
+
+		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
 
 	@Override

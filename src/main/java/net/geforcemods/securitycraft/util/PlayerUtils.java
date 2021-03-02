@@ -10,7 +10,10 @@ import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -71,8 +74,16 @@ public class PlayerUtils{
 	public static void sendMessageToPlayer(String playerName, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
 		PlayerEntity player = getPlayerFromName(playerName);
 
-		if(player != null)
-		{
+		if (player != null)
+			sendMessageToPlayer(player, prefix, text, color, false);
+	}
+
+	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color) {
+		sendMessageToPlayer(player, prefix, text, color, false);
+	}
+
+	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color, boolean shouldSendFromClient){
+		if (player.world.isRemote == shouldSendFromClient) {
 			player.sendMessage(new StringTextComponent("[")
 					.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
 					.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
@@ -80,15 +91,8 @@ public class PlayerUtils{
 		}
 	}
 
-	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color){
-		player.sendMessage(new StringTextComponent("[")
-				.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
-				.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
-				.append(text), Util.DUMMY_UUID); //appendSibling
-	}
-
 	/**
-	 * Sends the given {@link ICommandSender} a chat message, followed by a link prefixed with a colon. <p>
+	 * Sends the given {@link ICommandSource} a chat message, followed by a link prefixed with a colon. <p>
 	 */
 	public static void sendMessageEndingWithLink(ICommandSource sender, IFormattableTextComponent prefix, IFormattableTextComponent text, String link, TextFormatting color){
 		sender.sendMessage(new StringTextComponent("[")
@@ -102,18 +106,58 @@ public class PlayerUtils{
 	/**
 	 * Returns true if the player is holding the given item.
 	 */
-	public static boolean isHoldingItem(PlayerEntity player, Supplier<Item> item){
-		return isHoldingItem(player, item.get());
+	public static boolean isHoldingItem(PlayerEntity player, Supplier<Item> item, Hand hand){
+		return isHoldingItem(player, item.get(), hand);
 	}
 
 	/**
 	 * Returns true if the player is holding the given item.
+	 * @param player The player that is checked for the item
+	 * @param item The item that is checked
+	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
 	 */
-	public static boolean isHoldingItem(PlayerEntity player, Item item){
-		if(item == null && player.inventory.getCurrentItem().isEmpty())
-			return true;
+	public static boolean isHoldingItem(PlayerEntity player, Item item, Hand hand){
+		if (hand != Hand.OFF_HAND && !player.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
+			if (player.getHeldItem(Hand.MAIN_HAND).getItem() == item)
+				return true;
+		}
 
-		return (!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == item);
+		if (hand != Hand.MAIN_HAND && !player.getHeldItem(Hand.OFF_HAND).isEmpty()) {
+			if (player.getHeldItem(Hand.OFF_HAND).getItem() == item)
+				return true;
+		}
+
+		return item == null;
+	}
+
+	/**
+	 * Returns the ItemStack of the item the player is currently holding (both hands are checked).
+	 * @param player The player holding the item
+	 * @param item The item type that should be searched for
+	 */
+
+	public static ItemStack getSelectedItemStack(PlayerEntity player, Item item) {
+		return getSelectedItemStack(player.inventory, item);
+	}
+
+	/**
+	 * Returns the ItemStack of the item the player is currently holding (both hands are checked).
+	 * @param inventory The inventory that contains the item
+	 * @param item The item type that should be searched for
+	 */
+
+	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
+		if (!inventory.getCurrentItem().isEmpty()) {
+			if (inventory.getCurrentItem().getItem() == item)
+				return inventory.getCurrentItem();
+		}
+
+		if (!inventory.offHandInventory.get(0).isEmpty()) {
+			if (inventory.offHandInventory.get(0).getItem() == item)
+				return inventory.offHandInventory.get(0);
+		}
+
+		return ItemStack.EMPTY;
 	}
 
 	/**
