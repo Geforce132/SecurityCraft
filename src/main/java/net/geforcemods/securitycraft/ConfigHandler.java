@@ -28,6 +28,7 @@ public class ConfigHandler {
 	{
 		public BooleanValue sayThanksMessage;
 		public DoubleValue cameraSpeed;
+		public BooleanValue reinforcedBlockTint;
 
 		Client(ForgeConfigSpec.Builder builder)
 		{
@@ -40,6 +41,11 @@ public class ConfigHandler {
 					.translation("config.securitycraft:cameraSpeed")
 					.comment("How fast can you rotate when mounted to a camera and holding W-A-S-D?")
 					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
+
+			reinforcedBlockTint = builder
+					.translation("config.securitycraft:reinforcedBlockTint")
+					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overriden by servers.")
+					.define("reinforced_block_tint", true);
 		}
 	}
 
@@ -63,6 +69,7 @@ public class ConfigHandler {
 		public BooleanValue allowBlockClaim;
 		public BooleanValue respectInvisibility;
 		public BooleanValue reinforcedBlockTint;
+		public BooleanValue forceReinforcedBlockTint;
 		public BooleanValue ableToCraftMines;
 		public BooleanValue retinalScannerFace;
 
@@ -169,8 +176,12 @@ public class ConfigHandler {
 
 			reinforcedBlockTint = builder
 					.translation("config.securitycraft:reinforcedBlockTint")
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts?")
+					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This does nothing unless force_reinforced_block_tint is set to true.")
 					.define("reinforced_block_tint", true);
+
+			forceReinforcedBlockTint = builder
+					.comment("Set this to true if you want to force the setting of reinforced_block_tint for players.")
+					.define("force_reinforced_block_tint", false);
 
 			ableToCraftMines = builder
 					.translation("config.securitycraft:ableToCraftMines")

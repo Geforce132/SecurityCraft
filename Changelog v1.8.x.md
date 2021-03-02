@@ -1,5 +1,7 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
+- New: Server configuration option "force_reinforced_block_tint". This can be used to force players to use the setting of the server config value "reinforced_block_tint" 
+- New: Client configuration option "reinforced_block_tint". If the server does not force the reinforced block tint, this value will be used
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Fix: Double Crystal Quartz Slab does not drop two slab items
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
