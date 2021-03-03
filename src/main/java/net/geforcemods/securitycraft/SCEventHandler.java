@@ -29,7 +29,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -42,10 +41,6 @@ import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -54,21 +49,16 @@ import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
@@ -99,19 +89,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onBucketUsed(FillBucketEvent event){
-		if(event.getTarget() == null || event.getTarget().getType() == Type.BLOCK)
-			return;
-
-		ItemStack result = fillBucket(event.getWorld(), ((BlockRayTraceResult)event.getTarget()).getPos());
-		if(result.isEmpty())
-			return;
-		event.setFilledBucket(result);
-		event.setResult(Result.ALLOW);
-	}
-
-	@SubscribeEvent
-	public static void onRightClickBlock(RightClickBlock event){
+	public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event){
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()))
 		{
 			event.setCanceled(true);
@@ -199,38 +177,7 @@ public class SCEventHandler {
 		if(!(event.getWorld() instanceof World))
 			return;
 
-		List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
-
-		//don't let people break the disguise block
-		if(!sentries.isEmpty())
-		{
-			BlockPos pos = event.getPos();
-
-			if (!sentries.get(0).getDisguiseModule().isEmpty())
-			{
-				ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-				List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
-
-				if(blocks.size() > 0)
-				{
-					if(blocks.get(0) == event.getWorld().getBlockState(pos).getBlock())
-						event.setCanceled(true);
-				}
-			}
-
-			return;
-		}
-	}
-
-	@SubscribeEvent
-	public static void onOwnership(OwnershipEvent event)
-	{
-		handleOwnableTEs(event);
-	}
-
-	@SubscribeEvent
-	public static void onBlockBroken(BreakEvent event){
-		if(event.getWorld() instanceof World && !event.getWorld().isRemote()) {
+		if(!event.getWorld().isRemote()) {
 			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
 				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
 
@@ -253,26 +200,34 @@ public class SCEventHandler {
 						}
 					}
 			}
+		}
 
-			List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
 
-			if(!sentries.isEmpty())
+		//don't let people break the disguise block
+		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
+		{
+			ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
+			List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
+
+			if(blocks.size() > 0)
 			{
-				BlockPos pos = event.getPos();
-
-				if (!sentries.get(0).getDisguiseModule().isEmpty())
-				{
-					ItemStack disguiseModule = sentries.get(0).getDisguiseModule();
-					List<Block> blocks = ((ModuleItem)disguiseModule.getItem()).getBlockAddons(disguiseModule.getTag());
-
-					if(blocks.size() > 0)
-					{
-						BlockState state = blocks.get(0).getDefaultState();
-
-						((World)event.getWorld()).setBlockState(pos, state.getShape(event.getWorld(), pos) == VoxelShapes.fullCube() ? state : Blocks.AIR.getDefaultState());
-					}
-				}
+				if(blocks.get(0) == event.getWorld().getBlockState(event.getPos()).getBlock())
+					event.setCanceled(true);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onOwnership(OwnershipEvent event)
+	{
+		TileEntity te = event.getWorld().getTileEntity(event.getPos());
+
+		if(te instanceof IOwnable) {
+			String name = event.getPlayer().getName().getString();
+			String uuid = event.getPlayer().getGameProfile().getId().toString();
+
+			((IOwnable)te).getOwner().set(uuid, name);
 		}
 	}
 
@@ -338,31 +293,7 @@ public class SCEventHandler {
 			event.setBurnTime(0);
 	}
 
-	private static ItemStack fillBucket(World world, BlockPos pos){
-		BlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
-
-		if(block == SCContent.FAKE_WATER_BLOCK.get() && state.getFluidState().getFluid() == SCContent.FAKE_WATER.get()){
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return new ItemStack(SCContent.FAKE_WATER_BUCKET.get(), 1);
-		}else if(block == SCContent.FAKE_LAVA_BLOCK.get() && state.getFluidState().getFluid() == SCContent.FAKE_LAVA.get()){
-			world.setBlockState(pos, Blocks.AIR.getDefaultState());
-			return new ItemStack(SCContent.FAKE_LAVA_BUCKET.get(), 1);
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	private static void handleOwnableTEs(OwnershipEvent event) {
-		if(event.getWorld().getTileEntity(event.getPos()) instanceof IOwnable) {
-			String name = event.getPlayer().getName().getString();
-			String uuid = event.getPlayer().getGameProfile().getId().toString();
-
-			((IOwnable) event.getWorld().getTileEntity(event.getPos())).getOwner().set(uuid, name);
-		}
-	}
-
-	private static boolean handleCodebreaking(PlayerInteractEvent event) {
+	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
 		if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 		{
 			World world = event.getPlayer().world;
