@@ -49,6 +49,7 @@ import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -243,7 +244,7 @@ public class SCEventHandler {
 	{
 		if(event.getPlayer() != null)
 		{
-			Item held = event.getPlayer().getHeldItemMainhand().isEmpty() ? event.getPlayer().getHeldItemMainhand().getItem() : event.getPlayer().getHeldItemOffhand().getItem();
+			Item held = event.getPlayer().getHeldItemMainhand().getItem();
 
 			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 			{
