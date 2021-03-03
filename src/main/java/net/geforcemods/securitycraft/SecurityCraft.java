@@ -47,7 +47,6 @@ public class SecurityCraft {
 	@Instance(MODID)
 	public static SecurityCraft instance = new SecurityCraft();
 	public static SimpleNetworkWrapper network;
-	public static SCEventHandler eventHandler = new SCEventHandler();
 	private GuiHandler guiHandler = new GuiHandler();
 	public static CreativeTabs tabSCTechnical = new CreativeTabSCTechnical();
 	public static CreativeTabs tabSCMine = new CreativeTabSCExplosives();
@@ -108,7 +107,6 @@ public class SecurityCraft {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event){
-		MinecraftForge.EVENT_BUS.register(SecurityCraft.eventHandler);
 
 		if(Loader.isModLoaded("cyclicmagic"))
 			MinecraftForge.EVENT_BUS.register(new CyclicCompat());
