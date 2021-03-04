@@ -36,9 +36,6 @@ public class UniversalBlockModifierItem extends Item
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		if(ctx.getWorld().isRemote)
-			return ActionResultType.FAIL;
-
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		TileEntity te = world.getTileEntity(pos);
@@ -53,7 +50,7 @@ public class UniversalBlockModifierItem extends Item
 
 				return ActionResultType.FAIL;
 			}
-			else if(player instanceof ServerPlayerEntity)
+			else if(!ctx.getWorld().isRemote)
 			{
 				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 					@Override

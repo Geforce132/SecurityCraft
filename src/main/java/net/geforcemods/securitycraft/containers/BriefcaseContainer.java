@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
+import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
@@ -61,7 +62,7 @@ public class BriefcaseContainer extends Container {
 
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player) {
-		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
+		if(slot >= 0 && getSlot(slot) != null && (!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof BriefcaseItem))
 			return ItemStack.EMPTY;
 
 		return super.slotClick(slot, dragType, clickType, player);

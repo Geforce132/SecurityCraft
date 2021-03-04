@@ -94,23 +94,29 @@ public class ModuleItem extends Item{
 
 		if(canBeCustomized())
 		{
-			if(world.isRemote && (module == ModuleType.WHITELIST || module == ModuleType.BLACKLIST))
+			if(module == ModuleType.WHITELIST || module == ModuleType.BLACKLIST) {
 				SecurityCraft.proxy.displayEditModuleGui(stack);
-			else if(!world.isRemote && module == ModuleType.DISGUISE)
+				return ActionResult.resultConsume(stack);
+			}
+			else if(module == ModuleType.DISGUISE)
 			{
-				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
-					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
-						return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
-					}
+				if (!world.isRemote) {
+					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
+						}
 
-					@Override
-					public ITextComponent getDisplayName()
+						@Override
+						public ITextComponent getDisplayName()
 					{
 						return new TranslationTextComponent(getTranslationKey());
 					}
-				});
+					});
+				}
+
+				return ActionResult.resultConsume(stack);
 			}
 		}
 

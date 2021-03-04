@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
+- New: SecurityCraft's blocks and items can now properly be used by the offhand
 - New: Server configuration option "force_reinforced_block_tint". This can be used to force players to use the setting of the server config value "reinforced_block_tint" 
 - New: Client configuration option "reinforced_block_tint". If the server does not force the reinforced block tint, this value will be used
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
@@ -11,6 +12,7 @@
 - Fix: I.M.S. attacks players in spectator mode
 - Fix: Reinforced (Stained) Glass is see-through
 - Fix: The Briefcase's NBT contains empty Briefcase inventory slots
+- Fix: Some of SecurityCraft's tools don't lose durability when used on a block while held in the offhand
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 

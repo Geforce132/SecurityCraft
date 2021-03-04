@@ -48,20 +48,19 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
+		if(isFacingAnotherScanner(world, pos) && player instanceof ServerPlayerEntity)
 		{
-			if(isFacingAnotherScanner(world, pos) && player instanceof ServerPlayerEntity)
-			{
-				TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getTileEntity(pos);
 
-				if(te instanceof INamedContainerProvider)
-					NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
-			}
-			else if(hand == Hand.MAIN_HAND)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+			if(!world.isRemote && te instanceof INamedContainerProvider)
+				NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
+
+			return ActionResultType.SUCCESS;
 		}
-
-		return ActionResultType.SUCCESS;
+		else {
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+			return ActionResultType.SUCCESS;
+		}
 	}
 
 	/**
@@ -114,7 +113,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if(world.isRemote || state.getBlock() == newState.getBlock())
 			return;
 
-		InventoryScannerTileEntity connectedScanner = null;
+		InventoryScannerTileEntity connectedScanner = null;
+
 		for(Direction facing : Direction.Plane.HORIZONTAL)
 		{
 			for(int i = 1; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++)

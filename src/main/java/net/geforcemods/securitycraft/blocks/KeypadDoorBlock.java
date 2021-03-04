@@ -36,7 +36,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
 				activate(world, pos, state, ((KeypadDoorTileEntity)world.getTileEntity(pos)).getSignalLength());
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL, hand))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

@@ -47,14 +47,14 @@ public class KeypadBlock extends DisguisableBlock {
 	{
 		if(state.get(POWERED))
 			return ActionResultType.PASS;
-		else if(!world.isRemote)
+		else
 		{
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
 				return ActionResultType.FAIL;
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
 				activate(world, pos, ((KeypadTileEntity)world.getTileEntity(pos)).getSignalLength());
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL, hand))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

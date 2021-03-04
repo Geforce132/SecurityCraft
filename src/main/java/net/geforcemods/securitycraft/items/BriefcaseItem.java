@@ -44,7 +44,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 			return ActionResultType.SUCCESS;
 
 		handle(stack, world, player, hand);
-		return ActionResultType.FAIL;
+		return ActionResultType.CONSUME;
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		ItemStack stack = player.getHeldItem(hand);
 
 		handle(stack, world, player, hand);
-		return ActionResult.resultPass(stack);
+		return ActionResult.resultConsume(stack);
 	}
 
 	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand)
 	{
-		if(world.isRemote && hand == Hand.MAIN_HAND) {
+		if(world.isRemote) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);

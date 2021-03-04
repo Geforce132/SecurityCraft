@@ -587,9 +587,9 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(world.isRemote)
 			{
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, false, size));
-				PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
 			}
 
+			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
 			enabled = false;
 
 			for(BlockPos pos : blocks)

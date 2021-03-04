@@ -34,9 +34,6 @@ public abstract class SpecialDoorItem extends Item
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, ItemUseContext ctx)
 	{
-		if(world.isRemote)
-			return ActionResultType.FAIL;
-
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 

@@ -87,7 +87,7 @@ public class AdminToolItem extends Item {
 				if(!hasInfo)
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
-				return ActionResultType.FAIL;
+				return ActionResultType.SUCCESS;
 			}
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);

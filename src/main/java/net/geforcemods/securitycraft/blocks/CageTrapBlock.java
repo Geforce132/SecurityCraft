@@ -134,41 +134,36 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
+		ItemStack stack = player.getHeldItem(hand);
+
+		if(stack.getItem() == SCContent.WIRE_CUTTERS.get())
 		{
-			ItemStack stack = player.getHeldItem(hand);
-
-			if(stack.getItem() == SCContent.WIRE_CUTTERS.get())
+			if(!state.get(DEACTIVATED))
 			{
-				if(!state.get(DEACTIVATED))
-				{
-					world.setBlockState(pos, state.with(DEACTIVATED, true));
+				world.setBlockState(pos, state.with(DEACTIVATED, true));
 
-					if(!player.isCreative())
-						stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
+				if(!player.isCreative())
+					stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
-					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResultType.SUCCESS;
-				}
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return ActionResultType.SUCCESS;
 			}
-			else if(stack.getItem() == Items.REDSTONE)
+		}
+		else if(stack.getItem() == Items.REDSTONE)
+		{
+			if(state.get(DEACTIVATED))
 			{
-				if(state.get(DEACTIVATED))
-				{
-					world.setBlockState(pos, state.with(DEACTIVATED, false));
+				world.setBlockState(pos, state.with(DEACTIVATED, false));
 
-					if(!player.isCreative())
-						stack.shrink(1);
+				if(!player.isCreative())
+					stack.shrink(1);
 
-					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResultType.SUCCESS;
-				}
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return ActionResultType.SUCCESS;
 			}
-
-			return ActionResultType.FAIL;
 		}
 
-		return ActionResultType.SUCCESS;
+		return ActionResultType.PASS;
 	}
 
 	@Override
