@@ -79,6 +79,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					stack.setTag(new CompoundNBT());
 
 				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
+
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
@@ -92,7 +93,6 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 		else if (!world.isRemote)
 				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
-
 
 		return ActionResultType.SUCCESS;
 	}

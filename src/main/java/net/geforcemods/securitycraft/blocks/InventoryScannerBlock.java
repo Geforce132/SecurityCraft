@@ -59,7 +59,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		}
 		else {
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
-			return ActionResultType.CONSUME;
+			return ActionResultType.SUCCESS;
 		}
 	}
 

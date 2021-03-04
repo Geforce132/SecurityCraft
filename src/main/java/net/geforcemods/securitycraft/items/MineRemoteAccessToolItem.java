@@ -43,7 +43,6 @@ public class MineRemoteAccessToolItem extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
 		SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
-
 		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
 
@@ -73,6 +72,7 @@ public class MineRemoteAccessToolItem extends Item {
 					stack.setTag(new CompoundNBT());
 
 				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
+
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 

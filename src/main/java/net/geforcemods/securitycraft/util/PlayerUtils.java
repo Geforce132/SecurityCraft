@@ -115,6 +115,7 @@ public class PlayerUtils{
 	 * @param player The player that is checked for the item
 	 * @param item The item that is checked
 	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
+	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
 	 */
 	public static boolean isHoldingItem(PlayerEntity player, Item item, Hand hand){
 		if (hand != Hand.OFF_HAND && !player.getHeldItem(Hand.MAIN_HAND).isEmpty()) {
@@ -131,21 +132,19 @@ public class PlayerUtils{
 	}
 
 	/**
-	 * Returns the ItemStack of the item the player is currently holding (both hands are checked).
+	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
 	 * @param player The player holding the item
 	 * @param item The item type that should be searched for
 	 */
-
 	public static ItemStack getSelectedItemStack(PlayerEntity player, Item item) {
 		return getSelectedItemStack(player.inventory, item);
 	}
 
 	/**
-	 * Returns the ItemStack of the item the player is currently holding (both hands are checked).
+	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
 	 * @param inventory The inventory that contains the item
 	 * @param item The item type that should be searched for
 	 */
-
 	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
 		if (!inventory.getCurrentItem().isEmpty()) {
 			if (inventory.getCurrentItem().getItem() == item)

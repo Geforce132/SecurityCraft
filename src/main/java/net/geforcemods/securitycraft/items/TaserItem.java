@@ -76,7 +76,6 @@ public class TaserItem extends Item {
 					redstoneStack.setCount(redstoneStack.getCount() - 1);
 					player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
 					setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
-
 					return ActionResult.resultSuccess(stack);
 				}
 
@@ -176,6 +175,7 @@ public class TaserItem extends Item {
 
 		return rayTracedEntity == null ? null : new EntityRayTraceResult(rayTracedEntity, hitVec);
 	}
+
 	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)
 	{
 		if(hand == Hand.MAIN_HAND)
