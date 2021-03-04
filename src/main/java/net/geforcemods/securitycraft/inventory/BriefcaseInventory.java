@@ -53,7 +53,7 @@ public class BriefcaseInventory implements IInventory {
 		ListNBT items = new ListNBT();
 
 		for(int i = 0; i < getSizeInventory(); i++)
-			if(getStackInSlot(i) != null) {
+			if(!getStackInSlot(i).isEmpty()) {
 				CompoundNBT item = new CompoundNBT();
 				item.putInt("Slot", i);
 				getStackInSlot(i).write(item);
