@@ -28,14 +28,14 @@ public class KeypadDoorBlock extends SpecialDoorBlock
 	{
 		if(state.get(OPEN))
 			return false;
-		else if(!world.isRemote)
+		else
 		{
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
-				return false;
+				return true;
 
 			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
 				activate(world, pos, state, ((KeypadDoorTileEntity)world.getTileEntity(pos)).getSignalLength());
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand) && !PlayerUtils.isHoldingItem(player, SCContent.KEY_PANEL, hand))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

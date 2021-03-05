@@ -34,32 +34,32 @@ public class TrackMineBlock extends RailBlock implements IExplosive {
 
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if(!world.isRemote){
-			if(PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE))
-				return false;
+		if(PlayerUtils.isHoldingItem(player, SCContent.REMOTE_ACCESS_MINE, hand))
+			return false;
 
-			if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
-				if(defuseMine(world, pos))
-				{
-					if(!player.isCreative())
-						player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
+		if(isActive(world, pos) && isDefusable() && player.getHeldItem(hand).getItem() == SCContent.WIRE_CUTTERS.get()) {
+			if(defuseMine(world, pos))
+			{
+				if(!player.isCreative())
+					player.getHeldItem(hand).damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
-					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
-			}
-
-			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
-				if(activateMine(world, pos))
-				{
-					if(!player.isCreative())
-						player.inventory.getCurrentItem().damageItem(1, player, p -> p.sendBreakAnimation(hand));
-
-					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
 			}
 		}
 
-		return true;
+		if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+			if(activateMine(world, pos))
+			{
+				if(!player.isCreative())
+					player.getHeldItem(hand).damageItem(1, player, p -> p.sendBreakAnimation(hand));
+
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

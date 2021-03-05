@@ -116,15 +116,12 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
-		if(!world.isRemote)
-		{
-			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
-				return false;
-			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
-				activate(world, pos, player);
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
-		}
+		if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+			return true;
+		else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
+			activate(world, pos, player);
+		else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
+			((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 
 		return true;
 	}

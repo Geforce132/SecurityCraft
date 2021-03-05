@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -83,103 +84,97 @@ public class SCClientEventHandler {
 			Minecraft mc = Minecraft.getInstance();
 			ClientPlayerEntity player = mc.player;
 			World world = player.getEntityWorld();
-			int held = player.inventory.currentItem;
 
-			if(held < 0 || held >= player.inventory.mainInventory.size())
-				return;
+			for (Hand hand : Hand.values()) {
+				String textureToUse = null;
+				ItemStack stack = player.getHeldItem(hand);
 
-			ItemStack stack = player.inventory.mainInventory.get(held);
-
-			if(!stack.isEmpty() && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			{
-				String textureToUse = "item_not_bound";
-				double eyeHeight = player.getEyeHeight();
-				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
-
-				if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
+				if(stack.getItem() == SCContent.CAMERA_MONITOR.get())
 				{
-					CompoundNBT cameras = stack.getTag();
+					double eyeHeight = player.getEyeHeight();
+					Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+					RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-					if(cameras != null)
-						for(int i = 1; i < 31; i++)
-						{
-							if(!cameras.contains("Camera" + i))
-								continue;
+					if(mop != null && mop.getType() == Type.BLOCK && world.getTileEntity(((BlockRayTraceResult)mop).getPos()) instanceof SecurityCameraTileEntity)
+					{
+						CompoundNBT cameras = stack.getTag();
+						textureToUse = "item_not_bound";
 
-							String[] coords = cameras.getString("Camera" + i).split(" ");
-
-							if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
+						if(cameras != null) {
+							for(int i = 1; i < 31; i++)
 							{
-								textureToUse = "item_bound";
-								break;
-							}
-						}
+								if(!cameras.contains("Camera" + i))
+									continue;
 
-					GlStateManager.enableAlphaTest();
-					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
-					GlStateManager.disableAlphaTest();
-				}
-			}
-			else if(!stack.isEmpty() && stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
-			{
-				String textureToUse = "item_not_bound";
-				double eyeHeight = player.getEyeHeight();
-				Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
-				RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
+								String[] coords = cameras.getString("Camera" + i).split(" ");
 
-				if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getPos()).getBlock() instanceof IExplosive)
-				{
-					CompoundNBT mines = stack.getTag();
-
-					if(mines != null)
-						for(int i = 1; i <= 6; i++)
-						{
-							if(stack.getTag().getIntArray("mine" + i).length > 0)
-							{
-								int[] coords = mines.getIntArray("mine" + i);
-
-								if(coords[0] == ((BlockRayTraceResult)mop).getPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getPos().getZ())
+								if(Integer.parseInt(coords[0]) == ((BlockRayTraceResult)mop).getPos().getX() && Integer.parseInt(coords[1]) == ((BlockRayTraceResult)mop).getPos().getY() && Integer.parseInt(coords[2]) == ((BlockRayTraceResult)mop).getPos().getZ())
 								{
 									textureToUse = "item_bound";
 									break;
 								}
 							}
 						}
-
-					GlStateManager.enableAlphaTest();
-					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
-					GlStateManager.disableAlphaTest();
+					}
 				}
-			}
-			else if(!stack.isEmpty() && stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
-			{
-				String textureToUse = "item_not_bound";
-				Entity hitEntity = Minecraft.getInstance().pointedEntity;
-
-				if(hitEntity instanceof SentryEntity)
+				else if(stack.getItem() == SCContent.REMOTE_ACCESS_MINE.get())
 				{
-					CompoundNBT sentries = stack.getTag();
+					double eyeHeight = player.getEyeHeight();
+					Vec3d lookVec = new Vec3d((player.posX + (player.getLookVec().x * 5)), ((eyeHeight + player.posY) + (player.getLookVec().y * 5)), (player.posZ + (player.getLookVec().z * 5)));
+					RayTraceResult mop = world.rayTraceBlocks(new RayTraceContext(new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ), lookVec, BlockMode.OUTLINE, FluidMode.NONE, player));
 
-					if(sentries != null)
-						for(int i = 1; i <= 12; i++)
-						{
-							if(stack.getTag().getIntArray("sentry" + i).length > 0)
+					if(mop != null && mop.getType() == Type.BLOCK && world.getBlockState(((BlockRayTraceResult)mop).getPos()).getBlock() instanceof IExplosive)
+					{
+						textureToUse = "item_not_bound";
+						CompoundNBT mines = stack.getTag();
+
+						if(mines != null) {
+							for(int i = 1; i <= 6; i++)
 							{
-								int[] coords = sentries.getIntArray("sentry" + i);
-								if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+								if(stack.getTag().getIntArray("mine" + i).length > 0)
 								{
-									textureToUse = "item_bound";
-									break;
+									int[] coords = mines.getIntArray("mine" + i);
+
+									if(coords[0] == ((BlockRayTraceResult)mop).getPos().getX() && coords[1] == ((BlockRayTraceResult)mop).getPos().getY() && coords[2] == ((BlockRayTraceResult)mop).getPos().getZ())
+									{
+										textureToUse = "item_bound";
+										break;
+									}
 								}
 							}
 						}
+					}
+				}
+				else if(stack.getItem() == SCContent.REMOTE_ACCESS_SENTRY.get())
+				{
+					Entity hitEntity = Minecraft.getInstance().pointedEntity;
 
+					if(hitEntity instanceof SentryEntity)
+					{
+						textureToUse = "item_not_bound";
+						CompoundNBT sentries = stack.getTag();
+
+						if(sentries != null) {
+							for(int i = 1; i <= 12; i++)
+							{
+								if(stack.getTag().getIntArray("sentry" + i).length > 0)
+								{
+									int[] coords = sentries.getIntArray("sentry" + i);
+									if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
+									{
+										textureToUse = "item_bound";
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if (textureToUse != null) {
 					GlStateManager.enableAlphaTest();
 					Minecraft.getInstance().textureManager.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + held * 20 + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					drawNonStandardTexturedRect(Minecraft.getInstance().mainWindow.getScaledWidth() / 2 - 90 + (hand == Hand.MAIN_HAND ? player.inventory.currentItem * 20 : -29) + 2, Minecraft.getInstance().mainWindow.getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
 					GlStateManager.disableAlphaTest();
 				}
 			}

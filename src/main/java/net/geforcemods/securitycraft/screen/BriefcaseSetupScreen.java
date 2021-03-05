@@ -135,8 +135,8 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 				return;
 			}
 
-				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE)) {
-					ItemStack briefcase = Minecraft.getInstance().player.inventory.getCurrentItem();
+				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
+					ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
 
 					if(!briefcase.hasTag())
 						briefcase.setTag(new CompoundNBT());

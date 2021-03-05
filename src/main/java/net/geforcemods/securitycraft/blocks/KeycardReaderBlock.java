@@ -66,7 +66,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 			KeycardReaderBlock.activate(world, pos, te.getSignalLength());
 		}
-		else if (world.isRemote) {
+		else {
 			if(requiredLevel == -1)
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 			else
@@ -76,12 +76,12 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit){
-		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof BaseKeycardItem) && player.inventory.getCurrentItem().getItem() != SCContent.ADMIN_TOOL.get()))
+		if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof BaseKeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
 			((KeycardReaderTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
-		else if(player.inventory.getCurrentItem().getItem() == SCContent.ADMIN_TOOL.get())
+		else if(player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
 			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.LIMITED_USE_KEYCARD.get(), 1), player);
 		else
-			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.inventory.getCurrentItem(), player);
+			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.getHeldItem(hand), player);
 
 		return true;
 	}

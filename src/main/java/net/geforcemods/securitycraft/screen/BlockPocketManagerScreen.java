@@ -260,7 +260,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			feedback = te.enableMultiblock();
 
 			if(feedback != null)
-				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA, true);
 		}
 
 		Minecraft.getInstance().player.closeScreen();
@@ -304,7 +304,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		feedback = te.autoAssembleMultiblock(Minecraft.getInstance().player);
 
 		if(feedback != null)
-			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA);
+			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA, true);
 
 		Minecraft.getInstance().player.closeScreen();
 	}

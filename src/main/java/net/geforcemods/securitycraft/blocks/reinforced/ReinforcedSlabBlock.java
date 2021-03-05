@@ -92,8 +92,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 		{
 			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(ctx.getPlayer()))
 			{
-				if(world.isRemote)
-					PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 				return state;
 			}
