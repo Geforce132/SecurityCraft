@@ -8,6 +8,7 @@
 - Fix: I.M.S. attacks players in spectator mode
 - Fix: The wooden Reinforced Button's sound is incorrect
 - Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
+- Fix: The Briefcase's NBT contains empty Briefcase inventory slots
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

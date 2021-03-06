@@ -53,7 +53,7 @@ public class BriefcaseInventory implements IInventory {
 		NBTTagList items = new NBTTagList();
 
 		for(int i = 0; i < getSizeInventory(); i++)
-			if(getStackInSlot(i) != null) {
+			if(!getStackInSlot(i).isEmpty()) {
 				NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				getStackInSlot(i).writeToNBT(item);
