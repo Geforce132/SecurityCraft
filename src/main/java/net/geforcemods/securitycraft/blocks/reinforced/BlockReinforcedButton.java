@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,6 +70,18 @@ public class BlockReinforcedButton extends BlockButton implements IReinforcedBlo
 	protected void playReleaseSound(World world, BlockPos pos)
 	{
 		world.playSound(null, pos, isWooden ? SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+	}
+
+	@Override
+	public Material getMaterial(IBlockState state)
+	{
+		return isWooden ? Material.WOOD : Material.ROCK;
+	}
+
+	@Override
+	public EnumPushReaction getPushReaction(IBlockState state)
+	{
+		return EnumPushReaction.IGNORE;
 	}
 
 	@Override

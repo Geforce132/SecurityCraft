@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLever;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +51,18 @@ public class BlockReinforcedLever extends BlockLever implements IReinforcedBlock
 	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityWhitelistOnly te, EntityPlayer entity)
 	{
 		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase());
+	}
+
+	@Override
+	public Material getMaterial(IBlockState state)
+	{
+		return Material.WOOD;
+	}
+
+	@Override
+	public EnumPushReaction getPushReaction(IBlockState state)
+	{
+		return EnumPushReaction.IGNORE;
 	}
 
 	@Override
