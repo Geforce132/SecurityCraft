@@ -238,7 +238,6 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				String newOwner = player.getHeldItemMainhand().getDisplayName().getString();
 
 				dataManager.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID"));
-
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 			}
 			else
@@ -309,7 +308,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.values()[mode].getModeKey()).append(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), TextFormatting.DARK_RED);
+			player.sendStatusMessage(ClientUtils.localize(SentryMode.values()[mode].getModeKey()).append(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
