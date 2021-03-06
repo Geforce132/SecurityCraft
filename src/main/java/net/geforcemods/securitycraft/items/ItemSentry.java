@@ -48,7 +48,7 @@ public class ItemSentry extends Item
 		if (!world.isRemote)
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
 
-		PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), TextFormatting.DARK_RED);
+		player.sendStatusMessage(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if(!player.isCreative())
 			player.getHeldItem(hand).shrink(1);
