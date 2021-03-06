@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityWhitelistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +31,9 @@ public class BlockReinforcedButton extends BlockButton implements IReinforcedBlo
 	public BlockReinforcedButton(boolean isWooden)
 	{
 		super(isWooden);
+
+		if(isWooden)
+			setSoundType(SoundType.WOOD);
 
 		this.isWooden = isWooden;
 	}

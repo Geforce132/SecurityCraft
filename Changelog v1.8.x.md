@@ -6,6 +6,7 @@
 - Fix: Placing blocks using tools of other mods (like Better Builder's Wands) does not set the owner correctly
 - Fix: Portable Radar does not respect the "respect_invisibility" config option
 - Fix: I.M.S. attacks players in spectator mode
+- Fix: The wooden Reinforced Button's sound is incorrect
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
