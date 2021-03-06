@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -62,7 +63,7 @@ public class ContainerDisguiseModule extends Container {
 	@Override
 	public ItemStack slotClick(int slot, int dragType, ClickType clickType, EntityPlayer player)
 	{
-		if(slot >= 0 && getSlot(slot) != null && ((!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand()) || (!player.getHeldItemOffhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemOffhand())))
+		if(slot >= 0 && getSlot(slot) != null && (!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() == SCContent.disguiseModule))
 			return ItemStack.EMPTY;
 
 		return super.slotClick(slot, dragType, clickType, player);

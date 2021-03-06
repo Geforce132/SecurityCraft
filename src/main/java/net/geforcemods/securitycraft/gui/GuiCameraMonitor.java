@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -170,7 +171,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		{
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
-			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(playerInventory.getCurrentItem(), camID));
+			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.cameraMonitor), camID));
 			nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;

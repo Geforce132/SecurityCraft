@@ -220,7 +220,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 				feedback = te.enableMultiblock();
 
 				if(feedback != null)
-					PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA);
+					PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA, true);
 			}
 
 			Minecraft.getMinecraft().player.closeScreen();

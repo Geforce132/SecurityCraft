@@ -12,6 +12,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -87,8 +88,9 @@ public class GuiBriefcase extends GuiContainer {
 	protected void actionPerformed(GuiButton button) {
 		if(button.id == 8)
 		{
-			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-				NBTTagCompound nbt = Minecraft.getMinecraft().player.inventory.getCurrentItem().getTagCompound();
+			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
+				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player, SCContent.briefcase);
+				NBTTagCompound nbt = briefcase.getTagCompound();
 				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
 
 				if(nbt.getString("passcode").equals(code)) {
@@ -97,7 +99,7 @@ public class GuiBriefcase extends GuiContainer {
 						nbt.setString("ownerUUID", Minecraft.getMinecraft().player.getUniqueID().toString());
 					}
 
-					SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID_MAIN_HAND, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
+					SecurityCraft.network.sendToServer(new PacketSOpenGui(GuiHandler.BRIEFCASE_GUI_ID, (int) Minecraft.getMinecraft().player.posX, (int) Minecraft.getMinecraft().player.posY, (int) Minecraft.getMinecraft().player.posZ));
 				}
 			}
 		}

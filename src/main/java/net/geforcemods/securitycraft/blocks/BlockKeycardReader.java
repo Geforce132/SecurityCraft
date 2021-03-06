@@ -107,15 +107,17 @@ public class BlockKeycardReader extends BlockDisguisable  {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(player.inventory.getCurrentItem().getItem() == SCContent.universalBlockModifier)
+		ItemStack stack = player.getHeldItem(hand);
+		
+		if(stack.getItem() == SCContent.universalBlockModifier)
 			return false;
 
-		if(player.inventory.getCurrentItem().isEmpty() || (!(player.inventory.getCurrentItem().getItem() instanceof ItemKeycardBase) && player.inventory.getCurrentItem().getItem() != SCContent.adminTool))
+		if(stack.isEmpty() || (!(stack.getItem() instanceof ItemKeycardBase) && stack.getItem() != SCContent.adminTool))
 			((TileEntityKeycardReader) world.getTileEntity(pos)).openPasswordGUI(player);
-		else if(player.inventory.getCurrentItem().getItem() == SCContent.adminTool)
+		else if(stack.getItem() == SCContent.adminTool)
 			((BlockKeycardReader) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.limitedUseKeycard, 1), player);
 		else
-			((BlockKeycardReader) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.inventory.getCurrentItem(), player);
+			((BlockKeycardReader) BlockUtils.getBlock(world, pos)).insertCard(world, pos, stack, player);
 
 		return true;
 	}

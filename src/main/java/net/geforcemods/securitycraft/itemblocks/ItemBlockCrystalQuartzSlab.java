@@ -58,7 +58,7 @@ public class ItemBlockCrystalQuartzSlab extends ItemBlock {
 						if(!world.isRemote)
 							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
-						return EnumActionResult.FAIL;
+						return EnumActionResult.SUCCESS;
 					}
 				}
 

@@ -50,102 +50,102 @@ public class ItemUniversalOwnerChanger extends Item
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName();
 
-		if(!world.isRemote)
+		if(!(te instanceof IOwnable))
 		{
-			if(!(te instanceof IOwnable))
-			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
+			return EnumActionResult.SUCCESS;
+		}
+
+		Owner owner = ((IOwnable)te).getOwner();
+		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+
+		if(!owner.isOwner(player) && !isDefault)
+		{
+			if(!(block instanceof IBlockMine) && (!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
+				return EnumActionResult.SUCCESS;
 			}
 
-			Owner owner = ((IOwnable)te).getOwner();
-			boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+			return EnumActionResult.PASS;
+		}
 
-			if(!owner.isOwner(player) && !isDefault)
+		if(!stack.hasDisplayName() && !isDefault)
+		{
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+			return EnumActionResult.SUCCESS;
+		}
+
+		if(isDefault)
+		{
+			if(ConfigHandler.allowBlockClaim)
+				newOwner = player.getName();
+			else
 			{
-				if(!(block instanceof IBlockMine) && (!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)))
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
+				return EnumActionResult.SUCCESS;
 			}
+		}
 
-			if(!stack.hasDisplayName() && !isDefault)
+		boolean door = false;
+		boolean updateTop = true;
+
+		if(BlockUtils.getBlock(world, pos) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos) instanceof BlockSpecialDoor)
+		{
+			door = true;
+			((IOwnable)world.getTileEntity(pos)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+
+			if(BlockUtils.getBlock(world, pos.up()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.up()) instanceof BlockSpecialDoor)
+				((IOwnable)world.getTileEntity(pos.up())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			else if(BlockUtils.getBlock(world, pos.down()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.down()) instanceof BlockSpecialDoor)
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
-				return EnumActionResult.FAIL;
+				((IOwnable)world.getTileEntity(pos.down())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+				updateTop = false;
 			}
+		}
 
-			if(isDefault)
-			{
-				if(ConfigHandler.allowBlockClaim)
-					newOwner = player.getName();
-				else
-				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
-					return EnumActionResult.FAIL;
-				}
-			}
+		if(te instanceof IOwnable)
+			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-			boolean door = false;
-			boolean updateTop = true;
-
-			if(BlockUtils.getBlock(world, pos) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos) instanceof BlockSpecialDoor)
-			{
-				door = true;
-				((IOwnable)world.getTileEntity(pos)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-
-				if(BlockUtils.getBlock(world, pos.up()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.up()) instanceof BlockSpecialDoor)
-					((IOwnable)world.getTileEntity(pos.up())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-				else if(BlockUtils.getBlock(world, pos.down()) instanceof BlockReinforcedDoor || BlockUtils.getBlock(world, pos.down()) instanceof BlockSpecialDoor)
-				{
-					((IOwnable)world.getTileEntity(pos.down())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-					updateTop = false;
-				}
-			}
-
-			if(te instanceof IOwnable)
-				((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-
+		if (!world.isRemote) {
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 
 			if(door)
 				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
-
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
-			return EnumActionResult.SUCCESS;
 		}
 
-		return EnumActionResult.FAIL;
+		PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+		return EnumActionResult.SUCCESS;
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack ownerChanger = player.getHeldItem(hand);
 
-		if (!world.isRemote) {
-			if (!ownerChanger.hasDisplayName()) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
-				return ActionResult.newResult(EnumActionResult.FAIL, ownerChanger);
-			}
-
-			if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
-				ItemStack briefcase = player.getHeldItemOffhand();
-
-				if (ItemBriefcase.isOwnedBy(briefcase, player)) {
-					String newOwner = ownerChanger.getDisplayName();
-
-					if (!briefcase.hasTagCompound())
-						briefcase.setTagCompound(new NBTTagCompound());
-
-					briefcase.getTagCompound().setString("owner", newOwner);
-					briefcase.getTagCompound().setString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
-					return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
-				}
-				else
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
-			}
+		if (!ownerChanger.hasDisplayName()) {
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
 		}
 
-		return ActionResult.newResult(EnumActionResult.FAIL, ownerChanger);
+		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
+			ItemStack briefcase = player.getHeldItemOffhand();
+
+			if (ItemBriefcase.isOwnedBy(briefcase, player)) {
+				String newOwner = ownerChanger.getDisplayName();
+
+				if (!briefcase.hasTagCompound())
+					briefcase.setTagCompound(new NBTTagCompound());
+
+				briefcase.getTagCompound().setString("owner", newOwner);
+				briefcase.getTagCompound().setString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+				return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
+			}
+			else
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
+
+			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
+		}
+
+		return ActionResult.newResult(EnumActionResult.PASS, ownerChanger);
 	}
 }

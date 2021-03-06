@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,7 +25,7 @@ public class ContainerBlockReinforcer extends Container
 
 	public ContainerBlockReinforcer(EntityPlayer player, InventoryPlayer inventory, boolean isLvl1)
 	{
-		blockReinforcer = player.inventory.getCurrentItem();
+		blockReinforcer = player.getHeldItemMainhand().getItem() instanceof ItemUniversalBlockReinforcer ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)

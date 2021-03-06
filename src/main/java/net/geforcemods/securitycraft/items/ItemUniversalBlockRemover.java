@@ -41,76 +41,76 @@ public class ItemUniversalBlockRemover extends Item {
 
 		if(isOwnableBlock(block, tileEntity)) {
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player)) {
-				if(world.isRemote && !(block instanceof IBlockMine) && (!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)))
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable)tileEntity).getOwner().getName()), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
+				}
 
-				return EnumActionResult.FAIL;
+				return EnumActionResult.PASS;
 			}
 
-			if(!world.isRemote)
+
+			if(tileEntity instanceof IModuleInventory)
 			{
+				boolean isChest = tileEntity instanceof TileEntityKeypadChest;
 
-				if(tileEntity instanceof IModuleInventory)
+				for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
 				{
-					boolean isChest = tileEntity instanceof TileEntityKeypadChest;
+					if(isChest)
+						((TileEntityKeypadChest)tileEntity).addOrRemoveModuleFromAttached(module, true);
 
-					for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
-					{
-						if(isChest)
-							((TileEntityKeypadChest)tileEntity).addOrRemoveModuleFromAttached(module, true);
+					Block.spawnAsEntity(world, pos, module);
+				}
+			}
 
-						Block.spawnAsEntity(world, pos, module);
-					}
+			if(block == SCContent.laserBlock) {
+				TileEntityLaserBlock te = (TileEntityLaserBlock)world.getTileEntity(pos);
+
+				for(ItemStack module : te.getInventory())
+				{
+					if(!module.isEmpty())
+						te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {module, ((ItemModule)module.getItem()).getModuleType()}, te);
 				}
 
-				if(block == SCContent.laserBlock) {
-					TileEntityLaserBlock te = (TileEntityLaserBlock)world.getTileEntity(pos);
+				world.destroyBlock(pos, true);
+				BlockLaserBlock.destroyAdjacentLasers(world, pos);
+				player.getHeldItem(hand).damageItem(1, player);
+			} else if(block == SCContent.cageTrap && world.getBlockState(pos).getValue(BlockCageTrap.DEACTIVATED)) {
+				BlockPos originalPos = pos;
+				BlockPos middlePos = originalPos.up(4);
 
-					for(ItemStack module : te.getInventory())
-					{
-						if(!module.isEmpty())
-							te.createLinkedBlockAction(EnumLinkedAction.MODULE_REMOVED, new Object[] {module, ((ItemModule)module.getItem()).getModuleType()}, te);
+				new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
+					TileEntity te = w.getTileEntity(p);
+
+					if(te instanceof IOwnable && ((IOwnable) te).getOwner().equals(o)) {
+						Block b = w.getBlockState(p).getBlock();
+
+						if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
+							w.destroyBlock(p, false);
 					}
+				});
 
-					world.destroyBlock(pos, true);
-					BlockLaserBlock.destroyAdjacentLasers(world, pos);
-					player.inventory.getCurrentItem().damageItem(1, player);
-				} else if(block == SCContent.cageTrap && world.getBlockState(pos).getValue(BlockCageTrap.DEACTIVATED)) {
-					BlockPos originalPos = pos;
-					BlockPos middlePos = originalPos.up(4);
+				world.destroyBlock(originalPos, false);
+			} else {
+				if(block == SCContent.inventoryScanner)
+				{
+					TileEntityInventoryScanner te = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
-					new BlockCageTrap.BlockModifier(world, new MutableBlockPos(originalPos), ((IOwnable) tileEntity).getOwner()).loop((w, p, o) -> {
-						TileEntity te = w.getTileEntity(p);
-
-						if(te instanceof IOwnable && ((IOwnable) te).getOwner().equals(o)) {
-							Block b = w.getBlockState(p).getBlock();
-
-							if(b == SCContent.reinforcedIronBars || (p.equals(middlePos) && b == SCContent.horizontalReinforcedIronBars))
-								w.destroyBlock(p, false);
-						}
-					});
-
-					world.destroyBlock(originalPos, false);
-				} else {
-					if(block == SCContent.inventoryScanner)
-					{
-						TileEntityInventoryScanner te = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
-
-						if(te != null)
-							te.getInventory().clear();
-					}
-					else if(block instanceof IBlockWithNoDrops)
-						Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops)block).getUniversalBlockRemoverDrop());
-
-					world.destroyBlock(pos, true);
-					world.removeTileEntity(pos);
-					player.inventory.getCurrentItem().damageItem(1, player);
+					if(te != null)
+						te.getInventory().clear();
 				}
+				else if(block instanceof IBlockWithNoDrops)
+					Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops)block).getUniversalBlockRemoverDrop());
+
+				world.destroyBlock(pos, true);
+				world.removeTileEntity(pos);
+				player.getHeldItem(hand).damageItem(1, player);
 			}
 
 			return EnumActionResult.SUCCESS;
 		}
-		else return EnumActionResult.PASS;
+
+		return EnumActionResult.PASS;
 	}
 
 	private boolean isOwnableBlock(Block block, TileEntity tileEntity) {

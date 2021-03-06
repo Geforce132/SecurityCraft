@@ -49,7 +49,7 @@ public class ItemBriefcase extends Item {
 		}
 
 		handle(stack, world, player, hand);
-		return EnumActionResult.FAIL;
+		return EnumActionResult.SUCCESS;
 	}
 
 	@Override
@@ -57,12 +57,12 @@ public class ItemBriefcase extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		handle(stack, world, player, hand);
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	private void handle(ItemStack stack, World world, EntityPlayer player, EnumHand hand)
 	{
-		if(world.isRemote && hand == EnumHand.MAIN_HAND) {
+		if(world.isRemote) {
 			if(!stack.hasTagCompound()) {
 				stack.setTagCompound(new NBTTagCompound());
 				ClientUtils.syncItemNBT(stack);

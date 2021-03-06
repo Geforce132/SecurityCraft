@@ -26,7 +26,7 @@ public class ItemSCManual extends Item {
 		if(world.isRemote)
 			FMLCommonHandler.instance().showGuiScreen(new GuiSCManual());
 
-		return ActionResult.newResult(EnumActionResult.PASS, player.getHeldItem(hand));
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override

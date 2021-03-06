@@ -46,32 +46,32 @@ public class BlockTrackMine extends BlockRail implements IExplosive, ITileEntity
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote){
-			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine))
-				return false;
+		if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, hand))
+			return false;
 
-			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
-				if(defuseMine(world, pos))
-				{
-					if(!player.isCreative())
-						player.inventory.getCurrentItem().damageItem(1, player);
+		if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters, hand)) {
+			if(defuseMine(world, pos))
+			{
+				if(!player.isCreative())
+					player.getHeldItem(hand).damageItem(1, player);
 
-					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
-			}
-
-			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
-				if(activateMine(world, pos))
-				{
-					if(!player.isCreative())
-						player.inventory.getCurrentItem().damageItem(1, player);
-
-					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
 			}
 		}
 
-		return true;
+		if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+			if(activateMine(world, pos))
+			{
+				if(!player.isCreative())
+					player.getHeldItem(hand).damageItem(1, player);
+
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override

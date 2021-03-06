@@ -44,16 +44,16 @@ public class BlockKeypad extends BlockDisguisable {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
 		if(state.getValue(POWERED))
 			return false;
-		else if(!world.isRemote) {
+		else {
 			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
-				return false;
+				return true;
 
 			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
 				activate(world, pos, ((TileEntityKeypad)world.getTileEntity(pos)).getSignalLength());
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel, hand))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

@@ -30,41 +30,36 @@ public abstract class BlockExplosive extends BlockOwnable implements IExplosive,
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(!world.isRemote){
-			if(player.inventory.getCurrentItem().isEmpty() && explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
-				explode(world, pos);
-				return false;
+		if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, hand) || PlayerUtils.isHoldingItem(player, SCContent.universalOwnerChanger, hand))
+			return false;
+
+		if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters, hand)) {
+			if(defuseMine(world, pos))
+			{
+				if(!player.isCreative())
+					player.getHeldItem(hand).damageItem(1, player);
+
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
-			if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine) || PlayerUtils.isHoldingItem(player, SCContent.universalOwnerChanger))
-				return false;
+			return true;
+		}
 
-			if(isActive(world, pos) && isDefusable() && PlayerUtils.isHoldingItem(player, SCContent.wireCutters)) {
-				if(defuseMine(world, pos))
-				{
-					if(!player.isCreative())
-						player.inventory.getCurrentItem().damageItem(1, player);
+		if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL, hand)) {
+			if(activateMine(world, pos))
+			{
+				if(!player.isCreative())
+					player.getHeldItem(hand).damageItem(1, player);
 
-					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
-
-				return true;
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 
-			if(!isActive(world, pos) && PlayerUtils.isHoldingItem(player, Items.FLINT_AND_STEEL)) {
-				if(activateMine(world, pos))
-				{
-					if(!player.isCreative())
-						player.inventory.getCurrentItem().damageItem(1, player);
+			return true;
+		}
 
-					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				}
-
-				return true;
-			}
-
-			if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos))
-				explode(world, pos);
+		if(explodesWhenInteractedWith() && isActive(world, pos) && !EntityUtils.doesPlayerOwn(player, world, pos)) {
+			explode(world, pos);
+			return true;
 		}
 
 		return false;

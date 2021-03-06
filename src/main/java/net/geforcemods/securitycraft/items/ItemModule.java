@@ -86,13 +86,15 @@ public class ItemModule extends Item{
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote && !player.isSneaking())
+		if(!player.isSneaking())
 		{
 			if(!stack.hasTagCompound())
 				stack.setTagCompound(new NBTTagCompound());
 
-			if(canBeCustomized())
-				player.openGui(SecurityCraft.instance, guiToOpen, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+			if(canBeCustomized()) {
+				player.openGui(SecurityCraft.instance, guiToOpen, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+				return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+			}
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);

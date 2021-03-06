@@ -98,22 +98,23 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(!world.isRemote)
-			if(!state.getValue(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == SCContent.wireCutters){
-				world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
+		ItemStack stack = player.getHeldItem(hand);
 
-				if(!player.isCreative())
-					player.inventory.getCurrentItem().damageItem(1, player);
+		if(!state.getValue(DEACTIVATED) && stack.getItem() == SCContent.wireCutters){
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
 
-				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			}else if(state.getValue(DEACTIVATED) && player.inventory.getCurrentItem().getItem() == Items.FLINT_AND_STEEL){
-				world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
+			if(!player.isCreative())
+				stack.damageItem(1, player);
 
-				if(!player.isCreative())
-					player.inventory.getCurrentItem().damageItem(1, player);
+			world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		}else if(state.getValue(DEACTIVATED) && stack.getItem() == Items.FLINT_AND_STEEL){
+			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 
-				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			}
+			if(!player.isCreative())
+				stack.damageItem(1, player);
+
+			world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+		}
 
 		return true;
 	}

@@ -37,49 +37,50 @@ public class ItemSentryRemoteAccessTool extends Item {
 		if(!world.isRemote)
 			player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, player.getServer().getPlayerList().getEntityViewDistance(), (int)player.posY, (int)player.posZ);
 
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote){
-			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
+		List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(pos));
 
-			if(!sentries.isEmpty()) {
-				EntitySentry sentry = sentries.get(0);
-				BlockPos pos2 = sentry.getPosition();
+		if(!sentries.isEmpty()) {
+			EntitySentry sentry = sentries.get(0);
+			BlockPos pos2 = sentry.getPosition();
 
-				if(!isSentryAdded(stack, pos2)){
-					int availSlot = getNextAvailableSlot(stack);
+			if(!isSentryAdded(stack, pos2)){
+				int availSlot = getNextAvailableSlot(stack);
 
-					if(availSlot == 0){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
-						return EnumActionResult.FAIL;
-					}
-
-					if(!sentry.getOwner().isOwner(player)){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
-						return EnumActionResult.FAIL;
-					}
-
-					if(stack.getTagCompound() == null)
-						stack.setTagCompound(new NBTTagCompound());
-
-					stack.getTagCompound().setIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
-				}else{
-					removeTagFromItemAndUpdate(stack, pos2, player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
+				if(availSlot == 0){
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
 				}
+
+				if(!sentry.getOwner().isOwner(player)){
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
+				}
+
+				if(stack.getTagCompound() == null)
+					stack.setTagCompound(new NBTTagCompound());
+
+				stack.getTagCompound().setIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
+
+				if (!world.isRemote)
+					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
+			}else{
+				removeTagFromItemAndUpdate(stack, pos2, player);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
 			}
-			else
-				player.openGui(SecurityCraft.instance, GuiHandler.SRAT_MENU_ID, world, player.getServer().getPlayerList().getEntityViewDistance(), (int) player.posY, (int) player.posZ);
+
+			return EnumActionResult.SUCCESS;
 		}
 
-		return EnumActionResult.SUCCESS;
+		return EnumActionResult.PASS;
 	}
 
 	@Override
@@ -124,7 +125,10 @@ public class ItemSentryRemoteAccessTool extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTagCompound().setIntArray("sentry" + i, new int[]{0, 0, 0});
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+
+					if (!player.world.isRemote)
+						SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+
 					return;
 				}
 			}

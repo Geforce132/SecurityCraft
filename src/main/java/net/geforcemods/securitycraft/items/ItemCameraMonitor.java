@@ -36,46 +36,37 @@ public class ItemCameraMonitor extends Item {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote){
-			if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
-				if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((TileEntitySecurityCamera)world.getTileEntity(pos)).hasModule(EnumModuleType.SMART)){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
-					return EnumActionResult.SUCCESS;
+		if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
+			if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((TileEntitySecurityCamera)world.getTileEntity(pos)).hasModule(EnumModuleType.SMART)){
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
+				return EnumActionResult.SUCCESS;
+			}
+
+			if(stack.getTagCompound() == null)
+				stack.setTagCompound(new NBTTagCompound());
+
+			CameraView view = new CameraView(pos, player.dimension);
+
+			if(isCameraAdded(stack.getTagCompound(), view)){
+				stack.getTagCompound().removeTag(getTagNameFromPosition(stack.getTagCompound(), view));
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound", pos), TextFormatting.RED);
+				return EnumActionResult.SUCCESS;
+			}
+
+			for(int i = 1; i <= 30; i++)
+				if (!stack.getTagCompound().hasKey("Camera" + i)){
+					stack.getTagCompound().setString("Camera" + i, view.toNBTString());
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
+					break;
 				}
 
-				if(stack.getTagCompound() == null)
-					stack.setTagCompound(new NBTTagCompound());
-
-				CameraView view = new CameraView(pos, player.dimension);
-
-				if(isCameraAdded(stack.getTagCompound(), view)){
-					stack.getTagCompound().removeTag(getTagNameFromPosition(stack.getTagCompound(), view));
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound", pos), TextFormatting.RED);
-					return EnumActionResult.SUCCESS;
-				}
-
-				for(int i = 1; i <= 30; i++)
-					if (!stack.getTagCompound().hasKey("Camera" + i)){
-						stack.getTagCompound().setString("Camera" + i, view.toNBTString());
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
-						break;
-					}
-
+			if (!world.isRemote)
 				SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)player);
 
-				return EnumActionResult.SUCCESS;
-			}
-		}else if(world.isRemote && (BlockUtils.getBlock(world, pos) != SCContent.securityCamera || PlayerUtils.isPlayerMountedOnCamera(player))){
-			if(stack.getTagCompound() == null || stack.getTagCompound().isEmpty()) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return EnumActionResult.SUCCESS;
-			}
-
-			player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			return EnumActionResult.SUCCESS;
 		}
 
-		return EnumActionResult.SUCCESS;
+		return EnumActionResult.PASS;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -83,16 +74,13 @@ public class ItemCameraMonitor extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (world.isRemote) {
-			if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-				return ActionResult.newResult(EnumActionResult.PASS, stack);
-			}
-
-			player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) {
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		player.openGui(SecurityCraft.instance, GuiHandler.CAMERA_MONITOR_GUI_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override

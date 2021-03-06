@@ -116,8 +116,8 @@ public class GuiBriefcaseSetup extends GuiContainer {
 				return;
 			}
 
-			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase)) {
-				ItemStack briefcase = Minecraft.getMinecraft().player.inventory.getCurrentItem();
+			if(PlayerUtils.isHoldingItem(Minecraft.getMinecraft().player, SCContent.briefcase, null)) {
+				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player, SCContent.briefcase);
 
 				if(!briefcase.hasTagCompound())
 					briefcase.setTagCompound(new NBTTagCompound());

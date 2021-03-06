@@ -32,48 +32,49 @@ public class ItemMineRemoteAccessTool extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(world.isRemote)
-			return ActionResult.newResult(EnumActionResult.PASS, stack);
-		else{
+		if (!world.isRemote){
 			player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
-			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
+
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote)
-			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
-				if(!isMineAdded(stack, pos)){
-					int availSlot = getNextAvailableSlot(stack);
+		if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
+			if(!isMineAdded(stack, pos)){
+				int availSlot = getNextAvailableSlot(stack);
 
-					if(availSlot == 0){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
-						return EnumActionResult.FAIL;
-					}
-
-					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
-						player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-						return EnumActionResult.SUCCESS;
-					}
-
-					if(stack.getTagCompound() == null)
-						stack.setTagCompound(new NBTTagCompound());
-
-					stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.bound", pos), TextFormatting.GREEN);
-				}else{
-					removeTagFromItemAndUpdate(stack, pos, player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.unbound", pos), TextFormatting.RED);
+				if(availSlot == 0){
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
+					return EnumActionResult.SUCCESS;
 				}
-			}
-			else
-				player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 
-		return EnumActionResult.SUCCESS;
+				if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+					player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+					return EnumActionResult.SUCCESS;
+				}
+
+				if(stack.getTagCompound() == null)
+					stack.setTagCompound(new NBTTagCompound());
+
+				stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
+
+				if (!world.isRemote)
+					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)player);
+
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.bound", pos), TextFormatting.GREEN);
+				return EnumActionResult.SUCCESS;
+			}else{
+				removeTagFromItemAndUpdate(stack, pos, player);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.unbound", pos), TextFormatting.RED);
+				return EnumActionResult.SUCCESS;
+			}
+		}
+
+		return EnumActionResult.PASS;
 	}
 
 	@Override
@@ -107,7 +108,10 @@ public class ItemMineRemoteAccessTool extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+
+					if (!player.world.isRemote)
+						SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+
 					return;
 				}
 			}

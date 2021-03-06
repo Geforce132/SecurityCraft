@@ -85,16 +85,12 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(world.isRemote)
-			return true;
-		else{
-			if(isFacingAnotherScanner(world, pos))
-				player.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
-			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:inventoryScanner.name"), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+		if(isFacingAnotherScanner(world, pos))
+			player.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		else
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:inventoryScanner.name"), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 
-			return true;
-		}
+		return true;
 	}
 
 	/**
@@ -163,7 +159,8 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		if(world.isRemote)
 			return;
 
-		TileEntityInventoryScanner connectedScanner = null;
+		TileEntityInventoryScanner connectedScanner = null;
+
 		for(EnumFacing facing : EnumFacing.HORIZONTALS)
 		{
 			for(int i = 1; i <= ConfigHandler.inventoryScannerRange; i++)

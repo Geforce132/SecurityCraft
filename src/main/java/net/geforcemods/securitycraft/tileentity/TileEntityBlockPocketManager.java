@@ -582,9 +582,9 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 			if(world.isRemote)
 			{
 				SecurityCraft.network.sendToServer(new PacketCToggleBlockPocketManager(this, false, size));
-				PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
 			}
 
+			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
 			enabled = false;
 
 			for(BlockPos pos : blocks)

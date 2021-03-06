@@ -8,7 +8,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -70,11 +73,17 @@ public class PlayerUtils{
 			return (FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(name) != null);
 	}
 
-	public static void sendMessageToPlayer(EntityPlayer player, ITextComponent prefix, ITextComponent text, TextFormatting color){
-		player.sendMessage(new TextComponentString("[")
-				.appendSibling(prefix.setStyle(new Style().setColor(color)))
-				.appendSibling(new TextComponentString(TextFormatting.WHITE + "] "))
-				.appendSibling(text));
+	public static void sendMessageToPlayer(EntityPlayer player, ITextComponent prefix, ITextComponent text, TextFormatting color) {
+		sendMessageToPlayer(player, prefix, text, color, false);
+	}
+
+	public static void sendMessageToPlayer(EntityPlayer player, ITextComponent prefix, ITextComponent text, TextFormatting color, boolean shouldSendFromClient){
+		if (player.world.isRemote == shouldSendFromClient) {
+			player.sendMessage(new TextComponentString("[")
+					.appendSibling(prefix.setStyle(new Style().setColor(color)))
+					.appendSibling(new TextComponentString(TextFormatting.WHITE + "] "))
+					.appendSibling(text));
+		}
 	}
 
 	/**
@@ -93,14 +102,52 @@ public class PlayerUtils{
 
 	/**
 	 * Returns true if the player is holding the given item.
-	 *
-	 * Args: player, item.
+	 * @param player The player that is checked for the item
+	 * @param item The item that is checked
+	 * @param hand The hand in which the item should be; if hand is null, both hands are checked
+	 * @return true if the item was found in the mainhand or offhand, or if no item was found and item was null
 	 */
-	public static boolean isHoldingItem(EntityPlayer player, Item item){
-		if(item == null && player.inventory.getCurrentItem().isEmpty())
-			return true;
+	public static boolean isHoldingItem(EntityPlayer player, Item item, EnumHand hand){
+		if (hand != EnumHand.OFF_HAND && !player.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) {
+			if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == item)
+				return true;
+		}
 
-		return (!player.inventory.getCurrentItem().isEmpty() && player.inventory.getCurrentItem().getItem() == item);
+		if (hand != EnumHand.MAIN_HAND && !player.getHeldItem(EnumHand.OFF_HAND).isEmpty()) {
+			if (player.getHeldItem(EnumHand.OFF_HAND).getItem() == item)
+				return true;
+		}
+
+		return item == null;
+
+	}
+
+	/**
+	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 * @param player The player holding the item
+	 * @param item The item type that should be searched for
+	 */
+	public static ItemStack getSelectedItemStack(EntityPlayer player, Item item) {
+		return getSelectedItemStack(player.inventory, item);
+	}
+
+	/**
+	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
+	 * @param inventory The inventory that contains the item
+	 * @param item The item type that should be searched for
+	 */
+	public static ItemStack getSelectedItemStack(InventoryPlayer inventory, Item item) {
+		if (!inventory.getCurrentItem().isEmpty()) {
+			if (inventory.getCurrentItem().getItem() == item)
+				return inventory.getCurrentItem();
+		}
+
+		if (!inventory.offHandInventory.get(0).isEmpty()) {
+			if (inventory.offHandInventory.get(0).getItem() == item)
+				return inventory.offHandInventory.get(0);
+		}
+
+		return ItemStack.EMPTY;
 	}
 
 	/**

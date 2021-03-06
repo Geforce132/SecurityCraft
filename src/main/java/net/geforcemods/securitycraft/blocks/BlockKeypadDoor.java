@@ -30,14 +30,14 @@ public class BlockKeypadDoor extends BlockSpecialDoor
 			return false;
 		else if(!world.isRemote) {
 			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
-				return false;
+				return true;
 
 			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
 				activate(world, pos, state, ((TileEntityKeypad)world.getTileEntity(pos)).getSignalLength());
 				return true;
 			}
 
-			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel))
+			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel, hand))
 				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

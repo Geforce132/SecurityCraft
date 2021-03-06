@@ -22,37 +22,36 @@ public class ItemSentry extends Item
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(!world.isRemote)
+		pos = pos.offset(facing); //get sentry position
+
+		if(!world.isAirBlock(pos))
+			return EnumActionResult.PASS;
+		else
 		{
-			pos = pos.offset(facing); //get sentry position
+			BlockPos downPos = pos.down();
 
-			if(!world.isAirBlock(pos))
-				return EnumActionResult.PASS;
-			else
+			if(world.isAirBlock(downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
 			{
-				BlockPos downPos = pos.down();
-
-				if(world.isAirBlock(downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
-				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
-					return EnumActionResult.FAIL;
-				}
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				return EnumActionResult.SUCCESS;
 			}
-
-			Entity entity = new EntitySentry(world, player);
-			ItemStack stack = player.getHeldItem(hand);
-
-			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
-
-			if (stack.hasDisplayName())
-				entity.setCustomNameTag(stack.getDisplayName());
-
-			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), TextFormatting.DARK_RED);
-
-			if(!player.isCreative())
-				player.getHeldItem(hand).shrink(1);
 		}
+
+		Entity entity = new EntitySentry(world, player);
+		ItemStack stack = player.getHeldItem(hand);
+
+		entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+
+		if (stack.hasDisplayName())
+			entity.setCustomNameTag(stack.getDisplayName());
+
+		if (!world.isRemote)
+			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
+
+		PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), TextFormatting.DARK_RED);
+
+		if(!player.isCreative())
+			player.getHeldItem(hand).shrink(1);
 
 		return EnumActionResult.SUCCESS;
 	}

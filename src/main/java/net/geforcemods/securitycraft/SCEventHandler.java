@@ -46,7 +46,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -176,73 +175,73 @@ public class SCEventHandler {
 			return;
 		}
 
-		if(event.getHand() == EnumHand.MAIN_HAND)
+		Block block = world.getBlockState(event.getPos()).getBlock();
+
+		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel, event.getHand()))
 		{
-			if(!world.isRemote){
-				Block block = world.getBlockState(event.getPos()).getBlock();
-
-				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.keyPanel))
-				{
-					for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
-					{
-						if(pc.getOriginalBlock() == block)
-						{
-							event.setUseBlock(Result.DENY);
-							event.setUseItem(Result.ALLOW);
-						}
-					}
-
-					return;
-				}
-
-				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker) && handleCodebreaking(event)) {
-					event.setCanceled(true);
-					return;
-				}
-
-				if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier)){
-					if(tileEntity instanceof IModuleInventory) {
-						event.setCanceled(true);
-
-						if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
-							if(!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
-								PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockModifier.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-
-							return;
-						}
-
-						event.getEntityPlayer().openGui(SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
-						return;
-					}
-				}
-
-				if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG) && event.getEntityPlayer().inventory.getCurrentItem().hasDisplayName()){
-					event.setCanceled(true);
-
-					if(((INameable) tileEntity).getCustomName().equals(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName())) {
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
-						return;
-					}
-
-					if(!event.getEntityPlayer().isCreative())
-						event.getEntityPlayer().inventory.getCurrentItem().shrink(1);
-
-					((INameable) tileEntity).setCustomName(event.getEntityPlayer().inventory.getCurrentItem().getDisplayName());
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomName()), TextFormatting.RED);
-					return;
-				}
-
-			}
-
-			//outside !world.isRemote for properly checking the interaction
-			//all the sentry functionality for when the sentry is diguised
-			List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
-
-			if(!sentries.isEmpty())
+			for(IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles())
 			{
-				event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
-				event.setCancellationResult(EnumActionResult.SUCCESS);
+				if(pc.getOriginalBlock() == block)
+				{
+					event.setUseBlock(Result.DENY);
+					event.setUseItem(Result.ALLOW);
+				}
 			}
+
+			return;
+		}
+
+		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.codebreaker, event.getHand()) && handleCodebreaking(event)) {
+			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.SUCCESS);
+			return;
+		}
+
+		if(PlayerUtils.isHoldingItem(event.getEntityPlayer(), SCContent.universalBlockModifier, event.getHand())){
+			if(tileEntity instanceof IModuleInventory) {
+				event.setCanceled(true);
+				event.setCancellationResult(EnumActionResult.SUCCESS);
+
+				if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
+					if(!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockModifier.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+
+					return;
+				}
+
+				event.getEntityPlayer().openGui(SecurityCraft.instance, GuiHandler.CUSTOMIZE_BLOCK, world, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ());
+				return;
+			}
+		}
+
+		if(tileEntity instanceof INameable && ((INameable) tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getEntityPlayer(), Items.NAME_TAG, event.getHand()) && event.getEntityPlayer().getHeldItem(event.getHand()).hasDisplayName()){
+			ItemStack nametag = event.getEntityPlayer().getHeldItem(event.getHand());
+
+			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.SUCCESS);
+
+			if(((INameable) tileEntity).getCustomName().equals(nametag.getDisplayName())) {
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+				return;
+			}
+
+			if(!event.getEntityPlayer().isCreative())
+				nametag.shrink(1);
+
+			if (!world.isRemote)
+				((INameable) tileEntity).setCustomName(nametag.getDisplayName());
+
+			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomName()), TextFormatting.GREEN);
+			return;
+		}
+
+		//all the sentry functionality for when the sentry is diguised
+		List<EntitySentry> sentries = world.getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(event.getPos()));
+
+		if(!sentries.isEmpty())
+		{
+			event.setCanceled(sentries.get(0).processInteract(event.getEntityPlayer(), event.getHand())); //cancel if an action was taken
+			event.setCancellationResult(EnumActionResult.SUCCESS);
 		}
 	}
 

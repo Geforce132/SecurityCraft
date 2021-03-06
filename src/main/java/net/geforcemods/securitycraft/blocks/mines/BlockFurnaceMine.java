@@ -56,9 +56,7 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay,
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if(world.isRemote)
-			return true;
-		else if(player.inventory.getCurrentItem().getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)){
+		if(player.getHeldItem(hand).getItem() != SCContent.remoteAccessMine && !EntityUtils.doesPlayerOwn(player, world, pos)){
 			explode(world, pos);
 			return true;
 		}

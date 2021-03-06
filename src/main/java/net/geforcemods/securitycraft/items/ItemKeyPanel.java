@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.packets.PacketCPlaySoundAtPos;
@@ -18,23 +19,25 @@ public class ItemKeyPanel extends Item {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
-		if(!world.isRemote){
-			ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 
-			SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
-				if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
+		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+			if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
+			{
+				if(pc.convert(player, world, pos))
 				{
-					if(pc.convert(player, world, pos))
-					{
-						if(!player.capabilities.isCreativeMode)
-							stack.shrink(1);
+					if(!player.capabilities.isCreativeMode)
+						stack.shrink(1);
 
+					if (!world.isRemote)
 						SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SCSounds.LOCK.location.toString(), 1.0F, "block"));
-					}
+
+					return EnumActionResult.SUCCESS;
 				}
-			});
+			}
 		}
 
-		return EnumActionResult.SUCCESS;
+
+		return EnumActionResult.PASS;
 	}
 }

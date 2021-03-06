@@ -63,70 +63,73 @@ public class ItemTaser extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(!world.isRemote)
-		{
-			if(!stack.isItemDamaged()){
-				if(player.isSneaking() && (player.isCreative() || !powered))
+		if(!stack.isItemDamaged()){
+			if(player.isSneaking() && (player.isCreative() || !powered))
+			{
+				ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
+
+				if(player.isCreative())
 				{
-					ItemStack oneRedstone = new ItemStack(Items.REDSTONE, 1);
-
-					if(player.isCreative())
-					{
-						if(player.getHeldItem(hand).getItem() == SCContent.taser)
-							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
-						else
-							setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taser, 1));
-					}
-					else if(player.inventory.hasItemStack(oneRedstone))
-					{
-						int redstoneSlot = player.inventory.findSlotMatchingUnusedItem(oneRedstone);
-						ItemStack redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
-
-						redstoneStack.setCount(redstoneStack.getCount() - 1);
-						player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+					if(player.getHeldItem(hand).getItem() == SCContent.taser)
 						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
-					}
+					else
+						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taser, 1));
 
-					return ActionResult.newResult(EnumActionResult.PASS, stack);
+					return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+				}
+				else if(player.inventory.hasItemStack(oneRedstone))
+				{
+					int redstoneSlot = player.inventory.findSlotMatchingUnusedItem(oneRedstone);
+					ItemStack redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
+
+					redstoneStack.setCount(redstoneStack.getCount() - 1);
+					player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+					setSlotBasedOnHand(player, hand, new ItemStack(SCContent.taserPowered, 1));
+					return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 				}
 
-				int range = 11;
-				Vec3d startVec = new Vec3d(player.posX, player.posY + player.eyeHeight, player.posZ);
-				Vec3d lookVec = player.getLook(1.0F).scale(range);
-				Vec3d endVec = startVec.add(lookVec);
-				AxisAlignedBB boundingBox = player.getEntityBoundingBox().expand(lookVec.x, lookVec.y, lookVec.z).grow(1, 1, 1);
-				RayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof EntityLivingBase, range * range);
+				return ActionResult.newResult(EnumActionResult.PASS, stack);
+			}
 
+			int range = 11;
+			Vec3d startVec = new Vec3d(player.posX, player.posY + player.eyeHeight, player.posZ);
+			Vec3d lookVec = player.getLook(1.0F).scale(range);
+			Vec3d endVec = startVec.add(lookVec);
+			AxisAlignedBB boundingBox = player.getEntityBoundingBox().expand(lookVec.x, lookVec.y, lookVec.z).grow(1, 1, 1);
+			RayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof EntityLivingBase, range * range);
+
+			if (!world.isRemote)
 				SecurityCraft.network.sendToAll(new PacketCPlaySoundAtPos(player.posX, player.posY, player.posZ, SCSounds.TASERFIRED.path, 1.0F, "player"));
 
-				if (entityRayTraceResult != null)
+			if (entityRayTraceResult != null)
+			{
+				EntityLivingBase entity = (EntityLivingBase)entityRayTraceResult.entityHit;
+
+				if(!entity.isActiveItemStackBlocking() && entity.attackEntityFrom(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
 				{
-					EntityLivingBase entity = (EntityLivingBase)entityRayTraceResult.entityHit;
+					int strength = powered ? 4 : 1;
+					int length = powered ? 400 : 200;
 
-					if(!entity.isActiveItemStackBlocking() && entity.attackEntityFrom(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
-					{
-						int strength = powered ? 4 : 1;
-						int length = powered ? 400 : 200;
-
-						entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
-						entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
-						entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
-					}
-				}
-
-				if(!player.isCreative())
-				{
-					if(powered)
-					{
-						ItemStack taser = new ItemStack(SCContent.taser, 1);
-
-						taser.damageItem(150, player);
-						setSlotBasedOnHand(player, hand, taser);
-					}
-					else
-						stack.damageItem(150, player);
+					entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("weakness"), length, strength));
+					entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("nausea"), length, strength));
+					entity.addPotionEffect(new PotionEffect(Potion.getPotionFromResourceLocation("slowness"), length, strength));
 				}
 			}
+
+			if(!player.isCreative())
+			{
+				if(powered)
+				{
+					ItemStack taser = new ItemStack(SCContent.taser, 1);
+
+					taser.damageItem(150, player);
+					setSlotBasedOnHand(player, hand, taser);
+				}
+				else
+					stack.damageItem(150, player);
+			}
+
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 		}
 
 		return ActionResult.newResult(EnumActionResult.PASS, stack);

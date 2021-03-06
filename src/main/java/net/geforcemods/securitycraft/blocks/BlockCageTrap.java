@@ -161,40 +161,35 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(!world.isRemote)
+		ItemStack stack = player.getHeldItem(hand);
+
+		if(stack.getItem() == SCContent.wireCutters)
 		{
-			ItemStack stack = player.getHeldItem(hand);
-
-			if(stack.getItem() == SCContent.wireCutters)
+			if(!state.getValue(DEACTIVATED))
 			{
-				if(!state.getValue(DEACTIVATED))
-				{
-					world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
+				world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
 
-					if(!player.isCreative())
-						stack.damageItem(1, player);
+				if(!player.isCreative())
+					stack.damageItem(1, player);
 
-					world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return true;
-				}
+				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
 			}
-			else if(stack.getItem() == Items.REDSTONE)
-			{
-				if(state.getValue(DEACTIVATED))
-				{
-					world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
-
-					if(!player.isCreative())
-						stack.shrink(1);
-
-					world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return true;
-				}
-			}
-			return false;
 		}
+		else if(stack.getItem() == Items.REDSTONE)
+		{
+			if(state.getValue(DEACTIVATED))
+			{
+				world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
 
-		return true;
+				if(!player.isCreative())
+					stack.shrink(1);
+
+				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

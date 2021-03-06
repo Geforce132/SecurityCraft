@@ -25,6 +25,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
@@ -43,8 +44,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int CAMERA_MONITOR_GUI_ID = 12;
 	public static final int BRIEFCASE_CODE_SETUP_GUI_ID = 13;
 	public static final int BRIEFCASE_INSERT_CODE_GUI_ID = 14;
-	public static final int BRIEFCASE_GUI_ID_MAIN_HAND = 15;
-	public static final int BRIEFCASE_GUI_ID_OFF_HAND = 150;
+	public static final int BRIEFCASE_GUI_ID = 15;
 	public static final int KEY_CHANGER_GUI_ID = 16;
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int DISGUISE_MODULE = 102;
@@ -78,32 +78,29 @@ public class GuiHandler implements IGuiHandler {
 			case IMS_GUI_ID:
 				return new ContainerGeneric(player.inventory, te);
 			case CAMERA_MONITOR_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor, null))
 					return null;
 				return new ContainerGeneric(player.inventory, te);
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
 				return null;
-			case BRIEFCASE_GUI_ID_MAIN_HAND:
-				if(player.getHeldItemMainhand().getItem() != SCContent.briefcase)
+			case BRIEFCASE_GUI_ID:
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
-				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(player.getHeldItemMainhand()));
-			case BRIEFCASE_GUI_ID_OFF_HAND:
-				if(player.getHeldItemOffhand().getItem() != SCContent.briefcase)
-					return null;
-				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(player.getHeldItemOffhand()));
+				return new ContainerBriefcase(player.inventory, new BriefcaseInventory(PlayerUtils.getSelectedItemStack(player, SCContent.briefcase)));
 			case KEY_CHANGER_GUI_ID:
-				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
+				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
 				return new ContainerGeneric(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
 				return new ContainerCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
-				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
+				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ItemModule ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
+				if(!((ItemModule)module.getItem()).canBeCustomized())
 					return null;
-				return new ContainerDisguiseModule(player.inventory, new ModuleItemInventory(player.inventory.getCurrentItem()));
+				return new ContainerDisguiseModule(player.inventory, new ModuleItemInventory(module));
 			case BLOCK_REINFORCER:
 				return new ContainerBlockReinforcer(player, player.inventory, player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1);
 			case MODULES:
@@ -130,12 +127,12 @@ public class GuiHandler implements IGuiHandler {
 			case SETUP_KEYCARD_READER_ID:
 				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) te);
 			case MRAT_MENU_ID:
-				if(!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessMine)
-					return new GuiMRAT(player.inventory, player.getHeldItemMainhand());
+				if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, null))
+					return new GuiMRAT(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessMine));
 				else return null;
 			case SRAT_MENU_ID:
-				if(!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() == SCContent.remoteAccessSentry)
-					return new GuiSRAT(player.inventory, player.getHeldItemMainhand(), x);
+				if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessSentry, null))
+					return new GuiSRAT(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessSentry), x);
 				else return null;
 			case INVENTORY_SCANNER_GUI_ID:
 				return new GuiInventoryScanner(player.inventory, (TileEntityInventoryScanner) te, player);
@@ -150,40 +147,37 @@ public class GuiHandler implements IGuiHandler {
 			case IMS_GUI_ID:
 				return new GuiIMS(player.inventory, (TileEntityIMS) te);
 			case CAMERA_MONITOR_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.cameraMonitor, null))
 					return null;
-				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) player.inventory.getCurrentItem().getItem(), player.inventory.getCurrentItem().getTagCompound());
+				return new GuiCameraMonitor(player.inventory, (ItemCameraMonitor) PlayerUtils.getSelectedItemStack(player.inventory, SCContent.cameraMonitor).getItem(),  PlayerUtils.getSelectedItemStack(player.inventory, SCContent.cameraMonitor).getTagCompound());
 			case BRIEFCASE_CODE_SETUP_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
 				return new GuiBriefcaseSetup(player.inventory, null);
 			case BRIEFCASE_INSERT_CODE_GUI_ID:
-				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase))
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
 				return new GuiBriefcase(player.inventory, null);
-			case BRIEFCASE_GUI_ID_MAIN_HAND:
-				if(player.getHeldItemMainhand().getItem() != SCContent.briefcase)
+			case BRIEFCASE_GUI_ID:
+				if(!PlayerUtils.isHoldingItem(player, SCContent.briefcase, null))
 					return null;
-				return new GuiBriefcaseInventory(player.inventory, player.getHeldItemMainhand());
-			case BRIEFCASE_GUI_ID_OFF_HAND:
-				if(player.getHeldItemOffhand().getItem() != SCContent.briefcase)
-					return null;
-				return new GuiBriefcaseInventory(player.inventory, player.getHeldItemOffhand());
+				return new GuiBriefcaseInventory(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.briefcase));
 			case KEY_CHANGER_GUI_ID:
-				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger))
+				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
 				return new GuiKeyChanger(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
 				return new GuiCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:
-				if(!(player.inventory.getCurrentItem().getItem() instanceof ItemModule) || !((ItemModule) player.inventory.getCurrentItem().getItem()).canBeCustomized())
+				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ItemModule ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
+				if(!((ItemModule)module.getItem()).canBeCustomized())
 					return null;
 				return new GuiDisguiseModule(player.inventory);
 			case BLOCK_REINFORCER:
 				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
 				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory, isLvl1), isLvl1);
 			case MODULES:
-				if(player.getHeldItemMainhand().getItem() == SCContent.whitelistModule || player.getHeldItemMainhand().getItem() == SCContent.blacklistModule)
+				if(PlayerUtils.isHoldingItem(player, SCContent.whitelistModule, null) || PlayerUtils.isHoldingItem(player, SCContent.blacklistModule, null))
 					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), te);
 				return null;
 			case BLOCK_POCKET_MANAGER:

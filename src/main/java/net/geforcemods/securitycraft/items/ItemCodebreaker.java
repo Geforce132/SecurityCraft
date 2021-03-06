@@ -34,15 +34,15 @@ public class ItemCodebreaker extends Item {
 		ItemStack codebreaker = player.getHeldItem(hand);
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
-			if(!world.isRemote && !ConfigHandler.allowCodebreakerItem) {
+			if(!ConfigHandler.allowCodebreakerItem) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.briefcase.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-				return ActionResult.newResult(EnumActionResult.FAIL, codebreaker);
+				return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
 			}
 			else {
 				codebreaker.damageItem(1, player);
 
 				if (!world.isRemote && new Random().nextInt(3) == 1)
-					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID_OFF_HAND, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 			}
 
 			return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
