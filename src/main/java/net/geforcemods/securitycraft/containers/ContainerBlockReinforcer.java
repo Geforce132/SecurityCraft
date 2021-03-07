@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 import net.geforcemods.securitycraft.items.ItemUniversalBlockReinforcer;
@@ -266,12 +267,14 @@ public class ContainerBlockReinforcer extends Container
 
 				if(!newStack.isEmpty())
 				{
+					boolean isLvl3 = blockReinforcer.getItem() == SCContent.universalBlockReinforcerLvL3;
+
 					if(customMeta != -1)
 						newStack.setItemDamage(customMeta);
 					else if(customMeta != -2)
 						newStack.setItemDamage(stack.getItemDamage());
 
-					newStack.setCount(Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() + 1));
+					newStack.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getItemDamage() + 1));
 					output = newStack;
 				}
 			}
