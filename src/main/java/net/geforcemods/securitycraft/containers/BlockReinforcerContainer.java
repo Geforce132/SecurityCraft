@@ -232,7 +232,6 @@ public class BlockReinforcerContainer extends Container
 		public void onSlotChanged()
 		{
 			ItemStack stack = itemInventory.getStackInSlot(slotNumber % 2);
-			boolean isLvl3 = blockReinforcer.getItem() == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get();
 
 			if(!stack.isEmpty())
 			{
@@ -240,6 +239,8 @@ public class BlockReinforcerContainer extends Container
 
 				if(block != null)
 				{
+					boolean isLvl3 = blockReinforcer.getItem() == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get();
+
 					output = new ItemStack(block);
 					output.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
 				}
