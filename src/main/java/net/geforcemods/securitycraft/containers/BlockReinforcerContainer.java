@@ -239,8 +239,10 @@ public class BlockReinforcerContainer extends Container
 
 				if(block != null)
 				{
+					boolean isLvl3 = blockReinforcer.getItem() == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get();
+
 					output = new ItemStack(block);
-					output.setCount(Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
+					output.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
 				}
 			}
 		}
