@@ -17,7 +17,10 @@ public class IdButton extends ExtendedButton
 
 	public IdButton(int id, int xPos, int yPos, int width, int height, ITextComponent displayString, Consumer<IdButton> onClick)
 	{
-		super(xPos, yPos, width, height, displayString, b -> onClick.accept((IdButton)b));
+		super(xPos, yPos, width, height, displayString, b -> {
+			if(onClick != null)
+				onClick.accept((IdButton)b);
+		});
 
 		this.id = id;
 	}
