@@ -42,6 +42,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
 		keycodeTextbox.setMaxStringLength(4);
+		keycodeTextbox.setValidator(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = text.length() == 4);
 		setFocusedDefault(keycodeTextbox);
 	}
