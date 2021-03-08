@@ -61,6 +61,8 @@ public class CodebreakerItem extends Item {
 						}
 					}, player.getPosition());
 				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CODEBREAKER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
 
 			return ActionResult.resultSuccess(codebreaker);

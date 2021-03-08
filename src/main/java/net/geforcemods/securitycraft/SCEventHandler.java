@@ -294,7 +294,10 @@ public class SCEventHandler {
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.SERVER.allowCodebreakerItem.get());
-				else return true;
+				else {
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.CODEBREAKER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					return true;
+				}
 			}
 		}
 
