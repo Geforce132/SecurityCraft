@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.network.server.OpenGui;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -29,7 +29,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	private Button[] keycodeTopButtons = new Button[4];
 	private Button[] keycodeBottomButtons = new Button[4];
 	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
-	private ClickButton continueButton;
+	private IdButton continueButton;
 	private int[] digits = {0, 0, 0, 0};
 
 	public BriefcasePasswordScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
@@ -41,14 +41,14 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		super.init();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			addButton(keycodeTopButtons[i] = new ClickButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed));
+			addButton(keycodeTopButtons[i] = new IdButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed));
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			addButton(keycodeBottomButtons[i] = new ClickButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed));
+			addButton(keycodeBottomButtons[i] = new IdButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed));
 		}
 
-		addButton(continueButton = new ClickButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed));
+		addButton(continueButton = new IdButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed));
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
 			//text boxes are not added via addButton because they should not be selectable
@@ -82,7 +82,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(ClickButton button) {
+	protected void actionPerformed(IdButton button) {
 		if(button.id == continueButton.id)
 		{
 			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {

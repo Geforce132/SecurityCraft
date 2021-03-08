@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.network.server.SetExplosiveState;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -33,7 +33,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private ItemStack mrat;
-	private ClickButton[][] guiButtons = new ClickButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
+	private IdButton[][] guiButtons = new IdButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
 	private List<StringHoverChecker> hoverCheckers = new ArrayList<>();
@@ -83,7 +83,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
+						guiButtons[i][j] = new IdButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
 				}
@@ -163,7 +163,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		}
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		int mine = button.id / 4;
 		int action = button.id % 4;
 

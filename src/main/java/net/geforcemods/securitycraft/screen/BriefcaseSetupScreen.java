@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.network.server.OpenGui;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -38,7 +38,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	public void init() {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText(), this::actionPerformed));
+		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText(), this::actionPerformed));
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
 		keycodeTextbox.setMaxStringLength(4);
@@ -81,7 +81,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		saveAndContinueButton.setMessage(!flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText());
 	}
 
-	protected void actionPerformed(ClickButton button) {
+	protected void actionPerformed(IdButton button) {
 		if(keycodeTextbox.getText().length() < 4) {
 			flag  = true;
 			updateButtonText();
