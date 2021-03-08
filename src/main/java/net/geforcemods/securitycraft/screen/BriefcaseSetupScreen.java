@@ -27,7 +27,6 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String setupTitle = ClientUtils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText();
 	private TextFieldWidget keycodeTextbox;
-	private boolean flag = false;
 	private Button saveAndContinueButton;
 
 	public BriefcaseSetupScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
@@ -38,19 +37,18 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	public void init() {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText(), this::actionPerformed));
+		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText(), this::actionPerformed));
+		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
 		keycodeTextbox.setMaxStringLength(4);
+		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = text.length() == 4);
 		setFocusedDefault(keycodeTextbox);
-
-		updateButtonText();
 	}
 
 	@Override
 	public void onClose() {
 		super.onClose();
-		flag = false;
 		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
@@ -76,18 +74,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		int startY = (height - ySize) / 2;
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
-
-	private void updateButtonText() {
-		saveAndContinueButton.setMessage(!flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText());
-	}
-
 	protected void actionPerformed(IdButton button) {
-		if(keycodeTextbox.getText().length() < 4) {
-			flag  = true;
-			updateButtonText();
-			return;
-		}
-
 		if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
 			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
 
