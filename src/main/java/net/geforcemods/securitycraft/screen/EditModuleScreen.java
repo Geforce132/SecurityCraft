@@ -8,7 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -28,7 +28,7 @@ public class EditModuleScreen extends Screen
 	private final TranslationTextComponent editModule = ClientUtils.localize("gui.securitycraft:editModule");
 	private ItemStack module;
 	private TextFieldWidget inputField;
-	private ClickButton addButton, removeButton, copyButton, pasteButton, clearButton;
+	private IdButton addButton, removeButton, copyButton, pasteButton, clearButton;
 	private int xSize = 176, ySize = 166;
 
 	public EditModuleScreen(ItemStack item)
@@ -45,11 +45,11 @@ public class EditModuleScreen extends Screen
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, StringTextComponent.EMPTY));
-		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
-		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
-		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
-		addButton(pasteButton = new ClickButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
-		addButton(clearButton = new ClickButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
+		addButton(addButton = new IdButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add"), this::actionPerformed));
+		addButton(removeButton = new IdButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove"), this::actionPerformed));
+		addButton(copyButton = new IdButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy"), this::actionPerformed));
+		addButton(pasteButton = new IdButton(3, width / 2 - 38, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste"), this::actionPerformed));
+		addButton(clearButton = new IdButton(4, width / 2 - 38, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear"), this::actionPerformed));
 		addButton(clearButton);
 
 		addButton.active = false;
@@ -149,7 +149,7 @@ public class EditModuleScreen extends Screen
 			return super.charTyped(typedChar, keyCode);
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		if(button.id == addButton.id)
 		{
 			if(inputField.getText().isEmpty())

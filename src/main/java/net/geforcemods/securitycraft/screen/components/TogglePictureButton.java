@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class TogglePictureButton extends ClickButton{
+public class TogglePictureButton extends IdButton{
 
 	private Block blockToRender;
 	private Item itemToRender;
@@ -28,7 +28,7 @@ public class TogglePictureButton extends ClickButton{
 	private int currentIndex = 0;
 	private final int toggleCount;
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int toggleCount, Consumer<ClickButton> onClick)
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int toggleCount, Consumer<IdButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 

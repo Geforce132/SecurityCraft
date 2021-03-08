@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -30,8 +30,8 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	private final TranslationTextComponent explanation6 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6");
 	private final TranslationTextComponent explanation7 = ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7");
 	private KeycardReaderTileEntity te;
-	private ClickButton lvlOfSecurityButton;
-	private ClickButton requiresExactCardButton;
+	private IdButton lvlOfSecurityButton;
+	private IdButton requiresExactCardButton;
 	private boolean requiresExactCard = false;
 	private int lvlOfSecurity = 0;
 
@@ -44,9 +44,9 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	public void init(){
 		super.init();
 
-		addButton(lvlOfSecurityButton = new ClickButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, "", button -> updateButtonText()));
-		addButton(requiresExactCardButton = new ClickButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher"), this::actionPerformed));
-		addButton(new ClickButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save"), button -> saveLvls()));
+		addButton(lvlOfSecurityButton = new IdButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, "", button -> updateButtonText()));
+		addButton(requiresExactCardButton = new IdButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher"), this::actionPerformed));
+		addButton(new IdButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save"), button -> saveLvls()));
 
 		updateButtonText();
 	}
@@ -83,7 +83,7 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 		lvlOfSecurityButton.setMessage(ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded", lvlOfSecurity));
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		requiresExactCard = !requiresExactCard;
 		requiresExactCardButton.setMessage(requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal") : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher"));
 	}

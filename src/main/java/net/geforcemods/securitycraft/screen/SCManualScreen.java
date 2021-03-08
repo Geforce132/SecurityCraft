@@ -20,7 +20,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
@@ -238,7 +238,7 @@ public class SCManualScreen extends Screen {
 		return super.charTyped(typedChar, keyCode);
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		if(button.id == 1)
 			nextPage();
 		else if(button.id == 2)
@@ -482,10 +482,10 @@ public class SCManualScreen extends Screen {
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
-	static class ChangePageButton extends ClickButton {
+	static class ChangePageButton extends IdButton {
 		private final boolean isForward;
 
-		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<ClickButton> onClick){
+		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<IdButton> onClick){
 			super(index, xPos, yPos, 23, 13, "", onClick);
 			isForward = forward;
 		}

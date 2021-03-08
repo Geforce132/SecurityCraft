@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SetPassword;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
@@ -33,7 +33,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	private final TranslationTextComponent confirmPasscode = ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");
 	private TextFieldWidget textboxNewPasscode;
 	private TextFieldWidget textboxConfirmPasscode;
-	private ClickButton confirmButton;
+	private IdButton confirmButton;
 	private TileEntity tileEntity;
 
 	public KeyChangerScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
@@ -45,7 +45,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 	public void init(){
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(confirmButton = new ClickButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
+		addButton(confirmButton = new IdButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::actionPerformed));
 		confirmButton.active = false;
 
 		addButton(textboxNewPasscode = new TextFieldWidget(font, width / 2 - 57, height / 2 - 47, 110, 12, StringTextComponent.EMPTY));
@@ -90,7 +90,7 @@ public class KeyChangerScreen extends ContainerScreen<GenericTEContainer> {
 		confirmButton.active = confirmPasscode != null && newPasscode != null && !confirmPasscode.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(confirmPasscode);
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
