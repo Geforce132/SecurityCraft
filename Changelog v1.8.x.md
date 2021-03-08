@@ -16,6 +16,7 @@
 - Fix: The Briefcase's NBT contains empty Briefcase inventory slots
 - Fix: Some of SecurityCraft's tools don't lose durability when used on a block while held in the offhand
 - Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
+- Fix: Mines can be placed on some blocks that haven't got a solid top side
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 

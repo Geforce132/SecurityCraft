@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -19,7 +18,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion.Mode;
 
 public class ClaymoreTileEntity extends CustomizableTileEntity
 {
@@ -47,8 +45,7 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 			}
 
 			if(cooldown == 0){
-				getWorld().destroyBlock(getPos(), false);
-				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true, Mode.BREAK);
+				((ClaymoreBlock)getBlockState().getBlock()).explode(world, pos);
 				return;
 			}
 
