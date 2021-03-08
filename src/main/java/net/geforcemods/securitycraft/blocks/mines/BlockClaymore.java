@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -151,7 +152,7 @@ public class BlockClaymore extends BlockExplosive {
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, true);
+			world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, ConfigHandler.shouldSpawnFire, true);
 		}
 	}
 

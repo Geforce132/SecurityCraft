@@ -87,9 +87,9 @@ public class BlockFurnaceMine extends BlockExplosive implements IOverlayDisplay,
 		world.destroyBlock(pos, false);
 
 		if(ConfigHandler.smallerMineExplosion)
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, true);
+			world.newExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, ConfigHandler.shouldSpawnFire, true);
 		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, true);
+			world.newExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, ConfigHandler.shouldSpawnFire, true);
 
 	}
 

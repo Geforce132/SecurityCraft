@@ -141,9 +141,9 @@ public class BlockMine extends BlockExplosive {
 		if(!world.getBlockState(pos).getValue(DEACTIVATED)){
 			world.destroyBlock(pos, false);
 			if(ConfigHandler.smallerMineExplosion)
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, true);
+				world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, ConfigHandler.shouldSpawnFire, true);
 			else
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
+				world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, ConfigHandler.shouldSpawnFire, true);
 		}
 	}
 

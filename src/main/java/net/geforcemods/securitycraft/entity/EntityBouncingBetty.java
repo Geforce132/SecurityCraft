@@ -91,9 +91,9 @@ public class EntityBouncingBetty extends Entity {
 		float f = 6.0F;
 
 		if(ConfigHandler.smallerMineExplosion)
-			world.createExplosion(this, posX, posY, posZ, (f / 2), true);
+			world.newExplosion(this, posX, posY, posZ, (f / 2), ConfigHandler.shouldSpawnFire, true);
 		else
-			world.createExplosion(this, posX, posY, posZ, f, true);
+			world.newExplosion(this, posX, posY, posZ, f, ConfigHandler.shouldSpawnFire, true);
 	}
 
 	/**
