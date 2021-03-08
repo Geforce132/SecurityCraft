@@ -19,7 +19,7 @@
 - Fix: Mines can be placed on some blocks that haven't got a solid top side
 - Fix: Claymores spawn fire when exploding even though the shouldSpawnFire configuration option is false
 - Fix: Using TAB to navigate menus does not work properly in some of SecurityCraft's interfaces
-- Fix: Pressing ENTER to press button in SecurityCraft's interfaces does not work
+- Fix: Pressing ENTER to press buttons in SecurityCraft's interfaces does not work
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
