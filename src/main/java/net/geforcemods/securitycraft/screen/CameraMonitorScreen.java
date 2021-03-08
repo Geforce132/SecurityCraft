@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -36,10 +36,10 @@ public class CameraMonitorScreen extends Screen {
 	private PlayerInventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundNBT nbtTag;
-	private ClickButton prevPageButton;
-	private ClickButton nextPageButton;
-	private ClickButton[] cameraButtons = new ClickButton[10];
-	private ClickButton[] unbindButtons = new ClickButton[10];
+	private IdButton prevPageButton;
+	private IdButton nextPageButton;
+	private IdButton[] cameraButtons = new IdButton[10];
+	private IdButton[] unbindButtons = new IdButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private SecurityCraftTileEntity[] cameraTEs = new SecurityCraftTileEntity[10];
 	private int[] cameraViewDim = new int[10];
@@ -62,33 +62,33 @@ public class CameraMonitorScreen extends Screen {
 	public void init(){
 		super.init();
 
-		addButton(prevPageButton = new ClickButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed));
-		addButton(nextPageButton = new ClickButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed));
+		addButton(prevPageButton = new IdButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed));
+		addButton(nextPageButton = new IdButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed));
 
-		cameraButtons[0] = new ClickButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[1] = new ClickButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[2] = new ClickButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[3] = new ClickButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[4] = new ClickButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[5] = new ClickButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[6] = new ClickButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[7] = new ClickButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[8] = new ClickButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "", this::actionPerformed);
-		cameraButtons[9] = new ClickButton(10, width / 2 - 38, height / 2 + 40, 80, 20, "", this::actionPerformed);
+		cameraButtons[0] = new IdButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[1] = new IdButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[2] = new IdButton(3, width / 2 + 22, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[3] = new IdButton(4, width / 2 - 38, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[4] = new IdButton(5, width / 2 - 8, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[5] = new IdButton(6, width / 2 + 22, height / 2 - 30 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[6] = new IdButton(7, width / 2 - 38, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[7] = new IdButton(8, width / 2 - 8, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[8] = new IdButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "", this::actionPerformed);
+		cameraButtons[9] = new IdButton(10, width / 2 - 38, height / 2 + 40, 80, 20, "", this::actionPerformed);
 
-		unbindButtons[0] = new ClickButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[1] = new ClickButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[2] = new ClickButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[3] = new ClickButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[4] = new ClickButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[5] = new ClickButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
-		unbindButtons[6] = new ClickButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[7] = new ClickButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[8] = new ClickButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x", this::actionPerformed);
-		unbindButtons[9] = new ClickButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x", this::actionPerformed);
+		unbindButtons[0] = new IdButton(11, width / 2 - 19, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[1] = new IdButton(12, width / 2 + 11, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[2] = new IdButton(13, width / 2 + 41, height / 2 - 68 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[3] = new IdButton(14, width / 2 - 19, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[4] = new IdButton(15, width / 2 + 11, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[5] = new IdButton(16, width / 2 + 41, height / 2 - 38 + 10, 8, 8, "x", this::actionPerformed);
+		unbindButtons[6] = new IdButton(17, width / 2 - 19, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[7] = new IdButton(18, width / 2 + 11, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[8] = new IdButton(19, width / 2 + 41, height / 2 + 2, 8, 8, "x", this::actionPerformed);
+		unbindButtons[9] = new IdButton(20, width / 2 + 41, height / 2 + 32, 8, 8, "x", this::actionPerformed);
 
 		for(int i = 0; i < 10; i++) {
-			ClickButton button = cameraButtons[i];
+			IdButton button = cameraButtons[i];
 			int camID = (button.id + ((page - 1) * 10));
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
@@ -160,7 +160,7 @@ public class CameraMonitorScreen extends Screen {
 			}
 	}
 
-	protected void actionPerformed(ClickButton button) {
+	protected void actionPerformed(IdButton button) {
 		if(button.id == prevPageButton.id)
 			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
 		else if(button.id == nextPageButton.id)

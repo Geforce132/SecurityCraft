@@ -18,7 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PictureButton extends ClickButton{
+public class PictureButton extends IdButton{
 
 	private final ItemRenderer itemRenderer;
 	private Block blockToRender;
@@ -33,7 +33,7 @@ public class PictureButton extends ClickButton{
 		this(id, xPos, yPos, width, height, par7, itemToRender, null);
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender, Consumer<ClickButton> onClick) {
+	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender, Consumer<IdButton> onClick) {
 		super(id, xPos, yPos, width, height, "", onClick);
 		itemRenderer = par7;
 
@@ -43,7 +43,7 @@ public class PictureButton extends ClickButton{
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<ClickButton> onClick)
+	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<IdButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
