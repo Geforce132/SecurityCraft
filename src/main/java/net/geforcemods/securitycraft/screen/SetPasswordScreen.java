@@ -30,7 +30,6 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	private TranslationTextComponent setup;
 	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
-	private boolean isInvalid = false;
 	private IdButton saveAndContinueButton;
 
 	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
@@ -46,14 +45,14 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"), this::actionPerformed));
+		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save"), this::actionPerformed));
+		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
 		keycodeTextbox.setMaxStringLength(20);
 		keycodeTextbox.setValidator(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
 		setFocusedDefault(keycodeTextbox);
-
-		updateButtonText();
 	}
 
 	@Override
@@ -89,17 +88,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
-	private void updateButtonText(){
-		saveAndContinueButton.setMessage(!isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save") : ClientUtils.localize("gui.securitycraft:password.invalidCode"));
-	}
-
 	protected void actionPerformed(IdButton button){
-		if(keycodeTextbox.getText().isEmpty()){
-			isInvalid  = true;
-			updateButtonText();
-			return;
-		}
-
 		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 		ClientUtils.closePlayerScreen();
