@@ -60,12 +60,10 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	protected void actionPerformed(ClickButton button){
-		if(button.id == 0){
-			targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
-			tileEntity.setTargetingOption(targetMode);
-			ClientUtils.syncTileEntity(tileEntity);
-			updateButtonText();
-		}
+		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
+		tileEntity.setTargetingOption(targetMode);
+		ClientUtils.syncTileEntity(tileEntity);
+		updateButtonText();
 	}
 
 	private void updateButtonText() {

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -22,13 +20,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
 public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9'};
+	private final String setupTitle = ClientUtils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText();
 	private TextFieldWidget keycodeTextbox;
 	private boolean flag = false;
 	private Button saveAndContinueButton;
@@ -43,27 +40,11 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(saveAndContinueButton = new ClickButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText(), this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, "");
-
-		keycodeTextbox.setTextColor(-1);
-		keycodeTextbox.setDisabledTextColour(-1);
-		keycodeTextbox.setEnableBackgroundDrawing(true);
+		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
 		keycodeTextbox.setMaxStringLength(4);
-		keycodeTextbox.setFocused2(true);
+		setFocusedDefault(keycodeTextbox);
 
 		updateButtonText();
-	}
-
-	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
-	{
-		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getText().length() > 0){
-			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
-			keycodeTextbox.setText(keycodeTextbox.getText().substring(0, keycodeTextbox.getText().length() - 1));
-			return true;
-		}
-
-		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
@@ -83,7 +64,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText(), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText()) / 2, 6, 4210752);
+		font.drawString(setupTitle, xSize / 2 - font.getStringWidth(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override
@@ -96,62 +77,32 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 		this.blit(startX, startY, 0, 0, xSize, ySize);
 	}
 
-	@Override
-	public boolean charTyped(char typedChar, int keyCode) {
-		if(keycodeTextbox.isFocused() && isValidChar(typedChar))
-		{
-			keycodeTextbox.charTyped(typedChar, keyCode);
-			return true;
-		}
-		else
-			return super.charTyped(typedChar, keyCode);
-	}
-
-	private boolean isValidChar(char c) {
-		for(int i = 0; i < allowedChars.length; i++)
-			if(c == allowedChars[i])
-				return true;
-			else
-				continue;
-
-		return false;
-	}
-
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
-		keycodeTextbox.mouseClicked(mouseX, mouseY, mouseButton);
-		return super.mouseClicked(mouseX, mouseY, mouseButton);
-	}
-
 	private void updateButtonText() {
 		saveAndContinueButton.setMessage(!flag ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText());
 	}
 
 	protected void actionPerformed(ClickButton button) {
-		if(button.id == 0){
-			if(keycodeTextbox.getText().length() < 4) {
-				flag  = true;
-				updateButtonText();
-				return;
+		if(keycodeTextbox.getText().length() < 4) {
+			flag  = true;
+			updateButtonText();
+			return;
+		}
+
+		if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
+			ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
+
+			if(!briefcase.hasTag())
+				briefcase.setTag(new CompoundNBT());
+
+			briefcase.getTag().putString("passcode", keycodeTextbox.getText());
+
+			if (!briefcase.getTag().contains("owner")) {
+				briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
+				briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
 			}
 
-				if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-					ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
-
-					if(!briefcase.hasTag())
-						briefcase.setTag(new CompoundNBT());
-
-					briefcase.getTag().putString("passcode", keycodeTextbox.getText());
-
-					if (!briefcase.getTag().contains("owner")) {
-						briefcase.getTag().putString("owner", Minecraft.getInstance().player.getName().getString());
-						briefcase.getTag().putString("ownerUUID", Minecraft.getInstance().player.getUniqueID().toString());
-					}
-
-					ClientUtils.syncItemNBT(briefcase);
-					SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
-				}
+			ClientUtils.syncItemNBT(briefcase);
+			SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
 		}
 	}
-
 }

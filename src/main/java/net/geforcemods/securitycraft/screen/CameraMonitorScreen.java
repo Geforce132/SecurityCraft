@@ -21,7 +21,6 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -37,8 +36,8 @@ public class CameraMonitorScreen extends Screen {
 	private PlayerInventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundNBT nbtTag;
-	private Button prevPageButton;
-	private Button nextPageButton;
+	private ClickButton prevPageButton;
+	private ClickButton nextPageButton;
 	private ClickButton[] cameraButtons = new ClickButton[10];
 	private ClickButton[] unbindButtons = new ClickButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
@@ -63,10 +62,8 @@ public class CameraMonitorScreen extends Screen {
 	public void init(){
 		super.init();
 
-		prevPageButton = new ClickButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed);
-		nextPageButton = new ClickButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed);
-		addButton(prevPageButton);
-		addButton(nextPageButton);
+		addButton(prevPageButton = new ClickButton(-1, width / 2 - 68, height / 2 + 40, 20, 20, "<", this::actionPerformed));
+		addButton(nextPageButton = new ClickButton(0, width / 2 + 52, height / 2 + 40, 20, 20, ">", this::actionPerformed));
 
 		cameraButtons[0] = new ClickButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
 		cameraButtons[1] = new ClickButton(2, width / 2 - 8, height / 2 - 60 + 10, 20, 20, "", this::actionPerformed);
@@ -164,9 +161,9 @@ public class CameraMonitorScreen extends Screen {
 	}
 
 	protected void actionPerformed(ClickButton button) {
-		if(button.id == -1)
+		if(button.id == prevPageButton.id)
 			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
-		else if(button.id == 0)
+		else if(button.id == nextPageButton.id)
 			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);

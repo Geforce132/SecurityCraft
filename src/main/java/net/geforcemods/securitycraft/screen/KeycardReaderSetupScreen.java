@@ -35,9 +35,9 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	public void init(){
 		super.init();
 
-		addButton(lvlOfSecurityButton = new ClickButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, "", this::actionPerformed));
+		addButton(lvlOfSecurityButton = new ClickButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, "", button -> updateButtonText()));
 		addButton(requiresExactCardButton = new ClickButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText(), this::actionPerformed));
-		addButton(new ClickButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText(), this::actionPerformed));
+		addButton(new ClickButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText(), button -> saveLvls()));
 
 		updateButtonText();
 	}
@@ -75,29 +75,14 @@ public class KeycardReaderSetupScreen extends ContainerScreen<GenericTEContainer
 	}
 
 	protected void actionPerformed(ClickButton button){
-		switch(button.id){
-			case 0:
-				updateButtonText();
-				break;
-
-			case 1:
-				requiresExactCard = !requiresExactCard;
-				requiresExactCardButton.setMessage(requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText());
-				break;
-
-			case 2:
-				saveLvls();
-				break;
-		}
+		requiresExactCard = !requiresExactCard;
+		requiresExactCardButton.setMessage(requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText());
 	}
 
 	private void saveLvls() {
 		te.setPassword(String.valueOf(lvlOfSecurity));
 		te.setRequiresExactKeycard(requiresExactCard);
-
 		SecurityCraft.channel.sendToServer(new SetKeycardLevel(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), lvlOfSecurity, requiresExactCard));
-
 		Minecraft.getInstance().player.closeScreen();
 	}
-
 }

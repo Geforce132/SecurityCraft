@@ -95,8 +95,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
+
 				if (Minecraft.getInstance().player.world.isBlockPresent(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
 					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
@@ -128,6 +130,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					}
 					else {
 						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
+
 						for (int j = 0; j < 3; j++) {
 							guiButtons[i][j].active = false;
 						}
@@ -137,6 +140,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					for (int j = 0; j < 2; j++) {
 						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange").getFormattedText()));
 					}
+
 					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 				}
 			}
