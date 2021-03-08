@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,14 +23,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GuiSetPassword extends GuiContainer {
+public class GuiSetPassword extends GuiContainer implements GuiResponder {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private TileEntity tileEntity;
 	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
 	private String blockName;
 	private GuiTextField keycodeTextbox;
-	private boolean isInvalid = false;
 	private GuiButton saveAndContinueButton;
 
 	public GuiSetPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
@@ -42,23 +42,21 @@ public class GuiSetPassword extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText()));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText()));
+		saveAndContinueButton.enabled = false;
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
-
 		keycodeTextbox.setTextColor(-1);
 		keycodeTextbox.setDisabledTextColour(-1);
 		keycodeTextbox.setEnableBackgroundDrawing(true);
 		keycodeTextbox.setMaxStringLength(11);
 		keycodeTextbox.setFocused(true);
-
-		updateButtonText();
+		keycodeTextbox.setGuiResponder(this);
 	}
 
 	@Override
 	public void onGuiClosed(){
 		super.onGuiClosed();
-		isInvalid = false;
 		Keyboard.enableRepeatEvents(false);
 	}
 
@@ -124,19 +122,9 @@ public class GuiSetPassword extends GuiContainer {
 		keycodeTextbox.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
-	private void updateButtonText(){
-		saveAndContinueButton.displayString = !isInvalid ? ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText() : ClientUtils.localize("gui.securitycraft:password.invalidCode").getFormattedText();
-	}
-
 	@Override
 	protected void actionPerformed(GuiButton button){
-		if(button.id == 0){
-			if(keycodeTextbox.getText().isEmpty()){
-				isInvalid  = true;
-				updateButtonText();
-				return;
-			}
-
+		if(button.id == saveAndContinueButton.id){
 			((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
 			SecurityCraft.network.sendToServer(new PacketSSetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 
@@ -145,4 +133,16 @@ public class GuiSetPassword extends GuiContainer {
 		}
 	}
 
+
+	@Override
+	public void setEntryValue(int id, String text)
+	{
+		saveAndContinueButton.enabled = !text.isEmpty();
+	}
+
+	@Override
+	public void setEntryValue(int id, boolean value) {}
+
+	@Override
+	public void setEntryValue(int id, float value) {}
 }
