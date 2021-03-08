@@ -135,6 +135,7 @@ public class PlayerUtils{
 	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
 	 * @param player The player holding the item
 	 * @param item The item type that should be searched for
+	 * @return The item stack if it has been found, ItemStack.EMPTY if not
 	 */
 	public static ItemStack getSelectedItemStack(PlayerEntity player, Item item) {
 		return getSelectedItemStack(player.inventory, item);
@@ -144,6 +145,7 @@ public class PlayerUtils{
 	 * Returns the ItemStack of the given item the player is currently holding (both hands are checked).
 	 * @param inventory The inventory that contains the item
 	 * @param item The item type that should be searched for
+	 * @return The respective item stack if it has been found, ItemStack.EMPTY if not
 	 */
 	public static ItemStack getSelectedItemStack(PlayerInventory inventory, Item item) {
 		if (!inventory.getCurrentItem().isEmpty()) {

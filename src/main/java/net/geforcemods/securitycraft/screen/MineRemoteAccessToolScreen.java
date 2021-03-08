@@ -53,6 +53,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int y = padding;
 		int[] coords = null;
 		int id = 0;
+
 		hoverCheckers.clear();
 
 		for(int i = 0; i < 6; i++)
@@ -92,10 +93,13 @@ public class MineRemoteAccessToolScreen extends Screen{
 			}
 
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
+
 				if (Minecraft.getInstance().player.world.isBlockPresent(minePos)) {
 					Block block = minecraft.world.getBlockState(minePos).getBlock();
+
 					if (block instanceof IExplosive) {
 						boolean active = ((IExplosive) block).isActive(minecraft.world, minePos);
 						boolean defusable = ((IExplosive) block).isDefusable();
@@ -110,6 +114,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+
 						for (int j = 0; j < 4; j++) {
 							guiButtons[i][j].active = false;
 						}
@@ -119,6 +124,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 					for (int j = 0; j < 3; j++) {
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
+
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
