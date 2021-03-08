@@ -43,6 +43,8 @@ public class ItemCodebreaker extends Item {
 
 				if (!world.isRemote && new Random().nextInt(3) == 1)
 					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+				else
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:codebreaker.name"), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
 
 			return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);

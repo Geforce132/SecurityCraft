@@ -543,7 +543,10 @@ public class SCEventHandler {
 
 				if(event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !ConfigHandler.allowCodebreakerItem);
-				else return true;
+				else {
+					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:codebreaker.name"), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					return true;
+				}
 			}
 		}
 

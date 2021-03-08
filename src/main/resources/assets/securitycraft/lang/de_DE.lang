@@ -640,6 +640,7 @@ messages.securitycraft:blockpocket.notEnoughItems=Du hast nicht genug Blöcke, u
 messages.securitycraft:blockpocket.activated=Blocktasche aktiviert!
 messages.securitycraft:blockpocket.deactivated=Blocktasche deaktiviert!
 messages.securitycraft:blockpocket.assembled=Blocktasche aufgebaut!
+messages.securitycraft:codebreaker.failed=Code konnte nicht geknackt werden, bitte versuche es nochmal.
 
 jei.securitycraft.category.reinforcing=Blöcke verstärken
 jei.securitycraft.category.unreinforcing=Verstärkung entfernen

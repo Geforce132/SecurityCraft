@@ -638,6 +638,7 @@ messages.securitycraft:blockpocket.deactivated=Block Pocket deactivated!
 messages.securitycraft:sc_help=%s: %s + %s
 messages.securitycraft:blockpocket.assembled=Block Pocket assembled!
 messages.securitycraft:formattedCoordinates=X: %1$s Y: %2$s Z: %3$s
+messages.securitycraft:codebreaker.failed=Code breaking attempt failed, please try again.
 
 jei.securitycraft.category.reinforcing=Block Reinforcing
 jei.securitycraft.category.unreinforcing=Removing Reinforcment
