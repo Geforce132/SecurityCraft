@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -42,8 +41,7 @@ public class TileEntityClaymore extends CustomizableSCTE
 			}
 
 			if(cooldown == 0){
-				getWorld().destroyBlock(getPos(), false);
-				getWorld().createExplosion((Entity) null, entityX, entityY + 0.5F, entityZ, 3.5F, true);
+				((BlockClaymore)getBlockType()).explode(world, pos);
 				return;
 			}
 

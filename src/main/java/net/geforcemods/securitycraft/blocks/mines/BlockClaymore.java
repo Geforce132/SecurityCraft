@@ -1,13 +1,10 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -16,8 +13,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
@@ -25,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -33,7 +27,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class BlockClaymore extends BlockContainer implements IExplosive {
+public class BlockClaymore extends BlockExplosive {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool DEACTIVATED = PropertyBool.create("deactivated");
@@ -97,36 +91,13 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		ItemStack stack = player.getHeldItem(hand);
-
-		if(!state.getValue(DEACTIVATED) && stack.getItem() == SCContent.wireCutters){
-			world.setBlockState(pos, state.withProperty(DEACTIVATED, true));
-
-			if(!player.isCreative())
-				stack.damageItem(1, player);
-
-			world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-		}else if(state.getValue(DEACTIVATED) && stack.getItem() == Items.FLINT_AND_STEEL){
-			world.setBlockState(pos, state.withProperty(DEACTIVATED, false));
-
-			if(!player.isCreative())
-				stack.damageItem(1, player);
-
-			world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-		}
-
-		return true;
-	}
-
-	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);
 
 			if(!EntityUtils.doesPlayerOwn(player, world, pos))
-				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+				explode(world, pos);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest);
@@ -140,8 +111,7 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, true);
+			explode(world, pos);
 		}
 	}
 
@@ -228,8 +198,8 @@ public class BlockClaymore extends BlockContainer implements IExplosive {
 	}
 
 	@Override
-	public boolean isDefusable() {
-		return true;
+	public boolean explodesWhenInteractedWith() {
+		return false;
 	}
 
 	@Override
