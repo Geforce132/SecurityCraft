@@ -1,9 +1,6 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.tileentity.ClaymoreTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
@@ -14,22 +11,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -39,7 +29,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
-public class ClaymoreBlock extends OwnableBlock implements IExplosive {
+public class ClaymoreBlock extends ExplosiveBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
@@ -58,12 +48,6 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos)
-	{
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getPlayerRelativeBlockHardness(state, player, world, pos);
-	}
-
-	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
 			return;
@@ -78,39 +62,13 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
-	{
-		ItemStack stack = player.getHeldItem(hand);
-
-		if(!state.get(DEACTIVATED) && stack.getItem() == SCContent.WIRE_CUTTERS.get()){
-			world.setBlockState(pos, state.with(DEACTIVATED, true));
-
-			if(!player.isCreative())
-				stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
-
-			world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			return ActionResultType.SUCCESS;
-		}else if(state.get(DEACTIVATED) && stack.getItem() == Items.FLINT_AND_STEEL){
-			world.setBlockState(pos, state.with(DEACTIVATED, false));
-
-			if(!player.isCreative())
-				stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
-
-			world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			return ActionResultType.SUCCESS;
-		}
-
-		return ActionResultType.PASS;
-	}
-
-	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
 		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);
 
 			if(!EntityUtils.doesPlayerOwn(player, world, pos))
-				world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+				explode(world, pos);
 		}
 
 		return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
@@ -124,8 +82,7 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
 
-			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, (double) pos.getX() + 0.5F, (double) pos.getY() + 0.5F, (double) pos.getZ() + 0.5F, 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+			explode(world, pos);
 		}
 	}
 
@@ -216,8 +173,8 @@ public class ClaymoreBlock extends OwnableBlock implements IExplosive {
 	}
 
 	@Override
-	public boolean isDefusable() {
-		return true;
+	public boolean explodesWhenInteractedWith() {
+		return false;
 	}
 
 	@Override
