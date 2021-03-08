@@ -14,7 +14,7 @@ public class GuiBriefcaseInventory extends GuiContainer {
 	private String briefcaseName;
 
 	public GuiBriefcaseInventory(InventoryPlayer inventory, ItemStack briefcase) {
-		super(new ContainerBriefcase(inventory, new BriefcaseInventory(inventory.getCurrentItem())));
+		super(new ContainerBriefcase(inventory, new BriefcaseInventory(briefcase)));
 
 		this.briefcaseName = briefcase.getDisplayName();
 	}

@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.gui;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,7 +14,7 @@ public class GuiDisguiseModule extends GuiContainer {
 	private static final ResourceLocation TEXTURE  = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
 
 	public GuiDisguiseModule(InventoryPlayer inventory) {
-		super(new ContainerDisguiseModule(inventory, new ModuleItemInventory(inventory.getCurrentItem())));
+		super(new ContainerDisguiseModule(inventory, new ModuleItemInventory(PlayerUtils.getSelectedItemStack(inventory, SCContent.disguiseModule))));
 	}
 
 	@Override
