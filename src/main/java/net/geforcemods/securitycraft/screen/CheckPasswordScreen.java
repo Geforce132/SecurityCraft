@@ -16,10 +16,10 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
 
 @OnlyIn(Dist.CLIENT)
 public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
@@ -30,7 +30,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	private String blockName;
 	private TextFieldWidget keycodeTextbox;
 	private String currentString = "";
-	private static final int MAX_CHARS = 11;
+	private static final int MAX_CHARS = 20;
 
 	public CheckPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
@@ -55,13 +55,10 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(new ClickButton(9, width / 2 + 22, height / 2 + 10, 20, 20, "9", this::actionPerformed));
 		addButton(new ClickButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
-		keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, "");
-
-		keycodeTextbox.setTextColor(-1);
-		keycodeTextbox.setDisabledTextColour(-1);
-		keycodeTextbox.setEnableBackgroundDrawing(true);
+		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, ""));
 		keycodeTextbox.setMaxStringLength(MAX_CHARS);
-		keycodeTextbox.setFocused2(true);
+		keycodeTextbox.setValidator(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
+		setFocusedDefault(keycodeTextbox);
 	}
 
 	@Override
@@ -71,23 +68,10 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks){
-		super.render(mouseX, mouseY, partialTicks);
-		RenderSystem.disableLighting();
-		keycodeTextbox.render(mouseX, mouseY, partialTicks);
-	}
-
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
-	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
 		font.drawString(blockName, xSize / 2 - font.getStringWidth(blockName) / 2, 6, 4210752);
 	}
 
-	/**
-	 * Draw the background layer for the GuiContainer (everything behind the items)
-	 */
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY){
 		renderBackground();
@@ -102,7 +86,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers)
 	{
 		if(keyCode == GLFW.GLFW_KEY_BACKSPACE && currentString.length() > 0){
-			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
@@ -115,7 +99,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	@Override
 	public boolean charTyped(char typedChar, int keyCode) {
 		if(isValidChar(typedChar) && currentString.length() < MAX_CHARS){
-			Minecraft.getInstance().player.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("random.click")), 0.15F, 1.0F);
+			Minecraft.getInstance().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 			currentString += typedChar;
 			setTextboxCensoredText(keycodeTextbox, currentString);
 			checkCode(currentString);
@@ -136,15 +120,12 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	protected void actionPerformed(ClickButton button){
-		if (currentString.length() < MAX_CHARS) {
-			if(button.id >= 0 && button.id <= 9) {
-				currentString += "" + button.id;
-				setTextboxCensoredText(keycodeTextbox, currentString);
-				checkCode(currentString);
-			}
+		if(currentString.length() < MAX_CHARS && button.id >= 0 && button.id <= 9) {
+			currentString += "" + button.id;
+			setTextboxCensoredText(keycodeTextbox, currentString);
+			checkCode(currentString);
 		}
-
-		if(button.id == 10 && currentString.length() > 0)
+		else if(button.id == 10 && currentString.length() > 0)
 		{
 			currentString = Utils.removeLastChar(currentString);
 			setTextboxCensoredText(keycodeTextbox, currentString);
@@ -153,8 +134,11 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 
 	private void setTextboxCensoredText(TextFieldWidget textField, String text) {
 		String x = "";
+
 		for(int i = 1; i <= text.length(); i++)
+		{
 			x += "*";
+		}
 
 		textField.setText(x);
 	}

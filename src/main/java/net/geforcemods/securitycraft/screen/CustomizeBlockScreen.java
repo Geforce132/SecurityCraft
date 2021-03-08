@@ -67,8 +67,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 		for(int i = 0; i < moduleInv.getMaxNumberOfModules(); i++){
 			int column = i % numberOfColumns;
 
-			descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem()));
-			addButton(descriptionButtons[i]);
+			addButton(descriptionButtons[i] = new PictureButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRenderer, new ItemStack(moduleInv.acceptedModules()[i].getItem())));
 			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
 		}
 

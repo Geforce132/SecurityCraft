@@ -14,7 +14,6 @@ import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -30,7 +29,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	private Button[] keycodeTopButtons = new Button[4];
 	private Button[] keycodeBottomButtons = new Button[4];
 	private TextFieldWidget[] keycodeTextboxes = new TextFieldWidget[4];
-	private Button continueButton;
+	private ClickButton continueButton;
 	private int[] digits = {0, 0, 0, 0};
 
 	public BriefcasePasswordScreen(GenericContainer container, PlayerInventory inv, ITextComponent text) {
@@ -42,24 +41,18 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 		super.init();
 
 		for(int i = 0; i < keycodeTopButtons.length; i++) {
-			keycodeTopButtons[i] = new ClickButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed);
-			addButton(keycodeTopButtons[i]);
+			addButton(keycodeTopButtons[i] = new ClickButton(i, width / 2 - 40 + (i * 20), height / 2 - 52, 20, 20, UP_ARROW, this::actionPerformed));
 		}
 
 		for(int i = 0; i < keycodeBottomButtons.length; i++) {
-			keycodeBottomButtons[i] = new ClickButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed);
-			addButton(keycodeBottomButtons[i]);
+			addButton(keycodeBottomButtons[i] = new ClickButton(4 + i, width / 2 - 40 + (i * 20), height / 2, 20, 20, DOWN_ARROW, this::actionPerformed));
 		}
 
-		continueButton = new ClickButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed);
-		addButton(continueButton);
+		addButton(continueButton = new ClickButton(8, (width / 2 + 42), height / 2 - 26, 20, 20, ">", this::actionPerformed));
 
 		for(int i = 0; i < keycodeTextboxes.length; i++) {
+			//text boxes are not added via addButton because they should not be selectable
 			keycodeTextboxes[i] = new TextFieldWidget(font, (width / 2 - 37) + (i * 20), height / 2 - 22, 14, 12, "");
-
-			keycodeTextboxes[i].setTextColor(-1);
-			keycodeTextboxes[i].setDisabledTextColour(-1);
-			keycodeTextboxes[i].setEnableBackgroundDrawing(true);
 			keycodeTextboxes[i].setMaxStringLength(1);
 			keycodeTextboxes[i].setText("0");
 		}
@@ -90,11 +83,10 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 	}
 
 	protected void actionPerformed(ClickButton button) {
-		if(button.id == 8)
+		if(button.id == continueButton.id)
 		{
 			if(PlayerUtils.isHoldingItem(Minecraft.getInstance().player, SCContent.BRIEFCASE, null)) {
-				ItemStack briefcase = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get());
-				CompoundNBT nbt = briefcase.getTag();
+				CompoundNBT nbt = PlayerUtils.getSelectedItemStack(Minecraft.getInstance().player, SCContent.BRIEFCASE.get()).getTag();
 				String code = digits[0] + "" + digits[1] + "" +  digits[2] + "" + digits[3];
 
 				if(nbt.getString("passcode").equals(code)) {

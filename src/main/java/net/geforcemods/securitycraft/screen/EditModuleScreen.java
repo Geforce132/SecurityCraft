@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.item.ItemStack;
@@ -42,7 +41,7 @@ public class EditModuleScreen extends Screen
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, "");
+		addButton(inputField = new TextFieldWidget(font, width / 2 - 55, height / 2 - 65, 110, 15, ""));
 		addButton(addButton = new ClickButton(0, width / 2 - 38, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add").getFormattedText(), this::actionPerformed));
 		addButton(removeButton = new ClickButton(1, width / 2 - 38, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove").getFormattedText(), this::actionPerformed));
 		addButton(copyButton = new ClickButton(2, width / 2 - 38, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy").getFormattedText(), this::actionPerformed));
@@ -62,11 +61,13 @@ public class EditModuleScreen extends Screen
 		if (module.getTag() == null || module.getTag().isEmpty())
 			clearButton.active = false;
 
-		inputField.setTextColor(-1);
-		inputField.setDisabledTextColour(-1);
-		inputField.setEnableBackgroundDrawing(true);
 		inputField.setMaxStringLength(16);
-		inputField.setFocused2(true);
+		inputField.setValidator(s -> !s.contains(" "));
+		inputField.setResponder(s -> {
+			if(s.isEmpty())
+				addButton.active = removeButton.active = false;
+		});
+		setFocusedDefault(inputField);
 	}
 
 	@Override
@@ -84,8 +85,6 @@ public class EditModuleScreen extends Screen
 		int startY = (height - ySize) / 2;
 		blit(startX, startY, 0, 0, xSize, ySize);
 		super.render(mouseX, mouseY, partialTicks);
-		RenderSystem.disableLighting();
-		inputField.render(mouseX, mouseY, partialTicks);
 		font.drawSplitString(ClientUtils.localize("gui.securitycraft:editModule").getFormattedText(), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:editModule").getFormattedText()) / 2, startY + 6, width, 4210752);
 	}
 
@@ -116,24 +115,15 @@ public class EditModuleScreen extends Screen
 				if (inputField.getText().isEmpty())
 					return false;
 			}
-
-			if(keyCode == Minecraft.getInstance().gameSettings.keyBindInventory.getKey().getKeyCode())
-				return false;
-			else if(keyCode == GLFW.GLFW_KEY_ESCAPE)
-				return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
-			else
-				return inputField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
 		}
-		else return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+
+		return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
 	}
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode){
 		if(inputField.isFocused())
 		{
-			if (keyCode == GLFW.GLFW_KEY_SPACE)
-				return false;
-
 			inputField.charTyped(typedChar, keyCode);
 
 			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
@@ -149,72 +139,70 @@ public class EditModuleScreen extends Screen
 					removeButton.active = false;
 				}
 			}
+
 			return true;
 		}
 		else
 			return super.charTyped(typedChar, keyCode);
 	}
 
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int mouseButton){
-		inputField.mouseClicked(mouseX, mouseY, mouseButton);
-		return super.mouseClicked(mouseX, mouseY, mouseButton);
-	}
-
 	protected void actionPerformed(ClickButton button){
-		switch(button.id){
-			case 0: //add
-				if(inputField.getText().isEmpty())
-					return;
-
-				if(module.getTag() == null)
-					module.setTag(new CompoundNBT());
-
-				for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-				{
-					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
-					{
-						if (i == 9)
-							addButton.active = false;
-						return;
-					}
-				}
-
-				module.getTag().putString("Player" + getNextSlot(module.getTag()), inputField.getText());
-
-				if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
-					addButton.active = false;
-
-				inputField.setText("");
-				break;
-			case 1: //remove
-				if(inputField.getText().isEmpty())
-					return;
-
-				if(module.getTag() == null)
-					module.setTag(new CompoundNBT());
-
-				for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
-				{
-					if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
-						module.getTag().remove("Player" + i);
-				}
-
-				inputField.setText("");
-				break;
-			case 2: //copy
-				savedModule = module.getTag();
-				copyButton.active = false;
+		if(button.id == addButton.id)
+		{
+			if(inputField.getText().isEmpty())
 				return;
-			case 3: //paste
-				module.setTag(savedModule);
-				break;
-			case 4: //clear
+
+			if(module.getTag() == null)
 				module.setTag(new CompoundNBT());
-				inputField.setText("");
-				break;
-			default: return;
+
+			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
+			{
+				if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
+				{
+					if (i == 9)
+						addButton.active = false;
+
+					return;
+				}
+			}
+
+			module.getTag().putString("Player" + getNextFreeSlot(module.getTag()), inputField.getText());
+
+			if(module.getTag() != null && module.getTag().contains("Player" + ModuleItem.MAX_PLAYERS))
+				addButton.active = false;
+
+			inputField.setText("");
 		}
+		else if(button.id == removeButton.id)
+		{
+			if(inputField.getText().isEmpty())
+				return;
+
+			if(module.getTag() == null)
+				module.setTag(new CompoundNBT());
+
+			for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
+			{
+				if(module.getTag().contains("Player" + i) && module.getTag().getString("Player" + i).equals(inputField.getText()))
+					module.getTag().remove("Player" + i);
+			}
+
+			inputField.setText("");
+		}
+		else if(button.id == copyButton.id)
+		{
+			savedModule = module.getTag();
+			copyButton.active = false;
+			return;
+		}
+		else if(button.id == pasteButton.id)
+			module.setTag(savedModule);
+		else if(button.id == clearButton.id)
+		{
+			module.setTag(new CompoundNBT());
+			inputField.setText("");
+		}
+		else return;
 
 		if(module.getTag() != null)
 			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
@@ -226,7 +214,7 @@ public class EditModuleScreen extends Screen
 		clearButton.active = !(module.getTag() == null || module.getTag().isEmpty());
 	}
 
-	private int getNextSlot(CompoundNBT tag) {
+	private int getNextFreeSlot(CompoundNBT tag) {
 		for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 			if(tag.getString("Player" + i) != null && !tag.getString("Player" + i).isEmpty())
 				continue;
