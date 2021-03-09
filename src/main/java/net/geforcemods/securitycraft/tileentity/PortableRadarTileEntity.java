@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -55,7 +56,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 				if(hasModule(ModuleType.WHITELIST))
 					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(e.getName().getString().toLowerCase());
 
-				return e != owner && isNotWhitelisted && !e.isSpectator();
+				return e != owner && isNotWhitelisted && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if(hasModule(ModuleType.REDSTONE))

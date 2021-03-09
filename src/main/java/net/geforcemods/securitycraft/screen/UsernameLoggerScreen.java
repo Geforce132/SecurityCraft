@@ -13,7 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -47,7 +47,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	{
 		super.init();
 
-		addButton(new ClickButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
+		addButton(new IdButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
 			tileEntity.players = new String[100];
 			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);
@@ -60,7 +60,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, logged, xSize / 2 - font.getStringPropertyWidth(logged) / 2, 6, 4210752);
+		font.drawText(matrix, logged, xSize / 2 - font.getStringPropertyWidth(logged) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
 			renderTooltip(matrix, clear, mouseX - guiLeft, mouseY - guiTop);
@@ -179,7 +179,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
-						font.func_243248_b(matrix, localized, guiLeft + (xSize / 2 - font.getStringPropertyWidth(localized) / 2), bottom + 5, 4210752);
+						font.drawText(matrix, localized, guiLeft + (xSize / 2 - font.getStringPropertyWidth(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}

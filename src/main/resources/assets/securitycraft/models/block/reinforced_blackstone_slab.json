@@ -1,8 +1,0 @@
-{
-  "parent": "securitycraft:block/reinforced_half_slab",
-  "textures": {
-    "bottom": "minecraft:block/blackstone_top",
-    "top": "minecraft:block/blackstone_top",
-    "side": "minecraft:block/blackstone"
-  }
-}

@@ -66,7 +66,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		projectionRangeSlider = addButton(new NamedSlider(ClientUtils.localize("gui.securitycraft:projector.range", tileEntity.getProjectionRange()), blockName, id, left, guiTop + 89, sliderWidth, 20, ClientUtils.localize("gui.securitycraft:projector.range", ""), "", ProjectorTileEntity.MIN_RANGE, ProjectorTileEntity.MAX_RANGE, tileEntity.getProjectionRange(), false, true, slider -> {
 			//show a different number so it makes sense within the world
 			if(tileEntity.isHorizontal())
-				slider.setMessage(new StringTextComponent("").append(slider.dispString).appendString(Integer.toString((int)Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
+				slider.setMessage(new StringTextComponent("").appendSibling(slider.dispString).appendString(Integer.toString((int)Math.round(slider.sliderValue * (slider.maxValue - slider.minValue) + slider.minValue) - 16)));
 		}, this::sliderReleased));
 		projectionRangeSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionRangeSlider, ClientUtils.localize("gui.securitycraft:projector.range.description"));
@@ -102,7 +102,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, blockName, xSize / 2 - font.getStringPropertyWidth(blockName) / 2, 6, 4210752);
+		font.drawText(matrix, blockName, xSize / 2 - font.getStringPropertyWidth(blockName) / 2, 6, 4210752);
 	}
 
 	@Override

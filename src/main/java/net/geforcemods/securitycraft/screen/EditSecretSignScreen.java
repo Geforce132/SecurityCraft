@@ -126,8 +126,8 @@ public class EditSecretSignScreen extends Screen
 		boolean update = updateCounter / 6 % 2 == 0;
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
 		int textColor = te.getTextColor().getTextColor();
-		int k = textInputUtil.getEndIndex();
-		int l = textInputUtil.getStartIndex();
+		int k = textInputUtil.getSelectionEnd();
+		int l = textInputUtil.getSelectionStart();
 		int j1 = editLine * 10 - signText.length * 5;
 		IRenderTypeBuffer.Impl buffer;
 		IVertexBuilder builder;

@@ -46,12 +46,12 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
 
-		font.func_243248_b(matrix, ubr, (xSize - font.getStringPropertyWidth(ubr)) / 2, 5, 4210752);
-		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawText(matrix, ubr, (xSize - font.getStringPropertyWidth(ubr)) / 2, 5, 4210752);
+		font.drawText(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{
-			font.func_243248_b(matrix, output, 50, 25, 4210752);
+			font.drawText(matrix, output, 50, 25, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
 			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
 
@@ -61,7 +61,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 
 		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
-			font.func_243248_b(matrix, output, 50, 50, 4210752);
+			font.drawText(matrix, output, 50, 50, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
 			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
 

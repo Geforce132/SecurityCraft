@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "securitycraft:block/crystal_quartz_slab_top"
+    },
+    "type=bottom": {
+      "model": "securitycraft:block/crystal_quartz_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_quartz_default"
+    }
+  }
+}

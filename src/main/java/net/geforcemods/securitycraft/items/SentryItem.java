@@ -31,35 +31,34 @@ public class SentryItem extends Item
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
 	{
-		if(!world.isRemote)
+		pos = pos.offset(facing); //get sentry position
+
+		if(!world.isAirBlock(pos))
+			return ActionResultType.PASS;
+		else
 		{
-			pos = pos.offset(facing); //get sentry position
+			BlockPos downPos = pos.down();
 
-			if(!world.isAirBlock(pos))
-				return ActionResultType.PASS;
-			else
+			if(world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos)))
 			{
-				BlockPos downPos = pos.down();
-
-				if(world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos)))
-				{
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
-					return ActionResultType.FAIL;
-				}
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				return ActionResultType.FAIL;
 			}
-
-			SentryEntity entity = SCContent.eTypeSentry.create(world);
-
-			entity.setupSentry(player);
-			entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
-			if (stack.hasDisplayName())
-				entity.setCustomName(stack.getDisplayName());
-			world.addEntity(entity);
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), TextFormatting.DARK_RED);
-
-			if(!player.isCreative())
-				stack.shrink(1);
 		}
+
+		SentryEntity entity = SCContent.eTypeSentry.create(world);
+
+		entity.setupSentry(player);
+		entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+
+		if (stack.hasDisplayName())
+			entity.setCustomName(stack.getDisplayName());
+
+		world.addEntity(entity);
+		player.sendStatusMessage(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+
+		if(!player.isCreative())
+			stack.shrink(1);
 
 		return ActionResultType.SUCCESS;
 	}

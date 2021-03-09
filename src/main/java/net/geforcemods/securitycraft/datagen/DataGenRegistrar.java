@@ -21,7 +21,7 @@ public class DataGenRegistrar
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(generator, existingFileHelper);
 
 		generator.addProvider(new BlockLootTableGenerator(generator));
-		generator.addProvider(new BlockModelAndStateGenerator(generator, event.getExistingFileHelper()));
+		generator.addProvider(new BlockModelAndStateGenerator(generator, existingFileHelper));
 		generator.addProvider(blockTagGenerator);
 		generator.addProvider(new ItemModelGenerator(generator, existingFileHelper));
 		generator.addProvider(new FluidTagGenerator(generator, existingFileHelper));

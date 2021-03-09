@@ -118,7 +118,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 				return ActionResultType.FAIL;
 			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
 				activate(world, pos, player);
-			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER))
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
 		}
 

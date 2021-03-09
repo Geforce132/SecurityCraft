@@ -1,8 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_half_slab",
-    "textures": {
-        "bottom": "securitycraft:block/reinforced_granite",
-        "top": "securitycraft:block/reinforced_granite",
-        "side": "securitycraft:block/reinforced_granite"
-    }
-}

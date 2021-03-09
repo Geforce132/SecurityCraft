@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
@@ -28,21 +29,22 @@ public class KeyPanelItem extends Item {
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		if(!world.isRemote){
-			SecurityCraftAPI.getRegisteredPasswordConvertibles().forEach(pc -> {
-				if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
+		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
+			if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
+			{
+				if(pc.convert(player, world, pos))
 				{
-					if(pc.convert(player, world, pos))
-					{
-						if(!player.isCreative())
-							stack.shrink(1);
+					if(!player.isCreative())
+						stack.shrink(1);
 
+					if (!world.isRemote)
 						SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SCSounds.LOCK.location.toString(), 1.0F, "blocks"));
-					}
+
+					return ActionResultType.SUCCESS;
 				}
-			});
+			}
 		}
 
-		return ActionResultType.SUCCESS;
+		return ActionResultType.PASS;
 	}
 }

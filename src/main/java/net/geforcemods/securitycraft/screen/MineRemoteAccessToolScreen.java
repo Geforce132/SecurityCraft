@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.network.server.SetExplosiveState;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -34,7 +34,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
 	private final TranslationTextComponent mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
 	private ItemStack mrat;
-	private ClickButton[][] guiButtons = new ClickButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
+	private IdButton[][] guiButtons = new IdButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private int xSize = 256, ySize = 184;
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
@@ -53,6 +53,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int y = padding;
 		int[] coords = null;
 		int id = 0;
+
 		hoverCheckers.clear();
 
 		for(int i = 0; i < 6; i++)
@@ -83,7 +84,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
+						guiButtons[i][j] = new IdButton(id++, btnX, btnY, 20, 20, "X", this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
 				}
@@ -92,10 +93,13 @@ public class MineRemoteAccessToolScreen extends Screen{
 			}
 
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
+
 				if (Minecraft.getInstance().player.world.isBlockPresent(minePos)) {
 					Block block = minecraft.world.getBlockState(minePos).getBlock();
+
 					if (block instanceof IExplosive) {
 						boolean active = ((IExplosive) block).isActive(minecraft.world, minePos);
 						boolean defusable = ((IExplosive) block).isDefusable();
@@ -110,6 +114,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
+
 						for (int j = 0; j < 4; j++) {
 							guiButtons[i][j].active = false;
 						}
@@ -119,6 +124,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 					for (int j = 0; j < 3; j++) {
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
+
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
@@ -135,7 +141,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.func_243248_b(matrix, mratName, startX + xSize / 2 - font.getStringPropertyWidth(mratName), startY + -25 + 13, 0xFF0000);
+		font.drawText(matrix, mratName, startX + xSize / 2 - font.getStringPropertyWidth(mratName), startY + -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -147,7 +153,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 			else
 				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.func_243248_b(matrix, line, startX + xSize / 2 - font.getStringPropertyWidth(line) + 25, startY + i * 30 + 13, 4210752);
+			font.drawText(matrix, line, startX + xSize / 2 - font.getStringPropertyWidth(line) + 25, startY + i * 30 + 13, 4210752);
 		}
 
 		for(TextHoverChecker chc : hoverCheckers)
@@ -157,7 +163,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 		}
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		int mine = button.id / 4;
 		int action = button.id % 4;
 

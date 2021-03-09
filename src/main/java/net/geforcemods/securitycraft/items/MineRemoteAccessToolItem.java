@@ -42,10 +42,8 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
-		if(world.isRemote)
-			SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
-
-		return ActionResult.resultPass(player.getHeldItem(hand));
+		SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
+		return ActionResult.resultConsume(player.getHeldItem(hand));
 	}
 
 	@Override
@@ -55,40 +53,39 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
+		if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
+			if(!isMineAdded(stack, pos)){
+				int availSlot = getNextAvaliableSlot(stack);
 
-		if(!world.isRemote)
-		{
-			if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
-				if(!isMineAdded(stack, pos)){
-					int availSlot = getNextAvaliableSlot(stack);
-
-					if(availSlot == 0){
-						PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
-						return ActionResultType.FAIL;
-					}
-
-					if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
-					{
-						SecurityCraft.proxy.displayMRATGui(stack);
-						return ActionResultType.SUCCESS;
-					}
-
-					if(stack.getTag() == null)
-						stack.setTag(new CompoundNBT());
-
-					stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
-				}else{
-					removeTagFromItemAndUpdate(stack, pos, player);
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+				if(availSlot == 0){
+					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
+					return ActionResultType.FAIL;
 				}
+
+				if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
+				{
+					SecurityCraft.proxy.displayMRATGui(stack);
+					return ActionResultType.SUCCESS;
+				}
+
+				if(stack.getTag() == null)
+					stack.setTag(new CompoundNBT());
+
+				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
+
+				if (!world.isRemote)
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
+
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+				return ActionResultType.SUCCESS;
+			}else{
+				removeTagFromItemAndUpdate(stack, pos, player);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+				return ActionResultType.SUCCESS;
 			}
 		}
-		else if(world.isRemote && !(BlockUtils.getBlock(world, pos) instanceof IExplosive))
-			SecurityCraft.proxy.displayMRATGui(stack);
 
-		return ActionResultType.SUCCESS;
+		return ActionResultType.PASS;
 	}
 
 	@Override
@@ -106,7 +103,7 @@ public class MineRemoteAccessToolItem extends Item {
 					continue;
 				}
 				else
-					list.add(ClientUtils.localize("tooltip.securitycraft:mine").append(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
+					list.add(ClientUtils.localize("tooltip.securitycraft:mine").appendSibling(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
 			}
 			else
 				list.add(new StringTextComponent(TextFormatting.GRAY + "---"));
@@ -122,7 +119,8 @@ public class MineRemoteAccessToolItem extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
+					if (!player.world.isRemote)
+						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 					return;
 				}
 			}

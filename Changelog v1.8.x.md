@@ -1,10 +1,26 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
+- New: SecurityCraft's blocks and items can now properly be used by the offhand
+- New: Server configuration option "force_reinforced_block_tint". This can be used to force players to use the setting of the server config value "reinforced_block_tint" 
+- New: Client configuration option "reinforced_block_tint". If the server does not force the reinforced block tint, this value will be used
+- New: The Codebreaker will now send a message when it failed to break a code
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
+- Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
 - Fix: Double Crystal Quartz Slab does not drop two slab items
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
+- Fix: Newly added block mines don't get affected by the ableToCraftMines config setting
+- Fix: Portable Radar does not respect the "respect_invisibility" config option
+- Fix: I.M.S. attacks players in spectator mode
+- Fix: The Briefcase's NBT contains empty Briefcase inventory slots
+- Fix: Some of SecurityCraft's tools don't lose durability when used on a block while held in the offhand
+- Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
+- Fix: Mines can be placed on some blocks that haven't got a solid top side
+- Fix: Claymores spawn fire when exploding even though the shouldSpawnFire configuration option is false
+- Fix: Using TAB to navigate menus does not work properly in some of SecurityCraft's interfaces
+- Fix: Pressing ENTER to press buttons in SecurityCraft's interfaces does not work
 - Misc.: All of SecurityCraft's blocks now have loot tables
+- Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
 --------------------------Changelog for v1.8.21.1 of SecurityCraft--------------------------
 

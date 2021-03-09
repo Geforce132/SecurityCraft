@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -24,7 +25,7 @@ public class BlockReinforcerContainer extends Container
 	{
 		super(SCContent.cTypeBlockReinforcer, windowId);
 
-		blockReinforcer = inventory.getCurrentItem();
+		blockReinforcer = inventory.getCurrentItem().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getCurrentItem() : inventory.offHandInventory.get(0);
 		this.isLvl1 = isLvl1;
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -238,8 +239,10 @@ public class BlockReinforcerContainer extends Container
 
 				if(block != null)
 				{
+					boolean isLvl3 = blockReinforcer.getItem() == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get();
+
 					output = new ItemStack(block);
-					output.setCount(Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
+					output.setCount(isLvl3 ? stack.getCount() : Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamage()));
 				}
 			}
 		}

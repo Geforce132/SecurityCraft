@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -25,7 +25,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	private final TranslationTextComponent target = ClientUtils.localize("gui.securitycraft:ims.target");
 
 	private IMSTileEntity tileEntity;
-	private ClickButton targetButton;
+	private IdButton targetButton;
 	private IMSTargetingMode targetMode;
 
 	public IMSScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
@@ -38,7 +38,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	public void init(){
 		super.init();
 
-		addButton(targetButton = new ClickButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
+		addButton(targetButton = new IdButton(0, width / 2 - 75, height / 2 - 38, 150, 20, "", this::actionPerformed));
 		updateButtonText();
 	}
 
@@ -48,8 +48,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
 
-		font.func_243248_b(matrix, imsName, xSize / 2 - font.getStringPropertyWidth(imsName) / 2, 6, 4210752);
-		font.func_243248_b(matrix, target, xSize / 2 - font.getStringPropertyWidth(target) / 2, 30, 4210752);
+		font.drawText(matrix, imsName, xSize / 2 - font.getStringPropertyWidth(imsName) / 2, 6, 4210752);
+		font.drawText(matrix, target, xSize / 2 - font.getStringPropertyWidth(target) / 2, 30, 4210752);
 	}
 
 	@Override
@@ -62,13 +62,11 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
-	protected void actionPerformed(ClickButton button){
-		if(button.id == 0){
-			targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
-			tileEntity.setTargetingOption(targetMode);
-			ClientUtils.syncTileEntity(tileEntity);
-			updateButtonText();
-		}
+	protected void actionPerformed(IdButton button){
+		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
+		tileEntity.setTargetingOption(targetMode);
+		ClientUtils.syncTileEntity(tileEntity);
+		updateButtonText();
 	}
 
 	private void updateButtonText() {

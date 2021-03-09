@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_outer_stairs",
+  "textures": {
+    "side": "minecraft:block/polished_diorite",
+    "bottom": "minecraft:block/polished_diorite",
+    "top": "minecraft:block/polished_diorite"
+  }
+}

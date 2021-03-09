@@ -311,7 +311,7 @@ public class ClientProxy implements IProxy
 			if(world == null || pos == null)
 				return tint;
 
-			boolean tintBlocks = ConfigHandler.SERVER.reinforcedBlockTint.get();
+			boolean tintBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !state.get(ReinforcedSnowyDirtBlock.SNOWY))
 			{
@@ -330,7 +330,7 @@ public class ClientProxy implements IProxy
 				return noTint;
 		}, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-			boolean tintBlocks = ConfigHandler.SERVER.reinforcedBlockTint.get();
+			boolean tintBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 			if(item == SCContent.REINFORCED_GRASS_BLOCK.get())
 			{

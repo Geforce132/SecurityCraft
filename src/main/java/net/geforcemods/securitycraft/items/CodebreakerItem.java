@@ -21,6 +21,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,7 +38,7 @@ public class CodebreakerItem extends Item {
 		ItemStack codebreaker = player.getHeldItem(hand);
 
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
-			if(!world.isRemote && !ConfigHandler.SERVER.allowCodebreakerItem.get()) {
+			if(!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.BRIEFCASE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 				return ActionResult.resultFail(codebreaker);
 			}
@@ -61,6 +62,8 @@ public class CodebreakerItem extends Item {
 						}
 					}, player.getPosition());
 				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(SCContent.CODEBREAKER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
 
 			return ActionResult.resultSuccess(codebreaker);

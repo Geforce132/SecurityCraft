@@ -355,7 +355,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public Vector3d func_230268_c_(LivingEntity livingEntity) //getPositionAfterDismount
+	public Vector3d getDismountPosition(LivingEntity livingEntity)
 	{
 		livingEntity.rotationYaw = cameraUseYaw % 360.0F;
 		livingEntity.rotationPitch = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;

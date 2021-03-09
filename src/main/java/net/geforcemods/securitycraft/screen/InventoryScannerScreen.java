@@ -33,7 +33,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
 		infoString = ClientUtils.localize("gui.securitycraft:invScan.emit_redstone", ClientUtils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(ModuleType.REDSTONE) ? "yes" : "no")))
 				.appendString("\n\n")
-				.append(ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))));
+				.appendSibling(ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))));
 
 		if(hasStorageModule)
 			xSize = 246;
@@ -72,13 +72,13 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.prohibitedItems"), 8, 6, 4210752);
-		font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
+		font.drawText(matrix, ClientUtils.localize("gui.securitycraft:invScan.prohibitedItems"), 8, 6, 4210752);
+		font.drawText(matrix, ClientUtils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
+			font.drawText(matrix, ClientUtils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
 
-		font.func_243248_b(matrix, ClientUtils.localize("container.inventory"), 15, ySize - 93, 4210752);
+		font.drawText(matrix, ClientUtils.localize("container.inventory"), 15, ySize - 93, 4210752);
 	}
 
 	@Override

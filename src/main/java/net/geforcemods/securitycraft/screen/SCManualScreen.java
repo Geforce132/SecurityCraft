@@ -10,7 +10,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -18,10 +17,11 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
+import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -99,7 +99,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		updateRecipeAndIcons();
-		SecurityCraft.instance.manualPages.sort((page1, page2) -> {
+		SCManualItem.PAGES.sort((page1, page2) -> {
 			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey()).getString();
 			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey()).getString();
 
@@ -120,7 +120,7 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage == -1)
 			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || SecurityCraft.instance.manualPages.get(currentPage).isRecipeDisabled())
+		else if(recipe != null || SCManualItem.PAGES.get(currentPage).isRecipeDisabled())
 			minecraft.getTextureManager().bindTexture(infoBookTexture);
 		else
 			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -128,20 +128,20 @@ public class SCManualScreen extends Screen {
 		this.blit(matrix, startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
-			if(SecurityCraft.instance.manualPages.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-				font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
+				font.drawText(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.func_243248_b(matrix, ClientUtils.localize(SecurityCraft.instance.manualPages.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.drawText(matrix, ClientUtils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
 			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
-			String designedBy = SecurityCraft.instance.manualPages.get(currentPage).getDesignedBy();
+			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
 				font.func_238418_a_(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.func_243248_b(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
-			font.func_243248_b(matrix, intro2, width / 2 - font.getStringPropertyWidth(intro2) / 2, 142, 0);
+			font.drawText(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
+			font.drawText(matrix, intro2, width / 2 - font.getStringPropertyWidth(intro2) / 2, 142, 0);
 
 			for(int i = 0; i < author.size(); i++)
 			{
@@ -159,11 +159,11 @@ public class SCManualScreen extends Screen {
 			if(subpages.size() > 1)
 				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			font.drawString(matrix, (currentPage + 1) + "/" + SecurityCraft.instance.manualPages.size(), startX + 195, 192, 0x8E8270);
+			font.drawString(matrix, (currentPage + 1) + "/" + SCManualItem.PAGES.size(), startX + 195, 192, 0x8E8270);
 		}
 
 		if(currentPage > -1){
-			Item item = SecurityCraft.instance.manualPages.get(currentPage).getItem();
+			Item item = SCManualItem.PAGES.get(currentPage).getItem();
 
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
@@ -238,7 +238,7 @@ public class SCManualScreen extends Screen {
 		return super.charTyped(typedChar, keyCode);
 	}
 
-	protected void actionPerformed(ClickButton button){
+	protected void actionPerformed(IdButton button){
 		if(button.id == 1)
 			nextPage();
 		else if(button.id == 2)
@@ -274,7 +274,7 @@ public class SCManualScreen extends Screen {
 	{
 		currentPage++;
 
-		if(currentPage > SecurityCraft.instance.manualPages.size() - 1)
+		if(currentPage > SCManualItem.PAGES.size() - 1)
 			currentPage = -1;
 
 		updateRecipeAndIcons();
@@ -285,7 +285,7 @@ public class SCManualScreen extends Screen {
 		currentPage--;
 
 		if(currentPage < -1)
-			currentPage = SecurityCraft.instance.manualPages.size() - 1;
+			currentPage = SCManualItem.PAGES.size() - 1;
 
 		updateRecipeAndIcons();
 	}
@@ -323,7 +323,7 @@ public class SCManualScreen extends Screen {
 			return;
 		}
 
-		SCManualPage page = SecurityCraft.instance.manualPages.get(currentPage);
+		SCManualPage page = SCManualItem.PAGES.get(currentPage);
 
 		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
 		{
@@ -420,7 +420,7 @@ public class SCManualScreen extends Screen {
 
 						for(Option<?> option : scte.customOptions())
 						{
-							display.add(new StringTextComponent("- ").append(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
+							display.add(new StringTextComponent("- ").appendSibling(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
 
@@ -442,7 +442,7 @@ public class SCManualScreen extends Screen {
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							display.add(new StringTextComponent("- ").append(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
+							display.add(new StringTextComponent("- ").appendSibling(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
 
@@ -482,10 +482,10 @@ public class SCManualScreen extends Screen {
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
-	static class ChangePageButton extends ClickButton {
+	static class ChangePageButton extends IdButton {
 		private final boolean isForward;
 
-		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<ClickButton> onClick){
+		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<IdButton> onClick){
 			super(index, xPos, yPos, 23, 13, "", onClick);
 			isForward = forward;
 		}

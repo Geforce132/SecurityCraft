@@ -157,4 +157,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 		return false;
 	}
 
+	public Block getBlockDisguisedAs()
+	{
+		return blockDisguisedAs;
+	}
 }

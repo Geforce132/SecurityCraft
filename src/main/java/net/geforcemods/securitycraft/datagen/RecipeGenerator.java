@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Maps;
 
@@ -1016,12 +1017,7 @@ public class RecipeGenerator extends RecipeProvider
 
 	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
 	{
-		ShapelessRecipeBuilder.shapelessRecipe(result)
-		.setGroup("securitycraft:block_mines")
-		.addIngredient(input)
-		.addIngredient(SCContent.MINE.get())
-		.addCriterion("has_mine", hasItem(SCContent.MINE.get()))
-		.build(consumer);
+		addShapelessConditionalRecipe(consumer, result, 1, "securitycraft:block_mines", Arrays.asList(input, SCContent.MINE.get()), hasItem(SCContent.MINE.get()), ToggleMinesCondition.INSTANCE);
 	}
 
 	protected final void addButtonRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
@@ -1196,14 +1192,14 @@ public class RecipeGenerator extends RecipeProvider
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 	}
 
-	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result, int amount, String group, List<Ingredient> ingredients, CriterionInstance criterion, ICondition condition)
+	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider result, int amount, String group, List<IItemProvider> ingredients, CriterionInstance criterion, ICondition condition)
 	{
 		ShapelessRecipeBuilder.Result recipe;
 		Item resultItem = result.asItem();
 		ResourceLocation id = resultItem.getRegistryName();
 
 		recipe = new ShapelessRecipeBuilder.Result(id,
-				resultItem, amount, group, ingredients,
+				resultItem, amount, group, ingredients.stream().map(item -> Ingredient.fromItems(item)).collect(Collectors.toList()),
 				Advancement.Builder.builder().withCriterion("has_item", criterion),
 				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getGroup().getPath() + "/" + id.getPath()));
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);

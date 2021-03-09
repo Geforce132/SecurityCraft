@@ -1,0 +1,8 @@
+{
+  "parent": "securitycraft:block/reinforced_slab",
+  "textures": {
+    "side": "minecraft:block/polished_granite",
+    "bottom": "minecraft:block/polished_granite",
+    "top": "minecraft:block/polished_granite"
+  }
+}

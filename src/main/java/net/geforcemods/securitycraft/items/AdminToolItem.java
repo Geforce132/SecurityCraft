@@ -37,7 +37,7 @@ public class AdminToolItem extends Item {
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
 
-		if(world.isRemote && ConfigHandler.SERVER.allowAdminTool.get()) {
+		if(ConfigHandler.SERVER.allowAdminTool.get()) {
 			IFormattableTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
 
 			if(!player.isCreative())
@@ -68,7 +68,7 @@ public class AdminToolItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(ModuleType module : modules)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
@@ -80,7 +80,7 @@ public class AdminToolItem extends Item {
 
 					for(int i = 0; i < 4; i++)
 					{
-						ITextProperties text = ((SecretSignTileEntity)te).getText(i);
+						ITextProperties text = ((SecretSignTileEntity)te).signText[i];
 
 						if(text instanceof IFormattableTextComponent)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, (IFormattableTextComponent)text, TextFormatting.DARK_PURPLE);
@@ -92,7 +92,7 @@ public class AdminToolItem extends Item {
 				if(!hasInfo)
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 
-				return ActionResultType.FAIL;
+				return ActionResultType.SUCCESS;
 			}
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);

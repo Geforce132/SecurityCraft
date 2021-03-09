@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
-import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -37,9 +37,9 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private final TranslationTextComponent modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
-	private ClickButton[][] guiButtons = new ClickButton[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
+	private IdButton[][] guiButtons = new IdButton[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)
 	private ITextComponent[] names = new ITextComponent[12];
-	private ClickButton[] guiButtonsGlobal = new ClickButton[3];
+	private IdButton[] guiButtonsGlobal = new IdButton[3];
 	private static final int MODE = 0, TARGETS = 1, UNBIND = 2;
 	private int xSize = 440, ySize = 215;
 	private static final int SENTRY_TRACKING_RANGE = 256; // as defined when registering SentryEntity
@@ -89,7 +89,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new ClickButton(id++, btnX, btnY, 20, 20, "X", this::clickUnbind);
+						guiButtons[i][j] = new IdButton(id++, btnX, btnY, 20, 20, "X", this::clickUnbind);
 						guiButtons[i][j].active = false;
 						break;
 				}
@@ -98,8 +98,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
+
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
+
 				if (Minecraft.getInstance().player.world.isBlockPresent(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
 					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
@@ -131,6 +133,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					}
 					else {
 						removeTagFromToolAndUpdate(srat, coords[0], coords[1], coords[2]);
+
 						for (int j = 0; j < 3; j++) {
 							guiButtons[i][j].active = false;
 						}
@@ -140,6 +143,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 					for (int j = 0; j < 2; j++) {
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange")));
 					}
+
 					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind")));
 				}
 			}
@@ -148,7 +152,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		//Add buttons for global operation (all sentries), large id
 		guiButtonsGlobal[0] = new TogglePictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformedGlobal);
 		guiButtonsGlobal[1] = new TogglePictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformedGlobal);
-		guiButtonsGlobal[2] = new ClickButton(1002, startX + 44 + 260, startY + 188, 20, 20, "X", this::clickGlobalUnbind);
+		guiButtonsGlobal[2] = new IdButton(1002, startX + 44 + 260, startY + 188, 20, 20, "X", this::clickGlobalUnbind);
 
 		for (int j = 0; j < 3; j++) {
 			guiButtonsGlobal[j].active = foundSentry;
@@ -171,7 +175,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.func_243248_b(matrix, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.drawText(matrix, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -184,10 +188,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.func_243248_b(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.drawText(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
 
-		font.func_243248_b(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
+		font.drawText(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
 
 		for(TextHoverChecker chc : hoverCheckers)
 		{
@@ -212,12 +216,12 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 	}
 
-	private void clickUnbind(ClickButton button)
+	private void clickUnbind(IdButton button)
 	{
 		unbindSentry(button.id / 3);
 	}
 
-	private void clickGlobalUnbind(ClickButton button)
+	private void clickGlobalUnbind(IdButton button)
 	{
 		for(int i = 0; i < 12; i++)
 		{
@@ -249,7 +253,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	/**
 	 * Action to perform when a button is clicked
 	 */
-	protected void actionPerformed(ClickButton button) {
+	protected void actionPerformed(IdButton button) {
 		int sentry = button.id / 3;
 		int type = button.id % 3;
 		int mode = ((TogglePictureButton)button).getCurrentIndex();
@@ -263,13 +267,13 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		performSingleAction(sentry, mode, targets);
 	}
 
-	protected void actionPerformedGlobal(ClickButton button) {
+	protected void actionPerformedGlobal(IdButton button) {
 		for (int i = 0; i < buttons.size() / 3; i++) {
 			Widget widget = buttons.get(i * 3);
 
-			if(widget instanceof ClickButton && getSentryCoordinates(i)[1] != 0)
+			if(widget instanceof IdButton && getSentryCoordinates(i)[1] != 0)
 			{
-				int sentry = ((ClickButton)buttons.get(i * 3)).id / 3;
+				int sentry = ((IdButton)buttons.get(i * 3)).id / 3;
 				int mode = button.id == guiButtonsGlobal[MODE].id ? ((TogglePictureButton)guiButtonsGlobal[MODE]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][MODE]).getCurrentIndex();
 				int targets = button.id == guiButtonsGlobal[TARGETS].id ? ((TogglePictureButton)guiButtonsGlobal[TARGETS]).getCurrentIndex() : ((TogglePictureButton)guiButtons[sentry][TARGETS]).getCurrentIndex();
 

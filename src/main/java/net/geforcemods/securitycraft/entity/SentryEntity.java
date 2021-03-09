@@ -155,7 +155,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	@Override
-	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand)
+	public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand)
 	{
 		BlockPos pos = getPosition();
 
@@ -238,9 +238,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				String newOwner = player.getHeldItemMainhand().getDisplayName().getString();
 
 				dataManager.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID"));
-
-				if(world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 			}
 			else
 				toggleMode(player);
@@ -254,7 +252,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				remove();
 		}
 
-		return super.func_230254_b_(player, hand);
+		return super.getEntityInteractionResult(player, hand);
 	}
 
 	/**
@@ -309,8 +307,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		dataManager.set(MODE, mode);
 
-		if(player.world.isRemote && sendMessage)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize(SentryMode.values()[mode].getModeKey()).append(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), TextFormatting.DARK_RED);
+		if(sendMessage)
+			player.sendStatusMessage(ClientUtils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
