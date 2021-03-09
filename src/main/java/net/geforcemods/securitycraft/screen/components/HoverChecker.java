@@ -21,7 +21,7 @@ public class HoverChecker
 
 	public HoverChecker(Widget widget)
 	{
-		this(widget.x, widget.x + widget.getHeightRealms(), widget.y, widget.y + widget.getWidth());
+		this(widget.x, widget.x + widget.getHeight(), widget.y, widget.y + widget.getWidth());
 
 		this.widget = widget;
 	}

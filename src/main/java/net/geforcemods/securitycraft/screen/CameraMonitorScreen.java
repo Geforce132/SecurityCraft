@@ -14,8 +14,8 @@ import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -96,7 +96,7 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
 
-			button.setMessage(button.getMessage().copyRaw().append(new StringTextComponent("" + camID)));
+			button.setMessage(button.getMessage().copyRaw().appendSibling(new StringTextComponent("" + camID)));
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
@@ -151,7 +151,7 @@ public class CameraMonitorScreen extends Screen {
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.func_243248_b(matrix, selectCameras, startX + xSize / 2 - font.getStringPropertyWidth(selectCameras) / 2, startY + 6, 4210752);
+		font.drawText(matrix, selectCameras, startX + xSize / 2 - font.getStringPropertyWidth(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){

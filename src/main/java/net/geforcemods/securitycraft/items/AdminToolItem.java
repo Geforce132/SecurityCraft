@@ -68,7 +68,7 @@ public class AdminToolItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(ModuleType module : modules)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}

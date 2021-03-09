@@ -155,7 +155,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	@Override
-	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand)
+	public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand)
 	{
 		BlockPos pos = getPosition();
 
@@ -252,7 +252,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				remove();
 		}
 
-		return super.func_230254_b_(player, hand);
+		return super.getEntityInteractionResult(player, hand);
 	}
 
 	/**
@@ -308,7 +308,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(sendMessage)
-			player.sendStatusMessage(ClientUtils.localize(SentryMode.values()[mode].getModeKey()).append(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
+			player.sendStatusMessage(ClientUtils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}

@@ -85,9 +85,9 @@ public class PlayerUtils{
 	public static void sendMessageToPlayer(PlayerEntity player, IFormattableTextComponent prefix, IFormattableTextComponent text, TextFormatting color, boolean shouldSendFromClient){
 		if (player.world.isRemote == shouldSendFromClient) {
 			player.sendMessage(new StringTextComponent("[")
-					.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
-					.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
-					.append(text), Util.DUMMY_UUID); //appendSibling
+					.appendSibling(prefix.setStyle(Style.EMPTY.setFormatting(color)))
+					.appendSibling(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
+					.appendSibling(text), Util.DUMMY_UUID); //appendSibling
 		}
 	}
 
@@ -96,11 +96,11 @@ public class PlayerUtils{
 	 */
 	public static void sendMessageEndingWithLink(ICommandSource sender, IFormattableTextComponent prefix, IFormattableTextComponent text, String link, TextFormatting color){
 		sender.sendMessage(new StringTextComponent("[")
-				.append(prefix.setStyle(Style.EMPTY.setFormatting(color)))
-				.append(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
-				.append(text)
-				.append(new StringTextComponent(": "))
-				.append(ForgeHooks.newChatWithLinks(link)), Util.DUMMY_UUID); //appendSibling
+				.appendSibling(prefix.setStyle(Style.EMPTY.setFormatting(color)))
+				.appendSibling(new StringTextComponent("] ")).setStyle(Style.EMPTY.setFormatting(TextFormatting.WHITE))
+				.appendSibling(text)
+				.appendSibling(new StringTextComponent(": "))
+				.appendSibling(ForgeHooks.newChatWithLinks(link)), Util.DUMMY_UUID); //appendSibling
 	}
 
 	/**

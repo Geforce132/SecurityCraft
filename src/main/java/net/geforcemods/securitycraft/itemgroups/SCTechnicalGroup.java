@@ -12,7 +12,7 @@ public class SCTechnicalGroup extends ItemGroup
 	public SCTechnicalGroup()
 	{
 		super(SecurityCraft.MODID + ".technical");
-		setTabPath(SecurityCraft.MODID);
+		setGroupPath(SecurityCraft.MODID);
 	}
 
 	@Override

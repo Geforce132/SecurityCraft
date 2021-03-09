@@ -96,7 +96,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
+				body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
 		}
 
 		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
@@ -131,17 +131,17 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					body.add(ClientUtils.localize("waila.securitycraft:equipped"));
 
 					if(!sentry.getWhitelistModule().isEmpty())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
+						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
 
 					if(!sentry.getDisguiseModule().isEmpty())
-						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 				}
 			}
 
 			IFormattableTextComponent modeDescription = ClientUtils.localize(mode.getModeKey());
 
 			if(mode != SentryMode.IDLE)
-				modeDescription.appendString("- ").append(ClientUtils.localize(mode.getTargetKey()));
+				modeDescription.appendString("- ").appendSibling(ClientUtils.localize(mode.getTargetKey()));
 
 			body.add(modeDescription);
 		}

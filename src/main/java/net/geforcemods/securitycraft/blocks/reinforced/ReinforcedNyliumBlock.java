@@ -53,10 +53,10 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowa
 		BlockState state = world.getBlockState(pos);
 		BlockPos upperPos = pos.up();
 
-		if (state.isIn(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
+		if (state.matchesBlock(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.CRIMSON_FOREST_VEGETATION_CONFIG, 3, 1);
 		}
-		else if (state.isIn(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
+		else if (state.matchesBlock(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.WARPED_FOREST_VEGETATION_CONFIG, 3, 1);
 			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
 

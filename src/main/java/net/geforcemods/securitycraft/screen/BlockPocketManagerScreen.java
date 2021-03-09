@@ -122,11 +122,11 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.func_243248_b(matrix, blockPocketManager, (storage ? 123 : xSize) / 2 - font.getStringPropertyWidth(blockPocketManager) / 2, 6, 4210752);
+		font.drawText(matrix, blockPocketManager, (storage ? 123 : xSize) / 2 - font.getStringPropertyWidth(blockPocketManager) / 2, 6, 4210752);
 
 		if(storage)
 		{
-			font.func_243248_b(matrix, playerInventory.getDisplayName(), 8, ySize - 94, 4210752);
+			font.drawText(matrix, playerInventory.getDisplayName(), 8, ySize - 94, 4210752);
 			renderHoveredTooltip(matrix, mouseX - guiLeft, mouseY - guiTop);
 		}
 
@@ -134,7 +134,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		{
 			if(!storage)
 			{
-				font.func_243248_b(matrix, youNeed, xSize / 2 - font.getStringPropertyWidth(youNeed) / 2, 83, 4210752);
+				font.drawText(matrix, youNeed, xSize / 2 - font.getStringPropertyWidth(youNeed) / 2, 83, 4210752);
 
 				font.drawString(matrix, wallsNeededOverall + "", 42, 100, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 25, 96);
@@ -147,7 +147,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 			}
 			else
 			{
-				font.func_243248_b(matrix, youNeed, 169 + 87 / 2 - font.getStringPropertyWidth(youNeed) / 2, ySize - 83, 4210752);
+				font.drawText(matrix, youNeed, 169 + 87 / 2 - font.getStringPropertyWidth(youNeed) / 2, ySize - 83, 4210752);
 
 				font.drawString(matrix, Math.max(0, wallsStillNeeded) + "", 192, ySize - 66, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(BLOCK_POCKET_WALL, 175, ySize - 70);

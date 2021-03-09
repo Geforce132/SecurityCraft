@@ -48,10 +48,10 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 		if (plantable instanceof BushBlock) //a workaround because BaseReinforcedBlock can't use isValidGround because it is protected
 		{
-			boolean bushCondition = state.isIn(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.isIn(SCContent.REINFORCED_DIRT.get()) || state.isIn(SCContent.REINFORCED_COARSE_DIRT.get()) || state.isIn(SCContent.REINFORCED_PODZOL.get());
+			boolean bushCondition = state.matchesBlock(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.matchesBlock(SCContent.REINFORCED_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_COARSE_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_PODZOL.get());
 
 			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock || plantable instanceof FungusBlock)
-				return state.isIn(SCTags.Blocks.REINFORCED_NYLIUM) || state.isIn(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+				return state.isIn(SCTags.Blocks.REINFORCED_NYLIUM) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 		}
 
 		if(type == PlantType.DESERT)

@@ -112,9 +112,9 @@ public class ModuleItem extends Item{
 
 						@Override
 						public ITextComponent getDisplayName()
-					{
-						return new TranslationTextComponent(getTranslationKey());
-					}
+						{
+							return new TranslationTextComponent(getTranslationKey());
+						}
 					});
 				}
 
@@ -158,7 +158,7 @@ public class ModuleItem extends Item{
 				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").setStyle(GRAY_STYLE));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent("- ").append(ClientUtils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
+					list.add(new StringTextComponent("- ").appendSibling(ClientUtils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
 			}
 		}
 	}

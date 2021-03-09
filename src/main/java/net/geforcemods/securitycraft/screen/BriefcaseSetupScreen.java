@@ -64,7 +64,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.func_243248_b(matrix, setupTitle, xSize / 2 - font.getStringPropertyWidth(setupTitle) / 2, 6, 4210752);
+		font.drawText(matrix, setupTitle, xSize / 2 - font.getStringPropertyWidth(setupTitle) / 2, 6, 4210752);
 	}
 
 	@Override

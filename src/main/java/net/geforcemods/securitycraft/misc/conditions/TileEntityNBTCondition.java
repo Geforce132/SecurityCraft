@@ -33,20 +33,20 @@ public class TileEntityNBTCondition implements ILootCondition
 	@Override
 	public Set<LootParameter<?>> getRequiredParameters()
 	{
-		return ImmutableSet.of(LootParameters.field_237457_g_);
+		return ImmutableSet.of(LootParameters.ORIGIN);
 	}
 
 	@Override
 	public boolean test(LootContext lootContext)
 	{
-		TileEntity te = lootContext.getWorld().getTileEntity(new BlockPos(lootContext.get(LootParameters.field_237457_g_)));
+		TileEntity te = lootContext.getWorld().getTileEntity(new BlockPos(lootContext.get(LootParameters.ORIGIN)));
 		CompoundNBT nbt = te.write(new CompoundNBT());
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
 
 	@Override
-	public LootConditionType func_230419_b_()
+	public LootConditionType getConditionType()
 	{
 		return SecurityCraft.TILE_ENTITY_NBT_LOOT_CONDITION;
 	}

@@ -55,7 +55,7 @@ public class SentryItem extends Item
 			entity.setCustomName(stack.getDisplayName());
 
 		world.addEntity(entity);
-		player.sendStatusMessage(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+		player.sendStatusMessage(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if(!player.isCreative())
 			stack.shrink(1);

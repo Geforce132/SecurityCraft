@@ -91,7 +91,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getString()));
 
 						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(module.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
 					}
 				}
 
@@ -130,16 +130,16 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("waila.securitycraft:equipped").getString()));
 
 						if(!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
 
 						if(!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 					}
 
 					IFormattableTextComponent modeDescription = ClientUtils.localize(mode.getModeKey());
 
 					if(mode != SentryMode.IDLE)
-						modeDescription.appendString("- ").append(ClientUtils.localize(mode.getTargetKey()));
+						modeDescription.appendString("- ").appendSibling(ClientUtils.localize(mode.getTargetKey()));
 
 					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + modeDescription.getString()));
 				}

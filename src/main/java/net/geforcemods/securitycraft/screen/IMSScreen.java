@@ -48,8 +48,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
 
-		font.func_243248_b(matrix, imsName, xSize / 2 - font.getStringPropertyWidth(imsName) / 2, 6, 4210752);
-		font.func_243248_b(matrix, target, xSize / 2 - font.getStringPropertyWidth(target) / 2, 30, 4210752);
+		font.drawText(matrix, imsName, xSize / 2 - font.getStringPropertyWidth(imsName) / 2, 6, 4210752);
+		font.drawText(matrix, target, xSize / 2 - font.getStringPropertyWidth(target) / 2, 30, 4210752);
 	}
 
 	@Override

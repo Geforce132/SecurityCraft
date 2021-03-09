@@ -20,8 +20,8 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -129,9 +129,9 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-				font.func_243248_b(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.drawText(matrix, ClientUtils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.func_243248_b(matrix, ClientUtils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.drawText(matrix, ClientUtils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
 			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
@@ -140,8 +140,8 @@ public class SCManualScreen extends Screen {
 			if(designedBy != null && !designedBy.isEmpty())
 				font.func_238418_a_(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
 		}else{
-			font.func_243248_b(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
-			font.func_243248_b(matrix, intro2, width / 2 - font.getStringPropertyWidth(intro2) / 2, 142, 0);
+			font.drawText(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
+			font.drawText(matrix, intro2, width / 2 - font.getStringPropertyWidth(intro2) / 2, 142, 0);
 
 			for(int i = 0; i < author.size(); i++)
 			{
@@ -420,7 +420,7 @@ public class SCManualScreen extends Screen {
 
 						for(Option<?> option : scte.customOptions())
 						{
-							display.add(new StringTextComponent("- ").append(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
+							display.add(new StringTextComponent("- ").appendSibling(ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
 
@@ -442,7 +442,7 @@ public class SCManualScreen extends Screen {
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							display.add(new StringTextComponent("- ").append(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
+							display.add(new StringTextComponent("- ").appendSibling(ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
 

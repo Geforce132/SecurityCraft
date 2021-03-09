@@ -103,7 +103,7 @@ public class MineRemoteAccessToolItem extends Item {
 					continue;
 				}
 				else
-					list.add(ClientUtils.localize("tooltip.securitycraft:mine").append(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
+					list.add(ClientUtils.localize("tooltip.securitycraft:mine").appendSibling(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
 			}
 			else
 				list.add(new StringTextComponent(TextFormatting.GRAY + "---"));

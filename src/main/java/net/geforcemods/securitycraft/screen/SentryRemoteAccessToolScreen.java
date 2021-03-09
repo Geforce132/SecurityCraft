@@ -175,7 +175,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		minecraft.getTextureManager().bindTexture(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.func_243248_b(matrix, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.drawText(matrix, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -188,10 +188,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.func_243248_b(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.drawText(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
 
-		font.func_243248_b(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
+		font.drawText(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
 
 		for(TextHoverChecker chc : hoverCheckers)
 		{

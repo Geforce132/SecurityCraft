@@ -340,7 +340,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return mirrorIn == Mirror.NONE ? state : state.rotate(mirrorIn.toRotation(state.get(FACING))).func_235896_a_(HINGE); //cycle
+		return mirrorIn == Mirror.NONE ? state : state.rotate(mirrorIn.toRotation(state.get(FACING))).cycleValue(HINGE);
 	}
 
 	@Override

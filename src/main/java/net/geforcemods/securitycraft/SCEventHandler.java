@@ -148,7 +148,7 @@ public class SCEventHandler {
 		List<SentryEntity> sentries = world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
 
 		if(!sentries.isEmpty())
-			event.setCanceled(sentries.get(0).func_230254_b_(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
+			event.setCanceled(sentries.get(0).getEntityInteractionResult(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
 	}
 
 	@SubscribeEvent

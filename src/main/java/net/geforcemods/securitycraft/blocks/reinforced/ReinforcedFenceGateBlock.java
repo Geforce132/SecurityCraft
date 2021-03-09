@@ -69,7 +69,7 @@ public class ReinforcedFenceGateBlock extends FenceGateBlock implements IInterse
 			CreeperEntity creeper = (CreeperEntity)entity;
 			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.copyCenteredHorizontally(pos), true);
 
-			creeper.func_241841_a((ServerWorld)world, lightning);
+			creeper.causeLightningStrike((ServerWorld)world, lightning);
 			return;
 		}
 
