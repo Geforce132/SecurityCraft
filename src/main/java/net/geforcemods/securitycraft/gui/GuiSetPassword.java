@@ -133,7 +133,6 @@ public class GuiSetPassword extends GuiContainer implements GuiResponder {
 		}
 	}
 
-
 	@Override
 	public void setEntryValue(int id, String text)
 	{

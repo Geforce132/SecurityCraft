@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiKeyChanger extends GuiContainer {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u001B'}; //0-9, backspace and escape
+	private char[] allowedChars = {'0', '1', '2', '3', '4', '5', '6' ,'7' ,'8', '9', '\u0008', '\u0009', '\u001B'}; //0-9, backspace, tab, and escape
 	private GuiTextField textboxNewPasscode;
 	private GuiTextField textboxConfirmPasscode;
 	private GuiButton confirmButton;
@@ -58,7 +58,6 @@ public class GuiKeyChanger extends GuiContainer {
 		textboxConfirmPasscode.setDisabledTextColour(-1);
 		textboxConfirmPasscode.setEnableBackgroundDrawing(true);
 		textboxConfirmPasscode.setMaxStringLength(20);
-
 	}
 
 	@Override
@@ -94,7 +93,15 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if(keyCode == Keyboard.KEY_ESCAPE || !isValidChar(typedChar))
+		if(keyCode == Keyboard.KEY_TAB)
+		{
+			boolean isFirstTextboxFocused = textboxNewPasscode.isFocused();
+
+			textboxNewPasscode.setFocused(!isFirstTextboxFocused);
+			textboxConfirmPasscode.setFocused(isFirstTextboxFocused);
+			return;
+		}
+		else if(keyCode == Keyboard.KEY_ESCAPE || !isValidChar(typedChar))
 		{
 			super.keyTyped(typedChar, keyCode);
 			return;
@@ -143,5 +150,4 @@ public class GuiKeyChanger extends GuiContainer {
 			PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
 		}
 	}
-
 }
