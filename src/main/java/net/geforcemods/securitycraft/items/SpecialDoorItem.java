@@ -95,8 +95,7 @@ public abstract class SpecialDoorItem extends Item
 		else
 			isRightHinge = true;
 
-		boolean isAnyPowered = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, pos);
-		BlockState state = door.getDefaultState().with(DoorBlock.FACING, facing).with(DoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(DoorBlock.POWERED, isAnyPowered).with(DoorBlock.OPEN, isAnyPowered);
+		BlockState state = door.getDefaultState().with(DoorBlock.FACING, facing).with(DoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT);
 
 		world.setBlockState(pos, state.with(DoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
 		world.setBlockState(posAbove, state.with(DoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
