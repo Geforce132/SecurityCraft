@@ -14,7 +14,7 @@
 - Fix: Some of SecurityCraft's tools don't lose durability when used on a block while held in the offhand
 - Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
 - Fix: Mines can be placed on some blocks that haven't got a solid top side
-- Fix: Some Mines ignore the shouldSpawnFire configuration option
+- Fix: Some Mines ignore the shouldSpawnFire configuration optionplacing
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
