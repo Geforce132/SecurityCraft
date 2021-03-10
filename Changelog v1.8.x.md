@@ -19,6 +19,7 @@
 - Fix: Claymores spawn fire when exploding even though the shouldSpawnFire configuration option is false
 - Fix: Using TAB to navigate menus does not work properly in some of SecurityCraft's interfaces
 - Fix: Pressing ENTER to press buttons in SecurityCraft's interfaces does not work
+- Fix: Placing a Scanner-/Keypad Door in a block space that is powered will place the door in an open state
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
