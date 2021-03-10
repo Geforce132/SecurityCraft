@@ -68,7 +68,7 @@ public class BlockUtils{
 			{
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				return activator.isPowering(world, pos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
+				return activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 			}
 
 			if(world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower())
@@ -106,7 +106,7 @@ public class BlockUtils{
 
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						return activator.isPowering(world, pos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
+						return activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 					}
 				}
 			}
