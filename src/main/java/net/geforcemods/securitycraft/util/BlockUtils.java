@@ -1,23 +1,11 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.blocks.BlockKeycardReader;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
-import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedButton;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedLever;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedPressurePlate;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockLever;
@@ -36,8 +24,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils{
-	private static final List<Block> PRESSURE_PLATES = Arrays.asList(SCContent.reinforcedStonePressurePlate, SCContent.reinforcedWoodenPressurePlate);
-	private static final List<Block> BUTTONS = Arrays.asList(SCContent.reinforcedStoneButton, SCContent.reinforcedWoodenButton);
 	private static final IItemHandler EMPTY_INVENTORY = new EmptyHandler();
 
 	public static void updateAndNotify(World world, BlockPos pos, Block block, int delay, boolean shouldUpdate){
@@ -114,31 +100,21 @@ public class BlockUtils{
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)
 	{
-		TileEntity thisTile = world.getTileEntity(pos);
-
-		return hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.laserBlock, true, (state, te) -> state.getValue(BlockLaserBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.retinalScanner, true, (state, te) -> state.getValue(BlockRetinalScanner.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keypad, true, (state, te) -> state.getValue(BlockKeypad.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.keycardReader, true, (state, te) -> state.getValue(BlockKeycardReader.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.inventoryScanner, true, (state, te) -> ((TileEntityInventoryScanner)te).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner)te).shouldProvidePower()) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.getValue(BlockReinforcedPressurePlate.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> BUTTONS.contains(state.getBlock()) && state.getValue(BlockReinforcedButton.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.reinforcedLever, true, (state, te) -> state.getValue(BlockReinforcedLever.POWERED));
+		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getTileEntity(pos), activator));
 	}
 
-	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, Block block, boolean checkForBlock, BiFunction<IBlockState,TileEntity,Boolean> extraCondition)
+	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator)
 	{
 		for(EnumFacing facing : EnumFacing.values())
 		{
 			BlockPos offsetPos = pos.offset(facing);
 			IBlockState offsetState = world.getBlockState(offsetPos);
 
-			if(!checkForBlock || offsetState.getBlock() == block)
+			if(activator.getBlocks().contains(offsetState.getBlock()))
 			{
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				if(extraCondition.apply(offsetState, offsetTe))
-					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
+				return activator.isPowering(world, offsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 			}
 
 			if(world.getRedstonePower(offsetPos, facing) == 15 && !offsetState.canProvidePower())
@@ -152,7 +128,7 @@ public class BlockUtils{
 
 					offsetState = world.getBlockState(newOffsetPos);
 
-					if(!checkForBlock || offsetState.getBlock() == block)
+					if(activator.getBlocks().contains(offsetState.getBlock()))
 					{
 						if(offsetState.getPropertyKeys().contains(BlockLever.FACING))
 						{
@@ -167,8 +143,7 @@ public class BlockUtils{
 
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						if(extraCondition.apply(offsetState, offsetTe))
-							return ((IOwnable)offsetTe).getOwner().owns((IOwnable) te);
+						return activator.isPowering(world, newOffsetPos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 					}
 				}
 			}

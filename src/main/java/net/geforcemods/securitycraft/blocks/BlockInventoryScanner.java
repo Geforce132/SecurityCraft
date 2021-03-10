@@ -1,9 +1,14 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
@@ -316,5 +321,28 @@ public class BlockInventoryScanner extends BlockDisguisable {
 	public IBlockState withMirror(IBlockState state, Mirror mirror)
 	{
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
+	}
+
+	public static class DoorActivator implements Function<Object,IDoorActivator>, IDoorActivator
+	{
+		private List<Block> blocks = Arrays.asList(SCContent.inventoryScanner);
+
+		@Override
+		public IDoorActivator apply(Object o)
+		{
+			return this;
+		}
+
+		@Override
+		public boolean isPowering(World world, BlockPos pos, IBlockState state, TileEntity te)
+		{
+			return ((TileEntityInventoryScanner)te).hasModule(EnumModuleType.REDSTONE) && ((TileEntityInventoryScanner)te).shouldProvidePower();
+		}
+
+		@Override
+		public List<Block> getBlocks()
+		{
+			return blocks;
+		}
 	}
 }

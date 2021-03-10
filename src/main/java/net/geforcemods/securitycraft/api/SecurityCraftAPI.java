@@ -6,12 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.BlockKeypad;
-import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
-import net.geforcemods.securitycraft.blocks.BlockKeypadFurnace;
-import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedHopper;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
@@ -20,17 +14,11 @@ public class SecurityCraftAPI
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
 	private static List<IAttackTargetCheck> registeredSentryAttackTargetChecks = new ArrayList<>();
 	private static List<IPasswordConvertible> registeredPasswordConvertibles = new ArrayList<>();
+	private static List<IDoorActivator> registeredDoorActivators = new ArrayList<>();
 	public static final String IMC_EXTRACTION_BLOCK_MSG = "registerExtractionBlock";
 	public static final String IMC_SENTRY_ATTACK_TARGET_MSG = "registerSentryAttackTargetCheck";
 	public static final String IMC_PASSWORD_CONVERTIBLE_MSG = "registerPasswordConvertible";
-
-	public static void init()
-	{
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, IMC_EXTRACTION_BLOCK_MSG, BlockReinforcedHopper.ExtractionBlock.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypad.Convertible.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadChest.Convertible.class.getName());
-		FMLInterModComms.sendFunctionMessage(SecurityCraft.MODID, IMC_PASSWORD_CONVERTIBLE_MSG, BlockKeypadFurnace.Convertible.class.getName());
-	}
+	public static final String IMC_DOOR_ACTIVATOR_MSG = "registerDoorActivator";
 
 	public static void onIMC(IMCEvent event)
 	{
@@ -63,11 +51,21 @@ public class SecurityCraftAPI
 				else
 					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient password convertible information.", msg.getSender()));
 			}
+			else if(msg.key.equals(IMC_DOOR_ACTIVATOR_MSG))
+			{
+				Optional<Function<Object,IDoorActivator>> value = msg.getFunctionValue(Object.class, IDoorActivator.class);
+
+				if(value.isPresent())
+					registeredDoorActivators.add(value.get().apply(null));
+				else
+					System.out.println(String.format("[ERROR] Mod %s did not supply sufficient door activator information.", msg.getSender()));
+			}
 		}
 
 		registeredExtractionBlocks = Collections.unmodifiableList(registeredExtractionBlocks);
 		registeredPasswordConvertibles = Collections.unmodifiableList(registeredPasswordConvertibles);
 		registeredSentryAttackTargetChecks = Collections.unmodifiableList(registeredSentryAttackTargetChecks);
+		registeredDoorActivators = Collections.unmodifiableList(registeredDoorActivators);
 	}
 
 	public static List<IExtractionBlock> getRegisteredExtractionBlocks()
@@ -83,5 +81,10 @@ public class SecurityCraftAPI
 	public static List<IPasswordConvertible> getRegisteredPasswordConvertibles()
 	{
 		return registeredPasswordConvertibles;
+	}
+
+	public static List<IDoorActivator> getRegisteredDoorActivators()
+	{
+		return registeredDoorActivators;
 	}
 }
