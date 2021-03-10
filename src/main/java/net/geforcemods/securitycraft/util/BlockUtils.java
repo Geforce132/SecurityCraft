@@ -1,23 +1,11 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
-import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
-import net.geforcemods.securitycraft.blocks.KeypadBlock;
-import net.geforcemods.securitycraft.blocks.LaserBlock;
-import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
-import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.properties.AttachFace;
@@ -35,30 +23,6 @@ import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class BlockUtils{
 	private static final LazyOptional<IItemHandler> EMPTY_INVENTORY = LazyOptional.of(() -> new EmptyHandler());
-	private static final List<Block> PRESSURE_PLATES = Arrays.asList(new Block[] {
-			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
-			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get()
-	});
-	private static final List<Block> BUTTONS = Arrays.asList(new Block[]{
-			SCContent.REINFORCED_STONE_BUTTON.get(),
-			SCContent.REINFORCED_OAK_BUTTON.get(),
-			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
-			SCContent.REINFORCED_BIRCH_BUTTON.get(),
-			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
-			SCContent.REINFORCED_ACACIA_BUTTON.get(),
-			SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
-			SCContent.REINFORCED_CRIMSON_BUTTON.get(),
-			SCContent.REINFORCED_WARPED_BUTTON.get(),
-			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get()
-	});
 
 	public static boolean isSideSolid(IWorldReader world, BlockPos pos, Direction side)
 	{
@@ -90,31 +54,21 @@ public class BlockUtils{
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)
 	{
-		TileEntity thisTile = world.getTileEntity(pos);
-
-		return hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.LASER_BLOCK.get(), true, (state, te) -> state.get(LaserBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.RETINAL_SCANNER.get(), true, (state, te) -> state.get(RetinalScannerBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.KEYPAD.get(), true, (state, te) -> state.get(KeypadBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.KEYCARD_READER.get(), true, (state, te) -> state.get(KeycardReaderBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.INVENTORY_SCANNER.get(), true, (state, te) -> ((InventoryScannerTileEntity)te).hasModule(ModuleType.REDSTONE) && ((InventoryScannerTileEntity)te).shouldProvidePower()) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> PRESSURE_PLATES.contains(state.getBlock()) && state.get(ReinforcedPressurePlateBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, null, false, (state, te) -> BUTTONS.contains(state.getBlock()) && state.get(ReinforcedButtonBlock.POWERED)) ||
-				hasActiveSCBlockNextTo(world, pos, thisTile, SCContent.REINFORCED_LEVER.get(), true, (state, te) -> state.get(ReinforcedLeverBlock.POWERED));
+		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getTileEntity(pos), activator));
 	}
 
-	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, Block block, boolean checkForBlock, BiFunction<BlockState,TileEntity,Boolean> extraCondition)
+	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator)
 	{
 		for(Direction dir : Direction.values())
 		{
 			BlockPos offsetPos = pos.offset(dir);
 			BlockState offsetState = world.getBlockState(offsetPos);
 
-			if(!checkForBlock || offsetState.getBlock() == block)
+			if(activator.getBlocks().contains(offsetState.getBlock()))
 			{
 				TileEntity offsetTe = world.getTileEntity(offsetPos);
 
-				if(extraCondition.apply(offsetState, offsetTe))
-					return ((IOwnable)offsetTe).getOwner().owns((IOwnable)te);
+				return activator.isPowering(world, pos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 			}
 
 			if(world.getRedstonePower(offsetPos, dir) == 15 && !offsetState.canProvidePower())
@@ -128,7 +82,7 @@ public class BlockUtils{
 
 					offsetState = world.getBlockState(newOffsetPos);
 
-					if(!checkForBlock || offsetState.getBlock() == block)
+					if(activator.getBlocks().contains(offsetState.getBlock()))
 					{
 						//checking that e.g. a lever/button is correctly attached to the block
 						if(offsetState.hasProperty(BlockStateProperties.FACE) && offsetState.hasProperty(BlockStateProperties.HORIZONTAL_FACING))
@@ -152,8 +106,7 @@ public class BlockUtils{
 
 						TileEntity offsetTe = world.getTileEntity(newOffsetPos);
 
-						if(extraCondition.apply(offsetState, offsetTe))
-							return ((IOwnable)offsetTe).getOwner().owns((IOwnable) te);
+						return activator.isPowering(world, pos, offsetState, offsetTe) && (!(offsetTe instanceof IOwnable) || ((IOwnable)offsetTe).getOwner().owns((IOwnable)te));
 					}
 				}
 			}

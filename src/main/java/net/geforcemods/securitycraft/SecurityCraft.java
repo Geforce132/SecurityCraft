@@ -2,7 +2,13 @@ package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
 
+import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
+import net.geforcemods.securitycraft.blocks.KeypadBlock;
+import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
@@ -11,6 +17,7 @@ import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.conditions.TileEntityNBTCondition;
 import net.geforcemods.securitycraft.network.ClientProxy;
@@ -79,6 +86,13 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModEnqueue(InterModEnqueueEvent event){ //stage 3
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadBlock.Convertible::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadChestBlock.Convertible::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSWORD_CONVERTIBLE_MSG, KeypadFurnaceBlock.Convertible::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, CommonDoorActivator::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, InventoryScannerBlock.DoorActivator::new);
+
 		if(ModList.get().isLoaded("theoneprobe")) //fix crash without top installed
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);
 
