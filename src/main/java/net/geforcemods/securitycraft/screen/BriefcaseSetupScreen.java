@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericContainer;
-import net.geforcemods.securitycraft.network.server.OpenGui;
+import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -90,7 +90,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 			}
 
 			ClientUtils.syncItemNBT(briefcase);
-			SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
+			SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), getTitle()));
 		}
 	}
 }

@@ -41,9 +41,9 @@ public class RemoveCameraTag
 	{
 		ctx.get().enqueueWork(() -> {
 			ItemStack monitor = PlayerUtils.getSelectedItemStack(ctx.get().getSender().inventory, SCContent.CAMERA_MONITOR.get());
-			int id = message.camID;
 
-			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), ((CameraMonitorItem)monitor.getItem()).getCameraPositions(monitor.getTag()).get(id - 1)));
+			if(!monitor.isEmpty())
+				monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), ((CameraMonitorItem)monitor.getItem()).getCameraPositions(monitor.getTag()).get(message.camID - 1)));
 		});
 
 		ctx.get().setPacketHandled(true);
