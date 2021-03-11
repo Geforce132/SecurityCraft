@@ -193,80 +193,81 @@ public class SCEventHandler {
 				return;
 			}
 
-				if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.UNIVERSAL_BLOCK_REMOVER.get(), event.getHand())){
-					event.setCanceled(true);
+			if(tileEntity != null && isOwnableBlock(block, tileEntity) && PlayerUtils.isHoldingItem(event.getPlayer(), SCContent.UNIVERSAL_BLOCK_REMOVER.get(), event.getHand())){
+				event.setCanceled(true);
 
-					if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
-						if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock)))
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
-
-						return;
-					}
-
-					if(tileEntity instanceof IModuleInventory)
-					{
-						boolean isChest = tileEntity instanceof KeypadChestTileEntity;
-
-						for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
-						{
-							if(isChest)
-								((KeypadChestTileEntity)tileEntity).addOrRemoveModuleFromAttached(module, true);
-
-							Block.spawnAsEntity(world, event.getPos(), module);
-						}
-					}
-
-					if(block == SCContent.LASER_BLOCK.get()){
-						CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
-
-						for(ItemStack module : te.getInventory())
-						{
-							if(!module.isEmpty())
-								te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, te);
-						}
-
-						world.destroyBlock(event.getPos(), true);
-						LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
-						event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
-					}else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
-						BlockPos originalPos = event.getPos();
-						BlockPos middlePos = originalPos.up(4);
-
-						new CageTrapBlock.BlockModifier(event.getWorld(), new MutableBlockPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
-							TileEntity te = w.getTileEntity(p);
-
-							if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
-							{
-								Block b = w.getBlockState(p).getBlock();
-
-								if(b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
-									w.destroyBlock(p, false);
-							}
-						});
-
-						world.destroyBlock(originalPos, false);
-					}else{
-						BlockPos pos = event.getPos();
-
-						if((block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
-							pos = pos.down();
-
-						if(block == SCContent.INVENTORY_SCANNER.get())
-						{
-							InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, event.getPos());
-
-							if(te != null)
-								te.getInventory().clear();
-						}
-
-						world.destroyBlock(pos, true);
-						world.removeTileEntity(pos);
-						event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
-					}
+				if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
+					if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock)))
+						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 					return;
 				}
+
+				if(tileEntity instanceof IModuleInventory)
+				{
+					boolean isChest = tileEntity instanceof KeypadChestTileEntity;
+
+					for(ItemStack module : ((IModuleInventory)tileEntity).getInventory())
+					{
+						if(isChest)
+							((KeypadChestTileEntity)tileEntity).addOrRemoveModuleFromAttached(module, true);
+
+						Block.spawnAsEntity(world, event.getPos(), module);
+					}
+				}
+
+				if(block == SCContent.LASER_BLOCK.get()){
+					CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(event.getPos());
+
+					for(ItemStack module : te.getInventory())
+					{
+						if(!module.isEmpty())
+							te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, te);
+					}
+
+					world.destroyBlock(event.getPos(), true);
+					LaserBlock.destroyAdjacentLasers(event.getWorld(), event.getPos());
+					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
+				}else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(event.getPos()).get(CageTrapBlock.DEACTIVATED)) {
+					BlockPos originalPos = event.getPos();
+					BlockPos middlePos = originalPos.up(4);
+
+					new CageTrapBlock.BlockModifier(event.getWorld(), new MutableBlockPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+						TileEntity te = w.getTileEntity(p);
+
+						if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
+						{
+							Block b = w.getBlockState(p).getBlock();
+
+							if(b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
+								w.destroyBlock(p, false);
+						}
+					});
+
+					world.destroyBlock(originalPos, false);
+					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
+				}else{
+					BlockPos pos = event.getPos();
+
+					if((block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
+						pos = pos.down();
+
+					if(block == SCContent.INVENTORY_SCANNER.get())
+					{
+						InventoryScannerTileEntity te = InventoryScannerBlock.getConnectedInventoryScanner(world, event.getPos());
+
+						if(te != null)
+							te.getInventory().clear();
+					}
+
+					world.destroyBlock(pos, true);
+					world.removeTileEntity(pos);
+					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
+				}
+
+				return;
 			}
+		}
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
