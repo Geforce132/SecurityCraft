@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -52,30 +54,28 @@ public class SetPassword {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
+			World world = player.world;
+			TileEntity te = world.getTileEntity(pos);
 
-			if(getWorld(player).getTileEntity(pos) instanceof IPasswordProtected){
-				((IPasswordProtected) getWorld(player).getTileEntity(pos)).setPassword(password);
-				checkForAdjacentChest(pos, password, player);
+			if(te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))){
+				((IPasswordProtected)te).setPassword(password);
+
+				if(te instanceof KeypadChestTileEntity)
+					checkForAdjacentChest(world, pos, password, player);
 			}
 		});
 
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static void checkForAdjacentChest(BlockPos pos, String codeToSet, PlayerEntity player) {
-		if(getWorld(player).getTileEntity(pos) instanceof KeypadChestTileEntity)
-			if(getWorld(player).getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
-				((IPasswordProtected) getWorld(player).getTileEntity(pos.east())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
-				((IPasswordProtected) getWorld(player).getTileEntity(pos.west())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
-				((IPasswordProtected) getWorld(player).getTileEntity(pos.south())).setPassword(codeToSet);
-			else if(getWorld(player).getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
-				((IPasswordProtected) getWorld(player).getTileEntity(pos.north())).setPassword(codeToSet);
-	}
-
-	private static World getWorld(PlayerEntity player) //i'm lazy
-	{
-		return player.world;
+	private static void checkForAdjacentChest(World world, BlockPos pos, String codeToSet, PlayerEntity player) {
+		if(world.getTileEntity(pos.east()) instanceof KeypadChestTileEntity)
+			((IPasswordProtected) world.getTileEntity(pos.east())).setPassword(codeToSet);
+		else if(world.getTileEntity(pos.west()) instanceof KeypadChestTileEntity)
+			((IPasswordProtected) world.getTileEntity(pos.west())).setPassword(codeToSet);
+		else if(world.getTileEntity(pos.south()) instanceof KeypadChestTileEntity)
+			((IPasswordProtected) world.getTileEntity(pos.south())).setPassword(codeToSet);
+		else if(world.getTileEntity(pos.north()) instanceof KeypadChestTileEntity)
+			((IPasswordProtected) world.getTileEntity(pos.north())).setPassword(codeToSet);
 	}
 }

@@ -1,12 +1,9 @@
 package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -49,18 +46,6 @@ public class ClientUtils{
 		int minutes = (int) (time.longValue() / 16.666666F % 60.0F);
 
 		return String.format("%02d:%02d %s", Integer.valueOf(hours < 1 ? 12 : hours), Integer.valueOf(minutes), hours24 < 12 ? "AM" : "PM");
-	}
-
-	/**
-	 * Sends the client-side CompoundNBT of a block's TileEntity to the server.
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static void syncTileEntity(TileEntity tileEntity){
-		CompoundNBT tag = new CompoundNBT();
-		tileEntity.write(tag);
-		SecurityCraft.channel.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
 	}
 
 	/**

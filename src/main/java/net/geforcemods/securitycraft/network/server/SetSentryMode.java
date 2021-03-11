@@ -42,10 +42,9 @@ public class SetSentryMode
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-
 			List<SentryEntity> sentries = player.world.<SentryEntity>getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(message.pos));
 
-			if(!sentries.isEmpty())
+			if(!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 				sentries.get(0).toggleMode(player, message.mode, false);
 		});
 

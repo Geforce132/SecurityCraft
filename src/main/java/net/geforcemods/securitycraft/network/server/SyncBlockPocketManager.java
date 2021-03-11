@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -50,10 +51,11 @@ public class SyncBlockPocketManager
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
-			World world = ctx.get().getSender().world;
+			PlayerEntity player = ctx.get().getSender();
+			World world = player.world;
 			TileEntity te = world.getTileEntity(pos);
 
-			if(world.isBlockPresent(pos) && te instanceof BlockPocketManagerTileEntity)
+			if(world.isBlockPresent(pos) && te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
 			{
 				BlockPocketManagerTileEntity bpm = (BlockPocketManagerTileEntity)te;
 				BlockState state = world.getBlockState(pos);
