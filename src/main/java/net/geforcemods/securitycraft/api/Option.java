@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateSliderValue;
+import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -238,7 +238,7 @@ public abstract class Option<T> {
 		@Override
 		public void onMouseRelease(int id)
 		{
-			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(pos.get(), id, get()));
+			SecurityCraft.network.sendToServer(new UpdateSliderValue(pos.get(), id, get()));
 		}
 	}
 
@@ -322,7 +322,7 @@ public abstract class Option<T> {
 		@Override
 		public void onMouseRelease(int id)
 		{
-			SecurityCraft.network.sendToServer(new PacketSUpdateSliderValue(pos.get(), id, get()));
+			SecurityCraft.network.sendToServer(new UpdateSliderValue(pos.get(), id, get()));
 		}
 	}
 

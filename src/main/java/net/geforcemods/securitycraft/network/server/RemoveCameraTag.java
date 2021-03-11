@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
@@ -11,14 +11,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSRemoveCameraTag implements IMessage
+public class RemoveCameraTag implements IMessage
 {
 	private ItemStack heldItem;
 	private int camID;
 
-	public PacketSRemoveCameraTag(){}
+	public RemoveCameraTag(){}
 
-	public PacketSRemoveCameraTag(ItemStack stack, int cid)
+	public RemoveCameraTag(ItemStack stack, int cid)
 	{
 		heldItem = stack;
 		camID = cid;
@@ -38,16 +38,16 @@ public class PacketSRemoveCameraTag implements IMessage
 		camID = buf.readInt();
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSRemoveCameraTag, IMessage>
+	public static class Handler implements IMessageHandler<RemoveCameraTag, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSRemoveCameraTag message, MessageContext context)
+		public IMessage onMessage(RemoveCameraTag message, MessageContext context)
 		{
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				ItemStack monitor = PlayerUtils.getSelectedItemStack(context.getServerHandler().player, SCContent.cameraMonitor);
-				int id = message.camID;
 
-				monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(id - 1)));
+				if(!monitor.isEmpty())
+					monitor.getTagCompound().removeTag(ItemCameraMonitor.getTagNameFromPosition(monitor.getTagCompound(), ((ItemCameraMonitor)monitor.getItem()).getCameraPositions(monitor.getTagCompound()).get(message.camID - 1)));
 			});
 
 			return null;

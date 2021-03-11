@@ -6,8 +6,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
-import net.geforcemods.securitycraft.network.packets.PacketCClearLogger;
-import net.geforcemods.securitycraft.network.packets.PacketUpdateLogger;
+import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
+import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.entity.Entity;
@@ -109,11 +109,11 @@ public class TileEntityLogger extends TileEntityDisguisable {
 			for(int i = 0; i < players.length; i++)
 			{
 				if(players[i] != null)
-					SecurityCraft.network.sendToAll(new PacketUpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+					SecurityCraft.network.sendToAll(new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
 			}
 		}
 		else
-			SecurityCraft.network.sendToAll(new PacketCClearLogger(pos));
+			SecurityCraft.network.sendToAll(new ClearLoggerClient(pos));
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
@@ -12,18 +12,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketUpdateLogger implements IMessage{
+public class UpdateLogger implements IMessage{
 
 	private int x, y, z, i;
 	private String username;
 	private String uuid;
 	private long timestamp;
 
-	public PacketUpdateLogger(){
+	public UpdateLogger(){
 
 	}
 
-	public PacketUpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp){
+	public UpdateLogger(int x, int y, int z, int i, String username, String uuid, long timestamp){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -55,15 +55,15 @@ public class PacketUpdateLogger implements IMessage{
 		timestamp = buf.readLong();
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketUpdateLogger, IMessage> {
+	public static class Handler implements IMessageHandler<UpdateLogger, IMessage> {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketUpdateLogger message, MessageContext context) {
+		public IMessage onMessage(UpdateLogger message, MessageContext context) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 				int i = message.i;
-				TileEntityLogger te = (TileEntityLogger) getClientWorld(Minecraft.getMinecraft().player).getTileEntity(pos);
+				TileEntityLogger te = (TileEntityLogger) Minecraft.getMinecraft().player.world.getTileEntity(pos);
 
 				if(te != null)
 				{

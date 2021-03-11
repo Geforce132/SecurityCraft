@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -73,7 +73,7 @@ public class ModuleItemInventory implements IInventory {
 			}
 
 		tag.setTag("ItemInventory", items);
-		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
+		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(module));
 	}
 
 	@Override

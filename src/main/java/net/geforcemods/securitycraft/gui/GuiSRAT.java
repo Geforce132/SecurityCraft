@@ -12,8 +12,8 @@ import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketSetSentryMode;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -217,7 +217,7 @@ public class GuiSRAT extends GuiContainer {
 
 			guiButtons[sentry][TARGETS].enabled = EnumSentryMode.values()[resultingMode] != EnumSentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getMinecraft().player, resultingMode, false);
-			SecurityCraft.network.sendToServer(new PacketSetSentryMode(sentries.get(0).getPosition(), resultingMode));
+			SecurityCraft.network.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode));
 		}
 	}
 
@@ -318,7 +318,7 @@ public class GuiSRAT extends GuiContainer {
 
 				if (coords[0] == x && coords[1] == y && coords[2] == z) {
 					stack.getTagCompound().setIntArray("sentry" + i, new int[] { 0, 0, 0 });
-					SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(stack));
+					SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
 					return;
 				}
 			}

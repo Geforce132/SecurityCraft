@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
@@ -11,13 +11,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketCClearLogger implements IMessage
+public class ClearLoggerClient implements IMessage
 {
 	private BlockPos pos;
 
-	public PacketCClearLogger() {}
+	public ClearLoggerClient() {}
 
-	public PacketCClearLogger(BlockPos pos)
+	public ClearLoggerClient(BlockPos pos)
 	{
 		this.pos = pos;
 	}
@@ -34,15 +34,15 @@ public class PacketCClearLogger implements IMessage
 		pos = BlockPos.fromLong(buf.readLong());
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCClearLogger,IMessage>
+	public static class Handler implements IMessageHandler<ClearLoggerClient,IMessage>
 	{
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCClearLogger message, MessageContext context)
+		public IMessage onMessage(ClearLoggerClient message, MessageContext context)
 		{
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				EntityPlayer player = Minecraft.getMinecraft().player;
-				TileEntityLogger te = (TileEntityLogger) getClientWorld(player).getTileEntity(message.pos);
+				TileEntityLogger te = (TileEntityLogger) player.world.getTileEntity(message.pos);
 
 				if(te != null)
 					te.players = new String[100];

@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -63,7 +63,7 @@ public class ItemMineRemoteAccessTool extends Item {
 				stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
 
 				if (!world.isRemote)
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP)player);
+					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP)player);
 
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.bound", pos), TextFormatting.GREEN);
 				return EnumActionResult.SUCCESS;
@@ -110,7 +110,7 @@ public class ItemMineRemoteAccessTool extends Item {
 					stack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
 
 					if (!player.world.isRemote)
-						SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+						SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
 					return;
 				}

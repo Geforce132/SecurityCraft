@@ -13,8 +13,8 @@ import net.geforcemods.securitycraft.blocks.BlockBlockPocketWall;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartz;
 import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.network.packets.PacketCToggleBlockPocketManager;
-import net.geforcemods.securitycraft.network.packets.PacketSAssembleBlockPocket;
+import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -65,7 +65,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		if(!enabled) //multiblock detection
 		{
 			if(world.isRemote)
-				SecurityCraft.network.sendToServer(new PacketCToggleBlockPocketManager(this, true, size));
+				SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(this, true, size));
 
 			List<BlockPos> blocks = new ArrayList<>();
 			List<BlockPos> sides = new ArrayList<>();
@@ -256,7 +256,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		if(!enabled) //multiblock assembling in three steps
 		{
 			if(world.isRemote)
-				SecurityCraft.network.sendToServer(new PacketSAssembleBlockPocket(this, size));
+				SecurityCraft.network.sendToServer(new AssembleBlockPocket(this, size));
 
 			final EnumFacing managerFacing = world.getBlockState(pos).getValue(BlockBlockPocketManager.FACING);
 			final EnumFacing left = managerFacing.rotateY();
@@ -581,7 +581,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 		{
 			if(world.isRemote)
 			{
-				SecurityCraft.network.sendToServer(new PacketCToggleBlockPocketManager(this, false, size));
+				SecurityCraft.network.sendToServer(new ToggleBlockPocketManager(this, false, size));
 			}
 
 			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);

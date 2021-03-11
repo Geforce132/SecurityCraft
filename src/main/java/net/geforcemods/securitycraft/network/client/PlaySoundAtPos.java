@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -13,18 +13,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketCPlaySoundAtPos implements IMessage{
+public class PlaySoundAtPos implements IMessage{
 
 	private int x, y, z;
 	private String sound;
 	private double volume;
 	private String category;
 
-	public PacketCPlaySoundAtPos(){
+	public PlaySoundAtPos(){
 
 	}
 
-	public PacketCPlaySoundAtPos(int x, int y, int z, String sound, double volume, String cat){
+	public PlaySoundAtPos(int x, int y, int z, String sound, double volume, String cat){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -33,7 +33,7 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		category = cat;
 	}
 
-	public PacketCPlaySoundAtPos(double x, double y, double z, String sound, double volume, String cat){
+	public PlaySoundAtPos(double x, double y, double z, String sound, double volume, String cat){
 		this((int)x, (int)y, (int)z, sound, volume, cat);
 	}
 
@@ -57,11 +57,11 @@ public class PacketCPlaySoundAtPos implements IMessage{
 		ByteBufUtils.writeUTF8String(buf, category);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCPlaySoundAtPos, IMessage> {
+	public static class Handler implements IMessageHandler<PlaySoundAtPos, IMessage> {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCPlaySoundAtPos message, MessageContext ctx) {
+		public IMessage onMessage(PlaySoundAtPos message, MessageContext ctx) {
 			Minecraft.getMinecraft().world.playSound(Minecraft.getMinecraft().player, new BlockPos(message.x, message.y, message.z), new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.getByName(message.category), (float) message.volume, 1.0F);
 			return null;
 		}

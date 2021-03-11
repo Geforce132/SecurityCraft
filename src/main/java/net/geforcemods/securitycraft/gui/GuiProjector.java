@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
+import net.geforcemods.securitycraft.network.server.SyncProjector;
+import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
-import net.geforcemods.securitycraft.network.packets.PacketSSyncProjector;
-import net.geforcemods.securitycraft.network.packets.PacketSSyncProjector.DataType;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
@@ -72,7 +72,7 @@ public class GuiProjector extends GuiContainer implements ISlider {
 		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, b -> {
 			te.setHorizontal(!te.isHorizontal());
 			projectionRangeSlider.updateSlider();
-			SecurityCraft.network.sendToServer(new PacketSSyncProjector(te.getPos(), te.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
+			SecurityCraft.network.sendToServer(new SyncProjector(te.getPos(), te.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}));
 		toggleButton.setCurrentIndex(te.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new StringHoverChecker(toggleButton, Arrays.asList(ClientUtils.localize("gui.securitycraft:projector.vertical").getFormattedText(), ClientUtils.localize("gui.securitycraft:projector.horizontal").getFormattedText()));
@@ -144,7 +144,7 @@ public class GuiProjector extends GuiContainer implements ISlider {
 			dataType = DataType.OFFSET;
 		}
 
-		SecurityCraft.network.sendToServer(new PacketSSyncProjector(te.getPos(), data, dataType));
+		SecurityCraft.network.sendToServer(new SyncProjector(te.getPos(), data, dataType));
 	}
 
 	@Override

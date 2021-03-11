@@ -1,26 +1,28 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSSyncTENBTTag implements IMessage{
+public class SyncTENBTTag implements IMessage{
 
 	private int x, y, z;
 	private NBTTagCompound tag;
 
-	public PacketSSyncTENBTTag(){
+	public SyncTENBTTag(){
 
 	}
 
-	public PacketSSyncTENBTTag(int x, int y, int z, NBTTagCompound tag){
+	public SyncTENBTTag(int x, int y, int z, NBTTagCompound tag){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -43,17 +45,17 @@ public class PacketSSyncTENBTTag implements IMessage{
 		ByteBufUtils.writeTag(buf, tag);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSyncTENBTTag, IMessage> {
+	public static class Handler implements IMessageHandler<SyncTENBTTag, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSSyncTENBTTag message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
+		public IMessage onMessage(SyncTENBTTag message, MessageContext ctx) {
+			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
-				NBTTagCompound tag = message.tag;
 				EntityPlayer player = ctx.getServerHandler().player;
+				TileEntity te = player.world.getTileEntity(pos);
 
-				if(getWorld(player).getTileEntity(pos) != null)
-					getWorld(player).getTileEntity(pos).readFromNBT(tag);
+				if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
+					te.readFromNBT(message.tag);
 			});
 
 			return null;

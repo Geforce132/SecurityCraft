@@ -7,7 +7,7 @@ import org.lwjgl.input.Keyboard;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -190,7 +190,7 @@ public class GuiEditModule extends GuiContainer
 		}
 
 		if(module.getTagCompound() != null)
-			SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(module));
+			SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(module));
 
 		addButton.enabled = module.getTagCompound() != null && !module.getTagCompound().hasKey("Player" + ItemModule.MAX_PLAYERS) && !inputField.getText().isEmpty();
 		removeButton.enabled = !(module.getTagCompound() == null || module.getTagCompound().isEmpty() || inputField.getText().isEmpty());

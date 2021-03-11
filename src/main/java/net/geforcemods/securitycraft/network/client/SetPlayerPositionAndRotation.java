@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -8,16 +8,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketCSetPlayerPositionAndRotation implements IMessage{
+public class SetPlayerPositionAndRotation implements IMessage{
 
 	private double x, y, z;
 	private float rotationYaw, rotationPitch;
 
-	public PacketCSetPlayerPositionAndRotation(){
+	public SetPlayerPositionAndRotation(){
 
 	}
 
-	public PacketCSetPlayerPositionAndRotation(double x, double y, double z, float yaw, float pitch){
+	public SetPlayerPositionAndRotation(double x, double y, double z, float yaw, float pitch){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -43,11 +43,11 @@ public class PacketCSetPlayerPositionAndRotation implements IMessage{
 		buf.writeFloat(rotationPitch);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCSetPlayerPositionAndRotation, IMessage> {
+	public static class Handler implements IMessageHandler<SetPlayerPositionAndRotation, IMessage> {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCSetPlayerPositionAndRotation message, MessageContext ctx) {
+		public IMessage onMessage(SetPlayerPositionAndRotation message, MessageContext ctx) {
 			Minecraft.getMinecraft().player.setPositionAndRotation(message.x, message.y, message.z, message.rotationYaw, message.rotationPitch);
 			return null;
 		}

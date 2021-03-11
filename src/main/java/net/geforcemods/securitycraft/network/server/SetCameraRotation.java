@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
@@ -8,15 +8,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSSetCameraRotation implements IMessage {
+public class SetCameraRotation implements IMessage {
 
 	private float rotationYaw, rotationPitch;
 
-	public PacketSSetCameraRotation(){
+	public SetCameraRotation(){
 
 	}
 
-	public PacketSSetCameraRotation(float yaw, float pitch){
+	public SetCameraRotation(float yaw, float pitch){
 		rotationYaw = yaw;
 		rotationPitch = pitch;
 	}
@@ -33,11 +33,11 @@ public class PacketSSetCameraRotation implements IMessage {
 		buf.writeFloat(rotationPitch);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSetCameraRotation, IMessage>{
+	public static class Handler implements IMessageHandler<SetCameraRotation, IMessage>{
 
 		@Override
-		public IMessage onMessage(PacketSSetCameraRotation message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
+		public IMessage onMessage(SetCameraRotation message, MessageContext ctx) {
+			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 
 				if(player.getRidingEntity() instanceof EntitySecurityCamera){

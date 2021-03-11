@@ -1,8 +1,9 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
@@ -14,15 +15,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSUpdateSliderValue implements IMessage{
+public class UpdateSliderValue implements IMessage{
 
 	private BlockPos pos;
 	private int id;
 	private double value;
 
-	public PacketSUpdateSliderValue(){ }
+	public UpdateSliderValue(){ }
 
-	public PacketSUpdateSliderValue(BlockPos pos, int id, double v){
+	public UpdateSliderValue(BlockPos pos, int id, double v){
 		this.pos = pos;
 		this.id = id;
 		value = v;
@@ -42,18 +43,18 @@ public class PacketSUpdateSliderValue implements IMessage{
 		value = buf.readDouble();
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateSliderValue, IMessage> {
+	public static class Handler implements IMessageHandler<UpdateSliderValue, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSUpdateSliderValue message, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+		public IMessage onMessage(UpdateSliderValue message, MessageContext context) {
+			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
 				int id = message.id;
 				double value = message.value;
 				EntityPlayer player = context.getServerHandler().player;
-				TileEntity te = getWorld(player).getTileEntity(pos);
+				TileEntity te = player.world.getTileEntity(pos);
 
-				if(te instanceof ICustomizable) {
+				if(te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)) {
 					Option<?> o = ((ICustomizable)te).customOptions()[id];
 
 					if(o instanceof OptionDouble)

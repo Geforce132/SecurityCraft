@@ -1,27 +1,29 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSCheckPassword implements IMessage{
+public class CheckPassword implements IMessage{
 
 	private String password;
 	private int x, y, z;
 
-	public PacketSCheckPassword(){
+	public CheckPassword(){
 
 	}
 
-	public PacketSCheckPassword(int x, int y, int z, String code){
+	public CheckPassword(int x, int y, int z, String code){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -44,20 +46,20 @@ public class PacketSCheckPassword implements IMessage{
 		password = ByteBufUtils.readUTF8String(buf);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSCheckPassword, IMessage> {
+	public static class Handler implements IMessageHandler<CheckPassword, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSCheckPassword message, MessageContext ctx) {
-			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
+		public IMessage onMessage(CheckPassword message, MessageContext ctx) {
+			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
-				String password = message.password;
 				EntityPlayer player = ctx.getServerHandler().player;
+				TileEntity te = player.world.getTileEntity(pos);
 
-				if(getWorld(player).getTileEntity(pos) instanceof IPasswordProtected)
-					if(((IPasswordProtected) getWorld(player).getTileEntity(pos)).getPassword().equals(password)){
-						((EntityPlayerMP) player).closeScreen();
-						((IPasswordProtected) getWorld(player).getTileEntity(pos)).activate(player);
-					}
+				if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(message.password) && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
+				{
+					((EntityPlayerMP) player).closeScreen();
+					((IPasswordProtected)te).activate(player);
+				}
 			});
 
 			return null;

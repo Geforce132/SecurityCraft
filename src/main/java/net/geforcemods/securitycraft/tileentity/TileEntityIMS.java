@@ -27,7 +27,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
-	private EnumIMSTargetingMode targetingOption = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
+	private EnumIMSTargetingMode targetingMode = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 
 	@Override
@@ -51,7 +51,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			EntityLivingBase target = null;
 
-			if(targetingOption == EnumIMSTargetingMode.MOBS || targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
+			if(targetingMode == EnumIMSTargetingMode.MOBS || targetingMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS)
 			{
 				List<EntityMob> mobs = world.getEntitiesWithinAABB(EntityMob.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
@@ -59,7 +59,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 					target = mobs.get(0);
 			}
 
-			if(target == null && (targetingOption == EnumIMSTargetingMode.PLAYERS  || targetingOption == EnumIMSTargetingMode.PLAYERS_AND_MOBS))
+			if(target == null && (targetingMode == EnumIMSTargetingMode.PLAYERS  || targetingMode == EnumIMSTargetingMode.PLAYERS_AND_MOBS))
 			{
 				List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
@@ -114,7 +114,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		super.writeToNBT(tag);
 
 		tag.setInteger("bombsRemaining", bombsRemaining);
-		tag.setInteger("targetingOption", targetingOption.ordinal());
+		tag.setInteger("targetingOption", targetingMode.ordinal());
 		tag.setBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
@@ -126,7 +126,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	public void readFromNBT(NBTTagCompound tag){
 		super.readFromNBT(tag);
 		bombsRemaining = tag.getInteger("bombsRemaining");
-		targetingOption = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
+		targetingMode = EnumIMSTargetingMode.values()[tag.getInteger("targetingOption")];
 		updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
@@ -138,12 +138,12 @@ public class TileEntityIMS extends CustomizableSCTE {
 		this.bombsRemaining = bombsRemaining;
 	}
 
-	public EnumIMSTargetingMode getTargetingOption() {
-		return targetingOption;
+	public EnumIMSTargetingMode getTargetingMode() {
+		return targetingMode;
 	}
 
-	public void setTargetingOption(EnumIMSTargetingMode targetingOption) {
-		this.targetingOption = targetingOption;
+	public void setTargetingMode(EnumIMSTargetingMode targetingMode) {
+		this.targetingMode = targetingMode;
 	}
 
 	@Override

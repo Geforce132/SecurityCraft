@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
-import net.geforcemods.securitycraft.network.packets.PacketCInitSentryAnimation;
+import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -308,7 +308,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		if(sendMessage)
 			player.sendStatusMessage(ClientUtils.localize(EnumSentryMode.values()[mode].getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.values()[mode].getDescriptionKey())), true);
 		else if(!player.world.isRemote)
-			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive()));
+			SecurityCraft.network.sendToAll(new InitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive()));
 	}
 
 	@Override
@@ -318,7 +318,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		{
 			animateUpwards = getMode().isCamouflage() && target != null;
 			animate = true;
-			SecurityCraft.network.sendToAll(new PacketCInitSentryAnimation(getPosition(), animate, animateUpwards));
+			SecurityCraft.network.sendToAll(new InitSentryAnimation(getPosition(), animate, animateUpwards));
 		}
 
 		previousTargetId = target == null ? Long.MIN_VALUE : target.getEntityId();

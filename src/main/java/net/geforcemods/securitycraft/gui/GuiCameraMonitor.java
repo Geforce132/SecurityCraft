@@ -11,8 +11,8 @@ import net.geforcemods.securitycraft.gui.components.HoverChecker;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.network.packets.PacketSMountCamera;
-import net.geforcemods.securitycraft.network.packets.PacketSRemoveCameraTag;
+import net.geforcemods.securitycraft.network.server.MountCamera;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -25,6 +25,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 
 public class GuiCameraMonitor extends GuiContainer {
 
@@ -161,7 +162,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 			if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) == SCContent.securityCamera) {
 				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation())).mountCamera(Minecraft.getMinecraft().world, view.x, view.y, view.z, camID, Minecraft.getMinecraft().player);
-				SecurityCraft.network.sendToServer(new PacketSMountCamera(view.x, view.y, view.z, camID));
+				SecurityCraft.network.sendToServer(new MountCamera(new BlockPos(view.x, view.y, view.z), camID));
 				Minecraft.getMinecraft().player.closeScreen();
 			}
 			else
@@ -171,7 +172,7 @@ public class GuiCameraMonitor extends GuiContainer {
 		{
 			int camID = (button.id - 10) + ((page - 1) * 10);
 
-			SecurityCraft.network.sendToServer(new PacketSRemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.cameraMonitor), camID));
+			SecurityCraft.network.sendToServer(new RemoveCameraTag(PlayerUtils.getSelectedItemStack(playerInventory, SCContent.cameraMonitor), camID));
 			nbtTag.removeTag(ItemCameraMonitor.getTagNameFromPosition(nbtTag, cameraMonitor.getCameraPositions(nbtTag).get(camID - 1)));
 			button.enabled = false;
 			cameraButtons[(camID - 1) % 10].enabled = false;

@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketCInitSentryAnimation implements IMessage
+public class InitSentryAnimation implements IMessage
 {
 	public BlockPos pos;
 	public boolean animate, animateUpwards;
 
-	public PacketCInitSentryAnimation() {}
+	public InitSentryAnimation() {}
 
-	public PacketCInitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards)
+	public InitSentryAnimation(BlockPos sentryPos, boolean animate, boolean animateUpwards)
 	{
 		pos = sentryPos;
 		this.animate = animate;
@@ -42,10 +42,10 @@ public class PacketCInitSentryAnimation implements IMessage
 		buf.writeBoolean(animateUpwards);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCInitSentryAnimation, IMessage>
+	public static class Handler implements IMessageHandler<InitSentryAnimation, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketCInitSentryAnimation message, MessageContext ctx)
+		public IMessage onMessage(InitSentryAnimation message, MessageContext ctx)
 		{
 			List<EntityCreature> sentries = Minecraft.getMinecraft().player.world.<EntityCreature>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.gui.components.StackHoverChecker;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.network.packets.PacketSSyncBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -276,7 +276,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 
 	private void sync()
 	{
-		SecurityCraft.network.sendToServer(new PacketSSyncBlockPocketManager(te.getPos(), te.size, te.showOutline, te.autoBuildOffset));
+		SecurityCraft.network.sendToServer(new SyncBlockPocketManager(te.getPos(), te.size, te.showOutline, te.autoBuildOffset));
 	}
 
 	@Override

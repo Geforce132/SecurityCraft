@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.packets.PacketSSyncTENBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
+import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,7 +57,7 @@ public class ClientUtils{
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.writeToNBT(tag);
-		SecurityCraft.network.sendToServer(new PacketSSyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
+		SecurityCraft.network.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class ClientUtils{
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void syncItemNBT(ItemStack item){
-		SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(item));
+		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
 	/**

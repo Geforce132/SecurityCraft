@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
-import net.geforcemods.securitycraft.network.packets.PacketSUpdateNBTTag;
-import net.geforcemods.securitycraft.network.packets.PacketSetExplosiveState;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
+import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -177,20 +177,20 @@ public class GuiMRAT extends GuiContainer{
 		{
 			case DEFUSE:
 				((IExplosive)Minecraft.getMinecraft().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).defuseMine(Minecraft.getMinecraft().player.world, new BlockPos(coords[0], coords[1], coords[2]));
-				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "defuse"));
+				SecurityCraft.network.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "defuse"));
 				buttons[mine][DEFUSE].enabled = false;
 				buttons[mine][ACTIVATE].enabled = true;
 				buttons[mine][DETONATE].enabled = false;
 				break;
 			case ACTIVATE:
 				((IExplosive)Minecraft.getMinecraft().player.world.getBlockState(new BlockPos(coords[0], coords[1], coords[2])).getBlock()).activateMine(Minecraft.getMinecraft().player.world, new BlockPos(coords[0], coords[1], coords[2]));
-				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "activate"));
+				SecurityCraft.network.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "activate"));
 				buttons[mine][DEFUSE].enabled = true;
 				buttons[mine][ACTIVATE].enabled = false;
 				buttons[mine][DETONATE].enabled = true;
 				break;
 			case DETONATE:
-				SecurityCraft.network.sendToServer(new PacketSetExplosiveState(coords[0], coords[1], coords[2], "detonate"));
+				SecurityCraft.network.sendToServer(new RemoteControlMine(coords[0], coords[1], coords[2], "detonate"));
 				removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
 
 				for(int i = 0; i < 4; i++)
@@ -236,7 +236,7 @@ public class GuiMRAT extends GuiContainer{
 				if(coords[0] == x && coords[1] == y && coords[2] == z)
 				{
 					stack.getTagCompound().setIntArray("mine" + i, new int[]{0, 0, 0});
-					SecurityCraft.network.sendToServer(new PacketSUpdateNBTTag(stack));
+					SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(stack));
 					return;
 				}
 			}

@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
-import net.geforcemods.securitycraft.network.packets.PacketSClearLogger;
+import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -52,7 +52,7 @@ public class GuiLogger extends GuiContainer{
 		if(button.id == 0)
 		{
 			tileEntity.players = new String[100];
-			SecurityCraft.network.sendToServer(new PacketSClearLogger(tileEntity.getPos()));
+			SecurityCraft.network.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		}
 
 		if(playerList != null)

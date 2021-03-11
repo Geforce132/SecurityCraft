@@ -5,7 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.network.packets.PacketCUpdateNBTTag;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -69,7 +69,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 				stack.getTagCompound().setIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
 
 				if (!world.isRemote)
-					SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
 			}else{
@@ -127,7 +127,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 					stack.getTagCompound().setIntArray("sentry" + i, new int[]{0, 0, 0});
 
 					if (!player.world.isRemote)
-						SecurityCraft.network.sendTo(new PacketCUpdateNBTTag(stack), (EntityPlayerMP) player);
+						SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
 					return;
 				}

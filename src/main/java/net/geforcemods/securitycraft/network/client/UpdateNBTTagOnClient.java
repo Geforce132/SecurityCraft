@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -11,15 +11,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketCUpdateNBTTag implements IMessage{
+public class UpdateNBTTagOnClient implements IMessage{
 
 	private ItemStack stack;
 
-	public PacketCUpdateNBTTag(){
+	public UpdateNBTTagOnClient(){
 
 	}
 
-	public PacketCUpdateNBTTag(ItemStack stack){
+	public UpdateNBTTagOnClient(ItemStack stack){
 		if(!stack.isEmpty() && stack.hasTagCompound()){
 			this.stack = stack;
 		}
@@ -35,11 +35,11 @@ public class PacketCUpdateNBTTag implements IMessage{
 		ByteBufUtils.writeItemStack(buf, stack);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCUpdateNBTTag, IMessage> {
+	public static class Handler implements IMessageHandler<UpdateNBTTagOnClient, IMessage> {
 
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCUpdateNBTTag message, MessageContext ctx) {
+		public IMessage onMessage(UpdateNBTTagOnClient message, MessageContext ctx) {
 			ItemStack stackToUpdate = PlayerUtils.getSelectedItemStack(Minecraft.getMinecraft().player.inventory, message.stack.getItem());
 
 			if(!stackToUpdate.isEmpty())

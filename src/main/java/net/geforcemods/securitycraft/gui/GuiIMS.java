@@ -23,7 +23,7 @@ public class GuiIMS extends GuiContainer{
 	public GuiIMS(InventoryPlayer inventory, TileEntityIMS te) {
 		super(new ContainerGeneric(inventory, te));
 		tileEntity = te;
-		targetMode = tileEntity.getTargetingOption();
+		targetMode = tileEntity.getTargetingMode();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class GuiIMS extends GuiContainer{
 	protected void actionPerformed(GuiButton button){
 		if(button.id == 0){
 			targetMode = EnumIMSTargetingMode.values()[(targetMode.ordinal() + 1) % EnumIMSTargetingMode.values().length]; //next enum value
-			tileEntity.setTargetingOption(targetMode);
+			tileEntity.setTargetingMode(targetMode);
 			ClientUtils.syncTileEntity(tileEntity);
 			updateButtonText();
 		}

@@ -1,9 +1,10 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -12,15 +13,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSSyncProjector implements IMessage
+public class SyncProjector implements IMessage
 {
 	private BlockPos pos;
 	private int data;
 	private DataType dataType;
 
-	public PacketSSyncProjector(){}
+	public SyncProjector(){}
 
-	public PacketSSyncProjector(BlockPos pos, int data, DataType dataType){
+	public SyncProjector(BlockPos pos, int data, DataType dataType){
 		this.pos = pos;
 		this.data = data;
 		this.dataType = dataType;
@@ -50,17 +51,18 @@ public class PacketSSyncProjector implements IMessage
 			ByteBufUtils.writeVarInt(buf, data, 5);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSSyncProjector, IMessage>
+	public static class Handler implements IMessageHandler<SyncProjector, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSSyncProjector message, MessageContext ctx)
+		public IMessage onMessage(SyncProjector message, MessageContext ctx)
 		{
-			WorldUtils.addScheduledTask(getWorld(ctx.getServerHandler().player), () -> {
+			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				BlockPos pos = message.pos;
-				World world = ctx.getServerHandler().player.world;
+				EntityPlayer player = ctx.getServerHandler().player;
+				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if(world.isBlockLoaded(pos) && te instanceof TileEntityProjector)
+				if(world.isBlockLoaded(pos) && te instanceof TileEntityProjector && ((TileEntityProjector)te).getOwner().isOwner(null))
 				{
 					TileEntityProjector projector = (TileEntityProjector)te;
 					IBlockState state = world.getBlockState(pos);

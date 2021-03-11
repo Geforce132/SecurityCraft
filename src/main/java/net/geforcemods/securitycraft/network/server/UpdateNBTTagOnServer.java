@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -10,15 +10,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSUpdateNBTTag implements IMessage{
+public class UpdateNBTTagOnServer implements IMessage{
 
 	private ItemStack stack;
 
-	public PacketSUpdateNBTTag(){
+	public UpdateNBTTagOnServer(){
 
 	}
 
-	public PacketSUpdateNBTTag(ItemStack stack){
+	public UpdateNBTTagOnServer(ItemStack stack){
 		if(!stack.isEmpty() && stack.hasTagCompound()){
 			this.stack = stack;
 		}
@@ -34,11 +34,11 @@ public class PacketSUpdateNBTTag implements IMessage{
 		ByteBufUtils.writeItemStack(buf, stack);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSUpdateNBTTag, IMessage> {
+	public static class Handler implements IMessageHandler<UpdateNBTTagOnServer, IMessage> {
 
 		@Override
-		public IMessage onMessage(PacketSUpdateNBTTag message, MessageContext context) {
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+		public IMessage onMessage(UpdateNBTTagOnServer message, MessageContext context) {
+			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
 
 				if(PlayerUtils.isHoldingItem(player, message.stack.getItem(), null)) {

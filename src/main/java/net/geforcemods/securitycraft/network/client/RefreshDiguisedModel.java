@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
@@ -13,15 +13,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketCRefreshDiguisedModel implements IMessage
+public class RefreshDiguisedModel implements IMessage
 {
 	private BlockPos pos;
 	private boolean insert;
 	private ItemStack stack;
 
-	public PacketCRefreshDiguisedModel() {}
+	public RefreshDiguisedModel() {}
 
-	public PacketCRefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack)
+	public RefreshDiguisedModel(BlockPos pos, boolean insert, ItemStack stack)
 	{
 		this.pos = pos;
 		this.insert = insert;
@@ -44,11 +44,11 @@ public class PacketCRefreshDiguisedModel implements IMessage
 		stack = ByteBufUtils.readItemStack(buf);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketCRefreshDiguisedModel,IMessage>
+	public static class Handler implements IMessageHandler<RefreshDiguisedModel,IMessage>
 	{
 		@Override
 		@SideOnly(Side.CLIENT)
-		public IMessage onMessage(PacketCRefreshDiguisedModel message, MessageContext context)
+		public IMessage onMessage(RefreshDiguisedModel message, MessageContext context)
 		{
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				TileEntityDisguisable te = (TileEntityDisguisable)Minecraft.getMinecraft().world.getTileEntity(message.pos);

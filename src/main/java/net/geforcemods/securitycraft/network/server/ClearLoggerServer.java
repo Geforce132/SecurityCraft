@@ -1,21 +1,22 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSClearLogger implements IMessage
+public class ClearLoggerServer implements IMessage
 {
 	private BlockPos pos;
 
-	public PacketSClearLogger() {}
+	public ClearLoggerServer() {}
 
-	public PacketSClearLogger(BlockPos pos)
+	public ClearLoggerServer(BlockPos pos)
 	{
 		this.pos = pos;
 	}
@@ -32,19 +33,19 @@ public class PacketSClearLogger implements IMessage
 		buf.writeLong(pos.toLong());
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSClearLogger,IMessage>
+	public static class Handler implements IMessageHandler<ClearLoggerServer,IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSClearLogger message, MessageContext context)
+		public IMessage onMessage(ClearLoggerServer message, MessageContext context)
 		{
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
-				TileEntityLogger te = (TileEntityLogger)player.world.getTileEntity(message.pos);
+				TileEntity te = player.world.getTileEntity(message.pos);
 
-				if(te != null)
+				if(te instanceof TileEntityLogger && ((TileEntityLogger)te).getOwner().isOwner(player))
 				{
-					te.players = new String[100];
-					te.sendChangeToClient(true);
+					((TileEntityLogger)te).players = new String[100];
+					((TileEntityLogger)te).sendChangeToClient(true);
 				}
 			});
 

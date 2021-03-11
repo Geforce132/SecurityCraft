@@ -1,26 +1,29 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSAssembleBlockPocket implements IMessage
+public class ToggleBlockPocketManager implements IMessage
 {
 	private BlockPos pos;
 	private int dimension, size;
+	private boolean enabling;
 
-	public PacketSAssembleBlockPocket() {}
+	public ToggleBlockPocketManager() {}
 
-	public PacketSAssembleBlockPocket(TileEntityBlockPocketManager te, int size)
+	public ToggleBlockPocketManager(TileEntityBlockPocketManager te, boolean enabling, int size)
 	{
 		pos = te.getPos();
 		dimension = te.getWorld().provider.getDimension();
+		this.enabling = enabling;
 		this.size = size;
 	}
 
@@ -29,6 +32,7 @@ public class PacketSAssembleBlockPocket implements IMessage
 	{
 		pos = BlockPos.fromLong(buf.readLong());
 		dimension = buf.readInt();
+		enabling = buf.readBoolean();
 		size = buf.readInt();
 	}
 
@@ -37,24 +41,30 @@ public class PacketSAssembleBlockPocket implements IMessage
 	{
 		buf.writeLong(pos.toLong());
 		buf.writeInt(dimension);
+		buf.writeBoolean(enabling);
 		buf.writeInt(size);
 	}
 
-	public static class Handler implements IMessageHandler<PacketSAssembleBlockPocket, IMessage>
+	public static class Handler implements IMessageHandler<ToggleBlockPocketManager, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSAssembleBlockPocket message, MessageContext ctx)
+		public IMessage onMessage(ToggleBlockPocketManager message, MessageContext ctx)
 		{
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
+				EntityPlayer player = ctx.getServerHandler().player;
+				World world = player.world;
+				TileEntity te = world.getTileEntity(message.pos);
 
-				if(te instanceof TileEntityBlockPocketManager)
+				if(te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager)te).getOwner().isOwner(player))
 				{
 					((TileEntityBlockPocketManager)te).size = message.size;
-					((TileEntityBlockPocketManager)te).autoAssembleMultiblock(ctx.getServerHandler().player);
+
+					if(message.enabling)
+						((TileEntityBlockPocketManager)te).enableMultiblock();
+					else
+						((TileEntityBlockPocketManager)te).disableMultiblock();
 				}
 			});
-
 			return null;
 		}
 	}

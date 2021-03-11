@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.network.packets.PacketCRefreshDiguisedModel;
+import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.minecraft.item.ItemStack;
 
 public class TileEntityDisguisable extends CustomizableSCTE
@@ -15,7 +15,7 @@ public class TileEntityDisguisable extends CustomizableSCTE
 		super.onModuleInserted(stack, module);
 
 		if(!world.isRemote && module == EnumModuleType.DISGUISE)
-			SecurityCraft.network.sendToAll(new PacketCRefreshDiguisedModel(pos, true, stack));
+			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, true, stack));
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class TileEntityDisguisable extends CustomizableSCTE
 		super.onModuleRemoved(stack, module);
 
 		if(!world.isRemote && module == EnumModuleType.DISGUISE)
-			SecurityCraft.network.sendToAll(new PacketCRefreshDiguisedModel(pos, false, stack));
+			SecurityCraft.network.sendToAll(new RefreshDiguisedModel(pos, false, stack));
 	}
 
 	@Override

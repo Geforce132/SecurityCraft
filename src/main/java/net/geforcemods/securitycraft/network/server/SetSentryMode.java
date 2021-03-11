@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.network.packets;
+package net.geforcemods.securitycraft.network.server;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketSetSentryMode implements IMessage
+public class SetSentryMode implements IMessage
 {
 	public BlockPos pos;
 	public int mode;
 
-	public PacketSetSentryMode() {}
+	public SetSentryMode() {}
 
-	public PacketSetSentryMode(BlockPos sentryPos, int mode)
+	public SetSentryMode(BlockPos sentryPos, int mode)
 	{
 		pos = sentryPos;
 		this.mode = mode;
@@ -39,17 +39,16 @@ public class PacketSetSentryMode implements IMessage
 		buf.writeInt(mode);
 	}
 
-	public static class Handler extends PacketHelper implements IMessageHandler<PacketSetSentryMode, IMessage>
+	public static class Handler implements IMessageHandler<SetSentryMode, IMessage>
 	{
 		@Override
-		public IMessage onMessage(PacketSetSentryMode message, MessageContext context)
+		public IMessage onMessage(SetSentryMode message, MessageContext context)
 		{
-			WorldUtils.addScheduledTask(getWorld(context.getServerHandler().player), () -> {
+			WorldUtils.addScheduledTask(context.getServerHandler().player.world, () -> {
 				EntityPlayer player = context.getServerHandler().player;
+				List<EntitySentry> sentries = player.world.<EntitySentry>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
 
-				List<EntitySentry> sentries = getWorld(player).<EntitySentry>getEntitiesWithinAABB(EntitySentry.class, new AxisAlignedBB(message.pos));
-
-				if(!sentries.isEmpty())
+				if(!sentries.isEmpty() && sentries.get(0).getOwner().isOwner(player))
 					sentries.get(0).toggleMode(player, message.mode, false);
 			});
 
