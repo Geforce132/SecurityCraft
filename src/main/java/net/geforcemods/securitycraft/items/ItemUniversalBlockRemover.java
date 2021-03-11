@@ -91,6 +91,7 @@ public class ItemUniversalBlockRemover extends Item {
 				});
 
 				world.destroyBlock(originalPos, false);
+				player.getHeldItem(hand).damageItem(1, player);
 			} else {
 				if(block == SCContent.inventoryScanner)
 				{

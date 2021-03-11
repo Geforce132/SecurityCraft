@@ -244,7 +244,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 				{
 					for(int z = 0; z < 3; z++)
 					{
-						//skip the middle column above the cage trap, but not the place where the horiztonal iron bars are
+						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
 						if(!(x == 1 && z == 1 && y != 3))
 							ifTrue.accept(world, pos, owner);
 

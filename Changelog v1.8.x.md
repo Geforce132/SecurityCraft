@@ -16,6 +16,7 @@
 - Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
 - Fix: Mines can be placed on some blocks that haven't got a solid top side
 - Fix: Some Mines ignore the shouldSpawnFire configuration optionplacing
+- Fix: Universal Block Remover does not take damage when breaking a deactivated Cage Trap
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
