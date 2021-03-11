@@ -109,6 +109,7 @@ public class UniversalBlockRemoverItem extends Item
 					});
 
 					world.destroyBlock(originalPos, false);
+					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
 				}
 			}
 			else
