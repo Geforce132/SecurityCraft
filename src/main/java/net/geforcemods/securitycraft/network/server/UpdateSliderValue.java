@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -53,7 +54,7 @@ public class UpdateSliderValue {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(pos);
 
-			if(te instanceof ICustomizable) {
+			if(te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)) {
 				Option<?> o = ((ICustomizable)te).customOptions()[id];
 
 				if(o instanceof DoubleOption)
