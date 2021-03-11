@@ -4,11 +4,12 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class RemoteControlMine{
@@ -50,20 +51,23 @@ public class RemoteControlMine{
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
+			World world = player.world;
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
+			BlockState state = world.getBlockState(pos);
 
-			if(player.world.getBlockState(pos) instanceof IExplosive)
+			if(state.getBlock() instanceof IExplosive)
 			{
-				TileEntity te = player.world.getTileEntity(pos);
+				IExplosive explosive = ((IExplosive) state.getBlock());
+				TileEntity te = world.getTileEntity(pos);
 
 				if(te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player))
 				{
 					if(message.state.equalsIgnoreCase("activate"))
-						((IExplosive) BlockUtils.getBlock(player.world, message.x, message.y, message.z)).activateMine(player.world, BlockUtils.toPos(message.x, message.y, message.z));
+						explosive.activateMine(world,pos);
 					else if(message.state.equalsIgnoreCase("defuse"))
-						((IExplosive) BlockUtils.getBlock(player.world, message.x, message.y, message.z)).defuseMine(player.world, BlockUtils.toPos(message.x, message.y, message.z));
+						explosive.defuseMine(world, pos);
 					else if(message.state.equalsIgnoreCase("detonate"))
-						((IExplosive) BlockUtils.getBlock(player.world, message.x, message.y, message.z)).explode(player.world, BlockUtils.toPos(message.x, message.y, message.z));
+						explosive.explode(world, pos);
 				}
 			}
 		});
