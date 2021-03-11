@@ -19,87 +19,90 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class OpenGui {
+public class OpenBriefcaseGui {
 
 	private ResourceLocation id;
 	private ITextComponent name;
 
-	public OpenGui(){}
+	public OpenBriefcaseGui(){}
 
-	public OpenGui(ResourceLocation id, ITextComponent name){
+	public OpenBriefcaseGui(ResourceLocation id, ITextComponent name){
 		this.id = id;
 		this.name = name;
 	}
 
-	public static void encode(OpenGui message, PacketBuffer buf)
+	public static void encode(OpenBriefcaseGui message, PacketBuffer buf)
 	{
 		buf.writeResourceLocation(message.id);
 		buf.writeTextComponent(message.name);
 	}
 
-	public static OpenGui decode(PacketBuffer buf)
+	public static OpenBriefcaseGui decode(PacketBuffer buf)
 	{
-		OpenGui message = new OpenGui();
+		OpenBriefcaseGui message = new OpenBriefcaseGui();
 
 		message.id = buf.readResourceLocation();
 		message.name = buf.readTextComponent();
 		return message;
 	}
 
-	public static void onMessage(OpenGui message, Supplier<NetworkEvent.Context> ctx)
+	public static void onMessage(OpenBriefcaseGui message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
 			ResourceLocation id = message.id;
 			ServerPlayerEntity player = ctx.get().getSender();
 			BlockPos pos = player.getPosition();
 
-			if(id.equals(SCContent.cTypeBriefcaseInventory.getRegistryName()))
+			if(PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null))
 			{
-				NetworkHooks.openGui(player, new INamedContainerProvider() {
-					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
-						return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
-					}
+				if(id.equals(SCContent.cTypeBriefcaseInventory.getRegistryName()))
+				{
+					NetworkHooks.openGui(player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new BriefcaseContainer(windowId, inv, new BriefcaseInventory(PlayerUtils.getSelectedItemStack(player, SCContent.BRIEFCASE.get())));
+						}
 
-					@Override
-					public ITextComponent getDisplayName()
-					{
-						return message.name;
-					}
-				}, pos);
-			}
-			else if(id.equals(SCContent.cTypeBriefcaseSetup.getRegistryName()))
-			{
-				NetworkHooks.openGui(player, new INamedContainerProvider() {
-					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
-						return new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId);
-					}
+						@Override
+						public ITextComponent getDisplayName()
+						{
+							return message.name;
+						}
+					}, pos);
+				}
+				else if(id.equals(SCContent.cTypeBriefcaseSetup.getRegistryName()))
+				{
+					NetworkHooks.openGui(player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new GenericContainer(SCContent.cTypeBriefcaseSetup, windowId);
+						}
 
-					@Override
-					public ITextComponent getDisplayName()
-					{
-						return message.name;
-					}
-				}, pos);
-			}
-			else if(id.equals(SCContent.cTypeBriefcase.getRegistryName()))
-			{
-				NetworkHooks.openGui(player, new INamedContainerProvider() {
-					@Override
-					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
-					{
-						return new GenericContainer(SCContent.cTypeBriefcase, windowId);
-					}
+						@Override
+						public ITextComponent getDisplayName()
+						{
+							return message.name;
+						}
+					}, pos);
+				}
+				else if(id.equals(SCContent.cTypeBriefcase.getRegistryName()))
+				{
+					NetworkHooks.openGui(player, new INamedContainerProvider() {
+						@Override
+						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
+						{
+							return new GenericContainer(SCContent.cTypeBriefcase, windowId);
+						}
 
-					@Override
-					public ITextComponent getDisplayName()
-					{
-						return message.name;
-					}
-				}, pos);
+						@Override
+						public ITextComponent getDisplayName()
+						{
+							return message.name;
+						}
+					}, pos);
+				}
 			}
 		});
 

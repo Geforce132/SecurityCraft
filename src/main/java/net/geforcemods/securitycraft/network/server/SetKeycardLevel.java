@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetKeycardLevel {
@@ -52,13 +52,14 @@ public class SetKeycardLevel {
 	{
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
-			int level = message.level;
-			boolean exactCard = message.exactCard;
 			PlayerEntity player = ctx.get().getSender();
-			World world = player.world;
+			TileEntity te = player.world.getTileEntity(pos);
 
-			((KeycardReaderTileEntity) world.getTileEntity(pos)).setPassword(String.valueOf(level));
-			((KeycardReaderTileEntity) world.getTileEntity(pos)).setRequiresExactKeycard(exactCard);
+			if(te instanceof KeycardReaderTileEntity && ((KeycardReaderTileEntity)te).getOwner().isOwner(player))
+			{
+				((KeycardReaderTileEntity)te).setPassword(String.valueOf(message.level));
+				((KeycardReaderTileEntity)te).setRequiresExactKeycard(message.exactCard);
+			}
 		});
 
 		ctx.get().setPacketHandled(true);

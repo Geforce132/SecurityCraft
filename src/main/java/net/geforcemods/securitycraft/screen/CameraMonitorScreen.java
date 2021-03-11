@@ -26,6 +26,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -175,7 +176,7 @@ public class CameraMonitorScreen extends Screen {
 
 			if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) == SCContent.SECURITY_CAMERA.get()) {
 				((SecurityCameraBlock) BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation())).mountCamera(Minecraft.getInstance().world, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
-				SecurityCraft.channel.sendToServer(new MountCamera(view.x, view.y, view.z, camID));
+				SecurityCraft.channel.sendToServer(new MountCamera(new BlockPos(view.x, view.y, view.z), camID));
 				Minecraft.getInstance().player.closeScreen();
 			}
 			else

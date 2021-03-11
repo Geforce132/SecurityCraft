@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.server.GivePotionEffect;
+import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
@@ -22,10 +22,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.potion.Effect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -177,7 +175,7 @@ public class SecurityCameraEntity extends Entity{
 			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GivePotionEffect(Effect.getId(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
+				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
 
 		if(!world.isRemote)

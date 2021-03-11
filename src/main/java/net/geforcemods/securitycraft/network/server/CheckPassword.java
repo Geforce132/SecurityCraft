@@ -2,11 +2,13 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -51,12 +53,13 @@ public class CheckPassword {
 			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
+			TileEntity te = player.world.getTileEntity(pos);
 
-			if(player.world.getTileEntity(pos) instanceof IPasswordProtected)
-				if(((IPasswordProtected) player.world.getTileEntity(pos)).getPassword().equals(password)){
-					((ServerPlayerEntity) player).closeScreen();
-					((IPasswordProtected) player.world.getTileEntity(pos)).activate(player);
-				}
+			if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(password) && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
+			{
+				((ServerPlayerEntity) player).closeScreen();
+				((IPasswordProtected)te).activate(player);
+			}
 		});
 
 		ctx.get().setPacketHandled(true);

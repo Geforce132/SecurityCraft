@@ -4,7 +4,9 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
@@ -31,7 +33,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	public IMSScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 		tileEntity = (IMSTileEntity)container.te;
-		targetMode = tileEntity.getTargetingOption();
+		targetMode = tileEntity.getTargetingMode();
 	}
 
 	@Override
@@ -64,8 +66,8 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	protected void actionPerformed(IdButton button){
 		targetMode = IMSTargetingMode.values()[(targetMode.ordinal() + 1) % IMSTargetingMode.values().length]; //next enum value
-		tileEntity.setTargetingOption(targetMode);
-		ClientUtils.syncTileEntity(tileEntity);
+		tileEntity.setTargetingMode(targetMode);
+		SecurityCraft.channel.sendToServer(new SyncIMSTargetingOption(tileEntity.getPos(), tileEntity.getTargetingMode()));
 		updateButtonText();
 	}
 

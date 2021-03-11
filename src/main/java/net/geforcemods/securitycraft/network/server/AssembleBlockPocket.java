@@ -41,7 +41,7 @@ public class AssembleBlockPocket
 		ctx.get().enqueueWork(() -> {
 			TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
 
-			if(te instanceof BlockPocketManagerTileEntity)
+			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(ctx.get().getSender()))
 			{
 				((BlockPocketManagerTileEntity)te).size = message.size;
 				((BlockPocketManagerTileEntity)te).autoAssembleMultiblock(ctx.get().getSender());

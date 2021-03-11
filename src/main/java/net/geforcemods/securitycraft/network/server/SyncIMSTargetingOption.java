@@ -2,57 +2,51 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
+import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class SyncTENBTTag {
+public class SyncIMSTargetingOption
+{
+	private BlockPos pos;
+	private IMSTargetingMode targetingMode;
 
-	private int x, y, z;
-	private CompoundNBT tag;
+	public SyncIMSTargetingOption() {}
 
-	public SyncTENBTTag(){
-
-	}
-
-	public SyncTENBTTag(int x, int y, int z, CompoundNBT tag){
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.tag = tag;
-	}
-
-	public static void encode(SyncTENBTTag message, PacketBuffer buf)
+	public SyncIMSTargetingOption(BlockPos pos, IMSTargetingMode targetingMode)
 	{
-		buf.writeInt(message.x);
-		buf.writeInt(message.y);
-		buf.writeInt(message.z);
-		buf.writeCompoundTag(message.tag);
+		this.pos = pos;
+		this.targetingMode = targetingMode;
 	}
 
-	public static SyncTENBTTag decode(PacketBuffer buf)
+	public static void encode(SyncIMSTargetingOption message, PacketBuffer buf)
 	{
-		SyncTENBTTag message = new SyncTENBTTag();
+		buf.writeBlockPos(message.pos);
+		buf.writeEnumValue(message.targetingMode);
+	}
 
-		message.x = buf.readInt();
-		message.y = buf.readInt();
-		message.z = buf.readInt();
-		message.tag = buf.readCompoundTag();
+	public static SyncIMSTargetingOption decode(PacketBuffer buf)
+	{
+		SyncIMSTargetingOption message = new SyncIMSTargetingOption();
+
+		message.pos = buf.readBlockPos();
+		message.targetingMode = buf.readEnumValue(IMSTargetingMode.class);
 		return message;
 	}
 
-	public static void onMessage(SyncTENBTTag message, Supplier<NetworkEvent.Context> ctx)
+	public static void onMessage(SyncIMSTargetingOption message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
-			CompoundNBT tag = message.tag;
+			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
+			TileEntity te = player.world.getTileEntity(pos);
 
-			if(player.world.getTileEntity(pos) != null)
-				player.world.getTileEntity(pos).read(player.world.getBlockState(pos), tag);
+			if(te instanceof IMSTileEntity && ((IMSTileEntity)te).getOwner().isOwner(player))
+				((IMSTileEntity)te).setTargetingMode(message.targetingMode);
 		});
 
 		ctx.get().setPacketHandled(true);

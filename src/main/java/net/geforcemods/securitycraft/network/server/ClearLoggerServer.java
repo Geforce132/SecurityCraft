@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -36,12 +37,12 @@ public class ClearLoggerServer
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity)player.world.getTileEntity(message.pos);
+			TileEntity te = player.world.getTileEntity(message.pos);
 
-			if(te != null)
+			if(te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity)te).getOwner().isOwner(player))
 			{
-				te.players = new String[100];
-				te.sendChangeToClient(true);
+				((UsernameLoggerTileEntity)te).players = new String[100];
+				((UsernameLoggerTileEntity)te).sendChangeToClient(true);
 			}
 		});
 

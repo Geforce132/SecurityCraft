@@ -2,46 +2,29 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraftforge.fml.network.NetworkEvent;
 
-public class GivePotionEffect {
+public class GiveNightVision
+{
+	public GiveNightVision() {}
 
-	private int potionID, duration, amplifier;
+	public static void encode(GiveNightVision message, PacketBuffer buf) {}
 
-	public GivePotionEffect(){
-
-	}
-
-	public GivePotionEffect(int potionID, int duration, int amplifier){
-		this.potionID = potionID;
-		this.duration = duration;
-		this.amplifier = amplifier;
-	}
-
-	public static void encode(GivePotionEffect message, PacketBuffer buf)
+	public static GiveNightVision decode(PacketBuffer buf)
 	{
-		buf.writeInt(message.potionID);
-		buf.writeInt(message.duration);
-		buf.writeInt(message.amplifier);
+		return new GiveNightVision();
 	}
 
-	public static GivePotionEffect decode(PacketBuffer buf)
+	public static void onMessage(GiveNightVision message, Supplier<NetworkEvent.Context> ctx)
 	{
-		GivePotionEffect message = new GivePotionEffect();
-
-		message.potionID = buf.readInt();
-		message.duration = buf.readInt();
-		message.amplifier = buf.readInt();
-		return message;
-	}
-
-	public static void onMessage(GivePotionEffect message, Supplier<NetworkEvent.Context> ctx)
-	{
-		ctx.get().enqueueWork(() -> ctx.get().getSender().addPotionEffect(new EffectInstance(Effect.get(message.potionID), message.duration, message.amplifier, false, true)));
+		ctx.get().enqueueWork(() -> {
+			if(PlayerUtils.isPlayerMountedOnCamera(ctx.get().getSender()))
+				ctx.get().getSender().addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 3, -1, false, false));
+		});
 		ctx.get().setPacketHandled(true);
 	}
-
 }
