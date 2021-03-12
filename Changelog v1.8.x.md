@@ -25,6 +25,7 @@
 - Fix: Placing a Scanner-/Keypad Door in a block space that is powered will place the door in an open state
 - Fix: Universal Block Remover does not take damage when breaking a deactivated Cage Trap
 - Fix: The message that the Codebreaker has been disabled in the configuration file doesn't get sent
+- Fix: Some mines ignore the "smallerMinesExplosion" configuration option
 - Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
