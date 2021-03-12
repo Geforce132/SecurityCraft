@@ -44,14 +44,22 @@ public interface IPasswordProtected {
 	public void openPasswordGUI(PlayerEntity player);
 
 	/**
+	 * Can the codebreaker be used on that password-protected block?
+	 *
+	 * @return Return true if the codebreaker can be used on the block
+	 */
+	public default boolean isCodebreakable() {
+		return true;
+	}
+
+	/**
 	 * Called when a codebreaker is used on a password-protected block.
 	 *
 	 * @param blockState The BlockState of the block.
 	 * @param player The player who used the codebreaker.
-	 * @param isCodebreakerDisabled If the codebreaker is disabled through the SC configuration file.
 	 * @return Return true if the codebreaker "hack" was successful, false otherwise.
 	 */
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled);
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player);
 
 	/**
 	 * Return your TileEntity's password variable here.
