@@ -213,15 +213,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else {
-			activate(player);
-			return true;
-		}
-
-		return false;
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
+		activate(player);
+		return true;
 	}
 
 	@Override

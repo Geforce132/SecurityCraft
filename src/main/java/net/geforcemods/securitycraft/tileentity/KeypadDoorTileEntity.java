@@ -105,10 +105,8 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD_DOOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else if(!blockState.get(DoorBlock.OPEN)) {
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
+		if(!blockState.get(DoorBlock.OPEN)) {
 			activate(player);
 			return true;
 		}
