@@ -39,7 +39,7 @@ public class CodebreakerItem extends Item {
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
 			if(!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
 				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.BRIEFCASE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-				return ActionResult.resultFail(codebreaker);
+				return ActionResult.resultSuccess(codebreaker);
 			}
 			else {
 				codebreaker.damageItem(1, player, p -> p.sendBreakAnimation(hand));

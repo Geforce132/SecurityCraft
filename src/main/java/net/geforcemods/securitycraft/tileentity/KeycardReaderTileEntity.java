@@ -86,7 +86,12 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
+	public boolean isCodebreakable() {
+		return false;
+	}
+
+	@Override
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
 		return false;
 	}
 
