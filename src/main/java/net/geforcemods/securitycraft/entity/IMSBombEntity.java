@@ -56,7 +56,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		if(!world.isRemote && result.getType() == Type.BLOCK && BlockUtils.getBlock(world, ((BlockRayTraceResult)result).getPos()) != SCContent.IMS.get()){
 			BlockPos impactPos = ((BlockRayTraceResult)result).getPos();
 
-			world.createExplosion(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion(this, impactPos.getX(), impactPos.getY() + 1D, impactPos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.5F : 7F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
 			remove();
 		}
 	}
