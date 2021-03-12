@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -22,9 +23,13 @@ public class ItemSentry extends Item
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		pos = pos.offset(facing); //get sentry position
+		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
-		if(!world.isAirBlock(pos))
+		if (!replacesTargetedBlock) {
+			pos = pos.offset(facing); //if the block is not replaceable, place sentry next to targeted block
+		}
+
+		if(!world.isAirBlock(pos) && !replacesTargetedBlock)
 			return EnumActionResult.PASS;
 		else
 		{
@@ -44,6 +49,10 @@ public class ItemSentry extends Item
 
 		if (stack.hasDisplayName())
 			entity.setCustomNameTag(stack.getDisplayName());
+
+		if (replacesTargetedBlock) {
+			world.setBlockState(pos, Blocks.AIR.getDefaultState());
+		}
 
 		if (!world.isRemote)
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));

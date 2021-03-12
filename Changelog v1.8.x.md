@@ -20,6 +20,7 @@
 - Fix: Placing a Scanner-/Keypad Door in a block space that is powered will place the door in an open state
 - Fix: Universal Block Remover does not take damage when breaking a deactivated Cage Trap
 - Fix: The message that the Codebreaker has been disabled in the configuration file doesn't get sent
+- Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
