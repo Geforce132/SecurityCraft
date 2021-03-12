@@ -88,6 +88,9 @@ public class ItemAdminTool extends Item {
 
 			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
 		}
+		else {
+			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:adminTool.name"), ClientUtils.localize("messages.securitycraft:adminTool.disabled"), TextFormatting.DARK_PURPLE);
+		}
 
 		return EnumActionResult.SUCCESS;
 	}
