@@ -73,10 +73,8 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad_door.name"), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else if(!BlockUtils.getBlockProperty(world, pos, BlockKeypad.POWERED)) {
+	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
+		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypad.POWERED)) {
 			activate(player);
 			return true;
 		}

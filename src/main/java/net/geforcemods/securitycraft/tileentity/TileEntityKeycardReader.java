@@ -73,7 +73,12 @@ public class TileEntityKeycardReader extends TileEntityDisguisable implements IP
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
+	public boolean isCodebreakable() {
+		return false;
+	}
+
+	@Override
+	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
 		return false;
 	}
 

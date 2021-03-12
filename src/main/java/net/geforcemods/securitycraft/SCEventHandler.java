@@ -531,22 +531,27 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		if(ConfigHandler.allowCodebreakerItem)
-		{
-			World world = event.getEntityPlayer().world;
-			TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
+		World world = event.getEntityPlayer().world;
+		TileEntity tileEntity = event.getEntityPlayer().world.getTileEntity(event.getPos());
 
-			if(tileEntity instanceof IPasswordProtected)
+		if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
+		{
+			if(ConfigHandler.allowCodebreakerItem)
 			{
 				if(event.getEntityPlayer().getHeldItem(event.getHand()).getItem() == SCContent.codebreaker)
 					event.getEntityPlayer().getHeldItem(event.getHand()).damageItem(1, event.getEntityPlayer());
 
 				if(event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer(), !ConfigHandler.allowCodebreakerItem);
+					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer());
 				else {
 					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:codebreaker.name"), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;
 				}
+			}
+			else {
+				Block block = world.getBlockState(event.getPos()).getBlock();
+
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(block.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 		}
 

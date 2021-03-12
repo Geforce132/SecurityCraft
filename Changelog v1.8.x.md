@@ -14,9 +14,11 @@
 - Fix: The Briefcase's NBT contains empty Briefcase inventory slots
 - Fix: Some of SecurityCraft's tools don't lose durability when used on a block while held in the offhand
 - Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
-- Fix: Mines can be placed on some blocks that haven't got a solid top side
-- Fix: Some Mines ignore the shouldSpawnFire configuration optionplacing
+- Fix: Mines can be placed on some blocks that don't have a solid top side
+- Fix: Claymore explosions ignore the "shouldSpawnFire" configuration option
+- Fix: Placing a Scanner-/Keypad Door in a block space that is powered will place the door in an open state
 - Fix: Universal Block Remover does not take damage when breaking a deactivated Cage Trap
+- Fix: The message that the Codebreaker has been disabled in the configuration file doesn't get sent
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

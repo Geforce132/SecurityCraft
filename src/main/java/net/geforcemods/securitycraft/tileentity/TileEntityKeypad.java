@@ -79,10 +79,8 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypad.name"), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else if(!BlockUtils.getBlockProperty(world, pos, BlockKeypad.POWERED)) {
+	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
+		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypad.POWERED)) {
 			activate(player);
 			return true;
 		}

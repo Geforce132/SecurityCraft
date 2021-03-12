@@ -165,15 +165,9 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keypadChest.name"), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else {
-			activate(player);
-			return true;
-		}
-
-		return false;
+	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
+		activate(player);
+		return true;
 	}
 
 	@Override
