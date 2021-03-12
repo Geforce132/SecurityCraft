@@ -34,10 +34,9 @@ public class AdminToolItem extends Item {
 		World world = ctx.getWorld();
 		BlockPos pos = ctx.getPos();
 		PlayerEntity player = ctx.getPlayer();
+		TranslationTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
 
 		if(!world.isRemote && ConfigHandler.SERVER.allowAdminTool.get()) {
-			TranslationTextComponent adminToolName = ClientUtils.localize(SCContent.ADMIN_TOOL.get().getTranslationKey());
-
 			if(!player.isCreative())
 			{
 				PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
@@ -91,6 +90,9 @@ public class AdminToolItem extends Item {
 			}
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.noInfo"), TextFormatting.DARK_PURPLE);
+		}
+		else {
+			PlayerUtils.sendMessageToPlayer(player, adminToolName, ClientUtils.localize("messages.securitycraft:adminTool.disabled"), TextFormatting.DARK_PURPLE);
 		}
 
 		return ActionResultType.FAIL;
