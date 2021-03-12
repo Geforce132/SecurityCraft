@@ -298,9 +298,9 @@ public class SCEventHandler {
 		World world = event.getPlayer().world;
 		TileEntity tileEntity = world.getTileEntity(event.getPos());
 
-		if(ConfigHandler.SERVER.allowCodebreakerItem.get())
+		if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
 		{
-			if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
+			if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 			{
 				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
@@ -312,13 +312,13 @@ public class SCEventHandler {
 					return true;
 				}
 			}
-		}
-		else if (tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable()){
-			Block block = world.getBlockState(event.getPos()).getBlock();
+			else {
+				Block block = world.getBlockState(event.getPos()).getBlock();
 
-			PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(block.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(block.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+			}
 		}
-
+		
 		return false;
 	}
 }
