@@ -152,7 +152,7 @@ public class BlockClaymore extends BlockExplosive {
 	public void explode(World world, BlockPos pos) {
 		if(!world.isRemote){
 			world.destroyBlock(pos, false);
-			world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.5F, ConfigHandler.shouldSpawnFire, true);
+			world.newExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.smallerMineExplosion ? 1.5F : 3.5F, ConfigHandler.shouldSpawnFire, true);
 		}
 	}
 

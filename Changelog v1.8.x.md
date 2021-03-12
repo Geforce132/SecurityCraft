@@ -21,6 +21,7 @@
 - Fix: Universal Block Remover does not take damage when breaking a deactivated Cage Trap
 - Fix: The message that the Codebreaker has been disabled in the configuration file doesn't get sent
 - Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
+- Fix: Some mines ignore the "smallerMinesExplosion" configuration option
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
