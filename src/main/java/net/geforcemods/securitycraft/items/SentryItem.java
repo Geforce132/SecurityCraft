@@ -31,9 +31,13 @@ public class SentryItem extends Item
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
 	{
-		pos = pos.offset(facing); //get sentry position
+		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
-		if(!world.isAirBlock(pos))
+		if (!replacesTargetedBlock) {
+			pos = pos.offset(facing); //if the block is not replaceable, place sentry next to targeted block
+		}
+
+		if(!world.isAirBlock(pos) && !replacesTargetedBlock)
 			return ActionResultType.PASS;
 		else
 		{
@@ -53,6 +57,10 @@ public class SentryItem extends Item
 
 		if (stack.hasDisplayName())
 			entity.setCustomName(stack.getDisplayName());
+
+		if (replacesTargetedBlock) {
+			world.removeBlock(pos, false);
+		}
 
 		world.addEntity(entity);
 		player.sendStatusMessage(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
