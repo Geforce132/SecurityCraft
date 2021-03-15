@@ -87,14 +87,17 @@ public class EditModuleScreen extends Screen
 				addButton.active = false;
 			else
 			{
-				for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
+				if(module.hasTag())
 				{
-					if(s.equals(module.getTag().getString("Player" + i)))
+					for(int i = 1; i <= ModuleItem.MAX_PLAYERS; i++)
 					{
-						addButton.active = false;
-						removeButton.active = true;
-						playerList.setSelectedIndex(i - 1);
-						return;
+						if(s.equals(module.getTag().getString("Player" + i)))
+						{
+							addButton.active = false;
+							removeButton.active = true;
+							playerList.setSelectedIndex(i - 1);
+							return;
+						}
 					}
 				}
 
