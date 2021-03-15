@@ -191,12 +191,12 @@ public class EditModuleScreen extends Screen
 		}
 		else if(button.id == copyButton.id)
 		{
-			savedModule = module.getTag();
+			savedModule = module.getTag().copy();
 			copyButton.active = false;
 			return;
 		}
 		else if(button.id == pasteButton.id)
-			module.setTag(savedModule);
+			module.setTag(savedModule.copy());
 		else if(button.id == clearButton.id)
 		{
 			module.setTag(new CompoundNBT());
