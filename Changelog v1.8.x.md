@@ -23,6 +23,7 @@
 - Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
 - Fix: Some mines ignore the "smallerMinesExplosion" configuration option
 - Fix: Copying/Pasting module lists does not work properly
+- Fix: Scrolling using the mouse wheel in the Username Logger's GUI does not work
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

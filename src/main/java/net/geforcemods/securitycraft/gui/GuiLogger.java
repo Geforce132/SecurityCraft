@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -106,12 +107,14 @@ public class GuiLogger extends GuiContainer{
 	}
 
 	@Override
-	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+	public void handleMouseInput() throws IOException
 	{
-		if(playerList != null)
-			playerList.handleMouseInput(mouseX, mouseY);
+		super.handleMouseInput();
 
-		super.mouseClicked(mouseX, mouseY, mouseButton);
+		int mouseX = Mouse.getEventX() * width / mc.displayWidth;
+		int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
+
+		playerList.handleMouseInput(mouseX, mouseY);
 	}
 
 	class PlayerList extends GuiScrollingList
@@ -199,31 +202,6 @@ public class GuiLogger extends GuiContainer{
 
 			if(slotIndex >= 0 && slotIndex < tileEntity.players.length && tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].equals(""))
 				fontRenderer.drawString(tileEntity.players[slotIndex], width / 2 - fontRenderer.getStringWidth(tileEntity.players[slotIndex]) / 2, slotTop, 0xC6C6C6);
-		}
-
-		public int getHoveredSlot()
-		{
-			return hoveredSlot;
-		}
-
-		public int getLeft()
-		{
-			return left;
-		}
-
-		public int getBottom()
-		{
-			return bottom;
-		}
-
-		public int getTop()
-		{
-			return top;
-		}
-
-		public int getListWidth()
-		{
-			return listWidth;
 		}
 	}
 }
