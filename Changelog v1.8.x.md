@@ -5,6 +5,7 @@
 - New: Client configuration option "reinforced_block_tint". If the server does not force the reinforced block tint, this value will be used
 - New: The Codebreaker will now send a message when it failed to break a code
 - New: The Admin Tool will now send a message when used while it has been disabled in the config
+- New: Players that have been added to a Whitelist- or Blacklist Module will now be visible in a list in the GUI
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
 - API: Added hook for mods to define a block that can open Reinforced Doors/Reinforced Trapdoors/Reinforced Fence Gates. For more info, see IDoorActivator
