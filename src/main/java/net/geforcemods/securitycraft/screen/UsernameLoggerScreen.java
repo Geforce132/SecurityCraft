@@ -120,7 +120,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	class PlayerList extends ScrollPanel
 	{
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		private final int slotHeight = 10, listLength = 100;
+		private final int slotHeight = 12, listLength = 100;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left)
 		{
@@ -148,7 +148,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				int mouseListY = (int)(mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
-				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
@@ -167,11 +167,11 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		protected void drawPanel(int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
-			int slotBuffer = slotHeight - 3;
+			int slotBuffer = slotHeight - 4;
 			int mouseListY = (int)(mouseY - top + scrollDistance - border);
 			int slotIndex = mouseListY / slotHeight;
 
-			//highlighted hovered slot
+			//highlight hovered slot
 			if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 			{
 				if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
@@ -204,7 +204,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			for(int i = 0; i < tileEntity.players.length; i++)
 			{
 				if(tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.drawString(tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (10 * i), 0xC6C6C6);
+					font.drawString(tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
 	}
