@@ -22,6 +22,7 @@
 - Fix: The message that the Codebreaker has been disabled in the configuration file doesn't get sent
 - Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
 - Fix: Some mines ignore the "smallerMinesExplosion" configuration option
+- Fix: Copying/Pasting module lists does not work properly
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

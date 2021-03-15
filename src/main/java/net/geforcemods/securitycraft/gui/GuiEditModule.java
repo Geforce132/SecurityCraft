@@ -176,11 +176,11 @@ public class GuiEditModule extends GuiContainer
 				inputField.setText("");
 				break;
 			case 2: //copy
-				savedModule = module.getTagCompound();
+				savedModule = module.getTagCompound().copy();
 				copyButton.enabled = false;
 				return;
 			case 3: //paste
-				module.setTagCompound(savedModule);
+				module.setTagCompound(savedModule.copy());
 				break;
 			case 4: //clear
 				module.setTagCompound(new NBTTagCompound());
