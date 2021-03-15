@@ -133,15 +133,6 @@ public class ModuleItem extends Item{
 		else
 			list.add(new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").setStyle(GRAY_STYLE));
 
-		if(nbtCanBeModified && stack.getTag() != null && !stack.getTag().isEmpty()) {
-			list.add(StringTextComponent.EMPTY);
-			list.add(new TranslationTextComponent("tooltip.securitycraft:module.playerCustomization.players").setStyle(GRAY_STYLE));
-
-			for(int i = 1; i <= MAX_PLAYERS; i++)
-				if(!stack.getTag().getString("Player" + i).isEmpty())
-					list.add(new StringTextComponent(stack.getTag().getString("Player" + i)).setStyle(GRAY_STYLE));
-		}
-
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
 				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).setStyle(GRAY_STYLE));
