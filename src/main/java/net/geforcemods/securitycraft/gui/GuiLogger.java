@@ -55,9 +55,6 @@ public class GuiLogger extends GuiContainer{
 			tileEntity.players = new String[100];
 			SecurityCraft.network.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
 		}
-
-		if(playerList != null)
-			playerList.actionPerformed(button);
 	}
 
 	/**
@@ -125,7 +122,7 @@ public class GuiLogger extends GuiContainer{
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left, int screenWidth, int screenHeight)
 		{
-			super(client, width, height, top, top + height, left, 10, screenWidth, screenHeight);
+			super(client, width, height, top, top + height, left, 12, screenWidth, screenHeight);
 		}
 
 		@Override
@@ -168,6 +165,7 @@ public class GuiLogger extends GuiContainer{
 					int max = entryRight + 1;
 					BufferBuilder bufferBuilder = tess.getBuffer();
 
+					slotBuffer--;
 					this.hoveredSlot = slotIndex;
 					isHovering = true;
 					GlStateManager.disableTexture2D();
@@ -185,7 +183,7 @@ public class GuiLogger extends GuiContainer{
 				}
 			}
 
-			//trickery to make correctly set the currently hovered slot back if no slot is being hovered
+			//trickery to correctly set the currently hovered slot back if no slot is being hovered
 			if(i++ == getSize() - 1)
 			{
 				if(!isHovering)

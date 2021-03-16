@@ -108,15 +108,6 @@ public class ItemModule extends Item{
 		else
 			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable").getFormattedText());
 
-		if(nbtCanBeModified && stack.getTagCompound() != null && !stack.getTagCompound().isEmpty()) {
-			list.add(" ");
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.playerCustomization.players").getFormattedText() + ":");
-
-			for(int i = 1; i <= MAX_PLAYERS; i++)
-				if(!stack.getTagCompound().getString("Player" + i).isEmpty())
-					list.add(stack.getTagCompound().getString("Player" + i));
-		}
-
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
 				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons , numberOfItemAddons).getFormattedText());
