@@ -6,6 +6,8 @@
 - New: Players that have been added to a Whitelist- or Blacklist Module will now be visible in a list in the GUI
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
+- Change: The Whitelist Module has been renamed to "Allowlist Module" to be more clear about its function
+- Change: The Blacklist Module has been renamed to "Denylist Module" to be more clear about its function
 - API: Added hook for mods to define a block that can open Reinforced Doors/Reinforced Trapdoors/Reinforced Fence Gates. For more info, see IDoorActivator
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
