@@ -20,13 +20,13 @@ import net.minecraft.util.math.BlockPos;
 public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 
 	// The delay between each ping sound in ticks
-	private final static int DELAY = 100;
+	private static final int DELAY = 100;
 
 	// How far away can this SSS reach (possibly a config option?)
-	public final static int MAX_RANGE = 30;
+	public static final int MAX_RANGE = 30;
 
 	// How many blocks can be linked to a SSS (another config option?)
-	public final static int MAX_LINKED_BLOCKS = 30;
+	public static final int MAX_LINKED_BLOCKS = 30;
 
 	// Whether the ping sound should be emitted or not
 	private BooleanOption isSilent = new BooleanOption("isSilent", false);
@@ -35,7 +35,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	public float radarRotationDegrees = 0;
 
 	// A list containing all of the blocks that this SSS is linked to
-	public Set<BlockPos> linkedBlocks = new HashSet<BlockPos>();
+	public Set<BlockPos> linkedBlocks = new HashSet<>();
 
 	// Is this SSS active? Not used yet but will be in the future to allow
 	// the player to disable the SSS
