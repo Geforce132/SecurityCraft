@@ -777,6 +777,7 @@
 	"messages.securitycraft:sonic_security_system.notLinked": "Not linked with a block yet. Please right-click a compatible SecurityCraft block with this item in your hand while sneaking first.",
 	"messages.securitycraft:sonic_security_system.blockLinked": "Linked with the %1$s at %2$s.",
 	"messages.securitycraft:sonic_security_system.blockUnlinked": "Unlinked from the %1$s at %2$s.",
+	"messages.securitycraft:sonic_security_system.linkMaxReached": "You cannot link to additional blocks. Each Sonic Security System can be linked to a maximum of %s blocks.",
 	"messages.securitycraft:sonic_security_system.locked": "This %s is being locked by a Sonic Security System!",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",

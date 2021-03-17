@@ -25,6 +25,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class SonicSecuritySystemBlock extends OwnableBlock {
 
@@ -98,7 +99,7 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 			return stack;
 
 		stack.setTag(new CompoundNBT());
-		stack.getTag().put("LinkedBlocks", blockTag.getCompound("LinkedBlocks"));
+		stack.getTag().put("LinkedBlocks", blockTag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND));
 
 		return stack;
 	}

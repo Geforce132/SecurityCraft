@@ -14,8 +14,11 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 
 public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 
@@ -108,30 +111,21 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		// to store them in, create one (shouldn't be needed)
 		if(linkedBlocks.size() > 0 && !tag.contains("LinkedBlocks"))
 		{
-			tag.put("LinkedBlocks", new CompoundNBT());
+			tag.put("LinkedBlocks", new ListNBT());
 		}
 
 		Iterator<BlockPos> iterator = linkedBlocks.iterator();
 
-		int i = 0;
 		while(iterator.hasNext())
 		{
 			BlockPos blockToSave = iterator.next();
 
-			if(!tag.getCompound("LinkedBlocks").contains("block" + i))
-			{
-				CompoundNBT newNBT = new CompoundNBT();
-				newNBT.putInt("x", blockToSave.getX());
-				newNBT.putInt("y", blockToSave.getY());
-				newNBT.putInt("z", blockToSave.getZ());
+			CompoundNBT nbt = NBTUtil.writeBlockPos(blockToSave);
 
-				tag.getCompound("LinkedBlocks").put("block" + i, newNBT);
+			tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND).add(nbt);
 
-				if(!linkedBlocks.contains(blockToSave))
-					linkedBlocks.add(blockToSave);
-			}
-
-			i++;
+			if(!linkedBlocks.contains(blockToSave))
+				linkedBlocks.add(blockToSave);
 		}
 
 		tag.putBoolean("isActive", isActive);
@@ -146,20 +140,16 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 
 		if(tag.contains("LinkedBlocks"))
 		{
+			ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
+
 			// Read each saved position and add it to the linkedBlocks list
-			for(int i = 0; i < MAX_LINKED_BLOCKS; i++)
+			for(int i = 0; i < list.size(); i++)
 			{
-				CompoundNBT linkedBlock = tag.getCompound("LinkedBlocks");
+				CompoundNBT linkedBlock = list.getCompound(i);
 
-				if(linkedBlock.contains("block" + i))
-				{
-					int x = linkedBlock.getCompound("block" + i).getInt("x");
-					int y = linkedBlock.getCompound("block" + i).getInt("y");
-					int z = linkedBlock.getCompound("block" + i).getInt("z");
+				BlockPos linkedBlockPos = NBTUtil.readBlockPos(linkedBlock);
 
-					BlockPos linkedBlockPos = new BlockPos(x, y, z);
-					linkedBlocks.add(linkedBlockPos);
-				}
+				linkedBlocks.add(linkedBlockPos);
 			}
 		}
 
@@ -174,23 +164,17 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		if(itemTag == null || !itemTag.contains("LinkedBlocks"))
 			return;
 
-		CompoundNBT linkedBlock = itemTag.getCompound("LinkedBlocks");
+		ListNBT blocks = itemTag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < linkedBlock.size(); i++)
+		for(int i = 0; i < blocks.size(); i++)
 		{
-			if(linkedBlock.contains("block" + i))
+			CompoundNBT linkedBlock = blocks.getCompound(i);
+			BlockPos linkedBlockPos = NBTUtil.readBlockPos(linkedBlock);
+
+			// If the block has not already been linked with, add it to the list
+			if(!isLinkedToBlock(linkedBlockPos))
 			{
-				int x = linkedBlock.getCompound("block" + i).getInt("x");
-				int y = linkedBlock.getCompound("block" + i).getInt("y");
-				int z = linkedBlock.getCompound("block" + i).getInt("z");
-
-				BlockPos linkedBlockPos = new BlockPos(x, y, z);
-
-				// If the block has not already been linked with, add it to the list
-				if(!isLinkedToBlock(linkedBlockPos))
-				{
-					linkedBlocks.add(linkedBlockPos);
-				}
+				linkedBlocks.add(linkedBlockPos);
 			}
 		}
 
