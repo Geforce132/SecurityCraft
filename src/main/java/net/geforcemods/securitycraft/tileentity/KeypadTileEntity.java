@@ -18,10 +18,12 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeypadTileEntity extends DisguisableTileEntity implements IPasswordProtected {
@@ -144,6 +146,12 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 	@Override
 	public void setPassword(String password) {
 		passcode = password;
+	}
+
+	@Override
+	public boolean onRightClickWhenLocked(World world, BlockPos pos, PlayerEntity player)
+	{
+		return true;
 	}
 
 	@Override

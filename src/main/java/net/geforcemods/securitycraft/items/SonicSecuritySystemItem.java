@@ -93,13 +93,11 @@ public class SonicSecuritySystemItem extends Item {
 					else
 					{
 						// Set up a new TileEntity and add it to the block once it's placed
-						SonicSecuritySystemTileEntity te = new SonicSecuritySystemTileEntity();
-						te.getOwner().set(player.getUniqueID().toString(), player.getName().getString());
-						te.transferPositionsFromItem(stack.getTag());
-
 						world.setBlockState(pos, SCContent.SONIC_SECURITY_SYSTEM.get().getDefaultState().with(SonicSecuritySystemBlock.FACING, player.getHorizontalFacing().getOpposite()));
-						world.setTileEntity(pos, te);
-						((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).sync();
+
+						((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getString());
+						((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).transferPositionsFromItem(stack.getTag());
+						world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
 
 						world.playSound(null, pos, SoundType.METAL.getPlaceSound(), SoundCategory.BLOCKS, SoundType.METAL.volume, SoundType.METAL.pitch);
 
@@ -219,7 +217,7 @@ public class SonicSecuritySystemItem extends Item {
 		if(!tag.contains("LinkedBlocks"))
 			return false;
 
-		for(int i = 0; i < SonicSecuritySystemTileEntity.MAX_RANGE; i++)
+		for(int i = 0; i < SonicSecuritySystemTileEntity.MAX_LINKED_BLOCKS; i++)
 		{
 			if(tag.getCompound("LinkedBlocks").contains("block" + i))
 				return true;

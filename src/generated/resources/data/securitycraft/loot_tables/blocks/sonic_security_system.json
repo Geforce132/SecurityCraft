@@ -6,7 +6,20 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "securitycraft:sonic_security_system_item"
+          "name": "securitycraft:sonic_security_system_item",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                 {
+                   "source": "LinkedBlocks",
+                   "target": "LinkedBlocks",
+                   "op": "replace"
+                 }
+              ]
+            }
+          ]
         }
       ]
     }

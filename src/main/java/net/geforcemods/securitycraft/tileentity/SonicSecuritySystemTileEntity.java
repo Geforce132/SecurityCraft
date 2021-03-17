@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
@@ -23,7 +26,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	public final static int MAX_RANGE = 30;
 
 	// How many blocks can be linked to a SSS (another config option?)
-	private final int MAX_LINKED_BLOCKS = 30;
+	public final static int MAX_LINKED_BLOCKS = 30;
 
 	// Whether the ping sound should be emitted or not
 	private BooleanOption isSilent = new BooleanOption("isSilent", false);
@@ -32,7 +35,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	public float radarRotationDegrees = 0;
 
 	// A list containing all of the blocks that this SSS is linked to
-	private ArrayList<BlockPos> linkedBlocks = new ArrayList<BlockPos>();
+	public Set<BlockPos> linkedBlocks = new HashSet<BlockPos>();
 
 	// Is this SSS active? Not used yet but will be in the future to allow
 	// the player to disable the SSS
@@ -62,10 +65,14 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 				// TODO: should the SSS automatically forget the positions of linked blocks
 				// if they are broken?
 				ArrayList<BlockPos> blocksToRemove = new ArrayList<BlockPos>();
-				for(BlockPos linkedBlockPos : linkedBlocks)
+				Iterator<BlockPos> iterator = linkedBlocks.iterator();
+
+				while(iterator.hasNext())
 				{
-					if(!(world.getTileEntity(linkedBlockPos) instanceof ILockable))
-						blocksToRemove.add(linkedBlockPos);
+					BlockPos blockPos = iterator.next();
+
+					if(!(world.getTileEntity(blockPos) instanceof ILockable))
+						blocksToRemove.add(blockPos);
 				}
 
 				// This delinking part is in a separate loop to prevent a ConcurrentModificationException
@@ -104,46 +111,27 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 			tag.put("LinkedBlocks", new CompoundNBT());
 		}
 
-		// Write each linked block's position to the SSS's tag
-		for(int i = 0; i < linkedBlocks.size(); i++)
+		Iterator<BlockPos> iterator = linkedBlocks.iterator();
+
+		int i = 0;
+		while(iterator.hasNext())
 		{
-			BlockPos linkedBlockPos = linkedBlocks.get(i);
+			BlockPos blockToSave = iterator.next();
 
-			int x = 0, y = 0, z = 0;
-			boolean foundBlock = false;
-			for(int j = 0; j < MAX_LINKED_BLOCKS; j++)
+			if(!tag.getCompound("LinkedBlocks").contains("block" + i))
 			{
-				if(tag.getCompound("LinkedBlocks").contains("block" + j))
-				{
-					x = tag.getCompound("LinkedBlocks").getCompound("block" + j).getInt("x");
-					y = tag.getCompound("LinkedBlocks").getCompound("block" + j).getInt("y");
-					z = tag.getCompound("LinkedBlocks").getCompound("block" + j).getInt("z");
+				CompoundNBT newNBT = new CompoundNBT();
+				newNBT.putInt("x", blockToSave.getX());
+				newNBT.putInt("y", blockToSave.getY());
+				newNBT.putInt("z", blockToSave.getZ());
 
-					// The position is already saved to the tag, don't need to add it again
-					if(!(x == 0 && y == 0 && z == 0) && linkedBlockPos.equals(new BlockPos(x, y, z)))
-					{
-						foundBlock = true;
-						break;
-					}
-				}
+				tag.getCompound("LinkedBlocks").put("block" + i, newNBT);
+
+				if(!linkedBlocks.contains(blockToSave))
+					linkedBlocks.add(blockToSave);
 			}
 
-			// If the position is not already saved in the tag, add it
-			if(!foundBlock)
-			{
-				for(int j = 0; j < MAX_LINKED_BLOCKS; j++)
-				{
-					if(!tag.getCompound("LinkedBlocks").contains("block" + j))
-					{
-						CompoundNBT newNBT = new CompoundNBT();
-						newNBT.putInt("x", linkedBlockPos.getX());
-						newNBT.putInt("y", linkedBlockPos.getY());
-						newNBT.putInt("z", linkedBlockPos.getZ());
-
-						tag.getCompound("LinkedBlocks").put("block" + j, newNBT);
-					}
-				}
-			}
+			i++;
 		}
 
 		tag.putBoolean("isActive", isActive);
@@ -161,11 +149,13 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 			// Read each saved position and add it to the linkedBlocks list
 			for(int i = 0; i < MAX_LINKED_BLOCKS; i++)
 			{
-				if(tag.getCompound("LinkedBlocks").contains("block" + i))
+				CompoundNBT linkedBlock = tag.getCompound("LinkedBlocks");
+
+				if(linkedBlock.contains("block" + i))
 				{
-					int x = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("x");
-					int y = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("y");
-					int z = tag.getCompound("LinkedBlocks").getCompound("block" + i).getInt("z");
+					int x = linkedBlock.getCompound("block" + i).getInt("x");
+					int y = linkedBlock.getCompound("block" + i).getInt("y");
+					int z = linkedBlock.getCompound("block" + i).getInt("z");
 
 					BlockPos linkedBlockPos = new BlockPos(x, y, z);
 					linkedBlocks.add(linkedBlockPos);
@@ -184,10 +174,10 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		if(itemTag == null || !itemTag.contains("LinkedBlocks"))
 			return;
 
-		for(int i = 0; i < MAX_LINKED_BLOCKS; i++)
-		{
-			CompoundNBT linkedBlock = itemTag.getCompound("LinkedBlocks");
+		CompoundNBT linkedBlock = itemTag.getCompound("LinkedBlocks");
 
+		for(int i = 0; i < linkedBlock.size(); i++)
+		{
 			if(linkedBlock.contains("block" + i))
 			{
 				int x = linkedBlock.getCompound("block" + i).getInt("x");
@@ -223,13 +213,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		if(linkedBlocks.isEmpty())
 			return false;
 
-		for(int i = 0; i < linkedBlocks.size(); i++)
-		{
-			if(linkedBlocks.get(i).equals(linkedBlockPos))
-				return true;
-		}
-
-		return false;
+		return linkedBlocks.contains(linkedBlockPos);
 	}
 
 	/**
@@ -240,11 +224,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 		if(linkedBlocks.isEmpty())
 			return;
 
-		for(int i = 0; i < linkedBlocks.size(); i++)
-		{
-			if(linkedBlocks.get(i).equals(linkedBlockPos))
-				linkedBlocks.remove(i);
-		}
+		linkedBlocks.remove(linkedBlockPos);
 
 		if(shouldSync)
 			sync();
@@ -257,6 +237,11 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	{
 		linkedBlocks.clear();
 		sync();
+	}
+
+	public int getNumberOfLinkedBlocks()
+	{
+		return linkedBlocks.size();
 	}
 
 	/**

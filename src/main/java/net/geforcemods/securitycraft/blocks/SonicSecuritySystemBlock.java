@@ -9,6 +9,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -17,6 +18,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -83,10 +85,22 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader world, BlockPos pos, BlockState state)
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
 	{
-		// TODO have the dropped item retain the linked blocks
-		return new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
+		return getItemStackFromBlock(world.getTileEntity(pos).getUpdateTag());
+	}
+
+	private ItemStack getItemStackFromBlock(CompoundNBT blockTag)
+	{
+		ItemStack stack = new ItemStack(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
+
+		if(!blockTag.contains("LinkedBlocks"))
+			return stack;
+
+		stack.setTag(new CompoundNBT());
+		stack.getTag().put("LinkedBlocks", blockTag.getCompound("LinkedBlocks"));
+
+		return stack;
 	}
 
 	@Override
