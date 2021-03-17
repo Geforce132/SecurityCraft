@@ -174,7 +174,8 @@ public class SonicSecuritySystemItem extends Item {
 
 		ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
 
-		for(int i = 0; i < list.size(); i++)
+		// Starting from the end of the list to prevent skipping over entries
+		for(int i = list.size() - 1; i >= 0; i--)
 		{
 			BlockPos posRead = NBTUtil.readBlockPos(list.getCompound(i));
 
