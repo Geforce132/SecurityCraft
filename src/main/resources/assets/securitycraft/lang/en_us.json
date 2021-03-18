@@ -962,6 +962,8 @@
 	"option.securitycraft.keypad_door.signalLength.description": "How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)",
 	"option.securitycraft.sonic_security_system.isSilent": "Silent mode: %s",
 	"option.securitycraft.sonic_security_system.isSilent.description": "Silences the ping sound emitted by the Sonic Security System.",
+	"option.securitycraft.sonic_security_system.mode": "Mode: %s",
+	"option.securitycraft.sonic_security_system.mode.description": "Toggles the state of the Sonic Security System between being permanently on, activated by redstone, or off.",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

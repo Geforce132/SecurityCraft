@@ -123,6 +123,11 @@ public abstract class Option<T> {
 		return false;
 	}
 
+	@Override
+	public String toString() {
+		return (value) + "";
+	}
+
 	/**
 	 * A subclass of {@link Option}, already setup to handle booleans.
 	 */
@@ -150,11 +155,6 @@ public abstract class Option<T> {
 		public void writeToNBT(CompoundNBT tag)
 		{
 			tag.putBoolean(getName(), value);
-		}
-
-		@Override
-		public String toString() {
-			return (value) + "";
 		}
 	}
 
@@ -210,11 +210,6 @@ public abstract class Option<T> {
 		public void writeToNBT(CompoundNBT tag)
 		{
 			tag.putInt(getName(), value);
-		}
-
-		@Override
-		public String toString() {
-			return (value) + "";
 		}
 
 		@Override
@@ -360,6 +355,51 @@ public abstract class Option<T> {
 		@Override
 		public String toString() {
 			return Float.toString(value).length() > 5 ? Float.toString(value).substring(0, 5) : Float.toString(value);
+		}
+	}
+
+	/**
+	 * A subclass of {@link Option}, already setup to handle strings.
+	 */
+	public static class StringOption extends Option<String> {
+
+		private String[] options;
+		private int optionSelected;
+
+		public StringOption(String optionName, int startIndex, String... options) {
+			super(optionName, (startIndex >= options.length) ? options[0] : options[startIndex]);
+			this.options = options;
+			this.optionSelected = (startIndex >= options.length) ? 0 : startIndex;
+		}
+
+		@Override
+		public void toggle()
+		{
+			if((optionSelected + 1) >= options.length)
+			{
+				optionSelected = 0;
+				setValue(options[optionSelected]);
+			}
+			else
+				setValue(options[++optionSelected]);
+		}
+
+		@Override
+		public void readFromNBT(CompoundNBT tag)
+		{
+			if(tag.contains(getName()))
+			{
+				optionSelected = tag.getInt(getName());
+				value = options[optionSelected];
+			}
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void writeToNBT(CompoundNBT tag)
+		{
+			tag.putInt(getName(), optionSelected);
 		}
 	}
 }

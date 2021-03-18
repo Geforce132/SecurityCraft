@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.StringOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.block.BlockState;
@@ -33,16 +34,13 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 
 	// Whether the ping sound should be emitted or not
 	private BooleanOption isSilent = new BooleanOption("isSilent", false);
+	private StringOption mode = new StringOption("mode", 0, "on", "redstone", "off");
 
 	private int cooldown = DELAY;
 	public float radarRotationDegrees = 0;
 
 	// A list containing all of the blocks that this SSS is linked to
 	public Set<BlockPos> linkedBlocks = new HashSet<>();
-
-	// Is this SSS active? Not used yet but will be in the future to allow
-	// the player to disable the SSS
-	private boolean isActive = true;
 
 	public SonicSecuritySystemTileEntity()
 	{
@@ -54,6 +52,9 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	{
 		if(!world.isRemote)
 		{
+			if(!isActive())
+				return;
+
 			// If this SSS isn't linked to any blocks, return as no sound should
 			// be emitted and no blocks need to be removed
 			if(!isLinkedToBlock())
@@ -128,8 +129,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 				linkedBlocks.add(blockToSave);
 		}
 
-		tag.putBoolean("isActive", isActive);
-
 		return tag;
 	}
 
@@ -152,8 +151,6 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 				linkedBlocks.add(linkedBlockPos);
 			}
 		}
-
-		isActive = tag.getBoolean("isActive");
 	}
 
 	/**
@@ -233,16 +230,18 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	 */
 	public void toggle()
 	{
-		isActive = !isActive;
 		sync();
 	}
 
-	/**
-	 * @return Is this Sonic Security System active?
-	 */
 	public boolean isActive()
 	{
-		return isActive;
+		// toggle
+		if(mode.get().equals("on"))
+			return true;
+		else if(mode.get().equals("redstone"))
+			return world.isBlockPowered(pos);
+		else
+			return false;
 	}
 
 	@Override
@@ -254,7 +253,7 @@ public class SonicSecuritySystemTileEntity extends CustomizableTileEntity {
 	@Override
 	public Option<?>[] customOptions()
 	{
-		return new Option[] { isSilent };
+		return new Option[] { isSilent, mode };
 	}
 
 }
