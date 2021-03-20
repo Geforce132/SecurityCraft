@@ -27,6 +27,7 @@
 - Fix: Some mines ignore the "smallerMinesExplosion" configuration option
 - Fix: Copying/Pasting module lists does not work properly
 - Fix: Scrolling using the mouse wheel in the Username Logger's GUI does not work
+- Fix: Blocks that are disguised using blocks with support for CTM don't render
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

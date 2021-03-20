@@ -104,6 +104,12 @@ public class BlockDisguisable extends BlockOwnable implements IOverlayDisplay
 	}
 
 	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) //ctm fix
+	{
+		return true;
+	}
+
+	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face)
 	{
 		TileEntity te = world.getTileEntity(pos);
