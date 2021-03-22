@@ -14,6 +14,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -75,6 +76,12 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
 	{
 		return state.getValue(SOLID) ? FULL_BLOCK_AABB : EMPTY_AABB;
+	}
+
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type)
+	{
+		return false;
 	}
 
 	@Override
