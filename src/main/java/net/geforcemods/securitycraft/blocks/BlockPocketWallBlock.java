@@ -8,6 +8,8 @@ import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -72,6 +74,12 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 		}
 
 		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos, PlacementType type, EntityType<?> entityType)
+	{
+		return false;
 	}
 
 	@Override
