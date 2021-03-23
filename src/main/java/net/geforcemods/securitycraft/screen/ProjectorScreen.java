@@ -24,10 +24,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
+	private static final String SLOT_TOOLTIP = ClientUtils.localize("gui.securitycraft:projector.block").getFormattedText();
 	private ProjectorTileEntity tileEntity;
 	private String blockName;
 
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
+	private StringHoverChecker slotHoverChecker;
 
 	private NamedSlider projectionWidthSlider;
 	private NamedSlider projectionHeightSlider;
@@ -80,6 +82,8 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		toggleButton.setCurrentIndex(tileEntity.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new StringHoverChecker(toggleButton, Arrays.asList(ClientUtils.localize("gui.securitycraft:projector.vertical").getFormattedText(), ClientUtils.localize("gui.securitycraft:projector.horizontal").getFormattedText()));
 		projectionRangeSlider.updateSlider();
+
+		slotHoverChecker = new StringHoverChecker(guiTop + 22, guiTop + 39, guiLeft + 78, guiLeft + 95, SLOT_TOOLTIP);
 	}
 
 	@Override
@@ -94,6 +98,9 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 			if(thc.checkHover(mouseX, mouseY))
 				renderTooltip(thc.getName(), mouseX, mouseY);
 		}
+
+		if(slotHoverChecker.checkHover(mouseX, mouseY) && container.te.isEmpty())
+			renderTooltip(slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override
