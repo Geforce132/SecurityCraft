@@ -29,6 +29,7 @@
 - Fix: Scrolling using the mouse wheel in the Username Logger's GUI does not work
 - Fix: Blocks that are disguised using blocks with support for CTM don't render
 - Fix: Mobs can spawn inside of a block pocket
+- Fix: Projector placing/breaking/etc. sounds are incorrect
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
