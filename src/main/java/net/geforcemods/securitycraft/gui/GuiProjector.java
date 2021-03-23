@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
-import net.geforcemods.securitycraft.network.server.SyncProjector;
-import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
+import net.geforcemods.securitycraft.network.server.SyncProjector;
+import net.geforcemods.securitycraft.network.server.SyncProjector.DataType;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.GuiButton;
@@ -25,10 +25,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiProjector extends GuiContainer implements ISlider {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
+	private static final String SLOT_TOOLTIP = ClientUtils.localize("gui.securitycraft:projector.block").getFormattedText();
 	private TileEntityProjector te;
 	private String blockName;
 
 	private StringHoverChecker[] hoverCheckers = new StringHoverChecker[5];
+	private StringHoverChecker slotHoverChecker;
 
 	private GuiSlider projectionWidthSlider;
 	private GuiSlider projectionHeightSlider;
@@ -77,6 +79,8 @@ public class GuiProjector extends GuiContainer implements ISlider {
 		toggleButton.setCurrentIndex(te.isHorizontal() ? 1 : 0);
 		hoverCheckers[id++] = new StringHoverChecker(toggleButton, Arrays.asList(ClientUtils.localize("gui.securitycraft:projector.vertical").getFormattedText(), ClientUtils.localize("gui.securitycraft:projector.horizontal").getFormattedText()));
 		projectionRangeSlider.updateSlider();
+
+		slotHoverChecker = new StringHoverChecker(guiTop + 22, guiTop + 39, guiLeft + 78, guiLeft + 95, SLOT_TOOLTIP);
 	}
 
 	@Override
@@ -91,6 +95,9 @@ public class GuiProjector extends GuiContainer implements ISlider {
 			if(thc.checkHover(mouseX, mouseY))
 				drawHoveringText(thc.getName(), mouseX, mouseY);
 		}
+
+		if(slotHoverChecker.checkHover(mouseX, mouseY) && te.isEmpty())
+			drawHoveringText(slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override

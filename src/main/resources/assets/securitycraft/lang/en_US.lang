@@ -540,6 +540,7 @@ gui.securitycraft:projector.offset=Offset: %s
 gui.securitycraft:projector.offset.description=The horizontal offset of the projection.
 gui.securitycraft:projector.vertical=Vertical projection
 gui.securitycraft:projector.horizontal=Horizontal projection
+gui.securitycraft:projector.block=Insert block to project
 gui.securitycraft:keypadChestDouble=Large Password-protected Chest
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
@@ -668,6 +669,7 @@ tooltip.securitycraft:module.itemAddons.usage.blocksAndItems=You may add %$1s bl
 tooltip.securitycraft:module.itemAddons.added=Added
 tooltip.securitycraft:briefcase.owner=Owner: %s
 tooltip.securitycraft:keycard.uses=Uses remaining:
+tooltip.securitycraft:projector=Projects fake blocks into the world.
 
 itemGroup.tabSecurityCraft.decoration=SecurityCraft: Decoration
 itemGroup.tabSecurityCraft.explosives=SecurityCraft: Explosives

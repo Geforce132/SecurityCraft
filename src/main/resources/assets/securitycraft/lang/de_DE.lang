@@ -544,6 +544,7 @@ gui.securitycraft:projector.offset=Verschiebung: %s
 gui.securitycraft:projector.offset.description=Die horizontale Verschiebung der Projektion.
 gui.securitycraft:projector.vertical=Vertikale Projektion
 gui.securitycraft:projector.horizontal=Horizontale Projektion
+gui.securitycraft:projector.block=Block zum Projizieren einfügen
 gui.securitycraft:keypadChestDouble=Große passwortgesicherte Truhe
 
 messages.securitycraft:bugReport=Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln
@@ -670,6 +671,7 @@ tooltip.securitycraft:module.itemAddons.usage.blocksAndItems=Du kannst %1$s Bloc
 tooltip.securitycraft:module.itemAddons.added=Hinzugefügt
 tooltip.securitycraft:briefcase.owner=Besitzer: %s
 tooltip.securitycraft:keycard.uses=Verbleibende Benutzungen:
+tooltip.securitycraft:projector=Projiziert falsche Blöcke in die Welt.
 
 itemGroup.tabSecurityCraft.decoration=SecurityCraft: Dekoration
 itemGroup.tabSecurityCraft.explosives=SecurityCraft: Sprengstoffe
