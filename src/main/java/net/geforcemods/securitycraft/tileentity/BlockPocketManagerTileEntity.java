@@ -88,15 +88,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			{
 				//there are still blocks left to place, so a different block is blocking (heh) a space
 				if(!placeQueue.isEmpty())
-				{
 					placeQueue.clear();
-					//TODO: send error message to player
-				}
 				else //no more blocks left to place, assembling must be done
 				{
 					setWalls(!hasModule(ModuleType.DISGUISE));
-					//TODO: send success message
-					//new TranslationTextComponent("messages.securitycraft:blockpocket.assembled")
+					PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
 				}
 
 				shouldPlaceBlocks = false;
@@ -136,6 +132,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			return true;
 		}
 
+		//when an invalid block is in the way
+		PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(state.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
 		return false;
 	}
 
@@ -330,7 +328,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	 */
 	public IFormattableTextComponent autoAssembleMultiblock(PlayerEntity player)
 	{
-		if(!enabled) //multiblock assembling in three steps
+		if(!enabled)
 		{
 			if(world.isRemote)
 				SecurityCraft.channel.sendToServer(new AssembleBlockPocket(this, size));
@@ -354,7 +352,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			pos = pos.offset(right, -half);
 			startingPos = pos.toImmutable();
 
-			//Step 1: looping through cube level by level to make sure the space where the BP should go to isn't occupied
+			//loop through the cube level by level to make sure the building space isn't occupied
 			while(yi < size)
 			{
 				while(zi < size)
@@ -473,7 +471,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
 
-			//Step 2: if the player isn't in creative, take out the items that are used for assembling the BP. If there aren't enough items, the assemble button in the screen is turned off
+			//TODO: remove items while building instead of beforehand
 			if(!player.isCreative())
 			{
 				NonNullList<ItemStack> inventory = storage;
@@ -550,7 +548,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			yi = lowest;
 			zi = lowest;
 
-			//Step 3: placing the blocks and giving them the right owner
+			//add blocks to the auto building queue
 			while(yi < size)
 			{
 				while(zi < size)
