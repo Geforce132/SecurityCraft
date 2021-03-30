@@ -56,6 +56,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider
 {
 	public static final int RENDER_DISTANCE = 100;
+	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
 	public boolean enabled = false;
 	public boolean showOutline = false;
 	public int size = 5;
@@ -81,22 +82,24 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 		if(!world.isRemote && shouldPlaceBlocks)
 		{
+			PlayerEntity owner = PlayerUtils.getPlayerFromName(getOwner().getName());
+			boolean isCreative = owner.isCreative();
 			boolean placed4 = true;
 
 			//place 4 blocks per tick
 			//only place the next block if the previous one was placed
 			//if any block failed to place, either the end was reached, or a block was in the way
-			outer: for(int i = 0; i < 4; i++)
+			placeLoop: for(int i = 0; i < BLOCK_PLACEMENTS_PER_TICK; i++)
 			{
 				Pair<BlockPos,BlockState> toPlace;
-				BlockState state;
+				BlockState stateInWorld;
 
 				do
 				{
 					if(placeQueue.isEmpty())
 					{
 						placed4 = false;
-						break outer;
+						break placeLoop;
 					}
 
 					toPlace = placeQueue.remove(0);
@@ -105,15 +108,31 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight().getBlock().getTranslationKey()));
 				}
 				//reach the next block that is missing for the block pocket
-				while((state = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
+				while((stateInWorld = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
 
-				if(state.getMaterial().isReplaceable())
+				if(stateInWorld.getMaterial().isReplaceable())
 				{
 					BlockPos pos = toPlace.getLeft();
-					SoundType soundType = state.getSoundType();
+					BlockState stateToPlace = toPlace.getRight();
+					SoundType soundType = stateToPlace.getSoundType();
 					TileEntity te;
 
-					world.setBlockState(pos, toPlace.getRight());
+					if(!isCreative) //queue blocks for removal from the inventory
+					{
+						//remove blocks from inventory
+						invLoop: for(int k = 0; k < storage.size(); k++)
+						{
+							ItemStack stackToCheck = storage.get(k);
+
+							if(!stackToCheck.isEmpty() && ((BlockItem)stackToCheck.getItem()).getBlock() == stateToPlace.getBlock())
+							{
+								stackToCheck.shrink(1);
+								break invLoop;
+							}
+						}
+					}
+
+					world.setBlockState(pos, stateToPlace);
 					world.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
 					te = world.getTileEntity(pos);
 
@@ -125,9 +144,9 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				}
 
 				//when an invalid block is in the way
-				PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(state.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInWorld.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
 				placed4 = false;
-				break outer;
+				break placeLoop;
 			}
 
 			if(!placed4)
@@ -480,78 +499,6 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
 
-			//TODO: remove items while building instead of beforehand
-			if(!player.isCreative())
-			{
-				NonNullList<ItemStack> inventory = storage;
-
-				for(int i = 1; i <= inventory.size(); i++)
-				{
-					ItemStack stackToCheck = inventory.get(i - 1);
-
-					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof BlockItem)
-					{
-						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
-						int count = stackToCheck.getCount();
-
-						if(block == SCContent.BLOCK_POCKET_WALL.get())
-						{
-							if(count <= wallsNeeded)
-							{
-								inventory.set(i - 1, ItemStack.EMPTY);
-								wallsNeeded -= count;
-							}
-							else
-							{
-								while(wallsNeeded != 0)
-								{
-									stackToCheck.shrink(1);
-									wallsNeeded--;
-								}
-
-								inventory.set(i - 1, stackToCheck);
-							}
-						}
-						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-						{
-							if(count <= chiseledNeeded)
-							{
-								inventory.set(i - 1, ItemStack.EMPTY);
-								chiseledNeeded -= count;
-							}
-							else
-							{
-								while(chiseledNeeded != 0)
-								{
-									stackToCheck.shrink(1);
-									chiseledNeeded--;
-								}
-
-								inventory.set(i - 1, stackToCheck);
-							}
-						}
-						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-						{
-							if(count <= pillarsNeeded)
-							{
-								inventory.set(i - 1, ItemStack.EMPTY);
-								pillarsNeeded -= count;
-							}
-							else
-							{
-								while(pillarsNeeded != 0)
-								{
-									stackToCheck.shrink(1);
-									pillarsNeeded--;
-								}
-
-								inventory.set(i - 1, stackToCheck);
-							}
-						}
-					}
-				}
-			}
-
 			pos = getPos().toImmutable().offset(right, -half);
 			xi = lowest;
 			yi = lowest;
@@ -737,7 +684,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> getStorageHandler(), () -> getInsertOnlyHandler()).cast();
+		{
+			if(isPlacingBlocks()) //prevent extracting while auto building the block pocket
+				return getInsertOnlyHandler().cast();
+			else return BlockUtils.getProtectedCapability(side, this, () -> getStorageHandler(), () -> getInsertOnlyHandler()).cast();
+		}
 		else return super.getCapability(cap, side);
 	}
 
@@ -745,6 +696,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public void onTileEntityDestroyed()
 	{
 		super.onTileEntityDestroyed();
+
 		if (world.getBlockState(pos).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
 			disableMultiblock();
 	}
@@ -902,6 +854,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		}
 
 		return insertOnlyHandler;
+	}
+
+	public boolean isPlacingBlocks()
+	{
+		return shouldPlaceBlocks;
 	}
 
 	public static boolean isItemValid(ItemStack stack)
