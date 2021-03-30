@@ -81,10 +81,56 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 		if(!world.isRemote && shouldPlaceBlocks)
 		{
+			boolean placed4 = true;
+
 			//place 4 blocks per tick
 			//only place the next block if the previous one was placed
 			//if any block failed to place, either the end was reached, or a block was in the way
-			if(!(placeBlock() && placeBlock() && placeBlock() && placeBlock()))
+			outer: for(int i = 0; i < 4; i++)
+			{
+				Pair<BlockPos,BlockState> toPlace;
+				BlockState state;
+
+				do
+				{
+					if(placeQueue.isEmpty())
+					{
+						placed4 = false;
+						break outer;
+					}
+
+					toPlace = placeQueue.remove(0);
+
+					if(!(toPlace.getRight().getBlock() instanceof IBlockPocket))
+						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight().getBlock().getTranslationKey()));
+				}
+				//reach the next block that is missing for the block pocket
+				while((state = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
+
+				if(state.getMaterial().isReplaceable())
+				{
+					BlockPos pos = toPlace.getLeft();
+					SoundType soundType = state.getSoundType();
+					TileEntity te;
+
+					world.setBlockState(pos, toPlace.getRight());
+					world.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
+					te = world.getTileEntity(pos);
+
+					//assigning the owner
+					if(te instanceof OwnableTileEntity)
+						((OwnableTileEntity)te).getOwner().set(getOwner());
+
+					continue;
+				}
+
+				//when an invalid block is in the way
+				PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(state.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
+				placed4 = false;
+				break outer;
+			}
+
+			if(!placed4)
 			{
 				//there are still blocks left to place, so a different block is blocking (heh) a space
 				if(!placeQueue.isEmpty())
@@ -98,43 +144,6 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				shouldPlaceBlocks = false;
 			}
 		}
-	}
-
-	private boolean placeBlock()
-	{
-		Pair<BlockPos,BlockState> toPlace;
-		BlockState state;
-
-		do
-		{
-			if(placeQueue.isEmpty())
-				return false;
-
-			toPlace = placeQueue.remove(0);
-		}
-		//reach the next block that is missing for the block pocket
-		while((state = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
-
-		if(state.getMaterial().isReplaceable())
-		{
-			BlockPos pos = toPlace.getLeft();
-			SoundType soundType = state.getSoundType();
-			TileEntity te;
-
-			world.setBlockState(pos, toPlace.getRight());
-			world.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
-			te = world.getTileEntity(pos);
-
-			//assigning the owner
-			if(te instanceof OwnableTileEntity)
-				((OwnableTileEntity)te).getOwner().set(getOwner());
-
-			return true;
-		}
-
-		//when an invalid block is in the way
-		PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(state.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
-		return false;
 	}
 
 	/**
@@ -174,6 +183,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						break;
 					}
 				}
+
 				if (offset == 0) //when the bottom left corner couldn't be evaluated, take the autoBuildOffset
 					pos = pos.offset(left, offset = -autoBuildOffset + (size / 2));
 			}
