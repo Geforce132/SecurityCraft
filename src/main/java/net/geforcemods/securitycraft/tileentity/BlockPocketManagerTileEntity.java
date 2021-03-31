@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
@@ -23,6 +25,7 @@ import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -37,6 +40,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -52,6 +56,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class BlockPocketManagerTileEntity extends CustomizableTileEntity implements INamedContainerProvider
 {
 	public static final int RENDER_DISTANCE = 100;
+	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
 	public boolean enabled = false;
 	public boolean showOutline = false;
 	public int size = 5;
@@ -62,10 +67,102 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	protected NonNullList<ItemStack> storage = NonNullList.withSize(56, ItemStack.EMPTY);
 	private LazyOptional<IItemHandler> storageHandler;
 	private LazyOptional<IItemHandler> insertOnlyHandler;
+	private List<Pair<BlockPos,BlockState>> placeQueue = new ArrayList<>();
+	private boolean shouldPlaceBlocks = false;
 
 	public BlockPocketManagerTileEntity()
 	{
 		super(SCContent.teTypeBlockPocketManager);
+	}
+
+	@Override
+	public void tick()
+	{
+		super.tick();
+
+		if(!world.isRemote && shouldPlaceBlocks)
+		{
+			PlayerEntity owner = PlayerUtils.getPlayerFromName(getOwner().getName());
+			boolean isCreative = owner.isCreative();
+			boolean placed4 = true;
+
+			//place 4 blocks per tick
+			//only place the next block if the previous one was placed
+			//if any block failed to place, either the end was reached, or a block was in the way
+			placeLoop: for(int i = 0; i < BLOCK_PLACEMENTS_PER_TICK; i++)
+			{
+				Pair<BlockPos,BlockState> toPlace;
+				BlockState stateInWorld;
+
+				do
+				{
+					if(placeQueue.isEmpty())
+					{
+						placed4 = false;
+						break placeLoop;
+					}
+
+					toPlace = placeQueue.remove(0);
+
+					if(!(toPlace.getRight().getBlock() instanceof IBlockPocket))
+						throw new IllegalStateException(String.format("Tried to automatically place non-block pocket block \"%s\"! This mustn't happen!", toPlace.getRight().getBlock().getTranslationKey()));
+				}
+				//reach the next block that is missing for the block pocket
+				while((stateInWorld = world.getBlockState(toPlace.getLeft())) == toPlace.getRight());
+
+				if(stateInWorld.getMaterial().isReplaceable())
+				{
+					BlockPos pos = toPlace.getLeft();
+					BlockState stateToPlace = toPlace.getRight();
+					SoundType soundType = stateToPlace.getSoundType();
+					TileEntity te;
+
+					if(!isCreative) //queue blocks for removal from the inventory
+					{
+						//remove blocks from inventory
+						invLoop: for(int k = 0; k < storage.size(); k++)
+						{
+							ItemStack stackToCheck = storage.get(k);
+
+							if(!stackToCheck.isEmpty() && ((BlockItem)stackToCheck.getItem()).getBlock() == stateToPlace.getBlock())
+							{
+								stackToCheck.shrink(1);
+								break invLoop;
+							}
+						}
+					}
+
+					world.setBlockState(pos, stateToPlace);
+					world.playSound(null, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, soundType.getVolume(), soundType.getPitch());
+					te = world.getTileEntity(pos);
+
+					//assigning the owner
+					if(te instanceof OwnableTileEntity)
+						((OwnableTileEntity)te).getOwner().set(getOwner());
+
+					continue;
+				}
+
+				//when an invalid block is in the way
+				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInWorld.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
+				placed4 = false;
+				break placeLoop;
+			}
+
+			if(!placed4)
+			{
+				//there are still blocks left to place, so a different block is blocking (heh) a space
+				if(!placeQueue.isEmpty())
+					placeQueue.clear();
+				else //no more blocks left to place, assembling must be done
+				{
+					setWalls(!hasModule(ModuleType.DISGUISE));
+					PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
+				}
+
+				shouldPlaceBlocks = false;
+			}
+		}
 	}
 
 	/**
@@ -105,6 +202,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						break;
 					}
 				}
+
 				if (offset == 0) //when the bottom left corner couldn't be evaluated, take the autoBuildOffset
 					pos = pos.offset(left, offset = -autoBuildOffset + (size / 2));
 			}
@@ -254,12 +352,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	/**
 	 * Auto-assembles the Block Pocket for a player.
 	 * First it makes sure that the space isn't occupied, then it checks its inventory for the required items, then it places the blocks.
-	 * @param player The player that opened the screen, used to check if the player is in creative or not
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public IFormattableTextComponent autoAssembleMultiblock(PlayerEntity player)
+	public IFormattableTextComponent autoAssembleMultiblock()
 	{
-		if(!enabled) //multiblock assembling in three steps
+		if(!enabled)
 		{
 			if(world.isRemote)
 				SecurityCraft.channel.sendToServer(new AssembleBlockPocket(this, size));
@@ -283,7 +380,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			pos = pos.offset(right, -half);
 			startingPos = pos.toImmutable();
 
-			//Step 1: looping through cube level by level to make sure the space where the BP should go to isn't occupied
+			//loop through the cube level by level to make sure the building space isn't occupied
 			while(yi < size)
 			{
 				while(zi < size)
@@ -299,8 +396,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 						BlockPos currentPos = pos.offset(right, xi);
 						BlockState currentState = world.getBlockState(currentPos);
-
-						currentState.getMaterial().isReplaceable();
+						boolean replaceable = currentState.getMaterial().isReplaceable();
 
 						//checking the lowest and highest level of the cube
 						if((yi == lowest && !currentPos.equals(getPos())) || yi == highest) //if (y level is lowest AND it's not the block pocket manager's position) OR (y level is highest)
@@ -308,10 +404,10 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							//checking the corners
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							{
-								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() && !(currentState.getMaterial().isReplaceable()))
+								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() && !replaceable)
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable())
+								if(replaceable)
 									chiseledNeeded++;
 							}
 							//checking the sides parallel to the block pocket manager
@@ -319,10 +415,10 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							{
 								Axis typeToCheckFor = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.X : Axis.Z;
 
-								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != typeToCheckFor))
+								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !replaceable || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != typeToCheckFor))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable())
+								if(replaceable)
 									pillarsNeeded++;
 							}
 							//checking the sides orthogonal to the block pocket manager
@@ -330,29 +426,29 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							{
 								Axis typeToCheckFor = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.Z : Axis.X;
 
-								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != typeToCheckFor))
+								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !replaceable || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != typeToCheckFor))
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable())
+								if(replaceable)
 									pillarsNeeded++;
 							}
 							//checking the middle plane
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
 							{
-								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !(currentState.getMaterial().isReplaceable()))
+								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable())
+								if(replaceable)
 									wallsNeeded++;
 							}
 						}
 						//checking the corner edges
 						else if(yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 						{
-							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !(currentState.getMaterial().isReplaceable()) || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != Axis.Y))
+							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && !replaceable || (currentState.getBlock() == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get() && currentState.get(BlockStateProperties.AXIS) != Axis.Y))
 								return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-							if(currentState.getMaterial().isReplaceable())
+							if(replaceable)
 								pillarsNeeded++;
 						}
 						//checking the walls
@@ -361,19 +457,19 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 							//checking the walls parallel to the block pocket manager
 							if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
-								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !(currentState.getMaterial().isReplaceable()))
+								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable())
+								if(replaceable)
 									wallsNeeded++;
 							}
 							//checking the walls orthogonal to the block pocket manager
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
-								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !(currentState.getMaterial().isReplaceable()))
+								if(!(currentState.getBlock() instanceof BlockPocketWallBlock) && !replaceable)
 									return new TranslationTextComponent("messages.securitycraft:blockpocket.blockInWay", getFormattedRelativeCoordinates(currentPos, managerFacing), new TranslationTextComponent(currentState.getBlock().asItem().getTranslationKey()));
 
-								if(currentState.getMaterial().isReplaceable())
+								if(replaceable)
 									wallsNeeded++;
 							}
 						}
@@ -402,84 +498,12 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 			if(chiseledNeeded + pillarsNeeded + wallsNeeded == 0) //this applies when no blocks are missing, so when the BP is already in place
 				return new TranslationTextComponent("messages.securitycraft:blockpocket.alreadyAssembled");
 
-			//Step 2: if the player isn't in creative, take out the items that are used for assembling the BP. If there aren't enough items, the assemble button in the screen is turned off
-			if(!player.isCreative())
-			{
-				NonNullList<ItemStack> inventory = storage;
-
-				for(int i = 1; i <= inventory.size(); i++)
-				{
-					ItemStack stackToCheck = inventory.get(i - 1);
-
-					if(!stackToCheck.isEmpty() && stackToCheck.getItem() instanceof BlockItem)
-					{
-						Block block = ((BlockItem)stackToCheck.getItem()).getBlock();
-						int count = stackToCheck.getCount();
-
-						if(block == SCContent.BLOCK_POCKET_WALL.get())
-						{
-							if(count <= wallsNeeded)
-							{
-								inventory.set(i - 1, ItemStack.EMPTY);
-								wallsNeeded -= count;
-							}
-							else
-							{
-								while(wallsNeeded != 0)
-								{
-									stackToCheck.shrink(1);
-									wallsNeeded--;
-								}
-
-								inventory.set(i - 1, stackToCheck);
-							}
-						}
-						else if(block == SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-						{
-							if(count <= chiseledNeeded)
-							{
-								inventory.set(i - 1, ItemStack.EMPTY);
-								chiseledNeeded -= count;
-							}
-							else
-							{
-								while(chiseledNeeded != 0)
-								{
-									stackToCheck.shrink(1);
-									chiseledNeeded--;
-								}
-
-								inventory.set(i - 1, stackToCheck);
-							}
-						}
-						else if(block == SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-						{
-							if(count <= pillarsNeeded)
-							{
-								inventory.set(i - 1, ItemStack.EMPTY);
-								pillarsNeeded -= count;
-							}
-							else
-							{
-								while(pillarsNeeded != 0)
-								{
-									stackToCheck.shrink(1);
-									pillarsNeeded--;
-								}
-
-								inventory.set(i - 1, stackToCheck);
-							}
-						}
-					}
-				}
-			}
-
 			pos = getPos().toImmutable().offset(right, -half);
 			xi = lowest;
 			yi = lowest;
 			zi = lowest;
 
-			//Step 3: placing the blocks and giving them the right owner
+			//add blocks to the auto building queue
 			while(yi < size)
 			{
 				while(zi < size)
@@ -504,62 +528,37 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 						{
 							//placing the corners
 							if(((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
-							{
-								if(currentState.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get())
-									world.setBlockState(currentPos, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get().getDefaultState());
-							}
+								placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get().getDefaultState()));
 							//placing the sides parallel to the block pocket manager
 							else if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
 							{
 								Axis typeToPlace = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.X : Axis.Z;
 
-								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-									world.setBlockState(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, typeToPlace));
+								placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, typeToPlace)));
 							}
 							//placing the sides orthogonal to the block pocket manager
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
 							{
 								Axis typeToPlace = managerFacing == Direction.NORTH || managerFacing == Direction.SOUTH ? Axis.Z : Axis.X;
 
-								if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-									world.setBlockState(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, typeToPlace));
+								placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, typeToPlace)));
 							}
 							//placing the middle plane
 							else if(xi > lowest && zi > lowest && xi < highest && zi < highest)
-							{
-								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									world.setBlockState(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState());
-							}
+								placeQueue.add(Pair.of(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState()));
 						}
 						//placing the corner edges
 						else if(yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
-						{
-							if(currentState.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
-								world.setBlockState(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, Axis.Y));
-						}
+							placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().getDefaultState().with(ReinforcedRotatedPillarBlock.AXIS, Axis.Y)));
 						//placing the walls
 						else if(yi > lowest && yi < highest)
 						{
 							//checking the walls parallel to the block pocket manager
 							if((zi == lowest || zi == highest) && xi > lowest && xi < highest)
-							{
-								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									world.setBlockState(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState());
-							}
+								placeQueue.add(Pair.of(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState()));
 							//checking the walls orthogonal to the block pocket manager
 							else if((xi == lowest || xi == highest) && zi > lowest && zi < highest)
-							{
-								if(!(currentState.getBlock() instanceof BlockPocketWallBlock))
-									world.setBlockState(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState());
-							}
-						}
-
-						//assigning the owner
-						if(world.getTileEntity(currentPos) instanceof OwnableTileEntity)
-						{
-							OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(currentPos);
-
-							te.getOwner().set(getOwner());
+								placeQueue.add(Pair.of(currentPos, SCContent.BLOCK_POCKET_WALL.get().getDefaultState()));
 						}
 
 						xi++;
@@ -575,7 +574,8 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				pos = startingPos.up(yi);
 			}
 
-			return new TranslationTextComponent("messages.securitycraft:blockpocket.assembled");
+			shouldPlaceBlocks = true;
+			return null;
 		}
 
 		return null;
@@ -683,7 +683,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
 		if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.getProtectedCapability(side, this, () -> getStorageHandler(), () -> getInsertOnlyHandler()).cast();
+		{
+			if(isPlacingBlocks()) //prevent extracting while auto building the block pocket
+				return getInsertOnlyHandler().cast();
+			else return BlockUtils.getProtectedCapability(side, this, () -> getStorageHandler(), () -> getInsertOnlyHandler()).cast();
+		}
 		else return super.getCapability(cap, side);
 	}
 
@@ -691,6 +695,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	public void onTileEntityDestroyed()
 	{
 		super.onTileEntityDestroyed();
+
 		if (world.getBlockState(pos).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
 			disableMultiblock();
 	}
@@ -848,6 +853,11 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		}
 
 		return insertOnlyHandler;
+	}
+
+	public boolean isPlacingBlocks()
+	{
+		return shouldPlaceBlocks;
 	}
 
 	public static boolean isItemValid(ItemStack stack)

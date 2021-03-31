@@ -303,7 +303,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		IFormattableTextComponent feedback;
 
 		te.size = size;
-		feedback = te.autoAssembleMultiblock(Minecraft.getInstance().player);
+		feedback = te.autoAssembleMultiblock();
 
 		if(feedback != null)
 			PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), feedback, TextFormatting.DARK_AQUA, true);

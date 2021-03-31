@@ -683,6 +683,7 @@
 	"messages.securitycraft:portableRadar.withName": "%1$s is near your portable radar named %2$s.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s is near your portable radar at %2$s.",
 	"messages.securitycraft:codebreakerDisabled": "The codebreaker has been disabled through the config file.",
+	"messages.securitycraft:codebreaker.failed": "Code breaking attempt failed, please try again.",
 	"messages.securitycraft:keycardReader.required": "Required security level: %1$s - Your keycard's level: %2$s",
 	"messages.securitycraft:keycardReader.notSet": "Security level not set!",
 	"messages.securitycraft:invScan.notConnected": "This is not connected to another inventory scanner block!",
@@ -772,9 +773,9 @@
 	"messages.securitycraft:blockpocket.activated": "Block Pocket activated!",
 	"messages.securitycraft:blockpocket.deactivated": "Block Pocket deactivated!",
 	"messages.securitycraft:blockpocket.assembled": "Block Pocket assembled!",
+	"messages.securitycraft:blockpocket.assemblyFailed": "Assembling the Block Pocket has failed %1$s the Block Pocket Manager. (Incorrect Block: %2$s)",
 	"messages.securitycraft:sc_help": "%s: %s + %s",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
-	"messages.securitycraft:codebreaker.failed": "Code breaking attempt failed, please try again.",
 
 	"jei.securitycraft.category.reinforcing": "Block Reinforcing",
 	"jei.securitycraft.category.unreinforcing": "Removing Reinforcment",
