@@ -352,10 +352,9 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	/**
 	 * Auto-assembles the Block Pocket for a player.
 	 * First it makes sure that the space isn't occupied, then it checks its inventory for the required items, then it places the blocks.
-	 * @param player The player that opened the screen, used to check if the player is in creative or not
 	 * @return The feedback message. null if none should be sent.
 	 */
-	public IFormattableTextComponent autoAssembleMultiblock(PlayerEntity player)
+	public IFormattableTextComponent autoAssembleMultiblock()
 	{
 		if(!enabled)
 		{
