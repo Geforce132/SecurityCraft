@@ -30,6 +30,7 @@
 - Fix: Blocks that are disguised using blocks with support for CTM don't render
 - Fix: Mobs can spawn inside of a block pocket
 - Fix: Projector placing/breaking/etc. sounds are incorrect
+- Fix: Ownership does not get set properly when converting blocks (namely Chest -> Password-protected Chest and Frame -> Keypad)
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

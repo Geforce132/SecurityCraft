@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -202,8 +203,10 @@ public class BlockKeypad extends BlockDisguisable {
 		@Override
 		public boolean convert(EntityPlayer player, World world, BlockPos pos)
 		{
+			Owner oldOwner = ((IOwnable)world.getTileEntity(pos)).getOwner();
+
 			world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
-			((IOwnable) world.getTileEntity(pos)).getOwner().set(((IOwnable)world.getTileEntity(pos)).getOwner());
+			((IOwnable) world.getTileEntity(pos)).getOwner().set(oldOwner);
 			return true;
 		}
 	}

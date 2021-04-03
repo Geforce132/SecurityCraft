@@ -3,6 +3,7 @@
 /libs
 /lib
 /run
+/logs
 /.project
 /.classpath
 /.gradle

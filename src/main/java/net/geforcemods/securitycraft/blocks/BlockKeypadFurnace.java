@@ -173,11 +173,13 @@ public class BlockKeypadFurnace extends BlockOwnable {
 			EnumFacing facing = world.getBlockState(pos).getValue(FACING);
 			TileEntityFurnace furnace = (TileEntityFurnace)world.getTileEntity(pos);
 			NBTTagCompound tag = furnace.writeToNBT(new NBTTagCompound());
+			TileEntity newTe;
 
 			furnace.clear();
 			world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
-			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
-			((TileEntityKeypadFurnace)world.getTileEntity(pos)).readFromNBT(tag);
+			newTe = world.getTileEntity(pos);
+			((TileEntityKeypadFurnace)newTe).readFromNBT(tag);
+			((IOwnable)newTe).getOwner().set(player.getUniqueID().toString(), player.getName());
 			return true;
 		}
 	}

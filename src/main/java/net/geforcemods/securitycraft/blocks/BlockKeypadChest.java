@@ -16,7 +16,6 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -492,7 +491,7 @@ public class BlockKeypadChest extends BlockContainer
 	@Override
 	protected BlockStateContainer createBlockState()
 	{
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new BlockStateContainer(this, FACING);
 	}
 
 	@Override
@@ -543,11 +542,13 @@ public class BlockKeypadChest extends BlockContainer
 		{
 			TileEntityChest chest = (TileEntityChest)world.getTileEntity(pos);
 			NBTTagCompound tag = chest.writeToNBT(new NBTTagCompound());
+			TileEntity newTe;
 
 			chest.clear();
 			world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
-			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName());
-			((TileEntityChest)world.getTileEntity(pos)).readFromNBT(tag);
+			newTe = world.getTileEntity(pos);
+			((TileEntityChest)newTe).readFromNBT(tag);
+			((IOwnable)newTe).getOwner().set(player.getUniqueID().toString(), player.getName());
 		}
 
 		private EnumFacing getDoubleChestFacing(World world, BlockPos pos)
