@@ -35,7 +35,12 @@ public class BlockBlockPocketManager extends BlockOwnable
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if(!world.isRemote)
-			player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_POCKET_MANAGER, world, pos.getX(), pos.getY(), pos.getZ());
+		{
+			TileEntity te = world.getTileEntity(pos);
+
+			if(te instanceof TileEntityBlockPocketManager && !((TileEntityBlockPocketManager)te).isPlacingBlocks())
+				player.openGui(SecurityCraft.instance, GuiHandler.BLOCK_POCKET_MANAGER, world, pos.getX(), pos.getY(), pos.getZ());
+		}
 
 		return true;
 	}

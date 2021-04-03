@@ -259,7 +259,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 			ITextComponent feedback;
 
 			te.size = size;
-			feedback = te.autoAssembleMultiblock(Minecraft.getMinecraft().player);
+			feedback = te.autoAssembleMultiblock();
 
 			if(feedback != null)
 				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA);

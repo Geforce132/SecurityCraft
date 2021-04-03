@@ -53,7 +53,7 @@ public class AssembleBlockPocket implements IMessage
 				if(te instanceof TileEntityBlockPocketManager && ((TileEntityBlockPocketManager)te).getOwner().isOwner(player))
 				{
 					((TileEntityBlockPocketManager)te).size = message.size;
-					((TileEntityBlockPocketManager)te).autoAssembleMultiblock(player);
+					((TileEntityBlockPocketManager)te).autoAssembleMultiblock();
 				}
 			});
 
