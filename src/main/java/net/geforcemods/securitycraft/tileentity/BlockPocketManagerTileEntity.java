@@ -156,7 +156,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				else //no more blocks left to place, assembling must be done
 				{
 					setWalls(!hasModule(ModuleType.DISGUISE));
-					PlayerUtils.sendMessageToPlayer(getOwner().getName(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
+					PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
 				}
 
 				shouldPlaceBlocks = false;
