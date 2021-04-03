@@ -121,12 +121,6 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	{
 		font.drawString(blockPocketManager, (storage ? 123 : xSize) / 2 - font.getStringWidth(blockPocketManager) / 2, 6, 4210752);
 
-		if(storage)
-		{
-			font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
-			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
-		}
-
 		if(!te.enabled && isOwner)
 		{
 			if(!storage)
@@ -155,6 +149,12 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 				font.drawString(Math.max(0, chiseledStillNeeded) + "", 192, ySize - 22, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26);
 			}
+		}
+
+		if(storage)
+		{
+			font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
+			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
 		}
 	}
 
