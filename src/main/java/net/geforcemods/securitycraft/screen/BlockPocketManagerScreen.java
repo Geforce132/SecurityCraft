@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
@@ -121,14 +122,11 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	{
 		font.drawString(blockPocketManager, (storage ? 123 : xSize) / 2 - font.getStringWidth(blockPocketManager) / 2, 6, 4210752);
 
-		if(storage)
-		{
-			font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
-			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
-		}
-
 		if(!te.enabled && isOwner)
 		{
+			GlStateManager.enableColorMaterial();
+			RenderHelper.enableGUIStandardItemLighting();
+
 			if(!storage)
 			{
 				font.drawString(youNeed, xSize / 2 - font.getStringWidth(youNeed) / 2, 83, 4210752);
@@ -155,6 +153,12 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 				font.drawString(Math.max(0, chiseledStillNeeded) + "", 192, ySize - 22, 4210752);
 				minecraft.getItemRenderer().renderItemAndEffectIntoGUI(REINFORCED_CHISELED_CRYSTAL_QUARTZ, 175, ySize - 26);
 			}
+		}
+
+		if(storage)
+		{
+			font.drawString(playerInventory.getDisplayName().getFormattedText(), 8, ySize - 94, 4210752);
+			renderHoveredToolTip(mouseX - guiLeft, mouseY - guiTop);
 		}
 	}
 
