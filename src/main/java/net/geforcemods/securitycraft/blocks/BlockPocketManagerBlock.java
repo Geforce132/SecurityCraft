@@ -6,7 +6,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
@@ -38,8 +37,8 @@ public class BlockPocketManagerBlock extends OwnableBlock
 		{
 			TileEntity te = world.getTileEntity(pos);
 
-			if(te instanceof INamedContainerProvider)
-				NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
+			if(te instanceof BlockPocketManagerTileEntity && !((BlockPocketManagerTileEntity)te).isPlacingBlocks())
+				NetworkHooks.openGui((ServerPlayerEntity)player, (BlockPocketManagerTileEntity)te, pos);
 		}
 
 		return true;

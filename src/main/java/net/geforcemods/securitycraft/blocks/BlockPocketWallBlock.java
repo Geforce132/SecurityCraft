@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
+import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDisplay
+public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDisplay, IBlockPocket
 {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
