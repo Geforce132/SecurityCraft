@@ -137,8 +137,10 @@ public class KeypadChestBlock extends ChestBlock {
 	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor){
 		super.onNeighborChange(state, world, pos, neighbor);
 
-		if (world.getTileEntity(pos) instanceof KeypadChestTileEntity)
-			((KeypadChestTileEntity) world.getTileEntity(pos)).updateContainingBlockInfo();
+		TileEntity tileEntity = world.getTileEntity(pos);
+
+		if (tileEntity instanceof KeypadChestTileEntity)
+			((KeypadChestTileEntity) tileEntity).updateContainingBlockInfo();
 
 	}
 
