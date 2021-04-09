@@ -1,16 +1,12 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.DistExecutor;
 
 public class BriefcaseInventory implements IInventory {
 
@@ -62,7 +58,6 @@ public class BriefcaseInventory implements IInventory {
 			}
 
 		tag.put("ItemInventory", items);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(briefcase)));
 	}
 
 	@Override

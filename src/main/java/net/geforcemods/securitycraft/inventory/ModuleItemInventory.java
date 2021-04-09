@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -10,8 +8,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.thread.EffectiveSide;
 
 public class ModuleItemInventory implements IInventory {
 
@@ -73,9 +69,6 @@ public class ModuleItemInventory implements IInventory {
 			}
 
 		tag.put("ItemInventory", items);
-
-		if(EffectiveSide.get() == LogicalSide.CLIENT)
-			SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(module));
 	}
 
 	@Override
