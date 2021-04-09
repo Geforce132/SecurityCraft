@@ -322,8 +322,10 @@ public class BlockKeypadChest extends BlockContainer
 	{
 		super.onNeighborChange(world, pos, neighbor);
 
-		if (world.getTileEntity(pos) instanceof TileEntityKeypadChest)
-			((TileEntityKeypadChest) world.getTileEntity(pos)).updateContainingBlockInfo();
+		TileEntity tileEntity = world.getTileEntity(pos);
+
+		if (tileEntity instanceof TileEntityKeypadChest)
+			((TileEntityKeypadChest) tileEntity).updateContainingBlockInfo();
 	}
 
 	@Override
