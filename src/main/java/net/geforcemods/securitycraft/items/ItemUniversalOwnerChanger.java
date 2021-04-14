@@ -2,12 +2,14 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.blocks.BlockSpecialDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -111,6 +113,18 @@ public class ItemUniversalOwnerChanger extends Item
 
 			if(door)
 				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(((TileEntityOwnable)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
+		}
+
+		if(!world.isRemote && te instanceof IModuleInventory)
+		{
+			for(EnumModuleType moduleType : ((IModuleInventory)te).getInsertedModules())
+			{
+				ItemStack moduleStack = ((IModuleInventory)te).getModule(moduleType);
+
+				((IModuleInventory)te).removeModule(moduleType);
+				((IModuleInventory)te).onModuleRemoved(moduleStack, moduleType);
+				Block.spawnAsEntity(world, pos, moduleStack);
+			}
 		}
 
 		PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
