@@ -6,6 +6,8 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -48,6 +50,8 @@ public class LaserBlock extends DisguisableBlock {
 
 	public void setLaser(World world, BlockPos pos)
 	{
+		LaserBlockTileEntity thisTe = (LaserBlockTileEntity)world.getTileEntity(pos);
+
 		for(Direction facing : Direction.values())
 		{
 			int boundType = facing == Direction.UP || facing == Direction.DOWN ? 1 : (facing == Direction.NORTH || facing == Direction.SOUTH ? 2 : 3);
@@ -62,12 +66,18 @@ public class LaserBlock extends DisguisableBlock {
 					break inner;
 				else if(offsetBlock == SCContent.LASER_BLOCK.get())
 				{
-					LaserBlockTileEntity thisTe = (LaserBlockTileEntity)world.getTileEntity(pos);
 					LaserBlockTileEntity thatTe = (LaserBlockTileEntity)world.getTileEntity(offsetPos);
 
 					if(thisTe.getOwner().equals(thatTe.getOwner()))
 					{
 						CustomizableTileEntity.link(thisTe, thatTe);
+
+						for(ModuleType type : thatTe.getInsertedModules())
+						{
+							thisTe.insertModule(thatTe.getModule(type));
+						}
+
+						((BooleanOption)thisTe.customOptions()[0]).setValue(thatTe.isEnabled());
 
 						if (thisTe.isEnabled() && thatTe.isEnabled())
 						{

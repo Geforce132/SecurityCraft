@@ -8,6 +8,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -105,6 +107,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		}
 
 		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getTileEntity(pos);
+		Option<?>[] customOptions = thisTe.customOptions();
 
 		for(int i = 1; i < loopBoundary; i++)
 		{
@@ -118,7 +121,15 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 		}
 
-		CustomizableTileEntity.link((CustomizableTileEntity)world.getTileEntity(pos), connectedScanner);
+		CustomizableTileEntity.link(thisTe, connectedScanner);
+
+		for(ModuleType type : connectedScanner.getInsertedModules())
+		{
+			thisTe.insertModule(connectedScanner.getModule(type));
+		}
+
+		((BooleanOption)customOptions[0]).setValue(connectedScanner.isHorizontal());
+		((BooleanOption)customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
 	}
 
 	@Override

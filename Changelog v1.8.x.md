@@ -36,6 +36,7 @@
 - Fix: Mobs can spawn inside of a block pocket
 - Fix: Potential crash when placing down blocks next to a password-protected chest
 - Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
+- Fix: Newly placed Laser Blocks/Inventory Scanners don't synchronize with the Laser Block/Inventory Scanner they connected to
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
