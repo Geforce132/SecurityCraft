@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -103,9 +104,18 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				return;
 		}
 
+		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getTileEntity(pos);
+
 		for(int i = 1; i < loopBoundary; i++)
 		{
-			world.setBlockState(pos.offset(facing, i), SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing).with(HORIZONTAL, horizontal));
+			BlockPos offsetPos = pos.offset(facing, i);
+
+			world.setBlockState(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing).with(HORIZONTAL, horizontal));
+
+			TileEntity te = world.getTileEntity(offsetPos);
+
+			if(te instanceof IOwnable)
+				((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 		}
 
 		CustomizableTileEntity.link((CustomizableTileEntity)world.getTileEntity(pos), connectedScanner);

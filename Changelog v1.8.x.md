@@ -34,6 +34,8 @@
 - Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
 - Fix: Copying/Pasting module lists does not work properly
 - Fix: Mobs can spawn inside of a block pocket
+- Fix: Potential crash when placing down blocks next to a password-protected chest
+- Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
