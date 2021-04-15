@@ -75,10 +75,18 @@ public class LaserBlock extends DisguisableBlock {
 								offsetPos = pos.offset(facing, j);
 
 								if(world.getBlockState(offsetPos).isAir(world, offsetPos))
+								{
 									world.setBlockState(offsetPos, SCContent.LASER_FIELD.get().getDefaultState().with(LaserFieldBlock.BOUNDTYPE, boundType));
+
+									TileEntity te = world.getTileEntity(offsetPos);
+
+									if(te instanceof IOwnable)
+										((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+								}
 							}
 						}
 					}
+
 					break inner;
 				}
 			}
