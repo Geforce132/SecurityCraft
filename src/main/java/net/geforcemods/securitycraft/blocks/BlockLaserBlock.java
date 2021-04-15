@@ -6,7 +6,9 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -60,6 +62,8 @@ public class BlockLaserBlock extends BlockDisguisable {
 
 	public void setLaser(Owner owner, World world, BlockPos pos)
 	{
+		TileEntityLaserBlock thisTe = (TileEntityLaserBlock)world.getTileEntity(pos);
+
 		for(EnumFacing facing : EnumFacing.VALUES)
 		{
 			int boundType = facing == EnumFacing.UP || facing == EnumFacing.DOWN ? 1 : (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH ? 2 : 3);
@@ -73,12 +77,18 @@ public class BlockLaserBlock extends BlockDisguisable {
 					break inner;
 				else if(offsetBlock == SCContent.laserBlock)
 				{
-					TileEntityLaserBlock thisTe = (TileEntityLaserBlock)world.getTileEntity(pos);
 					TileEntityLaserBlock thatTe = (TileEntityLaserBlock)world.getTileEntity(offsetPos);
 
 					if(owner.equals(thatTe.getOwner()))
 					{
 						CustomizableSCTE.link(thisTe, thatTe);
+
+						for(EnumModuleType type : thatTe.getInsertedModules())
+						{
+							thisTe.insertModule(thatTe.getModule(type));
+						}
+
+						((OptionBoolean)thisTe.customOptions()[0]).setValue(thatTe.isEnabled());
 
 						if (thisTe.isEnabled() && thatTe.isEnabled())
 						{

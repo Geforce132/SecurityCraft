@@ -35,6 +35,7 @@
 - Fix: Ownership does not get set properly when converting blocks (namely Chest -> Password-protected Chest and Frame -> Keypad)
 - Fix: Potential crash when placing down blocks next to a password-protected chest
 - Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
+- Fix: Newly placed Laser Blocks/Inventory Scanners don't synchronize with the Laser Block/Inventory Scanner they connected to
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 

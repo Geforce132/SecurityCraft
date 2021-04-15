@@ -346,6 +346,11 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 		world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockInventoryScanner.HORIZONTAL, isHorizontal));
 	}
 
+	public boolean isHorizontal()
+	{
+		return horizontal.get();
+	}
+
 	public boolean doesFieldSolidify() {
 		return solidifyField.get();
 	}
