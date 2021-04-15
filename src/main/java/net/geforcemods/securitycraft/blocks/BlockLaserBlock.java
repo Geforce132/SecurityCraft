@@ -5,6 +5,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
 import net.minecraft.block.Block;
@@ -86,10 +87,18 @@ public class BlockLaserBlock extends BlockDisguisable {
 								offsetPos = pos.offset(facing, j);
 
 								if(world.getBlockState(offsetPos).getBlock() == Blocks.AIR)
+								{
 									world.setBlockState(offsetPos, SCContent.laserField.getDefaultState().withProperty(BlockLaserField.BOUNDTYPE, boundType));
+
+									TileEntity te = world.getTileEntity(offsetPos);
+
+									if(te instanceof IOwnable)
+										((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
+								}
 							}
 						}
 					}
+
 					break inner;
 				}
 			}

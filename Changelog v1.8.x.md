@@ -33,6 +33,8 @@
 - Fix: Mobs can spawn inside of a block pocket
 - Fix: Projector placing/breaking/etc. sounds are incorrect
 - Fix: Ownership does not get set properly when converting blocks (namely Chest -> Password-protected Chest and Frame -> Keypad)
+- Fix: Potential crash when placing down blocks next to a password-protected chest
+- Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
