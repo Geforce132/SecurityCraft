@@ -88,12 +88,7 @@ public class EntityBouncingBetty extends Entity {
 
 	private void explode()
 	{
-		float f = 6.0F;
-
-		if(ConfigHandler.smallerMineExplosion)
-			world.newExplosion(this, posX, posY, posZ, (f / 2), ConfigHandler.shouldSpawnFire, true);
-		else
-			world.newExplosion(this, posX, posY, posZ, f, ConfigHandler.shouldSpawnFire, true);
+		world.newExplosion(this, posX, posY, posZ, ConfigHandler.smallerMineExplosion ? 3.0F : 6.0F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 	}
 
 	/**

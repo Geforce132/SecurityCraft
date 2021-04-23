@@ -64,6 +64,10 @@ public class ConfigHandler
 	@LangKey("config.securitycraft:mineExplodesWhenInCreative")
 	public static boolean mineExplodesWhenInCreative = true;
 
+	@Name("Do mines' explosions break blocks?")
+	@LangKey("config.securitycraft:mineExplosionsBreakBlocks")
+	public static boolean mineExplosionsBreakBlocks = true;
+
 	@Name("Display a 'tip' message at spawn?")
 	@LangKey("config.securitycraft:sayThanksMessage")
 	public static boolean sayThanksMessage = true;
