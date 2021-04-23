@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -23,7 +24,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -112,11 +112,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	@Override
 	public void explode(World world, BlockPos pos) {
 		world.destroyBlock(pos, false);
-
-		if(ConfigHandler.SERVER.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 2.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
-		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+		world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
 	/**
