@@ -22,7 +22,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -124,10 +123,7 @@ public class MineBlock extends ExplosiveBlock {
 
 		if(!world.getBlockState(pos).get(DEACTIVATED)){
 			world.destroyBlock(pos, false);
-			if(ConfigHandler.SERVER.smallerMineExplosion.get())
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 1.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
-			else
-				world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 

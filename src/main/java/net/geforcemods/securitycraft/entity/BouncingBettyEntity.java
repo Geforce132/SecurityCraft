@@ -2,13 +2,13 @@ package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -81,12 +81,7 @@ public class BouncingBettyEntity extends Entity {
 
 	private void explode()
 	{
-		float f = 6.0F;
-
-		if(ConfigHandler.SERVER.smallerMineExplosion.get())
-			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (f / 2), ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
-		else
-			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), f, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+		world.createExplosion(this, getPosX(), getPosY(), getPosZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
 	/**
