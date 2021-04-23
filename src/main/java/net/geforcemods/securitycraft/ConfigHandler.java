@@ -59,6 +59,7 @@ public class ConfigHandler {
 		public BooleanValue ableToCraftLUKeycard;
 		public BooleanValue smallerMineExplosion;
 		public BooleanValue mineExplodesWhenInCreative;
+		public BooleanValue mineExplosionsBreakBlocks;
 		public IntValue laserBlockRange;
 		public IntValue inventoryScannerRange;
 		public IntValue maxAlarmRange;
@@ -118,6 +119,10 @@ public class ConfigHandler {
 			mineExplodesWhenInCreative = builder
 					.comment("Should mines explode if broken while in Creative mode?")
 					.define("mineExplodesWhenInCreative", true);
+
+			mineExplosionsBreakBlocks = builder
+					.comment("Set this to false if you want mines to not break blocks when they explode.")
+					.define("mineExplosionsBreakBlocks", true);
 
 			laserBlockRange = builder
 					.comment("From how many blocks away can a laser block connect to another laser block?")

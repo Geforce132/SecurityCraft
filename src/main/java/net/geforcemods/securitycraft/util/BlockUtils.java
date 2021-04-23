@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -14,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -50,6 +52,11 @@ public class BlockUtils{
 
 	public static int[] fromPos(BlockPos pos){
 		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
+	}
+
+	public static Mode getExplosionMode()
+	{
+		return ConfigHandler.SERVER.mineExplosionsBreakBlocks.get() ? Mode.BREAK : Mode.NONE;
 	}
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos)

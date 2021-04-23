@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.block.Block;
@@ -23,7 +24,6 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.Explosion.Mode;
 import net.minecraft.world.World;
 
 public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
@@ -98,11 +98,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 			return;
 
 		world.destroyBlock(pos, false);
-
-		if(ConfigHandler.SERVER.smallerMineExplosion.get())
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
-		else
-			world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), Mode.BREAK);
+		world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 
 	}
 

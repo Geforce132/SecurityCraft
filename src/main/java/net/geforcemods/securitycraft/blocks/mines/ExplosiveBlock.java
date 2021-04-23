@@ -79,5 +79,4 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	public boolean isDefusable(){
 		return true;
 	}
-
 }
