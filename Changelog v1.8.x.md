@@ -37,6 +37,7 @@
 - Fix: Potential crash when placing down blocks next to a password-protected chest
 - Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
 - Fix: Newly placed Laser Blocks/Inventory Scanners don't synchronize with the Laser Block/Inventory Scanner they connected to
+- Fix: Motion Activated Light crash
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------
 
