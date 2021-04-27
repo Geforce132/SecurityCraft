@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,21 +14,6 @@ public class ClientUtils{
 	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getInstance().player.closeScreen();
-	}
-
-	/**
-	 * Takes a screenshot, and sends the player a notification. <p>
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static void takeScreenshot() {
-		ScreenShotHelper.saveScreenshot(
-				Minecraft.getInstance().gameDir,
-				Minecraft.getInstance().getMainWindow().getWidth(),
-				Minecraft.getInstance().getMainWindow().getHeight(),
-				Minecraft.getInstance().getFramebuffer(),
-				msg -> Minecraft.getInstance().execute(() -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg)));
 	}
 
 	/**
