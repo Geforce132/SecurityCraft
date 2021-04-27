@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.entity.SecurityCameraEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -27,6 +28,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -44,6 +46,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -53,6 +56,23 @@ public class SCClientEventHandler
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("minecraft:textures/mob_effect/night_vision.png");
 	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+
+	@SubscribeEvent
+	public static void onScreenshot(ScreenshotEvent event)
+	{
+		PlayerEntity player = Minecraft.getInstance().player;
+
+		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		{
+			SecurityCameraEntity camera = ((SecurityCameraEntity)player.getRidingEntity());
+
+			if(camera.screenshotSoundCooldown == 0)
+			{
+				camera.screenshotSoundCooldown = 7;
+				Minecraft.getInstance().world.playSound(player.getPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
