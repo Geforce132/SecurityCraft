@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.entity.EntitySentry;
+import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
@@ -15,10 +16,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
@@ -30,6 +33,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,6 +41,23 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(value=Side.CLIENT, modid=SecurityCraft.MODID)
 public class SCClientEventHandler
 {
+	@SubscribeEvent
+	public static void onScreenshot(ScreenshotEvent event)
+	{
+		EntityPlayer player = Minecraft.getMinecraft().player;
+
+		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		{
+			EntitySecurityCamera camera = ((EntitySecurityCamera)player.getRidingEntity());
+
+			if(camera.screenshotSoundCooldown == 0)
+			{
+				camera.screenshotSoundCooldown = 7;
+				Minecraft.getMinecraft().world.playSound(player.getPosition(), SCSounds.CAMERASNAP.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public static void onPlayerRendered(RenderPlayerEvent.Pre event) {
 		if(PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer()))

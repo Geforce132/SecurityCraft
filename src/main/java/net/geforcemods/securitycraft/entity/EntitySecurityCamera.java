@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.entity;
 
-import org.lwjgl.input.Mouse;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -16,7 +14,6 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -26,7 +23,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +43,7 @@ public class EntitySecurityCamera extends Entity{
 	private float cameraUsePitch;
 
 	private int id;
-	private int screenshotCooldown = 0;
+	public int screenshotSoundCooldown = 0;
 	private int redstoneCooldown = 0;
 	private int toggleNightVisionCooldown = 0;
 	private int toggleLightCooldown = 0;
@@ -153,8 +149,8 @@ public class EntitySecurityCamera extends Entity{
 			if(lowestEntity != Minecraft.getMinecraft().player)
 				return;
 
-			if(screenshotCooldown > 0)
-				screenshotCooldown -= 1;
+			if(screenshotSoundCooldown > 0)
+				screenshotSoundCooldown -= 1;
 
 			if(redstoneCooldown > 0)
 				redstoneCooldown -= 1;
@@ -174,12 +170,6 @@ public class EntitySecurityCamera extends Entity{
 				lowestEntity.setPositionAndRotation(lowestEntity.posX, lowestEntity.posY, lowestEntity.posZ, rotationYaw, rotationPitch);
 
 			checkKeysPressed();
-
-			if(Mouse.hasWheel() && Mouse.isButtonDown(2) && screenshotCooldown == 0){
-				screenshotCooldown = 30;
-				ClientUtils.takeScreenshot();
-				Minecraft.getMinecraft().world.playSound(new BlockPos(posX, posY, posZ), SoundEvent.REGISTRY.getObject(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
-			}
 
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
 				SecurityCraft.network.sendToServer(new GiveNightVision());

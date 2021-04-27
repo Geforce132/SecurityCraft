@@ -7,10 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -19,17 +17,6 @@ public class ClientUtils{
 	@SideOnly(Side.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getMinecraft().player.closeScreen();
-	}
-
-	/**
-	 * Takes a screenshot, and sends the player a notification. <p>
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@SideOnly(Side.CLIENT)
-	public static void takeScreenshot() {
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-			Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(Minecraft.getMinecraft().gameDir, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer()));
 	}
 
 	/**
