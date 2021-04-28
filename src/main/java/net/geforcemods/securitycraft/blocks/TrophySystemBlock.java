@@ -35,10 +35,6 @@ public class TrophySystemBlock extends OwnableBlock {
 		super(properties);
 	}
 
-	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
-		return false;
-	}
-
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
 		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);

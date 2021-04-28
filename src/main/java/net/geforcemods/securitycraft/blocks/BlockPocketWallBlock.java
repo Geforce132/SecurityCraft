@@ -40,11 +40,6 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
 	}
 
-	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		return false;
-	}
-
 	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return state.get(SOLID);
