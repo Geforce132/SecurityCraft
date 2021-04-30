@@ -1,0 +1,169 @@
+package net.geforcemods.securitycraft.screen;
+
+import org.apache.commons.lang3.tuple.Pair;
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.gui.ScrollPanel;
+import net.minecraftforge.fml.network.PacketDistributor;
+
+public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
+
+	private final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
+	private final TranslationTextComponent projectiles = ClientUtils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
+	private final TranslationTextComponent moduleRequired = ClientUtils.localize("gui.securitycraft:trophy_system.moduleRequired");
+	private final TranslationTextComponent toggle = ClientUtils.localize("gui.securitycraft:trophy_system.toggle");
+	private TrophySystemTileEntity tileEntity;
+	private ProjectileScrollList projectileList;
+
+	public TrophySystemScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
+		super(container, inv, name);
+
+		this.tileEntity = (TrophySystemTileEntity)container.te;
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+
+		children.add(projectileList = new ProjectileScrollList(minecraft, xSize - 24, ySize - 60, guiTop + 40, guiLeft + 12));
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
+		font.drawText(matrix, this.title, xSize / 2 - font.getStringPropertyWidth(title) / 2, (float)this.titleY, 4210752);
+		font.drawText(matrix, this.projectiles, xSize / 2 - font.getStringPropertyWidth(projectiles) / 2, (float)this.titleY + 25, 4210752);
+	}
+
+	@Override
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	{
+		super.render(matrix, mouseX, mouseY, partialTicks);
+
+		if(projectileList != null)
+			projectileList.render(matrix, mouseX, mouseY, partialTicks);
+	}
+
+	@Override
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+		int startX = (width - xSize) / 2;
+		int startY = (height - ySize) / 2;
+
+		renderBackground(matrix);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+	}
+
+	class ProjectileScrollList extends ScrollPanel
+	{
+		private final int slotHeight = 12, listLength = tileEntity.projectileFilter.size();
+
+		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left)
+		{
+			super(client, width, height, top, left);
+		}
+
+		@Override
+		protected int getContentHeight()
+		{
+			int height = 50 + (tileEntity.projectileFilter.size() * font.FONT_HEIGHT);
+
+			if(height < bottom - top - 8)
+				height = bottom - top - 8;
+
+			return height;
+		}
+
+		@Override
+		protected boolean clickPanel(double mouseX, double mouseY, int button) {
+			int slotIndex = (int)mouseY / slotHeight;
+
+			//highlight hovered slot
+			if(tileEntity.hasModule(ModuleType.SMART) && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
+				Pair<EntityType<?>, Boolean> currentProjectile = tileEntity.projectileFilter.get(slotIndex);
+				int positionInList = tileEntity.projectileFilter.indexOf(currentProjectile);
+
+				tileEntity.projectileFilter.set(positionInList, Pair.of(currentProjectile.getLeft(), !currentProjectile.getRight()));
+				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(tileEntity.getPos(), positionInList, !currentProjectile.getRight()));
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+		{
+			super.render(matrix, mouseX, mouseY, partialTicks);
+
+			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int slotIndex = mouseListY / slotHeight;
+
+			if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				renderTooltip(matrix, tileEntity.hasModule(ModuleType.SMART) ? toggle : moduleRequired, mouseX, mouseY);
+			}
+		}
+
+		@Override
+		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
+		{
+			int baseY = top + border - (int)scrollDistance;
+			int slotBuffer = slotHeight - 4;
+			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int slotIndex = mouseListY / slotHeight;
+
+			//highlight hovered slot
+			if(tileEntity.hasModule(ModuleType.SMART) && mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+				int min = left;
+				int max = entryRight - 6; //6 is the width of the scrollbar
+				int slotTop = baseY + slotIndex * slotHeight;
+				BufferBuilder bufferBuilder = tess.getBuffer();
+
+				RenderSystem.enableBlend();
+				RenderSystem.disableTexture();
+				RenderSystem.defaultBlendFunc();
+				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+				bufferBuilder.pos(min, slotTop + slotBuffer + 2, 0).tex(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.pos(max, slotTop + slotBuffer + 2, 0).tex(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.pos(max, slotTop - 2, 0).tex(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.pos(min, slotTop - 2, 0).tex(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.pos(min + 1, slotTop + slotBuffer + 1, 0).tex(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.pos(max - 1, slotTop + slotBuffer + 1, 0).tex(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.pos(max - 1, slotTop - 1, 0).tex(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.pos(min + 1, slotTop - 1, 0).tex(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.finishDrawing();
+				WorldVertexBufferUploader.draw(bufferBuilder);
+				RenderSystem.enableTexture();
+				RenderSystem.disableBlend();
+			}
+
+			//draw entry strings
+			for(int i = 0; i < tileEntity.projectileFilter.size(); i++) {
+				Pair<EntityType<?>, Boolean> projectile = tileEntity.projectileFilter.get(i);
+				TranslationTextComponent projectileName = projectile.getLeft() == EntityType.PIG ? new TranslationTextComponent("gui.securitycraft:trophy_system.moddedProjectiles") : (TranslationTextComponent)projectile.getLeft().getName();
+
+				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, relativeY + (slotHeight * i), projectile.getRight() ? 0xC6C6C6 : 0x101010);
+			}
+		}
+	}
+}

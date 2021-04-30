@@ -6,10 +6,16 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.entity.BulletEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.FireballEntity;
@@ -17,11 +23,13 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 
-public class TrophySystemTileEntity extends OwnableTileEntity implements ITickableTileEntity {
+public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -33,6 +41,9 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
 
+	//The projectile filter of each trophy system
+	public List<Pair<EntityType<?>, Boolean>> projectileFilter = new ArrayList<>();
+
 	public Entity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
 	private final Random random = new Random();
@@ -40,6 +51,25 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
+		initProjectileFilter();
+	}
+
+	private void initProjectileFilter() {
+		projectileFilter.add(Pair.of(SCContent.eTypeBullet, true));
+		projectileFilter.add(Pair.of(EntityType.SPECTRAL_ARROW, true));
+		projectileFilter.add(Pair.of(EntityType.ARROW, true));
+		projectileFilter.add(Pair.of(EntityType.SMALL_FIREBALL, true));
+		projectileFilter.add(Pair.of(SCContent.eTypeImsBomb, true));
+		projectileFilter.add(Pair.of(EntityType.FIREBALL, true));
+		projectileFilter.add(Pair.of(EntityType.DRAGON_FIREBALL, true));
+		projectileFilter.add(Pair.of(EntityType.WITHER_SKULL, true));
+		projectileFilter.add(Pair.of(EntityType.SHULKER_BULLET, true));
+		projectileFilter.add(Pair.of(EntityType.LLAMA_SPIT, true));
+		projectileFilter.add(Pair.of(EntityType.EGG, true));
+		projectileFilter.add(Pair.of(EntityType.ENDER_PEARL, true));
+		projectileFilter.add(Pair.of(EntityType.SNOWBALL, true));
+		projectileFilter.add(Pair.of(EntityType.FIREWORK_ROCKET, true));
+		projectileFilter.add(Pair.of(EntityType.PIG, false)); //modded projectiles
 	}
 
 	@Override
@@ -76,6 +106,35 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
+	}
+
+	@Override
+	public CompoundNBT write(CompoundNBT tag) {
+		super.write(tag);
+
+		CompoundNBT projectilesNBT = new CompoundNBT();
+
+		for (int i = 0; i < projectileFilter.size(); i++) {
+			Pair<EntityType<?>, Boolean> projectile = projectileFilter.get(i);
+
+			projectilesNBT.putBoolean("projectile" + i, projectile.getRight());
+		}
+
+		tag.put("projectiles", projectilesNBT);
+		return tag;
+	}
+
+	@Override
+	public void read(BlockState state, CompoundNBT tag) {
+		super.read(state, tag);
+
+		CompoundNBT projectilesNBT = tag.getCompound("projectiles");
+
+		for (int i = 0; i < projectileFilter.size(); i++) {
+			EntityType<?> projectileType = projectileFilter.get(i).getLeft();
+
+			projectileFilter.set(i, Pair.of(projectileType, projectilesNBT.getBoolean("projectile" + i)));
+		}
 	}
 
 	/**
@@ -141,4 +200,26 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 			return null;
 	}
 
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
+
+		if (module == ModuleType.SMART) {
+			for (int i = 0; i < projectileFilter.size(); i++) {
+				EntityType<?> projectileType = projectileFilter.get(i).getLeft();
+
+				projectileFilter.set(i, Pair.of(projectileType, projectileType != EntityType.PIG));
+			}
+		}
+	}
+
+	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.SMART};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return null;
+	}
 }
