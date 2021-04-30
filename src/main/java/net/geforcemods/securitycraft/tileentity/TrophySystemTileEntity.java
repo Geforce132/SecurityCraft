@@ -10,10 +10,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableTileEntity;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.ShulkerBulletEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.entity.projectile.PotionEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -106,9 +108,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 
 		// Add all arrows and fireballs to the targets list. Could always add more
 		// projectile types if we think of any
-		potentialTargets.addAll(world.getEntitiesWithinAABB(AbstractArrowEntity.class, area, e -> !(e instanceof TridentEntity))); //ignore tridents
-		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(ShulkerBulletEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(ProjectileEntity.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries of this trophy system's owner
 		potentialTargets = potentialTargets.stream().filter(e -> !(e instanceof BulletEntity && ((BulletEntity)e).getOwner().equals(getOwner()))).collect(Collectors.toList());
@@ -120,6 +120,13 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		int target = random.nextInt(potentialTargets.size());
 
 		return potentialTargets.get(target);
+	}
+
+	private boolean isAllowedToTarget(Entity target) {
+		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
+			return false;
+
+		return true;
 	}
 
 	/**
