@@ -185,7 +185,14 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
 			return false;
 
-		return true;
+		for (Pair<EntityType<?>, Boolean> projectile : projectileFilter) {
+			if (projectile.getLeft() == target.getType()) {
+				return projectile.getRight();
+			}
+		}
+
+		//if we're here, we know that the potential target is a modded projectile
+		return projectileFilter.get(projectileFilter.size() - 1).getRight();
 	}
 
 	/**
