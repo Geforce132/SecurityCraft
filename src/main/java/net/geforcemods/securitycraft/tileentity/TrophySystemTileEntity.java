@@ -42,8 +42,21 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
 
-	//The projectile filter of each trophy system
-	private final List<Pair<EntityType<?>, Boolean>> projectileFilter;
+	private final List<Pair<EntityType<?>, Boolean>> projectileFilter = Arrays.asList(Pair.of(SCContent.eTypeBullet, true),
+			Pair.of(EntityType.SPECTRAL_ARROW, true),
+			Pair.of(EntityType.ARROW, true),
+			Pair.of(EntityType.SMALL_FIREBALL, true),
+			Pair.of(SCContent.eTypeImsBomb, true),
+			Pair.of(EntityType.FIREBALL, true),
+			Pair.of(EntityType.DRAGON_FIREBALL, true),
+			Pair.of(EntityType.WITHER_SKULL, true),
+			Pair.of(EntityType.SHULKER_BULLET, true),
+			Pair.of(EntityType.LLAMA_SPIT, true),
+			Pair.of(EntityType.EGG, true),
+			Pair.of(EntityType.ENDER_PEARL, true),
+			Pair.of(EntityType.SNOWBALL, true),
+			Pair.of(EntityType.FIREWORK_ROCKET, true),
+			Pair.of(EntityType.PIG, false)); //modded projectiles;
 
 	public ProjectileEntity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
@@ -52,21 +65,6 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
-		projectileFilter = Arrays.asList(Pair.of(SCContent.eTypeBullet, true),
-				Pair.of(EntityType.SPECTRAL_ARROW, true),
-				Pair.of(EntityType.ARROW, true),
-				Pair.of(EntityType.SMALL_FIREBALL, true),
-				Pair.of(SCContent.eTypeImsBomb, true),
-				Pair.of(EntityType.FIREBALL, true),
-				Pair.of(EntityType.DRAGON_FIREBALL, true),
-				Pair.of(EntityType.WITHER_SKULL, true),
-				Pair.of(EntityType.SHULKER_BULLET, true),
-				Pair.of(EntityType.LLAMA_SPIT, true),
-				Pair.of(EntityType.EGG, true),
-				Pair.of(EntityType.ENDER_PEARL, true),
-				Pair.of(EntityType.SNOWBALL, true),
-				Pair.of(EntityType.FIREWORK_ROCKET, true),
-				Pair.of(EntityType.PIG, false)); //modded projectiles
 	}
 
 	@Override
@@ -210,6 +208,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		Pair<EntityType<?>, Boolean> currentProjectile = projectileFilter.get(projectileIndex);
 
 		projectileFilter.set(projectileIndex, Pair.of(currentProjectile.getLeft(), allowed));
+
 		if (world.isRemote) {
 			SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileIndex, allowed));
 		}

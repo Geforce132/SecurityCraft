@@ -45,12 +45,13 @@ public class SyncTrophySystem {
 		ctx.get().enqueueWork(() -> {
 			World world = ctx.get().getSender().world;
 			BlockPos pos = message.pos;
-			BlockState state = world.getBlockState(pos);
 			int projectileIndex = message.projectileIndex;
 			boolean allowed = message.allowed;
 			TileEntity te = world.getTileEntity(pos);
 
 			if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
+				BlockState state = world.getBlockState(pos);
+
 				((TrophySystemTileEntity)te).setFilter(projectileIndex, allowed);
 				world.notifyBlockUpdate(pos, state, state, 2);
 			}
