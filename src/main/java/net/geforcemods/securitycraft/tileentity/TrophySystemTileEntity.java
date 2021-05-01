@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -9,16 +10,15 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceBottleEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -28,6 +28,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
@@ -42,41 +43,37 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public static final int RENDER_DISTANCE = 50;
 
 	//The projectile filter of each trophy system
-	public List<Pair<EntityType<?>, Boolean>> projectileFilter = new ArrayList<>();
+	private final List<Pair<EntityType<?>, Boolean>> projectileFilter;
 
-	public Entity entityBeingTargeted = null;
+	public ProjectileEntity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
 	private final Random random = new Random();
 
 	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
-		initProjectileFilter();
-	}
-
-	private void initProjectileFilter() {
-		projectileFilter.add(Pair.of(SCContent.eTypeBullet, true));
-		projectileFilter.add(Pair.of(EntityType.SPECTRAL_ARROW, true));
-		projectileFilter.add(Pair.of(EntityType.ARROW, true));
-		projectileFilter.add(Pair.of(EntityType.SMALL_FIREBALL, true));
-		projectileFilter.add(Pair.of(SCContent.eTypeImsBomb, true));
-		projectileFilter.add(Pair.of(EntityType.FIREBALL, true));
-		projectileFilter.add(Pair.of(EntityType.DRAGON_FIREBALL, true));
-		projectileFilter.add(Pair.of(EntityType.WITHER_SKULL, true));
-		projectileFilter.add(Pair.of(EntityType.SHULKER_BULLET, true));
-		projectileFilter.add(Pair.of(EntityType.LLAMA_SPIT, true));
-		projectileFilter.add(Pair.of(EntityType.EGG, true));
-		projectileFilter.add(Pair.of(EntityType.ENDER_PEARL, true));
-		projectileFilter.add(Pair.of(EntityType.SNOWBALL, true));
-		projectileFilter.add(Pair.of(EntityType.FIREWORK_ROCKET, true));
-		projectileFilter.add(Pair.of(EntityType.PIG, false)); //modded projectiles
+		projectileFilter = Arrays.asList(Pair.of(SCContent.eTypeBullet, true),
+				Pair.of(EntityType.SPECTRAL_ARROW, true),
+				Pair.of(EntityType.ARROW, true),
+				Pair.of(EntityType.SMALL_FIREBALL, true),
+				Pair.of(SCContent.eTypeImsBomb, true),
+				Pair.of(EntityType.FIREBALL, true),
+				Pair.of(EntityType.DRAGON_FIREBALL, true),
+				Pair.of(EntityType.WITHER_SKULL, true),
+				Pair.of(EntityType.SHULKER_BULLET, true),
+				Pair.of(EntityType.LLAMA_SPIT, true),
+				Pair.of(EntityType.EGG, true),
+				Pair.of(EntityType.ENDER_PEARL, true),
+				Pair.of(EntityType.SNOWBALL, true),
+				Pair.of(EntityType.FIREWORK_ROCKET, true),
+				Pair.of(EntityType.PIG, false)); //modded projectiles
 	}
 
 	@Override
 	public void tick() {
 		// If the trophy does not have a target, try looking for one
 		if(entityBeingTargeted == null) {
-			Entity target = getTarget();
+			ProjectileEntity target = getTarget();
 			UUID shooterUUID = getShooterUUID(target);
 
 			if(target != null && (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID()))) {
@@ -161,12 +158,10 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private Entity getTarget() {
-		List<Entity> potentialTargets = new ArrayList<>();
+	private ProjectileEntity getTarget() {
+		List<ProjectileEntity> potentialTargets = new ArrayList<>();
 		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
 
-		// Add all arrows and fireballs to the targets list. Could always add more
-		// projectile types if we think of any
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ProjectileEntity.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries of this trophy system's owner
@@ -181,7 +176,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		return potentialTargets.get(target);
 	}
 
-	private boolean isAllowedToTarget(Entity target) {
+	private boolean isAllowedToTarget(ProjectileEntity target) {
 		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
 			return false;
 
@@ -205,6 +200,27 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 			return ((FireballEntity) entity).func_234616_v_().getUniqueID(); //getShooter
 		else
 			return null;
+	}
+
+	public void toggleFilter(int projectileIndex) {
+		setFilter(projectileIndex, !projectileFilter.get(projectileIndex).getRight());
+	}
+
+	public void setFilter(int projectileIndex, boolean allowed) {
+		Pair<EntityType<?>, Boolean> currentProjectile = projectileFilter.get(projectileIndex);
+
+		projectileFilter.set(projectileIndex, Pair.of(currentProjectile.getLeft(), allowed));
+		if (world.isRemote) {
+			SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileIndex, allowed));
+		}
+	}
+
+	public Pair<EntityType<?>, Boolean> getFilterAtIndex(int index) {
+		return projectileFilter.get(index);
+	}
+
+	public int getFilterSize() {
+		return projectileFilter.size();
 	}
 
 	@Override

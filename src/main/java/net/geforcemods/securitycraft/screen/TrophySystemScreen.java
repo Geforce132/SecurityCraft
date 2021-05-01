@@ -9,7 +9,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
@@ -24,7 +23,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
@@ -50,8 +48,8 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawText(matrix, this.title, xSize / 2 - font.getStringPropertyWidth(title) / 2, (float)this.titleY, 4210752);
-		font.drawText(matrix, this.projectiles, xSize / 2 - font.getStringPropertyWidth(projectiles) / 2, (float)this.titleY + 25, 4210752);
+		font.drawText(matrix, title, xSize / 2 - font.getStringPropertyWidth(title) / 2, titleY, 4210752);
+		font.drawText(matrix, projectiles, xSize / 2 - font.getStringPropertyWidth(projectiles) / 2, titleY + 25, 4210752);
 	}
 
 	@Override
@@ -76,7 +74,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 	class ProjectileScrollList extends ScrollPanel
 	{
-		private final int slotHeight = 12, listLength = tileEntity.projectileFilter.size();
+		private final int slotHeight = 12, listLength = tileEntity.getFilterSize();
 
 		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left)
 		{
@@ -86,7 +84,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		@Override
 		protected int getContentHeight()
 		{
-			int height = 50 + (tileEntity.projectileFilter.size() * font.FONT_HEIGHT);
+			int height = 50 + (listLength * font.FONT_HEIGHT);
 
 			if(height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -100,11 +98,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 			//highlight hovered slot
 			if(tileEntity.hasModule(ModuleType.SMART) && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				Pair<EntityType<?>, Boolean> currentProjectile = tileEntity.projectileFilter.get(slotIndex);
-				int positionInList = tileEntity.projectileFilter.indexOf(currentProjectile);
-
-				tileEntity.projectileFilter.set(positionInList, Pair.of(currentProjectile.getLeft(), !currentProjectile.getRight()));
-				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(tileEntity.getPos(), positionInList, !currentProjectile.getRight()));
+				tileEntity.toggleFilter(slotIndex);
 				return true;
 			}
 
@@ -158,8 +152,8 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 			}
 
 			//draw entry strings
-			for(int i = 0; i < tileEntity.projectileFilter.size(); i++) {
-				Pair<EntityType<?>, Boolean> projectile = tileEntity.projectileFilter.get(i);
+			for(int i = 0; i < tileEntity.getFilterSize(); i++) {
+				Pair<EntityType<?>, Boolean> projectile = tileEntity.getFilterAtIndex(i);
 				TranslationTextComponent projectileName = projectile.getLeft() == EntityType.PIG ? new TranslationTextComponent("gui.securitycraft:trophy_system.moddedProjectiles") : (TranslationTextComponent)projectile.getLeft().getName();
 
 				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, relativeY + (slotHeight * i), projectile.getRight() ? 0xC6C6C6 : 0x101010);

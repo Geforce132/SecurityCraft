@@ -467,7 +467,7 @@
 
 	"entity.securitycraft.imsbomb": "I.M.S. Bomb",
 	"entity.securitycraft.sentry": "Sentry",
-	"entity.securitycraft.bullet": "Bullet",
+	"entity.securitycraft.bullet": "Sentry Bullet",
 
 	"death.attack.securitycraft.laser": "%s was sliced to death by a laser",
 	"death.attack.securitycraft.laser.player": "%1$s was sliced to death by a laser whilst fighting %2$s",

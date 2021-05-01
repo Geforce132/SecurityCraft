@@ -1,14 +1,11 @@
 package net.geforcemods.securitycraft.network.server;
 
-import java.util.List;
 import java.util.function.Supplier;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -16,22 +13,22 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class SyncTrophySystem {
 
 	private BlockPos pos;
-	private int projectileType;
+	private int projectileIndex;
 	private boolean allowed;
 
 	public SyncTrophySystem() {
 
 	}
 
-	public SyncTrophySystem(BlockPos pos, int projectileType, boolean allowed) {
+	public SyncTrophySystem(BlockPos pos, int projectileIndex, boolean allowed) {
 		this.pos = pos;
-		this.projectileType = projectileType;
+		this.projectileIndex = projectileIndex;
 		this.allowed = allowed;
 	}
 
 	public static void encode(SyncTrophySystem message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
-		buf.writeInt(message.projectileType);
+		buf.writeInt(message.projectileIndex);
 		buf.writeBoolean(message.allowed);
 	}
 
@@ -39,7 +36,7 @@ public class SyncTrophySystem {
 		SyncTrophySystem message = new SyncTrophySystem();
 
 		message.pos = buf.readBlockPos();
-		message.projectileType = buf.readInt();
+		message.projectileIndex = buf.readInt();
 		message.allowed = buf.readBoolean();
 		return message;
 	}
@@ -48,15 +45,13 @@ public class SyncTrophySystem {
 		ctx.get().enqueueWork(() -> {
 			World world = ctx.get().getSender().world;
 			BlockPos pos = message.pos;
-			int projectileType = message.projectileType;
+			BlockState state = world.getBlockState(pos);
+			int projectileIndex = message.projectileIndex;
 			boolean allowed = message.allowed;
-			TrophySystemTileEntity te = (TrophySystemTileEntity) world.getTileEntity(pos);
+			TileEntity te = world.getTileEntity(pos);
 
-			if(te != null) {
-				List<Pair<EntityType<?>, Boolean>> projectileFilter = te.projectileFilter;
-				BlockState state = world.getBlockState(pos);
-
-				projectileFilter.set(projectileType, Pair.of(projectileFilter.get(projectileType).getLeft(), allowed));
+			if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
+				((TrophySystemTileEntity)te).setFilter(projectileIndex, allowed);
 				world.notifyBlockUpdate(pos, state, state, 2);
 			}
 		});

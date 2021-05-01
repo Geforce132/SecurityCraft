@@ -467,7 +467,7 @@
 
 	"entity.securitycraft.imsbomb": "I.M.S.-Bombe",
 	"entity.securitycraft.sentry": "Geschütz",
-	"entity.securitycraft.bullet": "Kugel",
+	"entity.securitycraft.bullet": "Geschützkugel",
 
 	"death.attack.securitycraft.laser": "%s wurde von einem Laser zerschnitten",
 	"death.attack.securitycraft.laser.player": "%1$s wurde während des Kampfes mit %2$s von einem Laser zerschnitten",
