@@ -67,7 +67,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		projectileFilter.put(EntityType.ENDER_PEARL, true);
 		projectileFilter.put(EntityType.SNOWBALL, true);
 		projectileFilter.put(EntityType.FIREWORK_ROCKET, true);
-		projectileFilter.put(EntityType.PIG, false);
+		projectileFilter.put(EntityType.PIG, false); //modded projectiles
 	}
 
 	@Override
