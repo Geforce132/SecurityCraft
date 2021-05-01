@@ -4,31 +4,34 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class SyncTrophySystem {
 
 	private BlockPos pos;
-	private int projectileIndex;
+	private ResourceLocation projectileType;
 	private boolean allowed;
 
 	public SyncTrophySystem() {
 
 	}
 
-	public SyncTrophySystem(BlockPos pos, int projectileIndex, boolean allowed) {
+	public SyncTrophySystem(BlockPos pos, EntityType<?> projectileType, boolean allowed) {
 		this.pos = pos;
-		this.projectileIndex = projectileIndex;
+		this.projectileType = projectileType.getRegistryName();
 		this.allowed = allowed;
 	}
 
 	public static void encode(SyncTrophySystem message, PacketBuffer buf) {
 		buf.writeBlockPos(message.pos);
-		buf.writeInt(message.projectileIndex);
+		buf.writeResourceLocation(message.projectileType);
 		buf.writeBoolean(message.allowed);
 	}
 
@@ -36,24 +39,28 @@ public class SyncTrophySystem {
 		SyncTrophySystem message = new SyncTrophySystem();
 
 		message.pos = buf.readBlockPos();
-		message.projectileIndex = buf.readInt();
+		message.projectileType = buf.readResourceLocation();
 		message.allowed = buf.readBoolean();
 		return message;
 	}
 
 	public static void onMessage(SyncTrophySystem message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			World world = ctx.get().getSender().world;
-			BlockPos pos = message.pos;
-			int projectileIndex = message.projectileIndex;
-			boolean allowed = message.allowed;
-			TileEntity te = world.getTileEntity(pos);
+			EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(message.projectileType);
 
-			if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
-				BlockState state = world.getBlockState(pos);
+			if(projectileType != null)
+			{
+				World world = ctx.get().getSender().world;
+				BlockPos pos = message.pos;
+				boolean allowed = message.allowed;
+				TileEntity te = world.getTileEntity(pos);
 
-				((TrophySystemTileEntity)te).setFilter(projectileIndex, allowed);
-				world.notifyBlockUpdate(pos, state, state, 2);
+				if(te instanceof TrophySystemTileEntity && ((TrophySystemTileEntity)te).getOwner().isOwner(ctx.get().getSender())) {
+					BlockState state = world.getBlockState(pos);
+
+					((TrophySystemTileEntity)te).setFilter(projectileType, allowed);
+					world.notifyBlockUpdate(pos, state, state, 2);
+				}
 			}
 		});
 

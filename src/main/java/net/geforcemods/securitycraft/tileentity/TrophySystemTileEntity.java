@@ -1,13 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -17,8 +16,11 @@ import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceBottleEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -42,22 +44,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
 
-	private final List<Pair<EntityType<?>, Boolean>> projectileFilter = Arrays.asList(Pair.of(SCContent.eTypeBullet, true),
-			Pair.of(EntityType.SPECTRAL_ARROW, true),
-			Pair.of(EntityType.ARROW, true),
-			Pair.of(EntityType.SMALL_FIREBALL, true),
-			Pair.of(SCContent.eTypeImsBomb, true),
-			Pair.of(EntityType.FIREBALL, true),
-			Pair.of(EntityType.DRAGON_FIREBALL, true),
-			Pair.of(EntityType.WITHER_SKULL, true),
-			Pair.of(EntityType.SHULKER_BULLET, true),
-			Pair.of(EntityType.LLAMA_SPIT, true),
-			Pair.of(EntityType.EGG, true),
-			Pair.of(EntityType.ENDER_PEARL, true),
-			Pair.of(EntityType.SNOWBALL, true),
-			Pair.of(EntityType.FIREWORK_ROCKET, true),
-			Pair.of(EntityType.PIG, false)); //modded projectiles;
-
+	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	public ProjectileEntity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
 	private final Random random = new Random();
@@ -65,6 +52,22 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
+		//when adding new types ONLY ADD TO THE END. anything else will break saved data
+		projectileFilter.put(SCContent.eTypeBullet, true);
+		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
+		projectileFilter.put(EntityType.ARROW, true);
+		projectileFilter.put(EntityType.SMALL_FIREBALL, true);
+		projectileFilter.put(SCContent.eTypeImsBomb, true);
+		projectileFilter.put(EntityType.FIREBALL, true);
+		projectileFilter.put(EntityType.DRAGON_FIREBALL, true);
+		projectileFilter.put(EntityType.WITHER_SKULL, true);
+		projectileFilter.put(EntityType.SHULKER_BULLET, true);
+		projectileFilter.put(EntityType.LLAMA_SPIT, true);
+		projectileFilter.put(EntityType.EGG, true);
+		projectileFilter.put(EntityType.ENDER_PEARL, true);
+		projectileFilter.put(EntityType.SNOWBALL, true);
+		projectileFilter.put(EntityType.FIREWORK_ROCKET, true);
+		projectileFilter.put(EntityType.PIG, false);
 	}
 
 	@Override
@@ -108,11 +111,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		super.write(tag);
 
 		CompoundNBT projectilesNBT = new CompoundNBT();
+		int i = 0;
 
-		for (int i = 0; i < projectileFilter.size(); i++) {
-			Pair<EntityType<?>, Boolean> projectile = projectileFilter.get(i);
-
-			projectilesNBT.putBoolean("projectile" + i, projectile.getRight());
+		for (boolean b : projectileFilter.values()) {
+			projectilesNBT.putBoolean("projectile" + i, b);
+			i++;
 		}
 
 		tag.put("projectiles", projectilesNBT);
@@ -124,11 +127,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		super.read(state, tag);
 
 		CompoundNBT projectilesNBT = tag.getCompound("projectiles");
+		int i = 0;
 
-		for (int i = 0; i < projectileFilter.size(); i++) {
-			EntityType<?> projectileType = projectileFilter.get(i).getLeft();
-
-			projectileFilter.set(i, Pair.of(projectileType, projectilesNBT.getBoolean("projectile" + i)));
+		for (EntityType<?> projectileType : projectileFilter.keySet()) {
+			projectileFilter.put(projectileType, projectilesNBT.getBoolean("projectile" + i));
+			i++;
 		}
 	}
 
@@ -178,14 +181,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
 			return false;
 
-		for (Pair<EntityType<?>, Boolean> projectile : projectileFilter) {
-			if (projectile.getLeft() == target.getType()) {
-				return projectile.getRight();
-			}
-		}
-
-		//if we're here, we know that the potential target is a modded projectile
-		return projectileFilter.get(projectileFilter.size() - 1).getRight();
+		//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
+		return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
 	}
 
 	/**
@@ -200,26 +197,46 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 			return null;
 	}
 
-	public void toggleFilter(int projectileIndex) {
-		setFilter(projectileIndex, !projectileFilter.get(projectileIndex).getRight());
+	public void toggleFilter(EntityType<?> projectileType) {
+		setFilter(projectileType, !projectileFilter.get(projectileType));
 	}
 
-	public void setFilter(int projectileIndex, boolean allowed) {
-		Pair<EntityType<?>, Boolean> currentProjectile = projectileFilter.get(projectileIndex);
+	public void toggleFilter(int index)
+	{
+		int i = 0;
 
-		projectileFilter.set(projectileIndex, Pair.of(currentProjectile.getLeft(), allowed));
-
-		if (world.isRemote) {
-			SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileIndex, allowed));
+		for(EntityType<?> projectileType : projectileFilter.keySet())
+		{
+			if(i++ == index)
+			{
+				toggleFilter(projectileType);
+				return;
+			}
 		}
 	}
 
-	public Pair<EntityType<?>, Boolean> getFilterAtIndex(int index) {
-		return projectileFilter.get(index);
+	public void setFilter(EntityType<?> projectileType, boolean allowed) {
+		if(projectileFilter.containsKey(projectileType))
+		{
+			projectileFilter.put(projectileType, allowed);
+
+			if (world.isRemote) {
+				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileType, allowed));
+			}
+		}
+	}
+
+	public boolean getFilter(EntityType<?> projectileType) {
+		return projectileFilter.get(projectileType);
 	}
 
 	public int getFilterSize() {
 		return projectileFilter.size();
+	}
+
+	public Map<EntityType<?>,Boolean> getFilters()
+	{
+		return projectileFilter;
 	}
 
 	@Override
@@ -227,10 +244,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		super.onModuleRemoved(stack, module);
 
 		if (module == ModuleType.SMART) {
-			for (int i = 0; i < projectileFilter.size(); i++) {
-				EntityType<?> projectileType = projectileFilter.get(i).getLeft();
-
-				projectileFilter.set(i, Pair.of(projectileType, projectileType != EntityType.PIG));
+			for (EntityType<?> projectileType : projectileFilter.keySet()) {
+				projectileFilter.put(projectileType, projectileType != EntityType.PIG);
 			}
 		}
 	}

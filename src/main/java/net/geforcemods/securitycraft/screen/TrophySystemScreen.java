@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
-import org.apache.commons.lang3.tuple.Pair;
+import java.util.Map.Entry;
+
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -151,12 +152,13 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 				RenderSystem.disableBlend();
 			}
 
-			//draw entry strings
-			for(int i = 0; i < tileEntity.getFilterSize(); i++) {
-				Pair<EntityType<?>, Boolean> projectile = tileEntity.getFilterAtIndex(i);
-				TranslationTextComponent projectileName = projectile.getLeft() == EntityType.PIG ? new TranslationTextComponent("gui.securitycraft:trophy_system.moddedProjectiles") : (TranslationTextComponent)projectile.getLeft().getName();
+			int i = 0;
 
-				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, relativeY + (slotHeight * i), projectile.getRight() ? 0xC6C6C6 : 0x101010);
+			//draw entry strings
+			for(Entry<EntityType<?>,Boolean> projectile : tileEntity.getFilters().entrySet()) {
+				ITextComponent projectileName = projectile.getKey() == EntityType.PIG ? new TranslationTextComponent("gui.securitycraft:trophy_system.moddedProjectiles") : projectile.getKey().getName();
+
+				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, relativeY + (slotHeight * i++), projectile.getValue() ? 0xC6C6C6 : 0x101010);
 			}
 		}
 	}
