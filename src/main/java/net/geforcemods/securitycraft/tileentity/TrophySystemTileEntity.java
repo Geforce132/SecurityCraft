@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.entity.BulletEntity;
+import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -71,17 +72,17 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	@Override
 	public void tick() {
 		if (!world.isRemote) {
-		// If the trophy does not have a target, try looking for one
-		if(entityBeingTargeted == null) {
+			// If the trophy does not have a target, try looking for one
+			if(entityBeingTargeted == null) {
 				ProjectileEntity target = getPotentialTarget();
 
 				if(target != null) {
-			UUID shooterUUID = getShooterUUID(target);
+					UUID shooterUUID = getShooterUUID(target);
 
 					if (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID())) {
 						setTarget(target);
-			}
-		}
+					}
+				}
 			}
 		}
 
@@ -177,7 +178,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ProjectileEntity.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries of this trophy system's owner
-		potentialTargets = potentialTargets.stream().filter(e -> !(e instanceof BulletEntity && ((BulletEntity)e).getOwner().equals(getOwner()))).collect(Collectors.toList());
+		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
@@ -196,6 +197,15 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
 	}
 
+	private boolean filterSCProjectiles(ProjectileEntity projectile) {
+		if (projectile instanceof BulletEntity)
+			return !((BulletEntity)projectile).getOwner().equals(getOwner());
+		else if (projectile instanceof IMSBombEntity)
+			return !((IMSBombEntity)projectile).getOwner().equals(getOwner());
+
+		return true;
+	}
+
 	/**
 	 * Returns the UUID of the player who shot the given Entity
 	 */
@@ -204,7 +214,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 			return projectile.func_234616_v_().getUniqueID();
 		} else {
 			return null;
-	}
+		}
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {
