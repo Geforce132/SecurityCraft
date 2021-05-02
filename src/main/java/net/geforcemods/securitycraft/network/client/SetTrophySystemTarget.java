@@ -9,7 +9,6 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetTrophySystemTarget {
@@ -39,17 +38,15 @@ public class SetTrophySystemTarget {
 
 	public static void onMessage(SetTrophySystemTarget message, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
-			World world = Minecraft.getInstance().world;
-			TileEntity te = world.getTileEntity(message.trophyPos);
+			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.trophyPos);
 
 			if (te instanceof TrophySystemTileEntity) {
 				TrophySystemTileEntity trophySystemTE = (TrophySystemTileEntity)te;
-				Entity target = world.getEntityByID(message.targetID);
+				Entity target = Minecraft.getInstance().world.getEntityByID(message.targetID);
 
 				if (target instanceof ProjectileEntity) {
 					trophySystemTE.setTarget((ProjectileEntity)target);
 				}
-
 			}
 		});
 

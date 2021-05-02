@@ -88,7 +88,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	}
 
 	/**
-	 * @return The owner of the IMS who shot this bullet
+	 * @return The owner of the IMS which shot this bullet
 	 */
 	public Owner getOwner()
 	{
