@@ -14,13 +14,11 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceBottleEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -72,13 +70,18 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public void tick() {
+		if (!world.isRemote) {
 		// If the trophy does not have a target, try looking for one
 		if(entityBeingTargeted == null) {
-			ProjectileEntity target = getTarget();
+				ProjectileEntity target = getPotentialTarget();
+
+				if(target != null) {
 			UUID shooterUUID = getShooterUUID(target);
 
-			if(target != null && (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID()))) {
-				entityBeingTargeted = target;
+					if (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID())) {
+						setTarget(target);
+			}
+		}
 			}
 		}
 
@@ -135,6 +138,14 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		}
 	}
 
+	public void setTarget(ProjectileEntity target) {
+		this.entityBeingTargeted = target;
+
+		if (!world.isRemote) {
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(pos, target.getEntityId()));
+		}
+	}
+
 	/**
 	 * Deletes the targeted entity and creates a small explosion where it last was
 	 */
@@ -159,7 +170,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private ProjectileEntity getTarget() {
+	private ProjectileEntity getPotentialTarget() {
 		List<ProjectileEntity> potentialTargets = new ArrayList<>();
 		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
 
@@ -188,13 +199,12 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	/**
 	 * Returns the UUID of the player who shot the given Entity
 	 */
-	public UUID getShooterUUID(Entity entity) {
-		if(entity instanceof AbstractArrowEntity && ((AbstractArrowEntity) entity).func_234616_v_() != null) //getShooter
-			return ((AbstractArrowEntity) entity).func_234616_v_().getUniqueID(); //getShooter
-		else if(entity instanceof FireballEntity && ((FireballEntity) entity).func_234616_v_() != null) //getShooter
-			return ((FireballEntity) entity).func_234616_v_().getUniqueID(); //getShooter
-		else
+	public UUID getShooterUUID(ProjectileEntity projectile) {
+		if (projectile.func_234616_v_() != null) { //getShooter
+			return projectile.func_234616_v_().getUniqueID();
+		} else {
 			return null;
+	}
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {
