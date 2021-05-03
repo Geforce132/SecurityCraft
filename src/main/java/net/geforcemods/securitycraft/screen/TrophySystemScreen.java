@@ -27,10 +27,13 @@ import net.minecraftforge.client.gui.ScrollPanel;
 
 public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
-	private final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
+	private static final ResourceLocation FILTER_ENABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
+	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
+	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final TranslationTextComponent projectiles = ClientUtils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 	private final TranslationTextComponent moduleRequired = ClientUtils.localize("gui.securitycraft:trophy_system.moduleRequired");
 	private final TranslationTextComponent toggle = ClientUtils.localize("gui.securitycraft:trophy_system.toggle");
+	private final TranslationTextComponent moddedProjectiles = ClientUtils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
 	private TrophySystemTileEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
@@ -69,7 +72,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
@@ -97,7 +100,6 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
 			int slotIndex = (int)mouseY / slotHeight;
 
-			//highlight hovered slot
 			if(tileEntity.hasModule(ModuleType.SMART) && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				tileEntity.toggleFilter(slotIndex);
 				return true;
@@ -154,11 +156,15 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 			int i = 0;
 
-			//draw entry strings
+			//draw entry strings and indicators whether the filter is enabled
 			for(Entry<EntityType<?>,Boolean> projectile : tileEntity.getFilters().entrySet()) {
-				ITextComponent projectileName = projectile.getKey() == EntityType.PIG ? new TranslationTextComponent("gui.securitycraft:trophy_system.moddedProjectiles") : projectile.getKey().getName();
+				ITextComponent projectileName = projectile.getKey() == EntityType.PIG ? moddedProjectiles : projectile.getKey().getName();
+				int yStart = relativeY + (slotHeight * i);
 
-				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, relativeY + (slotHeight * i++), projectile.getValue() ? 0xC6C6C6 : 0x101010);
+				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, yStart, 0xC6C6C6);
+				minecraft.getTextureManager().bindTexture(projectile.getValue() ? FILTER_ENABLED_TEXTURE : FILTER_DISABLED_TEXTURE);
+				blit(matrix, left, yStart - 2, 0, 0, 12, 12, 12, 12);
+				i++;
 			}
 		}
 	}
