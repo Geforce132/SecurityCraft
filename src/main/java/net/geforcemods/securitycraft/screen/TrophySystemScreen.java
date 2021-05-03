@@ -76,6 +76,15 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 	}
 
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
+	{
+		if(projectileList != null)
+			projectileList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+
+		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
+
 	class ProjectileScrollList extends ScrollPanel
 	{
 		private final int slotHeight = 12, listLength = tileEntity.getFilterSize();
