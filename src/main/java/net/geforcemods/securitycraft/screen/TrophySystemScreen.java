@@ -122,7 +122,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		{
 			super.render(matrix, mouseX, mouseY, partialTicks);
 
-			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int mouseListY = (int)(mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
 
 			if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
@@ -135,7 +135,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		{
 			int baseY = top + border - (int)scrollDistance;
 			int slotBuffer = slotHeight - 4;
-			int mouseListY = (int)(mouseY - top + scrollDistance - border);
+			int mouseListY = (int)(mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
