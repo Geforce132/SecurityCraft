@@ -678,8 +678,8 @@
 	"gui.securitycraft:projector.horizontal": "Horizontal projection",
 	"gui.securitycraft:projector.block": "Insert block to project",
 	"gui.securitycraft:trophy_system.targetableProjectiles": "Targetable Projectiles:",
-	"gui.securitycraft:trophy_system.moduleRequired": "You need a Smart Module to toggle which projectile types can be targeted by this Trophy System.",
-	"gui.securitycraft:trophy_system.toggle": "Click to toggle the targeting of this projectile type",
+	"gui.securitycraft:trophy_system.moduleRequired": "You need to install a Smart Module to toggle which projectile types can be targeted by this Trophy System.",
+	"gui.securitycraft:trophy_system.toggle": "Click the entries in the list below to toggle the targeting of that specific projectile type.",
 	"gui.securitycraft:trophy_system.moddedProjectiles": "Modded Projectiles",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",

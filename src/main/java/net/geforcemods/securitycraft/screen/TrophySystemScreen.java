@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.gui.ScrollPanel;
@@ -30,10 +31,12 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation FILTER_ENABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
 	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
+	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png");
 	private final TranslationTextComponent projectiles = ClientUtils.localize("gui.securitycraft:trophy_system.targetableProjectiles");
 	private final TranslationTextComponent moduleRequired = ClientUtils.localize("gui.securitycraft:trophy_system.moduleRequired");
 	private final TranslationTextComponent toggle = ClientUtils.localize("gui.securitycraft:trophy_system.toggle");
 	private final TranslationTextComponent moddedProjectiles = ClientUtils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
+	private final boolean isSmart;
 	private TrophySystemTileEntity tileEntity;
 	private ProjectileScrollList projectileList;
 
@@ -41,6 +44,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		super(container, inv, name);
 
 		this.tileEntity = (TrophySystemTileEntity)container.te;
+		isSmart = tileEntity.hasModule(ModuleType.SMART);
 	}
 
 	@Override
@@ -63,6 +67,31 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 		if(projectileList != null)
 			projectileList.render(matrix, mouseX, mouseY, partialTicks);
+
+		float alpha = isSmart ? 1.0F : 0.5F;
+		int moduleLeft = guiLeft + 5;
+		int moduleRight = moduleLeft + 16;
+		int moduleTop = guiTop + 5;
+		int moduleBottom = moduleTop + 16;
+		Matrix4f m4f = matrix.getLast().getMatrix();
+		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+
+		RenderSystem.enableAlphaTest();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultAlphaFunc();
+		RenderSystem.defaultBlendFunc();
+		minecraft.getTextureManager().bindTexture(SMART_MODULE_TEXTURE);
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+		bufferBuilder.pos(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
+		bufferBuilder.pos(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();
+		bufferBuilder.pos(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 0).endVertex();
+		bufferBuilder.pos(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 0).endVertex();
+		bufferBuilder.finishDrawing();
+		WorldVertexBufferUploader.draw(bufferBuilder);
+		RenderSystem.disableBlend();
+
+		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
+			renderTooltip(matrix, isSmart ? toggle : moduleRequired, mouseX, mouseY);
 	}
 
 	@Override
@@ -109,25 +138,12 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
 			int slotIndex = (int)mouseY / slotHeight;
 
-			if(tileEntity.hasModule(ModuleType.SMART) && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
+			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				tileEntity.toggleFilter(slotIndex);
 				return true;
 			}
 
 			return false;
-		}
-
-		@Override
-		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
-		{
-			super.render(matrix, mouseX, mouseY, partialTicks);
-
-			int mouseListY = (int)(mouseY - top + scrollDistance - (border / 2));
-			int slotIndex = mouseListY / slotHeight;
-
-			if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
-				renderTooltip(matrix, tileEntity.hasModule(ModuleType.SMART) ? toggle : moduleRequired, mouseX, mouseY);
-			}
 		}
 
 		@Override
@@ -139,7 +155,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
-			if(tileEntity.hasModule(ModuleType.SMART) && mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+			if(isSmart && mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 				int min = left;
 				int max = entryRight - 6; //6 is the width of the scrollbar
 				int slotTop = baseY + slotIndex * slotHeight;

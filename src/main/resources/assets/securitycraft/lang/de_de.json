@@ -680,8 +680,8 @@
 	"gui.securitycraft:projector.horizontal": "Horizontale Projektion",
 	"gui.securitycraft:projector.block": "Block zum Projizieren einfügen",
 	"gui.securitycraft:trophy_system.targetableProjectiles": "Anvisierbare Projektile:",
-	"gui.securitycraft:trophy_system.moduleRequired": "Du brauchst ein schlaues Modul, um einzustellen, welche Projektilarten von diesem Trophy-System anvisierbar sind.",
-	"gui.securitycraft:trophy_system.toggle": "Klicke hier, um das Anvisieren von dieser Projektilart ein-/auszuschalten.",
+	"gui.securitycraft:trophy_system.moduleRequired": "Du musst ein ein schlaues Modul installieren, um einzustellen, welche Projektilarten von diesem Trophy-System anvisierbar sind.",
+	"gui.securitycraft:trophy_system.toggle": "Klicke die Einträge in der Liste unten, um das Anvisieren von der jeweiligen Projektilart ein-/auszuschalten.",
 	"gui.securitycraft:trophy_system.moddedProjectiles": "Gemoddete Projektile",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
