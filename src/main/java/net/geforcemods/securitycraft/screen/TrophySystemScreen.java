@@ -48,7 +48,14 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		this.tileEntity = (TrophySystemTileEntity)container.te;
 		isSmart = tileEntity.hasModule(ModuleType.SMART);
 		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
-		orderedFilterList.sort((e1, e2) -> e1.getName().getString().compareTo(e2.getName().getString()));
+		orderedFilterList.sort((e1, e2) -> {
+			//the entry for modded projectiles always shows at the bottom of the list
+			if(e1 == EntityType.PIG)
+				return 1;
+			else if(e2 == EntityType.PIG)
+				return -1;
+			else return e1.getName().getString().compareTo(e2.getName().getString());
+		});
 	}
 
 	@Override
