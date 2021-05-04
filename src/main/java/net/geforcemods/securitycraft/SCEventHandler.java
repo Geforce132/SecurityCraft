@@ -39,6 +39,7 @@ import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -60,17 +61,35 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
+	private static final String PREVIOUS_PLAYER_POS_NBT = "SecurityCraftPreviousPlayerPos";
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)event.getPlayer()), new SendTip());
+		PlayerEntity player = event.getPlayer();
+
+		if(player.getPersistentData().contains(PREVIOUS_PLAYER_POS_NBT))
+		{
+			BlockPos pos = BlockPos.fromLong(player.getPersistentData().getLong(PREVIOUS_PLAYER_POS_NBT));
+
+			player.getPersistentData().remove(PREVIOUS_PLAYER_POS_NBT);
+			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+		}
+
+		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SendTip());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getPlayer().getRidingEntity() instanceof SecurityCameraEntity)
-			event.getPlayer().getRidingEntity().remove();
+		PlayerEntity player = event.getPlayer();
+
+		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		{
+			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getRidingEntity()).getPreviousPlayerPos());
+
+			player.getRidingEntity().remove();
+			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.toLong());
+		}
 	}
 
 	@SubscribeEvent
