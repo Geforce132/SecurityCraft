@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
@@ -39,12 +40,15 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	private final boolean isSmart;
 	private TrophySystemTileEntity tileEntity;
 	private ProjectileScrollList projectileList;
+	private List<EntityType<?>> orderedFilterList;
 
 	public TrophySystemScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
 
 		this.tileEntity = (TrophySystemTileEntity)container.te;
 		isSmart = tileEntity.hasModule(ModuleType.SMART);
+		orderedFilterList = new ArrayList<>(tileEntity.getFilters().keySet());
+		orderedFilterList.sort((e1, e2) -> e1.getName().getString().compareTo(e2.getName().getString()));
 	}
 
 	@Override
@@ -139,7 +143,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 			int slotIndex = (int)mouseY / slotHeight;
 
 			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
-				tileEntity.toggleFilter(slotIndex);
+				tileEntity.toggleFilter(orderedFilterList.get(slotIndex));
 				return true;
 			}
 
@@ -182,12 +186,12 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 			int i = 0;
 
 			//draw entry strings and indicators whether the filter is enabled
-			for(Entry<EntityType<?>,Boolean> projectile : tileEntity.getFilters().entrySet()) {
-				ITextComponent projectileName = projectile.getKey() == EntityType.PIG ? moddedProjectiles : projectile.getKey().getName();
+			for(EntityType<?> projectileType : orderedFilterList) {
+				ITextComponent projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getName();
 				int yStart = relativeY + (slotHeight * i);
 
 				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, yStart, 0xC6C6C6);
-				minecraft.getTextureManager().bindTexture(projectile.getValue() ? FILTER_ENABLED_TEXTURE : FILTER_DISABLED_TEXTURE);
+				minecraft.getTextureManager().bindTexture(tileEntity.getFilter(projectileType) ? FILTER_ENABLED_TEXTURE : FILTER_DISABLED_TEXTURE);
 				blit(matrix, left, yStart - 2, 0, 0, 12, 12, 12, 12);
 				i++;
 			}
