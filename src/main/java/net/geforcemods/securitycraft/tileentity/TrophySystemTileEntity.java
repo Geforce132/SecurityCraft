@@ -51,7 +51,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
-		//when adding new types ONLY ADD TO THE END. anything else will break saved data. ordering is done in TrophySystemScreen
+		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
+		//ordering is done in TrophySystemScreen based on the user's current language
 		projectileFilter.put(SCContent.eTypeBullet, true);
 		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
 		projectileFilter.put(EntityType.ARROW, true);
@@ -234,10 +235,6 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	public boolean getFilter(EntityType<?> projectileType) {
 		return projectileFilter.get(projectileType);
-	}
-
-	public int getFilterSize() {
-		return projectileFilter.size();
 	}
 
 	public Map<EntityType<?>,Boolean> getFilters()

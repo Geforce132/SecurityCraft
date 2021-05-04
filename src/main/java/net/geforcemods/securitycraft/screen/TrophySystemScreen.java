@@ -38,9 +38,9 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	private final TranslationTextComponent toggle = ClientUtils.localize("gui.securitycraft:trophy_system.toggle");
 	private final TranslationTextComponent moddedProjectiles = ClientUtils.localize("gui.securitycraft:trophy_system.moddedProjectiles");
 	private final boolean isSmart;
+	private final List<EntityType<?>> orderedFilterList;
 	private TrophySystemTileEntity tileEntity;
 	private ProjectileScrollList projectileList;
-	private List<EntityType<?>> orderedFilterList;
 
 	public TrophySystemScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name) {
 		super(container, inv, name);
@@ -120,7 +120,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 	class ProjectileScrollList extends ScrollPanel
 	{
-		private final int slotHeight = 12, listLength = tileEntity.getFilterSize();
+		private final int slotHeight = 12, listLength = orderedFilterList.size();
 
 		public ProjectileScrollList(Minecraft client, int width, int height, int top, int left)
 		{
