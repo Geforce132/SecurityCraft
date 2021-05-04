@@ -38,6 +38,7 @@
 - Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
 - Fix: Newly placed Laser Blocks/Inventory Scanners don't synchronize with the Laser Block/Inventory Scanner they connected to
 - Fix: Motion Activated Light crash
+- Fix: Rejoining a server/world while being mounted to a camera teleports the player to that camera
 - Removed: Ability to take screenshots via middle mouse click while being mounted to a camera, as it is unneeded due to Minecraft's own screenshot feature
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------

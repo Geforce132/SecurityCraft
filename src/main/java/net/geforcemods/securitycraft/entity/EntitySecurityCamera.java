@@ -361,6 +361,11 @@ public class EntitySecurityCamera extends Entity{
 		}
 	}
 
+	public BlockPos getPreviousPlayerPos()
+	{
+		return new BlockPos(cameraUseX, cameraUseY, cameraUseZ);
+	}
+
 	@Override
 	protected void entityInit(){}
 

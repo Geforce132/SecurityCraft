@@ -83,6 +83,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
 
+	private static final String PREVIOUS_PLAYER_POS_NBT = "SecurityCraftPreviousPlayerPos";
 	public static HashMap<String, String> tipsWithLink = new HashMap<>();
 
 	static {
@@ -93,28 +94,45 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		if(!ConfigHandler.sayThanksMessage)
-			return;
+		EntityPlayer player = event.player;
 
-		String tipKey = getRandomTip();
-		ITextComponent message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] ")
-				.appendSibling(ClientUtils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
-				.appendSibling(new TextComponentString(" "))
-				.appendSibling(ClientUtils.localize("messages.securitycraft:tip"))
-				.appendSibling(new TextComponentString(" "))
-				.appendSibling(ClientUtils.localize(tipKey));
+		if(player.getEntityData().hasKey(PREVIOUS_PLAYER_POS_NBT))
+		{
+			BlockPos pos = BlockPos.fromLong(player.getEntityData().getLong(PREVIOUS_PLAYER_POS_NBT));
 
-		if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
-			message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+			player.getEntityData().removeTag(PREVIOUS_PLAYER_POS_NBT);
+			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+		}
 
-		event.player.sendMessage(message);
+		if(ConfigHandler.sayThanksMessage)
+		{
+			String tipKey = getRandomTip();
+			ITextComponent message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] ")
+					.appendSibling(ClientUtils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
+					.appendSibling(new TextComponentString(" "))
+					.appendSibling(ClientUtils.localize("messages.securitycraft:tip"))
+					.appendSibling(new TextComponentString(" "))
+					.appendSibling(ClientUtils.localize(tipKey));
+
+			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
+				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
+
+			player.sendMessage(message);
+		}
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(event.player) && event.player.getRidingEntity() instanceof EntitySecurityCamera)
-			event.player.getRidingEntity().setDead();
+		EntityPlayer player = event.player;
+
+		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		{
+			BlockPos pos = new BlockPos(((EntitySecurityCamera)player.getRidingEntity()).getPreviousPlayerPos());
+
+			player.getRidingEntity().setDead();
+			player.getEntityData().setLong(PREVIOUS_PLAYER_POS_NBT, pos.toLong());
+		}
 	}
 
 	@SubscribeEvent
