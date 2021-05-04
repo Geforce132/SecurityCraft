@@ -349,6 +349,11 @@ public class SecurityCameraEntity extends Entity{
 		livingEntity.rotationPitch = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
 		livingEntity.prevRotationYaw = livingEntity.rotationYaw;
 		livingEntity.prevRotationPitch = livingEntity.rotationPitch;
+		return getPreviousPlayerPos();
+	}
+
+	public Vector3d getPreviousPlayerPos()
+	{
 		return new Vector3d(cameraUseX, cameraUseY, cameraUseZ);
 	}
 
