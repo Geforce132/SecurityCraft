@@ -29,6 +29,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
@@ -131,7 +132,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
-		if (tag.contains("projectiles", 10)) {
+		if (tag.contains("projectiles", NBT.TAG_COMPOUND)) {
 			CompoundNBT projectilesNBT = tag.getCompound("projectiles");
 			int i = 0;
 
