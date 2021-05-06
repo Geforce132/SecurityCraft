@@ -131,12 +131,14 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public void read(BlockState state, CompoundNBT tag) {
 		super.read(state, tag);
 
-		CompoundNBT projectilesNBT = tag.getCompound("projectiles");
-		int i = 0;
+		if (tag.contains("projectiles", 10)) {
+			CompoundNBT projectilesNBT = tag.getCompound("projectiles");
+			int i = 0;
 
-		for (EntityType<?> projectileType : projectileFilter.keySet()) {
-			projectileFilter.put(projectileType, projectilesNBT.getBoolean("projectile" + i));
-			i++;
+			for (EntityType<?> projectileType : projectileFilter.keySet()) {
+				projectileFilter.put(projectileType, projectilesNBT.getBoolean("projectile" + i));
+				i++;
+			}
 		}
 	}
 
