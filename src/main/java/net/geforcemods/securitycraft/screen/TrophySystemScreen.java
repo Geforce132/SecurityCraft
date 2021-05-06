@@ -166,7 +166,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 			int slotIndex = mouseListY / slotHeight;
 
 			//highlight hovered slot
-			if(isSmart && mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
+			if(isSmart && mouseX >= left && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom) {
 				int min = left;
 				int max = entryRight - 6; //6 is the width of the scrollbar
 				int slotTop = baseY + slotIndex * slotHeight;
