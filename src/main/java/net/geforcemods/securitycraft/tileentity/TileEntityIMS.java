@@ -68,8 +68,8 @@ public class TileEntityIMS extends CustomizableSCTE {
 			}
 
 			if (target != null) {
-				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
-				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
+				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
+				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
 				double accelerationX = target.posX - pos.getX();
 				double accelerationY = target.getEntityBoundingBox().minY + target.height / 2.0F - pos.getY() - launchHeight;
