@@ -1,23 +1,12 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Maps;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard1Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard2Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard3Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard4Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard5Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleLimitedUseKeycardCondition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleMinesCondition;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.block.Blocks;
@@ -90,12 +79,14 @@ public class RecipeGenerator extends RecipeProvider
 		.key('R', SCContent.REINFORCED_REDSTONE_BLOCK.get())
 		.addCriterion("has_redstone_block", hasItem(Tags.Items.STORAGE_BLOCKS_REDSTONE))
 		.build(consumer);
-		addShapedConditionalRecipe(consumer, Arrays.asList(" P ", "IGI"), //bouncing betty
-				LinkedMapBuilder.create()
-				.put('P', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)
-				.put('I', Tags.Items.INGOTS_IRON)
-				.put('G', Tags.Items.GUNPOWDER),
-				SCContent.BOUNCING_BETTY.get(), 1, hasItem(Tags.Items.INGOTS_IRON), ToggleMinesCondition.INSTANCE);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.BOUNCING_BETTY.get())
+		.patternLine(" P ")
+		.patternLine("IGI")
+		.key('P', Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE)
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('G', Tags.Items.GUNPOWDER)
+		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.BRIEFCASE.get())
 		.patternLine("SSS")
 		.patternLine("ICI")
@@ -155,14 +146,17 @@ public class RecipeGenerator extends RecipeProvider
 		.key('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
-		addShapedConditionalRecipe(consumer, Arrays.asList("HSH", "SBS", "RGR"), //claymore
-				LinkedMapBuilder.create()
-				.put('H', Blocks.TRIPWIRE_HOOK)
-				.put('S', Tags.Items.STRING)
-				.put('B', SCContent.BOUNCING_BETTY.get())
-				.put('R', Tags.Items.DUSTS_REDSTONE)
-				.put('G', Tags.Items.GUNPOWDER),
-				SCContent.CLAYMORE.get(), 1, hasItem(Tags.Items.DUSTS_REDSTONE), ToggleMinesCondition.INSTANCE);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.CLAYMORE.get())
+		.patternLine("HSH")
+		.patternLine("SBS")
+		.patternLine("RGR")
+		.key('H', Blocks.TRIPWIRE_HOOK)
+		.key('S', Tags.Items.STRING)
+		.key('B', SCContent.BOUNCING_BETTY.get())
+		.key('R', Tags.Items.DUSTS_REDSTONE)
+		.key('G', Tags.Items.GUNPOWDER)
+		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.CODEBREAKER.get())
 		.patternLine("DTD")
 		.patternLine("GSG")
@@ -205,12 +199,15 @@ public class RecipeGenerator extends RecipeProvider
 		.key('F', ItemTags.WOODEN_FENCES)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
-		addShapedConditionalRecipe(consumer, Arrays.asList("BPB", " I ", "B B"), //intelligent munitions system
-				LinkedMapBuilder.create()
-				.put('B', SCContent.BOUNCING_BETTY.get())
-				.put('P', SCContent.PORTABLE_RADAR.get())
-				.put('I', SCContent.REINFORCED_IRON_BLOCK.get()),
-				SCContent.IMS.get(), 1, hasItem(SCContent.PORTABLE_RADAR.get()), ToggleMinesCondition.INSTANCE);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.IMS.get())
+		.patternLine("BPB")
+		.patternLine(" I ")
+		.patternLine("B B")
+		.key('B', SCContent.BOUNCING_BETTY.get())
+		.key('P', SCContent.PORTABLE_RADAR.get())
+		.key('I', SCContent.REINFORCED_IRON_BLOCK.get())
+		.addCriterion("has_radar", hasItem(SCContent.PORTABLE_RADAR.get()))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.INVENTORY_SCANNER.get())
 		.patternLine("SSS")
 		.patternLine("SLS")
@@ -255,11 +252,13 @@ public class RecipeGenerator extends RecipeProvider
 		.addCriterion("has_stone", hasItem(Tags.Items.STONE))
 		.build(consumer);
 		//k you can change again :)
-		addShapedConditionalRecipe(consumer, Arrays.asList(" I ", "IGI"), //mine
-				LinkedMapBuilder.create()
-				.put('I', Tags.Items.INGOTS_IRON)
-				.put('G', Tags.Items.GUNPOWDER),
-				SCContent.MINE.get(), 3, hasItem(Tags.Items.INGOTS_IRON), ToggleMinesCondition.INSTANCE);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.MINE.get(), 3)
+		.patternLine(" I ")
+		.patternLine("IGI")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('G', Tags.Items.GUNPOWDER)
+		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.MOTION_ACTIVATED_LIGHT.get())
 		.patternLine("L")
 		.patternLine("R")
@@ -427,12 +426,15 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', Tags.Items.RODS_WOODEN)
 		.addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE))
 		.build(consumer);
-		addShapedConditionalRecipe(consumer, Arrays.asList("I I", "ISI", "IGI"), //track mine
-				LinkedMapBuilder.create()
-				.put('I', Tags.Items.INGOTS_IRON)
-				.put('S', Tags.Items.RODS_WOODEN)
-				.put('G', Tags.Items.GUNPOWDER),
-				SCContent.TRACK_MINE.get(), 4, hasItem(Tags.Items.INGOTS_IRON), ToggleMinesCondition.INSTANCE);
+		ShapedRecipeBuilder.shapedRecipe(SCContent.TRACK_MINE.get(), 4)
+		.patternLine("I I")
+		.patternLine("ISI")
+		.patternLine("IGI")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('S', Tags.Items.RODS_WOODEN)
+		.key('G', Tags.Items.GUNPOWDER)
+		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
+		.build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(SCContent.TROPHY_SYSTEM.get())
 		.patternLine(" T ")
 		.patternLine(" B ")
@@ -640,12 +642,12 @@ public class RecipeGenerator extends RecipeProvider
 		addColoredWoolRecipe(consumer, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL.get());
 		addCompressingRecipe(consumer, SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
 		addCompressingRecipe(consumer, SCContent.REINFORCED_PACKED_ICE.get(), SCContent.REINFORCED_BLUE_ICE.get());
-		addKeycardRecipe(consumer, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get(), ToggleKeycard1Condition.INSTANCE);
-		addKeycardRecipe(consumer, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get(), ToggleKeycard2Condition.INSTANCE);
-		addKeycardRecipe(consumer, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get(), ToggleKeycard3Condition.INSTANCE);
-		addKeycardRecipe(consumer, Tags.Items.DYES_MAGENTA, SCContent.KEYCARD_LVL_4.get(), ToggleKeycard4Condition.INSTANCE);
-		addKeycardRecipe(consumer, Tags.Items.DYES_PURPLE, SCContent.KEYCARD_LVL_5.get(), ToggleKeycard5Condition.INSTANCE);
-		addKeycardRecipe(consumer, Tags.Items.GEMS_LAPIS, SCContent.LIMITED_USE_KEYCARD.get(), ToggleLimitedUseKeycardCondition.INSTANCE);
+		addKeycardRecipe(consumer, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1.get());
+		addKeycardRecipe(consumer, Tags.Items.INGOTS_BRICK, SCContent.KEYCARD_LVL_2.get());
+		addKeycardRecipe(consumer, Tags.Items.INGOTS_NETHER_BRICK, SCContent.KEYCARD_LVL_3.get());
+		addKeycardRecipe(consumer, Tags.Items.DYES_MAGENTA, SCContent.KEYCARD_LVL_4.get());
+		addKeycardRecipe(consumer, Tags.Items.DYES_PURPLE, SCContent.KEYCARD_LVL_5.get());
+		addKeycardRecipe(consumer, Tags.Items.GEMS_LAPIS, SCContent.LIMITED_USE_KEYCARD.get());
 		addModuleRecipe(consumer, Items.INK_SAC, SCContent.BLACKLIST_MODULE.get());
 		addModuleRecipe(consumer, Items.PAINTING, SCContent.DISGUISE_MODULE.get());
 		addModuleRecipe(consumer, Tags.Items.ARROWS, SCContent.HARMING_MODULE.get());
@@ -942,7 +944,12 @@ public class RecipeGenerator extends RecipeProvider
 
 	protected final void addBlockMineRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
 	{
-		addShapelessConditionalRecipe(consumer, result, 1, "securitycraft:block_mines", Arrays.asList(input, SCContent.MINE.get()), hasItem(SCContent.MINE.get()), ToggleMinesCondition.INSTANCE);
+		ShapelessRecipeBuilder.shapelessRecipe(result)
+		.setGroup("securitycraft:block_mines")
+		.addIngredient(input)
+		.addIngredient(SCContent.MINE.get())
+		.addCriterion("has_mine", hasItem(SCContent.MINE.get()))
+		.build(consumer);
 	}
 
 	protected final void addButtonRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider input, IItemProvider result)
@@ -995,13 +1002,16 @@ public class RecipeGenerator extends RecipeProvider
 		.build(consumer);
 	}
 
-	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result, ICondition condition)
+	protected final void addKeycardRecipe(Consumer<IFinishedRecipe> consumer, Tag<Item> specialIngredient, IItemProvider result)
 	{
-		addShapedConditionalRecipe(consumer, Arrays.asList("III", "SSS"),
-				LinkedMapBuilder.create()
-				.put('I', Ingredient.fromTag(Tags.Items.INGOTS_IRON))
-				.put('S', Ingredient.fromTag(specialIngredient)),
-				result, 1, "securitycraft:keycards", hasItem(Tags.Items.INGOTS_IRON), condition);
+		ShapedRecipeBuilder.shapedRecipe(result)
+		.setGroup("securitycraft:keycards")
+		.patternLine("III")
+		.patternLine("SSS")
+		.key('I', Tags.Items.INGOTS_IRON)
+		.key('S', specialIngredient)
+		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
+		.build(consumer);
 	}
 
 	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result)
@@ -1097,24 +1107,6 @@ public class RecipeGenerator extends RecipeProvider
 		.addIngredient(SCContent.RETINAL_SCANNER.get())
 		.addCriterion("has_sign", hasItem(ItemTags.SIGNS))
 		.build(consumer);
-	}
-
-	protected final void addShapedConditionalRecipe(Consumer<IFinishedRecipe> consumer, List<String> pattern, LinkedMapBuilder key, IItemProvider result, int amount, CriterionInstance criterion, ICondition condition)
-	{
-		addShapedConditionalRecipe(consumer, pattern, key, result, amount, "", criterion, condition);
-	}
-
-	protected final void addShapedConditionalRecipe(Consumer<IFinishedRecipe> consumer, List<String> pattern, LinkedMapBuilder key, IItemProvider result, int amount, String group, CriterionInstance criterion, ICondition condition)
-	{
-		ShapedRecipeBuilder.Result recipe;
-		Item resultItem = result.asItem();
-		ResourceLocation id = resultItem.getRegistryName();
-
-		recipe = new ShapedRecipeBuilder(Items.AIR, 0).new Result(id,
-				resultItem, amount, group, pattern, key.build(),
-				Advancement.Builder.builder().withCriterion("has_item", criterion),
-				new ResourceLocation(id.getNamespace(), "recipes/" + resultItem.getGroup().getPath() + "/" + id.getPath()));
-		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 	}
 
 	protected final void addShapelessConditionalRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider result, int amount, String group, List<IItemProvider> ingredients, CriterionInstance criterion, ICondition condition)
@@ -1229,41 +1221,6 @@ public class RecipeGenerator extends RecipeProvider
 		public CustomNBTIngredient(ItemStack stack)
 		{
 			super(stack);
-		}
-	}
-
-	private static class LinkedMapBuilder
-	{
-		private Map<Character,Ingredient> map = Maps.newLinkedHashMap();
-
-		private LinkedMapBuilder() {}
-
-		public static LinkedMapBuilder create()
-		{
-			return new LinkedMapBuilder();
-		}
-
-		public LinkedMapBuilder put(Character key, Ingredient value)
-		{
-			map.put(key, value);
-			return this;
-		}
-
-		public LinkedMapBuilder put(Character key, IItemProvider value)
-		{
-			map.put(key, Ingredient.fromItems(value));
-			return this;
-		}
-
-		public LinkedMapBuilder put(Character key, Tag<Item> value)
-		{
-			map.put(key, Ingredient.fromTag(value));
-			return this;
-		}
-
-		public Map<Character,Ingredient> build()
-		{
-			return map;
 		}
 	}
 }

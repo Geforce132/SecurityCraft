@@ -40,7 +40,9 @@
 - Fix: Newly placed Laser Blocks/Inventory Scanners don't synchronize with the Laser Block/Inventory Scanner they connected to
 - Fix: Rejoining a server/world while being mounted to a camera teleports the player to that camera
 - Fix: The fourth I.M.S. Bomb doesn't get shot properly
+- Fix: The SecurityCraft Manual does not properly reflect recipes that have been disabled via datapacks/3rd-party mods
 - Removed: Ability to take screenshots via middle mouse click while being mounted to a camera, as it is unneeded due to Minecraft's own screenshot feature
+- Removed: All configuration values that disable recipes. Use datapacks or 3rd-party mods to disable recipes instead
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
 
