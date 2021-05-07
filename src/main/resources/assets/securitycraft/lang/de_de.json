@@ -465,8 +465,9 @@
 	"item.securitycraft.crystal_quartz_item": "Kristallquartz",
 	"item.securitycraft.keypad_door_item": "Nummernschloss-Tür",
 
+	"entity.securitycraft.imsbomb": "I.M.S.-Bombe",
 	"entity.securitycraft.sentry": "Geschütz",
-	"entity.securitycraft.bullet": "Kugel",
+	"entity.securitycraft.bullet": "Geschützkugel",
 
 	"death.attack.securitycraft.laser": "%s wurde von einem Laser zerschnitten",
 	"death.attack.securitycraft.laser.player": "%1$s wurde während des Kampfes mit %2$s von einem Laser zerschnitten",
@@ -678,6 +679,10 @@
 	"gui.securitycraft:projector.vertical": "Vertikale Projektion",
 	"gui.securitycraft:projector.horizontal": "Horizontale Projektion",
 	"gui.securitycraft:projector.block": "Block zum Projizieren einfügen",
+	"gui.securitycraft:trophy_system.targetableProjectiles": "Anvisierbare Projektile:",
+	"gui.securitycraft:trophy_system.moduleRequired": "Du musst ein ein schlaues Modul installieren, um einzustellen, welche Projektilarten von diesem Trophy-System anvisierbar sind.",
+	"gui.securitycraft:trophy_system.toggle": "Klicke die Einträge in der Liste unten, um das Anvisieren der jeweiligen Projektilart ein-/auszuschalten.",
+	"gui.securitycraft:trophy_system.moddedProjectiles": "Gemoddete Projektile",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
@@ -878,6 +883,7 @@
 	"module.securitycraft.keypad_door.whitelist_module.description": "Ein Zulassungslisten-Modul in einer Nummernschloss-Tür erlaubt zugelassenen Spielern, die Tür zu aktivieren, ohne den Code zu kennen.",
 	"module.securitycraft.keypad_door.blacklist_module.description": "Ein Sperrlisten-Modul in einer Nummernschloss-Tür verhindert, dass gesperrte Spieler mit der Tür interagieren können.",
 	"module.securitycraft.username_logger.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die Spieler auf der Liste protokolliert werden.",
+	"module.securitycraft.trophy_system.smart_module.description": "Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",

@@ -772,6 +772,8 @@ public class SCContent
 	public static ContainerType<GenericTEContainer> cTypeKeycardSetup;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
 	public static ContainerType<GenericTEContainer> cTypeKeyChanger;
+	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")
+	public static ContainerType<GenericTEContainer> cTypeTrophySystem;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static ContainerType<BlockPocketManagerContainer> cTypeBlockPocketManager;
 
