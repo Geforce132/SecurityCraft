@@ -605,7 +605,7 @@ public class SCContent
 	@Reinforced public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BUTTON = BLOCKS.register("reinforced_polished_blackstone_button", () -> new ReinforcedButtonBlock(false, prop(Material.ROCK).doesNotBlockMovement(), Blocks.POLISHED_BLACKSTONE_BUTTON));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(Material.IRON).sound(SoundType.METAL), Blocks.REDSTONE_BLOCK));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.IRON, MaterialColor.STONE).sound(SoundType.METAL).notSolid()));
-	@HasManualPage @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
+	@HasManualPage(hasRecipeDescription=true) @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
 
 	//misc
