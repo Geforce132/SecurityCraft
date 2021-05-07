@@ -120,7 +120,7 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage == -1)
 			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || SCManualItem.PAGES.get(currentPage).isRecipeDisabled())
+		else if(recipe != null && recipe.size() > 0)
 			minecraft.getTextureManager().bindTexture(infoBookTexture);
 		else
 			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -362,7 +362,18 @@ public class SCManualScreen extends Screen {
 		TranslationTextComponent helpInfo = page.getHelpInfo();
 		boolean reinforcedPage = helpInfo.getKey().equals("help.securitycraft:reinforced.info") || helpInfo.getKey().contains("reinforced_hopper");
 
-		if(recipe != null && !reinforcedPage)
+		if(page.hasRecipeDescription())
+		{
+			String name = page.getItem().getRegistryName().getPath();
+
+			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
+		}
+		else if(reinforcedPage)
+		{
+			recipe = null;
+			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced")));
+		}
+		else if(recipe != null)
 		{
 			for(int i = 0; i < 3; i++)
 			{
@@ -372,19 +383,8 @@ public class SCManualScreen extends Screen {
 				}
 			}
 		}
-		else if(page.isRecipeDisabled())
-			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
-		else if(reinforcedPage)
-		{
-			recipe = null;
-			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced")));
-		}
 		else
-		{
-			String name = page.getItem().getRegistryName().getPath();
-
-			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name)));
-		}
+			hoverCheckers.add(new TextHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.disabled")));
 
 		Item item = page.getItem();
 

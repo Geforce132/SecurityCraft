@@ -25,13 +25,6 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard1Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard2Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard3Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard4Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleKeycard5Condition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleLimitedUseKeycardCondition;
-import net.geforcemods.securitycraft.misc.conditions.ToggleMinesCondition;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.OpenSRATGui;
@@ -101,14 +94,12 @@ import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -314,18 +305,6 @@ public class RegistrationHandler
 		{
 			event.getRegistry().register(SCSounds.values()[i].event);
 		}
-	}
-
-	@SubscribeEvent
-	public static void registerRecipeSerializers(RegistryEvent.Register<IRecipeSerializer<?>> event)
-	{
-		CraftingHelper.register(ToggleKeycard1Condition.Serializer.INSTANCE);
-		CraftingHelper.register(ToggleKeycard2Condition.Serializer.INSTANCE);
-		CraftingHelper.register(ToggleKeycard3Condition.Serializer.INSTANCE);
-		CraftingHelper.register(ToggleKeycard4Condition.Serializer.INSTANCE);
-		CraftingHelper.register(ToggleKeycard5Condition.Serializer.INSTANCE);
-		CraftingHelper.register(ToggleLimitedUseKeycardCondition.Serializer.INSTANCE);
-		CraftingHelper.register(ToggleMinesCondition.Serializer.INSTANCE);
 	}
 
 	@SubscribeEvent

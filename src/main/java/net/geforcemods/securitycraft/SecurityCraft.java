@@ -143,10 +143,14 @@ public class SecurityCraft {
 					else
 						key = hmp.specialInfoKey();
 
+
 					SCManualPage page = new SCManualPage(item, new TranslationTextComponent(key));
 
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());
+
+					if(hmp.hasRecipeDescription())
+						page.setHasRecipeDescription(true);
 
 					SCManualItem.PAGES.add(page);
 				}
