@@ -8,9 +8,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -63,10 +65,15 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	private void addPlayer(PlayerEntity player) {
+		String playerName = player.getName().getFormattedText();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName().getFormattedText(), timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
 		{
+			//ignore whitelisted players
+			if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(getModule(ModuleType.WHITELIST)).contains(playerName.toLowerCase()))
+				return;
+
 			for(int i = 0; i < players.length; i++)
 			{
 				if(players[i] == null || players[i].equals("")){
@@ -138,6 +145,12 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	public ITextComponent getDisplayName()
 	{
 		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getTranslationKey());
+	}
+
+	@Override
+	public ModuleType[] acceptedModules()
+	{
+		return new ModuleType[]{ModuleType.DISGUISE, ModuleType.WHITELIST};
 	}
 
 	@Override
