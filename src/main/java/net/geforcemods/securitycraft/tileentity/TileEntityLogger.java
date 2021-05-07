@@ -6,10 +6,12 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,10 +53,15 @@ public class TileEntityLogger extends TileEntityDisguisable {
 	}
 
 	private void addPlayer(EntityPlayer player) {
+		String playerName = player.getName();
 		long timestamp = System.currentTimeMillis();
 
-		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(player.getName(), timestamp))
+		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
 		{
+			//ignore whitelisted players
+			if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.WHITELIST)).contains(playerName.toLowerCase()))
+				return;
+
 			for(int i = 0; i < players.length; i++)
 			{
 				if(players[i] == null || players[i].equals("")){
@@ -114,6 +121,12 @@ public class TileEntityLogger extends TileEntityDisguisable {
 		}
 		else
 			SecurityCraft.network.sendToAll(new ClearLoggerClient(pos));
+	}
+
+	@Override
+	public EnumModuleType[] acceptedModules()
+	{
+		return new EnumModuleType[]{EnumModuleType.DISGUISE, EnumModuleType.WHITELIST};
 	}
 
 	@Override
