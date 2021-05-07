@@ -197,10 +197,10 @@ public class SCContent
 	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(Material.GLASS)));
 	@HasManualPage @RegisterItemBlock(SCItemGroup.DECORATION) public static final RegistryObject<Block> IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new IronFenceBlock(prop(Material.IRON, MaterialColor.IRON).sound(SoundType.METAL)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(prop(Material.IRON).sound(SoundType.METAL)));
-	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(prop(Material.IRON)));
-	@HasManualPage public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
+	@HasManualPage(hasRecipeDescription=true) @RegisterItemBlock public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(prop(Material.IRON)));
+	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.IRON).sound(SoundType.METAL)));
-	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	@HasManualPage(hasRecipeDescription=true) @RegisterItemBlock public static final RegistryObject<Block> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.IRON).sound(SoundType.METAL)));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(prop(Material.IRON).tickRandomly().sound(SoundType.METAL)));
 	public static final RegistryObject<Block> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop()));
 	@HasManualPage @RegisterItemBlock public static final RegistryObject<Block> MOTION_ACTIVATED_LIGHT = BLOCKS.register("motion_activated_light", () -> new MotionActivatedLightBlock(prop(Material.GLASS).sound(SoundType.GLASS)));
@@ -543,7 +543,7 @@ public class SCContent
 	@Reinforced public static final RegistryObject<Block> REINFORCED_DARK_OAK_BUTTON = BLOCKS.register("reinforced_dark_oak_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD).doesNotBlockMovement().sound(SoundType.WOOD), Blocks.DARK_OAK_BUTTON));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(Material.IRON).sound(SoundType.METAL), Blocks.REDSTONE_BLOCK));
 	@HasManualPage @Reinforced public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.IRON, MaterialColor.STONE).sound(SoundType.METAL)));
-	@HasManualPage @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.IRON).sound(SoundType.METAL)));
+	@HasManualPage(hasRecipeDescription=true) @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.IRON).sound(SoundType.METAL)));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
 	//misc
 	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CHISELED_CRYSTAL_QUARTZ));
@@ -555,7 +555,7 @@ public class SCContent
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedGrassPathBlock(prop(Material.EARTH).sound(SoundType.PLANT), Blocks.GRASS_PATH));
 
 	//items
-	@HasManualPage public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1).maxStackSize(1)));
+	@HasManualPage(hasRecipeDescription=true) public static final RegistryObject<Item> ADMIN_TOOL = ITEMS.register("admin_tool", () -> new AdminToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1).defaultMaxDamage(3)));

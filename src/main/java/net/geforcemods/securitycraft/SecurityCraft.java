@@ -145,6 +145,9 @@ public class SecurityCraft {
 					if(!hmp.designedBy().isEmpty())
 						page.setDesignedBy(hmp.designedBy());
 
+					if(hmp.hasRecipeDescription())
+						page.setHasRecipeDescription(true);
+
 					SCManualItem.PAGES.add(page);
 				}
 			}

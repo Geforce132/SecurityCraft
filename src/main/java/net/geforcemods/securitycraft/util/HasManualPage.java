@@ -24,4 +24,9 @@ public @interface HasManualPage
 	 * @return The author who designed this block/item
 	 */
 	String designedBy() default "";
+
+	/**
+	 * @return Whether this page displays information instead of a recipe
+	 */
+	boolean hasRecipeDescription() default false;
 }

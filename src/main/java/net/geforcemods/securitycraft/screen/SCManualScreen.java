@@ -19,8 +19,8 @@ import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
+import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -112,7 +112,7 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage == -1)
 			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
-		else if(recipe != null || SCManualItem.PAGES.get(currentPage).isRecipeDisabled())
+		else if(recipe != null && recipe.size() > 0)
 			minecraft.getTextureManager().bindTexture(infoBookTexture);
 		else
 			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
@@ -351,7 +351,18 @@ public class SCManualScreen extends Screen {
 		String helpInfo = page.getHelpInfo();
 		boolean reinforcedPage = helpInfo.equals("help.securitycraft:reinforced.info") || helpInfo.contains("reinforced_hopper");
 
-		if(recipe != null && !reinforcedPage)
+		if(page.hasRecipeDescription())
+		{
+			String name = page.getItem().getRegistryName().getPath();
+
+			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name).getFormattedText()));
+		}
+		else if(reinforcedPage)
+		{
+			recipe = null;
+			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced").getFormattedText()));
+		}
+		else if(recipe != null)
 		{
 			for(int i = 0; i < 3; i++)
 			{
@@ -361,19 +372,8 @@ public class SCManualScreen extends Screen {
 				}
 			}
 		}
-		else if(page.isRecipeDisabled())
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.disabled").getFormattedText()));
-		else if(reinforcedPage)
-		{
-			recipe = null;
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced").getFormattedText()));
-		}
 		else
-		{
-			String name = page.getItem().getRegistryName().getPath();
-
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name).getFormattedText()));
-		}
+			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.disabled").getFormattedText()));
 
 		Item item = page.getItem();
 
