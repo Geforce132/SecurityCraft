@@ -814,6 +814,7 @@
 	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Adding an allowlist module to a reinforced hopper will allow players on the list to access the hopper's contents and extract out of their own password-protected chests/furnaces/... using this hopper.",
 	"module.securitycraft.keypad_door.whitelist_module.description": "Adding an allowlist module to a keypad door will allow players on the list to use the block without knowing the code.",
 	"module.securitycraft.keypad_door.blacklist_module.description": "Adding a denylist module to a keypad door will ban players on the list from interacting with the block.",
+	"module.securitycraft.username_logger.whitelist_module.description": "Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",

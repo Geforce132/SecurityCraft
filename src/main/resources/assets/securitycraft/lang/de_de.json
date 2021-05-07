@@ -814,6 +814,7 @@
 	"module.securitycraft.reinforced_hopper.whitelist_module.description": "Ein Zulassungslisten-Modul in einem verstärkten Trichter erlaubt zugelassenen Spielern, den Trichter zu benutzen, sowie ihn zum Extrahieren von Items aus ihren passwortgesicherten Truhen/Öfen/... zu verwenden.",
 	"module.securitycraft.keypad_door.whitelist_module.description": "Ein Zulassungslisten-Modul in einer Nummernschloss-Tür erlaubt zugelassenen Spielern, die Tür zu aktivieren, ohne den Code zu kennen.",
 	"module.securitycraft.keypad_door.blacklist_module.description": "Ein Sperrlisten-Modul in einer Nummernschloss-Tür verhindert, dass gesperrte Spieler mit der Tür interagieren können.",
+	"module.securitycraft.username_logger.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die Spieler auf der Liste protokolliert werden.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: #",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",

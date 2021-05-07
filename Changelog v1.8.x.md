@@ -5,9 +5,10 @@
 - New: Client configuration option "reinforced_block_tint". If the server does not force the reinforced block tint, this value will be used
 - New: The Codebreaker will now send a message when it failed to break a code
 - New: The Admin Tool will now send a message when used while it has been disabled in the config
-- New: Players that have been added to a Whitelist- or Blacklist Module will now be visible in a list in the GUI
+- New: Players that have been added to an Allow- or Denylist Module will now be visible in a list in the GUI
 - New: Changing the owner of a block will now drop contained modules and storage module inventory
 - New: Configuration option "mineExplosionsBreakBlocks" to control whether explosions of mines break blocks
+- New: The Username Logger now supports the Allowlist Module, making it possible to prevent players on the list from being logged
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
 - Change: The Whitelist Module has been renamed to "Allowlist Module" to be more clear about its function
