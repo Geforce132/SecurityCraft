@@ -77,7 +77,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorContainer> {
 		projectionOffsetSlider.setFGColor(14737632);
 		hoverCheckers[id++] = new TextHoverChecker(projectionOffsetSlider, ClientUtils.localize("gui.securitycraft:projector.offset.description"));
 
-		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, b -> {
+		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
 			tileEntity.setHorizontal(!tileEntity.isHorizontal());
 			projectionRangeSlider.updateSlider();
 			SecurityCraft.channel.sendToServer(new SyncProjector(tileEntity.getPos(), tileEntity.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));

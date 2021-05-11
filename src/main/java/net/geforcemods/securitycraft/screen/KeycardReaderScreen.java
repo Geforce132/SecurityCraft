@@ -1,0 +1,158 @@
+package net.geforcemods.securitycraft.screen;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
+import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
+
+@OnlyIn(Dist.CLIENT)
+public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
+{
+	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
+	private static final ResourceLocation CHECKMARK_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
+	private static final ResourceLocation CROSS_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
+	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
+	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
+	private static final ITextComponent EQUALS = new StringTextComponent("=");
+	private static final ITextComponent GREATER_THAN_EQUALS = new StringTextComponent(">=");
+	private final ITextComponent blockName = ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey());
+	private final ITextComponent inventoryText = ClientUtils.localize("container.inventory");
+	private final ITextComponent keycardLevelsText = ClientUtils.localize("gui.securitycraft:keycard_reader.keycard_levels");
+	private final ITextComponent linkText = ClientUtils.localize("gui.securitycraft:keycard_reader.link");
+	private boolean isSmart;
+	private boolean isExactLevel = true;
+	private int signature;
+	private TranslationTextComponent signatureText;
+	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
+	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
+
+	public KeycardReaderScreen(KeycardReaderContainer container, PlayerInventory inv, ITextComponent name)
+	{
+		super(container, inv, name);
+
+		isSmart = container.te.hasModule(ModuleType.SMART);
+		ySize = 249;
+	}
+
+	@Override
+	public void init()
+	{
+		super.init();
+
+		int buttonHeight = 13;
+		int buttonY = guiTop + 35;
+
+		for(int i = 0; i < 5; i++)
+		{
+			toggleButtons[i] = addButton(new TogglePictureButton(i, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, CROSS_TEXTURE, new int[]{0, 0}, new int[]{0, 0}, 1, 13, 13, 13, 13, 2, thisButton -> {
+				//isSmart is already implicitly handled by TogglePictureButton
+				if(!isSmart)
+				{
+					for(int otherButtonId = 0; otherButtonId < 5; otherButtonId++)
+					{
+						if(isExactLevel)
+							toggleButtons[otherButtonId].setCurrentIndex(otherButtonId == thisButton.id ? 1 : 0);
+						else
+							toggleButtons[otherButtonId].setCurrentIndex(otherButtonId >= thisButton.id ? 1 : 0);
+					}
+				}
+			}) {
+				@Override
+				public ResourceLocation getTextureLocation()
+				{
+					return getCurrentIndex() == 0 ? CROSS_TEXTURE : CHECKMARK_TEXTURE;
+				}
+			});
+		}
+
+		minusThree = addButton(new ExtendedButton(guiLeft + 22, buttonY, 24, buttonHeight, new StringTextComponent("---"), b -> changeSignature(signature - 100)));
+		minusTwo = addButton(new ExtendedButton(guiLeft + 48, buttonY, 18, buttonHeight, new StringTextComponent("--"), b -> changeSignature(signature - 10)));
+		minusOne = addButton(new ExtendedButton(guiLeft + 68, buttonY, 12, buttonHeight, new StringTextComponent("-"), b -> changeSignature(signature - 1)));
+		//TODO: reset to reader's previous signature
+		reset = addButton(new PictureButton(-1, guiLeft + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(0)) {
+			@Override
+			public ResourceLocation getTextureLocation()
+			{
+				return active ? RESET_TEXTURE : RESET_INACTIVE_TEXTURE;
+			}
+		});
+		plusOne = addButton(new ExtendedButton(guiLeft + 96, buttonY, 12, buttonHeight, new StringTextComponent("+"), b -> changeSignature(signature + 1)));
+		plusTwo = addButton(new ExtendedButton(guiLeft + 110, buttonY, 18, buttonHeight, new StringTextComponent("++"), b -> changeSignature(signature + 10)));
+		plusThree = addButton(new ExtendedButton(guiLeft + 130, buttonY, 24, buttonHeight, new StringTextComponent("+++"), b -> changeSignature(signature + 100)));
+		addButton(new ExtendedButton(guiLeft + 8, guiTop + 105, 70, 20, linkText, b -> System.out.println("boop")));
+		changeSignature(0);
+
+		if(!isSmart)
+		{
+			addButton(new ExtendedButton(guiLeft + 135, guiTop + 67, 18, 18, EQUALS, b -> {
+				isExactLevel = !isExactLevel;
+
+				if(isExactLevel)
+					b.setMessage(EQUALS);
+				else
+					b.setMessage(GREATER_THAN_EQUALS);
+			}));
+		}
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
+	{
+		font.drawText(matrix, blockName, xSize / 2 - font.getStringPropertyWidth(blockName) / 2, 6, 4210752);
+		font.drawText(matrix, signatureText, xSize / 2 - font.getStringPropertyWidth(signatureText) / 2, 23, 4210752);
+		font.drawText(matrix, keycardLevelsText, 170 - font.getStringPropertyWidth(keycardLevelsText), 56, 4210752);
+
+		for(int i = 1; i <= 5; i++)
+		{
+			font.drawString(matrix, "" + i, 91, 55 + 17 * i, 4210752);
+		}
+
+		font.drawText(matrix, inventoryText, 8, ySize - 93, 4210752);
+		renderHoveredTooltip(matrix, mouseX - guiLeft, mouseY - guiTop);
+	}
+
+	@Override
+	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	{
+		renderBackground(matrix);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		minecraft.getTextureManager().bindTexture(TEXTURE);
+		blit(matrix, (width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize);
+	}
+
+	public void changeSignature(int newSignature)
+	{
+		boolean enablePlusButtons;
+		boolean enableMinusButtons;
+
+		signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
+		signatureText = new TranslationTextComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
+		enablePlusButtons = signature != Short.MAX_VALUE;
+		enableMinusButtons = signature != 0;
+		minusThree.active = enableMinusButtons;
+		minusTwo.active = enableMinusButtons;
+		minusOne.active = enableMinusButtons;
+		reset.active = enableMinusButtons;
+		plusOne.active = enablePlusButtons;
+		plusTwo.active = enablePlusButtons;
+		plusThree.active = enablePlusButtons;
+	}
+}

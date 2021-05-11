@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.RedstoneParticleData;
@@ -34,6 +35,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class KeycardReaderBlock extends DisguisableBlock  {
 
@@ -79,12 +81,15 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof BaseKeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
-			((KeycardReaderTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
-		else if(player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
-			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.LIMITED_USE_KEYCARD.get(), 1), player);
-		else
-			((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.getHeldItem(hand), player);
+		if(!world.isRemote)
+		{
+			if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof BaseKeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
+				NetworkHooks.openGui((ServerPlayerEntity)player, ((KeycardReaderTileEntity) world.getTileEntity(pos)), pos);
+			else if(player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
+				((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.LIMITED_USE_KEYCARD.get(), 1), player);
+			else
+				((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.getHeldItem(hand), player);
+		}
 
 		return ActionResultType.SUCCESS;
 	}

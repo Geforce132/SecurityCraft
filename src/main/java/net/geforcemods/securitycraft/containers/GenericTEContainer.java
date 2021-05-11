@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class GenericTEContainer extends Container {
-	public TileEntity te;
+	public final TileEntity te;
 
 	public GenericTEContainer(ContainerType<GenericTEContainer> type, int windowId, World world, BlockPos pos)
 	{

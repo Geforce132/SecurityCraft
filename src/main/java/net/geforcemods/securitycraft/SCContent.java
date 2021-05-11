@@ -84,6 +84,7 @@ import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
+import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
@@ -769,7 +770,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
 	public static ContainerType<GenericTEContainer> cTypeIMS;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
-	public static ContainerType<GenericTEContainer> cTypeKeycardSetup;
+	public static ContainerType<KeycardReaderContainer> cTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
 	public static ContainerType<GenericTEContainer> cTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")

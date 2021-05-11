@@ -6,12 +6,13 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
-import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -107,7 +108,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST, ModuleType.DISGUISE};
+		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST, ModuleType.DISGUISE, ModuleType.SMART};
 	}
 
 	@Override
@@ -128,7 +129,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new GenericTEContainer(SCContent.cTypeKeycardSetup, windowId, world, pos);
+		return new KeycardReaderContainer(windowId, inv, world, pos);
 	}
 
 	@Override
