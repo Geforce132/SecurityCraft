@@ -149,7 +149,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 		@Override
 		protected boolean clickPanel(double mouseX, double mouseY, int button) {
-			int slotIndex = (int)mouseY / slotHeight;
+			int slotIndex = (int)(mouseY + (border / 2)) / slotHeight;
 
 			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				tileEntity.toggleFilter(orderedFilterList.get(slotIndex));
