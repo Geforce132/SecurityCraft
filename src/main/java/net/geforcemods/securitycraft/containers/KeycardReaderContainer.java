@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 public class KeycardReaderContainer extends Container
 {
 	private final Inventory itemInventory = new Inventory(1);
-	private final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
 
 	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
@@ -37,7 +36,7 @@ public class KeycardReaderContainer extends Container
 		for(int i = 0; i < 9; i++)
 			addSlot(new Slot(inventory, i, 8 + i * 18, 225));
 
-		addSlot(keycardSlot = new Slot(itemInventory, 0, 35, 86) {
+		addSlot(new Slot(itemInventory, 0, 35, 86) {
 			@Override
 			public boolean isItemValid(ItemStack stack)
 			{
@@ -50,7 +49,6 @@ public class KeycardReaderContainer extends Container
 	public void onContainerClosed(PlayerEntity player)
 	{
 		super.onContainerClosed(player);
-
 		clearContainer(player, te.getWorld(), itemInventory);
 	}
 

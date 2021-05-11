@@ -1,34 +1,25 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
-import net.geforcemods.securitycraft.blocks.KeycardReaderBlock;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.common.util.Constants.NBT;
 
-public class KeycardReaderTileEntity extends DisguisableTileEntity implements IPasswordProtected, INamedContainerProvider {
+public class KeycardReaderTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
-	private int passLV = 0;
-	private boolean requiresExactKeycard = false;
+	private boolean[] acceptedLevels = {true, false, false, false, false};
+	private int signature = 0;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
@@ -37,73 +28,57 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IP
 		super(SCContent.teTypeKeycardReader);
 	}
 
-	/**
-	 * Writes a tile entity to NBT.
-	 * @return
-	 */
 	@Override
 	public CompoundNBT write(CompoundNBT tag){
 		super.write(tag);
-		tag.putInt("passLV", passLV);
-		tag.putBoolean("requiresExactKeycard", requiresExactKeycard);
+
+		CompoundNBT acceptedLevelsTag = new CompoundNBT();
+
+		for(int i = 1; i <= 5; i++)
+		{
+			acceptedLevelsTag.putBoolean("lvl" + i, acceptedLevels[i - 1]);
+		}
+
+		tag.put("acceptedLevels", acceptedLevelsTag);
+		tag.putInt("signature", signature);
 		return tag;
 	}
 
-	/**
-	 * Reads a tile entity from NBT.
-	 */
 	@Override
 	public void read(BlockState state, CompoundNBT tag){
 		super.read(state, tag);
 
-		passLV = tag.getInt("passLV");
-		requiresExactKeycard = tag.getBoolean("requiresExactKeycard");
-
-	}
-
-	public void setRequiresExactKeycard(boolean par1) {
-		requiresExactKeycard = par1;
-	}
-
-	public boolean doesRequireExactKeycard() {
-		return requiresExactKeycard;
-	}
-
-	@Override
-	public void activate(PlayerEntity player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeycardReaderBlock)
-			KeycardReaderBlock.activate(world, getPos(), signalLength.get());
-	}
-
-	@Override
-	public void openPasswordGUI(PlayerEntity player) {
-		if(getPassword() == null && player instanceof ServerPlayerEntity)
+		if(tag.contains("acceptedLevels", NBT.TAG_COMPOUND))
 		{
-			if(getOwner().isOwner(player))
-				NetworkHooks.openGui((ServerPlayerEntity)player, this, pos);
-			else
-				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+			CompoundNBT acceptedLevelsTag = tag.getCompound("acceptedLevels");
+
+			for(int i = 1; i <= 5; i++)
+			{
+				acceptedLevels[i - 1] = acceptedLevelsTag.getBoolean("lvl" + i);
+			}
 		}
+
+		signature = tag.getInt("signature");
 	}
 
-	@Override
-	public boolean isCodebreakable() {
-		return false;
+	public void setAcceptedLevels(boolean[] acceptedLevels)
+	{
+		this.acceptedLevels = acceptedLevels;
 	}
 
-	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
-		return false;
+	public boolean[] getAcceptedLevels()
+	{
+		return acceptedLevels;
 	}
 
-	@Override
-	public String getPassword() {
-		return passLV == 0 ? null : String.valueOf(passLV);
+	public void setSignature(int signature)
+	{
+		this.signature = signature;
 	}
 
-	@Override
-	public void setPassword(String password) {
-		passLV = Integer.parseInt(password);
+	public int getSignature()
+	{
+		return signature;
 	}
 
 	@Override

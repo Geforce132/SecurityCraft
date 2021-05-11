@@ -9,8 +9,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
+import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -37,9 +39,12 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private final ITextComponent inventoryText = ClientUtils.localize("container.inventory");
 	private final ITextComponent keycardLevelsText = ClientUtils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final ITextComponent linkText = ClientUtils.localize("gui.securitycraft:keycard_reader.link");
+	private final KeycardReaderTileEntity te;
 	private boolean isSmart;
 	private boolean isExactLevel = true;
+	private final int previousSignature;
 	private int signature;
+	private boolean[] acceptedLevels;
 	private TranslationTextComponent signatureText;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
@@ -48,7 +53,11 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	{
 		super(container, inv, name);
 
-		isSmart = container.te.hasModule(ModuleType.SMART);
+		te = container.te;
+		previousSignature = te.getSignature();
+		signature = previousSignature;
+		acceptedLevels = te.getAcceptedLevels();
+		isSmart = te.hasModule(ModuleType.SMART);
 		ySize = 249;
 	}
 
@@ -68,12 +77,19 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				{
 					for(int otherButtonId = 0; otherButtonId < 5; otherButtonId++)
 					{
+						boolean active;
+
 						if(isExactLevel)
-							toggleButtons[otherButtonId].setCurrentIndex(otherButtonId == thisButton.id ? 1 : 0);
+							active = otherButtonId == thisButton.id;
 						else
-							toggleButtons[otherButtonId].setCurrentIndex(otherButtonId >= thisButton.id ? 1 : 0);
+							active = otherButtonId >= thisButton.id;
+
+							toggleButtons[otherButtonId].setCurrentIndex(active ? 1 : 0);
+							acceptedLevels[otherButtonId] = active;
 					}
 				}
+				else
+					acceptedLevels[thisButton.id] = !acceptedLevels[thisButton.id];
 			}) {
 				@Override
 				public ResourceLocation getTextureLocation()
@@ -81,13 +97,13 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 					return getCurrentIndex() == 0 ? CROSS_TEXTURE : CHECKMARK_TEXTURE;
 				}
 			});
+			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0);
 		}
 
 		minusThree = addButton(new ExtendedButton(guiLeft + 22, buttonY, 24, buttonHeight, new StringTextComponent("---"), b -> changeSignature(signature - 100)));
 		minusTwo = addButton(new ExtendedButton(guiLeft + 48, buttonY, 18, buttonHeight, new StringTextComponent("--"), b -> changeSignature(signature - 10)));
 		minusOne = addButton(new ExtendedButton(guiLeft + 68, buttonY, 12, buttonHeight, new StringTextComponent("-"), b -> changeSignature(signature - 1)));
-		//TODO: reset to reader's previous signature
-		reset = addButton(new PictureButton(-1, guiLeft + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(0)) {
+		reset = addButton(new PictureButton(-1, guiLeft + 82, buttonY, 12, buttonHeight, RESET_INACTIVE_TEXTURE, 10, 10, 1, 2, 10, 10, 10, 10, b -> changeSignature(previousSignature)) {
 			@Override
 			public ResourceLocation getTextureLocation()
 			{
@@ -97,8 +113,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		plusOne = addButton(new ExtendedButton(guiLeft + 96, buttonY, 12, buttonHeight, new StringTextComponent("+"), b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ExtendedButton(guiLeft + 110, buttonY, 18, buttonHeight, new StringTextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ExtendedButton(guiLeft + 130, buttonY, 24, buttonHeight, new StringTextComponent("+++"), b -> changeSignature(signature + 100)));
+		changeSignature(signature);
 		addButton(new ExtendedButton(guiLeft + 8, guiTop + 105, 70, 20, linkText, b -> System.out.println("boop")));
-		changeSignature(0);
 
 		if(!isSmart)
 		{
@@ -138,6 +154,16 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		blit(matrix, (width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize);
 	}
 
+	@Override
+	public void onClose()
+	{
+		super.onClose();
+
+		te.setAcceptedLevels(acceptedLevels);
+		te.setSignature(signature);
+		SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature));
+	}
+
 	public void changeSignature(int newSignature)
 	{
 		boolean enablePlusButtons;
@@ -150,7 +176,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		minusThree.active = enableMinusButtons;
 		minusTwo.active = enableMinusButtons;
 		minusOne.active = enableMinusButtons;
-		reset.active = enableMinusButtons;
+		reset.active = signature != previousSignature;
 		plusOne.active = enablePlusButtons;
 		plusTwo.active = enablePlusButtons;
 		plusThree.active = enablePlusButtons;

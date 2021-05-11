@@ -4,12 +4,8 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BaseKeycardItem;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.ModuleUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +25,6 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -47,35 +42,9 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
 	}
 
-	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player) {
-		if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
-			return;
+	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player)
+	{
 
-		boolean whitelisted = ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST);
-		int requiredLevel = -1;
-		int cardLvl = ((BaseKeycardItem) stack.getItem()).getKeycardLvl();
-		KeycardReaderTileEntity te = ((KeycardReaderTileEntity)world.getTileEntity(pos));
-		boolean exact = te.doesRequireExactKeycard();
-
-		if(te.getPassword() != null)
-			requiredLevel = Integer.parseInt(te.getPassword());
-
-		if(whitelisted || (!exact && requiredLevel <= cardLvl || exact && requiredLevel == cardLvl)){
-			if(cardLvl == 6 && stack.getTag() != null && !player.isCreative()){
-				stack.getTag().putInt("Uses", stack.getTag().getInt("Uses") - 1);
-
-				if(stack.getTag().getInt("Uses") <= 0)
-					stack.shrink(1);
-			}
-
-			KeycardReaderBlock.activate(world, pos, te.getSignalLength());
-		}
-		else {
-			if(requiredLevel == -1)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
-			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required", te.getPassword(), ((BaseKeycardItem) stack.getItem()).getKeycardLvl()), TextFormatting.RED);
-		}
 	}
 
 	@Override
@@ -85,8 +54,6 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		{
 			if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof BaseKeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
 				NetworkHooks.openGui((ServerPlayerEntity)player, ((KeycardReaderTileEntity) world.getTileEntity(pos)), pos);
-			else if(player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
-				((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, new ItemStack(SCContent.LIMITED_USE_KEYCARD.get(), 1), player);
 			else
 				((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.getHeldItem(hand), player);
 		}
