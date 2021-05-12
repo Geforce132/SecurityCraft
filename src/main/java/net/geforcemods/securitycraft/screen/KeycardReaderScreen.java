@@ -48,6 +48,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private int signature;
 	private boolean[] acceptedLevels;
 	private TranslationTextComponent signatureText;
+	private int signatureTextLength;
+	private int signatureTextStartX;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
 
@@ -215,6 +217,15 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	}
 
 	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta)
+	{
+		if(mouseX >= guiLeft + signatureTextStartX && mouseY >= guiTop + 23 && mouseX <= guiLeft + signatureTextStartX + signatureTextLength && mouseY <= guiTop + 43)
+			changeSignature(signature + (int)Math.signum(delta));
+
+		return super.mouseScrolled(mouseX, mouseY, delta);
+	}
+
+	@Override
 	public void onClose()
 	{
 		super.onClose();
@@ -232,6 +243,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 
 		signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
 		signatureText = new TranslationTextComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
+		signatureTextLength = font.getStringPropertyWidth(signatureText);
+		signatureTextStartX = xSize / 2 - signatureTextLength / 2;
 		enablePlusButtons = signature != Short.MAX_VALUE;
 		enableMinusButtons = signature != 0;
 		minusThree.active = enableMinusButtons;
