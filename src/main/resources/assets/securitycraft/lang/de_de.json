@@ -807,6 +807,8 @@
 	"tooltip.securitycraft:briefcase.owner": "Besitzer: %s",
 	"tooltip.securitycraft:keycard.uses": "Verbleibende Benutzungen:",
 	"tooltip.securitycraft:projector": "Projiziert falsche Blöcke in die Welt.",
+	"tooltip.securitycraft:keycard.signature": "Signatur: %s",
+	"tooltip.securitycraft:keycard.reader_owner": "Funktioniert bei Schlüsselkarten-Lesern von: %s",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Dekoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Sprengstoffe",

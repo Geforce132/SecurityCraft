@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.containers;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.BaseKeycardItem;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -9,6 +9,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 public class KeycardReaderContainer extends Container
 {
 	private final Inventory itemInventory = new Inventory(1);
+	private final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
 
 	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
@@ -36,13 +38,28 @@ public class KeycardReaderContainer extends Container
 		for(int i = 0; i < 9; i++)
 			addSlot(new Slot(inventory, i, 8 + i * 18, 225));
 
-		addSlot(new Slot(itemInventory, 0, 35, 86) {
+		keycardSlot = addSlot(new Slot(itemInventory, 0, 35, 86) {
 			@Override
 			public boolean isItemValid(ItemStack stack)
 			{
-				return stack.getItem() instanceof BaseKeycardItem && stack.getItem() != SCContent.LIMITED_USE_KEYCARD.get();
+				return stack.getItem() instanceof KeycardItem && stack.getItem() != SCContent.LIMITED_USE_KEYCARD.get();
 			}
 		});
+	}
+
+	public void link()
+	{
+		ItemStack keycard = keycardSlot.getStack();
+
+		if(!keycard.isEmpty())
+		{
+			CompoundNBT tag = keycard.getOrCreateTag();
+
+			tag.putBoolean("linked", true);
+			tag.putInt("signature", te.getSignature());
+			tag.putString("ownerName", te.getOwner().getName());
+			tag.putString("ownerUUID", te.getOwner().getUUID());
+		}
 	}
 
 	@Override

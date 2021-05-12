@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.items.BaseKeycardItem;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
@@ -52,7 +52,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	{
 		if(!world.isRemote)
 		{
-			if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof BaseKeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
+			if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof KeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
 				NetworkHooks.openGui((ServerPlayerEntity)player, ((KeycardReaderTileEntity) world.getTileEntity(pos)), pos);
 			else
 				((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.getHeldItem(hand), player);

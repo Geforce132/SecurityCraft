@@ -44,7 +44,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private final KeycardReaderTileEntity te;
 	private boolean isSmart;
 	private boolean isExactLevel = true;
-	private final int previousSignature;
+	private int previousSignature;
 	private int signature;
 	private boolean[] acceptedLevels;
 	private TranslationTextComponent signatureText;
@@ -133,9 +133,14 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		plusOne = addButton(new ExtendedButton(guiLeft + 96, buttonY, 12, buttonHeight, new StringTextComponent("+"), b -> changeSignature(signature + 1)));
 		plusTwo = addButton(new ExtendedButton(guiLeft + 110, buttonY, 18, buttonHeight, new StringTextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ExtendedButton(guiLeft + 130, buttonY, 24, buttonHeight, new StringTextComponent("+++"), b -> changeSignature(signature + 100)));
+		//set correct signature
 		changeSignature(signature);
 		//link button
-		addButton(new ExtendedButton(guiLeft + 8, guiTop + 105, 70, 20, linkText, b -> System.out.println("boop")));
+		addButton(new ExtendedButton(guiLeft + 8, guiTop + 105, 70, 20, linkText, b -> {
+			previousSignature = signature;
+			changeSignature(signature);
+			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, true));
+		}));
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if(!isSmart)
@@ -233,7 +238,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		//write new data to client te and send that data to the server, which verifies and updates it on its side
 		te.setAcceptedLevels(acceptedLevels);
 		te.setSignature(signature);
-		SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature));
+		SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, false));
 	}
 
 	public void changeSignature(int newSignature)

@@ -805,6 +805,8 @@
 	"tooltip.securitycraft:briefcase.owner": "Owner: %s",
 	"tooltip.securitycraft:keycard.uses": "Uses remaining:",
 	"tooltip.securitycraft:projector": "Projects fake blocks into the world.",
+	"tooltip.securitycraft:keycard.signature": "Signature: %s",
+	"tooltip.securitycraft:keycard.reader_owner": "Works on Keycard Readers owned by: %s",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",

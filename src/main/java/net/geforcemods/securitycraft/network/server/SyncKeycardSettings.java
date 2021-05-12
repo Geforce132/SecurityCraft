@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -14,20 +16,23 @@ public class SyncKeycardSettings
 	private BlockPos pos;
 	private int signature;
 	private boolean[] acceptedLevels;
+	private boolean link;
 
 	public SyncKeycardSettings() {}
 
-	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature)
+	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link)
 	{
 		this.pos = pos;
 		this.acceptedLevels = acceptedLevels;
 		this.signature = signature;
+		this.link = link;
 	}
 
 	public static void encode(SyncKeycardSettings message, PacketBuffer buf)
 	{
 		buf.writeBlockPos(message.pos);
 		buf.writeVarInt(message.signature);
+		buf.writeBoolean(message.link);
 
 		for(int i = 0; i < 5; i++)
 		{
@@ -41,6 +46,7 @@ public class SyncKeycardSettings
 
 		message.pos = buf.readBlockPos();
 		message.signature = buf.readVarInt();
+		message.link = buf.readBoolean();
 		message.acceptedLevels = new boolean[5];
 
 		for(int i = 0; i < 5; i++)
@@ -66,6 +72,14 @@ public class SyncKeycardSettings
 				{
 					te.setAcceptedLevels(message.acceptedLevels);
 					te.setSignature(message.signature);
+
+					if(message.link)
+					{
+						Container container = player.openContainer;
+
+						if(container instanceof KeycardReaderContainer)
+							((KeycardReaderContainer)container).link();
+					}
 				}
 			}
 		});
