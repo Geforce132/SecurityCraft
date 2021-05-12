@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.gui.widget.Slider;
@@ -230,7 +230,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue((int)slider.getValue());
-			slider.setMessage((ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()).getFormattedText() + " ").replace("#", toString()));
+			slider.setMessage((Utils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()).getFormattedText() + " ").replace("#", toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
 		}
 	}
@@ -309,7 +309,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.setMessage((ClientUtils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()).getFormattedText() + " ").replace("#", toString()));
+			slider.setMessage((Utils.localize("option" + ((NamedSlider)slider).getBlockName() + "." + getName()).getFormattedText() + " ").replace("#", toString()));
 			SecurityCraft.channel.sendToServer(new UpdateSliderValue(pos.get(), ((NamedSlider)slider).id, get()));
 		}
 	}

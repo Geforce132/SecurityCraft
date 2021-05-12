@@ -5,7 +5,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,7 +26,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory
 	@Override
 	public String getTitle()
 	{
-		return ClientUtils.localize("jei.securitycraft.category.reinforcing").getFormattedText();
+		return Utils.localize("jei.securitycraft.category.reinforcing").getFormattedText();
 	}
 
 	@Override

@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
@@ -92,7 +92,7 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements IWaterLo
 		{
 			if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(ctx.getPlayer()))
 			{
-				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(ctx.getPlayer(), Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 				return state;
 			}

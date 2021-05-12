@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -132,21 +132,21 @@ public class ModuleItem extends Item{
 			list.add(new StringTextComponent(TextFormatting.GRAY + new TranslationTextComponent("tooltip.securitycraft:module.notModifiable").getFormattedText()));
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).getFormattedText()));
+				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).getFormattedText()));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText()));
+				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText()));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText()));
+				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText()));
 
 			if(getNumberOfAddons() > 0 && !getAddons(stack.getTag()).isEmpty()) {
 				list.add(new StringTextComponent(" "));
 
-				list.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":"));
+				list.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":"));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + ClientUtils.localize(addon.getTranslationKey()).getFormattedText()));
+					list.add(new StringTextComponent(TextFormatting.GRAY + "- " + Utils.localize(addon.getTranslationKey()).getFormattedText()));
 			}
 		}
 	}

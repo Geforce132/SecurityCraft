@@ -13,8 +13,8 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -65,7 +65,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			return ActionResultType.SUCCESS;
 		}
 		else {
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 			return ActionResultType.SUCCESS;
 		}
 	}

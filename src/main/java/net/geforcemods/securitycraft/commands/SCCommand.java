@@ -6,8 +6,8 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import net.geforcemods.securitycraft.network.client.SendTip;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -29,7 +29,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> connect()
 	{
 		return Commands.literal("connect").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("IRC"), ClientUtils.localize("messages.securitycraft:irc.connected"), SendTip.tipsWithLink.get("discord"), TextFormatting.GREEN);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("IRC"), Utils.localize("messages.securitycraft:irc.connected"), SendTip.tipsWithLink.get("discord"), TextFormatting.GREEN);
 			return 0;
 		});
 	}
@@ -48,7 +48,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> bug()
 	{
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
 			return 0;
 		});
 	}

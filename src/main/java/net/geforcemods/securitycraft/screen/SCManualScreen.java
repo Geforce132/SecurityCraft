@@ -23,7 +23,7 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -60,8 +60,8 @@ public class SCManualScreen extends Screen {
 	private List<String> subpages = new ArrayList<>();
 	private int currentSubpage = 0;
 	private final int subpageLength = 1285;
-	private final String intro1 = ClientUtils.localize("gui.securitycraft:scManual.intro.1").getFormattedText();
-	private final String intro2 = ClientUtils.localize("gui.securitycraft:scManual.intro.2").getFormattedText();
+	private final String intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").getFormattedText();
+	private final String intro2 = Utils.localize("gui.securitycraft:scManual.intro.2").getFormattedText();
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -92,8 +92,8 @@ public class SCManualScreen extends Screen {
 
 		updateRecipeAndIcons();
 		SCManualItem.PAGES.sort((page1, page2) -> {
-			String key1 = ClientUtils.localize(page1.getItem().getTranslationKey()).getFormattedText();
-			String key2 = ClientUtils.localize(page2.getItem().getTranslationKey()).getFormattedText();
+			String key1 = Utils.localize(page1.getItem().getTranslationKey()).getFormattedText();
+			String key2 = Utils.localize(page2.getItem().getTranslationKey()).getFormattedText();
 
 			return key1.compareTo(key2);
 		});
@@ -121,16 +121,16 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
-				font.drawString(ClientUtils.localize("gui.securitycraft:scManual.reinforced").getFormattedText(), startX + 39, 27, 0);
+				font.drawString(Utils.localize("gui.securitycraft:scManual.reinforced").getFormattedText(), startX + 39, 27, 0);
 			else
-				font.drawString(ClientUtils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()).getFormattedText(), startX + 39, 27, 0);
+				font.drawString(Utils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()).getFormattedText(), startX + 39, 27, 0);
 
 			font.drawSplitString(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 
 			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
-				font.drawSplitString(ClientUtils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 180, 75, 0);
+				font.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 180, 75, 0);
 		}else{
 			font.drawString(intro1, width / 2 - font.getStringWidth(intro1) / 2, 22, 0);
 			font.drawString(intro2, width / 2 - font.getStringWidth(intro2) / 2, 142, 0);
@@ -138,7 +138,7 @@ public class SCManualScreen extends Screen {
 
 			if(I18n.hasKey("gui.securitycraft:scManual.author"))
 			{
-				String text = ClientUtils.localize("gui.securitycraft:scManual.author").getFormattedText();
+				String text = Utils.localize("gui.securitycraft:scManual.author").getFormattedText();
 
 				font.drawSplitString(text, width / 2 - 175 / 2, 155, 175, 0);
 			}
@@ -353,12 +353,12 @@ public class SCManualScreen extends Screen {
 		{
 			String name = page.getItem().getRegistryName().getPath();
 
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe." + name).getFormattedText()));
+			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe." + name).getFormattedText()));
 		}
 		else if(reinforcedPage)
 		{
 			recipe = null;
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.recipe.reinforced").getFormattedText()));
+			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.recipe.reinforced").getFormattedText()));
 		}
 		else if(recipe != null)
 		{
@@ -371,7 +371,7 @@ public class SCManualScreen extends Screen {
 			}
 		}
 		else
-			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, ClientUtils.localize("gui.securitycraft:scManual.disabled").getFormattedText()));
+			hoverCheckers.add(new StringHoverChecker(144, 144 + (2 * 20) + 16, startX + 100, (startX + 100) + (2 * 20) + 16, Utils.localize("gui.securitycraft:scManual.disabled").getFormattedText()));
 
 		Item item = page.getItem();
 
@@ -380,34 +380,34 @@ public class SCManualScreen extends Screen {
 			TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
 			if(block instanceof IExplosive)
-				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, ClientUtils.localize("gui.securitycraft:scManual.explosiveBlock").getFormattedText()));
+				hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock").getFormattedText()));
 
 			if(te != null){
 				if(te instanceof IOwnable)
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, ClientUtils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock").getFormattedText()));
 
 				if(te instanceof IPasswordProtected)
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, ClientUtils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passwordProtectedBlock").getFormattedText()));
 
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, ClientUtils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock").getFormattedText()));
 
 				if(te instanceof ICustomizable)
 				{
 					ICustomizable scte = (ICustomizable)te;
 
-					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, ClientUtils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock").getFormattedText()));
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
 					{
 						List<String> display = new ArrayList<>();
 
-						display.add(ClientUtils.localize("gui.securitycraft:scManual.options").getFormattedText());
+						display.add(Utils.localize("gui.securitycraft:scManual.options").getFormattedText());
 						display.add("---");
 
 						for(Option<?> option : scte.customOptions())
 						{
-							display.add("- " + ClientUtils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description").getFormattedText());
+							display.add("- " + Utils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description").getFormattedText());
 							display.add("");
 						}
 
@@ -424,12 +424,12 @@ public class SCManualScreen extends Screen {
 					{
 						List<String> display = new ArrayList<>();
 
-						display.add(ClientUtils.localize("gui.securitycraft:scManual.modules").getFormattedText());
+						display.add(Utils.localize("gui.securitycraft:scManual.modules").getFormattedText());
 						display.add("---");
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							display.add("- " + ClientUtils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description").getFormattedText());
+							display.add("- " + Utils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description").getFormattedText());
 							display.add("");
 						}
 
@@ -464,7 +464,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		helpInfo = ClientUtils.localize(page.getHelpInfo()).getFormattedText();
+		helpInfo = Utils.localize(page.getHelpInfo()).getFormattedText();
 		subpages.clear();
 
 		while(font.getStringWidth(helpInfo) > subpageLength)

@@ -10,9 +10,9 @@ import net.geforcemods.securitycraft.entity.ai.AttackRangedIfEnabledGoal;
 import net.geforcemods.securitycraft.entity.ai.TargetNearestPlayerOrMobGoal;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -237,7 +237,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				String newOwner = player.getHeldItemMainhand().getDisplayName().getFormattedText();
 
 				dataManager.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID"));
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 			}
 			else
 				toggleMode(player);
@@ -307,7 +307,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(sendMessage)
-			player.sendStatusMessage(ClientUtils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(ClientUtils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
+			player.sendStatusMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
 		else if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}

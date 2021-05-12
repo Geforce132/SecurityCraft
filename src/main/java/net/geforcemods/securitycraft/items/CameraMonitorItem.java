@@ -11,8 +11,8 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -48,7 +48,7 @@ public class CameraMonitorItem extends Item {
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
 		if(BlockUtils.getBlock(world, pos) == SCContent.SECURITY_CAMERA.get() && !PlayerUtils.isPlayerMountedOnCamera(player)){
 			if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((SecurityCameraTileEntity)world.getTileEntity(pos)).hasModule(ModuleType.SMART)){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 
@@ -59,14 +59,14 @@ public class CameraMonitorItem extends Item {
 
 			if(isCameraAdded(stack.getTag(), view)){
 				stack.getTag().remove(getTagNameFromPosition(stack.getTag(), view));
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound", pos), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.unbound", pos), TextFormatting.RED);
 				return ActionResultType.SUCCESS;
 			}
 
 			for(int i = 1; i <= 30; i++)
 				if (!stack.getTag().contains("Camera" + i)){
 					stack.getTag().putString("Camera" + i, view.toNBTString());
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
 					break;
 				}
 
@@ -84,7 +84,7 @@ public class CameraMonitorItem extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getTranslationKey()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 			return ActionResult.resultPass(stack);
 		}
 
@@ -100,7 +100,7 @@ public class CameraMonitorItem extends Item {
 		if(stack.getTag() == null)
 			return;
 
-		tooltip.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:cameraMonitor").getFormattedText() + " " + getNumberOfCamerasBound(stack.getTag()) + "/30"));
+		tooltip.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:cameraMonitor").getFormattedText() + " " + getNumberOfCamerasBound(stack.getTag()) + "/30"));
 	}
 
 	public static String getTagNameFromPosition(CompoundNBT tag, CameraView view) {

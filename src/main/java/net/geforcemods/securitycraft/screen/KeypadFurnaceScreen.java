@@ -6,7 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.AbstractFurnaceContainer;
@@ -42,7 +42,7 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getFormattedText() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name").getFormattedText());
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomSCName() ? tileFurnace.getCustomSCName().getFormattedText() : Utils.localize("gui.securitycraft:protectedFurnace.name").getFormattedText());
 		font.drawString(s, xSize / 2 - font.getStringWidth(s) / 2, 6.0F, 4210752);
 		font.drawString(playerInventory.getDisplayName().getFormattedText(), 8.0F, ySize - 96 + 2, 4210752);
 	}

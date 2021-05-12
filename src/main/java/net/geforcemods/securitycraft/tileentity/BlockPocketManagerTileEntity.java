@@ -20,9 +20,9 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -143,7 +143,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				}
 
 				//when an invalid block is in the way
-				PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInWorld.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assemblyFailed", getFormattedRelativeCoordinates(toPlace.getLeft(), getBlockState().get(BlockPocketManagerBlock.FACING)), new TranslationTextComponent(stateInWorld.getBlock().getTranslationKey())), TextFormatting.DARK_AQUA);
 				placed4 = false;
 				break placeLoop;
 			}
@@ -156,7 +156,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				else //no more blocks left to place, assembling must be done
 				{
 					setWalls(!hasModule(ModuleType.DISGUISE));
-					PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
+					PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), new TranslationTextComponent("messages.securitycraft:blockpocket.assembled"), TextFormatting.DARK_AQUA);
 				}
 
 				shouldPlaceBlocks = false;
@@ -589,7 +589,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 				SecurityCraft.channel.sendToServer(new ToggleBlockPocketManager(this, false, size));
 			}
 
-			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), ClientUtils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
+			PlayerUtils.sendMessageToPlayer(SecurityCraft.proxy.getClientPlayer(), Utils.localize(SCContent.BLOCK_POCKET_MANAGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:blockpocket.deactivated"), TextFormatting.DARK_AQUA);
 			enabled = false;
 
 			for(BlockPos pos : blocks)
@@ -645,21 +645,21 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 		}
 
 		if (offsetLeft > 0) {
-			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksLeft", offsetLeft));
 		}
 		else if (offsetLeft < 0) {
-			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksRight", -offsetLeft));
 		}
 
 		if (offsetBehind > 0) {
-			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksBehind", offsetBehind));
 		}
 
 		if (offsetAbove > 0) {
-			components.add(ClientUtils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
+			components.add(Utils.localize("messages.securitycraft:blockpocket.position.blocksAbove", offsetAbove));
 		}
 
-		return ClientUtils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
+		return Utils.localize("messages.securitycraft:blockpocket.position." + components.size(), components.toArray());
 	}
 
 	public void toggleOutline()

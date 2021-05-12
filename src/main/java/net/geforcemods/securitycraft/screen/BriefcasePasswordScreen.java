@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.screen.components.IdButton;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -69,7 +69,7 @@ public class BriefcasePasswordScreen extends ContainerScreen<GenericContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		font.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText(), xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText()) / 2, 6, 4210752);
+		font.drawString(Utils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText(), xSize / 2 - font.getStringWidth(Utils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText()) / 2, 6, 4210752);
 	}
 
 	@Override

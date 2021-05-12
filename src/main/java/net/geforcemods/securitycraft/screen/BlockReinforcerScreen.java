@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -41,14 +41,14 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
 		NonNullList<ItemStack> inv = container.getInventory();
-		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title").getFormattedText();
+		String ubr = Utils.localize("gui.securitycraft:blockReinforcer.title").getFormattedText();
 
 		font.drawString(ubr, (xSize - font.getStringWidth(ubr)) / 2, 5, 4210752);
-		font.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
+		font.drawString(Utils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 25, 4210752);
+			font.drawString(Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 25, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
 			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
 
@@ -58,7 +58,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 
 		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
-			font.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 50, 4210752);
+			font.drawString(Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 50, 4210752);
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
 			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
 
