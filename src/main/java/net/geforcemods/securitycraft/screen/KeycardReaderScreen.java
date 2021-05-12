@@ -78,8 +78,6 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		//keycard level buttons
 		for(int i = 0; i < 5; i++)
 		{
-			final int id = i;
-
 			toggleButtons[i] = addButton(new TogglePictureButton(i, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, CROSS_TEXTURE, new int[]{0, 0}, new int[]{0, 0}, 1, 13, 13, 13, 13, 2, thisButton -> {
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if(!isSmart)
@@ -89,12 +87,12 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 						boolean active;
 
 						if(isExactLevel)
-							active = otherButtonId == thisButton.id;
+							active = (otherButtonId == thisButton.id);
 						else
-							active = otherButtonId >= thisButton.id;
+							active = (otherButtonId >= thisButton.id);
 
-							//update button state and data
-							changeLevelState(id, active);
+						//update button state and data
+						changeLevelState(otherButtonId, active);
 					}
 				}
 				else
