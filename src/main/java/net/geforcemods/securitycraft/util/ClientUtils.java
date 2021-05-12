@@ -1,15 +1,31 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.Arrays;
+
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class ClientUtils{
+	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png");
 
 	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
@@ -59,5 +75,40 @@ public class ClientUtils{
 		}
 
 		return new TranslationTextComponent(key, params);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void renderSmartModuleInfo(MatrixStack matrix, ITextComponent moduleTooltip, ITextComponent noModuleTooltip, boolean isSmart, int guiLeft, int guiTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
+	{
+		Minecraft mc = Minecraft.getInstance();
+		float alpha = isSmart ? 1.0F : 0.5F;
+		int moduleLeft = guiLeft + 5;
+		int moduleRight = moduleLeft + 16;
+		int moduleTop = guiTop + 5;
+		int moduleBottom = moduleTop + 16;
+		Matrix4f m4f = matrix.getLast().getMatrix();
+		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+
+		RenderSystem.enableAlphaTest();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultAlphaFunc();
+		RenderSystem.defaultBlendFunc();
+		mc.getTextureManager().bindTexture(SMART_MODULE_TEXTURE);
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+		bufferBuilder.pos(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
+		bufferBuilder.pos(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();
+		bufferBuilder.pos(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 0).endVertex();
+		bufferBuilder.pos(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 0).endVertex();
+		bufferBuilder.finishDrawing();
+		WorldVertexBufferUploader.draw(bufferBuilder);
+		RenderSystem.disableBlend();
+
+		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
+		{
+			ITextComponent text = isSmart ? moduleTooltip : noModuleTooltip;
+
+			if(text != null)
+				GuiUtils.drawHoveringText(matrix, Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
+		}
 	}
 }

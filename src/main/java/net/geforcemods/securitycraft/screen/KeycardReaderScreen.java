@@ -39,6 +39,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private final ITextComponent inventoryText = ClientUtils.localize("container.inventory");
 	private final ITextComponent keycardLevelsText = ClientUtils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final ITextComponent linkText = ClientUtils.localize("gui.securitycraft:keycard_reader.link");
+	private final ITextComponent noSmartModule = ClientUtils.localize("gui.securitycraft:keycard_reader.noSmartModule");
+	private final ITextComponent smartModule = ClientUtils.localize("gui.securitycraft:keycard_reader.smartModule");
 	private final KeycardReaderTileEntity te;
 	private boolean isSmart;
 	private boolean isExactLevel = true;
@@ -192,7 +194,15 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		}
 
 		font.drawText(matrix, inventoryText, 8, ySize - 93, 4210752);
-		renderHoveredTooltip(matrix, mouseX - guiLeft, mouseY - guiTop);
+	}
+
+	@Override
+	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
+	{
+		super.render(matrix, mouseX, mouseY, partialTicks);
+
+		renderHoveredTooltip(matrix, mouseX, mouseY);
+		ClientUtils.renderSmartModuleInfo(matrix, smartModule, noSmartModule, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
 	}
 
 	@Override
