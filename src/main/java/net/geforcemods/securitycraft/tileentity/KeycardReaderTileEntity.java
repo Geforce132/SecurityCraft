@@ -48,6 +48,22 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	public void read(BlockState state, CompoundNBT tag){
 		super.read(state, tag);
 
+		//carry over old data
+		if(tag.contains("passLV"))
+		{
+			boolean oldRequiresExactKeycard = false;
+			int oldPassLV = tag.getInt("passLV") - 1; //old data was 1-indexed, new one is 0-indexed
+
+			if(tag.contains("requiresExactKeycard"))
+				oldRequiresExactKeycard = tag.getBoolean("requiresExactKeycard");
+
+			for(int i = 0; i < 5; i++)
+			{
+				acceptedLevels[i] = oldRequiresExactKeycard ? i == oldPassLV : i >= oldPassLV;
+			}
+		}
+
+		//don't try to load this data if it doesn't exist, otherwise everything will be "false"
 		if(tag.contains("acceptedLevels", NBT.TAG_COMPOUND))
 		{
 			CompoundNBT acceptedLevelsTag = tag.getCompound("acceptedLevels");
