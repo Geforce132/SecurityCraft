@@ -68,11 +68,16 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 
 		int buttonHeight = 13;
 		int buttonY = guiTop + 35;
+		int activeButtons = 0;
+		int firstActiveButton = -1;
 
+		//keycard level buttons
 		for(int i = 0; i < 5; i++)
 		{
+			final int id = i;
+
 			toggleButtons[i] = addButton(new TogglePictureButton(i, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, CROSS_TEXTURE, new int[]{0, 0}, new int[]{0, 0}, 1, 13, 13, 13, 13, 2, thisButton -> {
-				//isSmart is already implicitly handled by TogglePictureButton
+				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if(!isSmart)
 				{
 					for(int otherButtonId = 0; otherButtonId < 5; otherButtonId++)
@@ -84,8 +89,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 						else
 							active = otherButtonId >= thisButton.id;
 
-							toggleButtons[otherButtonId].setCurrentIndex(active ? 1 : 0);
-							acceptedLevels[otherButtonId] = active;
+							//update button state and data
+							changeLevelState(id, active);
 					}
 				}
 				else
@@ -97,7 +102,18 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 					return getCurrentIndex() == 0 ? CROSS_TEXTURE : CHECKMARK_TEXTURE;
 				}
 			});
-			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0);
+			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
+
+			if(!isSmart)
+			{
+				if(acceptedLevels[i])
+				{
+					if(firstActiveButton == -1)
+						firstActiveButton = i;
+
+					activeButtons++;
+				}
+			}
 		}
 
 		minusThree = addButton(new ExtendedButton(guiLeft + 22, buttonY, 24, buttonHeight, new StringTextComponent("---"), b -> changeSignature(signature - 100)));
@@ -114,17 +130,50 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		plusTwo = addButton(new ExtendedButton(guiLeft + 110, buttonY, 18, buttonHeight, new StringTextComponent("++"), b -> changeSignature(signature + 10)));
 		plusThree = addButton(new ExtendedButton(guiLeft + 130, buttonY, 24, buttonHeight, new StringTextComponent("+++"), b -> changeSignature(signature + 100)));
 		changeSignature(signature);
+		//link button
 		addButton(new ExtendedButton(guiLeft + 8, guiTop + 105, 70, 20, linkText, b -> System.out.println("boop")));
 
+		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if(!isSmart)
 		{
-			addButton(new ExtendedButton(guiLeft + 135, guiTop + 67, 18, 18, EQUALS, b -> {
+			if(activeButtons == 1)
+				isExactLevel = true;
+			else if(activeButtons == 0) //probably won't happen but just in case
+			{
+				isExactLevel = true;
+				acceptedLevels[0] = true;
+			}
+			else
+			{
+				boolean active = false;
+
+				isExactLevel = false;
+
+				//set all buttons prior to the first active button to false, and >= firstActiveButton to true
+				for(int i = 0; i < 5; i++)
+				{
+					if(i == firstActiveButton)
+						active = true;
+
+					changeLevelState(i, active);
+				}
+			}
+
+			addButton(new ExtendedButton(guiLeft + 135, guiTop + 67, 18, 18, isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
+				boolean change = false;
+
 				isExactLevel = !isExactLevel;
 
-				if(isExactLevel)
-					b.setMessage(EQUALS);
-				else
-					b.setMessage(GREATER_THAN_EQUALS);
+				//change keycard level buttons' states based on the =/>= button's state
+				for(int i = 0; i < 5; i++)
+				{
+					if(change)
+						changeLevelState(i, !isExactLevel);
+					else
+						change = acceptedLevels[i];
+				}
+
+				b.setMessage(isExactLevel ? EQUALS : GREATER_THAN_EQUALS);
 			}));
 		}
 	}
@@ -136,6 +185,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		font.drawText(matrix, signatureText, xSize / 2 - font.getStringPropertyWidth(signatureText) / 2, 23, 4210752);
 		font.drawText(matrix, keycardLevelsText, 170 - font.getStringPropertyWidth(keycardLevelsText), 56, 4210752);
 
+		//numbers infront of keycard levels buttons
 		for(int i = 1; i <= 5; i++)
 		{
 			font.drawString(matrix, "" + i, 91, 55 + 17 * i, 4210752);
@@ -159,6 +209,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	{
 		super.onClose();
 
+		//write new data to client te and send that data to the server, which verifies and updates it on its side
 		te.setAcceptedLevels(acceptedLevels);
 		te.setSignature(signature);
 		SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature));
@@ -180,5 +231,11 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		plusOne.active = enablePlusButtons;
 		plusTwo.active = enablePlusButtons;
 		plusThree.active = enablePlusButtons;
+	}
+
+	public void changeLevelState(int i, boolean active)
+	{
+		toggleButtons[i].setCurrentIndex(active ? 1 : 0);
+		acceptedLevels[i] = active;
 	}
 }
