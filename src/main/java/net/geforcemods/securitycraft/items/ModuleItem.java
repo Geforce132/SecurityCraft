@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.inventory.ModuleItemInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -135,21 +135,21 @@ public class ModuleItem extends Item{
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).setStyle(GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons, numberOfItemAddons).setStyle(GRAY_STYLE));
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).setStyle(GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).setStyle(GRAY_STYLE));
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).setStyle(GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).setStyle(GRAY_STYLE));
 
 			if(getNumberOfAddons() > 0 && !getAddons(stack.getTag()).isEmpty()) {
 				list.add(StringTextComponent.EMPTY);
 
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").setStyle(GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added").setStyle(GRAY_STYLE));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent("- ").appendSibling(ClientUtils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
+					list.add(new StringTextComponent("- ").appendSibling(Utils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
 			}
 		}
 	}

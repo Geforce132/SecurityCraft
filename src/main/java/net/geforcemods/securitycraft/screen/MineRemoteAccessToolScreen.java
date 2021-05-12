@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -32,7 +32,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
 	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
-	private final TranslationTextComponent mratName = ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
+	private final TranslationTextComponent mratName = Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey());
 	private ItemStack mrat;
 	private IdButton[][] guiButtons = new IdButton[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
@@ -107,10 +107,10 @@ public class MineRemoteAccessToolScreen extends Screen{
 						guiButtons[i][DEFUSE].active = active && defusable;
 						guiButtons[i][ACTIVATE].active = !active && defusable;
 						guiButtons[i][DETONATE].active = active;
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DEFUSE], ClientUtils.localize("gui.securitycraft:mrat.defuse")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][ACTIVATE], ClientUtils.localize("gui.securitycraft:mrat.activate")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DETONATE], ClientUtils.localize("gui.securitycraft:mrat.detonate")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse")));
+						hoverCheckers.add(new TextHoverChecker(guiButtons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate")));
+						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate")));
+						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -122,10 +122,10 @@ public class MineRemoteAccessToolScreen extends Screen{
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange")));
+						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
 
-					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind")));
+					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
 				}
 			}
 		}
@@ -149,9 +149,9 @@ public class MineRemoteAccessToolScreen extends Screen{
 			TranslationTextComponent line;
 
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = ClientUtils.localize("gui.securitycraft:mrat.notBound");
+				line = Utils.localize("gui.securitycraft:mrat.notBound");
 			else
-				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
+				line = Utils.localize("gui.securitycraft:mrat.mineLocations", new BlockPos(coords[0], coords[1], coords[2]));
 
 			font.drawText(matrix, line, startX + xSize / 2 - font.getStringPropertyWidth(line) + 25, startY + i * 30 + 13, 4210752);
 		}

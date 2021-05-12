@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -72,11 +71,11 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 						IFormattableTextComponent text;
 
 						if(hasCustomSCName())
-							text = ClientUtils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
 						else
-							text = ClientUtils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 
-						PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), text, TextFormatting.BLUE);
+						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), text, TextFormatting.BLUE);
 						setSentMessage();
 					}
 				}

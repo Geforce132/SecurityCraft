@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
@@ -227,12 +228,12 @@ public class SCClientEventHandler
 		GameSettings settings = Minecraft.getInstance().gameSettings;
 		SecurityCameraTileEntity te = (SecurityCameraTileEntity)world.getTileEntity(pos);
 		boolean hasRedstoneModule = te.hasModule(ModuleType.REDSTONE);
-		ITextComponent lookAround = ClientUtils.localize("gui.securitycraft:camera.lookAround", settings.keyBindForward.func_238171_j_(), settings.keyBindLeft.func_238171_j_(), settings.keyBindBack.func_238171_j_(), settings.keyBindRight.func_238171_j_());
-		ITextComponent exit = ClientUtils.localize("gui.securitycraft:camera.exit", settings.keyBindSneak.func_238171_j_());
-		ITextComponent zoom = ClientUtils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.func_238171_j_(), KeyBindings.cameraZoomOut.func_238171_j_());
-		ITextComponent nightVision = ClientUtils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
-		ITextComponent redstone = ClientUtils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.func_238171_j_());
-		ITextComponent redstoneNote = ClientUtils.localize("gui.securitycraft:camera.toggleRedstoneNote");
+		ITextComponent lookAround = Utils.localize("gui.securitycraft:camera.lookAround", settings.keyBindForward.func_238171_j_(), settings.keyBindLeft.func_238171_j_(), settings.keyBindBack.func_238171_j_(), settings.keyBindRight.func_238171_j_());
+		ITextComponent exit = Utils.localize("gui.securitycraft:camera.exit", settings.keyBindSneak.func_238171_j_());
+		ITextComponent zoom = Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.func_238171_j_(), KeyBindings.cameraZoomOut.func_238171_j_());
+		ITextComponent nightVision = Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.func_238171_j_());
+		ITextComponent redstone = Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.func_238171_j_());
+		ITextComponent redstoneNote = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 		String time = ClientUtils.getFormattedMinecraftTime();
 		int timeY = 25;
 

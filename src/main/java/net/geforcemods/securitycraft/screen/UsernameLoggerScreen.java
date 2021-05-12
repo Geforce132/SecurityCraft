@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -31,8 +31,8 @@ import net.minecraftforge.client.gui.ScrollPanel;
 public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent logged = ClientUtils.localize("gui.securitycraft:logger.logged");
-	private final TranslationTextComponent clear = ClientUtils.localize("gui.securitycraft:editModule.clear");
+	private final TranslationTextComponent logged = Utils.localize("gui.securitycraft:logger.logged");
+	private final TranslationTextComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
 	private UsernameLoggerTileEntity tileEntity;
 	private PlayerList playerList;
 
@@ -155,7 +155,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
-						TranslationTextComponent localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+						TranslationTextComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);

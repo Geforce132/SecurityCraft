@@ -4,24 +4,15 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ClientUtils{
-
-	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getInstance().player.closeScreen();
 	}
 
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static String getFormattedMinecraftTime(){
 		Long time = Minecraft.getInstance().world.getDayTime();
 
@@ -34,30 +25,8 @@ public class ClientUtils{
 
 	/**
 	 * Sends the client-side CompoundNBT of a player's held item to the server.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
-	}
-
-	/**
-	 * Localizes a String with the given format
-	 * @param key The string to localize (aka the identifier in the .lang file)
-	 * @param params The parameters to insert into the String ala String.format
-	 * @return The localized String
-	 */
-	public static TranslationTextComponent localize(String key, Object... params)
-	{
-		for(int i = 0; i < params.length; i++)
-		{
-			if(params[i] instanceof TranslationTextComponent)
-				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getFormatArgs());
-			else if(params[i] instanceof BlockPos)
-				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
-		}
-
-		return new TranslationTextComponent(key, params);
 	}
 }

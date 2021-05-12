@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.LivingEntity;
@@ -38,7 +38,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 
 			if(!getOwner().isOwner(player) && (!hasModule(ModuleType.WHITELIST) || !ModuleUtils.getPlayersFromModule(getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
@@ -53,7 +53,7 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 				world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
 		}
 	}
 

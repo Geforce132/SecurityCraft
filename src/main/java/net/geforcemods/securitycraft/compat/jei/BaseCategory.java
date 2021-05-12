@@ -5,14 +5,14 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
 {
-	protected static final TranslationTextComponent OUTPUT_TEXT = ClientUtils.localize("gui.securitycraft:blockReinforcer.output");
+	protected static final TranslationTextComponent OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final IDrawable background;
 	private final IDrawable icon;
 

@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -85,12 +85,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 
 				if(option instanceof ISlider && option.isSlider())
 				{
-					TranslationTextComponent translatedBlockName = ClientUtils.localize(blockName);
+					TranslationTextComponent translatedBlockName = Utils.localize(blockName);
 
 					if(option instanceof DoubleOption)
-						optionButtons[i] = new NamedSlider(ClientUtils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption)option).getMin(), ((DoubleOption)option).getMax(), ((DoubleOption)option).get(), true, false, (ISlider)option, null);
 					else if(option instanceof IntOption)
-						optionButtons[i] = new NamedSlider(ClientUtils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option, null);
+						optionButtons[i] = new NamedSlider(Utils.localize("option" + blockName + "." + option.getName(), option.toString()), translatedBlockName, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption)option).getMin(), ((IntOption)option).getMax(), ((IntOption)option).get(), true, false, (ISlider)option, null);
 
 					optionButtons[i].setFGColor(14737632);
 				}
@@ -147,9 +147,9 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		TranslationTextComponent s = ClientUtils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
+		TranslationTextComponent s = Utils.localize(moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey());
 		font.drawText(matrix, s, xSize / 2 - font.getStringPropertyWidth(s) / 2, 6, 4210752);
-		font.drawText(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawText(matrix, Utils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -174,21 +174,21 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	private ITextComponent getModuleDescription(int buttonID) {
 		String moduleDescription = "module" + blockName + "." + descriptionButtons[buttonID].getItemStack().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 
-		return ClientUtils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey())
+		return Utils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey())
 				.appendSibling(new StringTextComponent(":"))
 				.mergeStyle(TextFormatting.RESET)
 				.appendSibling(new StringTextComponent("\n\n"))
-				.appendSibling(ClientUtils.localize(moduleDescription));
+				.appendSibling(Utils.localize(moduleDescription));
 	}
 
 	private TranslationTextComponent getOptionDescription(int buttonID) {
 		String optionDescription = "option" + blockName + "." +  ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
 
-		return ClientUtils.localize(optionDescription);
+		return Utils.localize(optionDescription);
 	}
 
 	private ITextComponent getOptionButtonTitle(Option<?> option) {
-		return ClientUtils.localize("option" + blockName + "." + option.getName(), option.toString());
+		return Utils.localize("option" + blockName + "." + option.getName(), option.toString());
 	}
 
 	public List<Rectangle2d> getGuiExtraAreas()

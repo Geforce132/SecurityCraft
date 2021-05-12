@@ -22,7 +22,7 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -85,7 +85,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if(config.get(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(ClientUtils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()));
+			body.add(Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()));
 
 		if(disguised)
 			return;
@@ -93,7 +93,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		//if the te is ownable, show modules only when it's owned, otherwise always show
 		if(config.get(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
 			if(!((IModuleInventory) te).getInsertedModules().isEmpty())
-				body.add(ClientUtils.localize("waila.securitycraft:equipped"));
+				body.add(Utils.localize("waila.securitycraft:equipped"));
 
 			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
 				body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
@@ -102,13 +102,13 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
 			String password = ((IPasswordProtected) te).getPassword();
 
-			body.add(ClientUtils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet"))));
+			body.add(Utils.localize("waila.securitycraft:password", (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet"))));
 		}
 
 		if(config.get(SHOW_CUSTOM_NAME) && te instanceof INameable && ((INameable) te).canBeNamed()){
 			ITextComponent text = ((INameable) te).getCustomSCName();
 
-			body.add(ClientUtils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? text : ClientUtils.localize("waila.securitycraft:customName.notSet"))));
+			body.add(Utils.localize("waila.securitycraft:customName", (((INameable) te).hasCustomSCName() ? text : Utils.localize("waila.securitycraft:customName.notSet"))));
 		}
 	}
 
@@ -122,13 +122,13 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 			SentryMode mode = sentry.getMode();
 
 			if(config.get(SHOW_OWNER))
-				body.add(ClientUtils.localize("waila.securitycraft:owner", sentry.getOwner().getName()));
+				body.add(Utils.localize("waila.securitycraft:owner", sentry.getOwner().getName()));
 
 			if(config.get(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer())){
 
 				if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 				{
-					body.add(ClientUtils.localize("waila.securitycraft:equipped"));
+					body.add(Utils.localize("waila.securitycraft:equipped"));
 
 					if(!sentry.getWhitelistModule().isEmpty())
 						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
@@ -138,10 +138,10 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				}
 			}
 
-			IFormattableTextComponent modeDescription = ClientUtils.localize(mode.getModeKey());
+			IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
 
 			if(mode != SentryMode.IDLE)
-				modeDescription.appendString("- ").appendSibling(ClientUtils.localize(mode.getTargetKey()));
+				modeDescription.appendString("- ").appendSibling(Utils.localize(mode.getTargetKey()));
 
 			body.add(modeDescription);
 		}

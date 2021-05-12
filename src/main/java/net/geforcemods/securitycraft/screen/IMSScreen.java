@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.network.server.SyncIMSTargetingOption;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity.IMSTargetingMode;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -23,8 +23,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent imsName = ClientUtils.localize(SCContent.IMS.get().getTranslationKey());
-	private final TranslationTextComponent target = ClientUtils.localize("gui.securitycraft:ims.target");
+	private final TranslationTextComponent imsName = Utils.localize(SCContent.IMS.get().getTranslationKey());
+	private final TranslationTextComponent target = Utils.localize("gui.securitycraft:ims.target");
 
 	private IMSTileEntity tileEntity;
 	private IdButton targetButton;
@@ -72,7 +72,7 @@ public class IMSScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	private void updateButtonText() {
-		targetButton.setMessage(ClientUtils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)));
+		targetButton.setMessage(Utils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)));
 	}
 
 }
