@@ -151,7 +151,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 			else if(activeButtons == 0) //probably won't happen but just in case
 			{
 				isExactLevel = true;
-				acceptedLevels[0] = true;
+				changeLevelState(0, true);
 			}
 			else
 			{
