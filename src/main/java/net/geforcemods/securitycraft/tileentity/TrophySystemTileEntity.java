@@ -1,25 +1,42 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.OwnableTileEntity;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.entity.BulletEntity;
+import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ExperienceBottleEntity;
+import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.ShulkerBulletEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.entity.projectile.PotionEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.entity.projectile.TridentEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.fml.network.PacketDistributor;
 
-public class TrophySystemTileEntity extends OwnableTileEntity implements ITickableTileEntity {
+public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
@@ -31,6 +48,7 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
 
+	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	public Entity entityBeingTargeted = null;
 	public int cooldown = COOLDOWN_TIME;
 	private final Random random = new Random();
@@ -38,17 +56,39 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	public TrophySystemTileEntity()
 	{
 		super(SCContent.teTypeTrophySystem);
+		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
+		//ordering is done in TrophySystemScreen based on the user's current language
+		projectileFilter.put(SCContent.eTypeBullet, true);
+		projectileFilter.put(EntityType.SPECTRAL_ARROW, true);
+		projectileFilter.put(EntityType.ARROW, true);
+		projectileFilter.put(EntityType.SMALL_FIREBALL, true);
+		projectileFilter.put(SCContent.eTypeImsBomb, true);
+		projectileFilter.put(EntityType.FIREBALL, true);
+		projectileFilter.put(EntityType.DRAGON_FIREBALL, true);
+		projectileFilter.put(EntityType.WITHER_SKULL, true);
+		projectileFilter.put(EntityType.SHULKER_BULLET, true);
+		projectileFilter.put(EntityType.LLAMA_SPIT, true);
+		projectileFilter.put(EntityType.EGG, true);
+		projectileFilter.put(EntityType.ENDER_PEARL, true);
+		projectileFilter.put(EntityType.SNOWBALL, true);
+		projectileFilter.put(EntityType.FIREWORK_ROCKET, true);
+		projectileFilter.put(EntityType.PIG, false); //modded projectiles
 	}
 
 	@Override
 	public void tick() {
-		// If the trophy does not have a target, try looking for one
-		if(entityBeingTargeted == null) {
-			Entity target = getTarget();
-			UUID shooterUUID = getShooterUUID(target);
+		if (!world.isRemote) {
+			// If the trophy does not have a target, try looking for one
+			if(entityBeingTargeted == null) {
+				Entity target = getPotentialTarget();
 
-			if(target != null && (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID()))) {
-				entityBeingTargeted = target;
+				if(target != null) {
+					UUID shooterUUID = getShooterUUID(target);
+
+					if (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID())) {
+						setTarget(target);
+					}
+				}
 			}
 		}
 
@@ -76,6 +116,45 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
 	}
 
+	@Override
+	public CompoundNBT write(CompoundNBT tag) {
+		super.write(tag);
+
+		CompoundNBT projectilesNBT = new CompoundNBT();
+		int i = 0;
+
+		for (boolean b : projectileFilter.values()) {
+			projectilesNBT.putBoolean("projectile" + i, b);
+			i++;
+		}
+
+		tag.put("projectiles", projectilesNBT);
+		return tag;
+	}
+
+	@Override
+	public void read(CompoundNBT tag) {
+		super.read(tag);
+
+		if (tag.contains("projectiles", NBT.TAG_COMPOUND)) {
+			CompoundNBT projectilesNBT = tag.getCompound("projectiles");
+			int i = 0;
+
+			for (EntityType<?> projectileType : projectileFilter.keySet()) {
+				projectileFilter.put(projectileType, projectilesNBT.getBoolean("projectile" + i));
+				i++;
+			}
+		}
+	}
+
+	public void setTarget(Entity target) {
+		this.entityBeingTargeted = target;
+
+		if (!world.isRemote) {
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(pos, target.getEntityId()));
+		}
+	}
+
 	/**
 	 * Deletes the targeted entity and creates a small explosion where it last was
 	 */
@@ -100,18 +179,14 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 	 * Randomly returns a new Entity target from the list of all entities
 	 * within range of the trophy
 	 */
-	private Entity getTarget() {
+	private Entity getPotentialTarget() {
 		List<Entity> potentialTargets = new ArrayList<>();
 		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
 
-		// Add all arrows and fireballs to the targets list. Could always add more
-		// projectile types if we think of any
-		potentialTargets.addAll(world.getEntitiesWithinAABB(AbstractArrowEntity.class, area, e -> !(e instanceof TridentEntity))); //ignore tridents
-		potentialTargets.addAll(world.getEntitiesWithinAABB(DamagingProjectileEntity.class, area));
-		potentialTargets.addAll(world.getEntitiesWithinAABB(ShulkerBulletEntity.class, area));
+		potentialTargets.addAll(world.getEntitiesWithinAABB(Entity.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries of this trophy system's owner
-		potentialTargets = potentialTargets.stream().filter(e -> !(e instanceof BulletEntity && ((BulletEntity)e).getOwner().equals(getOwner()))).collect(Collectors.toList());
+		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if(potentialTargets.size() <= 0) return null;
@@ -122,16 +197,84 @@ public class TrophySystemTileEntity extends OwnableTileEntity implements ITickab
 		return potentialTargets.get(target);
 	}
 
+	private boolean isAllowedToTarget(Entity target) {
+		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
+			return false;
+
+		//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
+		return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
+	}
+
+	private boolean filterSCProjectiles(Entity projectile) {
+		if (projectile instanceof BulletEntity)
+			return !((BulletEntity)projectile).getOwner().equals(getOwner());
+		else if (projectile instanceof IMSBombEntity)
+			return !((IMSBombEntity)projectile).getOwner().equals(getOwner());
+
+		return true;
+	}
+
 	/**
 	 * Returns the UUID of the player who shot the given Entity
 	 */
-	public UUID getShooterUUID(Entity entity) {
-		if(entity instanceof AbstractArrowEntity && ((AbstractArrowEntity) entity).shootingEntity != null)
-			return ((AbstractArrowEntity) entity).shootingEntity;
-		else if(entity instanceof FireballEntity && ((FireballEntity) entity).shootingEntity != null && ((FireballEntity) entity).shootingEntity.getUniqueID() != null)
-			return ((FireballEntity) entity).shootingEntity.getUniqueID();
-		else
-			return null;
+	public UUID getShooterUUID(Entity projectile) {
+		if(projectile instanceof AbstractArrowEntity) //arrows, spectral arrows and sentry bullets
+			return ((AbstractArrowEntity) projectile).shootingEntity;
+
+		LivingEntity shooter = null;
+
+		if(projectile instanceof DamagingProjectileEntity) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
+			shooter = ((DamagingProjectileEntity) projectile).shootingEntity;
+		else if (projectile instanceof FireworkRocketEntity)
+			shooter = ((FireworkRocketEntity)projectile).boostedEntity;
+		else if (projectile instanceof ThrowableEntity) //eggs, snowballs and ender pearls
+			shooter = ((ThrowableEntity)projectile).getThrower();
+
+		return shooter != null ? shooter.getUniqueID() : null;
 	}
 
+	public void toggleFilter(EntityType<?> projectileType) {
+		setFilter(projectileType, !projectileFilter.get(projectileType));
+	}
+
+	public void setFilter(EntityType<?> projectileType, boolean allowed) {
+		if(projectileFilter.containsKey(projectileType))
+		{
+			projectileFilter.put(projectileType, allowed);
+
+			if (world.isRemote) {
+				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileType, allowed));
+			}
+		}
+	}
+
+	public boolean getFilter(EntityType<?> projectileType) {
+		return projectileFilter.get(projectileType);
+	}
+
+	public Map<EntityType<?>,Boolean> getFilters()
+	{
+		return projectileFilter;
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module) {
+		super.onModuleRemoved(stack, module);
+
+		if (module == ModuleType.SMART) {
+			for (EntityType<?> projectileType : projectileFilter.keySet()) {
+				projectileFilter.put(projectileType, projectileType != EntityType.PIG);
+			}
+		}
+	}
+
+	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[]{ModuleType.SMART};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return null;
+	}
 }

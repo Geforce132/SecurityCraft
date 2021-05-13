@@ -49,6 +49,7 @@ import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
@@ -190,6 +191,7 @@ public class ClientProxy implements IProxy {
 		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
 		KeyBindings.init();
 	}
 
