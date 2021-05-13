@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
@@ -109,23 +108,6 @@ public class ModuleUtils{
 
 				return true;
 			}
-		}else if(te instanceof KeycardReaderTileEntity){
-			KeycardReaderTileEntity reader = (KeycardReaderTileEntity)te;
-
-			if(module == ModuleType.WHITELIST && reader.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){
-				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
-
-				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
-				return true;
-			}
-
-			if(module == ModuleType.BLACKLIST && reader.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getString().toLowerCase())){
-				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
-
-				return true;
-			}
 		}else if(te instanceof RetinalScannerTileEntity){
 			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
@@ -136,7 +118,7 @@ public class ModuleUtils{
 			if(module == ModuleType.WHITELIST && ((SecretSignTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
 				return true;
 		}
-		if(te instanceof SpecialDoorTileEntity){
+		else if(te instanceof SpecialDoorTileEntity){
 			SpecialDoorTileEntity door = (SpecialDoorTileEntity)te;
 
 			if(module == ModuleType.WHITELIST && door.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){

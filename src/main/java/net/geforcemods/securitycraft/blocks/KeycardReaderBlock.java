@@ -4,8 +4,9 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.KeycardItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,10 +53,18 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	{
 		if(!world.isRemote)
 		{
-			if(player.getHeldItem(hand).isEmpty() || (!(player.getHeldItem(hand).getItem() instanceof KeycardItem) && player.getHeldItem(hand).getItem() != SCContent.ADMIN_TOOL.get()))
-				NetworkHooks.openGui((ServerPlayerEntity)player, ((KeycardReaderTileEntity) world.getTileEntity(pos)), pos);
+			ItemStack stack = player.getHeldItem(hand);
+
+			if(!(stack.getItem() instanceof KeycardItem) && stack.getItem() != SCContent.ADMIN_TOOL.get())
+			{
+				KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
+
+				//only allow the owner and whitelisted players to open the gui
+				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
+					NetworkHooks.openGui((ServerPlayerEntity)player, te, pos);
+			}
 			else
-				((KeycardReaderBlock) BlockUtils.getBlock(world, pos)).insertCard(world, pos, player.getHeldItem(hand), player);
+				insertCard(world, pos, stack, player);
 		}
 
 		return ActionResultType.SUCCESS;

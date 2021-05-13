@@ -43,6 +43,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private final ITextComponent smartModule = ClientUtils.localize("gui.securitycraft:keycard_reader.smartModule");
 	private final KeycardReaderTileEntity te;
 	private boolean isSmart;
+	private boolean isOwner;
 	private boolean isExactLevel = true;
 	private int previousSignature;
 	private int signature;
@@ -62,6 +63,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		signature = previousSignature;
 		acceptedLevels = te.getAcceptedLevels();
 		isSmart = te.hasModule(ModuleType.SMART);
+		isOwner = te.getOwner().isOwner(inv.player);
 		ySize = 249;
 	}
 
@@ -105,6 +107,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				}
 			});
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
+			toggleButtons[i].active = isOwner;
 
 			if(!isSmart)
 			{
@@ -181,7 +184,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				}
 
 				b.setMessage(isExactLevel ? EQUALS : GREATER_THAN_EQUALS);
-			}));
+			})).active = isOwner;
 		}
 	}
 
@@ -222,7 +225,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta)
 	{
-		if(mouseX >= guiLeft + signatureTextStartX && mouseY >= guiTop + 23 && mouseX <= guiLeft + signatureTextStartX + signatureTextLength && mouseY <= guiTop + 43)
+		if(isOwner && mouseX >= guiLeft + signatureTextStartX && mouseY >= guiTop + 23 && mouseX <= guiLeft + signatureTextStartX + signatureTextLength && mouseY <= guiTop + 43)
 			changeSignature(signature + (int)Math.signum(delta));
 
 		return super.mouseScrolled(mouseX, mouseY, delta);
@@ -233,10 +236,13 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	{
 		super.onClose();
 
-		//write new data to client te and send that data to the server, which verifies and updates it on its side
-		te.setAcceptedLevels(acceptedLevels);
-		te.setSignature(signature);
-		SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, false));
+		if(isOwner)
+		{
+			//write new data to client te and send that data to the server, which verifies and updates it on its side
+			te.setAcceptedLevels(acceptedLevels);
+			te.setSignature(signature);
+			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, false));
+		}
 	}
 
 	public void changeSignature(int newSignature)
@@ -244,16 +250,19 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
-		signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
+		if(isOwner)
+			signature = Math.max(0, Math.min(newSignature, Short.MAX_VALUE)); //keep between 0 and 32767 (disallow negative numbers)
+
 		signatureText = new TranslationTextComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
 		signatureTextLength = font.getStringPropertyWidth(signatureText);
 		signatureTextStartX = xSize / 2 - signatureTextLength / 2;
-		enablePlusButtons = signature != Short.MAX_VALUE;
-		enableMinusButtons = signature != 0;
+
+		enablePlusButtons = isOwner && signature != Short.MAX_VALUE;
+		enableMinusButtons = isOwner && signature != 0;
 		minusThree.active = enableMinusButtons;
 		minusTwo.active = enableMinusButtons;
 		minusOne.active = enableMinusButtons;
-		reset.active = signature != previousSignature;
+		reset.active = isOwner && signature != previousSignature;
 		plusOne.active = enablePlusButtons;
 		plusTwo.active = enablePlusButtons;
 		plusThree.active = enablePlusButtons;
@@ -261,7 +270,10 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 
 	public void changeLevelState(int i, boolean active)
 	{
-		toggleButtons[i].setCurrentIndex(active ? 1 : 0);
-		acceptedLevels[i] = active;
+		if(isOwner)
+		{
+			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
+			acceptedLevels[i] = active;
+		}
 	}
 }
