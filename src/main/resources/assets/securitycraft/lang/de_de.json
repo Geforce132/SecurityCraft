@@ -679,6 +679,7 @@
 	"gui.securitycraft:keycard_reader.link": "Verbinden",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Du musst ein schlaues Modul installieren, um die Schlüsselkarten-Level individuell zu kontrollieren.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individuelle Kontrolle von Schlüsselkarten-Level aktiv!",
+	"gui.securitycraft:keycard_reader.level_mismatch": "Der Level dieser Schlüsselkarte ist nicht aktiviert!",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
@@ -966,5 +967,6 @@
 	"securitycraft.subtitle.camerazoomin": "Kamerazoom",
 	"securitycraft.subtitle.camerasnap": "Kamerablende",
 	"securitycraft.subtitle.taserfire": "Taser wird gefeuert",
-	"securitycraft.subtitle.lock": "Behälter wird verschlossen"
+	"securitycraft.subtitle.lock": "Behälter wird verschlossen",
+	"securitycraft.subtitle.get_item": "Item bekommen!"
 }

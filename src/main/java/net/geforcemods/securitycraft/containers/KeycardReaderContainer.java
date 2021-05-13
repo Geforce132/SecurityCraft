@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public class KeycardReaderContainer extends Container
 {
 	private final Inventory itemInventory = new Inventory(1);
-	private final Slot keycardSlot;
+	public final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
 
 	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
@@ -59,6 +59,7 @@ public class KeycardReaderContainer extends Container
 			tag.putInt("signature", te.getSignature());
 			tag.putString("ownerName", te.getOwner().getName());
 			tag.putString("ownerUUID", te.getOwner().getUUID());
+			tag.putInt("uses", -1); //unlimited
 		}
 	}
 
