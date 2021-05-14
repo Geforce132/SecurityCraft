@@ -44,8 +44,10 @@ import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
+import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
+import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
@@ -420,13 +422,13 @@ public class RegistrationHandler
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "sentry"), 5)
 				.entity(EntitySentry.class)
-				.name(SecurityCraft.MODID + ":sentry")
+				.name("Sentry")
 				.tracker(256, 1, true).build());
 
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "bullet"), 6)
 				.entity(EntityBullet.class)
-				.name(SecurityCraft.MODID + ":bullet")
+				.name("SentryBullet")
 				.tracker(256, 1, true).build());
 	}
 
@@ -459,6 +461,8 @@ public class RegistrationHandler
 		network.registerMessage(AssembleBlockPocket.Handler.class, AssembleBlockPocket.class, 30, Side.SERVER);
 		network.registerMessage(SyncProjector.Handler.class, SyncProjector.class, 31, Side.SERVER);
 		network.registerMessage(SyncBlockPocketManager.Handler.class, SyncBlockPocketManager.class, 32, Side.SERVER);
+		network.registerMessage(SyncTrophySystem.Handler.class, SyncTrophySystem.class, 33, Side.SERVER);
+		network.registerMessage(SetTrophySystemTarget.Handler.class, SetTrophySystemTarget.class, 34, Side.CLIENT);
 	}
 
 	@SubscribeEvent
@@ -894,7 +898,7 @@ public class RegistrationHandler
 	 * @param block The Block to register
 	 * @param itemBlock The ItemBlock to register
 	 * @param initPage Wether a SecurityCraft Manual page should be added for the block
-	 * @param The name of the person who designed this block
+	 * @param designedBy The name of the person who designed this block
 	 */
 	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, ItemBlock itemBlock, boolean initPage, String designedBy)
 	{

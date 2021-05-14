@@ -2,16 +2,21 @@ package net.geforcemods.securitycraft.entity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
 public class EntityIMSBomb extends EntityFireball {
 
+	private static final DataParameter<Owner> OWNER = EntityDataManager.createKey(EntityIMSBomb.class, Owner.getSerializer());
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
@@ -21,10 +26,14 @@ public class EntityIMSBomb extends EntityFireball {
 		setSize(0.25F, 0.3F);
 	}
 
-	public EntityIMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height){
+	public EntityIMSBomb(World world, double x, double y, double z, double accelerationX, double accelerationY, double accelerationZ, int height, TileEntityIMS te){
 		super(world, x, y, z, accelerationX, accelerationY, accelerationZ);
 		setSize(0.25F, 0.3F);
 		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
+
+		Owner owner = te.getOwner();
+
+		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 	}
 
 	@Override
@@ -75,6 +84,22 @@ public class EntityIMSBomb extends EntityFireball {
 		ticksFlying = tag.getInteger("ticksFlying");
 		launching = tag.getBoolean("launching");
 	}
+
+	/**
+	 * @return The owner of the IMS which shot this bullet
+	 */
+	public Owner getOwner()
+	{
+		return dataManager.get(OWNER);
+	}
+
+	@Override
+	protected void entityInit()
+	{
+		super.entityInit();
+		dataManager.register(OWNER, new Owner());
+	}
+
 
 	@Override
 	protected float getMotionFactor(){

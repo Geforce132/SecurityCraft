@@ -75,7 +75,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 				double accelerationY = target.getEntityBoundingBox().minY + target.height / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = target.posZ - pos.getZ();
 
-				world.spawnEntity(new EntityIMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight));
+				world.spawnEntity(new EntityIMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 				bombsRemaining--;
 				updateBombCount = true;

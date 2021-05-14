@@ -1,13 +1,18 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -56,6 +61,19 @@ public class BlockTrophySystem extends BlockOwnable {
 			world.setBlockToAir(pos);
 		}
 	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
+			if (!world.isRemote)
+				player.openGui(SecurityCraft.instance, GuiHandler.TROPHY_SYSTEM_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
+
+			return true;
+		}
+
+		return false;
+	}
+
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

@@ -7,6 +7,8 @@
 - New: Changing the owner of a block will now drop contained modules and storage module inventory
 - New: Configuration option "mineExplosionsBreakBlocks" to control whether explosions of mines break blocks
 - New: The Username Logger now supports the Allowlist Module, making it possible to prevent players on the list from being logged
+- New: The Trophy System is now also capable of targeting Ender Pearls, Snowballs, Eggs, Llama Spit and Firework Rockets
+- New: Inserting a Smart Module into a Trophy System now allows its owner to manually configure which projectile types the Trophy System is allowed to target
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
 - Change: The Whitelist Module has been renamed to "Allowlist Module" to be more clear about its function

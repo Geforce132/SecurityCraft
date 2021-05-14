@@ -32,7 +32,7 @@ public class EntityBullet extends EntityArrow
 	}
 
 	/**
-	 * @return The owner of the sentry who shot this bullet
+	 * @return The owner of the sentry which shot this bullet
 	 */
 	public Owner getOwner()
 	{

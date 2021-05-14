@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,6 +47,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int BRIEFCASE_INSERT_CODE_GUI_ID = 14;
 	public static final int BRIEFCASE_GUI_ID = 15;
 	public static final int KEY_CHANGER_GUI_ID = 16;
+	public static final int TROPHY_SYSTEM_GUI_ID = 17;
 	public static final int CUSTOMIZE_BLOCK = 100;
 	public static final int DISGUISE_MODULE = 102;
 	public static final int BLOCK_REINFORCER = 103;
@@ -93,6 +95,8 @@ public class GuiHandler implements IGuiHandler {
 			case KEY_CHANGER_GUI_ID:
 				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
+				return new ContainerGeneric(player.inventory, te);
+			case TROPHY_SYSTEM_GUI_ID:
 				return new ContainerGeneric(player.inventory, te);
 			case CUSTOMIZE_BLOCK:
 				return new ContainerCustomizeBlock(player.inventory, (IModuleInventory) te);
@@ -166,6 +170,8 @@ public class GuiHandler implements IGuiHandler {
 				if(te == null || !PlayerUtils.isHoldingItem(player, SCContent.universalKeyChanger, null))
 					return null;
 				return new GuiKeyChanger(player.inventory, te);
+			case TROPHY_SYSTEM_GUI_ID:
+				return new GuiTrophySystem(player.inventory, (TileEntityTrophySystem) te);
 			case CUSTOMIZE_BLOCK:
 				return new GuiCustomizeBlock(player.inventory, (IModuleInventory) te);
 			case DISGUISE_MODULE:

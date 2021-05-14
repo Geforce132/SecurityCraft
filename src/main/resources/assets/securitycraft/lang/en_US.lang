@@ -324,8 +324,9 @@ item.securitycraft:sentry.name=Sentry
 item.securitycraft:crystalQuartzItem.name=Crystal Quartz
 item.securitycraft:keypad_door_item.name=Keypad Door
 
+entity.securitycraft:imsbomb.name=I.M.S. Bomb
 entity.securitycraft:sentry.name=Sentry
-entity.securitycraft:bullet.name=Bullet
+entity.securitycraft:bullet.name=Sentry Bullet
 
 death.attack.securitycraft.laser=%s was sliced to death by a laser
 death.attack.securitycraft.laser.player=%1$s was sliced to death by a laser whilst fighting %2$s
@@ -542,6 +543,10 @@ gui.securitycraft:projector.vertical=Vertical projection
 gui.securitycraft:projector.horizontal=Horizontal projection
 gui.securitycraft:projector.block=Insert block to project
 gui.securitycraft:keypadChestDouble=Large Password-protected Chest
+gui.securitycraft:trophy_system.targetableProjectiles=Targetable Projectiles:
+gui.securitycraft:trophy_system.moduleRequired=You need to install a Smart Module to toggle which projectile types can be targeted by this Trophy System.
+gui.securitycraft:trophy_system.toggle=Click the entries in the list below to toggle the targeting of that specific projectile type.
+gui.securitycraft:trophy_system.moddedProjectiles=Modded Projectiles
 
 messages.securitycraft:bugReport=Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please
 messages.securitycraft:retinalScanner.hello=Hello %s.
@@ -719,6 +724,7 @@ module.securitycraft:reinforced_hopper.whitelistModule.description=Adding an all
 module.securitycraft:keypad_door.whitelistModule.description=Adding an allowlist module to a keypad door will allow players on the list to use the block without knowing the code.
 module.securitycraft:keypad_door.blacklistModule.description=Adding a denylist module to a keypad door will ban players on the list from interacting with the block.
 module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.
+module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
