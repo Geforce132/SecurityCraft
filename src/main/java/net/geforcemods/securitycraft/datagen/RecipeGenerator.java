@@ -62,6 +62,7 @@ public class RecipeGenerator extends RecipeProvider
 		harmingStack.setTag(harmingNBT);
 		strongHarmingStack.setTag(strongHarmingNBT);
 
+		//combine keycard with limited use keycard to get keycards with the a configurable limited amount of uses
 		CustomRecipeBuilder.customRecipe(LimitedUseKeycardRecipe.serializer).build(consumer, "limited_use_keycards");
 
 		//shaped recipes
@@ -667,6 +668,12 @@ public class RecipeGenerator extends RecipeProvider
 		addKeycardRecipe(consumer, Tags.Items.DYES_MAGENTA, SCContent.KEYCARD_LVL_4.get());
 		addKeycardRecipe(consumer, Tags.Items.DYES_PURPLE, SCContent.KEYCARD_LVL_5.get());
 		addKeycardRecipe(consumer, Tags.Items.GEMS_LAPIS, SCContent.LIMITED_USE_KEYCARD.get());
+		//recipes to reset linked keycards
+		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_1.get());
+		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_2.get());
+		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_3.get());
+		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_4.get());
+		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_5.get());
 		addModuleRecipe(consumer, Items.INK_SAC, SCContent.BLACKLIST_MODULE.get());
 		addModuleRecipe(consumer, Items.PAINTING, SCContent.DISGUISE_MODULE.get());
 		addModuleRecipe(consumer, ItemTags.ARROWS, SCContent.HARMING_MODULE.get());
@@ -1081,6 +1088,14 @@ public class RecipeGenerator extends RecipeProvider
 		.key('S', specialIngredient)
 		.addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON))
 		.build(consumer);
+	}
+
+	protected final void addKeycardResetRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider keycard)
+	{
+		ShapelessRecipeBuilder.shapelessRecipe(keycard)
+		.addIngredient(keycard)
+		.addCriterion("has_keycard", hasItem(keycard))
+		.build(consumer, new ResourceLocation(SecurityCraft.MODID, keycard.asItem().getRegistryName().getPath() + "_reset"));
 	}
 
 	protected final void addModuleRecipe(Consumer<IFinishedRecipe> consumer, IItemProvider specialIngredient, IItemProvider result)
