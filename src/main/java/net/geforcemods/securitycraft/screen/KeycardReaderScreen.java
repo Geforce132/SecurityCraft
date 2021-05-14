@@ -164,10 +164,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				minecraft.getSoundHandler().play(SimpleSound.master(SCSounds.GET_ITEM.event, 1.0F));
 		}));
 		//button for saving the amount of limited uses onto the keycard
-		setUsesButton = addButton(new PictureButton(-1, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> {
-			SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())));
-			b.active = false;
-		}) {
+		setUsesButton = addButton(new PictureButton(-1, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())))) {
 			@Override
 			public ResourceLocation getTextureLocation()
 			{
