@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
@@ -31,7 +31,7 @@ public class DisguiseModuleScreen extends ContainerScreen<DisguiseModuleContaine
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String disguiseModuleName = ClientUtils.localize(SCContent.DISGUISE_MODULE.get().getTranslationKey()).getFormattedText();
+		String disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getTranslationKey()).getFormattedText();
 		font.drawString(disguiseModuleName, xSize / 2 - font.getStringWidth(disguiseModuleName) / 2, 6, 4210752);
 	}
 

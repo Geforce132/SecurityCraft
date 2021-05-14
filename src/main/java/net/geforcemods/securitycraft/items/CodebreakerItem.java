@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.BriefcaseContainer;
 import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -39,7 +39,7 @@ public class CodebreakerItem extends Item {
 
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
 			if(!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.BRIEFCASE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 				return ActionResult.newResult(ActionResultType.SUCCESS, codebreaker);
 			}
 			else {
@@ -63,7 +63,7 @@ public class CodebreakerItem extends Item {
 					}, player.getPosition());
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.CODEBREAKER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
 
 			return ActionResult.newResult(ActionResultType.SUCCESS, codebreaker);

@@ -7,9 +7,9 @@ import net.geforcemods.securitycraft.items.BaseKeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,9 +68,9 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		}
 		else {
 			if(requiredLevel == -1)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), Utils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:keycardReader.required", te.getPassword(), ((BaseKeycardItem) stack.getItem()).getKeycardLvl()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), Utils.localize("messages.securitycraft:keycardReader.required", te.getPassword(), ((BaseKeycardItem) stack.getItem()).getKeycardLvl()), TextFormatting.RED);
 		}
 	}
 

@@ -6,9 +6,9 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -63,7 +63,7 @@ public class KeypadChestBlock extends ChestBlock {
 					if (chest1.hasCustomName()) {
 						return chest1.getDisplayName();
 					} else {
-						return chest2.hasCustomName() ? chest2.getDisplayName() : ClientUtils.localize("block.securitycraft.keypad_chest_double");
+						return chest2.hasCustomName() ? chest2.getDisplayName() : Utils.localize("block.securitycraft.keypad_chest_double");
 					}
 				}
 			};

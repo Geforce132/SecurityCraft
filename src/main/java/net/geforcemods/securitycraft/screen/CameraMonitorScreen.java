@@ -17,8 +17,8 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -149,15 +149,15 @@ public class CameraMonitorScreen extends Screen {
 
 		super.render(mouseX, mouseY, partialTicks);
 
-		font.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText(), startX + xSize / 2 - font.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText()) / 2, startY + 6, 4210752);
+		font.drawString(Utils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText(), startX + xSize / 2 - font.getStringWidth(Utils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText()) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").getFormattedText().replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, font);
+					this.renderTooltip(font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim").getFormattedText().replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, font);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					this.renderTooltip(font.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
+					this.renderTooltip(font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomSCName().getFormattedText()), 150), mouseX, mouseY, font);
 			}
 	}
 

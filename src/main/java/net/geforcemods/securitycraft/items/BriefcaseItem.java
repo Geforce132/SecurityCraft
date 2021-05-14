@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -74,7 +75,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (briefcase.hasTag() && briefcase.getTag().contains("owner"))
-			tooltip.add(new StringTextComponent(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).getFormattedText()));
+			tooltip.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).getFormattedText()));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {

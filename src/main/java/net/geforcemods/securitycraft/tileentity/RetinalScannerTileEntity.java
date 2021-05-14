@@ -19,10 +19,10 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,7 +63,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 					return;
 
 				if(entity instanceof PlayerEntity && !getOwner().isOwner((PlayerEntity) entity) && !ModuleUtils.checkForModule(world, pos, (PlayerEntity)entity, ModuleType.WHITELIST)) {
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, ClientUtils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 					return;
 				}
 
@@ -71,7 +71,7 @@ public class RetinalScannerTileEntity extends DisguisableTileEntity {
 				world.getPendingBlockTicks().scheduleTick(new BlockPos(pos), SCContent.RETINAL_SCANNER.get(), getSignalLength());
 
 				if(entity instanceof PlayerEntity && sendMessage.get())
-					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, ClientUtils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer((PlayerEntity) entity, Utils.localize(SCContent.RETINAL_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
 			}
 		}
 	}

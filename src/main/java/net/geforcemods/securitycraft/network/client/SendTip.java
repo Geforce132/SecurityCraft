@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -44,7 +44,7 @@ public class SendTip
 				return;
 
 	    	String tipKey = getRandomTip();
-	    	ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + ClientUtils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getFormattedText() + " " + ClientUtils.localize("messages.securitycraft:tip").getFormattedText() + " " + ClientUtils.localize(tipKey).getFormattedText() + " ");
+	    	ITextComponent message = new StringTextComponent("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] " + Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()).getFormattedText() + " " + Utils.localize("messages.securitycraft:tip").getFormattedText() + " " + Utils.localize(tipKey).getFormattedText() + " ");
 
 	    	if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 	    		message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -31,7 +31,7 @@ public class EditModuleScreen extends Screen
 {
 	private static CompoundNBT savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
-	private final String editModule = ClientUtils.localize("gui.securitycraft:editModule").getFormattedText();
+	private final String editModule = Utils.localize("gui.securitycraft:editModule").getFormattedText();
 	private ItemStack module = ItemStack.EMPTY;
 	private TextFieldWidget inputField;
 	private IdButton addButton, removeButton, copyButton, pasteButton, clearButton;
@@ -57,11 +57,11 @@ public class EditModuleScreen extends Screen
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
 		addButton(inputField = new TextFieldWidget(font, controlsStartX - 17, height / 2 - 65, 110, 15, ""));
-		addButton(addButton = new IdButton(0, controlsStartX, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add").getFormattedText(), this::actionPerformed));
-		addButton(removeButton = new IdButton(1, controlsStartX, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove").getFormattedText(), this::actionPerformed));
-		addButton(copyButton = new IdButton(2, controlsStartX, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy").getFormattedText(), this::actionPerformed));
-		addButton(pasteButton = new IdButton(3, controlsStartX, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste").getFormattedText(), this::actionPerformed));
-		addButton(clearButton = new IdButton(4, controlsStartX, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear").getFormattedText(), this::actionPerformed));
+		addButton(addButton = new IdButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add").getFormattedText(), this::actionPerformed));
+		addButton(removeButton = new IdButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove").getFormattedText(), this::actionPerformed));
+		addButton(copyButton = new IdButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText(), this::actionPerformed));
+		addButton(pasteButton = new IdButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText(), this::actionPerformed));
+		addButton(clearButton = new IdButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText(), this::actionPerformed));
 		addButton(clearButton);
 		children.add(playerList = new PlayerList(minecraft, 110, 141, height / 2 - 66, guiLeft + 10));
 

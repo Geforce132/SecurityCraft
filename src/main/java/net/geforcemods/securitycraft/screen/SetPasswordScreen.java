@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -29,7 +30,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()).getFormattedText();
+		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()).getFormattedText();
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText(), this::actionPerformed));
+		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:keycardSetup.save").getFormattedText(), this::actionPerformed));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
@@ -61,7 +62,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		String setup = ClientUtils.localize("gui.securitycraft:password.setup").getFormattedText();
+		String setup = Utils.localize("gui.securitycraft:password.setup").getFormattedText();
 		String combined = blockName + " " + setup;
 
 		if(font.getStringWidth(combined) < xSize - 10)

@@ -35,9 +35,9 @@ import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -167,7 +167,7 @@ public class SCEventHandler {
 
 					if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
 						if(!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock))
-							PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 						return;
 					}
@@ -199,7 +199,7 @@ public class SCEventHandler {
 				event.setCanceled(true);
 
 				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getDisplayName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
 					return;
 				}
 
@@ -207,7 +207,7 @@ public class SCEventHandler {
 					nametag.shrink(1);
 
 				((INameable) tileEntity).setCustomSCName(nametag.getDisplayName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.named", ((INameable) tileEntity).getCustomSCName()), TextFormatting.RED);
 				return;
 			}
 
@@ -216,7 +216,7 @@ public class SCEventHandler {
 
 				if(!((IOwnable) tileEntity).getOwner().isOwner(event.getPlayer())){
 					if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof DisguisableBlock)))
-						PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 					return;
 				}
@@ -449,14 +449,14 @@ public class SCEventHandler {
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer());
 				else {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(SCContent.CODEBREAKER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(SCContent.CODEBREAKER.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;
 				}
 			}
 			else {
 				Block block = world.getBlockState(event.getPos()).getBlock();
 
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(block.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 		}
 
