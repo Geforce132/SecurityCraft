@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +23,7 @@ public class BlockTrophySystem extends BlockOwnable {
 
 	public BlockTrophySystem(Material material) {
 		super(material);
+		setSoundType(SoundType.METAL);
 	}
 
 	@Override
