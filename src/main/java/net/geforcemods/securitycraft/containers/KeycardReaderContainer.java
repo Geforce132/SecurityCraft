@@ -59,7 +59,19 @@ public class KeycardReaderContainer extends Container
 			tag.putInt("signature", te.getSignature());
 			tag.putString("ownerName", te.getOwner().getName());
 			tag.putString("ownerUUID", te.getOwner().getUUID());
-			tag.putInt("uses", -1); //unlimited
+		}
+	}
+
+	public void setKeycardUses(int uses)
+	{
+		ItemStack keycard = keycardSlot.getStack();
+
+		if(!keycard.isEmpty())
+		{
+			CompoundNBT tag = keycard.getOrCreateTag();
+
+			if(tag.getBoolean("limited"))
+				tag.putInt("uses", uses);
 		}
 	}
 

@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
+import net.minecraft.data.CustomRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
@@ -59,6 +61,8 @@ public class RecipeGenerator extends RecipeProvider
 		strongHealingStack.setTag(strongHealingNBT);
 		harmingStack.setTag(harmingNBT);
 		strongHarmingStack.setTag(strongHarmingNBT);
+
+		CustomRecipeBuilder.customRecipe(LimitedUseKeycardRecipe.serializer).build(consumer, "limited_use_keycards");
 
 		//shaped recipes
 		ShapedRecipeBuilder.shapedRecipe(SCContent.ALARM.get())

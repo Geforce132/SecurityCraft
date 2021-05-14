@@ -675,7 +675,7 @@
 	"gui.securitycraft:keycard_reader.link": "Link",
 	"gui.securitycraft:keycard_reader.noSmartModule": "You need a Smart Module to control the keycard levels individually.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individual keycard level control active!",
-	"gui.securitycraft:keycard_reader.level_mismatch": "The level of this keycard is not enabled!",
+	"gui.securitycraft:keycard_reader.level_mismatch": "The level of this keycard is not enabled in this keycard reader!",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",
@@ -804,10 +804,12 @@
 	"tooltip.securitycraft:module.itemAddons.usage.blocksAndItems": "You may add $1%s block(s) and $2%s item(s).",
 	"tooltip.securitycraft:module.itemAddons.added": "Added:",
 	"tooltip.securitycraft:briefcase.owner": "Owner: %s",
-	"tooltip.securitycraft:keycard.uses": "Uses remaining:",
+	"tooltip.securitycraft:keycard.uses": "Uses remaining: %s",
 	"tooltip.securitycraft:projector": "Projects fake blocks into the world.",
 	"tooltip.securitycraft:keycard.signature": "Signature: %s",
 	"tooltip.securitycraft:keycard.reader_owner": "Works on Keycard Readers owned by: %s",
+	"tooltip.securitycraft:keycard.link_info": "Put this card into a Keycard Reader to link it.",
+	"tooltip.securitycraft:keycard.limited_info": "Combine this card with a Limited Use Keycard in a crafting table to control how often it can be used.",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosives",

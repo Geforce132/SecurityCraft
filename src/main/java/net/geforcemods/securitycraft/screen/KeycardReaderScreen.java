@@ -13,15 +13,19 @@ import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -39,6 +43,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private static final ResourceLocation CROSS_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
+	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
+	private static final ResourceLocation RETURN_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return_inactive.png");
 	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
 	private static final ITextComponent EQUALS = new StringTextComponent("=");
 	private static final ITextComponent GREATER_THAN_EQUALS = new StringTextComponent(">=");
@@ -49,6 +55,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private final ITextComponent noSmartModule = ClientUtils.localize("gui.securitycraft:keycard_reader.noSmartModule");
 	private final ITextComponent smartModule = ClientUtils.localize("gui.securitycraft:keycard_reader.smartModule");
 	private final ITextComponent levelMismatchInfo = ClientUtils.localize("gui.securitycraft:keycard_reader.level_mismatch");
+	private final ITextComponent limitedInfo = new TranslationTextComponent("tooltip.securitycraft:keycard.limited_info");
 	private final KeycardReaderTileEntity te;
 	private final boolean isSmart;
 	private final boolean isOwner;
@@ -61,6 +68,9 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private int signatureTextStartX;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
+	private TextFieldWidget usesTextField;
+	private TextHoverChecker usesHoverChecker;
+	private Button setUsesButton;
 
 	public KeycardReaderScreen(KeycardReaderContainer container, PlayerInventory inv, ITextComponent name)
 	{
@@ -145,7 +155,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		//set correct signature
 		changeSignature(signature);
 		//link button
-		addButton(new ExtendedButton(guiLeft + 8, guiTop + 107, 70, 20, linkText, b -> {
+		addButton(new ExtendedButton(guiLeft + 8, guiTop + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
 			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, true));
@@ -153,6 +163,23 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 			if(container.keycardSlot.getStack().getDisplayName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundHandler().play(SimpleSound.master(SCSounds.GET_ITEM.event, 1.0F));
 		}));
+		//button for saving the amount of limited uses onto the keycard
+		setUsesButton = addButton(new PictureButton(-1, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> {
+			SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())));
+			b.active = false;
+		}) {
+			@Override
+			public ResourceLocation getTextureLocation()
+			{
+				return active ? RETURN_TEXTURE : RETURN_INACTIVE_TEXTURE;
+			}
+		});
+		//text field for setting amount of limited uses
+		usesTextField = addButton(new TextFieldWidget(font, guiLeft + 28, guiTop + 107, 30, 15, StringTextComponent.EMPTY));
+		usesTextField.setValidator(s -> s.matches("[0-9]*"));
+		usesTextField.setMaxStringLength(3);
+		//info text when hovering over text field
+		usesHoverChecker = new TextHoverChecker(guiTop + 107, guiTop + 122, guiLeft + 28, guiLeft + 58, limitedInfo);
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if(!isSmart)
@@ -216,12 +243,36 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	}
 
 	@Override
+	public void tick()
+	{
+		super.tick();
+
+		ItemStack stack = container.keycardSlot.getStack();
+		boolean wasActive = usesTextField.active;
+		boolean enabled = !stack.isEmpty() && stack.hasTag() && stack.getTag().getBoolean("limited");
+
+		usesTextField.setEnabled(enabled);
+		usesTextField.active = enabled;
+
+		//set the text of the text field to the amount of uses on the keycard
+		if(!wasActive && enabled)
+			usesTextField.setText("" + stack.getTag().getInt("uses"));
+		else if(wasActive && !enabled)
+			usesTextField.setText("");
+
+		//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
+		setUsesButton.active = enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
+	}
+
+	@Override
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
+		ItemStack stack = container.keycardSlot.getStack();
+
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
-		if(container.keycardSlot.getHasStack() && !acceptedLevels[((KeycardItem)container.keycardSlot.getStack().getItem()).getLevel()])
+		if(!stack.isEmpty() && !acceptedLevels[((KeycardItem)stack.getItem()).getLevel()])
 		{
 			int left = guiLeft + 40;
 			int top = guiTop + 60;
@@ -230,8 +281,11 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 			blit(matrix, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
 
 			if(mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
-				GuiUtils.drawHoveringText(matrix, Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, minecraft.fontRenderer);
+				GuiUtils.drawHoveringText(matrix, Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, font);
 		}
+
+		if(!usesTextField.active && usesHoverChecker.checkHover(mouseX, mouseY))
+			GuiUtils.drawHoveringText(matrix, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
 
 		renderHoveredTooltip(matrix, mouseX, mouseY);
 		ClientUtils.renderSmartModuleInfo(matrix, smartModule, noSmartModule, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);

@@ -789,7 +789,7 @@
 	"tooltip.securitycraft:module.itemAddons.usage.blocksAndItems": "Vous pourriez ajouter $1%s bloc(s) et $2%s objet(s).",
 	"tooltip.securitycraft:module.itemAddons.added": "Ajouté:",
 	"tooltip.securitycraft:briefcase.owner": "Propriétaire : %s",
-	"tooltip.securitycraft:keycard.uses": "Utilisations restantes :",
+	"tooltip.securitycraft:keycard.uses": "Utilisations restantes : %s",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Décoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosifs",

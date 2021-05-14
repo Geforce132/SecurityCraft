@@ -679,7 +679,7 @@
 	"gui.securitycraft:keycard_reader.link": "Verbinden",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Du musst ein schlaues Modul installieren, um die Schlüsselkarten-Level individuell zu kontrollieren.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individuelle Kontrolle von Schlüsselkarten-Level aktiv!",
-	"gui.securitycraft:keycard_reader.level_mismatch": "Der Level dieser Schlüsselkarte ist nicht aktiviert!",
+	"gui.securitycraft:keycard_reader.level_mismatch": "Der Level dieser Schlüsselkarte ist in diesem Schlüsselkarten-Leser nicht aktiviert!",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",
@@ -806,10 +806,12 @@
 	"tooltip.securitycraft:module.itemAddons.usage.blocksAndItems": "Du kannst $1%s Block/Blöcke und $2%s Item(s) hinzufügen.",
 	"tooltip.securitycraft:module.itemAddons.added": "Hinzugefügt:",
 	"tooltip.securitycraft:briefcase.owner": "Besitzer: %s",
-	"tooltip.securitycraft:keycard.uses": "Verbleibende Benutzungen:",
+	"tooltip.securitycraft:keycard.uses": "Verbleibende Benutzungen: %s",
 	"tooltip.securitycraft:projector": "Projiziert falsche Blöcke in die Welt.",
 	"tooltip.securitycraft:keycard.signature": "Signatur: %s",
 	"tooltip.securitycraft:keycard.reader_owner": "Funktioniert bei Schlüsselkarten-Lesern von: %s",
+	"tooltip.securitycraft:keycard.link_info": "Lege diese Karte in einen Schlüsselkarten-Leser um sie damit zu verbinden.",
+	"tooltip.securitycraft:keycard.limited_info": "Verbinde diese Karte in einer Werkbank mit einer begrenzt nutzbaren Schlüsselkarte, um zu kontrollieren, wie oft sie verwendet werden darf.",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Dekoration",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Sprengstoffe",

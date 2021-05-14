@@ -18,6 +18,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class KeycardItem extends Item
 {
 	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	private static final ITextComponent LINK_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.link_info").setStyle(GRAY_STYLE);
+	public static final ITextComponent LIMITED_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.limited_info").setStyle(GRAY_STYLE);
 	private final int level; //0-indexed
 
 	public KeycardItem(Item.Properties properties, int level)
@@ -40,6 +42,9 @@ public class KeycardItem extends Item
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag)
 	{
+		if(isLimitedUseKeycard())
+			return;
+
 		CompoundNBT tag = stack.getOrCreateTag();
 
 		if(tag.getBoolean("linked"))
@@ -47,5 +52,12 @@ public class KeycardItem extends Item
 			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.signature", tag.getInt("signature")).setStyle(GRAY_STYLE));
 			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(GRAY_STYLE));
 		}
+		else
+			list.add(LINK_INFO);
+
+		if(tag.getBoolean("limited"))
+			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.uses", tag.getInt("uses")).setStyle(GRAY_STYLE));
+		else
+			list.add(LIMITED_INFO);
 	}
 }

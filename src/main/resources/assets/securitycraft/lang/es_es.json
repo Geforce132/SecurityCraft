@@ -693,7 +693,7 @@
 	"tooltip.securitycraft:module.itemAddons.usage.items": "Puedes añadir %s objeto(s).",
 	"tooltip.securitycraft:module.itemAddons.usage.blocksAndItems": "Puedes añadir $1%s bloque(s) y $2%s objeto(s).",
 	"tooltip.securitycraft:module.itemAddons.added": "Añadido:",
-	"tooltip.securitycraft:keycard.uses": "Usos restantes:",
+	"tooltip.securitycraft:keycard.uses": "Usos restantes: %s",
 
 	"itemGroup.securitycraft.decoration": "SecurityCraft: Decoración",
 	"itemGroup.securitycraft.explosives": "SecurityCraft: Explosivos",
