@@ -19,9 +19,11 @@ import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ExperienceBottleEntity;
 import net.minecraft.entity.item.FireworkRocketEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
@@ -198,11 +200,15 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	private boolean isAllowedToTarget(Entity target) {
-		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity)
+		if (target instanceof TridentEntity || target instanceof FishingBobberEntity || target instanceof PotionEntity || target instanceof ExperienceBottleEntity || target instanceof PigEntity)
 			return false;
 
-		//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
-		return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
+		if (projectileFilter.containsKey(target.getType()) || target instanceof IProjectile) {
+			//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
+			return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityType.PIG));
+		}
+
+		return false;
 	}
 
 	private boolean filterSCProjectiles(Entity projectile) {
