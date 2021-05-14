@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "securitycraft:reinforced_gold_block"
+    "securitycraft:reinforced_gold_block",
+    "securitycraft:gold_mine",
+    "securitycraft:gilded_blackstone_mine",
+    "securitycraft:nether_gold_mine"
   ]
 }
