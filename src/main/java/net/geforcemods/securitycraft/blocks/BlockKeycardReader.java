@@ -7,9 +7,9 @@ import net.geforcemods.securitycraft.items.ItemKeycardBase;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -99,9 +99,9 @@ public class BlockKeycardReader extends BlockDisguisable  {
 		else if(!world.isRemote)
 		{
 			if(requiredLevel == -1)
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("tile.securitycraft:keycardReader.name"), Utils.localize("messages.securitycraft:keycardReader.notSet"), TextFormatting.RED);
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:keycardReader.name"), ClientUtils.localize("messages.securitycraft:keycardReader.required", te.getPassword(), cardLvl), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("tile.securitycraft:keycardReader.name"), Utils.localize("messages.securitycraft:keycardReader.required", te.getPassword(), cardLvl), TextFormatting.RED);
 		}
 	}
 

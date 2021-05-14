@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockDisguisable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -39,7 +39,7 @@ public class ItemUniversalKeyChanger extends Item {
 				return EnumActionResult.SUCCESS;
 			}
 			else if(!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable)) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable)world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -62,14 +62,14 @@ public class ItemUniversalKeyChanger extends Item {
 			if (ItemBriefcase.isOwnedBy(briefcase, player)) {
 				if (briefcase.hasTagCompound() && briefcase.getTagCompound().hasKey("passcode")) {
 					briefcase.getTagCompound().removeTag("passcode");
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
 					return ActionResult.newResult(EnumActionResult.SUCCESS, keyChanger);
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.noPasscode"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.noPasscode"), TextFormatting.RED);
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalKeyChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), TextFormatting.RED);
 
 			return ActionResult.newResult(EnumActionResult.SUCCESS, keyChanger);
 		}

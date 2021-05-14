@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,9 +31,9 @@ public class GuiInventoryScanner extends GuiContainer {
 		playerObj = player;
 		owns = tileEntity.getOwner().isOwner(playerObj);
 		hasStorageModule = tileEntity.hasModule(EnumModuleType.STORAGE);
-		infoString = ClientUtils.localize("gui.securitycraft:invScan.emit_redstone", ClientUtils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(EnumModuleType.REDSTONE) ? "yes" : "no")))
+		infoString = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(EnumModuleType.REDSTONE) ? "yes" : "no")))
 				.appendText("\n\n")
-				.appendSibling(ClientUtils.localize("gui.securitycraft:invScan.check_inv", ClientUtils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")))).getFormattedText();
+				.appendSibling(Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")))).getFormattedText();
 
 		if(hasStorageModule)
 			xSize = 246;
@@ -72,13 +72,13 @@ public class GuiInventoryScanner extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.prohibitedItems").getFormattedText(), 8, 6, 4210752);
-		fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + ClientUtils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:invScan.prohibitedItems").getFormattedText(), 8, 6, 4210752);
+		fontRenderer.drawString(tileEntity.getOwner().isOwner(playerObj) ? (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.admin").getFormattedText()) : (TextFormatting.UNDERLINE + Utils.localize("gui.securitycraft:invScan.mode.view").getFormattedText()), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 188, 18, 4210752);
+			fontRenderer.drawString(Utils.localize("gui.securitycraft:invScan.storage").getFormattedText(), 188, 18, 4210752);
 
-		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 15, ySize - 93, 4210752);
+		fontRenderer.drawString(Utils.localize("container.inventory").getFormattedText(), 15, ySize - 93, 4210752);
 	}
 
 	@Override

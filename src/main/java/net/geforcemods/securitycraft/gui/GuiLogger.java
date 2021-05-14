@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -63,12 +63,12 @@ public class GuiLogger extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String localized = ClientUtils.localize("gui.securitycraft:logger.logged").getFormattedText();
+		String localized = Utils.localize("gui.securitycraft:logger.logged").getFormattedText();
 
 		fontRenderer.drawString(localized, xSize / 2 - fontRenderer.getStringWidth(localized) / 2, 6, 4210752);
 
 		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
-			drawHoveringText(ClientUtils.localize("gui.securitycraft:editModule.clear").getFormattedText(), mouseX - guiLeft, mouseY - guiTop);
+			drawHoveringText(Utils.localize("gui.securitycraft:editModule.clear").getFormattedText(), mouseX - guiLeft, mouseY - guiTop);
 
 		int slotIndex = playerList.hoveredSlot;
 
@@ -79,7 +79,7 @@ public class GuiLogger extends GuiContainer{
 			{
 				if(tileEntity.getOwner().isOwner(mc.player))
 				{
-					localized = ClientUtils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
+					localized = Utils.localize("gui.securitycraft:logger.date", DATE_FORMAT.format(new Date(tileEntity.timestamps[slotIndex]))).getFormattedText();
 
 					if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 						drawHoveringText(tileEntity.uuids[slotIndex], mouseX - guiLeft, mouseY - guiTop);

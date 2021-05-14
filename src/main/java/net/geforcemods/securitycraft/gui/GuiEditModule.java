@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
@@ -33,7 +33,7 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 {
 	private static NBTTagCompound savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
-	private final String editModule = ClientUtils.localize("gui.securitycraft:editModule").getFormattedText();
+	private final String editModule = Utils.localize("gui.securitycraft:editModule").getFormattedText();
 	private ItemStack module;
 	private GuiTextField inputField;
 	private GuiButton addButton, removeButton, copyButton, pasteButton, clearButton;
@@ -56,11 +56,11 @@ public class GuiEditModule extends GuiContainer implements GuiResponder
 
 		Keyboard.enableRepeatEvents(true);
 		inputField = new GuiTextField(5, fontRenderer, controlsStartX - 17, height / 2 - 65, 110, 15);
-		buttonList.add(addButton = new GuiButton(0, controlsStartX, height / 2 - 45, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.add").getFormattedText()));
-		buttonList.add(removeButton = new GuiButton(1, controlsStartX, height / 2 - 20, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.remove").getFormattedText()));
-		buttonList.add(copyButton = new GuiButton(2, controlsStartX, height / 2 + 5, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
-		buttonList.add(pasteButton = new GuiButton(3, controlsStartX, height / 2 + 30, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
-		buttonList.add(clearButton = new GuiButton(4, controlsStartX, height / 2 + 55, 76, 20, ClientUtils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
+		buttonList.add(addButton = new GuiButton(0, controlsStartX, height / 2 - 45, 76, 20, Utils.localize("gui.securitycraft:editModule.add").getFormattedText()));
+		buttonList.add(removeButton = new GuiButton(1, controlsStartX, height / 2 - 20, 76, 20, Utils.localize("gui.securitycraft:editModule.remove").getFormattedText()));
+		buttonList.add(copyButton = new GuiButton(2, controlsStartX, height / 2 + 5, 76, 20, Utils.localize("gui.securitycraft:editModule.copy").getFormattedText()));
+		buttonList.add(pasteButton = new GuiButton(3, controlsStartX, height / 2 + 30, 76, 20, Utils.localize("gui.securitycraft:editModule.paste").getFormattedText()));
+		buttonList.add(clearButton = new GuiButton(4, controlsStartX, height / 2 + 55, 76, 20, Utils.localize("gui.securitycraft:editModule.clear").getFormattedText()));
 		playerList = new PlayerList(mc, 110, 141, height / 2 - 66, guiLeft + 10, width, height);
 
 		addButton.enabled = false;

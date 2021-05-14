@@ -20,10 +20,10 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,7 +55,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 				return;
 
 			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.checkForModule(world, pos, (EntityPlayer)entity, EnumModuleType.WHITELIST)) {
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.securitycraft:retinalScanner.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
@@ -63,7 +63,7 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 			world.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, getSignalLength());
 
 			if(entity instanceof EntityPlayer && sendMessage.get())
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, ClientUtils.localize("tile.securitycraft:retinalScanner.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
 		}
 	}
 

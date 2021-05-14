@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
@@ -36,7 +37,7 @@ public class GuiBriefcaseSetup extends GuiContainer implements GuiResponder {
 	public void initGui() {
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText()));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:keycardSetup.save").getFormattedText()));
 		saveAndContinueButton.enabled = false;
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
@@ -64,7 +65,7 @@ public class GuiBriefcaseSetup extends GuiContainer implements GuiResponder {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText()) / 2, 6, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:briefcase.setupTitle").getFormattedText()) / 2, 6, 4210752);
 	}
 
 	@Override

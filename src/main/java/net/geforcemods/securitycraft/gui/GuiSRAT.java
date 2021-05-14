@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -118,9 +117,9 @@ public class GuiSRAT extends GuiContainer {
 						guiButtons[i][UNBIND].enabled = true;
 						((TogglePictureButton)guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
 						((TogglePictureButton)guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode1").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets2").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 						foundSentry = true;
 					}
 					else {
@@ -132,9 +131,9 @@ public class GuiSRAT extends GuiContainer {
 				}
 				else {
 					for (int j = 0; j < 2; j++) {
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], ClientUtils.localize("gui.securitycraft:srat.outOfRange").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:srat.outOfRange").getFormattedText()));
 					}
-					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 				}
 			}
 		}
@@ -149,9 +148,9 @@ public class GuiSRAT extends GuiContainer {
 			addButton(guiButtonsGlobal[j]);
 		}
 
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.mode2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], Arrays.asList(ClientUtils.localize("gui.securitycraft:srat.targets1").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets2").getFormattedText(), ClientUtils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
-		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], ClientUtils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode1").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets2").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
+		hoverCheckers.add(new StringHoverChecker(guiButtonsGlobal[UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
 	}
 
 	/**
@@ -160,15 +159,15 @@ public class GuiSRAT extends GuiContainer {
 	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String modifyAll = ClientUtils.localize("gui.securitycraft:srat.modifyAll").getFormattedText();
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessSentry.name").getFormattedText(), 5, -25 + 13, 0xFF0000);
+		String modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll").getFormattedText();
+		fontRenderer.drawString(Utils.localize("item.securitycraft:remoteAccessSentry.name").getFormattedText(), 5, -25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
 			String line;
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = ClientUtils.localize("gui.securitycraft:srat.notBound").getFormattedText();
+				line = Utils.localize("gui.securitycraft:srat.notBound").getFormattedText();
 			else if(names[i] != null)
 				line = names[i];
 			else

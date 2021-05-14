@@ -64,14 +64,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && keypad.hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypad), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypad), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && keypad.hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypad), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypad), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -82,14 +82,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && ((IModuleInventory) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadChest), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadChest), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadChest), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadChest), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -100,14 +100,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && ((IModuleInventory) te).hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -116,7 +116,7 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && reader.hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
 				return true;
@@ -124,7 +124,7 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.BLACKLIST && reader.hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -143,14 +143,14 @@ public class ModuleUtils{
 
 			if(module == EnumModuleType.WHITELIST && door.hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(player.getName().toLowerCase())){
 				if(door.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(door.getBlockType()), ClientUtils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, translate(door.getBlockType()), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
 
 				return true;
 			}
 
 			if(module == EnumModuleType.BLACKLIST && door.hasModule(EnumModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.BLACKLIST).contains(player.getName().toLowerCase())){
 				if(door.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, translate(door.getBlockType()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, translate(door.getBlockType()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
@@ -171,6 +171,6 @@ public class ModuleUtils{
 
 	private static TextComponentTranslation translate(Block block)
 	{
-		return ClientUtils.localize(block.getTranslationKey() + ".name");
+		return Utils.localize(block.getTranslationKey() + ".name");
 	}
 }

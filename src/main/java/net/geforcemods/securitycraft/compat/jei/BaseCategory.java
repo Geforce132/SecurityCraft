@@ -8,14 +8,14 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe>
 {
-	protected static final String OUTPUT_TEXT = ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText();
+	protected static final String OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText();
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final int yOffset;

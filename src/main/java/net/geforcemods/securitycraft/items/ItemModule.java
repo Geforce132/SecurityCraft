@@ -6,7 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -104,27 +104,27 @@ public class ItemModule extends Item{
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.modifiable").getFormattedText());
+			list.add(Utils.localize("tooltip.securitycraft:module.modifiable").getFormattedText());
 		else
-			list.add(ClientUtils.localize("tooltip.securitycraft:module.notModifiable").getFormattedText());
+			list.add(Utils.localize("tooltip.securitycraft:module.notModifiable").getFormattedText());
 
 		if(canBeCustomized()) {
 			if(numberOfItemAddons > 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons , numberOfItemAddons).getFormattedText());
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocksAndItems", numberOfBlockAddons , numberOfItemAddons).getFormattedText());
 
 			if(numberOfItemAddons > 0 && numberOfBlockAddons == 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText());
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.items", numberOfItemAddons).getFormattedText());
 
 			if(numberOfItemAddons == 0 && numberOfBlockAddons > 0)
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText());
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.usage.blocks", numberOfBlockAddons).getFormattedText());
 
 			if(getNumberOfAddons() > 0 && !getAddons(stack.getTagCompound()).isEmpty()) {
 				list.add(" ");
 
-				list.add(ClientUtils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":");
+				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added").getFormattedText() + ":");
 
 				for(ItemStack addon : getAddons(stack.getTagCompound()))
-					list.add("- " + ClientUtils.localize(addon.getTranslationKey() + ".name").getFormattedText());
+					list.add("- " + Utils.localize(addon.getTranslationKey() + ".name").getFormattedText());
 			}
 		}
 	}

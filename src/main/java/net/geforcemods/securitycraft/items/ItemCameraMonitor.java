@@ -12,8 +12,8 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -38,7 +38,7 @@ public class ItemCameraMonitor extends Item {
 
 		if(BlockUtils.getBlock(world, pos) == SCContent.securityCamera && !PlayerUtils.isPlayerMountedOnCamera(player)){
 			if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player) && !((TileEntitySecurityCamera)world.getTileEntity(pos)).hasModule(EnumModuleType.SMART)){
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:cameraMonitor.name"), Utils.localize("messages.securitycraft:cameraMonitor.cannotView"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 
@@ -49,14 +49,14 @@ public class ItemCameraMonitor extends Item {
 
 			if(isCameraAdded(stack.getTagCompound(), view)){
 				stack.getTagCompound().removeTag(getTagNameFromPosition(stack.getTagCompound(), view));
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.unbound", pos), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:cameraMonitor.name"), Utils.localize("messages.securitycraft:cameraMonitor.unbound", pos), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 
 			for(int i = 1; i <= 30; i++)
 				if (!stack.getTagCompound().hasKey("Camera" + i)){
 					stack.getTagCompound().setString("Camera" + i, view.toNBTString());
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:cameraMonitor.name"), Utils.localize("messages.securitycraft:cameraMonitor.bound", pos), TextFormatting.GREEN);
 					break;
 				}
 
@@ -75,7 +75,7 @@ public class ItemCameraMonitor extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if(!stack.hasTagCompound() || !hasCameraAdded(stack.getTagCompound())) {
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:cameraMonitor.name"), ClientUtils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:cameraMonitor.name"), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 		}
 
@@ -89,7 +89,7 @@ public class ItemCameraMonitor extends Item {
 		if(stack.getTagCompound() == null)
 			return;
 
-		tooltip.add(ClientUtils.localize("tooltip.securitycraft:cameraMonitor").getFormattedText() + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
+		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor").getFormattedText() + " " + getNumberOfCamerasBound(stack.getTagCompound()) + "/30");
 	}
 
 	public static String getTagNameFromPosition(NBTTagCompound tag, CameraView view) {

@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.gui;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerBlockReinforcer;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;
@@ -38,14 +38,14 @@ public class GuiBlockReinforcer extends GuiContainer
 	{
 		ContainerBlockReinforcer container = (ContainerBlockReinforcer)inventorySlots;
 		NonNullList<ItemStack> inv = container.getInventory();
-		String ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title").getFormattedText();
+		String ubr = Utils.localize("gui.securitycraft:blockReinforcer.title").getFormattedText();
 
 		fontRenderer.drawString(ubr, (xSize - fontRenderer.getStringWidth(ubr)) / 2, 5, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
+		fontRenderer.drawString(Utils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 25, 4210752);
+			fontRenderer.drawString(Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 25, 4210752);
 			GuiUtils.drawItemStackToGui(container.reinforcingSlot.getOutput(), 116, 20, false);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
@@ -54,7 +54,7 @@ public class GuiBlockReinforcer extends GuiContainer
 
 		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
-			fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 50, 4210752);
+			fontRenderer.drawString(Utils.localize("gui.securitycraft:blockReinforcer.output").getFormattedText(), 50, 50, 4210752);
 			GuiUtils.drawItemStackToGui(container.unreinforcingSlot.getOutput(), 116, 46, false);
 
 			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)

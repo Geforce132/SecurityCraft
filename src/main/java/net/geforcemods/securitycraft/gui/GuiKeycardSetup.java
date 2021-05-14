@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -31,8 +31,8 @@ public class GuiKeycardSetup extends GuiContainer{
 		super.initGui();
 
 		buttonList.add(lvlOfSecurityButton = new GuiButton(0, width / 2 - (48 * 2 - 23), height / 2 + 20, 150, 20, ""));
-		buttonList.add(requiresExactCardButton = new GuiButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText()));
-		buttonList.add(new GuiButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save").getFormattedText()));
+		buttonList.add(requiresExactCardButton = new GuiButton(1, width / 2 - (48 * 2 - 11), height / 2 - 28, 125, 20, requiresExactCard ? Utils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : Utils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText()));
+		buttonList.add(new GuiButton(2, width / 2 - 48, height / 2 + 30 + 20, 100, 20, Utils.localize("gui.securitycraft:keycardSetup.save").getFormattedText()));
 
 		updateButtonText();
 	}
@@ -43,13 +43,13 @@ public class GuiKeycardSetup extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.1").getFormattedText()) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.2").getFormattedText()) / 2 - 2, 30 - 10, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.3").getFormattedText()) / 2 - 11, 42 - 10, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.4").getFormattedText()) / 2 - 10, 54 - 10, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.5").getFormattedText(), xSize / 2 + 45, 66 - 5, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.6").getFormattedText()) / 2 - 6, 78 - 1, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:keycardSetup.explanation.7").getFormattedText()) / 2 - 20, 90 - 1, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.1").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:keycardSetup.explanation.1").getFormattedText()) / 2, 6, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.2").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:keycardSetup.explanation.2").getFormattedText()) / 2 - 2, 30 - 10, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.3").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:keycardSetup.explanation.3").getFormattedText()) / 2 - 11, 42 - 10, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.4").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:keycardSetup.explanation.4").getFormattedText()) / 2 - 10, 54 - 10, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.5").getFormattedText(), xSize / 2 + 45, 66 - 5, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.6").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:keycardSetup.explanation.6").getFormattedText()) / 2 - 6, 78 - 1, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:keycardSetup.explanation.7").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:keycardSetup.explanation.7").getFormattedText()) / 2 - 20, 90 - 1, 4210752);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class GuiKeycardSetup extends GuiContainer{
 		if(++lvlOfSecurity > 5)
 			lvlOfSecurity = 1;
 
-		lvlOfSecurityButton.displayString = ClientUtils.localize("gui.securitycraft:keycardSetup.lvlNeeded").getFormattedText() + " " + lvlOfSecurity;
+		lvlOfSecurityButton.displayString = Utils.localize("gui.securitycraft:keycardSetup.lvlNeeded").getFormattedText() + " " + lvlOfSecurity;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class GuiKeycardSetup extends GuiContainer{
 
 			case 1:
 				requiresExactCard = !requiresExactCard;
-				requiresExactCardButton.displayString = requiresExactCard ? ClientUtils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : ClientUtils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText();
+				requiresExactCardButton.displayString = requiresExactCard ? Utils.localize("gui.securitycraft:keycardSetup.equal").getFormattedText() : Utils.localize("gui.securitycraft:keycardSetup.equalOrHigher").getFormattedText();
 				break;
 
 			case 2:

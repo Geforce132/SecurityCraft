@@ -12,9 +12,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -54,7 +54,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 		if(!(te instanceof IOwnable))
 		{
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
 			return EnumActionResult.SUCCESS;
 		}
 
@@ -64,7 +64,7 @@ public class ItemUniversalOwnerChanger extends Item
 		if(!owner.isOwner(player) && !isDefault)
 		{
 			if(!(block instanceof IBlockMine) && (!(te instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)te).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 
@@ -73,7 +73,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 		if(!stack.hasDisplayName() && !isDefault)
 		{
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
 			return EnumActionResult.SUCCESS;
 		}
 
@@ -83,7 +83,7 @@ public class ItemUniversalOwnerChanger extends Item
 				newOwner = player.getName();
 			else
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.noBlockClaiming"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -127,7 +127,7 @@ public class ItemUniversalOwnerChanger extends Item
 			}
 		}
 
-		PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+		PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 		return EnumActionResult.SUCCESS;
 	}
 
@@ -136,7 +136,7 @@ public class ItemUniversalOwnerChanger extends Item
 		ItemStack ownerChanger = player.getHeldItem(hand);
 
 		if (!ownerChanger.hasDisplayName()) {
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), TextFormatting.RED);
 			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
 		}
 
@@ -151,11 +151,11 @@ public class ItemUniversalOwnerChanger extends Item
 
 				briefcase.getTagCompound().setString("owner", newOwner);
 				briefcase.getTagCompound().setString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
 
 			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
 		}

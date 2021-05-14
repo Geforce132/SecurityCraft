@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadDoor;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
@@ -68,7 +68,7 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 			if(getOwner().isOwner(player))
 				player.openGui(SecurityCraft.instance, GuiHandler.SETUP_PASSWORD_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			else
-				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
 	}
 

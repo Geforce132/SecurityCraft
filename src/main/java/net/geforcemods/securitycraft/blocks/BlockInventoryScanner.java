@@ -16,8 +16,8 @@ import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -96,7 +96,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		if(isFacingAnotherScanner(world, pos))
 			player.openGui(SecurityCraft.instance, GuiHandler.INVENTORY_SCANNER_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		else
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("tile.securitycraft:inventoryScanner.name"), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize("tile.securitycraft:inventoryScanner.name"), Utils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 
 		return true;
 	}

@@ -7,7 +7,6 @@ import org.lwjgl.input.Keyboard;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -36,7 +35,7 @@ public class GuiCheckPassword extends GuiContainer {
 	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
-		blockName = ClientUtils.localize(block.getTranslationKey() + ".name").getFormattedText();
+		blockName = Utils.localize(block.getTranslationKey() + ".name").getFormattedText();
 	}
 
 	@Override

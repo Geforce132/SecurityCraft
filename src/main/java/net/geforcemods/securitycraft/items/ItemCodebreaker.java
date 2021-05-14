@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -35,7 +35,7 @@ public class ItemCodebreaker extends Item {
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
 			if(!ConfigHandler.allowCodebreakerItem) {
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.briefcase.getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.briefcase.getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 				return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);
 			}
 			else {
@@ -44,7 +44,7 @@ public class ItemCodebreaker extends Item {
 				if (!world.isRemote && new Random().nextInt(3) == 1)
 					player.openGui(SecurityCraft.instance, GuiHandler.BRIEFCASE_GUI_ID, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 				else
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:codebreaker.name"), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
 
 			return ActionResult.newResult(EnumActionResult.SUCCESS, codebreaker);

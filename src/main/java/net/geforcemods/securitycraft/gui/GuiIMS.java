@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS.EnumIMSTargetingMode;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,8 +15,8 @@ import net.minecraft.util.ResourceLocation;
 public class GuiIMS extends GuiContainer{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final String imsName = ClientUtils.localize(SCContent.ims.getTranslationKey() + ".name").getFormattedText();
-	private final String target = ClientUtils.localize("gui.securitycraft:ims.target").getFormattedText();
+	private final String imsName = Utils.localize(SCContent.ims.getTranslationKey() + ".name").getFormattedText();
+	private final String target = Utils.localize("gui.securitycraft:ims.target").getFormattedText();
 	private TileEntityIMS tileEntity;
 	private GuiButton targetButton;
 	private EnumIMSTargetingMode targetMode;
@@ -64,7 +65,7 @@ public class GuiIMS extends GuiContainer{
 	}
 
 	private void updateButtonText() {
-		targetButton.displayString = ClientUtils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText();
+		targetButton.displayString = Utils.localize("gui.securitycraft:srat.targets" + (((targetMode.ordinal() + 2) % 3) + 1)).getFormattedText();
 	}
 
 }

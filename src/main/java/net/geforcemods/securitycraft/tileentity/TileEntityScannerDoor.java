@@ -3,10 +3,10 @@ package net.geforcemods.securitycraft.tileentity;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,7 +33,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor
 
 			if(!getOwner().isOwner(player) && (!hasModule(EnumModuleType.WHITELIST) || !ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.WHITELIST)).contains(player.getName().toLowerCase())))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
@@ -49,7 +49,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor
 				world.scheduleUpdate(pos, SCContent.scannerDoor, length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:scannerDoorItem.name"), ClientUtils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
 		}
 	}
 

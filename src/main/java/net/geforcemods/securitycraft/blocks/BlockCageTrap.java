@@ -15,8 +15,8 @@ import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -153,7 +153,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
-					PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName(ownerName), ClientUtils.localize("tile.securitycraft:cageTrap.name"), ClientUtils.localize("messages.securitycraft:cageTrap.captured", entity.getName(), pos), TextFormatting.BLACK);
+					PlayerUtils.sendMessageToPlayer(PlayerUtils.getPlayerFromName(ownerName), Utils.localize("tile.securitycraft:cageTrap.name"), Utils.localize("messages.securitycraft:cageTrap.captured", entity.getName(), pos), TextFormatting.BLACK);
 			}
 		}
 	}

@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -54,12 +53,12 @@ public class ItemSentryRemoteAccessTool extends Item {
 				int availSlot = getNextAvailableSlot(stack);
 
 				if(availSlot == 0){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
 				if(!sentry.getOwner().isOwner(player)){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
@@ -71,10 +70,10 @@ public class ItemSentryRemoteAccessTool extends Item {
 				if (!world.isRemote)
 					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP) player);
 
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
 			}else{
 				removeTagFromItemAndUpdate(stack, pos2, player);
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessSentry.name"), ClientUtils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessSentry.name"), Utils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
 			}
 
 			return EnumActionResult.SUCCESS;
@@ -106,7 +105,7 @@ public class ItemSentryRemoteAccessTool extends Item {
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
 						nameToShow = sentries.get(0).getCustomNameTag();
 					else
-						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry").getFormattedText() + " " + i;
+						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getFormattedText() + " " + i;
 
 					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos));
 				}

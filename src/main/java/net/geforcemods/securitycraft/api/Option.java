@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.gui.GuiCustomizeBlock;
 import net.geforcemods.securitycraft.gui.components.GuiSlider;
 import net.geforcemods.securitycraft.gui.components.GuiSlider.ISlider;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
@@ -232,7 +232,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue((int)slider.getValue());
-			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
+			slider.displayString = (Utils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override
@@ -316,7 +316,7 @@ public abstract class Option<T> {
 				return;
 
 			setValue(slider.getValue());
-			slider.displayString = (ClientUtils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
+			slider.displayString = (Utils.localize("option." + blockName + "." + getName()).getFormattedText() + " ").replace("#", toString());
 		}
 
 		@Override

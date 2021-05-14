@@ -29,8 +29,8 @@ import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.tileentity.IEMPAffected;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPortal;
@@ -108,11 +108,11 @@ public class SCEventHandler {
 		{
 			String tipKey = getRandomTip();
 			ITextComponent message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] ")
-					.appendSibling(ClientUtils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
+					.appendSibling(Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
 					.appendSibling(new TextComponentString(" "))
-					.appendSibling(ClientUtils.localize("messages.securitycraft:tip"))
+					.appendSibling(Utils.localize("messages.securitycraft:tip"))
 					.appendSibling(new TextComponentString(" "))
-					.appendSibling(ClientUtils.localize(tipKey));
+					.appendSibling(Utils.localize(tipKey));
 
 			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));
@@ -222,7 +222,7 @@ public class SCEventHandler {
 
 				if(tileEntity instanceof IOwnable && !((IOwnable) tileEntity).getOwner().isOwner(event.getEntityPlayer())){
 					if(!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, event.getPos()).getItem()).getBlock() instanceof BlockDisguisable))
-						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:universalBlockModifier.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 					return;
 				}
@@ -239,7 +239,7 @@ public class SCEventHandler {
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 
 			if(((INameable) tileEntity).getCustomName().equals(nametag.getDisplayName())) {
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable) tileEntity).getCustomName()), TextFormatting.RED);
 				return;
 			}
 
@@ -249,7 +249,7 @@ public class SCEventHandler {
 			if (!world.isRemote)
 				((INameable) tileEntity).setCustomName(nametag.getDisplayName());
 
-			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomName()), TextFormatting.GREEN);
+			PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(event.getWorld().getBlockState(event.getPos()).getBlock().getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomName()), TextFormatting.GREEN);
 			return;
 		}
 
@@ -562,14 +562,14 @@ public class SCEventHandler {
 				if(event.getEntityPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getEntityPlayer());
 				else {
-					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize("item.securitycraft:codebreaker.name"), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize("item.securitycraft:codebreaker.name"), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;
 				}
 			}
 			else {
 				Block block = world.getBlockState(event.getPos()).getBlock();
 
-				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), ClientUtils.localize(block.getTranslationKey() + ".name"), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getEntityPlayer(), Utils.localize(block.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 		}
 

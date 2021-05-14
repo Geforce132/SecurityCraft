@@ -7,24 +7,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ClientUtils{
-
-	@SideOnly(Side.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getMinecraft().player.closeScreen();
 	}
 
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
 	public static String getFormattedMinecraftTime(){
 		Long time = Minecraft.getMinecraft().world.provider.getWorldTime();
 
@@ -37,10 +28,7 @@ public class ClientUtils{
 
 	/**
 	 * Sends the client-side NBTTagCompound of a block's TileEntity to the server.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
 	public static void syncTileEntity(TileEntity tileEntity){
 		NBTTagCompound tag = new NBTTagCompound();
 		tileEntity.writeToNBT(tag);
@@ -49,28 +37,8 @@ public class ClientUtils{
 
 	/**
 	 * Sends the client-side NBTTagCompound of a player's held item to the server.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@SideOnly(Side.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.network.sendToServer(new UpdateNBTTagOnServer(item));
-	}
-
-	/**
-	 * Localizes a String with the given format
-	 * @param key The string to localize (aka the identifier in the .lang file)
-	 * @param params The parameters to insert into the String ala String.format
-	 * @return The localized String
-	 */
-	public static TextComponentTranslation localize(String key, Object... params)
-	{
-		for(int i = 0; i < params.length; i++)
-		{
-			if(params[i] instanceof BlockPos)
-				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
-		}
-
-		return new TextComponentTranslation(key, params);
 	}
 }

@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -97,10 +96,10 @@ public class GuiMRAT extends GuiContainer{
 						buttons[i][DEFUSE].enabled = active && defusable;
 						buttons[i][ACTIVATE].enabled = !active && defusable;
 						buttons[i][DETONATE].enabled = active;
-						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], ClientUtils.localize("gui.securitycraft:mrat.defuse").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], ClientUtils.localize("gui.securitycraft:mrat.activate").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], ClientUtils.localize("gui.securitycraft:mrat.detonate").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 					}
 					else {
 						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
@@ -111,9 +110,9 @@ public class GuiMRAT extends GuiContainer{
 				}
 				else {
 					for (int j = 0; j < 3; j++) {
-						hoverCheckers.add(new StringHoverChecker(buttons[i][j], ClientUtils.localize("gui.securitycraft:mrat.outOfRange").getFormattedText()));
+						hoverCheckers.add(new StringHoverChecker(buttons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange").getFormattedText()));
 					}
-					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], ClientUtils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
+					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 				}
 			}
 		}
@@ -125,7 +124,7 @@ public class GuiMRAT extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText()), -25 + 13, 0xFF0000);
+		fontRenderer.drawString(Utils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("item.securitycraft:remoteAccessMine.name").getFormattedText()), -25 + 13, 0xFF0000);
 
 		for(int i = 0; i < 6; i++)
 		{
@@ -133,9 +132,9 @@ public class GuiMRAT extends GuiContainer{
 			String line;
 
 			if(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
-				line = ClientUtils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
+				line = Utils.localize("gui.securitycraft:mrat.notBound").getFormattedText();
 			else
-				line = ClientUtils.localize("gui.securitycraft:mrat.mineLocations", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).getFormattedText();
+				line = Utils.localize("gui.securitycraft:mrat.mineLocations", Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).getFormattedText();
 
 			fontRenderer.drawString(line, xSize / 2 - fontRenderer.getStringWidth(line) + 25, i * 30 + 13, 4210752);
 		}

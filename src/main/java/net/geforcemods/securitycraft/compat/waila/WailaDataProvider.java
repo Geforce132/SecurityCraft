@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -36,10 +36,10 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 	private static final String SHOW_CUSTOM_NAME = "securitycraft.showcustomname";
 
 	public static void callbackRegister(IWailaRegistrar registrar){
-		registrar.addConfig("SecurityCraft", SHOW_OWNER, ClientUtils.localize("waila.securitycraft:displayOwner").getFormattedText());
-		registrar.addConfig("SecurityCraft", SHOW_MODULES, ClientUtils.localize("waila.securitycraft:showModules").getFormattedText());
-		registrar.addConfig("SecurityCraft", SHOW_PASSWORDS, ClientUtils.localize("waila.securitycraft:showPasswords").getFormattedText());
-		registrar.addConfig("SecurityCraft", SHOW_CUSTOM_NAME, ClientUtils.localize("waila.securitycraft:showCustomName").getFormattedText());
+		registrar.addConfig("SecurityCraft", SHOW_OWNER, Utils.localize("waila.securitycraft:displayOwner").getFormattedText());
+		registrar.addConfig("SecurityCraft", SHOW_MODULES, Utils.localize("waila.securitycraft:showModules").getFormattedText());
+		registrar.addConfig("SecurityCraft", SHOW_PASSWORDS, Utils.localize("waila.securitycraft:showPasswords").getFormattedText());
+		registrar.addConfig("SecurityCraft", SHOW_CUSTOM_NAME, Utils.localize("waila.securitycraft:showCustomName").getFormattedText());
 		registrar.registerBodyProvider((IWailaDataProvider)new WailaDataProvider(), IOwnable.class);
 		registrar.registerStackProvider(new WailaDataProvider(), IOverlayDisplay.class);
 		registrar.registerBodyProvider((IWailaEntityProvider)new WailaDataProvider(), EntitySentry.class);
@@ -79,29 +79,29 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 
 		//last part is a little cheaty to prevent owner info from being displayed on non-sc blocks
 		if(config.getConfig(SHOW_OWNER) && te instanceof IOwnable && block.getRegistryName().getNamespace().equals(SecurityCraft.MODID))
-			body.add(ClientUtils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((IOwnable) te).getOwner().getName());
+			body.add(Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((IOwnable) te).getOwner().getName());
 
 		if(!disguised)
 		{
 			//if the te is ownable, show modules only when it's owned, otherwise always show
 			if(config.getConfig(SHOW_MODULES) && te instanceof IModuleInventory && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(data.getPlayer()))){
 				if(!((IModuleInventory) te).getInsertedModules().isEmpty())
-					body.add(ClientUtils.localize("waila.securitycraft:equipped").getFormattedText());
+					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
 				for(EnumModuleType module : ((IModuleInventory) te).getInsertedModules())
-					body.add("- " + ClientUtils.localize(module.getTranslationKey()).getFormattedText());
+					body.add("- " + Utils.localize(module.getTranslationKey()).getFormattedText());
 			}
 
 			if(config.getConfig(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof TileEntityKeycardReader) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
 				String password = ((IPasswordProtected) te).getPassword();
 
-				body.add(ClientUtils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : ClientUtils.localize("waila.securitycraft:password.notSet").getFormattedText()));
+				body.add(Utils.localize("waila.securitycraft:password").getFormattedText() + " " + (password != null && !password.isEmpty() ? password : Utils.localize("waila.securitycraft:password.notSet").getFormattedText()));
 			}
 
 			if(config.getConfig(SHOW_CUSTOM_NAME) && te instanceof INameable && ((INameable) te).canBeNamed()){
 				String name = ((INameable) te).getCustomName();
 
-				body.add(ClientUtils.localize("waila.securitycraft:customName").getFormattedText() + " " + (((INameable) te).hasCustomName() ? name : ClientUtils.localize("waila.securitycraft:customName.notSet").getFormattedText()));
+				body.add(Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + (((INameable) te).hasCustomName() ? name : Utils.localize("waila.securitycraft:customName.notSet").getFormattedText()));
 			}
 		}
 
@@ -117,27 +117,27 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			EnumSentryMode mode = sentry.getMode();
 
 			if(config.getConfig(SHOW_OWNER))
-				body.add(ClientUtils.localize("waila.securitycraft:owner").getFormattedText() + " " + sentry.getOwner().getName());
+				body.add(Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + sentry.getOwner().getName());
 
 			if(config.getConfig(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer()))
 			{
 
 				if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 				{
-					body.add(ClientUtils.localize("waila.securitycraft:equipped").getFormattedText());
+					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
 					if (!sentry.getWhitelistModule().isEmpty())
-						body.add("- " + ClientUtils.localize(EnumModuleType.WHITELIST.getTranslationKey()).getFormattedText());
+						body.add("- " + Utils.localize(EnumModuleType.WHITELIST.getTranslationKey()).getFormattedText());
 
 					if (!sentry.getDisguiseModule().isEmpty())
-						body.add("- " + ClientUtils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+						body.add("- " + Utils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
 				}
 			}
 
-			String modeDescription = ClientUtils.localize(mode.getModeKey()).getFormattedText();
+			String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
 
 			if(mode != EnumSentryMode.IDLE)
-				modeDescription += " - " + ClientUtils.localize(mode.getTargetKey()).getFormattedText();
+				modeDescription += " - " + Utils.localize(mode.getTargetKey()).getFormattedText();
 
 			body.add(modeDescription);
 		}

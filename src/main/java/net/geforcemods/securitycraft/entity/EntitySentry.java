@@ -10,9 +10,9 @@ import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
@@ -236,7 +236,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				String newOwner = player.getHeldItemMainhand().getDisplayName();
 
 				dataManager.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID"));
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalOwnerChanger.name"), ClientUtils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
 			}
 			else
 				toggleMode(player);
@@ -306,7 +306,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		dataManager.set(MODE, mode);
 
 		if(sendMessage)
-			player.sendStatusMessage(ClientUtils.localize(EnumSentryMode.values()[mode].getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.values()[mode].getDescriptionKey())), true);
+			player.sendStatusMessage(Utils.localize(EnumSentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(EnumSentryMode.values()[mode].getDescriptionKey())), true);
 		else if(!player.world.isRemote)
 			SecurityCraft.network.sendToAll(new InitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive()));
 	}

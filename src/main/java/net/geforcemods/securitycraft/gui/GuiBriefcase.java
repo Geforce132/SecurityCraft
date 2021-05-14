@@ -4,8 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -71,7 +71,7 @@ public class GuiBriefcase extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText()) / 2, 6, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:briefcase.enterPasscode").getFormattedText()) / 2, 6, 4210752);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -31,10 +31,10 @@ public class GuiTrophySystem extends GuiContainer {
 	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/items/smart_module.png");
-	private final String projectiles = ClientUtils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getFormattedText();
-	private final String moduleRequired = ClientUtils.localize("gui.securitycraft:trophy_system.moduleRequired").getFormattedText();
-	private final String toggle = ClientUtils.localize("gui.securitycraft:trophy_system.toggle").getFormattedText();
-	private final String moddedProjectiles = ClientUtils.localize("gui.securitycraft:trophy_system.moddedProjectiles").getFormattedText();
+	private final String projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getFormattedText();
+	private final String moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired").getFormattedText();
+	private final String toggle = Utils.localize("gui.securitycraft:trophy_system.toggle").getFormattedText();
+	private final String moddedProjectiles = Utils.localize("gui.securitycraft:trophy_system.moddedProjectiles").getFormattedText();
 	private final boolean isSmart;
 	private final List<EntityEntry> orderedFilterList;
 	private TileEntityTrophySystem tileEntity;
@@ -65,7 +65,7 @@ public class GuiTrophySystem extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String name = ClientUtils.localize("tile.securitycraft:trophy_system.name").getFormattedText();
+		String name = Utils.localize("tile.securitycraft:trophy_system.name").getFormattedText();
 		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		fontRenderer.drawString(projectiles, xSize / 2 - fontRenderer.getStringWidth(projectiles) / 2, 31, 4210752);
 	}

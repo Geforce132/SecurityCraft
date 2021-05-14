@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class ItemKeycardBase extends Item{
 				stack.getTagCompound().setInteger("Uses", 5);
 			}
 
-			list.add(ClientUtils.localize("tooltip.securitycraft:keycard.uses").getFormattedText() + " " + stack.getTagCompound().getInteger("Uses"));
+			list.add(Utils.localize("tooltip.securitycraft:keycard.uses").getFormattedText() + " " + stack.getTagCompound().getInteger("Uses"));
 
 		}
 	}

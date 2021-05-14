@@ -13,9 +13,9 @@ import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -39,8 +39,8 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.blockPocketWall);
 	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 1);
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.reinforcedCrystalQuartz, 1, 2);
-	private final String blockPocketManager = ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name").getFormattedText();
-	private final String youNeed = ClientUtils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText();
+	private final String blockPocketManager = Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name").getFormattedText();
+	private final String youNeed = Utils.localize("gui.securitycraft:blockPocketManager.youNeed").getFormattedText();
 	private final boolean storage;
 	private final boolean isOwner;
 	private final int[] materialCounts = new int[3];
@@ -87,11 +87,11 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 		int widgetOffset = widgetWidth / 2;
 		int[] yOffset = storage ? new int[]{-76, -100, -52, -28, -4} : new int[]{-40, -70, 23, 47, 71};
 
-		buttonList.add(toggleButton = new GuiButton(0, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText()));
-		buttonList.add(sizeButton = new GuiButton(1, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
-		buttonList.add(assembleButton = new GuiButton(2, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[2], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText()));
-		buttonList.add(outlineButton = new GuiButton(3, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText()));
-		buttonList.add(offsetSlider = new GuiSlider(ClientUtils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, ClientUtils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
+		buttonList.add(toggleButton = new GuiButton(0, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!te.enabled ? "activate" : "deactivate")).getFormattedText()));
+		buttonList.add(sizeButton = new GuiButton(1, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
+		buttonList.add(assembleButton = new GuiButton(2, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[2], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText()));
+		buttonList.add(outlineButton = new GuiButton(3, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showOutline ? "show" : "hide")).getFormattedText()));
+		buttonList.add(offsetSlider = new GuiSlider(Utils.localize("gui.securitycraft:projector.offset", te.autoBuildOffset).getFormattedText(), "", 4, guiLeft + width / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.autoBuildOffset, false, true, this));
 		offsetSlider.updateSlider();
 
 		if(!te.getOwner().isOwner(Minecraft.getMinecraft().player))
@@ -115,7 +115,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, guiTop + ySize - 27, guiTop + ySize - 9, guiLeft + 174, guiLeft + 191);
 		}
 
-		assembleHoverChecker = new StringHoverChecker(assembleButton, Arrays.asList(ClientUtils.localize("gui.securitycraft:blockPocketManager.needStorageModule").getFormattedText(), ClientUtils.localize("messages.securitycraft:blockpocket.notEnoughItems").getFormattedText()));
+		assembleHoverChecker = new StringHoverChecker(assembleButton, Arrays.asList(Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule").getFormattedText(), Utils.localize("messages.securitycraft:blockpocket.notEnoughItems").getFormattedText()));
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 				feedback = te.enableMultiblock();
 
 				if(feedback != null)
-					PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA, true);
+					PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA, true);
 			}
 
 			Minecraft.getMinecraft().player.closeScreen();
@@ -251,7 +251,7 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 			te.autoBuildOffset = newOffset;
 			offsetSlider.setValue(newOffset);
 			offsetSlider.updateSlider();
-			button.displayString = ClientUtils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText();
+			button.displayString = Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText();
 			sync();
 		}
 		else if(button.id == assembleButton.id)
@@ -262,14 +262,14 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 			feedback = te.autoAssembleMultiblock();
 
 			if(feedback != null)
-				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA);
+				PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize(SCContent.blockPocketManager.getTranslationKey() + ".name"), feedback, TextFormatting.DARK_AQUA);
 
 			Minecraft.getMinecraft().player.closeScreen();
 		}
 		else if(button.id == outlineButton.id)
 		{
 			te.toggleOutline();
-			outlineButton.displayString = ClientUtils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")).getFormattedText();
+			outlineButton.displayString = Utils.localize("gui.securitycraft:blockPocketManager.outline."+ (!te.showOutline ? "show" : "hide")).getFormattedText();
 			sync();
 		}
 	}

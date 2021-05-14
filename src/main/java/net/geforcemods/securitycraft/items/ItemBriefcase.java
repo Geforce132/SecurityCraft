@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -80,7 +81,7 @@ public class ItemBriefcase extends Item {
 	public void addInformation(ItemStack briefcase, World world, List<String> tooltip, ITooltipFlag flag)
 	{
 		if (briefcase.hasTagCompound() && briefcase.getTagCompound().hasKey("owner"))
-			tooltip.add(TextFormatting.GRAY + ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTagCompound().getString("owner")).getFormattedText());
+			tooltip.add(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTagCompound().getString("owner")).getFormattedText());
 	}
 
 	public boolean hasColor(ItemStack stack)

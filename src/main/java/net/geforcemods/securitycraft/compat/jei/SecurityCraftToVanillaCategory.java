@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.compat.jei;
 
 import mezz.jei.api.IGuiHelper;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 
 public class SecurityCraftToVanillaCategory extends BaseCategory
 {
@@ -13,7 +13,7 @@ public class SecurityCraftToVanillaCategory extends BaseCategory
 	@Override
 	public String getTitle()
 	{
-		return ClientUtils.localize("jei.securitycraft.category.unreinforcing").getFormattedText();
+		return Utils.localize("jei.securitycraft.category.unreinforcing").getFormattedText();
 	}
 
 	@Override

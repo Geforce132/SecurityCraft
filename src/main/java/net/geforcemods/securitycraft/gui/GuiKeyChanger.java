@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -41,7 +42,7 @@ public class GuiKeyChanger extends GuiContainer {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText()));
+		buttonList.add(confirmButton = new GuiButton(0, width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm").getFormattedText()));
 		confirmButton.enabled = false;
 
 		textboxNewPasscode = new GuiTextField(0, fontRenderer, width / 2 - 57, height / 2 - 47, 110, 12);
@@ -76,9 +77,9 @@ public class GuiKeyChanger extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
-		fontRenderer.drawString(ClientUtils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText()) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText()) / 2, 25, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText()) / 2, 65, 4210752);
+		fontRenderer.drawString(Utils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("item.securitycraft:universalKeyChanger.name").getFormattedText()) / 2, 6, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode").getFormattedText()) / 2, 25, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode").getFormattedText()) / 2, 65, 4210752);
 	}
 
 	@Override
@@ -147,7 +148,7 @@ public class GuiKeyChanger extends GuiContainer {
 			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
 			ClientUtils.closePlayerScreen();
-			PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, ClientUtils.localize("item.securitycraft:universalKeyChanger.name"), ClientUtils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
+			PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
 		}
 	}
 }

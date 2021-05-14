@@ -14,10 +14,10 @@ import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -42,7 +42,7 @@ public class ItemUniversalBlockRemover extends Item {
 		if(isOwnableBlock(block, tileEntity)) {
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player)) {
 				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof TileEntityDisguisable) || (((ItemBlock)((BlockDisguisable)((TileEntityDisguisable)tileEntity).getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof BlockDisguisable))) {
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:universalBlockRemover.name"), ClientUtils.localize("messages.securitycraft:notOwned", ((IOwnable)tileEntity).getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockRemover.name"), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)tileEntity).getOwner().getName()), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 

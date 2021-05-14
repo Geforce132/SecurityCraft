@@ -15,8 +15,8 @@ import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -142,10 +142,10 @@ public class GuiCameraMonitor extends GuiContainer {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim").getFormattedText().replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
+					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim").getFormattedText().replace("#", cameraViewDim[i] + ""), 150), mouseX, mouseY, mc.fontRenderer);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomName())
-					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRenderer);
+					this.drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getCustomName()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
 	}
 
@@ -181,7 +181,7 @@ public class GuiCameraMonitor extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		fontRenderer.drawString(ClientUtils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(ClientUtils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText()) / 2, 6, 4210752);
+		fontRenderer.drawString(Utils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText(), xSize / 2 - fontRenderer.getStringWidth(Utils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText()) / 2, 6, 4210752);
 	}
 
 	@Override

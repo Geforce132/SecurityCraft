@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.gui;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -42,9 +42,9 @@ public class GuiKeypadFurnaceInventory extends GuiContainer{
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomName() ? tileFurnace.getName() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name").getFormattedText());
+		String s = gurnace ? "Keypad Gurnace" : (tileFurnace.hasCustomName() ? tileFurnace.getName() : Utils.localize("gui.securitycraft:protectedFurnace.name").getFormattedText());
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		fontRenderer.drawString(ClientUtils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
+		fontRenderer.drawString(Utils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 	}
 
 	@Override

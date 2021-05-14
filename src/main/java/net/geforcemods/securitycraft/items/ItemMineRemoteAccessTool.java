@@ -8,8 +8,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,7 +48,7 @@ public class ItemMineRemoteAccessTool extends Item {
 				int availSlot = getNextAvailableSlot(stack);
 
 				if(availSlot == 0){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessMine.name"), Utils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
 
@@ -65,11 +65,11 @@ public class ItemMineRemoteAccessTool extends Item {
 				if (!world.isRemote)
 					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP)player);
 
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.bound", pos), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessMine.name"), Utils.localize("messages.securitycraft:mrat.bound", pos), TextFormatting.GREEN);
 				return EnumActionResult.SUCCESS;
 			}else{
 				removeTagFromItemAndUpdate(stack, pos, player);
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:remoteAccessMine.name"), ClientUtils.localize("messages.securitycraft:mrat.unbound", pos), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:remoteAccessMine.name"), Utils.localize("messages.securitycraft:mrat.unbound", pos), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -92,7 +92,7 @@ public class ItemMineRemoteAccessTool extends Item {
 					continue;
 				}
 				else
-					list.add(ClientUtils.localize("tooltip.securitycraft:mine").getFormattedText() + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
+					list.add(Utils.localize("tooltip.securitycraft:mine").getFormattedText() + " " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2]);
 			}
 			else
 				list.add("---");

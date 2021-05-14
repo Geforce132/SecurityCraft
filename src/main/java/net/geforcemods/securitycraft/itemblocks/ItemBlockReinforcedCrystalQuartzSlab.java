@@ -4,8 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCrystalQuartzSlab;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.state.IBlockState;
@@ -56,7 +56,7 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 
 					if(!((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
 						if(!world.isRemote)
-							PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("messages.securitycraft:reinforcedSlab"), ClientUtils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
+							PlayerUtils.sendMessageToPlayer(player, Utils.localize("messages.securitycraft:reinforcedSlab"), Utils.localize("messages.securitycraft:reinforcedSlab.cannotDoubleSlab"), TextFormatting.RED);
 
 						return EnumActionResult.SUCCESS;
 					}

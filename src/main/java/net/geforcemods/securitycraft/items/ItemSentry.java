@@ -2,8 +2,8 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +37,7 @@ public class ItemSentry extends Item
 
 			if(world.isAirBlock(downPos) || world.getCollisionBoxes(null, new AxisAlignedBB(downPos)).isEmpty())
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize("item.securitycraft:sentry.name"), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:sentry.name"), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -57,7 +57,7 @@ public class ItemSentry extends Item
 		if (!world.isRemote)
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
 
-		player.sendStatusMessage(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+		player.sendStatusMessage(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(EnumSentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if(!player.isCreative())
 			player.getHeldItem(hand).shrink(1);
