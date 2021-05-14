@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.network.PacketBuffer;
@@ -67,11 +69,15 @@ public class SyncKeycardSettings
 			if(tile instanceof KeycardReaderTileEntity)
 			{
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
+				boolean isWhitelisted = te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase());
 
-				if(te.getOwner().isOwner(player))
+				if(te.getOwner().isOwner(player) || isWhitelisted)
 				{
-					te.setAcceptedLevels(message.acceptedLevels);
-					te.setSignature(message.signature);
+					if(!isWhitelisted)
+					{
+						te.setAcceptedLevels(message.acceptedLevels);
+						te.setSignature(message.signature);
+					}
 
 					if(message.link)
 					{
