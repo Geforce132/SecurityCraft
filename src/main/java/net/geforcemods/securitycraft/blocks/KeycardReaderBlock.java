@@ -56,41 +56,41 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		{
 			ItemStack stack = player.getHeldItem(hand);
 			Item item = stack.getItem();
+			KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
+			boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 
 			//either no keycard, or an unlinked keycard, or an admin tool
-			if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && item != SCContent.ADMIN_TOOL.get())
+			if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
 			{
-				KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
-
 				//only allow the owner and whitelisted players to open the gui
 				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
 					NetworkHooks.openGui((ServerPlayerEntity)player, te, pos);
 			}
 			else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 			{
-				IFormattableTextComponent feedback = insertCard(world, pos, stack, player);
+				if(isCodebreaker)
+				{
+					if(!player.isCreative())
+						stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
-				if(feedback != null)
-					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), feedback, TextFormatting.RED);
+					if(new Random().nextInt(3) == 1)
+						activate(world, pos, te.getSignalLength());
+				}
+				else
+				{
+					IFormattableTextComponent feedback = insertCard(world, pos, te, stack, player);
+
+					if(feedback != null)
+						PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), feedback, TextFormatting.RED);
+				}
 			}
 		}
 
 		return ActionResultType.SUCCESS;
 	}
 
-	public IFormattableTextComponent insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player)
+	public IFormattableTextComponent insertCard(World world, BlockPos pos, KeycardReaderTileEntity te, ItemStack stack, PlayerEntity player)
 	{
-		KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
-
-		//let admins through everywhere
-		if(player.isCreative() && stack.getItem() == SCContent.ADMIN_TOOL.get())
-		{
-			activate(world, pos, te.getSignalLength());
-			return null;
-		}
-
-		//it's a KeycardItem \o/
-
 		CompoundNBT tag = stack.getTag();
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
