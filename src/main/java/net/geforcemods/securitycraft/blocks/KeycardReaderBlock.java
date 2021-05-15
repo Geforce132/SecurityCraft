@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
@@ -54,34 +55,43 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 	{
 		if(!world.isRemote)
 		{
-			ItemStack stack = player.getHeldItem(hand);
-			Item item = stack.getItem();
 			KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
-			boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 
-			//either no keycard, or an unlinked keycard, or an admin tool
-			if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
+			if(te.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.BLACKLIST)).contains(player.getName().getString()))
 			{
-				//only allow the owner and whitelisted players to open the gui
-				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
-					NetworkHooks.openGui((ServerPlayerEntity)player, te, pos);
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), ClientUtils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 			}
-			else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
+			else
 			{
-				if(isCodebreaker)
-				{
-					if(!player.isCreative())
-						stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
+				ItemStack stack = player.getHeldItem(hand);
+				Item item = stack.getItem();
+				boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 
-					if(new Random().nextInt(3) == 1)
-						activate(world, pos, te.getSignalLength());
+				//either no keycard, or an unlinked keycard, or an admin tool
+				if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
+				{
+					//only allow the owner and whitelisted players to open the gui
+					if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
+						NetworkHooks.openGui((ServerPlayerEntity)player, te, pos);
 				}
-				else
+				else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 				{
-					IFormattableTextComponent feedback = insertCard(world, pos, te, stack, player);
+					if(isCodebreaker)
+					{
+						if(!player.isCreative())
+							stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
 
-					if(feedback != null)
-						PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), feedback, TextFormatting.RED);
+						if(new Random().nextInt(3) == 1)
+							activate(world, pos, te.getSignalLength());
+					}
+					else
+					{
+						IFormattableTextComponent feedback = insertCard(world, pos, te, stack, player);
+
+						if(feedback != null)
+							PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), feedback, TextFormatting.RED);
+					}
 				}
 			}
 		}
@@ -105,7 +115,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 
 		//the keycard's level
 		if(!te.getAcceptedLevels()[level]) //both are 0 indexed, so it's ok
-			return new TranslationTextComponent("messages.securitycraft:keycardReader.wrongLevel", level + 1);
+			return new TranslationTextComponent("messages.securitycraft:keycardReader.wrongLevel", level + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
 		boolean powered = world.getBlockState(pos).get(POWERED);
 
