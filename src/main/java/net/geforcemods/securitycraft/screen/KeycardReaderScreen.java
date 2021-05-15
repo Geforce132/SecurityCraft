@@ -281,7 +281,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				GuiUtils.drawHoveringText(matrix, Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, font);
 		}
 
-		if(!usesTextField.active && usesHoverChecker.checkHover(mouseX, mouseY))
+		if(!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
 			GuiUtils.drawHoveringText(matrix, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
 
 		renderHoveredTooltip(matrix, mouseX, mouseY);
