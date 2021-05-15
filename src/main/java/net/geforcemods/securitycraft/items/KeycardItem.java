@@ -28,11 +28,9 @@ public class KeycardItem extends Item
 		this.level = level;
 	}
 
-	public boolean isLimitedUseKeycard()
-	{
-		return this == SCContent.LIMITED_USE_KEYCARD.get();
-	}
-
+	/**
+	 * @return 0-indexed level of this keycard. Example: The level 1 keycard will return 0, and the level 5 keycard will return 4
+	 */
 	public int getLevel()
 	{
 		return level;
@@ -42,7 +40,7 @@ public class KeycardItem extends Item
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag)
 	{
-		if(isLimitedUseKeycard())
+		if(this == SCContent.LIMITED_USE_KEYCARD.get())
 			return;
 
 		CompoundNBT tag = stack.getOrCreateTag();

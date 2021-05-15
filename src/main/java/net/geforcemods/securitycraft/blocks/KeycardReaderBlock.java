@@ -7,12 +7,15 @@ import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
@@ -26,6 +29,9 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -43,19 +49,16 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
 	}
 
-	public void insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player)
-	{
-
-	}
-
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote)
 		{
 			ItemStack stack = player.getHeldItem(hand);
+			Item item = stack.getItem();
 
-			if(!(stack.getItem() instanceof KeycardItem) && stack.getItem() != SCContent.ADMIN_TOOL.get())
+			//either no keycard, or an unlinked keycard, or an admin tool
+			if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && item != SCContent.ADMIN_TOOL.get())
 			{
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
 
@@ -63,11 +66,64 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
 					NetworkHooks.openGui((ServerPlayerEntity)player, te, pos);
 			}
-			else
-				insertCard(world, pos, stack, player);
+			else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
+			{
+				IFormattableTextComponent feedback = insertCard(world, pos, stack, player);
+
+				if(feedback != null)
+					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), feedback, TextFormatting.RED);
+			}
 		}
 
 		return ActionResultType.SUCCESS;
+	}
+
+	public IFormattableTextComponent insertCard(World world, BlockPos pos, ItemStack stack, PlayerEntity player)
+	{
+		KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
+
+		//let admins through everywhere
+		if(player.isCreative() && stack.getItem() == SCContent.ADMIN_TOOL.get())
+		{
+			activate(world, pos, te.getSignalLength());
+			return null;
+		}
+
+		//it's a KeycardItem \o/
+
+		CompoundNBT tag = stack.getTag();
+
+		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
+		if(!te.getOwner().getUUID().equals(tag.getString("ownerUUID")))
+			return new TranslationTextComponent("messages.securitycraft:keycardReader.differentOwner");
+
+		//the keycard's signature does not match this keycard reader's
+		if(te.getSignature() != tag.getInt("signature"))
+			return new TranslationTextComponent("messages.securitycraft:keycardReader.wrongSignature");
+
+		int level = ((KeycardItem)stack.getItem()).getLevel();
+
+		//the keycard's level
+		if(!te.getAcceptedLevels()[level]) //both are 0 indexed, so it's ok
+			return new TranslationTextComponent("messages.securitycraft:keycardReader.wrongLevel", level + 1);
+
+		boolean powered = world.getBlockState(pos).get(POWERED);
+
+		if(tag.getBoolean("limited"))
+		{
+			int uses = tag.getInt("uses");
+
+			if(uses <= 0)
+				return new TranslationTextComponent("messages.securitycraft:keycardReader.noUses");
+
+			if(!player.isCreative() && !powered) //only remove uses when the keycard reader is not already active
+				tag.putInt("uses", --uses);
+		}
+
+		if(!powered)
+			activate(world, pos, te.getSignalLength());
+
+		return null;
 	}
 
 	public static void activate(World world, BlockPos pos, int signalLength){
