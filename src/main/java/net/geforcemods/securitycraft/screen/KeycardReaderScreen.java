@@ -71,6 +71,9 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 	private TextFieldWidget usesTextField;
 	private TextHoverChecker usesHoverChecker;
 	private Button setUsesButton;
+	private Button linkButton;
+	//fixes link and set uses buttons being on for a split second when opening the container
+	private boolean firstTick = true;
 
 	public KeycardReaderScreen(KeycardReaderContainer container, PlayerInventory inv, ITextComponent name)
 	{
@@ -155,14 +158,15 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		//set correct signature
 		changeSignature(signature);
 		//link button
-		addButton(new ExtendedButton(guiLeft + 8, guiTop + 126, 70, 20, linkText, b -> {
+		linkButton = addButton(new ExtendedButton(guiLeft + 8, guiTop + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
 			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, true));
 
 			if(container.keycardSlot.getStack().getDisplayName().getString().equalsIgnoreCase("Zelda"))
-				minecraft.getSoundHandler().play(SimpleSound.master(SCSounds.GET_ITEM.event, 1.0F));
+				minecraft.getSoundHandler().play(SimpleSound.master(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
 		}));
+		linkButton.active = false;
 		//button for saving the amount of limited uses onto the keycard
 		setUsesButton = addButton(new PictureButton(-1, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())))) {
 			@Override
@@ -171,6 +175,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				return active ? RETURN_TEXTURE : RETURN_INACTIVE_TEXTURE;
 			}
 		});
+		setUsesButton.active = false;
 		//text field for setting amount of limited uses
 		usesTextField = addButton(new TextFieldWidget(font, guiLeft + 28, guiTop + 107, 30, 15, StringTextComponent.EMPTY));
 		usesTextField.setValidator(s -> s.matches("[0-9]*"));
@@ -258,7 +263,9 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 			usesTextField.setText("");
 
 		//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
-		setUsesButton.active = enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
+		setUsesButton.active = !firstTick && enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
+		linkButton.active = !firstTick && !stack.isEmpty();
+		firstTick = false;
 	}
 
 	@Override
