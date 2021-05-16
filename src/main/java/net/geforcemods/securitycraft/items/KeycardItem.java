@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -47,7 +49,7 @@ public class KeycardItem extends Item
 
 		if(tag.getBoolean("linked"))
 		{
-			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.signature", tag.getInt("signature")).setStyle(GRAY_STYLE));
+			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(GRAY_STYLE));
 			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(GRAY_STYLE));
 		}
 		else
