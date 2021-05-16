@@ -42,7 +42,12 @@ public class KeycardReaderContainer extends Container
 			@Override
 			public boolean isItemValid(ItemStack stack)
 			{
-				return stack.getItem() instanceof KeycardItem && stack.getItem() != SCContent.LIMITED_USE_KEYCARD.get();
+				//only allow keycards
+				//do not allow limited use keycards as they are only crafting components
+				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
+				return stack.getItem() instanceof KeycardItem
+						&& stack.getItem() != SCContent.LIMITED_USE_KEYCARD.get()
+						&& (!stack.hasTag() || stack.getTag().getString("ownerUUID").equals(te.getOwner().getUUID()));
 			}
 		});
 	}
