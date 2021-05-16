@@ -250,8 +250,11 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		super.tick();
 
 		ItemStack stack = container.keycardSlot.getStack();
+		boolean isEmpty = stack.isEmpty();
 		boolean wasActive = usesTextField.active;
-		boolean enabled = !stack.isEmpty() && stack.hasTag() && stack.getTag().getBoolean("limited");
+		boolean hasTag = stack.hasTag();
+		boolean enabled = !isEmpty && hasTag && stack.getTag().getBoolean("limited");
+		int cardSignature = stack.hasTag() ? stack.getTag().getInt("signature") : -1;
 
 		usesTextField.setEnabled(enabled);
 		usesTextField.active = enabled;
@@ -264,7 +267,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 
 		//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
 		setUsesButton.active = !firstTick && enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
-		linkButton.active = !firstTick && !stack.isEmpty();
+		linkButton.active = !firstTick && !isEmpty && cardSignature != signature;
 		firstTick = false;
 	}
 
