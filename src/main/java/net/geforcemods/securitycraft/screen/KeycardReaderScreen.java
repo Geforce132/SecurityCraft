@@ -265,10 +265,19 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		else if(wasActive && !enabled)
 			usesTextField.setText("");
 
-		//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
-		setUsesButton.active = !firstTick && enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
-		linkButton.active = !firstTick && !isEmpty && cardSignature != signature;
-		firstTick = false;
+		//fixes the buttons being active for a brief moment right after opening the screen
+		if(firstTick)
+		{
+			setUsesButton.active = false;
+			linkButton.active = false;
+			firstTick = false;
+		}
+		else
+		{
+			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
+			setUsesButton.active = enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
+			linkButton.active = !isEmpty && cardSignature != signature;
+		}
 	}
 
 	@Override
