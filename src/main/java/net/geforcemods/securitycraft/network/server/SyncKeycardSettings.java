@@ -69,11 +69,11 @@ public class SyncKeycardSettings
 			if(tile instanceof KeycardReaderTileEntity)
 			{
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
-				boolean isWhitelisted = te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase());
+				boolean isOwner = te.getOwner().isOwner(player);
 
-				if(te.getOwner().isOwner(player) || isWhitelisted)
+				if(isOwner || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
 				{
-					if(!isWhitelisted)
+					if(isOwner)
 					{
 						te.setAcceptedLevels(message.acceptedLevels);
 						te.setSignature(message.signature);
