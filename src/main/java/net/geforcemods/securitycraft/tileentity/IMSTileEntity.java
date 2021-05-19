@@ -33,7 +33,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
-	private IMSTargetingMode targetingOption = IMSTargetingMode.PLAYERS_AND_MOBS;
+	private IMSTargetingMode targetingMode = IMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
 
 	public IMSTileEntity()
@@ -66,7 +66,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(range.get());
 			LivingEntity target = null;
 
-			if(targetingOption == IMSTargetingMode.MOBS || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS)
+			if(targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
 			{
 				List<MonsterEntity> mobs = world.<MonsterEntity>getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
@@ -74,7 +74,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 					target = mobs.get(0);
 			}
 
-			if(target == null && (targetingOption == IMSTargetingMode.PLAYERS  || targetingOption == IMSTargetingMode.PLAYERS_AND_MOBS))
+			if(target == null && (targetingMode == IMSTargetingMode.PLAYERS  || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
 			{
 				List<PlayerEntity> players = world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
@@ -83,14 +83,14 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 			}
 
 			if (target != null) {
-				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 1.2D : 0.55D;
-				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 1.2D : 0.6D;
+				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
+				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
 				double accelerationX = target.getPosX() - pos.getX();
 				double accelerationY = target.getBoundingBox().minY + target.getHeight() / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = target.getPosZ() - pos.getZ();
 
-				world.addEntity(new IMSBombEntity(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight));
+				world.addEntity(new IMSBombEntity(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
 				if (!world.isRemote)
 					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
@@ -105,7 +105,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	{
 		return entity != null
 				&& (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((PlayerEntity)entity).isCreative() && !((PlayerEntity)entity).isSpectator()) //PlayerEntity checks
-				&& !(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getString().toLowerCase())); //checks for all entities
+				&& !(hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(entity.getName().getString().toLowerCase())); //checks for all entities
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		super.write(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
-		tag.putInt("targetingOption", targetingOption.ordinal());
+		tag.putInt("targetingOption", targetingMode.ordinal());
 		tag.putBoolean("updateBombCount", updateBombCount);
 		return tag;
 	}
@@ -149,7 +149,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		super.read(state, tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
-		targetingOption = IMSTargetingMode.values()[tag.getInt("targetingOption")];
+		targetingMode = IMSTargetingMode.values()[tag.getInt("targetingOption")];
 		updateBombCount = tag.getBoolean("updateBombCount");
 	}
 
@@ -157,17 +157,17 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 		this.bombsRemaining = bombsRemaining;
 	}
 
-	public IMSTargetingMode getTargetingOption() {
-		return targetingOption;
+	public IMSTargetingMode getTargetingMode() {
+		return targetingMode;
 	}
 
-	public void setTargetingOption(IMSTargetingMode targetingOption) {
-		this.targetingOption = targetingOption;
+	public void setTargetingMode(IMSTargetingMode targetingOption) {
+		this.targetingMode = targetingOption;
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST};
 	}
 
 	@Override

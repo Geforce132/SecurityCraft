@@ -33,4 +33,23 @@ public class Utils {
 
 		connectedScanner.setContents(contents);
 	}
+
+	/**
+	 * Localizes a String with the given format
+	 * @param key The string to localize (aka the identifier in the .lang file)
+	 * @param params The parameters to insert into the String ala String.format
+	 * @return The localized String
+	 */
+	public static TranslationTextComponent localize(String key, Object... params)
+	{
+		for(int i = 0; i < params.length; i++)
+		{
+			if(params[i] instanceof TranslationTextComponent)
+				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getFormatArgs());
+			else if(params[i] instanceof BlockPos)
+				params[i] = getFormattedCoordinates((BlockPos)params[i]);
+		}
+	
+		return new TranslationTextComponent(key, params);
+	}
 }

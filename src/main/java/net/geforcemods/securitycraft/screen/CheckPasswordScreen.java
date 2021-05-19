@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -38,7 +37,7 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public CheckPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
 	}
 
 	@Override

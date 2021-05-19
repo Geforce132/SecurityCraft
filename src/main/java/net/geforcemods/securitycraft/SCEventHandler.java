@@ -27,8 +27,8 @@ import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -69,17 +69,35 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 @EventBusSubscriber(modid=SecurityCraft.MODID)
 public class SCEventHandler {
+	private static final String PREVIOUS_PLAYER_POS_NBT = "SecurityCraftPreviousPlayerPos";
 
 	@SubscribeEvent
 	public static void onPlayerLoggedIn(PlayerLoggedInEvent event){
-		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)event.getPlayer()), new SendTip());
+		PlayerEntity player = event.getPlayer();
+
+		if(player.getPersistentData().contains(PREVIOUS_PLAYER_POS_NBT))
+		{
+			BlockPos pos = BlockPos.fromLong(player.getPersistentData().getLong(PREVIOUS_PLAYER_POS_NBT));
+
+			player.getPersistentData().remove(PREVIOUS_PLAYER_POS_NBT);
+			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+		}
+
+		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SendTip());
 	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event)
 	{
-		if(PlayerUtils.isPlayerMountedOnCamera(event.getPlayer()) && event.getPlayer().getRidingEntity() instanceof SecurityCameraEntity)
-			event.getPlayer().getRidingEntity().remove();
+		PlayerEntity player = event.getPlayer();
+
+		if(PlayerUtils.isPlayerMountedOnCamera(player))
+		{
+			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getRidingEntity()).getPreviousPlayerPos());
+
+			player.getRidingEntity().remove();
+			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.toLong());
+		}
 	}
 
 	@SubscribeEvent
@@ -126,7 +144,7 @@ public class SCEventHandler {
 			if(tileEntity instanceof ILockable && ((ILockable) tileEntity).isLocked() && ((ILockable) tileEntity).onRightClickWhenLocked(world, event.getPos(), event.getPlayer()))
 			{
 				event.setCanceled(true);
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), ClientUtils.localize(block.getTranslationKey()), ClientUtils.localize("messages.securitycraft:sonic_security_system.locked", ClientUtils.localize(block.getTranslationKey())), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:sonic_security_system.locked", Utils.localize(block.getTranslationKey())), TextFormatting.DARK_RED);
 				return;
 			}
 
@@ -142,7 +160,7 @@ public class SCEventHandler {
 				event.setCancellationResult(ActionResultType.SUCCESS);
 
 				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getDisplayName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
 					return;
 				}
 
@@ -150,7 +168,7 @@ public class SCEventHandler {
 					nametag.shrink(1);
 
 				((INameable) tileEntity).setCustomSCName(nametag.getDisplayName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), ClientUtils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
 				return;
 			}
 		}
@@ -336,22 +354,27 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		if(ConfigHandler.SERVER.allowCodebreakerItem.get())
-		{
-			World world = event.getPlayer().world;
-			TileEntity tileEntity = event.getPlayer().world.getTileEntity(event.getPos());
+		World world = event.getPlayer().world;
+		TileEntity tileEntity = world.getTileEntity(event.getPos());
 
-			if(tileEntity instanceof IPasswordProtected)
+		if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
+		{
+			if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 			{
 				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
 					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
-					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer(), !ConfigHandler.SERVER.allowCodebreakerItem.get());
+					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer());
 				else {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(SCContent.CODEBREAKER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(SCContent.CODEBREAKER.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;
 				}
+			}
+			else {
+				Block block = world.getBlockState(event.getPos()).getBlock();
+
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 		}
 

@@ -1,13 +1,20 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
+import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -58,7 +65,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			return ActionResultType.SUCCESS;
 		}
 		else {
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.INVENTORY_SCANNER.get().getTranslationKey()), Utils.localize("messages.securitycraft:invScan.notConnected"), TextFormatting.RED);
 			return ActionResultType.SUCCESS;
 		}
 	}
@@ -99,12 +106,30 @@ public class InventoryScannerBlock extends DisguisableBlock {
 				return;
 		}
 
+		InventoryScannerTileEntity thisTe = (InventoryScannerTileEntity)world.getTileEntity(pos);
+		Option<?>[] customOptions = thisTe.customOptions();
+
 		for(int i = 1; i < loopBoundary; i++)
 		{
-			world.setBlockState(pos.offset(facing, i), SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing).with(HORIZONTAL, horizontal));
+			BlockPos offsetPos = pos.offset(facing, i);
+
+			world.setBlockState(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().getDefaultState().with(FACING, facing).with(HORIZONTAL, horizontal));
+
+			TileEntity te = world.getTileEntity(offsetPos);
+
+			if(te instanceof IOwnable)
+				((IOwnable)te).setOwner(thisTe.getOwner().getUUID(), thisTe.getOwner().getName());
 		}
 
-		CustomizableTileEntity.link((CustomizableTileEntity)world.getTileEntity(pos), connectedScanner);
+		CustomizableTileEntity.link(thisTe, connectedScanner);
+
+		for(ModuleType type : connectedScanner.getInsertedModules())
+		{
+			thisTe.insertModule(connectedScanner.getModule(type));
+		}
+
+		((BooleanOption)customOptions[0]).setValue(connectedScanner.isHorizontal());
+		((BooleanOption)customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
 	}
 
 	@Override
@@ -275,5 +300,22 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		return state.rotate(mirror.toRotation(state.get(FACING)));
+	}
+
+	public static class DoorActivator implements IDoorActivator
+	{
+		private List<Block> blocks = Arrays.asList(SCContent.INVENTORY_SCANNER.get());
+
+		@Override
+		public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te)
+		{
+			return ((InventoryScannerTileEntity)te).hasModule(ModuleType.REDSTONE) && ((InventoryScannerTileEntity)te).shouldProvidePower();
+		}
+
+		@Override
+		public List<Block> getBlocks()
+		{
+			return blocks;
+		}
 	}
 }

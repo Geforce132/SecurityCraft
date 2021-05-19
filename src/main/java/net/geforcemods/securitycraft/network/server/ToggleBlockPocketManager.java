@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -43,9 +44,10 @@ public class ToggleBlockPocketManager
 	public static void onMessage(ToggleBlockPocketManager message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
+			PlayerEntity player = ctx.get().getSender();
+			TileEntity te = player.world.getTileEntity(message.pos);
 
-			if(te instanceof BlockPocketManagerTileEntity)
+			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
 			{
 				((BlockPocketManagerTileEntity)te).size = message.size;
 

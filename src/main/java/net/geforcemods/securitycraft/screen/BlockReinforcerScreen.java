@@ -5,7 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.BlockReinforcerContainer;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -21,8 +21,8 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer.png");
 	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID + ":textures/gui/container/universal_block_reinforcer_lvl1.png");
-	private final TranslationTextComponent ubr = ClientUtils.localize("gui.securitycraft:blockReinforcer.title");
-	private final TranslationTextComponent output = ClientUtils.localize("gui.securitycraft:blockReinforcer.output");
+	private final TranslationTextComponent ubr = Utils.localize("gui.securitycraft:blockReinforcer.title");
+	private final TranslationTextComponent output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final boolean isLvl1;
 
 	public BlockReinforcerScreen(BlockReinforcerContainer container, PlayerInventory inv, ITextComponent name)
@@ -47,7 +47,7 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 		NonNullList<ItemStack> inv = container.getInventory();
 
 		font.drawText(matrix, ubr, (xSize - font.getStringPropertyWidth(ubr)) / 2, 5, 4210752);
-		font.drawText(matrix, ClientUtils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.drawText(matrix, Utils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{

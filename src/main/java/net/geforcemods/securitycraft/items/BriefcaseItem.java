@@ -4,8 +4,9 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.OpenGui;
+import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -66,9 +67,9 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getDisplayName()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getDisplayName()));
 		}
 	}
 
@@ -76,7 +77,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if (briefcase.hasTag() && briefcase.getTag().contains("owner"))
-			tooltip.add(ClientUtils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).setStyle(GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).setStyle(GRAY_STYLE));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {

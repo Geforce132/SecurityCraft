@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.network.client.OpenSRATGui;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -66,12 +65,12 @@ public class SentryRemoteAccessToolItem extends Item {
 				int availSlot = getNextAvaliableSlot(stack);
 
 				if(availSlot == 0){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
 
 				if(!sentry.getOwner().isOwner(player)){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
 
@@ -83,10 +82,10 @@ public class SentryRemoteAccessToolItem extends Item {
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
 			}else{
 				removeTagFromItemAndUpdate(stack, pos2, player);
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
 			}
 
 			return ActionResultType.SUCCESS;
@@ -120,7 +119,7 @@ public class SentryRemoteAccessToolItem extends Item {
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
 						nameToShow = sentries.get(0).getCustomName().getString();
 					else
-						nameToShow = ClientUtils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+						nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
 
 					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 				}

@@ -1,46 +1,37 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.Arrays;
+
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ScreenShotHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class ClientUtils{
+	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png");
 
-	@OnlyIn(Dist.CLIENT)
 	public static void closePlayerScreen(){
 		Minecraft.getInstance().player.closeScreen();
 	}
 
 	/**
-	 * Takes a screenshot, and sends the player a notification. <p>
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static void takeScreenshot() {
-		ScreenShotHelper.saveScreenshot(
-				Minecraft.getInstance().gameDir,
-				Minecraft.getInstance().getMainWindow().getWidth(),
-				Minecraft.getInstance().getMainWindow().getHeight(),
-				Minecraft.getInstance().getFramebuffer(),
-				msg -> Minecraft.getInstance().execute(() -> Minecraft.getInstance().ingameGUI.getChatGUI().printChatMessage(msg)));
-	}
-
-	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static String getFormattedMinecraftTime(){
 		Long time = Minecraft.getInstance().world.getDayTime();
 
@@ -52,43 +43,44 @@ public class ClientUtils{
 	}
 
 	/**
-	 * Sends the client-side CompoundNBT of a block's TileEntity to the server.
-	 *
-	 * Only works on the CLIENT side.
-	 */
-	@OnlyIn(Dist.CLIENT)
-	public static void syncTileEntity(TileEntity tileEntity){
-		CompoundNBT tag = new CompoundNBT();
-		tileEntity.write(tag);
-		SecurityCraft.channel.sendToServer(new SyncTENBTTag(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), tag));
-	}
-
-	/**
 	 * Sends the client-side CompoundNBT of a player's held item to the server.
-	 *
-	 * Only works on the CLIENT side.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void syncItemNBT(ItemStack item){
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
-	/**
-	 * Localizes a String with the given format
-	 * @param key The string to localize (aka the identifier in the .lang file)
-	 * @param params The parameters to insert into the String ala String.format
-	 * @return The localized String
-	 */
-	public static TranslationTextComponent localize(String key, Object... params)
+	@OnlyIn(Dist.CLIENT)
+	public static void renderSmartModuleInfo(MatrixStack matrix, ITextComponent moduleTooltip, ITextComponent noModuleTooltip, boolean isSmart, int guiLeft, int guiTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
 	{
-		for(int i = 0; i < params.length; i++)
-		{
-			if(params[i] instanceof TranslationTextComponent)
-				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getFormatArgs());
-			else if(params[i] instanceof BlockPos)
-				params[i] = Utils.getFormattedCoordinates((BlockPos)params[i]);
-		}
+		Minecraft mc = Minecraft.getInstance();
+		float alpha = isSmart ? 1.0F : 0.5F;
+		int moduleLeft = guiLeft + 5;
+		int moduleRight = moduleLeft + 16;
+		int moduleTop = guiTop + 5;
+		int moduleBottom = moduleTop + 16;
+		Matrix4f m4f = matrix.getLast().getMatrix();
+		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
 
-		return new TranslationTextComponent(key, params);
+		RenderSystem.enableAlphaTest();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultAlphaFunc();
+		RenderSystem.defaultBlendFunc();
+		mc.getTextureManager().bindTexture(SMART_MODULE_TEXTURE);
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+		bufferBuilder.pos(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
+		bufferBuilder.pos(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();
+		bufferBuilder.pos(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 0).endVertex();
+		bufferBuilder.pos(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 0).endVertex();
+		bufferBuilder.finishDrawing();
+		WorldVertexBufferUploader.draw(bufferBuilder);
+		RenderSystem.disableBlend();
+
+		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
+		{
+			ITextComponent text = isSmart ? moduleTooltip : noModuleTooltip;
+
+			if(text != null)
+				GuiUtils.drawHoveringText(matrix, Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
+		}
 	}
 }

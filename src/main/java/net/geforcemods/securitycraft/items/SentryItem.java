@@ -3,8 +3,8 @@ package net.geforcemods.securitycraft.items;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,9 +31,13 @@ public class SentryItem extends Item
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
 	{
-		pos = pos.offset(facing); //get sentry position
+		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
-		if(!world.isAirBlock(pos))
+		if (!replacesTargetedBlock) {
+			pos = pos.offset(facing); //if the block is not replaceable, place sentry next to targeted block
+		}
+
+		if(!world.isAirBlock(pos) && !replacesTargetedBlock)
 			return ActionResultType.PASS;
 		else
 		{
@@ -41,7 +45,7 @@ public class SentryItem extends Item
 
 			if(world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos)))
 			{
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.SENTRY.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return ActionResultType.FAIL;
 			}
 		}
@@ -54,8 +58,12 @@ public class SentryItem extends Item
 		if (stack.hasDisplayName())
 			entity.setCustomName(stack.getDisplayName());
 
+		if (replacesTargetedBlock) {
+			world.removeBlock(pos, false);
+		}
+
 		world.addEntity(entity);
-		player.sendStatusMessage(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(ClientUtils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+		player.sendStatusMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if(!player.isCreative())
 			stack.shrink(1);

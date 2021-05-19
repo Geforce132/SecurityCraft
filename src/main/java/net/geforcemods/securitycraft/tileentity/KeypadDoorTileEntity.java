@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -100,15 +100,13 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 				}
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), ClientUtils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passwordProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player, boolean isCodebreakerDisabled) {
-		if(isCodebreakerDisabled)
-			PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.KEYPAD_DOOR.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-		else if(!blockState.get(DoorBlock.OPEN)) {
+	public boolean onCodebreakerUsed(BlockState blockState, PlayerEntity player) {
+		if(!blockState.get(DoorBlock.OPEN)) {
 			activate(player);
 			return true;
 		}
@@ -145,7 +143,7 @@ public class KeypadDoorTileEntity extends SpecialDoorTileEntity implements IPass
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST};
 	}
 
 	@Override

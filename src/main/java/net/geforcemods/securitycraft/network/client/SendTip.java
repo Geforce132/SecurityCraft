@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -48,10 +48,10 @@ public class SendTip
 			IFormattableTextComponent message = new StringTextComponent("[")
 					.appendSibling(new StringTextComponent("SecurityCraft").mergeStyle(TextFormatting.GOLD))
 					.appendSibling(new StringTextComponent("] "))
-					.appendSibling(ClientUtils.localize("messages.securitycraft:thanks",
+					.appendSibling(Utils.localize("messages.securitycraft:thanks",
 							SecurityCraft.getVersion(),
-							ClientUtils.localize("messages.securitycraft:tip"),
-							ClientUtils.localize(tipKey)));
+							Utils.localize("messages.securitycraft:tip"),
+							Utils.localize(tipKey)));
 
 			if(tipsWithLink.containsKey(tipKey.split("\\.")[2]))
 				message = message.appendSibling(ForgeHooks.newChatWithLinks(tipsWithLink.get(tipKey.split("\\.")[2])));

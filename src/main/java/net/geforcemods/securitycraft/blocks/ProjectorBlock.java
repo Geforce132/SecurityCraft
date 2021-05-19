@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -8,11 +9,13 @@ import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -28,13 +31,20 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ProjectorBlock extends DisguisableBlock {
 
+	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	private static final VoxelShape NORTH = Stream.of(Block.makeCuboidShape(3, 5, 0.9, 6, 8, 1.9), Block.makeCuboidShape(0, 3, 1, 16, 10, 16), Block.makeCuboidShape(2, 8, 0.5, 7, 9, 1), Block.makeCuboidShape(2, 4, 0.5, 7, 5, 1), Block.makeCuboidShape(6, 5, 0.5, 7, 8, 1), Block.makeCuboidShape(2, 5, 0.5, 3, 8, 1), Block.makeCuboidShape(0, 0, 1, 2, 3, 3), Block.makeCuboidShape(14, 0, 1, 16, 3, 3), Block.makeCuboidShape(14, 0, 14, 16, 3, 16), Block.makeCuboidShape(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
 	private static final VoxelShape SOUTH = Stream.of(Block.makeCuboidShape(0, 3, 0, 16, 10, 15), Block.makeCuboidShape(10, 5, 14.1, 13, 8, 15.100000000000001), Block.makeCuboidShape(9, 8, 15, 14, 9, 15.5), Block.makeCuboidShape(9, 4, 15, 14, 5, 15.5), Block.makeCuboidShape(9, 5, 15, 10, 8, 15.5), Block.makeCuboidShape(13, 5, 15, 14, 8, 15.5), Block.makeCuboidShape(14, 0, 13, 16, 3, 15), Block.makeCuboidShape(0, 0, 13, 2, 3, 15), Block.makeCuboidShape(0, 0, 0, 2, 3, 2), Block.makeCuboidShape(14, 0, 0, 16, 3, 2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
@@ -155,5 +165,12 @@ public class ProjectorBlock extends DisguisableBlock {
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
 		return state.rotate(mirror.toRotation(state.get(FACING)));
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag)
+	{
+		tooltip.add(new TranslationTextComponent("tooltip.securitycraft:projector").setStyle(GRAY_STYLE));
 	}
 }

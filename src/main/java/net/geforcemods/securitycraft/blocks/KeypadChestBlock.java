@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -66,7 +66,7 @@ public class KeypadChestBlock extends ChestBlock {
 					if (chest1.hasCustomName()) {
 						return chest1.getDisplayName();
 					} else {
-						return chest2.hasCustomName() ? chest2.getDisplayName() : ClientUtils.localize("block.securitycraft.keypad_chest_double");
+						return chest2.hasCustomName() ? chest2.getDisplayName() : Utils.localize("block.securitycraft.keypad_chest_double");
 					}
 				}
 			});
@@ -94,9 +94,9 @@ public class KeypadChestBlock extends ChestBlock {
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos)) {
-			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.DENYLIST))
 				return ActionResultType.FAIL;
-			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
+			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.ALLOWLIST))
 				activate(world, pos, player);
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
@@ -142,11 +142,11 @@ public class KeypadChestBlock extends ChestBlock {
 	@Override
 	public void onNeighborChange(BlockState state, IWorldReader world, BlockPos pos, BlockPos neighbor){
 		super.onNeighborChange(state, world, pos, neighbor);
-		KeypadChestTileEntity ChestTileEntity = (KeypadChestTileEntity)world.getTileEntity(pos);
 
-		if (ChestTileEntity != null)
-			ChestTileEntity.updateContainingBlockInfo();
+		TileEntity tileEntity = world.getTileEntity(pos);
 
+		if (tileEntity instanceof KeypadChestTileEntity)
+			((KeypadChestTileEntity) tileEntity).updateContainingBlockInfo();
 	}
 
 	@Override

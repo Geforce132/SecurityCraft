@@ -306,6 +306,7 @@ public class BlockTagGenerator extends BlockTagsProvider
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
 				SCContent.REINFORCED_WARPED_NYLIUM.get());
 		getOrCreateBuilder(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
+		getOrCreateBuilder(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
 		getOrCreateBuilder(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		getOrCreateBuilder(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		getOrCreateBuilder(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get());

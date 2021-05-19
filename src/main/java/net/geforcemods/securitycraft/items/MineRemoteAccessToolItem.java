@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
@@ -58,7 +57,7 @@ public class MineRemoteAccessToolItem extends Item {
 				int availSlot = getNextAvaliableSlot(stack);
 
 				if(availSlot == 0){
-					PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), Utils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
 
@@ -76,11 +75,11 @@ public class MineRemoteAccessToolItem extends Item {
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				return ActionResultType.SUCCESS;
 			}else{
 				removeTagFromItemAndUpdate(stack, pos, player);
-				PlayerUtils.sendMessageToPlayer(player, ClientUtils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -103,7 +102,7 @@ public class MineRemoteAccessToolItem extends Item {
 					continue;
 				}
 				else
-					list.add(ClientUtils.localize("tooltip.securitycraft:mine").appendSibling(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine").appendSibling(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
 			}
 			else
 				list.add(new StringTextComponent(TextFormatting.GRAY + "---"));

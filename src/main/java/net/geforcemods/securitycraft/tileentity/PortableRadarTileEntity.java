@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -51,12 +50,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
 			List<PlayerEntity> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> {
-				boolean isNotWhitelisted = true;
+				boolean isNotAllowed = true;
 
-				if(hasModule(ModuleType.WHITELIST))
-					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(e.getName().getString().toLowerCase());
+				if(hasModule(ModuleType.ALLOWLIST))
+					isNotAllowed = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(e.getName().getString().toLowerCase());
 
-				return e != owner && isNotWhitelisted && !e.isSpectator() && !EntityUtils.isInvisible(e);
+				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if(hasModule(ModuleType.REDSTONE))
@@ -72,11 +71,11 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 						IFormattableTextComponent text;
 
 						if(hasCustomSCName())
-							text = ClientUtils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
+							text = Utils.localize("messages.securitycraft:portableRadar.withName", attackedName, getCustomSCName().copyRaw().mergeStyle(TextFormatting.ITALIC));
 						else
-							text = ClientUtils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
+							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, Utils.getFormattedCoordinates(pos));
 
-						PlayerUtils.sendMessageToPlayer(owner, ClientUtils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), text, TextFormatting.BLUE);
+						PlayerUtils.sendMessageToPlayer(owner, Utils.localize(SCContent.PORTABLE_RADAR.get().getTranslationKey()), text, TextFormatting.BLUE);
 						setSentMessage();
 					}
 				}
@@ -135,7 +134,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.REDSTONE, ModuleType.WHITELIST};
+		return new ModuleType[]{ModuleType.REDSTONE, ModuleType.ALLOWLIST};
 	}
 
 	@Override

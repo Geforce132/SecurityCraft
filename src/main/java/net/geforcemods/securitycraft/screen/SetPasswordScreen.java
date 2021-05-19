@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -35,8 +36,8 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = ClientUtils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
-		setup = ClientUtils.localize("gui.securitycraft:password.setup");
+		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		setup = Utils.localize("gui.securitycraft:password.setup");
 		combined = blockName.copyRaw().appendSibling(new StringTextComponent(" ")).appendSibling(setup);
 	}
 
@@ -45,7 +46,7 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		super.init();
 
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, ClientUtils.localize("gui.securitycraft:keycardSetup.save"), this::actionPerformed));
+		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:keycardSetup.save"), this::actionPerformed));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));

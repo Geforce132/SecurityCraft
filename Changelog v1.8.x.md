@@ -4,8 +4,20 @@
 - New: Server configuration option "force_reinforced_block_tint". This can be used to force players to use the setting of the server config value "reinforced_block_tint" 
 - New: Client configuration option "reinforced_block_tint". If the server does not force the reinforced block tint, this value will be used
 - New: The Codebreaker will now send a message when it failed to break a code
+- New: The Admin Tool will now send a message when used while it has been disabled in the config
+- New: Players that have been added to an Allow- or Denylist Module will now be visible in a list in the GUI
+- New: Changing the owner of a block will now drop contained modules and storage module inventory
+- New: Configuration option "mineExplosionsBreakBlocks" to control whether explosions of mines break blocks
+- New: The Username Logger now supports the Allowlist Module, making it possible to prevent players on the list from being logged
+- New: The Trophy System is now also capable of targeting Ender Pearls, Snowballs, Eggs, Llama Spit and Firework Rockets
+- New: Inserting a Smart Module into a Trophy System now allows its owner to manually configure which projectile types the Trophy System is allowed to target
+- New: Keycards can now be linked to Keycard Readers via a signature that can be shared with multiple other readers. See the SecurityCraft Manual for more info
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
+- Change: The Whitelist Module has been renamed to "Allowlist Module" to be more clear about its function
+- Change: The Blacklist Module has been renamed to "Denylist Module" to be more clear about its function
+- Change: Auto-assembling the Block Pocket no longer instantly builds the structure
+- API: Added hook for mods to define a block that can open Reinforced Doors/Reinforced Trapdoors/Reinforced Fence Gates. For more info, see IDoorActivator
 - Fix: Double Crystal Quartz Slab does not drop two slab items
 - Fix: An item stack cannot be put into the Universal Block Reinforcer's slots if the stack's count is larger than the Reinforcer's durability
 - Fix: I.M.S. entity gets stuck in mid-air when leaving and rejoining the world
@@ -15,12 +27,28 @@
 - Fix: The Briefcase's NBT contains empty Briefcase inventory slots
 - Fix: Some of SecurityCraft's tools don't lose durability when used on a block while held in the offhand
 - Fix: Reinforced Buttons and the Reinforced Lever can get washed away by water and destroyed by pistons
-- Fix: Mines can be placed on some blocks that haven't got a solid top side
-- Fix: Claymores spawn fire when exploding even though the shouldSpawnFire configuration option is false
+- Fix: Mines can be placed on some blocks that don't have a solid top side
+- Fix: Claymore explosions ignore the "shouldSpawnFire" configuration option
 - Fix: Using TAB to navigate menus does not work properly in some of SecurityCraft's interfaces
 - Fix: Pressing ENTER to press buttons in SecurityCraft's interfaces does not work
+- Fix: Placing a Scanner-/Keypad Door in a block space that is powered will place the door in an open state
+- Fix: Universal Block Remover does not take damage when breaking a deactivated Cage Trap
+- Fix: The message that the Codebreaker has been disabled in the configuration file doesn't get sent
+- Fix: Some mines ignore the "smallerMinesExplosion" configuration option
+- Fix: Placing a Sentry in replaceable blocks, such as grass, does not work
+- Fix: Copying/Pasting module lists does not work properly
+- Fix: Mobs can spawn inside of a block pocket
+- Fix: Potential crash when placing down blocks next to a password-protected chest
+- Fix: Laser-/Inventory Scanner Fields don't have the proper owner assigned
+- Fix: Newly placed Laser Blocks/Inventory Scanners don't synchronize with the Laser Block/Inventory Scanner they connected to
+- Fix: Rejoining a server/world while being mounted to a camera teleports the player to that camera
+- Fix: The fourth I.M.S. Bomb doesn't get shot properly
+- Fix: The SecurityCraft Manual does not properly reflect recipes that have been disabled via datapacks/3rd-party mods
+- Removed: Ability to take screenshots via middle mouse click while being mounted to a camera, as it is unneeded due to Minecraft's own screenshot feature
+- Removed: All configuration values that disable recipes. Use datapacks or 3rd-party mods to disable recipes instead
 - Misc.: All of SecurityCraft's blocks now have loot tables
 - Misc.: Added data generators for more blockstates and models and renamed some textures and models along the way. This will break resourcepacks
+- Misc.: The minimum required Forge version is now 36.0.42
 
 --------------------------Changelog for v1.8.21.1 of SecurityCraft--------------------------
 

@@ -302,7 +302,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.STORAGE, ModuleType.DISGUISE, ModuleType.REDSTONE};
 	}
 
 	@Override
@@ -346,6 +346,11 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	{
 		horizontal.setValue(isHorizontal);
 		world.setBlockState(pos, getBlockState().with(InventoryScannerBlock.HORIZONTAL, isHorizontal));
+	}
+
+	public boolean isHorizontal()
+	{
+		return horizontal.get();
 	}
 
 	public boolean doesFieldSolidify() {

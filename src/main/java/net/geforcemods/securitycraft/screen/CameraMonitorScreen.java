@@ -18,14 +18,15 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,7 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class CameraMonitorScreen extends Screen {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent selectCameras = ClientUtils.localize("gui.securitycraft:monitor.selectCameras");
+	private final TranslationTextComponent selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
 	private PlayerInventory playerInventory;
 	private CameraMonitorItem cameraMonitor;
 	private CompoundNBT nbtTag;
@@ -156,10 +157,10 @@ public class CameraMonitorScreen extends Screen {
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					renderTooltip(matrix, font.trimStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					renderTooltip(matrix, font.trimStringToWidth(ClientUtils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
 			}
 	}
 
@@ -175,7 +176,7 @@ public class CameraMonitorScreen extends Screen {
 
 			if(BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation()) == SCContent.SECURITY_CAMERA.get()) {
 				((SecurityCameraBlock) BlockUtils.getBlock(Minecraft.getInstance().world, view.getLocation())).mountCamera(Minecraft.getInstance().world, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
-				SecurityCraft.channel.sendToServer(new MountCamera(view.x, view.y, view.z, camID));
+				SecurityCraft.channel.sendToServer(new MountCamera(new BlockPos(view.x, view.y, view.z), camID));
 				Minecraft.getInstance().player.closeScreen();
 			}
 			else

@@ -1,27 +1,15 @@
 {
-  "type": "forge:conditional",
-  "recipes": [
+  "type": "minecraft:crafting_shapeless",
+  "group": "securitycraft:block_mines",
+  "ingredients": [
     {
-      "conditions": [
-        {
-          "type": "securitycraft:toggle_mines"
-        }
-      ],
-      "recipe": {
-        "type": "minecraft:crafting_shapeless",
-        "group": "securitycraft:block_mines",
-        "ingredients": [
-          {
-            "item": "minecraft:coal_ore"
-          },
-          {
-            "item": "securitycraft:mine"
-          }
-        ],
-        "result": {
-          "item": "securitycraft:coal_mine"
-        }
-      }
+      "item": "minecraft:coal_ore"
+    },
+    {
+      "item": "securitycraft:mine"
     }
-  ]
+  ],
+  "result": {
+    "item": "securitycraft:coal_mine"
+  }
 }

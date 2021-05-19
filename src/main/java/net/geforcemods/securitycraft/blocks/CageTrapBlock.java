@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -127,7 +126,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
-					PlayerUtils.sendMessageToPlayer(ownerName, ClientUtils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()), ClientUtils.localize("messages.securitycraft:cageTrap.captured", ((PlayerEntity) entity).getName(), Utils.getFormattedCoordinates(pos)), TextFormatting.BLACK);
+					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()), Utils.localize("messages.securitycraft:cageTrap.captured", ((PlayerEntity) entity).getName(), Utils.getFormattedCoordinates(pos)), TextFormatting.BLACK);
 			}
 		}
 	}
@@ -212,7 +211,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				{
 					for(int z = 0; z < 3; z++)
 					{
-						//skip the middle column above the cage trap, but not the place where the horiztonal iron bars are
+						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
 						if(!(x == 1 && z == 1 && y != 3))
 							ifTrue.accept(world, pos, owner);
 
@@ -226,12 +225,6 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 			}
 
 			pos.setPos(origin); //reset the mutable block pos for the next usage
-		}
-
-		@FunctionalInterface
-		public interface TriFunction<T,U,V,R>
-		{
-			R apply(T t, U u, V v);
 		}
 	}
 }

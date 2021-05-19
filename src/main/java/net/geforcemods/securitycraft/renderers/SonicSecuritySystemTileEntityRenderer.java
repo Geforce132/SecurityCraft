@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -61,7 +61,7 @@ public class SonicSecuritySystemTileEntityRenderer extends TileEntityRenderer<So
 		modelSonicSecuritySystem.radar.rotateAngleY = te.radarRotationDegrees;
 		modelSonicSecuritySystem.render(matrix, buffer.getBuffer(RenderType.getEntitySolid(sonicSecuritySystemTexture)), p_225616_5_, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
-		TranslationTextComponent text = ClientUtils.localize("Listening..");
+		TranslationTextComponent text = Utils.localize("Listening..");
 
 		matrix.push();
 		matrix.rotate(Vector3f.YP.rotationDegrees(te.radarRotationDegrees * 32));

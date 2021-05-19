@@ -52,14 +52,9 @@ public class ConfigHandler {
 		public BooleanValue allowAdminTool;
 		public BooleanValue shouldSpawnFire;
 		public BooleanValue ableToBreakMines;
-		public BooleanValue ableToCraftKeycard1;
-		public BooleanValue ableToCraftKeycard2;
-		public BooleanValue ableToCraftKeycard3;
-		public BooleanValue ableToCraftKeycard4;
-		public BooleanValue ableToCraftKeycard5;
-		public BooleanValue ableToCraftLUKeycard;
 		public BooleanValue smallerMineExplosion;
 		public BooleanValue mineExplodesWhenInCreative;
+		public BooleanValue mineExplosionsBreakBlocks;
 		public IntValue laserBlockRange;
 		public IntValue inventoryScannerRange;
 		public IntValue maxAlarmRange;
@@ -67,7 +62,6 @@ public class ConfigHandler {
 		public BooleanValue respectInvisibility;
 		public BooleanValue reinforcedBlockTint;
 		public BooleanValue forceReinforcedBlockTint;
-		public BooleanValue ableToCraftMines;
 		public BooleanValue retinalScannerFace;
 
 		Server(ForgeConfigSpec.Builder builder)
@@ -88,30 +82,6 @@ public class ConfigHandler {
 					.comment("Should players be able to break a mine without it exploding?")
 					.define("ableToBreakMines", true);
 
-			ableToCraftKeycard1 = builder
-					.comment("Is the level 1 keycard craftable?")
-					.define("ableToCraftKeycard1", true);
-
-			ableToCraftKeycard2 = builder
-					.comment("Is the level 2 keycard craftable?")
-					.define("ableToCraftKeycard2", true);
-
-			ableToCraftKeycard3 = builder
-					.comment("Is the level 3 keycard craftable?")
-					.define("ableToCraftKeycard3", true);
-
-			ableToCraftKeycard4 = builder
-					.comment("Is the level 4 keycard craftable?")
-					.define("ableToCraftKeycard4", true);
-
-			ableToCraftKeycard5 = builder
-					.comment("Is the level 5 keycard craftable?")
-					.define("ableToCraftKeycard5", true);
-
-			ableToCraftLUKeycard = builder
-					.comment("Is the limited use keycard craftable?")
-					.define("ableToCraftLUKeycard", true);
-
 			smallerMineExplosion = builder
 					.comment("Should mines' explosions be smaller than usual.")
 					.define("smallerMineExplosion", false);
@@ -119,6 +89,10 @@ public class ConfigHandler {
 			mineExplodesWhenInCreative = builder
 					.comment("Should mines explode if broken while in Creative mode?")
 					.define("mineExplodesWhenInCreative", true);
+
+			mineExplosionsBreakBlocks = builder
+					.comment("Set this to false if you want mines to not break blocks when they explode.")
+					.define("mineExplosionsBreakBlocks", true);
 
 			laserBlockRange = builder
 					.comment("From how many blocks away can a laser block connect to another laser block?")
@@ -147,10 +121,6 @@ public class ConfigHandler {
 			forceReinforcedBlockTint = builder
 					.comment("Set this to true if you want to force the setting of reinforced_block_tint for players.")
 					.define("force_reinforced_block_tint", false);
-
-			ableToCraftMines = builder
-					.comment("Are all mines craftable?")
-					.define("ableToCraftMines", true);
 
 			retinalScannerFace = builder
 					.comment("Display owner face on retinal scanner?")

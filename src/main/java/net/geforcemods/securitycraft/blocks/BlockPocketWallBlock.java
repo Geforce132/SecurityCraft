@@ -4,10 +4,13 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
+import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySpawnPlacementRegistry.PlacementType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
@@ -25,7 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDisplay
+public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDisplay, IBlockPocket
 {
 	public static final BooleanProperty SEE_THROUGH = BooleanProperty.create("see_through");
 	public static final BooleanProperty SOLID = BooleanProperty.create("solid");
@@ -35,11 +38,6 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 		super(properties);
 
 		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
-	}
-
-	public static boolean isNormalCube(BlockState state, IBlockReader world, BlockPos pos)
-	{
-		return false;
 	}
 
 	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
@@ -65,7 +63,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 					if(te.getManager() == null)
 						return VoxelShapes.empty();
 
-					if(te.getManager().hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), ModuleType.WHITELIST).contains(entity.getName().getString().toLowerCase()))
+					if(te.getManager().hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), ModuleType.ALLOWLIST).contains(entity.getName().getString().toLowerCase()))
 						return VoxelShapes.empty();
 					else if(!te.getOwner().isOwner((PlayerEntity)entity))
 						return VoxelShapes.fullCube();
@@ -76,6 +74,12 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 		}
 
 		return VoxelShapes.fullCube();
+	}
+
+	@Override
+	public boolean canCreatureSpawn(BlockState state, IBlockReader world, BlockPos pos, PlacementType type, EntityType<?> entityType)
+	{
+		return false;
 	}
 
 	@Override

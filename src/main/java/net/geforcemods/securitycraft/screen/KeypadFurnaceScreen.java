@@ -6,7 +6,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.AbstractFurnaceContainer;
@@ -27,7 +27,7 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 		super(container, inv, name);
 
 		title = new Random().nextInt(100) < 5 ? new StringTextComponent("Keypad Gurnace")
-				: (container.te.hasCustomSCName() ? container.te.getCustomSCName() : ClientUtils.localize("gui.securitycraft:protectedFurnace.name"));
+				: (container.te.hasCustomSCName() ? container.te.getCustomSCName() : Utils.localize("gui.securitycraft:protectedFurnace.name"));
 	}
 
 	@Override

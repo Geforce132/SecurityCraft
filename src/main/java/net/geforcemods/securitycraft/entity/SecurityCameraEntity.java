@@ -8,12 +8,11 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.server.GivePotionEffect;
+import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -22,17 +21,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.potion.Effect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class SecurityCameraEntity extends Entity{
 
@@ -46,7 +42,7 @@ public class SecurityCameraEntity extends Entity{
 	private float cameraUseYaw;
 	private float cameraUsePitch;
 	private int id;
-	private int screenshotCooldown = 0;
+	public int screenshotSoundCooldown = 0;
 	private int redstoneCooldown = 0;
 	private int toggleNightVisionCooldown = 0;
 	private int toggleLightCooldown = 0;
@@ -146,8 +142,8 @@ public class SecurityCameraEntity extends Entity{
 			if(lowestEntity != Minecraft.getInstance().player)
 				return;
 
-			if(screenshotCooldown > 0)
-				screenshotCooldown -= 1;
+			if(screenshotSoundCooldown > 0)
+				screenshotSoundCooldown -= 1;
 
 			if(redstoneCooldown > 0)
 				redstoneCooldown -= 1;
@@ -168,16 +164,8 @@ public class SecurityCameraEntity extends Entity{
 
 			checkKeysPressed();
 
-			boolean isMiddleDown = Minecraft.getInstance().mouseHelper.isMiddleDown();
-
-			if(isMiddleDown && screenshotCooldown == 0){
-				screenshotCooldown = 30;
-				ClientUtils.takeScreenshot();
-				Minecraft.getInstance().world.playSound(new BlockPos(getPosX(), getPosY(), getPosZ()), ForgeRegistries.SOUND_EVENTS.getValue(SCSounds.CAMERASNAP.location), SoundCategory.BLOCKS, 1.0F, 1.0F, true);
-			}
-
 			if(getPassengers().size() != 0 && shouldProvideNightVision)
-				SecurityCraft.channel.sendToServer(new GivePotionEffect(Effect.getId(ForgeRegistries.POTIONS.getValue(new ResourceLocation("night_vision"))), 3, -1));
+				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
 
 		if(!world.isRemote)
@@ -361,6 +349,11 @@ public class SecurityCameraEntity extends Entity{
 		livingEntity.rotationPitch = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
 		livingEntity.prevRotationYaw = livingEntity.rotationYaw;
 		livingEntity.prevRotationPitch = livingEntity.rotationPitch;
+		return getPreviousPlayerPos();
+	}
+
+	public Vector3d getPreviousPlayerPos()
+	{
 		return new Vector3d(cameraUseX, cameraUseY, cameraUseZ);
 	}
 

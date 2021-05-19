@@ -64,7 +64,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity)) {
-				if (ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, ModuleType.WHITELIST))
+				if (ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, ModuleType.ALLOWLIST))
 					return VoxelShapes.empty();
 
 				for (int i = 0; i < 10; i++) {
@@ -95,7 +95,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IInterse
 
 		if(entity instanceof PlayerEntity && !EntityUtils.isInvisible((PlayerEntity)entity))
 		{
-			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, ModuleType.WHITELIST))
+			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (PlayerEntity)entity, ModuleType.ALLOWLIST))
 				return;
 
 			for(int i = 0; i < 10; i++)

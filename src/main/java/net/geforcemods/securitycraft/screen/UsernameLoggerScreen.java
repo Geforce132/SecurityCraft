@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -15,7 +14,7 @@ import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -32,8 +31,8 @@ import net.minecraftforge.client.gui.ScrollPanel;
 public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
-	private final TranslationTextComponent logged = ClientUtils.localize("gui.securitycraft:logger.logged");
-	private final TranslationTextComponent clear = ClientUtils.localize("gui.securitycraft:editModule.clear");
+	private final TranslationTextComponent logged = Utils.localize("gui.securitycraft:logger.logged");
+	private final TranslationTextComponent clear = Utils.localize("gui.securitycraft:editModule.clear");
 	private UsernameLoggerTileEntity tileEntity;
 	private PlayerList playerList;
 
@@ -88,7 +87,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
 	{
-		if(playerList != null)
+		if(playerList != null && playerList.isMouseOver(mouseX, mouseY))
 			playerList.mouseScrolled(mouseX, mouseY, scroll);
 
 		return super.mouseScrolled(mouseX, mouseY, scroll);
@@ -124,7 +123,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	class PlayerList extends ScrollPanel
 	{
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		private final int slotHeight = 10, listLength = 100;
+		private final int slotHeight = 12, listLength = 100;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left)
 		{
@@ -143,24 +142,6 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		}
 
 		@Override
-		public boolean mouseClicked(double mouseX, double mouseY, int button)
-		{
-			if(tileEntity.getOwner().isOwner(minecraft.player))
-			{
-				int mouseListY = (int)(mouseY - top + scrollDistance - border);
-				int slotIndex = mouseListY / slotHeight;
-
-				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				{
-					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
-						GLFW.glfwSetClipboardString(minecraft.getMainWindow().getHandle(), tileEntity.uuids[slotIndex]);
-				}
-			}
-
-			return super.mouseClicked(mouseX, mouseY, button);
-		}
-
-		@Override
 		public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 		{
 			super.render(matrix, mouseX, mouseY, partialTicks);
@@ -170,11 +151,11 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 				int mouseListY = (int)(mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / slotHeight;
 
-				if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
+				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 				{
 					if(tileEntity.players[slotIndex] != null  && !tileEntity.players[slotIndex].isEmpty())
 					{
-						TranslationTextComponent localized = ClientUtils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
+						TranslationTextComponent localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(tileEntity.timestamps[slotIndex])));
 
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
@@ -189,11 +170,11 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		protected void drawPanel(MatrixStack matrix, int entryRight, int relativeY, Tessellator tess, int mouseX, int mouseY)
 		{
 			int baseY = top + border - (int)scrollDistance;
-			int slotBuffer = slotHeight - 3;
+			int slotBuffer = slotHeight - 4;
 			int mouseListY = (int)(mouseY - top + scrollDistance - border);
 			int slotIndex = mouseListY / slotHeight;
 
-			//highlighted hovered slot
+			//highlight hovered slot
 			if(mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
 			{
 				if(tileEntity.players[slotIndex] != null && !tileEntity.players[slotIndex].isEmpty())
@@ -226,7 +207,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			for(int i = 0; i < tileEntity.players.length; i++)
 			{
 				if(tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.drawString(matrix, tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (10 * i), 0xC6C6C6);
+					font.drawString(matrix, tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
 	}
