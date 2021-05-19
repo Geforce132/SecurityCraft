@@ -599,7 +599,7 @@ public class ReinforcedHopperTileEntity extends LockableLootTileEntity implement
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.WHITELIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST};
 	}
 
 	@Override

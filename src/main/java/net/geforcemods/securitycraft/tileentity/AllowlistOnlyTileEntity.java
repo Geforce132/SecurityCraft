@@ -5,17 +5,17 @@ import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.ModuleType;
 
-public class WhitelistOnlyTileEntity extends CustomizableTileEntity
+public class AllowlistOnlyTileEntity extends CustomizableTileEntity
 {
-	public WhitelistOnlyTileEntity()
+	public AllowlistOnlyTileEntity()
 	{
-		super(SCContent.teTypeWhitelistOnly);
+		super(SCContent.teTypeAllowlistOnly);
 	}
 
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.WHITELIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST};
 	}
 
 	@Override

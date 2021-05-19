@@ -57,7 +57,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(SentryEntity.class, Owner.getSerializer());
 	private static final DataParameter<CompoundNBT> MODULE = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
-	private static final DataParameter<CompoundNBT> WHITELIST = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
+	private static final DataParameter<CompoundNBT> ALLOWLIST = EntityDataManager.<CompoundNBT>createKey(SentryEntity.class, DataSerializers.COMPOUND_NBT);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(SentryEntity.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(SentryEntity.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
@@ -78,7 +78,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		dataManager.set(OWNER, new Owner(owner.getName().getFormattedText(), PlayerEntity.getUUID(owner.getGameProfile()).toString()));
 		dataManager.set(MODULE, new CompoundNBT());
-		dataManager.set(WHITELIST, new CompoundNBT());
+		dataManager.set(ALLOWLIST, new CompoundNBT());
 		dataManager.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
@@ -89,7 +89,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(MODULE, new CompoundNBT());
-		dataManager.register(WHITELIST, new CompoundNBT());
+		dataManager.register(ALLOWLIST, new CompoundNBT());
 		dataManager.register(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
@@ -195,14 +195,14 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.WHITELIST_MODULE.get())
+			else if(item == SCContent.ALLOWLIST_MODULE.get())
 			{
-				ItemStack module = getWhitelistModule();
+				ItemStack module = getAllowlistModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
 					Block.spawnAsEntity(world, pos, module);
 
-				setWhitelistModule(player.getHeldItemMainhand());
+				setAllowlistModule(player.getHeldItemMainhand());
 
 				if(!player.isCreative())
 					player.setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
@@ -221,9 +221,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 				}
 
 				Block.spawnAsEntity(world, pos, getDisguiseModule());
-				Block.spawnAsEntity(world, pos, getWhitelistModule());
+				Block.spawnAsEntity(world, pos, getAllowlistModule());
 				dataManager.set(MODULE, new CompoundNBT());
-				dataManager.set(WHITELIST, new CompoundNBT());
+				dataManager.set(ALLOWLIST, new CompoundNBT());
 			}
 			else if(item == SCContent.REMOTE_ACCESS_SENTRY.get()) //bind/unbind sentry to remote control
 				item.onItemUse(new ItemUseContext(player, hand, new BlockRayTraceResult(new Vec3d(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
@@ -276,7 +276,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		super.remove();
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.SENTRY.get()));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
-		Block.spawnAsEntity(world, pos, getWhitelistModule()); //if there is none, nothing will drop
+		Block.spawnAsEntity(world, pos, getAllowlistModule()); //if there is none, nothing will drop
 	}
 
 	@Override
@@ -362,7 +362,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	{
 		tag.put("TileEntityData", getOwnerTag());
 		tag.put("InstalledModule", getDisguiseModule().write(new CompoundNBT()));
-		tag.put("InstalledWhitelist", getWhitelistModule().write(new CompoundNBT()));
+		tag.put("InstalledWhitelist", getAllowlistModule().write(new CompoundNBT()));
 		tag.putInt("SentryMode", dataManager.get(MODE));
 		tag.putFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeAdditional(tag);
@@ -387,7 +387,7 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		dataManager.set(OWNER, new Owner(name, uuid));
 		dataManager.set(MODULE, tag.getCompound("InstalledModule"));
-		dataManager.set(WHITELIST, tag.getCompound("InstalledWhitelist"));
+		dataManager.set(ALLOWLIST, tag.getCompound("InstalledWhitelist"));
 		dataManager.set(MODE, tag.getInt("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readAdditional(tag);
@@ -422,12 +422,12 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	/**
-	 * Sets the sentry's whitelist module
+	 * Sets the sentry's allowlist module
 	 * @param module The module to set
 	 */
-	public void setWhitelistModule(ItemStack module)
+	public void setAllowlistModule(ItemStack module)
 	{
-		dataManager.set(WHITELIST, module.write(new CompoundNBT()));
+		dataManager.set(ALLOWLIST, module.write(new CompoundNBT()));
 	}
 
 	/**
@@ -444,11 +444,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 	}
 
 	/**
-	 * @return The whitelist module that is added to this sentry. ItemStack.EMPTY if none available
+	 * @return The allowlist module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
-	public ItemStack getWhitelistModule()
+	public ItemStack getAllowlistModule()
 	{
-		CompoundNBT tag = dataManager.get(WHITELIST);
+		CompoundNBT tag = dataManager.get(ALLOWLIST);
 
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
@@ -474,11 +474,11 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		return headYTranslation;
 	}
 
-	public boolean isTargetingWhitelistedPlayer(LivingEntity potentialTarget)
+	public boolean isTargetingAllowedPlayer(LivingEntity potentialTarget)
 	{
 		if(potentialTarget != null)
 		{
-			List<String> players = ModuleUtils.getPlayersFromModule(getWhitelistModule());
+			List<String> players = ModuleUtils.getPlayersFromModule(getAllowlistModule());
 
 			for(String s : players)
 			{

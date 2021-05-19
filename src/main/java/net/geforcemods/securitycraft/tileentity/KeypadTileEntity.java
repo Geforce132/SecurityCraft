@@ -146,7 +146,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST, ModuleType.DISGUISE};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE};
 	}
 
 	@Override

@@ -139,7 +139,7 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
-import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
+import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
@@ -596,13 +596,13 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> WIRE_CUTTERS = ITEMS.register("wire_cutters", () -> new Item(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1).defaultMaxDamage(476)));
 
 	//modules
-	@HasManualPage public static final RegistryObject<ModuleItem> BLACKLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.BLACKLIST, true, true));
+	@HasManualPage public static final RegistryObject<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.DENYLIST, true, true));
 	@HasManualPage public static final RegistryObject<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.DISGUISE, false, true, 0, 1));
 	@HasManualPage public static final RegistryObject<ModuleItem> HARMING_MODULE = ITEMS.register("harming_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.HARMING, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> REDSTONE_MODULE = ITEMS.register("redstone_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.REDSTONE, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.SMART, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.STORAGE, false));
-	@HasManualPage public static final RegistryObject<ModuleItem> WHITELIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.WHITELIST, true, true));
+	@HasManualPage public static final RegistryObject<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.ALLOWLIST, true, true));
 
 	//tile entity types
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")
@@ -654,7 +654,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket")
 	public static TileEntityType<BlockPocketTileEntity> teTypeBlockPocket;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_pressure_plate")
-	public static TileEntityType<WhitelistOnlyTileEntity> teTypeWhitelistOnly;
+	public static TileEntityType<AllowlistOnlyTileEntity> teTypeAllowlistOnly;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_hopper")
 	public static TileEntityType<ReinforcedHopperTileEntity> teTypeReinforcedHopper;
 	@ObjectHolder(SecurityCraft.MODID + ":projector")

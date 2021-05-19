@@ -55,10 +55,10 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		{
 			KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
 
-			if(te.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.BLACKLIST)).contains(player.getName().getString()))
+			if(te.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.DENYLIST)).contains(player.getName().getString()))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
 			else
 			{
@@ -69,8 +69,8 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 				//either no keycard, or an unlinked keycard, or an admin tool
 				if((!(item instanceof KeycardItem) || !stack.hasTag() || !stack.getTag().getBoolean("linked")) && !isCodebreaker)
 				{
-					//only allow the owner and whitelisted players to open the gui
-					if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
+					//only allow the owner and players on the allowlist to open the gui
+					if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase())))
 						NetworkHooks.openGui((ServerPlayerEntity)player, te, pos);
 				}
 				else if(item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now

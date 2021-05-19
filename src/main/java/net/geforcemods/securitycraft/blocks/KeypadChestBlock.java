@@ -86,9 +86,9 @@ public class KeypadChestBlock extends ChestBlock {
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		if(!world.isRemote && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos)) {
-			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.DENYLIST))
 				return true;
-			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
+			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.ALLOWLIST))
 				activate(world, pos, player);
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);

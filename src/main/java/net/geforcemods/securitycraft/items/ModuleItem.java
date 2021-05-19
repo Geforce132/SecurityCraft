@@ -94,7 +94,7 @@ public class ModuleItem extends Item{
 
 		if(canBeCustomized())
 		{
-			if(module == ModuleType.WHITELIST || module == ModuleType.BLACKLIST) {
+			if(module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
 				SecurityCraft.proxy.displayEditModuleGui(stack);
 				return ActionResult.newResult(ActionResultType.SUCCESS, stack);
 			}

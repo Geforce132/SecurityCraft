@@ -344,7 +344,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST};
 	}
 
 	@Override

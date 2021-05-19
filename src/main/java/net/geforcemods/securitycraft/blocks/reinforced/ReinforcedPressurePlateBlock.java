@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
+import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -40,9 +40,9 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		{
 			TileEntity tileEntity = world.getTileEntity(pos);
 
-			if(tileEntity instanceof WhitelistOnlyTileEntity)
+			if(tileEntity instanceof AllowlistOnlyTileEntity)
 			{
-				if(isAllowedToPress(world, pos, (WhitelistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
+				if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
 					updateState(world, pos, state, redstoneStrength);
 			}
 		}
@@ -60,11 +60,11 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		{
 			TileEntity tileEntity = world.getTileEntity(pos);
 
-			if(tileEntity instanceof WhitelistOnlyTileEntity)
+			if(tileEntity instanceof AllowlistOnlyTileEntity)
 			{
 				for(Entity entity : list)
 				{
-					if(entity instanceof PlayerEntity && isAllowedToPress(world, pos, (WhitelistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
+					if(entity instanceof PlayerEntity && isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)tileEntity, (PlayerEntity)entity))
 						return 15;
 				}
 			}
@@ -73,9 +73,9 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		return 0;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, WhitelistOnlyTileEntity te, PlayerEntity entity)
+	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity)
 	{
-		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getUnformattedComponentText().toLowerCase());
+		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(entity.getName().getUnformattedComponentText().toLowerCase());
 	}
 
 	@Override
@@ -106,6 +106,6 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new WhitelistOnlyTileEntity();
+		return new AllowlistOnlyTileEntity();
 	}
 }
