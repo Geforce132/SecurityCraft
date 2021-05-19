@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
@@ -106,23 +105,6 @@ public class ModuleUtils{
 			if(module == ModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
 				if(furnace.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
-
-				return true;
-			}
-		}else if(te instanceof KeycardReaderTileEntity){
-			KeycardReaderTileEntity reader = (KeycardReaderTileEntity)te;
-
-			if(module == ModuleType.WHITELIST && reader.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getFormattedText().toLowerCase())){
-				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
-
-				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
-				return true;
-			}
-
-			if(module == ModuleType.BLACKLIST && reader.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getFormattedText().toLowerCase())){
-				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYCARD_READER.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
 
 				return true;
 			}
