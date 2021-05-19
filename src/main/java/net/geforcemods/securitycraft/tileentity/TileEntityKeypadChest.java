@@ -331,7 +331,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[] {EnumModuleType.WHITELIST, EnumModuleType.BLACKLIST};
+		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST};
 	}
 
 	@Override

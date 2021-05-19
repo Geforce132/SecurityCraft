@@ -79,7 +79,7 @@ public abstract class TileEntitySpecialDoor extends CustomizableSCTE
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[]{EnumModuleType.WHITELIST};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class TileEntityLaserBlock extends TileEntityDisguisable {
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.HARMING, EnumModuleType.WHITELIST, EnumModuleType.DISGUISE};
+		return new EnumModuleType[]{EnumModuleType.HARMING, EnumModuleType.ALLOWLIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override

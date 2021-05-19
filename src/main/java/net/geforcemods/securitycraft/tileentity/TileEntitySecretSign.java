@@ -64,7 +64,7 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.WHITELIST};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class TileEntitySecretSign extends TileEntitySign implements IOwnable, IM
 	}
 
 	public boolean isPlayerAllowedToSeeText(EntityPlayer player) {
-		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.checkForModule(getWorld(), getPos(), player, EnumModuleType.WHITELIST);
+		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.checkForModule(getWorld(), getPos(), player, EnumModuleType.ALLOWLIST);
 	}
 
 	@Override

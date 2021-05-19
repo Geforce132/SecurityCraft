@@ -188,11 +188,11 @@ public class SCContent
 	public static Item wireCutters;
 
 	//Modules
-	public static ItemModule blacklistModule;
+	public static ItemModule denylistModule;
 	public static ItemModule disguiseModule;
 	public static ItemModule harmingModule;
 	public static ItemModule redstoneModule;
 	public static ItemModule smartModule;
 	public static ItemModule storageModule;
-	public static ItemModule whitelistModule;
+	public static ItemModule allowlistModule;
 }

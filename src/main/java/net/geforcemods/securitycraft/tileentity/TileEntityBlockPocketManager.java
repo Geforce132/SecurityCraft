@@ -793,7 +793,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 	{
 		return new EnumModuleType[] {
 				EnumModuleType.DISGUISE,
-				EnumModuleType.WHITELIST,
+				EnumModuleType.ALLOWLIST,
 				EnumModuleType.STORAGE
 		};
 	}

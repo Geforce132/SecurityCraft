@@ -16,8 +16,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public enum EnumModuleType {
 
 	REDSTONE(SCContent.redstoneModule, "redstone_module"),
-	WHITELIST(SCContent.whitelistModule, "whitelist_module"),
-	BLACKLIST(SCContent.blacklistModule, "blacklist_module"),
+	ALLOWLIST(SCContent.allowlistModule, "whitelist_module"),
+	DENYLIST(SCContent.denylistModule, "blacklist_module"),
 	HARMING(SCContent.harmingModule, "harming_module"),
 	SMART(SCContent.smartModule, "smart_module"),
 	STORAGE(SCContent.storageModule, "storage_module"),

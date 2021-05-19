@@ -31,7 +31,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
-			if(!getOwner().isOwner(player) && (!hasModule(EnumModuleType.WHITELIST) || !ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.WHITELIST)).contains(player.getName().toLowerCase())))
+			if(!getOwner().isOwner(player) && (!hasModule(EnumModuleType.ALLOWLIST) || !ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.ALLOWLIST)).contains(player.getName().toLowerCase())))
 			{
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;

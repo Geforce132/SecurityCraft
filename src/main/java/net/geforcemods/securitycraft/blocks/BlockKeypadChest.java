@@ -124,9 +124,9 @@ public class BlockKeypadChest extends BlockContainer
 	{
 		if(!world.isRemote && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
 		{
-			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.DENYLIST))
 				return true;
-			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST))
+			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.ALLOWLIST))
 				activate(world, pos, player);
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				((TileEntityKeypadChest) world.getTileEntity(pos)).openPasswordGUI(player);

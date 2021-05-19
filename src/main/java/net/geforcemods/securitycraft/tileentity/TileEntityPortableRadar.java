@@ -42,12 +42,12 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 			EntityPlayerMP owner = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
 			List<EntityPlayer> entities = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> {
-				boolean isNotWhitelisted = true;
+				boolean isNotAllowed = true;
 
-				if(hasModule(EnumModuleType.WHITELIST))
-					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(e.getName().toLowerCase());
+				if(hasModule(EnumModuleType.ALLOWLIST))
+					isNotAllowed = !ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(e.getName().toLowerCase());
 
-				return e != owner && isNotWhitelisted && !e.isSpectator() && !EntityUtils.isInvisible(e);
+				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if(hasModule(EnumModuleType.REDSTONE))
@@ -117,7 +117,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.REDSTONE, EnumModuleType.WHITELIST};
+		return new EnumModuleType[]{EnumModuleType.REDSTONE, EnumModuleType.ALLOWLIST};
 	}
 
 	@Override

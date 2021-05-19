@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.TileEntityWhitelistOnly;
+import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLever;
@@ -43,14 +43,14 @@ public class BlockReinforcedLever extends BlockLever implements IReinforcedBlock
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-		if(isAllowedToPress(world, pos, (TileEntityWhitelistOnly)world.getTileEntity(pos), player))
+		if(isAllowedToPress(world, pos, (TileEntityAllowlistOnly)world.getTileEntity(pos), player))
 			return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
 		return false;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityWhitelistOnly te, EntityPlayer entity)
+	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityAllowlistOnly te, EntityPlayer entity)
 	{
-		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase());
+		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(entity.getName().toLowerCase());
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class BlockReinforcedLever extends BlockLever implements IReinforcedBlock
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
-		return new TileEntityWhitelistOnly();
+		return new TileEntityAllowlistOnly();
 	}
 
 	@Override

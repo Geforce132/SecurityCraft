@@ -292,8 +292,8 @@ public class SetupHandler
 		SCContent.fLavaBucket = new ItemModifiedBucket(SCContent.bogusLavaFlowing).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("bucket_f_lava").setTranslationKey("securitycraft:bucketFLava");
 		SCContent.universalBlockModifier = new Item().setMaxStackSize(1).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_modifier").setTranslationKey("securitycraft:universalBlockModifier");
 		SCContent.redstoneModule = (ItemModule) new ItemModule(EnumModuleType.REDSTONE, false).setRegistryName("redstone_module").setTranslationKey("securitycraft:redstoneModule");
-		SCContent.whitelistModule = (ItemModule) new ItemModule(EnumModuleType.WHITELIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module").setTranslationKey("securitycraft:whitelistModule");
-		SCContent.blacklistModule = (ItemModule) new ItemModule(EnumModuleType.BLACKLIST, true, true, GuiHandler.MODULES).setRegistryName("blacklist_module").setTranslationKey("securitycraft:blacklistModule");
+		SCContent.allowlistModule = (ItemModule) new ItemModule(EnumModuleType.ALLOWLIST, true, true, GuiHandler.MODULES).setRegistryName("whitelist_module").setTranslationKey("securitycraft:whitelistModule");
+		SCContent.denylistModule = (ItemModule) new ItemModule(EnumModuleType.DENYLIST, true, true, GuiHandler.MODULES).setRegistryName("blacklist_module").setTranslationKey("securitycraft:blacklistModule");
 		SCContent.harmingModule = (ItemModule) new ItemModule(EnumModuleType.HARMING, false).setRegistryName("harming_module").setTranslationKey("securitycraft:harmingModule");
 		SCContent.smartModule = (ItemModule) new ItemModule(EnumModuleType.SMART, false).setRegistryName("smart_module").setTranslationKey("securitycraft:smartModule");
 		SCContent.storageModule = (ItemModule) new ItemModule(EnumModuleType.STORAGE, false).setRegistryName("storage_module").setTranslationKey("securitycraft:storageModule");

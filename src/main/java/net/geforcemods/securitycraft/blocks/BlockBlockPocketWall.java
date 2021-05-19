@@ -62,7 +62,7 @@ public class BlockBlockPocketWall extends BlockOwnable implements ITileEntityPro
 				if(te.getManager() == null)
 					return;
 
-				if(te.getManager().hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase()))
+				if(te.getManager().hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), EnumModuleType.ALLOWLIST).contains(entity.getName().toLowerCase()))
 					return;
 				else if(!te.getOwner().isOwner((EntityPlayer)entity))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, FULL_BLOCK_AABB);

@@ -58,8 +58,8 @@ public class TileEntityLogger extends TileEntityDisguisable {
 
 		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
 		{
-			//ignore whitelisted players
-			if(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.WHITELIST)).contains(playerName.toLowerCase()))
+			//ignore players on the allowlist
+			if(hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.ALLOWLIST)).contains(playerName.toLowerCase()))
 				return;
 
 			for(int i = 0; i < players.length; i++)
@@ -126,7 +126,7 @@ public class TileEntityLogger extends TileEntityDisguisable {
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[]{EnumModuleType.DISGUISE, EnumModuleType.WHITELIST};
+		return new EnumModuleType[]{EnumModuleType.DISGUISE, EnumModuleType.ALLOWLIST};
 	}
 
 	@Override

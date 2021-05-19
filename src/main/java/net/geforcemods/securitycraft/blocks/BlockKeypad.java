@@ -46,10 +46,10 @@ public class BlockKeypad extends BlockDisguisable {
 		if(state.getValue(POWERED))
 			return false;
 		else {
-			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.DENYLIST))
 				return true;
 
-			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST)){
+			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.ALLOWLIST)){
 				activate(world, pos, ((TileEntityKeypad)world.getTileEntity(pos)).getSignalLength());
 				return true;
 			}

@@ -47,7 +47,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntitySentry.class, Owner.getSerializer());
 	private static final DataParameter<NBTTagCompound> MODULE = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
-	private static final DataParameter<NBTTagCompound> WHITELIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
+	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntitySentry.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
@@ -76,7 +76,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		setSize(1.0F, 1.0F);
 		dataManager.set(OWNER, owner);
 		dataManager.set(MODULE, new NBTTagCompound());
-		dataManager.set(WHITELIST, new NBTTagCompound());
+		dataManager.set(ALLOWLIST, new NBTTagCompound());
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
@@ -87,7 +87,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		super.entityInit();
 		dataManager.register(OWNER, new Owner());
 		dataManager.register(MODULE, new NBTTagCompound());
-		dataManager.register(WHITELIST, new NBTTagCompound());
+		dataManager.register(ALLOWLIST, new NBTTagCompound());
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
@@ -194,14 +194,14 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
-			else if(item == SCContent.whitelistModule)
+			else if(item == SCContent.allowlistModule)
 			{
-				ItemStack module = getWhitelistModule();
+				ItemStack module = getAllowlistModule();
 
 				if(!module.isEmpty()) //drop the old module as to not override it with the new one
 					Block.spawnAsEntity(world, pos, module);
 
-				setWhitelistModule(player.getHeldItemMainhand());
+				setAllowlistModule(player.getHeldItemMainhand());
 
 				if(!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -220,9 +220,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				}
 
 				Block.spawnAsEntity(world, pos, getDisguiseModule());
-				Block.spawnAsEntity(world, pos, getWhitelistModule());
+				Block.spawnAsEntity(world, pos, getAllowlistModule());
 				dataManager.set(MODULE, new NBTTagCompound());
-				dataManager.set(WHITELIST, new NBTTagCompound());
+				dataManager.set(ALLOWLIST, new NBTTagCompound());
 			}
 			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
 				item.onItemUse(player, world, pos, hand, EnumFacing.NORTH, 0.0F, 0.0F, 0.0F);
@@ -273,7 +273,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
-		Block.spawnAsEntity(world, pos, getWhitelistModule()); //if there is none, nothing will drop
+		Block.spawnAsEntity(world, pos, getAllowlistModule()); //if there is none, nothing will drop
 		setDead();
 	}
 
@@ -360,7 +360,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		tag.setTag("TileEntityData", getOwnerTag());
 		tag.setTag("InstalledModule", getDisguiseModule().writeToNBT(new NBTTagCompound()));
-		tag.setTag("InstalledWhitelist", getWhitelistModule().writeToNBT(new NBTTagCompound()));
+		tag.setTag("InstalledWhitelist", getAllowlistModule().writeToNBT(new NBTTagCompound()));
 		tag.setInteger("SentryMode", dataManager.get(MODE));
 		tag.setFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeEntityToNBT(tag);
@@ -385,7 +385,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 		dataManager.set(OWNER, new Owner(name, uuid));
 		dataManager.set(MODULE, tag.getCompoundTag("InstalledModule"));
-		dataManager.set(WHITELIST, tag.getCompoundTag("InstalledWhitelist"));
+		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readEntityFromNBT(tag);
@@ -420,12 +420,12 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	/**
-	 * Sets the sentry's whitelist module
+	 * Sets the sentry's allowlist module
 	 * @param module The module to set
 	 */
-	public void setWhitelistModule(ItemStack module)
+	public void setAllowlistModule(ItemStack module)
 	{
-		dataManager.set(WHITELIST, module.writeToNBT(new NBTTagCompound()));
+		dataManager.set(ALLOWLIST, module.writeToNBT(new NBTTagCompound()));
 	}
 
 	/**
@@ -442,11 +442,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	/**
-	 * @return The whitelist module that is added to this sentry. ItemStack.EMPTY if none available
+	 * @return The allowlist module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
-	public ItemStack getWhitelistModule()
+	public ItemStack getAllowlistModule()
 	{
-		NBTTagCompound tag = dataManager.get(WHITELIST);
+		NBTTagCompound tag = dataManager.get(ALLOWLIST);
 
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
@@ -472,11 +472,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		return headYTranslation;
 	}
 
-	public boolean isTargetingWhitelistedPlayer(EntityLivingBase potentialTarget)
+	public boolean isTargetingAllowedPlayer(EntityLivingBase potentialTarget)
 	{
 		if(potentialTarget != null)
 		{
-			List<String> players = ModuleUtils.getPlayersFromModule(getWhitelistModule());
+			List<String> players = ModuleUtils.getPlayersFromModule(getAllowlistModule());
 
 			for(String s : players)
 			{

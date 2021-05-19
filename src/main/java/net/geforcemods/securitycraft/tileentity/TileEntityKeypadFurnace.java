@@ -527,7 +527,7 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[] {EnumModuleType.WHITELIST, EnumModuleType.BLACKLIST};
+		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST};
 	}
 
 	@Override

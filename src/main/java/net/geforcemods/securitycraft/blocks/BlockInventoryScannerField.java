@@ -68,7 +68,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
 			if (entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityPlayer)entity)) {
-				if (ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumModuleType.WHITELIST))
+				if (ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumModuleType.ALLOWLIST))
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 
 				for (int i = 0; i < 10; i++) {
@@ -142,7 +142,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 
 		if(entity instanceof EntityPlayer && !EntityUtils.isInvisible((EntityLivingBase)entity))
 		{
-			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumModuleType.WHITELIST))
+			if(ModuleUtils.checkForModule(world, connectedScanner.getPos(), (EntityPlayer)entity, EnumModuleType.ALLOWLIST))
 				return;
 
 			for(int i = 0; i < 10; i++)

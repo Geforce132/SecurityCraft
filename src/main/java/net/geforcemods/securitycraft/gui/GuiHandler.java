@@ -183,7 +183,7 @@ public class GuiHandler implements IGuiHandler {
 				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
 				return new GuiBlockReinforcer(new ContainerBlockReinforcer(player, player.inventory, isLvl1), isLvl1);
 			case MODULES:
-				if(PlayerUtils.isHoldingItem(player, SCContent.whitelistModule, null) || PlayerUtils.isHoldingItem(player, SCContent.blacklistModule, null))
+				if(PlayerUtils.isHoldingItem(player, SCContent.allowlistModule, null) || PlayerUtils.isHoldingItem(player, SCContent.denylistModule, null))
 					return new GuiEditModule(player.inventory, player.getHeldItemMainhand(), te);
 				return null;
 			case BLOCK_POCKET_MANAGER:

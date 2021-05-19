@@ -100,7 +100,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.WHITELIST, EnumModuleType.BLACKLIST, EnumModuleType.DISGUISE};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.DISGUISE};
 	}
 
 	@Override

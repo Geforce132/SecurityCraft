@@ -87,7 +87,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	{
 		return entity != null
 				&& (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((EntityPlayer)entity).isCreative() && !((EntityPlayer)entity).isSpectator()) //PlayerEntity checks
-				&& !(hasModule(EnumModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.WHITELIST).contains(entity.getName().toLowerCase())); //checks for all entities
+				&& !(hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(entity.getName().toLowerCase())); //checks for all entities
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.WHITELIST};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
 	}
 
 	@Override

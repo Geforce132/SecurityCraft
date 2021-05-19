@@ -64,7 +64,7 @@ public class TileEntityReinforcedHopper extends TileEntityHopper implements IOwn
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[] {EnumModuleType.WHITELIST};
+		return new EnumModuleType[] {EnumModuleType.ALLOWLIST};
 	}
 
 	@Override

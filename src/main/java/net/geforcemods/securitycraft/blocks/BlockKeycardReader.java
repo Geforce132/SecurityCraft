@@ -74,10 +74,10 @@ public class BlockKeycardReader extends BlockDisguisable  {
 	}
 
 	public void insertCard(World world, BlockPos pos, ItemStack stack, EntityPlayer player) {
-		if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.BLACKLIST))
+		if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.DENYLIST))
 			return;
 
-		boolean whitelisted = ModuleUtils.checkForModule(world, pos, player, EnumModuleType.WHITELIST);
+		boolean onAllowlist = ModuleUtils.checkForModule(world, pos, player, EnumModuleType.ALLOWLIST);
 		int requiredLevel = -1;
 		int cardLvl = ((ItemKeycardBase) stack.getItem()).getKeycardLvl();
 		TileEntityKeycardReader te = ((TileEntityKeycardReader)world.getTileEntity(pos));
@@ -86,7 +86,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 		if(te.getPassword() != null)
 			requiredLevel = Integer.parseInt(te.getPassword());
 
-		if(whitelisted || (!exact && requiredLevel <= cardLvl || exact && requiredLevel == cardLvl)){
+		if(onAllowlist || (!exact && requiredLevel <= cardLvl || exact && requiredLevel == cardLvl)){
 			if(cardLvl == 6 && stack.getTagCompound() != null && !player.capabilities.isCreativeMode){
 				stack.getTagCompound().setInteger("Uses", stack.getTagCompound().getInteger("Uses") - 1);
 

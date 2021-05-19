@@ -122,12 +122,12 @@ public class WailaDataProvider implements IWailaDataProvider, IWailaEntityProvid
 			if(config.getConfig(SHOW_MODULES) && sentry.getOwner().isOwner(data.getPlayer()))
 			{
 
-				if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+				if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 				{
 					body.add(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-					if (!sentry.getWhitelistModule().isEmpty())
-						body.add("- " + Utils.localize(EnumModuleType.WHITELIST.getTranslationKey()).getFormattedText());
+					if (!sentry.getAllowlistModule().isEmpty())
+						body.add("- " + Utils.localize(EnumModuleType.ALLOWLIST.getTranslationKey()).getFormattedText());
 
 					if (!sentry.getDisguiseModule().isEmpty())
 						body.add("- " + Utils.localize(EnumModuleType.DISGUISE.getTranslationKey()).getFormattedText());
