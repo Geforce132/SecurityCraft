@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "securitycraft:keycard_lv3"
+    }
+  ],
+  "result": {
+    "item": "securitycraft:keycard_lv3"
+  }
+}

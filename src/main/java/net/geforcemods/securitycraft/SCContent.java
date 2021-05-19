@@ -84,6 +84,7 @@ import net.geforcemods.securitycraft.containers.DisguiseModuleContainer;
 import net.geforcemods.securitycraft.containers.GenericContainer;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
+import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
 import net.geforcemods.securitycraft.containers.KeypadFurnaceContainer;
 import net.geforcemods.securitycraft.containers.ProjectorContainer;
 import net.geforcemods.securitycraft.entity.BouncingBettyEntity;
@@ -94,12 +95,12 @@ import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.fluids.FakeLavaFluid;
 import net.geforcemods.securitycraft.fluids.FakeWaterFluid;
 import net.geforcemods.securitycraft.items.AdminToolItem;
-import net.geforcemods.securitycraft.items.BaseKeycardItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
+import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.items.KeypadDoorItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -626,15 +627,15 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.register("crystal_quartz_item", () -> new Item(itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
-	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 0));
-	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 1));
-	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 2));
-	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 4));
-	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 5));
+	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_1 = ITEMS.register("keycard_lv1", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 0));
+	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_2 = ITEMS.register("keycard_lv2", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 1));
+	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_3 = ITEMS.register("keycard_lv3", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 2));
+	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_4 = ITEMS.register("keycard_lv4", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 3));
+	@HasManualPage public static final RegistryObject<Item> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), 4));
 	@HasManualPage public static final RegistryObject<Item> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp(SecurityCraft.groupSCTechnical)));
 	public static final RegistryObject<Item> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new BlockItem(SCContent.KEYPAD_CHEST.get(), itemProp(SecurityCraft.groupSCTechnical).setISTER(() -> ItemKeypadChestRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage public static final RegistryObject<Item> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new KeypadDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
-	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new BaseKeycardItem(itemProp(SecurityCraft.groupSCTechnical), 3));
+	@HasManualPage public static final RegistryObject<Item> LIMITED_USE_KEYCARD = ITEMS.register("limited_use_keycard", () -> new KeycardItem(itemProp(SecurityCraft.groupSCTechnical), -1));
 	@HasManualPage public static final RegistryObject<Item> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new ReinforcedDoorItem(itemProp(SecurityCraft.groupSCDecoration)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_MINE = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
 	@HasManualPage public static final RegistryObject<Item> REMOTE_ACCESS_SENTRY = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1)));
@@ -769,7 +770,7 @@ public class SCContent
 	@ObjectHolder(SecurityCraft.MODID + ":ims")
 	public static ContainerType<GenericTEContainer> cTypeIMS;
 	@ObjectHolder(SecurityCraft.MODID + ":keycard_setup")
-	public static ContainerType<GenericTEContainer> cTypeKeycardSetup;
+	public static ContainerType<KeycardReaderContainer> cTypeKeycardReader;
 	@ObjectHolder(SecurityCraft.MODID + ":key_changer")
 	public static ContainerType<GenericTEContainer> cTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":trophy_system")

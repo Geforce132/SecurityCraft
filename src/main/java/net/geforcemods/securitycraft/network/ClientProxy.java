@@ -39,7 +39,7 @@ import net.geforcemods.securitycraft.screen.EditSecretSignScreen;
 import net.geforcemods.securitycraft.screen.IMSScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
-import net.geforcemods.securitycraft.screen.KeycardReaderSetupScreen;
+import net.geforcemods.securitycraft.screen.KeycardReaderScreen;
 import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
@@ -268,7 +268,7 @@ public class ClientProxy implements IProxy
 		ScreenManager.registerFactory(SCContent.cTypeSetPassword, SetPasswordScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeIMS, IMSScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeycardSetup, KeycardReaderSetupScreen::new);
+		ScreenManager.registerFactory(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
 		ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);

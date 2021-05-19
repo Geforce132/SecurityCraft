@@ -80,7 +80,7 @@ public class MineRemoteAccessToolScreen extends Screen{
 						guiButtons[i][j].active = false;
 						break;
 					case DETONATE:
-						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18, this::actionPerformed);
+						guiButtons[i][j] = new PictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 0, 1, 18, 18, 256, 256, this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:

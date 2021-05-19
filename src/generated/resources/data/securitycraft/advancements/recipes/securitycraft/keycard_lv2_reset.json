@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "securitycraft:keycard_lv2_reset"
+    ]
+  },
+  "criteria": {
+    "has_keycard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "securitycraft:keycard_lv2"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "securitycraft:keycard_lv2_reset"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_keycard",
+      "has_the_recipe"
+    ]
+  ]
+}
