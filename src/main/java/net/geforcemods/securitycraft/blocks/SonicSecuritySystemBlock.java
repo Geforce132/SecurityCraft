@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -14,10 +15,13 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -48,6 +52,47 @@ public class SonicSecuritySystemBlock extends OwnableBlock {
 
 	public static boolean isNormalCube(BlockState state, IBlockReader reader, BlockPos pos) {
 		return false;
+	}
+
+	@Override
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	{
+		/*if(world.isRemote && hand != Hand.MAIN_HAND) return ActionResultType.PASS;*/
+		if(world.isRemote)
+		{
+			SecurityCraft.proxy.displaySonicSecuritySystemGui((SonicSecuritySystemTileEntity) world.getTileEntity(pos));
+		}
+
+		/*
+		if(((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).isRecording())
+		{
+			((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).setRecording(false);
+			System.out.println(((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).recordedNotes.size());
+		}
+		else if(!((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).isRecording()){
+			((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).setRecording(true);
+		}
+
+		System.out.println("Is recording: " + ((SonicSecuritySystemTileEntity) world.getTileEntity(pos)).isRecording());
+		 */
+
+		return ActionResultType.SUCCESS;
+	}
+
+	@Override
+	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
+		if(blockAccess.getTileEntity(pos) instanceof SonicSecuritySystemTileEntity)
+			return ((SonicSecuritySystemTileEntity) blockAccess.getTileEntity(pos)).shouldEmitPower ? 15 : 0;
+
+		return 0;
+	}
+
+	@Override
+	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side){
+		if(blockAccess.getTileEntity(pos) instanceof SonicSecuritySystemTileEntity)
+			return ((SonicSecuritySystemTileEntity) blockAccess.getTileEntity(pos)).shouldEmitPower ? 15 : 0;
+
+		return 0;
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)

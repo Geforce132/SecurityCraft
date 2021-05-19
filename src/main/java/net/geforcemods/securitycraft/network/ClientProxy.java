@@ -47,8 +47,10 @@ import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasswordScreen;
+import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -428,5 +430,11 @@ public class ClientProxy implements IProxy
 	public void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
 		Minecraft.getInstance().displayGuiScreen(new EditSecretSignScreen(te));
+	}
+
+	@Override
+	public void displaySonicSecuritySystemGui(SonicSecuritySystemTileEntity te)
+	{
+		Minecraft.getInstance().displayGuiScreen(new SonicSecuritySystemScreen(te));
 	}
 }

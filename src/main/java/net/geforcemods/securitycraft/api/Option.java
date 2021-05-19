@@ -129,7 +129,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle booleans.
+	 * A subclass of {@link Option} set up to handle booleans.
 	 */
 	public static class BooleanOption extends Option<Boolean>{
 
@@ -159,7 +159,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle integers.
+	 * A subclass of {@link Option} set up to handle integers.
 	 */
 	public static class IntOption extends Option<Integer> implements ISlider{
 		private boolean slider;
@@ -231,7 +231,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle doubles.
+	 * A subclass of {@link Option} set up to handle doubles.
 	 */
 	public static class DoubleOption extends Option<Double> implements ISlider{
 		private boolean slider;
@@ -310,7 +310,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle floats.
+	 * A subclass of {@link Option} set up to handle floats.
 	 */
 	public static class FloatOption extends Option<Float>{
 
@@ -359,7 +359,7 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * A subclass of {@link Option}, already setup to handle strings.
+	 * A subclass of {@link Option} set up to handle strings.
 	 */
 	public static class StringOption extends Option<String> {
 
@@ -375,13 +375,8 @@ public abstract class Option<T> {
 		@Override
 		public void toggle()
 		{
-			if((optionSelected + 1) >= options.length)
-			{
-				optionSelected = 0;
-				setValue(options[optionSelected]);
-			}
-			else
-				setValue(options[++optionSelected]);
+			optionSelected = (optionSelected + 1) % options.length;
+			setValue(options[optionSelected]);
 		}
 
 		@Override
@@ -400,6 +395,52 @@ public abstract class Option<T> {
 		public void writeToNBT(CompoundNBT tag)
 		{
 			tag.putInt(getName(), optionSelected);
+		}
+	}
+
+	/**
+	 * A subclass of {@link Option} set up to handle enumerations.
+	 */
+	public static class EnumOption extends Option<Enum<?>> {
+
+		private Enum<?>[] options;
+		private int optionSelected;
+
+		public EnumOption(String optionName, int startIndex, Enum<?>... options) {
+			super(optionName, (startIndex >= options.length) ? options[0] : options[startIndex]);
+			this.options = options;
+			this.optionSelected = (startIndex >= options.length) ? 0 : startIndex;
+		}
+
+		@Override
+		public void toggle()
+		{
+			optionSelected = (optionSelected + 1) % options.length;
+			setValue(options[optionSelected]);
+		}
+
+		@Override
+		public void readFromNBT(CompoundNBT tag)
+		{
+			if(tag.contains(getName()))
+			{
+				optionSelected = tag.getInt(getName());
+				value = options[optionSelected];
+			}
+			else
+				value = getDefaultValue();
+		}
+
+		@Override
+		public void writeToNBT(CompoundNBT tag)
+		{
+			tag.putInt(getName(), optionSelected);
+		}
+
+		@Override
+		public String toString()
+		{
+			return options[optionSelected].name().toLowerCase();
 		}
 	}
 }

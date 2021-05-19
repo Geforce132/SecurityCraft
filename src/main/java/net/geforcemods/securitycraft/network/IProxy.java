@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network;
 
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -17,4 +18,5 @@ public interface IProxy
 	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag);
 	public void displaySCManualGui();
 	public void displayEditSecretSignGui(SecretSignTileEntity te);
+	public void displaySonicSecuritySystemGui(SonicSecuritySystemTileEntity te);
 }

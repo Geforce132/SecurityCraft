@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -25,6 +26,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.SendTip;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -42,6 +44,7 @@ import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -58,6 +61,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -300,6 +304,35 @@ public class SCEventHandler {
 
 		if(item instanceof BlockItem && ((BlockItem)item).getBlock() instanceof ReinforcedCarpetBlock)
 			event.setBurnTime(0);
+	}
+
+	@SubscribeEvent
+	public static void onNoteBlockPlayed(NoteBlockEvent.Play event)
+	{
+		System.out.println(event.getNote() + " | " + event.getOctave() + " | " + event.getVanillaNoteId() + " | " + event.getInstrument());
+
+		AxisAlignedBB searchBox = new AxisAlignedBB(event.getPos());
+		searchBox = searchBox.grow(SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE, SonicSecuritySystemTileEntity.MAX_RANGE); //TODO double-check to be sure this is the correct function to use and not expand()
+
+		List<BlockPos> blocksToSearch = BlockPos.getAllInBox(searchBox).map(BlockPos::toImmutable).collect(Collectors.toList());
+
+		for(BlockPos searchingPos : blocksToSearch)
+		{
+			if(event.getWorld().getBlockState(searchingPos).getBlock() == SCContent.SONIC_SECURITY_SYSTEM.get())
+			{
+				SonicSecuritySystemTileEntity te = ((SonicSecuritySystemTileEntity) event.getWorld().getTileEntity(searchingPos));
+
+				// If the found SSS is within range, linked to this block, and active, return true
+				if(te.isActive() && te.isRecording())
+					te.recordNote(event.getVanillaNoteId(), event.getInstrument().getString());
+				else if(te.isActive() && !te.isRecording() && te.listenToNote(event.getVanillaNoteId(), event.getInstrument().getString()))
+				{
+					System.out.println("opening");
+					te.shouldEmitPower = true;
+					event.getWorld().updateBlock(searchingPos, SCContent.SONIC_SECURITY_SYSTEM.get());
+				}
+			}
+		}
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {

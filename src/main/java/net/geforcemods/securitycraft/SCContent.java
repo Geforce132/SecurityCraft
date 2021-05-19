@@ -19,7 +19,6 @@ import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadDoorBlock;
 import net.geforcemods.securitycraft.blocks.KeypadFurnaceBlock;
-import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.LoggerBlock;
@@ -33,6 +32,7 @@ import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
@@ -131,7 +131,6 @@ import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
-import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.LaserBlockTileEntity;
 import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
@@ -143,6 +142,7 @@ import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
 import net.geforcemods.securitycraft.tileentity.ScannerDoorTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
+import net.geforcemods.securitycraft.tileentity.SonicSecuritySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
@@ -781,6 +781,8 @@ public class SCContent
 	public static ContainerType<GenericTEContainer> cTypeKeyChanger;
 	@ObjectHolder(SecurityCraft.MODID + ":block_pocket_manager")
 	public static ContainerType<BlockPocketManagerContainer> cTypeBlockPocketManager;
+	@ObjectHolder(SecurityCraft.MODID + ":sonic_security_system")
+	public static ContainerType<GenericTEContainer> cTypeSonicSecuritySystem;
 
 	private static final Block.Properties prop()
 	{
