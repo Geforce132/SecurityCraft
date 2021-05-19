@@ -296,7 +296,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.WHITELIST, ModuleType.BLACKLIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST};
 	}
 
 	@Override

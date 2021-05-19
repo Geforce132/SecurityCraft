@@ -71,8 +71,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 		if(!getOwner().isOwner(player) && !EntityUtils.isInvisible(player) && !hasPlayerName(playerName, timestamp))
 		{
-			//ignore whitelisted players
-			if(hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(getModule(ModuleType.WHITELIST)).contains(playerName.toLowerCase()))
+			//ignore players on the allowlist
+			if(hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(getModule(ModuleType.ALLOWLIST)).contains(playerName.toLowerCase()))
 				return;
 
 			for(int i = 0; i < players.length; i++)
@@ -151,7 +151,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[]{ModuleType.DISGUISE, ModuleType.WHITELIST};
+		return new ModuleType[]{ModuleType.DISGUISE, ModuleType.ALLOWLIST};
 	}
 
 	@Override

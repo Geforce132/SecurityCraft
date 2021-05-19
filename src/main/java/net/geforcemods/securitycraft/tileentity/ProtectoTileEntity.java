@@ -23,7 +23,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(((LivingEntity) entity).getName().getString().toLowerCase())))))
+			if ((entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || (hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(((LivingEntity) entity).getName().getString().toLowerCase())))))
 				return false;
 
 			if(!world.isRemote)
@@ -61,7 +61,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST};
 	}
 
 	@Override

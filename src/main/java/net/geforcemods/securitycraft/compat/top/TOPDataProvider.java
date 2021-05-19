@@ -125,12 +125,12 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((SentryEntity) entity).getOwner().getName()).getString()));
 
-					if(!sentry.getWhitelistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
 					{
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
 
-						if(!sentry.getWhitelistModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.WHITELIST.getTranslationKey())));
+						if(!sentry.getAllowlistModule().isEmpty())
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
 						if(!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));

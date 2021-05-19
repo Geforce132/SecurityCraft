@@ -71,7 +71,7 @@ public class SyncKeycardSettings
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
 				boolean isOwner = te.getOwner().isOwner(player);
 
-				if(isOwner || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
+				if(isOwner || (te.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase())))
 				{
 					if(isOwner)
 					{

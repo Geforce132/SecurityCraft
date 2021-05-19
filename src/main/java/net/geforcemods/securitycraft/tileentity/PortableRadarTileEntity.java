@@ -50,12 +50,12 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 			ServerPlayerEntity owner = world.getServer().getPlayerList().getPlayerByUsername(getOwner().getName());
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
 			List<PlayerEntity> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area, e -> {
-				boolean isNotWhitelisted = true;
+				boolean isNotAllowed = true;
 
-				if(hasModule(ModuleType.WHITELIST))
-					isNotWhitelisted = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(e.getName().getString().toLowerCase());
+				if(hasModule(ModuleType.ALLOWLIST))
+					isNotAllowed = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(e.getName().getString().toLowerCase());
 
-				return e != owner && isNotWhitelisted && !e.isSpectator() && !EntityUtils.isInvisible(e);
+				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});
 
 			if(hasModule(ModuleType.REDSTONE))
@@ -134,7 +134,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.REDSTONE, ModuleType.WHITELIST};
+		return new ModuleType[]{ModuleType.REDSTONE, ModuleType.ALLOWLIST};
 	}
 
 	@Override

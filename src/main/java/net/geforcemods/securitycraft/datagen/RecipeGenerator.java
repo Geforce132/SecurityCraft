@@ -674,13 +674,13 @@ public class RecipeGenerator extends RecipeProvider
 		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_3.get());
 		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_4.get());
 		addKeycardResetRecipe(consumer, SCContent.KEYCARD_LVL_5.get());
-		addModuleRecipe(consumer, Items.INK_SAC, SCContent.BLACKLIST_MODULE.get());
+		addModuleRecipe(consumer, Items.INK_SAC, SCContent.DENYLIST_MODULE.get());
 		addModuleRecipe(consumer, Items.PAINTING, SCContent.DISGUISE_MODULE.get());
 		addModuleRecipe(consumer, ItemTags.ARROWS, SCContent.HARMING_MODULE.get());
 		addModuleRecipe(consumer, Tags.Items.DUSTS_REDSTONE, SCContent.REDSTONE_MODULE.get());
 		addModuleRecipe(consumer, Tags.Items.ENDER_PEARLS, SCContent.SMART_MODULE.get());
 		addModuleRecipe(consumer, SCContent.KEYPAD_CHEST.get(), SCContent.STORAGE_MODULE.get());
-		addModuleRecipe(consumer, Items.PAPER, SCContent.WHITELIST_MODULE.get());
+		addModuleRecipe(consumer, Items.PAPER, SCContent.ALLOWLIST_MODULE.get());
 		addMossyRecipe(consumer, SCTags.Items.REINFORCED_COBBLESTONE, SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
 		addMossyRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICKS.get());
 		addPillarRecipe(consumer, SCContent.CRYSTAL_QUARTZ.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get());

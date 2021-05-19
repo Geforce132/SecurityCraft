@@ -99,7 +99,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST, ModuleType.BLACKLIST, ModuleType.DISGUISE, ModuleType.SMART};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.SMART};
 	}
 
 	@Override

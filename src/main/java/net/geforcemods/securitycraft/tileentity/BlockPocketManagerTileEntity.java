@@ -794,7 +794,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 	{
 		return new ModuleType[] {
 				ModuleType.DISGUISE,
-				ModuleType.WHITELIST,
+				ModuleType.ALLOWLIST,
 				ModuleType.STORAGE
 		};
 	}

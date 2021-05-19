@@ -52,7 +52,7 @@ public class SetKeycardUses
 			{
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
 
-				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase())))
+				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase())))
 				{
 					Container container = player.openContainer;
 

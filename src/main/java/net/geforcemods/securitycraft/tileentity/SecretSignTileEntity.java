@@ -81,7 +81,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.WHITELIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST};
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	public boolean isPlayerAllowedToSeeText(PlayerEntity player) {
-		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.checkForModule(getWorld(), getPos(), player, ModuleType.WHITELIST);
+		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.checkForModule(getWorld(), getPos(), player, ModuleType.ALLOWLIST);
 	}
 
 	@Override

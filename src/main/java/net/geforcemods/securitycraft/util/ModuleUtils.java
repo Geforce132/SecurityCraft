@@ -59,16 +59,16 @@ public class ModuleUtils{
 		if(te instanceof KeypadTileEntity){
 			KeypadTileEntity keypad = (KeypadTileEntity)te;
 
-			if(module == ModuleType.WHITELIST && keypad.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.ALLOWLIST && keypad.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
 				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				return true;
 			}
 
-			if(module == ModuleType.BLACKLIST && keypad.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.DENYLIST && keypad.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
 				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
@@ -77,16 +77,16 @@ public class ModuleUtils{
 		{
 			KeypadChestTileEntity chest = (KeypadChestTileEntity)te;
 
-			if(module == ModuleType.WHITELIST && ((IModuleInventory) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.ALLOWLIST && ((IModuleInventory) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
 				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				return true;
 			}
 
-			if(module == ModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.DENYLIST && ((IModuleInventory) te).hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
 				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
@@ -95,42 +95,42 @@ public class ModuleUtils{
 		{
 			KeypadFurnaceTileEntity furnace = (KeypadFurnaceTileEntity)te;
 
-			if(module == ModuleType.WHITELIST && ((IModuleInventory) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.ALLOWLIST && ((IModuleInventory) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
 				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				return true;
 			}
 
-			if(module == ModuleType.BLACKLIST && ((IModuleInventory) te).hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.DENYLIST && ((IModuleInventory) te).hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
 				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}
 		}else if(te instanceof RetinalScannerTileEntity){
-			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
+			if(module == ModuleType.ALLOWLIST && ((CustomizableTileEntity) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase()))
 				return true;
 		}else if(te instanceof InventoryScannerTileEntity){
-			if(module == ModuleType.WHITELIST && ((CustomizableTileEntity)te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
+			if(module == ModuleType.ALLOWLIST && ((CustomizableTileEntity)te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase()))
 				return true;
 		}else if(te instanceof SecretSignTileEntity) {
-			if(module == ModuleType.WHITELIST && ((SecretSignTileEntity) te).hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase()))
+			if(module == ModuleType.ALLOWLIST && ((SecretSignTileEntity) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase()))
 				return true;
 		}
 		else if(te instanceof SpecialDoorTileEntity){
 			SpecialDoorTileEntity door = (SpecialDoorTileEntity)te;
 
-			if(module == ModuleType.WHITELIST && door.hasModule(ModuleType.WHITELIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.ALLOWLIST && door.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
 				if(door.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(door.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:module.whitelisted"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(door.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				return true;
 			}
 
-			if(module == ModuleType.BLACKLIST && door.hasModule(ModuleType.BLACKLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.BLACKLIST).contains(player.getName().getString().toLowerCase())){
+			if(module == ModuleType.DENYLIST && door.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
 				if(door.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(door.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(door.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}

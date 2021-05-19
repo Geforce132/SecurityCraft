@@ -66,7 +66,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 							&& !((PlayerEntity)potentialTarget).isSpectator()
 							&& !((PlayerEntity)potentialTarget).isCreative()
 							&& !((SentryEntity)goalOwner).getOwner().isOwner(((PlayerEntity)potentialTarget))
-							&& !sentry.isTargetingWhitelistedPlayer(potentialTarget)
+							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
 							&& !EntityUtils.isInvisible(potentialTarget))
 						break;
 				}
@@ -92,7 +92,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 	@Override
 	public boolean shouldContinueExecuting()
 	{
-		return (isSupportedTarget(nearestTarget) || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && !sentry.isTargetingWhitelistedPlayer(target) && super.shouldContinueExecuting();
+		return (isSupportedTarget(nearestTarget) || nearestTarget instanceof PlayerEntity) && isCloseEnough(nearestTarget) && shouldExecute() && !sentry.isTargetingAllowedPlayer(target) && super.shouldContinueExecuting();
 	}
 
 	public boolean isCloseEnough(Entity entity)

@@ -59,8 +59,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 			{
 				ReinforcedHopperTileEntity te = (ReinforcedHopperTileEntity)tileEntity;
 
-				//only allow the owner or whitelisted players to access a reinforced hopper
-				if(te.getOwner().isOwner(player) || ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.WHITELIST)).contains(player.getName().getString().toLowerCase()))
+				//only allow the owner or players on the allowlist to access a reinforced hopper
+				if(te.getOwner().isOwner(player) || ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase()))
 					player.openContainer(te);
 			}
 		}
@@ -131,11 +131,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 				{
 					IModuleInventory inv = (IModuleInventory)te;
 
-					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's whitelist module
-					if(ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.WHITELIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
+					if(ModuleUtils.getPlayersFromModule(inv.getModule(ModuleType.ALLOWLIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
 						return true;
-					//hoppers can extract out of e.g. chests whose owner is on the hopper's whitelist module
-					else if(ModuleUtils.getPlayersFromModule(hopperTe.getModule(ModuleType.WHITELIST)).contains(te.getOwner().getName().toLowerCase()))
+					//hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
+					else if(ModuleUtils.getPlayersFromModule(hopperTe.getModule(ModuleType.ALLOWLIST)).contains(te.getOwner().getName().toLowerCase()))
 						return true;
 				}
 

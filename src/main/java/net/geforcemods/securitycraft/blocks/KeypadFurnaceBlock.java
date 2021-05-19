@@ -114,9 +114,9 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	{
 		if(!world.isRemote)
 		{
-			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.BLACKLIST))
+			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.DENYLIST))
 				return ActionResultType.FAIL;
-			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.WHITELIST))
+			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.ALLOWLIST))
 				activate(world, pos, player);
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
 				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
