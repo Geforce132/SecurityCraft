@@ -77,11 +77,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 				switch (j) {
 					case MODE:
-						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformed);
+						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
 					case TARGETS:
-						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformed);
+						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::actionPerformed);
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
@@ -146,8 +146,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 
 		//Add buttons for global operation (all sentries), large id
-		guiButtonsGlobal[MODE] = new TogglePictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformedGlobal);
-		guiButtonsGlobal[TARGETS] = new TogglePictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformedGlobal);
+		guiButtonsGlobal[MODE] = new TogglePictureButton(1000, startX + 260, startY + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::actionPerformedGlobal);
+		guiButtonsGlobal[TARGETS] = new TogglePictureButton(1001, startX + 22 + 260, startY + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::actionPerformedGlobal);
 		guiButtonsGlobal[UNBIND] = new IdButton(1002, startX + 44 + 260, startY + 188, 20, 20, "X", this::clickGlobalUnbind);
 
 		for (int j = 0; j < 3; j++) {

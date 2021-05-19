@@ -333,6 +333,10 @@ public class SCManualScreen extends Screen {
 				ShapelessRecipe recipe = (ShapelessRecipe) object;
 
 				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
+					//don't show keycard reset recipes
+					if(recipe.getId().getPath().endsWith("_reset"))
+						continue;
+
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.getIngredients().size(), Ingredient.EMPTY);
 
 					for(int i = 0; i < recipeItems.size(); i++)

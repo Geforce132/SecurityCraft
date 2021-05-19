@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
@@ -31,7 +32,6 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	private static final ResourceLocation FILTER_ENABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
 	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
-	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png");
 	private final String projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getFormattedText();
 	private final String moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired").getFormattedText();
 	private final String toggle = Utils.localize("gui.securitycraft:trophy_system.toggle").getFormattedText();
@@ -78,29 +78,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		if(projectileList != null)
 			projectileList.render(mouseX, mouseY, partialTicks);
 
-		float alpha = isSmart ? 1.0F : 0.5F;
-		int moduleLeft = guiLeft + 5;
-		int moduleRight = moduleLeft + 16;
-		int moduleTop = guiTop + 5;
-		int moduleBottom = moduleTop + 16;
-		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-
-		RenderSystem.enableAlphaTest();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultAlphaFunc();
-		RenderSystem.defaultBlendFunc();
-		minecraft.getTextureManager().bindTexture(SMART_MODULE_TEXTURE);
-		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
-		bufferBuilder.pos(moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
-		bufferBuilder.pos(moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();
-		bufferBuilder.pos(moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 0).endVertex();
-		bufferBuilder.pos(moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 0).endVertex();
-		bufferBuilder.finishDrawing();
-		WorldVertexBufferUploader.draw(bufferBuilder);
-		RenderSystem.disableBlend();
-
-		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
-			renderTooltip(isSmart ? toggle : moduleRequired, mouseX, mouseY);
+		ClientUtils.renderSmartModuleInfo(toggle, moduleRequired, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
 	}
 
 	@Override

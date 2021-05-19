@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.block.Block;
@@ -16,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class PictureButton extends IdButton{
@@ -26,8 +25,12 @@ public class PictureButton extends IdButton{
 	private ResourceLocation textureLocation;
 	private int u;
 	private int v;
-	private int texWidth;
-	private int texHeight;
+	private int drawOffsetX;
+	private int drawOffsetY;
+	private int drawWidth;
+	private int drawHeight;
+	private int textureWidth;
+	private int textureHeight;
 
 	public PictureButton(int id, int xPos, int yPos, int width, int height, ItemRenderer par7, ItemStack itemToRender) {
 		this(id, xPos, yPos, width, height, par7, itemToRender, null);
@@ -43,7 +46,7 @@ public class PictureButton extends IdButton{
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight, Consumer<IdButton> onClick)
+	public PictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<IdButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
@@ -51,8 +54,12 @@ public class PictureButton extends IdButton{
 		textureLocation = texture;
 		u = textureX;
 		v = textureY;
-		texWidth = textureWidth;
-		texHeight = textureHeight;
+		this.textureWidth = textureWidth;
+		this.textureHeight = textureHeight;
+		this.drawOffsetX = drawOffsetX;
+		this.drawOffsetY = drawOffsetY;
+		this.drawWidth = drawWidth;
+		this.drawHeight = drawHeight;
 	}
 
 	/**
@@ -61,23 +68,17 @@ public class PictureButton extends IdButton{
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks)
 	{
-		Minecraft mc = Minecraft.getInstance();
-
 		if (visible)
 		{
+			Minecraft mc = Minecraft.getInstance();
 			FontRenderer font = mc.fontRenderer;
-			mc.getTextureManager().bindTexture(WIDGETS_LOCATION);
+
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			int hoverState = !active ? 0 : !isHovered ? 1 : 2;
-			RenderSystem.enableBlend();
-			RenderSystem.blendFuncSeparate(770, 771, 1, 0);
-			RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			this.blit(x, y, 0, 46 + hoverState * 20, width / 2, height);
-			this.blit(x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
+			GuiUtils.drawContinuousTexturedBox(WIDGETS_LOCATION, x, y, 0, 46 + getYImage(isHovered()) * 20, width, height, 200, 20, 2, 3, 2, 2, getBlitOffset());
 
 			if(blockToRender != null){
-				RenderSystem.enableRescaleNormal(); //(this.width / 2) - 8
+				RenderSystem.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(blockToRender), x + 2, y + 3, "");
 			}else if(itemToRender != null){
@@ -86,27 +87,21 @@ public class PictureButton extends IdButton{
 				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(itemToRender), x + 2, y + 2, "");
 				RenderSystem.disableLighting();
 			}
-			else if(textureLocation != null)
+			else if(getTextureLocation() != null)
 			{
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(textureLocation);
-				blit(x, y + 1, u, v, texWidth, texHeight);
+				mc.getTextureManager().bindTexture(getTextureLocation());
+				blit(x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
-
-			int color = 14737632;
-
-			if (!active)
-				color = 10526880;
-			else if (isHovered)
-				color = 16777120;
-
-			drawCenteredString(font, getMessage(), x + width / 2, y + (height - 8) / 2, color);
-
 		}
+	}
+
+	public ResourceLocation getTextureLocation()
+	{
+		return textureLocation;
 	}
 
 	public Item getItemStack() {
 		return (blockToRender != null ? blockToRender.asItem() : itemToRender);
 	}
-
 }

@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.screen.components;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.Widget;
 
 public class StringHoverChecker extends HoverChecker
 {
@@ -22,12 +22,12 @@ public class StringHoverChecker extends HoverChecker
 		button = null;
 	}
 
-	public StringHoverChecker(Button button, String line)
+	public StringHoverChecker(Widget button, String line)
 	{
 		this(button, Arrays.asList(line));
 	}
 
-	public StringHoverChecker(Button button, List<String> lines)
+	public StringHoverChecker(Widget button, List<String> lines)
 	{
 		super(button);
 		this.lines = lines;
