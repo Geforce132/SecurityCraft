@@ -67,7 +67,7 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.HARMING, ModuleType.WHITELIST, ModuleType.DISGUISE};
+		return new ModuleType[]{ModuleType.HARMING, ModuleType.ALLOWLIST, ModuleType.DISGUISE};
 	}
 
 	@Override

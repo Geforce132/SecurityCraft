@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.tileentity.WhitelistOnlyTileEntity;
+import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
@@ -42,14 +42,14 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult rayTrace) {
-		if(isAllowedToPress(world, pos, (WhitelistOnlyTileEntity)world.getTileEntity(pos), player))
+		if(isAllowedToPress(world, pos, (AllowlistOnlyTileEntity)world.getTileEntity(pos), player))
 			return super.onBlockActivated(state, world, pos, player, hand, rayTrace);
 		return ActionResultType.FAIL;
 	}
 
-	public boolean isAllowedToPress(World world, BlockPos pos, WhitelistOnlyTileEntity te, PlayerEntity entity)
+	public boolean isAllowedToPress(World world, BlockPos pos, AllowlistOnlyTileEntity te, PlayerEntity entity)
 	{
-		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, ModuleType.WHITELIST).contains(entity.getName().getUnformattedComponentText().toLowerCase());
+		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(entity.getName().getUnformattedComponentText().toLowerCase());
 	}
 
 	@Override
@@ -80,6 +80,6 @@ public class ReinforcedButtonBlock extends AbstractButtonBlock implements IReinf
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world)
 	{
-		return new WhitelistOnlyTileEntity();
+		return new AllowlistOnlyTileEntity();
 	}
 }
