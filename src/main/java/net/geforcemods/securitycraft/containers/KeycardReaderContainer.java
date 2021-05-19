@@ -44,10 +44,14 @@ public class KeycardReaderContainer extends Container
 			{
 				//only allow keycards
 				//do not allow limited use keycards as they are only crafting components
+				if(!(stack.getItem() instanceof KeycardItem) || stack.getItem() == SCContent.LIMITED_USE_KEYCARD.get())
+					return false;
+
+				boolean hasTag = stack.hasTag();
+				String ownerUUID = hasTag ? stack.getTag().getString("ownerUUID") : "";
+
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return stack.getItem() instanceof KeycardItem
-						&& stack.getItem() != SCContent.LIMITED_USE_KEYCARD.get()
-						&& (!stack.hasTag() || stack.getTag().getString("ownerUUID").equals(te.getOwner().getUUID()));
+				return !hasTag || ownerUUID.isEmpty() || ownerUUID.equals(te.getOwner().getUUID());
 			}
 		});
 	}
