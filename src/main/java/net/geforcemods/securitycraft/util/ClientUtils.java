@@ -18,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class ClientUtils{
@@ -49,7 +47,6 @@ public class ClientUtils{
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static void renderSmartModuleInfo(MatrixStack matrix, ITextComponent moduleTooltip, ITextComponent noModuleTooltip, boolean isSmart, int guiLeft, int guiTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
 	{
 		Minecraft mc = Minecraft.getInstance();
