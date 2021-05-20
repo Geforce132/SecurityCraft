@@ -560,6 +560,7 @@
 	"gui.securitycraft:srat.outOfRange": "Torreta fuera de rango",
 	"gui.securitycraft:password.invalidCode": "¡Código no válido!",
 	"gui.securitycraft:password.setup": "config.",
+	"gui.securitycraft:password.save": "Guardar y continuar",
 	"gui.securitycraft:camera.activateNightVision": "%s - Activar visión nocturna",
 	"gui.securitycraft:camera.exit": "%s - Salir de la cámara",
 	"gui.securitycraft:camera.toggleRedstone": "%s - Alternar señal de redstone",

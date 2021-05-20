@@ -557,6 +557,7 @@
 	"gui.securitycraft:srat.outOfRange": "보초 범위 이탈",
 	"gui.securitycraft:password.invalidCode": "잘못된 코드 입니다!",
 	"gui.securitycraft:password.setup": "설정",
+	"gui.securitycraft:password.save": "저장 및 계속",
 	"gui.securitycraft:camera.activateNightVision": "%s - 야간 투시 활성화",
 	"gui.securitycraft:camera.exit": "%s - 카메라 나가기",
 	"gui.securitycraft:camera.toggleRedstone": "%s - 레드스톤 신호 전환",
