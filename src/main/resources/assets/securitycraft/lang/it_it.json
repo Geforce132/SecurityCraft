@@ -571,6 +571,7 @@
 	"gui.securitycraft:srat.outOfRange": "Sentinella fuori portata",
 	"gui.securitycraft:password.invalidCode": "Codice invalido!",
 	"gui.securitycraft:password.setup": "setup",
+	"gui.securitycraft:password.save": "Salva e continua",
 	"gui.securitycraft:camera.activateNightVision": "Attiva visione notturna",
 	"gui.securitycraft:camera.exit": "Esci",
 	"gui.securitycraft:camera.toggleRedstone": "Segnale di redstone",

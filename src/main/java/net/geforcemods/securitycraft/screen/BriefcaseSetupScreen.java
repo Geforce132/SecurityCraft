@@ -38,7 +38,7 @@ public class BriefcaseSetupScreen extends ContainerScreen<GenericContainer> {
 	public void init() {
 		super.init();
 		minecraft.keyboardListener.enableRepeatEvents(true);
-		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:keycardSetup.save").getFormattedText(), this::actionPerformed));
+		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText(), this::actionPerformed));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, ""));
