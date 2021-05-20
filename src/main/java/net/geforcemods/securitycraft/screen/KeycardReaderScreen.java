@@ -276,7 +276,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		else
 		{
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
-			setUsesButton.active = enabled && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
+			setUsesButton.active = enabled && usesTextField.getText() != null && !usesTextField.getText().isEmpty() && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getText());
 			linkButton.active = !isEmpty && cardSignature != signature;
 		}
 	}
