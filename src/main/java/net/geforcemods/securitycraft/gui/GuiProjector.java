@@ -71,7 +71,7 @@ public class GuiProjector extends GuiContainer implements ISlider {
 		projectionWidthSlider.packedFGColour = 14737632;
 		hoverCheckers[id++] = new StringHoverChecker(projectionOffsetSlider, Utils.localize("gui.securitycraft:projector.offset.description").getFormattedText());
 
-		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, b -> {
+		toggleButton = addButton(new TogglePictureButton(id, left, guiTop + 26, 20, 20, TEXTURE, new int[]{176, 192}, new int[]{0, 0}, 2, 2, b -> {
 			te.setHorizontal(!te.isHorizontal());
 			projectionRangeSlider.updateSlider();
 			SecurityCraft.network.sendToServer(new SyncProjector(te.getPos(), te.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));

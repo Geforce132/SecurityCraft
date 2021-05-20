@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
@@ -108,23 +107,6 @@ public class ModuleUtils{
 			if(module == EnumModuleType.DENYLIST && ((IModuleInventory) te).hasModule(EnumModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.DENYLIST).contains(player.getName().toLowerCase())){
 				if(furnace.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keypadFurnace), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return true;
-			}
-		}else if(te instanceof TileEntityKeycardReader){
-			TileEntityKeycardReader reader = (TileEntityKeycardReader)te;
-
-			if(module == EnumModuleType.ALLOWLIST && reader.hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(player.getName().toLowerCase())){
-				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
-
-				world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
-				return true;
-			}
-
-			if(module == EnumModuleType.DENYLIST && reader.hasModule(EnumModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.DENYLIST).contains(player.getName().toLowerCase())){
-				if(reader.sendsMessages() && world.isRemote)
-					PlayerUtils.sendMessageToPlayer(player, translate(SCContent.keycardReader), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return true;
 			}

@@ -5,20 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
+import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
@@ -30,7 +28,6 @@ public class GuiTrophySystem extends GuiContainer {
 	private static final ResourceLocation FILTER_ENABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
 	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
-	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/items/smart_module.png");
 	private final String projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getFormattedText();
 	private final String moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired").getFormattedText();
 	private final String toggle = Utils.localize("gui.securitycraft:trophy_system.toggle").getFormattedText();
@@ -77,28 +74,7 @@ public class GuiTrophySystem extends GuiContainer {
 		if(projectileList != null)
 			projectileList.drawScreen(mouseX, mouseY, partialTicks);
 
-		int moduleLeft = guiLeft + 5;
-		int moduleRight = moduleLeft + 16;
-		int moduleTop = guiTop + 5;
-		int moduleBottom = moduleTop + 16;
-		float alpha = isSmart ? 1.0F : 0.5F;
-		Tessellator tess = Tessellator.getInstance();
-		BufferBuilder bufferBuilder = tess.getBuffer();
-
-		GlStateManager.enableAlpha();
-		GlStateManager.enableBlend();
-		mc.getTextureManager().bindTexture(SMART_MODULE_TEXTURE);
-		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-		bufferBuilder.pos(moduleLeft, moduleBottom, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-		bufferBuilder.pos(moduleRight, moduleBottom, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-		bufferBuilder.pos(moduleRight, moduleTop, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-		bufferBuilder.pos(moduleLeft, moduleTop, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-		tess.draw();
-		GlStateManager.disableBlend();
-		GlStateManager.disableAlpha();
-
-		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
-			drawHoveringText(isSmart ? toggle : moduleRequired, mouseX, mouseY);
+		GuiUtils.renderSmartModuleInfo(toggle, moduleRequired, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
 	}
 
 	@Override

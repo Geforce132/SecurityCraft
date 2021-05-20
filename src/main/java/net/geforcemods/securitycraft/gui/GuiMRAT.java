@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.gui.components.GuiPictureButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -72,7 +72,7 @@ public class GuiMRAT extends GuiContainer{
 						buttons[i][j].enabled = false;
 						break;
 					case DETONATE:
-						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 18, 18);
+						buttons[i][j] = new GuiPictureButton(id++, btnX, btnY, 20, 20, INFO_BOOK_ICONS, 54, 1, 0, 1, 18, 18, 256, 256);
 						buttons[i][j].enabled = false;
 						break;
 					case UNBIND:

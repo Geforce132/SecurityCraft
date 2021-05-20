@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.containers.ContainerCustomizeBlock;
 import net.geforcemods.securitycraft.containers.ContainerDisguiseModule;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.containers.ContainerInventoryScanner;
+import net.geforcemods.securitycraft.containers.ContainerKeycardReader;
 import net.geforcemods.securitycraft.containers.ContainerKeypadFurnace;
 import net.geforcemods.securitycraft.containers.ContainerProjector;
 import net.geforcemods.securitycraft.inventory.BriefcaseInventory;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {
 
-	public static final int SETUP_KEYCARD_READER_ID = 1;
+	public static final int KEYCARD_READER_ID = 1;
 	public static final int MRAT_MENU_ID = 2;
 	public static final int SRAT_MENU_ID = 3;
 	public static final int INVENTORY_SCANNER_GUI_ID = 6;
@@ -61,8 +62,8 @@ public class GuiHandler implements IGuiHandler {
 
 		switch(id)
 		{
-			case SETUP_KEYCARD_READER_ID:
-				return new ContainerGeneric(player.inventory, te);
+			case KEYCARD_READER_ID:
+				return new ContainerKeycardReader(player.inventory, (TileEntityKeycardReader)te);
 			case MRAT_MENU_ID:
 				return new ContainerGeneric(player.inventory, te);
 			case SRAT_MENU_ID:
@@ -128,8 +129,8 @@ public class GuiHandler implements IGuiHandler {
 
 		switch(id)
 		{
-			case SETUP_KEYCARD_READER_ID:
-				return new GuiKeycardSetup(player.inventory, (TileEntityKeycardReader) te);
+			case KEYCARD_READER_ID:
+				return new GuiKeycardReader(player.inventory, (TileEntityKeycardReader) te);
 			case MRAT_MENU_ID:
 				if(PlayerUtils.isHoldingItem(player, SCContent.remoteAccessMine, null))
 					return new GuiMRAT(player.inventory, PlayerUtils.getSelectedItemStack(player, SCContent.remoteAccessMine));

@@ -1,19 +1,17 @@
 package net.geforcemods.securitycraft.gui.components;
 
+import java.util.function.Consumer;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.GlStateManager.DestFactor;
-import net.minecraft.client.renderer.GlStateManager.SourceFactor;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
-public class GuiPictureButton extends GuiButton{
+public class GuiPictureButton extends ClickButton{
 
 	private final RenderItem itemRenderer;
 	private Block blockToRender;
@@ -21,11 +19,25 @@ public class GuiPictureButton extends GuiButton{
 	private ResourceLocation textureLocation;
 	private int u;
 	private int v;
-	private int texWidth;
-	private int texHeight;
+	private int drawOffsetX;
+	private int drawOffsetY;
+	private int drawWidth;
+	private int drawHeight;
+	private int textureWidth;
+	private int textureHeight;
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender) {
-		super(id, xPos, yPos, width, height, "");
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender)
+	{
+		this(id, xPos, yPos, width, height, par7, itemToRender, null);
+	}
+
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight)
+	{
+		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffsetX, drawOffsetY, drawWidth, drawHeight, textureWidth, textureHeight, null);
+	}
+
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, RenderItem par7, ItemStack itemToRender, Consumer<ClickButton> onClick) {
+		super(id, xPos, yPos, width, height, "", onClick);
 		itemRenderer = par7;
 
 		if(!itemToRender.isEmpty() && itemToRender.getItem().getTranslationKey().startsWith("tile."))
@@ -34,39 +46,33 @@ public class GuiPictureButton extends GuiButton{
 			this.itemToRender = itemToRender.getItem();
 	}
 
-	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int textureWidth, int textureHeight)
+	public GuiPictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int textureX, int textureY, int drawOffsetX, int drawOffsetY, int drawWidth, int drawHeight, int textureWidth, int textureHeight, Consumer<ClickButton> onClick)
 	{
-		super(id, xPos, yPos, width, height, "");
+		super(id, xPos, yPos, width, height, "", onClick);
 
 		itemRenderer = null;
 		textureLocation = texture;
 		u = textureX;
 		v = textureY;
-		texWidth = textureWidth;
-		texHeight = textureHeight;
+		this.textureWidth = textureWidth;
+		this.textureHeight = textureHeight;
+		this.drawOffsetX = drawOffsetX;
+		this.drawOffsetY = drawOffsetY;
+		this.drawWidth = drawWidth;
+		this.drawHeight = drawHeight;
 	}
 
-	/**
-	 * Draws this button to the screen.
-	 */
 	@Override
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
 	{
 		if (visible)
 		{
-			FontRenderer fontRenderer = mc.fontRenderer;
-			mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 			hovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-			int hoverState = getHoverState(hovered);
-			GlStateManager.enableBlend();
-			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-			GlStateManager.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-			this.drawTexturedModalRect(x, y, 0, 46 + hoverState * 20, width / 2, height);
-			this.drawTexturedModalRect(x + width / 2, y, 200 - width / 2, 46 + hoverState * 20, width / 2, height);
+			GuiUtils.drawContinuousTexturedBox(BUTTON_TEXTURES, x, y, 0, 46 + getHoverState(hovered) * 20, width, height, 200, 20, 2, 3, 2, 2, zLevel);
 
 			if(blockToRender != null){
-				GlStateManager.enableRescaleNormal(); //(this.width / 2) - 8
+				GlStateManager.enableRescaleNormal();
 				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
 				itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, new ItemStack(blockToRender), x + 2, y + 3, "");
 			}else if(itemToRender != null){
@@ -75,27 +81,21 @@ public class GuiPictureButton extends GuiButton{
 				itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, new ItemStack(itemToRender), x + 2, y + 2, "");
 				GlStateManager.disableLighting();
 			}
-			else if(textureLocation != null)
+			else if(getTextureLocation() != null)
 			{
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(textureLocation);
-				drawTexturedModalRect(x, y + 1, u, v, texWidth, texHeight);
+				mc.getTextureManager().bindTexture(getTextureLocation());
+				drawModalRectWithCustomSizedTexture(x + drawOffsetX, y + drawOffsetY, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
-
-			int color = 14737632;
-
-			if (!enabled)
-				color = 10526880;
-			else if (hovered)
-				color = 16777120;
-
-			drawCenteredString(fontRenderer, displayString, x + width / 2, y + (height - 8) / 2, color);
-
 		}
+	}
+
+	public ResourceLocation getTextureLocation()
+	{
+		return textureLocation;
 	}
 
 	public Item getItemStack() {
 		return (blockToRender != null ? Item.getItemFromBlock(blockToRender) : itemToRender);
 	}
-
 }

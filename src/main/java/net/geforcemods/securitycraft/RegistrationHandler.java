@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWalls;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.ItemSCManual;
 import net.geforcemods.securitycraft.misc.DyeBriefcaseRecipe;
+import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.ClearLoggerClient;
@@ -45,30 +46,32 @@ import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetPlayerPositionAndRotation;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
-import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
-import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
-import net.geforcemods.securitycraft.network.server.GiveNightVision;
+import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
+import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.OpenBriefcaseGui;
+import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
+import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
+import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SetPassword;
+import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
+import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
+import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
-import net.geforcemods.securitycraft.network.server.SetCameraPowered;
-import net.geforcemods.securitycraft.network.server.RemoteControlMine;
-import net.geforcemods.securitycraft.network.server.SetKeycardLevel;
-import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
+import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
@@ -95,7 +98,6 @@ import net.geforcemods.securitycraft.tileentity.TileEntitySecretSign;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrackMine;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
-import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Items;
@@ -435,7 +437,7 @@ public class RegistrationHandler
 	public static void registerPackets(SimpleNetworkWrapper network)
 	{
 		network.registerMessage(SetCameraPowered.Handler.class, SetCameraPowered.class, 1, Side.SERVER);
-		network.registerMessage(SetKeycardLevel.Handler.class, SetKeycardLevel.class, 3, Side.SERVER);
+		network.registerMessage(SyncKeycardSettings.Handler.class, SyncKeycardSettings.class, 3, Side.SERVER);
 		network.registerMessage(UpdateLogger.Handler.class, UpdateLogger.class, 4, Side.CLIENT);
 		network.registerMessage(UpdateNBTTagOnClient.Handler.class, UpdateNBTTagOnClient.class, 5, Side.CLIENT);
 		network.registerMessage(UpdateNBTTagOnServer.Handler.class, UpdateNBTTagOnServer.class, 6, Side.SERVER);
@@ -463,6 +465,7 @@ public class RegistrationHandler
 		network.registerMessage(SyncBlockPocketManager.Handler.class, SyncBlockPocketManager.class, 32, Side.SERVER);
 		network.registerMessage(SyncTrophySystem.Handler.class, SyncTrophySystem.class, 33, Side.SERVER);
 		network.registerMessage(SetTrophySystemTarget.Handler.class, SetTrophySystemTarget.class, 34, Side.CLIENT);
+		network.registerMessage(SetKeycardUses.Handler.class, SetKeycardUses.class, 35, Side.SERVER);
 	}
 
 	@SubscribeEvent
@@ -512,6 +515,7 @@ public class RegistrationHandler
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
 	{
 		event.getRegistry().register(new DyeBriefcaseRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
+		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard")));
 	}
 
 	@SideOnly(Side.CLIENT)

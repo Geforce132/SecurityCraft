@@ -12,8 +12,8 @@ import net.geforcemods.securitycraft.entity.EntitySentry.EnumSentryMode;
 import net.geforcemods.securitycraft.gui.components.ClickButton;
 import net.geforcemods.securitycraft.gui.components.StringHoverChecker;
 import net.geforcemods.securitycraft.gui.components.TogglePictureButton;
-import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
+import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -75,11 +75,11 @@ public class GuiSRAT extends GuiContainer {
 
 				switch (j) {
 					case MODE:
-						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformedSingle);
+						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::actionPerformedSingle);
 						guiButtons[i][j].enabled = false;
 						break;
 					case TARGETS:
-						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformedSingle);
+						guiButtons[i][j] = new TogglePictureButton(id++, btnX, btnY, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::actionPerformedSingle);
 						guiButtons[i][j].enabled = false;
 						break;
 					case UNBIND:
@@ -139,8 +139,8 @@ public class GuiSRAT extends GuiContainer {
 		}
 
 		//Add buttons for global operation (all sentries), large id
-		guiButtonsGlobal[MODE] = new TogglePictureButton(1000, guiLeft + 260, guiTop + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 3, this::actionPerformedGlobal);
-		guiButtonsGlobal[TARGETS] = new TogglePictureButton(1001, guiLeft + 22 + 260, guiTop + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 3, this::actionPerformedGlobal);
+		guiButtonsGlobal[MODE] = new TogglePictureButton(1000, guiLeft + 260, guiTop + 188, 20, 20, SENTRY_ICONS, modeTextureX, yStarts, 2, 3, this::actionPerformedGlobal);
+		guiButtonsGlobal[TARGETS] = new TogglePictureButton(1001, guiLeft + 22 + 260, guiTop + 188, 20, 20, SENTRY_ICONS, targetTextureX, yStarts, 2, 3, this::actionPerformedGlobal);
 		guiButtonsGlobal[UNBIND] = new ClickButton(1002, guiLeft + 44 + 260, guiTop + 188, 20, 20, "X", this::clickGlobalUnbind);
 
 		for (int j = 0; j < 3; j++) {

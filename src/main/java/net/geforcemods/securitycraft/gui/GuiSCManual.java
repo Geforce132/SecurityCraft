@@ -63,7 +63,6 @@ public class GuiSCManual extends GuiScreen {
 	private final String intro2 = Utils.localize("gui.securitycraft:scManual.intro.2").getFormattedText();
 
 	public GuiSCManual() {
-		super();
 	}
 
 	@Override
@@ -339,6 +338,10 @@ public class GuiSCManual extends GuiScreen {
 					ShapelessRecipes recipe = (ShapelessRecipes) object;
 
 					if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
+						//don't show keycard reset recipes
+						if(recipe.getRegistryName().getPath().endsWith("_reset"))
+							continue;
+
 						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(recipe.recipeItems.size(), Ingredient.EMPTY);
 
 						for(int i = 0; i < recipeItems.size(); i++)

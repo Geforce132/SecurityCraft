@@ -100,7 +100,7 @@ import net.geforcemods.securitycraft.items.ItemBriefcase;
 import net.geforcemods.securitycraft.items.ItemCameraMonitor;
 import net.geforcemods.securitycraft.items.ItemCodebreaker;
 import net.geforcemods.securitycraft.items.ItemKeyPanel;
-import net.geforcemods.securitycraft.items.ItemKeycardBase;
+import net.geforcemods.securitycraft.items.ItemKeycard;
 import net.geforcemods.securitycraft.items.ItemKeypadDoor;
 import net.geforcemods.securitycraft.items.ItemMineRemoteAccessTool;
 import net.geforcemods.securitycraft.items.ItemModifiedBucket;
@@ -278,12 +278,12 @@ public class SetupHandler
 	public static void setupItems()
 	{
 		SCContent.codebreaker = new ItemCodebreaker().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");
-		SCContent.keycardLvl1 = new ItemKeycardBase(0).setRegistryName("keycard_lv1").setTranslationKey("securitycraft:keycardLV1");
-		SCContent.keycardLvl2 = new ItemKeycardBase(1).setRegistryName("keycard_lv2").setTranslationKey("securitycraft:keycardLV2");
-		SCContent.keycardLvl3 = new ItemKeycardBase(2).setRegistryName("keycard_lv3").setTranslationKey("securitycraft:keycardLV3");
-		SCContent.keycardLvl4 = new ItemKeycardBase(4).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
-		SCContent.keycardLvl5 = new ItemKeycardBase(5).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
-		SCContent.limitedUseKeycard = new ItemKeycardBase(3).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
+		SCContent.keycardLvl1 = new ItemKeycard(0).setRegistryName("keycard_lv1").setTranslationKey("securitycraft:keycardLV1");
+		SCContent.keycardLvl2 = new ItemKeycard(1).setRegistryName("keycard_lv2").setTranslationKey("securitycraft:keycardLV2");
+		SCContent.keycardLvl3 = new ItemKeycard(2).setRegistryName("keycard_lv3").setTranslationKey("securitycraft:keycardLV3");
+		SCContent.keycardLvl4 = new ItemKeycard(4).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
+		SCContent.keycardLvl5 = new ItemKeycard(5).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
+		SCContent.limitedUseKeycard = new ItemKeycard(-1).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");
 		SCContent.remoteAccessMine = new ItemMineRemoteAccessTool().setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("remote_access_mine").setTranslationKey("securitycraft:remoteAccessMine");

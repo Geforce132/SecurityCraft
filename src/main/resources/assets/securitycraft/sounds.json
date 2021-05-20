@@ -4,5 +4,6 @@
     "cameraSnap": {"category": "block","sounds":["securitycraft:cameraSnap"], "subtitle": "securitycraft.subtitle.cameraSnap"},
     "taserFire": {"category": "block","sounds":["securitycraft:taserFire"], "subtitle": "securitycraft.subtitle.taserFire"},
     "electrified": {"category": "player","sounds":["securitycraft:electrified"], "subtitle": "securitycraft.subtitle.electrified"},
-    "lock": {"category": "block","sounds":["securitycraft:lock"], "subtitle": "securitycraft.subtitle.lock"}
+    "lock": {"category": "block","sounds":["securitycraft:lock"], "subtitle": "securitycraft.subtitle.lock"},
+    "get_item": {"category": "block","sounds":["securitycraft:get_item"], "subtitle": "securitycraft.subtitle.get_item"}
 }
