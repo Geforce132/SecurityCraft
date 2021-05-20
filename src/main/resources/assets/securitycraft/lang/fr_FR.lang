@@ -451,6 +451,7 @@ gui.securitycraft:srat.unbind=Dissocier sentinelle
 gui.securitycraft:srat.outOfRange=Sentinelle hors de portée
 gui.securitycraft:password.invalidCode=Code Invalide!
 gui.securitycraft:password.setup=Installation
+gui.securitycraft:password.save=Sauvegarder & continuer
 gui.securitycraft:camera.activateNightVision=Activer la vision nocturne
 gui.securitycraft:camera.exit=Exit Caméra
 gui.securitycraft:camera.toggleRedstone=Basculer le signal redstone

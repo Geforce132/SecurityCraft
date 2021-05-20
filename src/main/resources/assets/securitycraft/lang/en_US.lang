@@ -490,6 +490,7 @@ gui.securitycraft:srat.unbind=Unbind sentry
 gui.securitycraft:srat.outOfRange=Sentry out of range
 gui.securitycraft:password.invalidCode=Invalid code!
 gui.securitycraft:password.setup=setup
+gui.securitycraft:password.save=Save
 gui.securitycraft:camera.lookAround=Look around
 gui.securitycraft:camera.activateNightVision=Activate night vision
 gui.securitycraft:camera.exit=Exit Camera

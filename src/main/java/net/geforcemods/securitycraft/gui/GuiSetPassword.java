@@ -43,7 +43,7 @@ public class GuiSetPassword extends GuiContainer implements GuiResponder {
 	public void initGui(){
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
-		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:keycardSetup.save").getFormattedText()));
+		buttonList.add(saveAndContinueButton = new GuiButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save").getFormattedText()));
 		saveAndContinueButton.enabled = false;
 
 		keycodeTextbox = new GuiTextField(1, fontRenderer, width / 2 - 37, height / 2 - 47, 77, 12);
