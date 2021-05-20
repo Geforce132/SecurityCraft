@@ -57,7 +57,7 @@ public class KeycardReaderBlock extends DisguisableBlock  {
 		{
 			KeycardReaderTileEntity te = (KeycardReaderTileEntity)world.getTileEntity(pos);
 
-			if(te.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.DENYLIST)).contains(player.getName().getString()))
+			if(te.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.DENYLIST)).contains(player.getName().getString().toLowerCase()))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
