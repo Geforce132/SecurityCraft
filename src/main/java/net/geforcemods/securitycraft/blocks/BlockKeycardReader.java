@@ -89,7 +89,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 			if(te.hasModule(EnumModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(te.getModule(EnumModuleType.DENYLIST)).contains(player.getName()))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, new TextComponentTranslation(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.blacklisted"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, new TextComponentTranslation(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 			}
 			else
 			{
