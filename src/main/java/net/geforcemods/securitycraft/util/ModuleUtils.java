@@ -3,37 +3,17 @@ package net.geforcemods.securitycraft.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkedAction;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
-import net.geforcemods.securitycraft.tileentity.KeypadTileEntity;
-import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
-import net.geforcemods.securitycraft.tileentity.SecretSignTileEntity;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.tileentity.SpecialDoorTileEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
 
 public class ModuleUtils{
-	public static List<String> getPlayersFromModule(World world, BlockPos pos, ModuleType module) {
-		IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
-
-		if(te.hasModule(module))
-			return getPlayersFromModule(te.getModule(module));
-		else return new ArrayList<>();
-	}
-
 	public static List<String> getPlayersFromModule(ItemStack stack)
 	{
 		List<String> list = new ArrayList<>();
@@ -50,93 +30,21 @@ public class ModuleUtils{
 		return list;
 	}
 
-	public static boolean checkForModule(World world, BlockPos pos, PlayerEntity player, ModuleType module){
-		TileEntity te = world.getTileEntity(pos);
+	public static boolean isAllowed(IModuleInventory inv, Entity entity)
+	{
+		return isAllowed(inv, entity.getName().getString());
+	}
 
-		if(!(te instanceof IModuleInventory))
-			return false;
+	public static boolean isAllowed(IModuleInventory inv, String name)
+	{
+		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
+		return getPlayersFromModule(inv.getModule(ModuleType.ALLOWLIST)).contains(name.toLowerCase());
+	}
 
-		if(te instanceof KeypadTileEntity){
-			KeypadTileEntity keypad = (KeypadTileEntity)te;
-
-			if(module == ModuleType.ALLOWLIST && keypad.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
-				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
-
-				return true;
-			}
-
-			if(module == ModuleType.DENYLIST && keypad.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
-				if(keypad.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return true;
-			}
-		}
-		else if(te instanceof KeypadChestTileEntity)
-		{
-			KeypadChestTileEntity chest = (KeypadChestTileEntity)te;
-
-			if(module == ModuleType.ALLOWLIST && ((IModuleInventory) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
-				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
-
-				return true;
-			}
-
-			if(module == ModuleType.DENYLIST && ((IModuleInventory) te).hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
-				if(chest.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_CHEST.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return true;
-			}
-		}
-		else if(te instanceof KeypadFurnaceTileEntity)
-		{
-			KeypadFurnaceTileEntity furnace = (KeypadFurnaceTileEntity)te;
-
-			if(module == ModuleType.ALLOWLIST && ((IModuleInventory) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
-				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
-
-				return true;
-			}
-
-			if(module == ModuleType.DENYLIST && ((IModuleInventory) te).hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
-				if(furnace.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.KEYPAD_FURNACE.get().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return true;
-			}
-		}else if(te instanceof RetinalScannerTileEntity){
-			if(module == ModuleType.ALLOWLIST && ((CustomizableTileEntity) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase()))
-				return true;
-		}else if(te instanceof InventoryScannerTileEntity){
-			if(module == ModuleType.ALLOWLIST && ((CustomizableTileEntity)te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase()))
-				return true;
-		}else if(te instanceof SecretSignTileEntity) {
-			if(module == ModuleType.ALLOWLIST && ((SecretSignTileEntity) te).hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase()))
-				return true;
-		}
-		else if(te instanceof SpecialDoorTileEntity){
-			SpecialDoorTileEntity door = (SpecialDoorTileEntity)te;
-
-			if(module == ModuleType.ALLOWLIST && door.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(player.getName().getString().toLowerCase())){
-				if(door.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(door.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
-
-				return true;
-			}
-
-			if(module == ModuleType.DENYLIST && door.hasModule(ModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.DENYLIST).contains(player.getName().getString().toLowerCase())){
-				if(door.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(door.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
-
-				return true;
-			}
-		}
-
-		return false;
+	public static boolean isDenied(IModuleInventory inv, Entity entity)
+	{
+		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
+		return getPlayersFromModule(inv.getModule(ModuleType.DENYLIST)).contains(entity.getName().getString().toLowerCase());
 	}
 
 	public static void createLinkedAction(LinkedAction action, ItemStack stack, CustomizableTileEntity te)

@@ -5,7 +5,6 @@ import java.util.Optional;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -38,6 +37,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -93,13 +93,26 @@ public class KeypadChestBlock extends ChestBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote && world.getTileEntity(pos) instanceof KeypadChestTileEntity && !isBlocked(world, pos)) {
-			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.DENYLIST))
+		if(!world.isRemote && !isBlocked(world, pos))
+		{
+			KeypadChestTileEntity te = (KeypadChestTileEntity)world.getTileEntity(pos);
+
+			if(ModuleUtils.isDenied(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+
 				return ActionResultType.FAIL;
-			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.ALLOWLIST))
+			}
+			else if(ModuleUtils.isAllowed(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+
 				activate(world, pos, player);
+			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				((KeypadChestTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
+				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;

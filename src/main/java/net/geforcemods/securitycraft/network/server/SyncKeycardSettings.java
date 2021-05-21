@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -71,7 +70,7 @@ public class SyncKeycardSettings
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
 				boolean isOwner = te.getOwner().isOwner(player);
 
-				if(isOwner || (te.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase())))
+				if(isOwner || ModuleUtils.isAllowed(te, player))
 				{
 					if(isOwner)
 					{

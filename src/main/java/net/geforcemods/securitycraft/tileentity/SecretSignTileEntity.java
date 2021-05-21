@@ -94,7 +94,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	}
 
 	public boolean isPlayerAllowedToSeeText(PlayerEntity player) {
-		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.checkForModule(getWorld(), getPos(), player, ModuleType.ALLOWLIST);
+		return !isSecret() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, player);
 	}
 
 	@Override
