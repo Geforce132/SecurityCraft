@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedHopper;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -54,7 +53,7 @@ public class BlockReinforcedHopper extends BlockHopper implements IReinforcedBlo
 				TileEntityReinforcedHopper te = (TileEntityReinforcedHopper)tileEntity;
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
-				if(te.getOwner().isOwner(player) || ModuleUtils.getPlayersFromModule(te.getModule(EnumModuleType.ALLOWLIST)).contains(player.getName().toLowerCase()))
+				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 				{
 					player.displayGUIChest(te);
 					player.addStat(StatList.HOPPER_INSPECTED);
@@ -103,10 +102,10 @@ public class BlockReinforcedHopper extends BlockHopper implements IReinforcedBlo
 					IModuleInventory inv = (IModuleInventory)te;
 
 					//hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
-					if(ModuleUtils.getPlayersFromModule(inv.getModule(EnumModuleType.ALLOWLIST)).contains(hopperTe.getOwner().getName().toLowerCase()))
+					if(ModuleUtils.isAllowed(inv, hopperTe.getOwner().getName()))
 						return true;
 					//hoppers can extract out of e.g. chests whose owner is on the hopper's allowlist module
-					else if(ModuleUtils.getPlayersFromModule(hopperTe.getModule(EnumModuleType.ALLOWLIST)).contains(te.getOwner().getName().toLowerCase()))
+					else if(ModuleUtils.isAllowed(hopperTe, te.getOwner().getName()))
 						return true;
 				}
 

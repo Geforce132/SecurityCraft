@@ -5,11 +5,11 @@ import java.util.function.Function;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
@@ -40,6 +40,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
@@ -122,14 +123,26 @@ public class BlockKeypadChest extends BlockContainer
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
-		if(!world.isRemote && world.getTileEntity(pos) instanceof TileEntityKeypadChest)
+		if(!world.isRemote)
 		{
-			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.DENYLIST))
+			TileEntityKeypadChest te = (TileEntityKeypadChest)world.getTileEntity(pos);
+
+			if(ModuleUtils.isDenied(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+
 				return true;
-			else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.ALLOWLIST))
+			}
+			else if(ModuleUtils.isAllowed(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+
 				activate(world, pos, player);
+			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-				((TileEntityKeypadChest) world.getTileEntity(pos)).openPasswordGUI(player);
+				te.openPasswordGUI(player);
 		}
 
 		return true;

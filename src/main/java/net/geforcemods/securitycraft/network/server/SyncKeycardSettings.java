@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.containers.ContainerKeycardReader;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -73,7 +72,7 @@ public class SyncKeycardSettings implements IMessage
 					TileEntityKeycardReader te = (TileEntityKeycardReader)tile;
 					boolean isOwner = te.getOwner().isOwner(player);
 
-					if(isOwner || (te.hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(EnumModuleType.ALLOWLIST)).contains(player.getName().toLowerCase())))
+					if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 					{
 						if(isOwner)
 						{

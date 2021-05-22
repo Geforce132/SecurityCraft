@@ -7,11 +7,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -32,6 +32,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -80,12 +81,27 @@ public class BlockKeypadFurnace extends BlockOwnable {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ){
-		if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.DENYLIST))
-			return true;
-		else if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.ALLOWLIST))
-			activate(world, pos, player);
-		else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
-			((TileEntityKeypadFurnace) world.getTileEntity(pos)).openPasswordGUI(player);
+		if(!world.isRemote)
+		{
+			TileEntityKeypadFurnace te = (TileEntityKeypadFurnace)world.getTileEntity(pos);
+
+			if(ModuleUtils.isDenied(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+
+				return true;
+			}
+			else if(ModuleUtils.isAllowed(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+
+				activate(world, pos, player);
+			}
+			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
+				te.openPasswordGUI(player);
+		}
 
 		return true;
 	}

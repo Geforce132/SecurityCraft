@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -31,7 +30,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor
 			if(PlayerUtils.isPlayerMountedOnCamera(player))
 				return;
 
-			if(!getOwner().isOwner(player) && (!hasModule(EnumModuleType.ALLOWLIST) || !ModuleUtils.getPlayersFromModule(getModule(EnumModuleType.ALLOWLIST)).contains(player.getName().toLowerCase())))
+			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
 			{
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:scannerDoorItem.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;

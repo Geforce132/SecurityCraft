@@ -45,7 +45,7 @@ public class TileEntityPortableRadar extends CustomizableSCTE {
 				boolean isNotAllowed = true;
 
 				if(hasModule(EnumModuleType.ALLOWLIST))
-					isNotAllowed = !ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(e.getName().toLowerCase());
+					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});

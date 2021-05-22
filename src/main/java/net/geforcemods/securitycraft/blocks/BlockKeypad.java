@@ -6,13 +6,12 @@ import java.util.function.Function;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -28,6 +27,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -46,16 +46,26 @@ public class BlockKeypad extends BlockDisguisable {
 		if(state.getValue(POWERED))
 			return false;
 		else {
-			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.DENYLIST))
-				return true;
+			TileEntityKeypad te = (TileEntityKeypad)world.getTileEntity(pos);
 
-			if(ModuleUtils.checkForModule(world, pos, player, EnumModuleType.ALLOWLIST)){
-				activate(world, pos, ((TileEntityKeypad)world.getTileEntity(pos)).getSignalLength());
+			if(ModuleUtils.isDenied(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+
+				return true;
+			}
+
+			if(ModuleUtils.isAllowed(te, player)){
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+
+				activate(world, pos, te.getSignalLength());
 				return true;
 			}
 
 			if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand) && !PlayerUtils.isHoldingItem(player, SCContent.keyPanel, hand))
-				((IPasswordProtected) world.getTileEntity(pos)).openPasswordGUI(player);
+				te.openPasswordGUI(player);
 		}
 
 		return true;

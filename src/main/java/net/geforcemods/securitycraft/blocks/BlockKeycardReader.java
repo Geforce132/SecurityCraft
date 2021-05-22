@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemKeycard;
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -86,7 +85,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 		{
 			TileEntityKeycardReader te = (TileEntityKeycardReader)world.getTileEntity(pos);
 
-			if(te.hasModule(EnumModuleType.DENYLIST) && ModuleUtils.getPlayersFromModule(te.getModule(EnumModuleType.DENYLIST)).contains(player.getName()))
+			if(ModuleUtils.isDenied(te, player))
 			{
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, new TextComponentTranslation(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
@@ -101,7 +100,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 				if((!(item instanceof ItemKeycard) || !stack.hasTagCompound() || !stack.getTagCompound().getBoolean("linked")) && !isCodebreaker)
 				{
 					//only allow the owner and whitelisted players to open the gui
-					if(te.getOwner().isOwner(player) || (te.hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(EnumModuleType.ALLOWLIST)).contains(player.getName().toLowerCase())))
+					if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 						player.openGui(SecurityCraft.instance, GuiHandler.KEYCARD_READER_ID, world, pos.getX(), pos.getY(), pos.getZ());
 				}
 				else if(item != SCContent.limitedUseKeycard) //limited use keycards are only crafting components now

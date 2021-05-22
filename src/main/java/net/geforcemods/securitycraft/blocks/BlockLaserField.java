@@ -116,7 +116,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
-						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, offsetPos, EnumModuleType.ALLOWLIST).contains(((EntityLivingBase) entity).getName().toLowerCase()))
+						if(te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory)te, entity))
 							return;
 
 						world.setBlockState(offsetPos, world.getBlockState(offsetPos).withProperty(BlockLaserBlock.POWERED, true));

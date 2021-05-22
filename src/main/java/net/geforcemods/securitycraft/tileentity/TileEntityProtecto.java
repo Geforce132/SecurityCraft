@@ -18,7 +18,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof EntityLivingBase && !(entity instanceof EntitySentry) && !EntityUtils.isInvisible(((EntityLivingBase)entity))) {
-			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || (hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(((EntityLivingBase) entity).getName().toLowerCase())))))
+			if ((entity instanceof EntityPlayer && (getOwner().isOwner((EntityPlayer) entity) || ModuleUtils.isAllowed(this, entity))))
 				return false;
 
 			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false);

@@ -87,7 +87,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	{
 		return entity != null
 				&& (!(entity instanceof EntityPlayer) || !getOwner().isOwner((EntityPlayer)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((EntityPlayer)entity).isCreative() && !((EntityPlayer)entity).isSpectator()) //PlayerEntity checks
-				&& !(hasModule(EnumModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(entity.getName().toLowerCase())); //checks for all entities
+				&& !ModuleUtils.isAllowed(this, entity); //checks for all entities
 	}
 
 	/**

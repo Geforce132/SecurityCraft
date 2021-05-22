@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Arrays;
 import java.util.List;
 
-import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityAllowlistOnly;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -85,7 +84,7 @@ public class BlockReinforcedPressurePlate extends BlockPressurePlate implements 
 
 	public boolean isAllowedToPress(World world, BlockPos pos, TileEntityAllowlistOnly te, EntityPlayer entity)
 	{
-		return te.getOwner().isOwner(entity) || ModuleUtils.getPlayersFromModule(world, pos, EnumModuleType.ALLOWLIST).contains(entity.getName().toLowerCase());
+		return te.getOwner().isOwner(entity) || ModuleUtils.isAllowed(te, entity);
 	}
 
 	@Override
