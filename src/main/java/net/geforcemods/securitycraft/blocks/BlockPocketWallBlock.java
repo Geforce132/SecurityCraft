@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -65,7 +64,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 					if(te.getManager() == null)
 						return VoxelShapes.empty();
 
-					if(te.getManager().hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getManager().getWorld(), te.getManager().getPos(), ModuleType.ALLOWLIST).contains(entity.getName().getFormattedText().toLowerCase()))
+					if(ModuleUtils.isAllowed(te.getManager(), entity))
 						return VoxelShapes.empty();
 					else if(!te.getOwner().isOwner((PlayerEntity)entity))
 						return VoxelShapes.fullCube();

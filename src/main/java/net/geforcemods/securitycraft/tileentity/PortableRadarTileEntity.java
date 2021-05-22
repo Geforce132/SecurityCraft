@@ -51,7 +51,7 @@ public class PortableRadarTileEntity extends CustomizableTileEntity {
 				boolean isNotAllowed = true;
 
 				if(hasModule(ModuleType.ALLOWLIST))
-					isNotAllowed = !ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(e.getName().getString().toLowerCase());
+					isNotAllowed = !ModuleUtils.isAllowed(this, e);
 
 				return e != owner && isNotAllowed && !e.isSpectator() && !EntityUtils.isInvisible(e);
 			});

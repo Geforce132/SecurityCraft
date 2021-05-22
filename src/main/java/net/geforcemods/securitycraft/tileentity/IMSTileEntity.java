@@ -105,7 +105,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	{
 		return entity != null
 				&& (!(entity instanceof PlayerEntity) || !getOwner().isOwner((PlayerEntity)entity) && !PlayerUtils.isPlayerMountedOnCamera(entity) && !((PlayerEntity)entity).isCreative() && !((PlayerEntity)entity).isSpectator()) //PlayerEntity checks
-				&& !(hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(world, pos, ModuleType.ALLOWLIST).contains(entity.getName().getString().toLowerCase())); //checks for all entities
+				&& !(ModuleUtils.isAllowed(this, entity)); //checks for all entities
 	}
 
 	/**
