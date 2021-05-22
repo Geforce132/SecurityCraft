@@ -214,8 +214,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * Returns the UUID of the player who shot the given Entity
 	 */
 	public UUID getShooterUUID(ProjectileEntity projectile) {
-		if (projectile.func_234616_v_() != null) { //getShooter
-			return projectile.func_234616_v_().getUniqueID();
+		if (projectile.getShooter() != null) {
+			return projectile.getShooter().getUniqueID();
 		} else {
 			return null;
 		}

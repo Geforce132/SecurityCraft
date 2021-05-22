@@ -54,7 +54,7 @@ public class BulletEntity extends AbstractArrowEntity
 	{
 		if(!(raytraceResult.getEntity() instanceof SentryEntity))
 		{
-			raytraceResult.getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, func_234616_v_()), MathHelper.ceil(getMotion().length()));
+			raytraceResult.getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
 			remove();
 		}
 	}
