@@ -5,10 +5,10 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeypadFurnaceTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -40,6 +40,7 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -120,12 +121,24 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	{
 		if(!world.isRemote)
 		{
-			if(ModuleUtils.checkForModule(world, pos, player, ModuleType.DENYLIST))
+			KeypadFurnaceTileEntity te = (KeypadFurnaceTileEntity)world.getTileEntity(pos);
+
+			if(ModuleUtils.isDenied(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+
 				return ActionResultType.FAIL;
-			else if(ModuleUtils.checkForModule(world, pos, player, ModuleType.ALLOWLIST))
+			}
+			else if(ModuleUtils.isAllowed(te, player))
+			{
+				if(te.sendsMessages())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+
 				activate(world, pos, player);
+			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.CODEBREAKER, hand))
-				((KeypadFurnaceTileEntity) world.getTileEntity(pos)).openPasswordGUI(player);
+				te.openPasswordGUI(player);
 		}
 
 		return ActionResultType.SUCCESS;

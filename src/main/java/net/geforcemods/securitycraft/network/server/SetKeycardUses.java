@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.containers.KeycardReaderContainer;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.KeycardReaderTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,7 +51,7 @@ public class SetKeycardUses
 			{
 				KeycardReaderTileEntity te = (KeycardReaderTileEntity)tile;
 
-				if(te.getOwner().isOwner(player) || (te.hasModule(ModuleType.ALLOWLIST) && ModuleUtils.getPlayersFromModule(te.getModule(ModuleType.ALLOWLIST)).contains(player.getName().getString().toLowerCase())))
+				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 				{
 					Container container = player.openContainer;
 
