@@ -16,7 +16,12 @@ import java.lang.annotation.Target;
 public @interface Tinted
 {
 	/**
-	 * @return The tint to apply, default is 0x999999
+	 * @return true if this block should receive a reinforcing tint, false if not
 	 */
-	int value() default 0x999999;
+	boolean hasReinforcedTint() default true;
+
+	/**
+	 * @return The custom tint of this block which is mixed with the reinforcing tint. 0xFFFFFF (no custom tint) by default
+	 */
+	int customTint() default 0xFFFFFF;
 }

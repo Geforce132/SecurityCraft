@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.network;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -43,6 +45,8 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -341,6 +345,10 @@ public class ClientProxy implements IProxy {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerRenderThings(){
+		Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
+		Map<Item, IItemColor> specialItemTint = new HashMap<>();
+		int noTint = 0xFFFFFF;
+
 		KeyBindings.init();
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityKeypadChest.class, new TileEntityKeypadChestRenderer());
@@ -353,14 +361,32 @@ public class ClientProxy implements IProxy {
 
 		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new ItemKeypadChestRenderer());
 
+		specialBlockTint.put(SCContent.reinforcedGrass, (state, world, pos, tintIndex) -> {
+			if (tintIndex == 1 && !state.getValue(BlockReinforcedGrass.SNOWY)) {
+				int grassTint = BiomeColorHelper.getGrassColorAtPos(world, pos);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return noTint;
+		});
+
+		specialItemTint.put(Item.getItemFromBlock(SCContent.reinforcedGrass), (stack, tintIndex) -> {
+			if (tintIndex == 1) {
+				int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return noTint;
+		});
+
 		for(Field field : SCContent.class.getFields())
 		{
 			if(field.isAnnotationPresent(Tinted.class))
 			{
-				int tint = field.getAnnotation(Tinted.class).value();
-				int noTint = 0xFFFFFF;
-				int crystalQuartzTint = 0x15B3A2;
-				int reinforcedCrystalQuartzTint = 0x0E7063;
+				int tint = field.getAnnotation(Tinted.class).customTint();
+				boolean hasReinforcedTint = field.getAnnotation(Tinted.class).hasReinforcedTint();
 
 				try
 				{
@@ -368,37 +394,22 @@ public class ClientProxy implements IProxy {
 
 					//registering reinforced blocks color overlay for world
 					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-						if(state.getBlock() == SCContent.reinforcedGrass && !state.getValue(BlockReinforcedGrass.SNOWY))
-						{
-							if(tintIndex == 0)
-								return ConfigHandler.reinforcedBlockTint ? tint : noTint;
-
-							int grassTint = BiomeColorHelper.getGrassColorAtPos(world, pos);
-
-							return ConfigHandler.reinforcedBlockTint ? mixTints(grassTint, tint) : grassTint;
-						}
-						else if(ConfigHandler.reinforcedBlockTint)
+						if(world == null || pos == null)
 							return tint;
-						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
-							return crystalQuartzTint;
+
+						if (tintIndex == 0)
+							return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
+						else if (specialBlockTint.containsKey(block))
+							return specialBlockTint.get(block).colorMultiplier(state, world, pos, tintIndex);
 						else
 							return noTint;
 					}, block);
 					//same thing for inventory
 					Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
-						if(block == SCContent.reinforcedGrass)
-						{
-							if(tintIndex == 0)
-								return ConfigHandler.reinforcedBlockTint ? tint : noTint;
-
-							int grassTint = ColorizerGrass.getGrassColor(0.5D, 1.0D);
-
-							return ConfigHandler.reinforcedBlockTint ? mixTints(grassTint, tint) : grassTint;
-						}
-						else if(ConfigHandler.reinforcedBlockTint)
-							return tint;
-						else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
-							return crystalQuartzTint;
+						if (tintIndex == 0)
+							return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
+						else if (specialItemTint.containsKey(stack.getItem()))
+							return specialItemTint.get(stack.getItem()).colorMultiplier(stack, tintIndex);
 						else
 							return noTint;
 					}, block);
@@ -412,6 +423,10 @@ public class ClientProxy implements IProxy {
 
 		Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> tintIndex == 0 ? ((ItemBriefcase)stack.getItem()).getColor(stack) : -1, SCContent.briefcase);
+	}
+
+	private int mixWithReinforcedTintIfEnabled(int tint1) {
+		return ConfigHandler.reinforcedBlockTint ? mixTints(tint1, 0x999999) : tint1;
 	}
 
 	private int mixTints(int tint1, int tint2)
