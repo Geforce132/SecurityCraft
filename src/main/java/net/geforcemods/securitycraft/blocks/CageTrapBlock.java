@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
 import net.geforcemods.securitycraft.tileentity.DisguisableTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -52,25 +53,26 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if(te instanceof DisguisableTileEntity)
+		if(tile instanceof CageTrapTileEntity)
 		{
-			DisguisableTileEntity disguisableTe = (DisguisableTileEntity)te;
+			CageTrapTileEntity te = (CageTrapTileEntity)tile;
 
 			if(ctx instanceof EntitySelectionContext)
 			{
 				EntitySelectionContext esc = (EntitySelectionContext)ctx;
+				Entity entity = esc.getEntity();
 
-				if(esc.getEntity() instanceof PlayerEntity && te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((PlayerEntity)esc.getEntity()))
-					return getCorrectShape(state, world, pos, ctx, disguisableTe);
-				if(esc.getEntity() instanceof MobEntity && te instanceof CageTrapTileEntity && !state.get(DEACTIVATED))
-					return (((CageTrapTileEntity) te).capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, disguisableTe));
-				else if(esc.getEntity() instanceof ItemEntity)
-					return getCorrectShape(state, world, pos, ctx, disguisableTe);
+				if(entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity)entity) || ModuleUtils.isAllowed(te, entity)))
+					return getCorrectShape(state, world, pos, ctx, te);
+				if(entity instanceof MobEntity && !state.get(DEACTIVATED))
+					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
+				else if(entity instanceof ItemEntity)
+					return getCorrectShape(state, world, pos, ctx, te);
 			}
 
-			return state.get(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, disguisableTe) : VoxelShapes.empty();
+			return state.get(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : VoxelShapes.empty();
 		}
 		else return VoxelShapes.empty(); //shouldn't happen
 	}
