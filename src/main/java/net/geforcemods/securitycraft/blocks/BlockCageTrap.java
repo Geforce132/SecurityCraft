@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
@@ -68,35 +69,31 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState)
 	{
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if(te instanceof TileEntityDisguisable)
+		if(tile instanceof TileEntityCageTrap)
 		{
-			TileEntityDisguisable disguisableTe = (TileEntityDisguisable)te;
+			TileEntityCageTrap te = (TileEntityCageTrap)tile;
 
-			if(entity instanceof EntityPlayer && te instanceof IOwnable && ((IOwnable) te).getOwner().isOwner((EntityPlayer)entity))
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
-			if(entity instanceof EntityLiving && te instanceof TileEntityCageTrap && !state.getValue(DEACTIVATED))
+			if(entity instanceof EntityPlayer && (te.getOwner().isOwner((EntityPlayer)entity) || ModuleUtils.isAllowed(te, entity)))
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+			if(entity instanceof EntityLiving && !state.getValue(DEACTIVATED))
 			{
-				if(((TileEntityCageTrap)te).capturesMobs())
-				{
+				if(te.capturesMobs())
 					addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
-					return;
-				}
 				else
-				{
-					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
-					return;
-				}
+					addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
+
+				return;
 			}
 			else if(entity instanceof EntityItem)
 			{
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 				return;
 			}
 
 			if(state.getValue(DEACTIVATED))
-				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, disguisableTe);
+				addCorrectShape(state, world, pos, entityBox, collidingBoxes, entity, isActualState, te);
 			else
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, NULL_AABB);
 		}

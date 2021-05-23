@@ -728,6 +728,7 @@ module.securitycraft:keypad_door.whitelistModule.description=Adding an allowlist
 module.securitycraft:keypad_door.blacklistModule.description=Adding a denylist module to a keypad door will ban players on the list from interacting with the block.
 module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.
 module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
+module.securitycraft:cageTrap.whitelistModule.description=Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
