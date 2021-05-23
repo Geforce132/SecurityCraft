@@ -887,6 +887,7 @@
 	"module.securitycraft.keypad_door.blacklist_module.description": "Adding a denylist module to a keypad door will ban players on the list from interacting with the block.",
 	"module.securitycraft.username_logger.whitelist_module.description": "Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.",
 	"module.securitycraft.trophy_system.smart_module.description": "Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.",
+	"module.securitycraft.cage_trap.whitelist_module.description": "Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
