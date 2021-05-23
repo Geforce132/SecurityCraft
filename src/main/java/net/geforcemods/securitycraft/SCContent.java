@@ -56,6 +56,7 @@ public class SCContent
 	@Reinforced @Tinted public static Block reinforcedBookshelf;
 	@Reinforced @Tinted public static Block reinforcedBrick;
 	@Reinforced @Tinted public static Block reinforcedCarpet;
+	@Reinforced @Tinted public static Block reinforcedCauldron;
 	@Reinforced @Tinted public static Block reinforcedClay;
 	@Reinforced @Tinted public static Block reinforcedCobblestone;
 	@Reinforced @Tinted public static Block reinforcedCompressedBlocks;

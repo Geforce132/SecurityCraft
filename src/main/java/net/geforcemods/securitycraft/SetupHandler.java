@@ -49,6 +49,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedBookshelf;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedButton;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCarpet;
+import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCauldron;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCobweb;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedCompressedBlocks;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedConcrete;
@@ -249,6 +250,7 @@ public class SetupHandler
 		SCContent.reinforcedHopper = new BlockReinforcedHopper().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_hopper").setTranslationKey("securitycraft:reinforced_hopper");
 		SCContent.projector = new BlockProjector().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("projector").setTranslationKey("securitycraft:projector");
 		SCContent.keypadDoor = new BlockKeypadDoor(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("keypad_door").setTranslationKey("securitycraft:keypad_door");
+		SCContent.reinforcedCauldron = new BlockReinforcedCauldron().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_cauldron").setTranslationKey("securitycraft:reinforced_cauldron");
 	}
 
 	public static void setupMines()

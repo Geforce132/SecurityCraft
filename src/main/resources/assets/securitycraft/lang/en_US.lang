@@ -283,6 +283,7 @@ tile.securitycraft:reinforced_hopper.name=Reinforced Hopper
 tile.securitycraft:projector.name=Projector
 tile.securitycraft:secret_sign.name=Secret Sign
 tile.securitycraft:keypad_door.name=Keypad Door
+tile.securitycraft:reinforced_cauldron.name=Reinforced Cauldron
 
 item.securitycraft:codebreaker.name=Codebreaker
 item.securitycraft:doorIndestructibleIronItem.name=Reinforced Iron Door
@@ -733,6 +734,7 @@ module.securitycraft:keypad_door.blacklistModule.description=Adding a denylist m
 module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.
 module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
 module.securitycraft:trophy_system.speed_module.description=Adding a speed module to a Trophy System allows it to destroy targets twice as fast.
+module.securitycraft:reinforced_cauldron.whitelistModule.description=Adding an allowlist module to a Reinforced Cauldron will allow players on the list to interact with the Reinforced Cauldron.
 module.securitycraft:cageTrap.whitelistModule.description=Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
@@ -860,6 +862,8 @@ option.securitycraft:keypad_door.sendMessage=Message: #
 option.securitycraft:keypad_door.sendMessage.description=Does this keypad door send a message upon activation (when using allowlist/denylist modules)?
 option.securitycraft:keypad_door.signalLength=Signal length: #
 option.securitycraft:keypad_door.signalLength.description=How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)
+option.securitycraft:reinforced_cauldron.isPublic=Public: #
+option.securitycraft:reinforced_cauldron.isPublic.description=Should every player be able to interact with this block?
 
 securitycraft.subtitle.alarm=Alarm sounding
 securitycraft.subtitle.electrified=Entity electrocuted

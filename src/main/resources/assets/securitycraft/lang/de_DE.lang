@@ -1,4 +1,4 @@
-﻿tile.securitycraft:laserBlock.name=Laserblock
+tile.securitycraft:laserBlock.name=Laserblock
 tile.securitycraft:laser.name=Laser
 tile.securitycraft:laserActive.name=Aktivierter Laser
 tile.securitycraft:keypad.name=Nummernschloss
@@ -274,7 +274,6 @@ tile.securitycraft:reinforced_podzol.name=Verstärkter Podsol
 tile.securitycraft:reinforced_mycelium.name=Verstärktes Myzel
 tile.securitycraft:reinforced_ice.name=Verstärktes Eis
 tile.securitycraft:reinforced_packed_ice.name=Verstärktes Packeis
-tile.securitycraft:reinforced_mycelium.name=Verstärktes Myzel
 tile.securitycraft:reinforced_clay.name=Verstärkter Ton
 tile.securitycraft:reinforced_nether_wart_block.name=Verstärkter Netherwarzenblock
 tile.securitycraft:reinforced_grass_path.name=Verstärkter Trampelpfad
@@ -285,6 +284,7 @@ tile.securitycraft:reinforced_hopper.name=Verstärkter Trichter
 tile.securitycraft:projector.name=Projektor
 tile.securitycraft:secret_sign.name=Geheimes Schild
 tile.securitycraft:keypad_door.name=Nummernschloss-Tür
+tile.securitycraft:reinforced_cauldron.name=Verstärkter Kessel
 
 item.securitycraft:codebreaker.name=Codebrecher
 item.securitycraft:doorIndestructibleIronItem.name=Verstärkte Eisentür
@@ -736,6 +736,7 @@ module.securitycraft:keypad_door.blacklistModule.description=Ein Sperrlisten-Mod
 module.securitycraft:usernameLogger.whitelistModule.description=Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die Spieler auf der Liste protokolliert werden.
 module.securitycraft:trophy_system.smartModule.description=Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.
 module.securitycraft:trophy_system.speed_module.description=Ein Schnelligkeits-Modul in einem Trophy-System erlaubt es seine Ziele doppelt so schnell zu zerstören.
+module.securitycraft:reinforced_cauldron.whitelistModule.description=Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.
 module.securitycraft:cageTrap.whitelistModule.description=Ein Zulassungslisten-Modul in einer Käfigfalle verhindert, dass die Spieler auf der Liste gefangen genommen werden.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
@@ -865,6 +866,8 @@ option.securitycraft:keypad_door.sendMessage=Nachricht: #
 option.securitycraft:keypad_door.sendMessage.description=Sendet diese Nummernschloss-Tür eine Nachricht, wenn sie aktiviert wird?
 option.securitycraft:keypad_door.signalLength=Dauer zum Schließen: #
 option.securitycraft:keypad_door.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
+option.securitycraft:reinforced_cauldron.isPublic=Öffentlich: #
+option.securitycraft:reinforced_cauldron.isPublic.description=Soll jeder Spieler mit diesem Block interagieren können?
 
 securitycraft.subtitle.alarm=Alarm geht los
 securitycraft.subtitle.electrified=Stromschlag
