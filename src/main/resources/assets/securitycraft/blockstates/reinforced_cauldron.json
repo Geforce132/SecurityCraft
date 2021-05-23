@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "securitycraft:block/reinforced_cauldron"
+    },
+    "level=1": {
+      "model": "securitycraft:block/reinforced_cauldron_level1"
+    },
+    "level=2": {
+      "model": "securitycraft:block/reinforced_cauldron_level2"
+    },
+    "level=3": {
+      "model": "securitycraft:block/reinforced_cauldron_level3"
+    }
+  }
+}
