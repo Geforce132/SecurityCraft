@@ -416,6 +416,7 @@
 	"block.securitycraft.secret_crimson_sign": "Geheimes Karmesinschild",
 	"block.securitycraft.secret_warped_sign": "Geheimes Wirrschild",
 	"block.securitycraft.keypad_door": "Nummernschloss-Tür",
+	"block.securitycraft.reinforced_cauldron": "Verstärkter Kessel",
 
 	"item.securitycraft.codebreaker": "Codebrecher",
 	"item.securitycraft.door_indestructible_iron_item": "Verstärkte Eisentür",
@@ -888,6 +889,7 @@
 	"module.securitycraft.username_logger.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die Spieler auf der Liste protokolliert werden.",
 	"module.securitycraft.trophy_system.smart_module.description": "Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.",
 	"module.securitycraft.cage_trap.whitelist_module.description": "Ein Zulassungslisten-Modul in einer Käfigfalle verhindert, dass die Spieler auf der Liste gefangen genommen werden.",
+	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",
@@ -965,6 +967,8 @@
 	"option.securitycraft.keypad_door.sendMessage.description": "Sendet diese Nummernschloss-Tür eine Nachricht, wenn sie aktiviert wird?",
 	"option.securitycraft.keypad_door.signalLength": "Dauer zum Schließen: %s",
 	"option.securitycraft.keypad_door.signalLength.description": "Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)",
+	"option.securitycraft.reinforced_cauldron.isPublic": "Öffentlich: %s",
+	"option.securitycraft.reinforced_cauldron.isPublic.description": "Soll jeder Spieler mit diesem Block interagieren können?",
 
 	"securitycraft.subtitle.alarm": "Alarm geht los",
 	"securitycraft.subtitle.electrified": "Stromschlag",

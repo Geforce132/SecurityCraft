@@ -416,6 +416,7 @@
 	"block.securitycraft.reinforced_redstone_lamp": "Reinforced Redstone Lamp",
 	"block.securitycraft.reinforced_hopper": "Reinforced Hopper",
 	"block.securitycraft.keypad_door": "Keypad Door",
+	"block.securitycraft.reinforced_cauldron": "Reinforced Cauldron",
 
 	"item.securitycraft.codebreaker": "Codebreaker",
 	"item.securitycraft.door_indestructible_iron_item": "Reinforced Iron Door",
@@ -888,6 +889,7 @@
 	"module.securitycraft.username_logger.whitelist_module.description": "Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.",
 	"module.securitycraft.trophy_system.smart_module.description": "Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.",
 	"module.securitycraft.cage_trap.whitelist_module.description": "Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.",
+	"module.securitycraft.reinforced_cauldron.whitelist_module.description": "Adding an allowlist module to a Reinforced Cauldron will allow players on the list to interact with the Reinforced Cauldron.",
 
 	"option.securitycraft.portable_radar.searchRadius": "Search radius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "The radius the radar searches in.",
@@ -965,6 +967,8 @@
 	"option.securitycraft.keypad_door.sendMessage.description": "Does this keypad door send a message upon activation (when using allowlist/denylist modules)?",
 	"option.securitycraft.keypad_door.signalLength": "Signal length: %s",
 	"option.securitycraft.keypad_door.signalLength.description": "How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)",
+	"option.securitycraft.reinforced_cauldron.isPublic": "Public: %s",
+	"option.securitycraft.reinforced_cauldron.isPublic.description": "Should every player be able to interact with this block?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
 	"securitycraft.subtitle.electrified": "Entity electrocuted",

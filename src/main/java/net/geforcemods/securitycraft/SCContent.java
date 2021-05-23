@@ -47,6 +47,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronB
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
@@ -135,6 +136,7 @@ import net.geforcemods.securitycraft.tileentity.MotionActivatedLightTileEntity;
 import net.geforcemods.securitycraft.tileentity.PortableRadarTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
 import net.geforcemods.securitycraft.tileentity.ProtectoTileEntity;
+import net.geforcemods.securitycraft.tileentity.ReinforcedCauldronTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedHopperTileEntity;
 import net.geforcemods.securitycraft.tileentity.ReinforcedIronBarsTileEntity;
 import net.geforcemods.securitycraft.tileentity.RetinalScannerTileEntity;
@@ -609,6 +611,9 @@ public class SCContent
 	@HasManualPage(hasRecipeDescription=true) @OwnableTE @Reinforced(hasTint=false) public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.IRON).sound(SoundType.METAL).notSolid()));
 	@OwnableTE @Reinforced public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
 
+	//ordered by vanilla brewing tab order
+	@Reinforced public static final RegistryObject<Block> REINFORCED_CAULDRON = BLOCKS.register("reinforced_cauldron", () -> new ReinforcedCauldronBlock(prop(Material.IRON, MaterialColor.STONE))); //.notSolid
+
 	//misc
 	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CHISELED_CRYSTAL_QUARTZ));
 	@Reinforced(tint=0x0E7063) public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(), SCContent.CRYSTAL_QUARTZ));
@@ -729,6 +734,8 @@ public class SCContent
 	public static TileEntityType<KeypadDoorTileEntity> teTypeKeypadDoor;
 	@ObjectHolder(SecurityCraft.MODID + ":reinforced_iron_bars")
 	public static TileEntityType<ReinforcedIronBarsTileEntity> teTypeReinforcedIronBars;
+	@ObjectHolder(SecurityCraft.MODID + ":reinforced_cauldron")
+	public static TileEntityType<ReinforcedCauldronTileEntity> teTypeReinforcedCauldron;
 
 	//entity types
 	@ObjectHolder(SecurityCraft.MODID + ":bouncingbetty")
