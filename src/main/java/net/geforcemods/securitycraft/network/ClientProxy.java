@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.network;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -63,6 +65,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.color.IBlockColor;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -198,15 +202,22 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void tint()
 	{
-		Map<Block,Integer> toTint = new HashMap<>();
+		Set<Block> reinforcedTint = new HashSet<>();
+		Map<Block, Integer> toTint = new HashMap<>();
+		Map<Block, IBlockColor> specialBlockTint = new HashMap<>();
+		Map<Block, IItemColor> specialItemTint = new HashMap<>();
 
 		for(Field field : SCContent.class.getFields())
 		{
-			if(field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).hasTint())
+			if(field.isAnnotationPresent(Reinforced.class))
 			{
 				try
 				{
-					toTint.put(((RegistryObject<Block>)field.get(null)).get(), field.getAnnotation(Reinforced.class).tint());
+					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
+						reinforcedTint.add(((RegistryObject<Block>)field.get(null)).get());
+
+					if (field.getAnnotation(Reinforced.class).hasReinforcedTint() || field.getAnnotation(Reinforced.class).customTint() != 0xFFFFFF)
+						toTint.put(((RegistryObject<Block>)field.get(null)).get(), field.getAnnotation(Reinforced.class).customTint());
 				}
 				catch(IllegalArgumentException | IllegalAccessException e)
 				{
@@ -217,54 +228,61 @@ public class ClientProxy implements IProxy {
 
 		int noTint = 0xFFFFFF;
 		int crystalQuartzTint = 0x15B3A2;
-		int reinforcedCrystalQuartzTint = 0x0E7063;
 
-		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), reinforcedCrystalQuartzTint);
-		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), reinforcedCrystalQuartzTint);
+		toTint.put(SCContent.BLOCK_POCKET_MANAGER.get(), crystalQuartzTint);
+		reinforcedTint.add(SCContent.BLOCK_POCKET_MANAGER.get());
+		toTint.put(SCContent.BLOCK_POCKET_WALL.get(), crystalQuartzTint);
+		reinforcedTint.add(SCContent.BLOCK_POCKET_WALL.get());
 		toTint.put(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), crystalQuartzTint);
 		toTint.put(SCContent.CRYSTAL_QUARTZ_SLAB.get(), crystalQuartzTint);
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
+
+		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
+			if (tintIndex == 1 && !state.get(ReinforcedSnowyDirtBlock.SNOWY)) {
+				int grassTint = BiomeColors.getGrassColor(world, pos);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return noTint;
+		});
+		specialBlockTint.put(SCContent.REINFORCED_CAULDRON.get(), (state, world, pos, tintIndex) -> {
+			if (tintIndex == 1)
+				return BiomeColors.getWaterColor(world, pos);
+
+			return noTint;
+		});
+
+		specialItemTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (stack, tintIndex) -> {
+			if (tintIndex == 1) {
+				int grassTint = GrassColors.get(0.5D, 1.0D);
+
+				return mixWithReinforcedTintIfEnabled(grassTint);
+			}
+
+			return noTint;
+		});
+
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			if(world == null || pos == null)
 				return tint;
 
-			boolean tintBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
-
-			if(block == SCContent.REINFORCED_GRASS_BLOCK.get() && !state.get(ReinforcedSnowyDirtBlock.SNOWY))
-			{
-				if(tintIndex == 0)
-					return tintBlocks ? tint : noTint;
-
-				int grassTint = BiomeColors.getGrassColor(world, pos);
-
-				return tintBlocks ? mixTints(grassTint, tint) : grassTint;
-			}
-			else if(tintBlocks)
-				return tint;
-			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
-				return crystalQuartzTint;
+			if (tintIndex == 0)
+				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;
+			else if (specialBlockTint.containsKey(block))
+				return specialBlockTint.get(block).getColor(state, world, pos, tintIndex);
 			else
 				return noTint;
 		}, block));
 		toTint.forEach((item, tint) -> Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-			boolean tintBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
-
-			if(item == SCContent.REINFORCED_GRASS_BLOCK.get())
-			{
-				if(tintIndex == 0)
-					return tintBlocks ? tint : noTint;
-
-				int grassTint = GrassColors.get(0.5D, 1.0D);
-
-				return tintBlocks ? mixTints(grassTint, tint) : grassTint;
-			}
-			else if(tintBlocks)
-				return tint;
-			else if(tint == reinforcedCrystalQuartzTint || tint == crystalQuartzTint)
-				return crystalQuartzTint;
-			else return noTint;
+			if (tintIndex == 0)
+				return reinforcedTint.contains(item) ? mixWithReinforcedTintIfEnabled(tint) : tint;
+			else if (specialItemTint.containsKey(item))
+				return specialItemTint.get(item).getColor(stack, tintIndex);
+			else
+				return noTint;
 		}, item));
 		Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
 			Block block = state.getBlock();
@@ -292,6 +310,12 @@ public class ClientProxy implements IProxy {
 			else
 				return -1;
 		}, SCContent.BRIEFCASE.get());
+	}
+
+	private int mixWithReinforcedTintIfEnabled(int tint1) {
+		boolean tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
+
+		return tintReinforcedBlocks ? mixTints(tint1, 0x999999) : tint1;
 	}
 
 	private int mixTints(int tint1, int tint2)
