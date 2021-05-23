@@ -42,9 +42,6 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
-	/* Number of ticks that the trophy takes to "charge" */
-	public static final int COOLDOWN_TIME = 8;
-
 	/* The number of blocks away from the trophy system you can be for
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
@@ -52,7 +49,7 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 
 	private final Map<EntityEntry, Boolean> projectileFilter = new LinkedHashMap<>();
 	public Entity entityBeingTargeted = null;
-	public int cooldown = COOLDOWN_TIME;
+	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
 	public TileEntityTrophySystem() {
@@ -171,7 +168,7 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 	 * Resets the cooldown and targeted entity variables
 	 */
 	private void resetTarget() {
-		cooldown = COOLDOWN_TIME;
+		cooldown = getCooldownTime();
 		entityBeingTargeted = null;
 	}
 
@@ -276,7 +273,7 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.SMART};
+		return new EnumModuleType[]{EnumModuleType.SMART, EnumModuleType.SPEED};
 	}
 
 	@Override
@@ -284,4 +281,11 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 		return null;
 	}
 
+	/*
+	 * @return The number of ticks that the trophy takes to "charge"
+	 */
+	public int getCooldownTime()
+	{
+		return hasModule(EnumModuleType.SPEED) ? 4 : 8;
+	}
 }

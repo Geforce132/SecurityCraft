@@ -325,6 +325,7 @@ item.securitycraft:secretSignItem.name=Geheimes Schild
 item.securitycraft:sentry.name=Geschütz
 item.securitycraft:crystalQuartzItem.name=Kristallquartz
 item.securitycraft:keypad_door_item.name=Nummernschloss-Tür
+item.securitycraft:speed_module.name=Schnelligkeits-Modul
 
 entity.securitycraft:imsbomb.name=I.M.S.-Bombe
 entity.securitycraft:sentry.name=Geschütz
@@ -438,6 +439,7 @@ help.securitycraft:secretSignItem.info=Das Geheime Schild funktioniert wie das V
 help.securitycraft:sentry.info=Das Geschütz hat drei Modi, die mit einem Rechtsklick auf das Geschütz gewechselt werden können. Untätig (es wird niemals angreifen), Tarnen (es wird nur feindliche Spieler in seiner Nähe attackieren) und Aggressiv (es wird Mobs und feindliche Spieler attackieren). Rechtsklicke es mit einem Tarnmodul welches einen normalen, undurchsichtigen Block hat (z.B. Stein, aber nicht Glas oder Stufen), und das Geschütz wird sich tarnen. Das Modul kann direkt ausgewechselt, oder per Rechtsklick mit einem Universellen Block Modifizierer entfernt werden. Um das Geschütz zu entfernen, ducke Dich und rechtsklicke es.
 help.securitycraft:crystalQuartzItem.info=Kristallquartz wird benutzt, um Kristallquartz-Blöcke herzustellen.
 help.securitycraft:keypad_door_item.info=Die Nummernschloss-Tür verhält sich wie ein Nummernschloss. Um die Tür zu öffnen, muss man den korrekten Code eingeben.
+help.securitycraft:speed_module.info=Das Schnelligkeits-Modul erlaubt einigen von SecurityCrafts Blöcken, schneller zu arbeiten.
 
 gui.securitycraft:scManual.disabled=Deaktiviert
 gui.securitycraft:scManual.intro.1=Anfangen mit SecurityCraft
@@ -686,6 +688,7 @@ itemGroup.tabSecurityCraft.explosives=SecurityCraft: Sprengstoffe
 itemGroup.tabSecurityCraft.technical=SecurityCraft: Technisch
 
 module.securitycraft:ims.whitelistModule.description=Ein Zulassungslisten-Modul in einem I.M.S. erlaubt zugelassenen Spielern, sich innerhalb des Angriffsradius der Mine zu bewegen, ohne angegriffen zu werden.
+module.securitycraft:ims.speed_module.description=Ein Schnelligkeits-Modul in einem I.M.S. lässt das I.M.S. schneller schießen, und erhöht zudem die Geschwindigkeit der geschossenen Bomben.
 module.securitycraft:inventoryScanner.whitelistModule.description=Ein Zulassungslisten-Modul in einem Inventarscanner erlaubt zugelassenen Spieler, durch das Feld zu gehen, ohne deren Inventar überprüft zu bekommen.
 module.securitycraft:inventoryScanner.smartModule.description=Ein schlaues Modul in einem Inventarscanner erlaubt dem Scanner, auch auf Meta-, NBT-Daten, sowie Verzauberungen Rücksicht zu nehmen.
 module.securitycraft:inventoryScanner.storageModule.description=Ein Lagermodul in einem Inventarscanner erlaubt, die aus einem Spielerinventar entfernten Items im Inventarscanner zu speichern.
@@ -707,7 +710,8 @@ module.securitycraft:retinalScanner.whitelistModule.description=Ein Zulassungsli
 module.securitycraft:retinalScanner.disguiseModule.description=Wenn ein Tarnmodul zu einem Augenscanner hinzugefügt wird, ändert er seine Textur/sein Modell zu denen des Blockes im Tarnmodul.
 module.securitycraft:securityCamera.redstoneModule.description=Ein Redstone Modul in einer Kamera lässt diese ein Redstonesignal abgeben, wenn angeschaltet.
 module.securitycraft:securityCamera.smartModule.description=Ein schlaues Modul lässt jeden die Kamera anschauen.
-module.securitycraft:protecto.whitelistModule.description=Ein Zulassungslisten-Modul in einem Protecto erlaubt zugelassenen Spielern, sich in dem Angriffsradius aufzuhalten, ohne attakiert zu werden.
+module.securitycraft:protecto.whitelistModule.description=Ein Zulassungslisten-Modul in einem Protecto erlaubt zugelassenen Spielern, sich in dem Angriffsradius aufzuhalten, ohne attackiert zu werden.
+module.securitycraft:protecto.speed_module.description=Ein Schnelligkeits-Modul in einem Protecto erlaubt ihm doppelt so schnell zu attackieren.
 module.securitycraft:blockPocketManager.disguiseModule.description=Ein Tarnmodul in einem Blocktaschenverwalter macht die Seiten der Blocktasche undurchsichtig.
 module.securitycraft:blockPocketManager.whitelistModule.description=Ein Zulassungslisten-Modul in einem Blocktaschenverwalter erlaubt zugelassenen Spielern, durch die Seiten der Blocktasche zu gehen.
 module.securitycraft:blockPocketManager.storageModule.description=Ein Lagermodul in einem Blocktaschenverwalter fügt diesem ein Inventar hinzu, das als Lager der zum Bau der Blocktasche benötigten Materialien genutzt werden kann. Weiterhin kann, sofern alle benötigten Materialien vorhanden sind, die Blocktasche automatisch aufgebaut werden.
@@ -730,7 +734,8 @@ module.securitycraft:reinforced_hopper.whitelistModule.description=Ein Zulassung
 module.securitycraft:keypad_door.whitelistModule.description=Ein Zulassungslisten-Modul in einer Nummernschloss-Tür erlaubt zugelassenen Spielern, die Tür zu aktivieren, ohne den Code zu kennen.
 module.securitycraft:keypad_door.blacklistModule.description=Ein Sperrlisten-Modul in einer Nummernschloss-Tür verhindert, dass gesperrte Spieler mit der Tür interagieren können.
 module.securitycraft:usernameLogger.whitelistModule.description=Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die Spieler auf der Liste protokolliert werden.
-module.securitycraft:trophy_system.smart_module.description=Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.
+module.securitycraft:trophy_system.smartModule.description=Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.
+module.securitycraft:trophy_system.speed_module.description=Ein Schnelligkeits-Modul in einem Trophy-System erlaubt es seine Ziele doppelt so schnell zu zerstören.
 module.securitycraft:cageTrap.whitelistModule.description=Ein Zulassungslisten-Modul in einer Käfigfalle verhindert, dass die Spieler auf der Liste gefangen genommen werden.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?

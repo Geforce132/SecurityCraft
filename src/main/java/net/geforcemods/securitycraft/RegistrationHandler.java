@@ -339,6 +339,7 @@ public class RegistrationHandler
 		registerItem(event, SCContent.smartModule);
 		registerItem(event, SCContent.storageModule);
 		registerItem(event, SCContent.disguiseModule);
+		registerItem(event, SCContent.speedModule);
 		registerItem(event, SCContent.wireCutters);
 		registerItem(event, SCContent.adminTool);
 		registerItem(event, SCContent.keyPanel);
@@ -799,6 +800,7 @@ public class RegistrationHandler
 		ModelLoader.setCustomModelResourceLocation(SCContent.storageModule, 0, new ModelResourceLocation("securitycraft:storage_module", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.smartModule, 0, new ModelResourceLocation("securitycraft:smart_module", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.disguiseModule, 0, new ModelResourceLocation("securitycraft:disguise_module", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(SCContent.speedModule, 0, new ModelResourceLocation("securitycraft:speed_module", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.wireCutters, 0, new ModelResourceLocation("securitycraft:wire_cutters", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.keyPanel, 0, new ModelResourceLocation("securitycraft:keypad_item", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(SCContent.adminTool, 0, new ModelResourceLocation("securitycraft:admin_tool", "inventory"));

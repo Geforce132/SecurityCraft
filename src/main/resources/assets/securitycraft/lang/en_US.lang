@@ -323,6 +323,7 @@ item.securitycraft:secretSignItem.name=Secret Sign
 item.securitycraft:sentry.name=Sentry
 item.securitycraft:crystalQuartzItem.name=Crystal Quartz
 item.securitycraft:keypad_door_item.name=Keypad Door
+item.securitycraft:speed_module.name=Speed Module
 
 entity.securitycraft:imsbomb.name=I.M.S. Bomb
 entity.securitycraft:sentry.name=Sentry
@@ -435,6 +436,7 @@ help.securitycraft:secretSignItem.info=The Secret Sign works like a vanilla sign
 help.securitycraft:sentry.info=The Sentry has three modes that can be switched by rightclicking it. Idle (it will never attack), Camouflage (it will only attack enemy players in its range) and Aggressive (it will attack hostile mobs and enemy players). Rightclicking it with a Disguise Module containing a full and opaque block (e.g. stone, but not glass or stairs) will make the Sentry disguise itself. The module can be switched directly, or extracted by rightclicking with a Universal Block Modifier. To remove the sentry, sneak-rightclick it.
 help.securitycraft:crystalQuartzItem.info=Crystal Quartz is used to craft Crystal Quartz blocks.
 help.securitycraft:keypad_door_item.info=The Keypad Door acts like a Keypad combined with a Reinforced Iron Door, where a code has to be inserted in order to open the door.
+help.securitycraft:speed_module.info=The speed module allows some of SecurityCraft's blocks to operate faster than usual.
 
 gui.securitycraft:scManual.disabled=Disabled
 gui.securitycraft:scManual.intro.1=Getting started with SecurityCraft
@@ -684,6 +686,7 @@ itemGroup.tabSecurityCraft.explosives=SecurityCraft: Explosives
 itemGroup.tabSecurityCraft.technical=SecurityCraft: Technical
 
 module.securitycraft:ims.whitelistModule.description=Adding an allowlist module to an I.M.S. will allow the players on the list to walk into the range of the I.M.S. without being targeted.
+module.securitycraft:ims.speed_module.description=Adding a speed module to an I.M.S. will make the I.M.S. shoot faster, as well as increase the speed of the shot bombs.
 module.securitycraft:inventoryScanner.whitelistModule.description=Adding an allowlist module to an inventory scanner will allow players on the list to walk through the scanning field without checking their inventory.
 module.securitycraft:inventoryScanner.smartModule.description=Adding a smart module to an inventory scanner will make the scanner check for enchantments and other metadata changes when scanning inventories.
 module.securitycraft:inventoryScanner.storageModule.description=Adding a storage module will allow the scannner to store the items it finds while something passes through the field in a built-in inventory.
@@ -706,6 +709,7 @@ module.securitycraft:retinalScanner.disguiseModule.description=Adding a disguise
 module.securitycraft:securityCamera.redstoneModule.description=Adding the redstone module to a camera lets the camera emit a 15-block redstone signal when enabled.
 module.securitycraft:securityCamera.smartModule.description=Adding the smart module to a camera lets anyone access the camera.
 module.securitycraft:protecto.whitelistModule.description=Adding an allowlist module to a protecto will allow the players on the list to walk into the range of the protecto without being targeted.
+module.securitycraft:protecto.speed_module.description=Adding a speed module to a protecto will allow it to attack twice as fast.
 module.securitycraft:blockPocketManager.disguiseModule.description=Adding a disguise module to a Block Pocket Manager will make the Block Pocket's sides opaque.
 module.securitycraft:blockPocketManager.whitelistModule.description=Adding an allowlist module to a Block Pocket Manager will allow players on the list to pass through the Block Pocket's sides.
 module.securitycraft:reinforced_stone_pressure_plate.whitelistModule.description=Adding an allowlist module to a Reinforced Stone Pressure Plate will allow players on the list to activate it.
@@ -728,6 +732,7 @@ module.securitycraft:keypad_door.whitelistModule.description=Adding an allowlist
 module.securitycraft:keypad_door.blacklistModule.description=Adding a denylist module to a keypad door will ban players on the list from interacting with the block.
 module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.
 module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
+module.securitycraft:trophy_system.speed_module.description=Adding a speed module to a Trophy System allows it to destroy targets twice as fast.
 module.securitycraft:cageTrap.whitelistModule.description=Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?

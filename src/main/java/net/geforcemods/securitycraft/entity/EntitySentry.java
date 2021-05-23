@@ -46,8 +46,9 @@ import net.minecraft.world.World;
 public class EntitySentry extends EntityCreature implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(EntitySentry.class, Owner.getSerializer());
-	private static final DataParameter<NBTTagCompound> MODULE = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
+	private static final DataParameter<NBTTagCompound> DISGUISE_MODULE = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
 	private static final DataParameter<NBTTagCompound> ALLOWLIST = EntityDataManager.<NBTTagCompound>createKey(EntitySentry.class, DataSerializers.COMPOUND_TAG);
+	private static final DataParameter<Boolean> HAS_SPEED_MODULE = EntityDataManager.<Boolean>createKey(EntitySentry.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntitySentry.class, DataSerializers.VARINT);
 	public static final DataParameter<Float> HEAD_ROTATION = EntityDataManager.<Float>createKey(EntitySentry.class, DataSerializers.FLOAT);
 	public static final float MAX_TARGET_DISTANCE = 20.0F;
@@ -75,8 +76,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		super(world);
 		setSize(1.0F, 1.0F);
 		dataManager.set(OWNER, owner);
-		dataManager.set(MODULE, new NBTTagCompound());
+		dataManager.set(DISGUISE_MODULE, new NBTTagCompound());
 		dataManager.set(ALLOWLIST, new NBTTagCompound());
+		dataManager.set(HAS_SPEED_MODULE, false);
 		dataManager.set(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.set(HEAD_ROTATION, 0.0F);
 	}
@@ -86,8 +88,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	{
 		super.entityInit();
 		dataManager.register(OWNER, new Owner());
-		dataManager.register(MODULE, new NBTTagCompound());
+		dataManager.register(DISGUISE_MODULE, new NBTTagCompound());
 		dataManager.register(ALLOWLIST, new NBTTagCompound());
+		dataManager.register(HAS_SPEED_MODULE, false);
 		dataManager.register(MODE, EnumSentryMode.CAMOUFLAGE_HP.ordinal());
 		dataManager.register(HEAD_ROTATION, 0.0F);
 	}
@@ -95,7 +98,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	@Override
 	protected void initEntityAI()
 	{
-		tasks.addTask(1, new EntityAIAttackRangedIfEnabled(this, 5, 10.0F));
+		tasks.addTask(1, new EntityAIAttackRangedIfEnabled(this, this::getShootingSpeed, 10.0F));
 		targetTasks.addTask(1, new EntityAITargetNearestPlayerOrMob(this));
 	}
 
@@ -206,6 +209,16 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				if(!player.isCreative())
 					player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
+			else if(item == SCContent.speedModule)
+			{
+				if(!hasSpeedModule())
+				{
+					setHasSpeedModule(true);
+
+					if(!player.isCreative())
+						player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
+				}
+			}
 			else if(item == SCContent.universalBlockModifier)
 			{
 				if (!getDisguiseModule().isEmpty())
@@ -221,7 +234,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 				Block.spawnAsEntity(world, pos, getDisguiseModule());
 				Block.spawnAsEntity(world, pos, getAllowlistModule());
-				dataManager.set(MODULE, new NBTTagCompound());
+
+				if(hasSpeedModule())
+					Block.spawnAsEntity(world, pos, new ItemStack(SCContent.speedModule));
+
+				dataManager.set(DISGUISE_MODULE, new NBTTagCompound());
 				dataManager.set(ALLOWLIST, new NBTTagCompound());
 			}
 			else if(item == SCContent.remoteAccessSentry) //bind/unbind sentry to remote control
@@ -274,6 +291,10 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, pos, getAllowlistModule()); //if there is none, nothing will drop
+
+		if(hasSpeedModule())
+			Block.spawnAsEntity(world, pos, new ItemStack(SCContent.speedModule));
+
 		setDead();
 	}
 
@@ -361,6 +382,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		tag.setTag("TileEntityData", getOwnerTag());
 		tag.setTag("InstalledModule", getDisguiseModule().writeToNBT(new NBTTagCompound()));
 		tag.setTag("InstalledWhitelist", getAllowlistModule().writeToNBT(new NBTTagCompound()));
+		tag.setBoolean("HasSpeedModule", hasSpeedModule());
 		tag.setInteger("SentryMode", dataManager.get(MODE));
 		tag.setFloat("HeadRotation", dataManager.get(HEAD_ROTATION));
 		super.writeEntityToNBT(tag);
@@ -384,8 +406,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		String uuid = teTag.getString("ownerUUID");
 
 		dataManager.set(OWNER, new Owner(name, uuid));
-		dataManager.set(MODULE, tag.getCompoundTag("InstalledModule"));
+		dataManager.set(DISGUISE_MODULE, tag.getCompoundTag("InstalledModule"));
 		dataManager.set(ALLOWLIST, tag.getCompoundTag("InstalledWhitelist"));
+		dataManager.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
 		dataManager.set(MODE, tag.getInteger("SentryMode"));
 		dataManager.set(HEAD_ROTATION, tag.getFloat("HeadRotation"));
 		super.readEntityFromNBT(tag);
@@ -416,7 +439,7 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 				world.setBlockState(getPosition(), state.isFullBlock() ? state : Blocks.AIR.getDefaultState());
 		}
 
-		dataManager.set(MODULE, module.writeToNBT(new NBTTagCompound()));
+		dataManager.set(DISGUISE_MODULE, module.writeToNBT(new NBTTagCompound()));
 	}
 
 	/**
@@ -429,11 +452,20 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 	}
 
 	/**
+	 * Sets whether this sentry has a speed module installed
+	 * @param hasSpeedModule true to set that this sentry has a speed module, false otherwise
+	 */
+	public void setHasSpeedModule(boolean hasSpeedModule)
+	{
+		dataManager.set(HAS_SPEED_MODULE, hasSpeedModule);
+	}
+
+	/**
 	 * @return The disguise module that is added to this sentry. ItemStack.EMPTY if none available
 	 */
 	public ItemStack getDisguiseModule()
 	{
-		NBTTagCompound tag = dataManager.get(MODULE);
+		NBTTagCompound tag = dataManager.get(DISGUISE_MODULE);
 
 		if(tag == null || tag.isEmpty())
 			return ItemStack.EMPTY;
@@ -452,6 +484,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 			return ItemStack.EMPTY;
 		else
 			return new ItemStack(tag);
+	}
+
+	public boolean hasSpeedModule()
+	{
+		return dataManager.get(HAS_SPEED_MODULE);
 	}
 
 	/**
@@ -486,6 +523,11 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		}
 
 		return false;
+	}
+
+	public int getShootingSpeed()
+	{
+		return hasSpeedModule() ? 5 : 10;
 	}
 
 	//start: disallow sentry to take damage

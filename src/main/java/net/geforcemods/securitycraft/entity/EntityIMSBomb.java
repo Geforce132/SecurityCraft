@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.MoverType;
@@ -20,6 +21,7 @@ public class EntityIMSBomb extends EntityFireball {
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
+	private boolean isFast;
 
 	public EntityIMSBomb(World world){
 		super(world);
@@ -34,6 +36,7 @@ public class EntityIMSBomb extends EntityFireball {
 		Owner owner = te.getOwner();
 
 		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
+		isFast = te.hasModule(EnumModuleType.SPEED);
 	}
 
 	@Override
@@ -45,11 +48,14 @@ public class EntityIMSBomb extends EntityFireball {
 		else
 		{
 			if(ticksFlying == 0)
-				motionY = 0.35F;
+				motionY = isFast ? 0.66F : 0.33F;
 
 			//move up before homing onto target
-			if(ticksFlying++ < launchTime)
+			if(ticksFlying < launchTime)
+			{
+				ticksFlying += isFast ? 2 : 1;
 				move(MoverType.SELF, motionX, motionY, motionZ);
+			}
 			else
 			{
 				motionX = motionY = motionZ = 0.0F;
@@ -73,6 +79,7 @@ public class EntityIMSBomb extends EntityFireball {
 		tag.setInteger("launchTime", launchTime);
 		tag.setInteger("ticksFlying", ticksFlying);
 		tag.setBoolean("launching", launching);
+		tag.setBoolean("isFast", isFast);
 		return tag;
 	}
 
@@ -83,6 +90,7 @@ public class EntityIMSBomb extends EntityFireball {
 		launchTime = tag.getInteger("launchTime");
 		ticksFlying = tag.getInteger("ticksFlying");
 		launching = tag.getBoolean("launching");
+		isFast = tag.getBoolean("isFast");
 	}
 
 	/**
@@ -100,10 +108,9 @@ public class EntityIMSBomb extends EntityFireball {
 		dataManager.register(OWNER, new Owner());
 	}
 
-
 	@Override
 	protected float getMotionFactor(){
-		return 1F;
+		return isFast ? 1.5F : 1.0F;
 	}
 
 	@Override

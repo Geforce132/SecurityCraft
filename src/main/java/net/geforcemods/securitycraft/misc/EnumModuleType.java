@@ -21,7 +21,8 @@ public enum EnumModuleType {
 	HARMING(SCContent.harmingModule, "harming_module"),
 	SMART(SCContent.smartModule, "smart_module"),
 	STORAGE(SCContent.storageModule, "storage_module"),
-	DISGUISE(SCContent.disguiseModule, "disguise_module");
+	DISGUISE(SCContent.disguiseModule, "disguise_module"),
+	SPEED(SCContent.speedModule, "speed_module");
 
 	private ItemModule module;
 	private String registryPath;

@@ -33,7 +33,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 
 	@Override
 	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
+		boolean canAttack = (getAttackCooldown() == getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
 
 		if(canAttack && !BlockUtils.getBlockProperty(world, pos, BlockProtecto.ACTIVATED))
 			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, true);
@@ -55,8 +55,14 @@ public class TileEntityProtecto extends CustomizableSCTE {
 	}
 
 	@Override
+	public int getTicksBetweenAttacks()
+	{
+		return hasModule(EnumModuleType.SPEED) ? 100 : 200;
+	}
+
+	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.SPEED};
 	}
 
 	@Override

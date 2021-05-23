@@ -29,6 +29,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
 	private EnumIMSTargetingMode targetingMode = EnumIMSTargetingMode.PLAYERS_AND_MOBS;
 	private boolean updateBombCount = false;
+	private int attackTime = getAttackInterval();
 
 	@Override
 	public void update(){
@@ -39,8 +40,11 @@ public class TileEntityIMS extends CustomizableSCTE {
 			updateBombCount = false;
 		}
 
-		if(world.getTotalWorldTime() % 80L == 0L)
+		if(attackTime-- == 0)
+		{
+			attackTime = getAttackInterval();
 			launchMine();
+		}
 	}
 
 	/**
@@ -148,12 +152,17 @@ public class TileEntityIMS extends CustomizableSCTE {
 
 	@Override
 	public EnumModuleType[] acceptedModules() {
-		return new EnumModuleType[]{EnumModuleType.ALLOWLIST};
+		return new EnumModuleType[]{EnumModuleType.ALLOWLIST, EnumModuleType.SPEED};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[]{range};
+	}
+
+	public int getAttackInterval()
+	{
+		return hasModule(EnumModuleType.SPEED) ? 40 : 80;
 	}
 
 	public static enum EnumIMSTargetingMode {

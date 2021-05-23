@@ -195,4 +195,5 @@ public class SCContent
 	public static ItemModule smartModule;
 	public static ItemModule storageModule;
 	public static ItemModule allowlistModule;
+	public static ItemModule speedModule;
 }
