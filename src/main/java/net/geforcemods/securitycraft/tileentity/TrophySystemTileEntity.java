@@ -37,16 +37,13 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	/* The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
 
-	/* Number of ticks that the trophy takes to "charge" */
-	public static final int COOLDOWN_TIME = 8;
-
 	/* The number of blocks away from the trophy system you can be for
 	 * the laser beam between itself and the projectile to be rendered */
 	public static final int RENDER_DISTANCE = 50;
 
 	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	public ProjectileEntity entityBeingTargeted = null;
-	public int cooldown = COOLDOWN_TIME;
+	public int cooldown = getCooldownTime();
 	private final Random random = new Random();
 
 	public TrophySystemTileEntity()
@@ -167,7 +164,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 * Resets the cooldown and targeted entity variables
 	 */
 	private void resetTarget() {
-		cooldown = COOLDOWN_TIME;
+		cooldown = getCooldownTime();
 		entityBeingTargeted = null;
 	}
 
@@ -258,11 +255,19 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART};
+		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED};
 	}
 
 	@Override
 	public Option<?>[] customOptions() {
 		return null;
+	}
+
+	/*
+	 * @return The number of ticks that the trophy takes to "charge"
+	 */
+	public int getCooldownTime()
+	{
+		return hasModule(ModuleType.SPEED) ? 4 : 8;
 	}
 }

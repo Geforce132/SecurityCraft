@@ -120,6 +120,7 @@ import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.renderers.ItemKeypadChestRenderer;
 import net.geforcemods.securitycraft.tileentity.AlarmTileEntity;
+import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.tileentity.BlockPocketManagerTileEntity;
 import net.geforcemods.securitycraft.tileentity.BlockPocketTileEntity;
 import net.geforcemods.securitycraft.tileentity.CageTrapTileEntity;
@@ -146,7 +147,6 @@ import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrackMineTileEntity;
 import net.geforcemods.securitycraft.tileentity.TrophySystemTileEntity;
 import net.geforcemods.securitycraft.tileentity.UsernameLoggerTileEntity;
-import net.geforcemods.securitycraft.tileentity.AllowlistOnlyTileEntity;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableTE;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
@@ -674,6 +674,7 @@ public class SCContent
 	@HasManualPage public static final RegistryObject<ModuleItem> SMART_MODULE = ITEMS.register("smart_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.SMART, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.STORAGE, false));
 	@HasManualPage public static final RegistryObject<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.ALLOWLIST, true, true));
+	@HasManualPage public static final RegistryObject<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(SecurityCraft.groupSCTechnical).maxStackSize(1), ModuleType.SPEED, false));
 
 	//tile entity types
 	@ObjectHolder(SecurityCraft.MODID + ":ownable")

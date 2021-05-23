@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.IMSTileEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.EntityType;
@@ -25,6 +26,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 	private int ticksFlying = 0;
 	private int launchTime;
 	private boolean launching = true;
+	private boolean isFast;
 
 	public IMSBombEntity(EntityType<IMSBombEntity> type, World world){
 		super(SCContent.eTypeImsBomb, world);
@@ -37,6 +39,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		Owner owner = te.getOwner();
 
 		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
+		isFast = te.hasModule(ModuleType.SPEED);
 	}
 
 	@Override
@@ -46,11 +49,14 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		else
 		{
 			if(ticksFlying == 0)
-				setMotion(getMotion().x, 0.33F, getMotion().z);
+				setMotion(getMotion().x, isFast ? 0.66F : 0.33F, getMotion().z);
 
 			//move up before homing onto target
-			if(ticksFlying++ < launchTime)
+			if(ticksFlying < launchTime)
+			{
+				ticksFlying += isFast ? 2 : 1;
 				move(MoverType.SELF, getMotion());
+			}
 			else
 			{
 				setMotion(0.0D, 0.0D, 0.0D);
@@ -76,6 +82,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		tag.putInt("launchTime", launchTime);
 		tag.putInt("ticksFlying", ticksFlying);
 		tag.putBoolean("launching", launching);
+		tag.putBoolean("isFast", isFast);
 	}
 
 	@Override
@@ -85,6 +92,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 		launchTime = tag.getInt("launchTime");
 		ticksFlying = tag.getInt("ticksFlying");
 		launching = tag.getBoolean("launching");
+		isFast = tag.getBoolean("isFast");
 	}
 
 	/**
@@ -104,7 +112,7 @@ public class IMSBombEntity extends AbstractFireballEntity {
 
 	@Override
 	protected float getMotionFactor(){
-		return 1F;
+		return isFast ? 1.5F : 1.0F;
 	}
 
 	@Override

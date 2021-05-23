@@ -20,7 +20,8 @@ public enum ModuleType {
 	HARMING(SCContent.HARMING_MODULE),
 	SMART(SCContent.SMART_MODULE),
 	STORAGE(SCContent.STORAGE_MODULE),
-	DISGUISE(SCContent.DISGUISE_MODULE);
+	DISGUISE(SCContent.DISGUISE_MODULE),
+	SPEED(SCContent.SPEED_MODULE);
 
 	private Supplier<ModuleItem> module;
 

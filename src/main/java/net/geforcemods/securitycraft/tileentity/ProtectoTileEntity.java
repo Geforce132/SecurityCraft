@@ -38,7 +38,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() == 200 && world.canBlockSeeSky(pos) && world.isRaining());
+		boolean canAttack = (getAttackCooldown() >= getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
 
 		if(canAttack && !getBlockState().get(ProtectoBlock.ACTIVATED))
 			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
@@ -60,8 +60,14 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
+	public int getTicksBetweenAttacks()
+	{
+		return hasModule(ModuleType.SPEED) ? 100 : 200;
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.ALLOWLIST};
+		return new ModuleType[]{ModuleType.ALLOWLIST, ModuleType.SPEED};
 	}
 
 	@Override

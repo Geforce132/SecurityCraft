@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.ai;
 
 import java.util.EnumSet;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.entity.SentryEntity.SentryMode;
@@ -14,16 +15,14 @@ public class AttackRangedIfEnabledGoal extends Goal
 	private SentryEntity sentry;
 	private LivingEntity attackTarget;
 	private int rangedAttackTime;
-	private final int attackIntervalMin;
-	private final int maxRangedAttackTime;
+	private final Supplier<Integer> maxAttackTime;
 	private final float attackRadius;
 
-	public AttackRangedIfEnabledGoal(IRangedAttackMob attacker, int maxAttackTime, float maxAttackDistance)
+	public AttackRangedIfEnabledGoal(IRangedAttackMob attacker, Supplier<Integer> maxAttackTime, float maxAttackDistance)
 	{
 		sentry = (SentryEntity)attacker;
 		rangedAttackTime = -1;
-		attackIntervalMin = maxAttackTime;
-		maxRangedAttackTime = maxAttackTime;
+		this.maxAttackTime = maxAttackTime;
 		attackRadius = maxAttackDistance;
 		setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
@@ -65,9 +64,9 @@ public class AttackRangedIfEnabledGoal extends Goal
 			float distanceFactor = MathHelper.clamp(f, 0.1F, 1.0F);
 
 			sentry.attackEntityWithRangedAttack(attackTarget, distanceFactor);
-			rangedAttackTime = MathHelper.floor(f * (maxRangedAttackTime - attackIntervalMin) + attackIntervalMin);
+			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
 		}
 		else if(rangedAttackTime < 0)
-			rangedAttackTime = MathHelper.floor((MathHelper.sqrt(targetDistance) / attackRadius) * (maxRangedAttackTime - attackIntervalMin) + attackIntervalMin);
+			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
 	}
 }
