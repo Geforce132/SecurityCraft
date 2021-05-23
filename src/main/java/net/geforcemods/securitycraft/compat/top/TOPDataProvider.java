@@ -125,7 +125,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 					probeInfo.text(TextFormatting.GRAY + (Utils.localize("waila.securitycraft:owner").getFormattedText() + " " + ((SentryEntity) entity).getOwner().getName()));
 
-					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty())
+					if(!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())
 					{
 						probeInfo.text(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
@@ -134,6 +134,9 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 
 						if(!sentry.getDisguiseModule().isEmpty())
 							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey()).getFormattedText());
+
+						if(sentry.hasSpeedModule())
+							probeInfo.text(TextFormatting.GRAY + "- " + new TranslationTextComponent(ModuleType.SPEED.getTranslationKey()).getFormattedText());
 					}
 
 					String modeDescription = Utils.localize(mode.getModeKey()).getFormattedText();
