@@ -4,12 +4,14 @@ import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.EnumLinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.items.ItemModule;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -104,7 +106,9 @@ public class ContainerCustomizeBlock extends Container{
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+		TileEntity te = moduleInv.getTileEntity();
+
+		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, te.getBlockType());
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler

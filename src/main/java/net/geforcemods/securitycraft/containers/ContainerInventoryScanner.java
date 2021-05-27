@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,11 +15,11 @@ import net.minecraft.item.ItemStack;
 public class ContainerInventoryScanner extends Container {
 
 	private final int numRows;
-	private final TileEntityInventoryScanner inventoryScannerTE;
+	private final TileEntityInventoryScanner te;
 
 	public ContainerInventoryScanner(InventoryPlayer inventory, TileEntityInventoryScanner te){
 		numRows = te.getSizeInventory() / 9;
-		inventoryScannerTE = te;
+		this.te = te;
 
 		//prohibited items
 		for(int i = 0; i < 10; i++)
@@ -78,12 +80,12 @@ public class ContainerInventoryScanner extends Container {
 	{
 		super.onContainerClosed(player);
 
-		Utils.setISinTEAppropriately(player.world, inventoryScannerTE.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(inventoryScannerTE.getPos())).getContents());
+		Utils.setISinTEAppropriately(player.world, te.getPos(), ((TileEntityInventoryScanner) player.world.getTileEntity(te.getPos())).getContents());
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, SCContent.inventoryScanner);
 	}
 
 	@Override
@@ -91,12 +93,12 @@ public class ContainerInventoryScanner extends Container {
 	{
 		if(slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof SlotOwnerRestricted && ((SlotOwnerRestricted)getSlot(slotId)).isGhostSlot())
 		{
-			if(inventoryScannerTE.getOwner().isOwner(player))
+			if(te.getOwner().isOwner(player))
 			{
 				ItemStack pickedUpStack = player.inventory.getItemStack().copy();
 
 				pickedUpStack.setCount(1);
-				inventoryScannerTE.getContents().set(slotId, pickedUpStack);
+				te.getContents().set(slotId, pickedUpStack);
 			}
 
 			return ItemStack.EMPTY;

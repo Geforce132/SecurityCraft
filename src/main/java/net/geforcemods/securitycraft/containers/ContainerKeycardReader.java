@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.containers;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.ItemKeycard;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -129,6 +130,6 @@ public class ContainerKeycardReader extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer player)
 	{
-		return true;
+		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, SCContent.keycardReader);
 	}
 }

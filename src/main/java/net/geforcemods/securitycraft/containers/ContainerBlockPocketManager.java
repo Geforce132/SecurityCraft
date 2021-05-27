@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocketManager;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,11 +14,13 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBlockPocketManager extends Container
 {
+	private final TileEntityBlockPocketManager te;
 	public final boolean storage;
 	public final boolean isOwner;
 
 	public ContainerBlockPocketManager(InventoryPlayer inventory, TileEntityBlockPocketManager te)
 	{
+		this.te = te;
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(EnumModuleType.STORAGE) && isOwner;
 
@@ -83,6 +87,6 @@ public class ContainerBlockPocketManager extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer player)
 	{
-		return true;
+		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, SCContent.blockPocketManager);
 	}
 }

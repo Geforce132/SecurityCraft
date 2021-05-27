@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.containers;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,9 +13,12 @@ import net.minecraft.item.ItemStack;
 public class ContainerProjector extends Container {
 
 	public static final int SIZE = 1;
+	private final TileEntityProjector te;
 
 	public ContainerProjector(InventoryPlayer inventory, TileEntityProjector te)
 	{
+		this.te = te;
+
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; ++x)
 				addSlotToContainer(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 59));
@@ -66,8 +71,8 @@ public class ContainerProjector extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn)
+	public boolean canInteractWith(EntityPlayer player)
 	{
-		return true;
+		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, SCContent.projector);
 	}
 }
