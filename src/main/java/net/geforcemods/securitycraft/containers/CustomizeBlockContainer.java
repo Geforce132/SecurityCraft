@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -19,11 +20,13 @@ import net.minecraftforge.items.SlotItemHandler;
 public class CustomizeBlockContainer extends Container{
 
 	public IModuleInventory moduleInv;
+	private IWorldPosCallable worldPosCallable;
 	private final int maxSlots;
 
 	public CustomizeBlockContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.cTypeCustomizeBlock, windowId);
 		this.moduleInv = (IModuleInventory)world.getTileEntity(pos);
+		worldPosCallable = IWorldPosCallable.of(world, pos);
 
 		int slotId = 0;
 
@@ -108,7 +111,7 @@ public class CustomizeBlockContainer extends Container{
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return true;
+		return isWithinUsableDistance(worldPosCallable, player, moduleInv.getTileEntity().getBlockState().getBlock());
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler
