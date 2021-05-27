@@ -10,6 +10,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -17,11 +18,13 @@ public class InventoryScannerContainer extends Container {
 
 	private final int numRows;
 	public final InventoryScannerTileEntity te;
+	private IWorldPosCallable worldPosCallable;
 
 	public InventoryScannerContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory){
 		super(SCContent.cTypeInventoryScanner, windowId);
 		te = (InventoryScannerTileEntity)world.getTileEntity(pos);
 		numRows = te.getSizeInventory() / 9;
+		worldPosCallable = IWorldPosCallable.of(world, pos);
 
 		//prohibited items
 		for(int i = 0; i < 10; i++)
@@ -87,7 +90,7 @@ public class InventoryScannerContainer extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return true;
+		return isWithinUsableDistance(worldPosCallable, player, SCContent.INVENTORY_SCANNER.get());
 	}
 
 	@Override

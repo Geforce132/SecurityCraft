@@ -11,6 +11,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,6 +20,7 @@ public class KeycardReaderContainer extends Container
 	private final Inventory itemInventory = new Inventory(1);
 	public final Slot keycardSlot;
 	public KeycardReaderTileEntity te;
+	private IWorldPosCallable worldPosCallable;
 
 	public KeycardReaderContainer(int windowId, PlayerInventory inventory, World world, BlockPos pos)
 	{
@@ -28,6 +30,8 @@ public class KeycardReaderContainer extends Container
 
 		if(tile instanceof KeycardReaderTileEntity)
 			te = (KeycardReaderTileEntity)tile;
+
+		worldPosCallable = IWorldPosCallable.of(world, pos);
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -127,8 +131,8 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn)
+	public boolean canInteractWith(PlayerEntity player)
 	{
-		return true;
+		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYCARD_READER.get());
 	}
 }
