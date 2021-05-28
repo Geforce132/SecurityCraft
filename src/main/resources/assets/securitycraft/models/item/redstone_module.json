@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:item/redstone_module"
+        "layer0": "securitycraft:item/module_background",
+        "layer1": "minecraft:item/redstone"
     }
 }
