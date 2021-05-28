@@ -10,7 +10,6 @@ import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +35,7 @@ public class ItemBriefcase extends Item {
 		IBlockState state = world.getBlockState(pos);
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(state.getBlock() == Blocks.CAULDRON)
+		if(state.getBlock() instanceof BlockCauldron)
 		{
 			int level = state.getValue(BlockCauldron.LEVEL);
 
