@@ -48,6 +48,7 @@
 - Fix: Rejoining a server/world while being mounted to a camera teleports the player to that camera
 - Fix: The fourth I.M.S. Bomb doesn't get shot properly
 - Fix: The SecurityCraft Manual does not properly reflect recipes that have been disabled via datapacks/3rd-party mods
+- Fix: Rightclicking a block while attempting to change a Briefcase's owner does not change the owner
 - Removed: Ability to take screenshots via middle mouse click while being mounted to a camera, as it is unneeded due to Minecraft's own screenshot feature
 - Removed: All configuration values that disable recipes. Use datapacks or 3rd-party mods to disable recipes instead
 - Misc.: All of SecurityCraft's blocks now have loot tables
