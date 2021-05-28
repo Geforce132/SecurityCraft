@@ -52,6 +52,10 @@ public class ItemUniversalOwnerChanger extends Item
 		TileEntity te = world.getTileEntity(pos);
 		String newOwner = stack.getDisplayName();
 
+		//prioritize handling the briefcase
+		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase)
+			return handleBriefcase(player, stack).getType();
+
 		if(!(te instanceof IOwnable))
 		{
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.cantChange"), TextFormatting.RED);
@@ -140,26 +144,30 @@ public class ItemUniversalOwnerChanger extends Item
 			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
 		}
 
-		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
-			ItemStack briefcase = player.getHeldItemOffhand();
-
-			if (ItemBriefcase.isOwnedBy(briefcase, player)) {
-				String newOwner = ownerChanger.getDisplayName();
-
-				if (!briefcase.hasTagCompound())
-					briefcase.setTagCompound(new NBTTagCompound());
-
-				briefcase.getTagCompound().setString("owner", newOwner);
-				briefcase.getTagCompound().setString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
-				return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
-			}
-			else
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
-
-			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
-		}
+		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase)
+			return handleBriefcase(player, ownerChanger);
 
 		return ActionResult.newResult(EnumActionResult.PASS, ownerChanger);
+	}
+
+	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, ItemStack ownerChanger)
+	{
+		ItemStack briefcase = player.getHeldItemOffhand();
+
+		if (ItemBriefcase.isOwnedBy(briefcase, player)) {
+			String newOwner = ownerChanger.getDisplayName();
+
+			if (!briefcase.hasTagCompound())
+				briefcase.setTagCompound(new NBTTagCompound());
+
+			briefcase.getTagCompound().setString("owner", newOwner);
+			briefcase.getTagCompound().setString("ownerUUID", PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID");
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), TextFormatting.GREEN);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
+		}
+		else
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalOwnerChanger.getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), TextFormatting.RED);
+
+		return ActionResult.newResult(EnumActionResult.SUCCESS, ownerChanger);
 	}
 }
