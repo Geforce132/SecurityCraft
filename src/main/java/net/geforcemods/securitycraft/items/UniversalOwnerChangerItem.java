@@ -47,13 +47,13 @@ public class UniversalOwnerChangerItem extends Item
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction side, Hand hand)
 	{
-		Block block = world.getBlockState(pos).getBlock();
-		TileEntity te = world.getTileEntity(pos);
-		String newOwner = stack.getDisplayName().getString();
-
 		//prioritize handling the briefcase
 		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, stack).getType();
+
+		Block block = world.getBlockState(pos).getBlock();
+		TileEntity te = world.getTileEntity(pos);
+		String newOwner = stack.getDisplayName().getString();
 
 		if(!(te instanceof IOwnable))
 		{
@@ -91,32 +91,20 @@ public class UniversalOwnerChangerItem extends Item
 			}
 		}
 
-		boolean door = false;
-		boolean updateTop = true;
-
-		if(BlockUtils.getBlock(world, pos) instanceof ReinforcedDoorBlock || BlockUtils.getBlock(world, pos) instanceof SpecialDoorBlock)
+		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
 		{
-			door = true;
-			((IOwnable)world.getTileEntity(pos)).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-			if(BlockUtils.getBlock(world, pos.up()) instanceof ReinforcedDoorBlock || BlockUtils.getBlock(world, pos.up()) instanceof SpecialDoorBlock)
-				((IOwnable)world.getTileEntity(pos.up())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-			else if(BlockUtils.getBlock(world, pos.down()) instanceof ReinforcedDoorBlock || BlockUtils.getBlock(world, pos.down()) instanceof SpecialDoorBlock)
-			{
-				((IOwnable)world.getTileEntity(pos.down())).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-				updateTop = false;
-			}
+			//check if the above block is a door, and if not (tryUpdateBlock returned false), try the same thing with the block below
+			if(!tryUpdateBlock(world, pos.up(), newOwner))
+				tryUpdateBlock(world, pos.down(), newOwner);
 		}
 
 		if(te instanceof IOwnable)
 			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
-		if (!world.isRemote) {
+		if (!world.isRemote)
 			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
-
-			if (door)
-				world.getServer().getPlayerList().sendPacketToAllPlayers(((OwnableTileEntity)world.getTileEntity(updateTop ? pos.up() : pos.down())).getUpdatePacket());
-		}
 
 		//disable this in a development environment
 		if(FMLLoader.isProduction() && te instanceof IModuleInventory)
@@ -148,6 +136,22 @@ public class UniversalOwnerChangerItem extends Item
 			return handleBriefcase(player, ownerChanger);
 
 		return ActionResult.resultPass(ownerChanger);
+	}
+
+	private boolean tryUpdateBlock(World world, BlockPos pos, String newOwner)
+	{
+		Block block = BlockUtils.getBlock(world, pos);
+
+		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
+		{
+			OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(pos);
+
+			te.getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+			return true;
+		}
+
+		return false;
 	}
 
 	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, ItemStack ownerChanger)
