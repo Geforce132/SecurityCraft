@@ -1,6 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "securitycraft:items/speed_module"
+        "layer0": "securitycraft:items/module_background",
+        "layer1": "minecraft:items/sugar"
     }
 }
