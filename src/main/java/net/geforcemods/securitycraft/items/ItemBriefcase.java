@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
+import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedCauldron;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockCauldron;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -37,15 +39,24 @@ public class ItemBriefcase extends Item {
 
 		if(state.getBlock() instanceof BlockCauldron)
 		{
+			TileEntity te = world.getTileEntity(pos);
+
+			if (te instanceof TileEntityReinforcedCauldron && !((TileEntityReinforcedCauldron)te).isAllowedToInteract(player))
+			{
+				return EnumActionResult.FAIL;
+			}
+
 			int level = state.getValue(BlockCauldron.LEVEL);
 
 			if(level > 0 && hasColor(stack))
 			{
 				removeColor(stack);
 				((BlockCauldron)state.getBlock()).setWaterLevel(world, pos, state, level - 1);
+
+				return EnumActionResult.SUCCESS;
 			}
 
-			return EnumActionResult.SUCCESS;
+			return EnumActionResult.FAIL;
 		}
 
 		handle(stack, world, player, hand);
