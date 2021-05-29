@@ -313,8 +313,8 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 		if(previousOwner != null && world.getTileEntity(pos) instanceof OwnableTileEntity && world.getTileEntity(pos.up()) instanceof OwnableTileEntity)
 		{
-			((OwnableTileEntity)world.getTileEntity(pos)).getOwner().set(previousOwner);
-			((OwnableTileEntity)world.getTileEntity(pos.up())).getOwner().set(previousOwner);
+			((OwnableTileEntity)world.getTileEntity(pos)).setOwner(previousOwner.getUUID(), previousOwner.getName());
+			((OwnableTileEntity)world.getTileEntity(pos.up())).setOwner(previousOwner.getUUID(), previousOwner.getName());
 		}
 	}
 

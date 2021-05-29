@@ -238,7 +238,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 			furnace.clear();
 			world.setBlockState(pos, SCContent.KEYPAD_FURNACE.get().getDefaultState().with(FACING, facing).with(OPEN, false).with(LIT, lit));
 			((KeypadFurnaceTileEntity)world.getTileEntity(pos)).read(tag);
-			((IOwnable) world.getTileEntity(pos)).getOwner().set(player.getUniqueID().toString(), player.getName().getFormattedText());
+			((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getFormattedText());
 			return true;
 		}
 	}
