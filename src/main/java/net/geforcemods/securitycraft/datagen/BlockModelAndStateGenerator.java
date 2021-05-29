@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.RedstoneOreMineBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
@@ -69,6 +70,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 						reinforcedStairsBlock(block);
 					else if(block instanceof ReinforcedWallBlock)
 						reinforcedWallBlock(block);
+					else if(block instanceof ReinforcedCarpetBlock)
+						reinforcedCarpetBlock(block);
 				}
 				else if(field.isAnnotationPresent(RegisterItemBlock.class) && field.getAnnotation(RegisterItemBlock.class).value() == SCItemGroup.EXPLOSIVES)
 				{
@@ -168,6 +171,43 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(new UncheckedModelFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/" + vanillaBlock.getRegistryName().getPath())))});
 	}
 
+	public void reinforcedCarpetBlock(Block block)
+	{
+		String name = name(block);
+		ModelFile model = models().reinforcedCarpet(name, mcLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("reinforced_", "").replace("carpet", "wool")));
+
+		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[]{new ConfiguredModel(model)});
+	}
+
+	public void reinforcedPaneBlock(ReinforcedPaneBlock block)
+	{
+		String name = name(block);
+
+		reinforcedPaneBlock(block, block.getRegistryName().toString(), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
+	}
+
+	public void reinforcedPaneBlock(ReinforcedPaneBlock block, String name, ResourceLocation pane, ResourceLocation edge)
+	{
+		ModelFile post = models().panePost(name + "_post", pane, edge);
+		ModelFile side = models().paneSide(name + "_side", pane, edge);
+		ModelFile sideAlt = models().paneSideAlt(name + "_side_alt", pane, edge);
+		ModelFile noSide = models().paneNoSide(name + "_noside", pane);
+		ModelFile noSideAlt = models().paneNoSideAlt(name + "_noside_alt", pane);
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block).part().modelFile(post).addModel().end();
+
+		SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().forEach(e -> {
+			Direction dir = e.getKey();
+
+			if(dir.getAxis().isHorizontal())
+			{
+				builder.part().modelFile(dir == Direction.SOUTH || dir == Direction.WEST ? sideAlt : side).rotationY(dir.getAxis() == Axis.X ? 90 : 0).addModel()
+				.condition(e.getValue(), true).end()
+				.part().modelFile(dir == Direction.SOUTH || dir == Direction.EAST ? noSideAlt : noSide).rotationY(dir == Direction.WEST ? 270 : dir == Direction.SOUTH ? 90 : 0).addModel()
+				.condition(e.getValue(), false);
+			}
+		});
+	}
+
 	public void reinforcedSlabBlock(Block block)
 	{
 		String name = name(block).replace("_slab", "");
@@ -257,35 +297,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 					.uvLock(yRot != 0 || half == Half.TOP)
 					.build();
 		}, StairsBlock.WATERLOGGED);
-	}
-
-	public void reinforcedPaneBlock(ReinforcedPaneBlock block)
-	{
-		String name = name(block);
-
-		reinforcedPaneBlock(block, block.getRegistryName().toString(), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
-	}
-
-	public void reinforcedPaneBlock(ReinforcedPaneBlock block, String name, ResourceLocation pane, ResourceLocation edge)
-	{
-		ModelFile post = models().panePost(name + "_post", pane, edge);
-		ModelFile side = models().paneSide(name + "_side", pane, edge);
-		ModelFile sideAlt = models().paneSideAlt(name + "_side_alt", pane, edge);
-		ModelFile noSide = models().paneNoSide(name + "_noside", pane);
-		ModelFile noSideAlt = models().paneNoSideAlt(name + "_noside_alt", pane);
-		MultiPartBlockStateBuilder builder = getMultipartBuilder(block).part().modelFile(post).addModel().end();
-
-		SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().forEach(e -> {
-			Direction dir = e.getKey();
-
-			if(dir.getAxis().isHorizontal())
-			{
-				builder.part().modelFile(dir == Direction.SOUTH || dir == Direction.WEST ? sideAlt : side).rotationY(dir.getAxis() == Axis.X ? 90 : 0).addModel()
-				.condition(e.getValue(), true).end()
-				.part().modelFile(dir == Direction.SOUTH || dir == Direction.EAST ? noSideAlt : noSide).rotationY(dir == Direction.WEST ? 270 : dir == Direction.SOUTH ? 90 : 0).addModel()
-				.condition(e.getValue(), false);
-			}
-		});
 	}
 
 	public void reinforcedWallBlock(Block block)
