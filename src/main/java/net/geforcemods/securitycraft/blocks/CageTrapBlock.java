@@ -119,7 +119,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					TileEntity te = w.getTileEntity(p);
 
 					if(te instanceof IOwnable)
-						((IOwnable)te).getOwner().set(o);
+						((IOwnable)te).setOwner(o.getUUID(), o.getName());
 
 					if(te instanceof ReinforcedIronBarsTileEntity)
 						((ReinforcedIronBarsTileEntity)te).setCanDrop(false);

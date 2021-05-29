@@ -60,8 +60,8 @@ public class ReinforcedDoorItem extends Item
 
 			if(world.getTileEntity(pos) != null)
 			{
-				((OwnableTileEntity) world.getTileEntity(pos)).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-				((OwnableTileEntity) world.getTileEntity(pos.up())).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				((OwnableTileEntity) world.getTileEntity(pos)).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((OwnableTileEntity) world.getTileEntity(pos.up())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
 			return ActionResultType.SUCCESS;

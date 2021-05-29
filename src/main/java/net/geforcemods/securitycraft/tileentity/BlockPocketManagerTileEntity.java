@@ -138,7 +138,7 @@ public class BlockPocketManagerTileEntity extends CustomizableTileEntity impleme
 
 					//assigning the owner
 					if(te instanceof OwnableTileEntity)
-						((OwnableTileEntity)te).getOwner().set(getOwner());
+						((OwnableTileEntity)te).setOwner(getOwner().getUUID(), getOwner().getName());
 
 					continue;
 				}

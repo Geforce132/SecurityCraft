@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.api;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.IDataSerializer;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -68,22 +67,6 @@ public class Owner {
 	public void set(String uuid, String name) {
 		playerName = name;
 		playerUUID = uuid;
-	}
-
-	/**
-	 * Set the UUID and name of a new owner using strings.
-	 */
-	public void set(String uuid, ITextComponent name) {
-		playerName = name.getString();
-		playerUUID = uuid;
-	}
-
-	/**
-	 * Set the UUID and name of a new owner using another Owner object.
-	 */
-	public void set(Owner newOwner) {
-		playerName = newOwner.getName();
-		playerUUID = newOwner.getUUID();
 	}
 
 	/**
