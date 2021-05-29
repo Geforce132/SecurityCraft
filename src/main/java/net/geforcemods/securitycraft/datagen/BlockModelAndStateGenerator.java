@@ -188,6 +188,13 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		});
 	}
 
+	public void reinforcedPaneBlock(PaneBlock block)
+	{
+		String name = name(block);
+
+		paneBlock(block, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
+	}
+
 	public void reinforcedSlabBlock(Block block)
 	{
 		String name = name(block).replace("_slab", "");
@@ -277,13 +284,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 					.uvLock(yRot != 0 || half == Half.TOP)
 					.build();
 		}, StairsBlock.WATERLOGGED);
-	}
-
-	public void reinforcedPaneBlock(PaneBlock block)
-	{
-		String name = name(block);
-
-		paneBlock(block, modLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("_pane", "")), modLoc(ModelProvider.BLOCK_FOLDER + "/" + name + "_top"));
 	}
 
 	public void reinforcedWallBlock(Block block)

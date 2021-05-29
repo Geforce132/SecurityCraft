@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class SCBlockModelProvider extends BlockModelProvider
@@ -50,17 +49,17 @@ public class SCBlockModelProvider extends BlockModelProvider
 
 	public BlockModelBuilder reinforcedWallPost(String name, ResourceLocation wall)
 	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_post"), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_wall_post"), "wall", wall);
 	}
 
 	public BlockModelBuilder reinforcedWallSide(String name, ResourceLocation wall, boolean tall)
 	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_side" + (tall ? "_tall" : "")), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_wall_side" + (tall ? "_tall" : "")), "wall", wall);
 	}
 
 	public BlockModelBuilder reinforcedWallInventory(String name, ResourceLocation wall)
 	{
-		return uncheckedSingleTexture(name, modLoc(ModelProvider.BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", wall);
 	}
 
 	public BlockModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture)
