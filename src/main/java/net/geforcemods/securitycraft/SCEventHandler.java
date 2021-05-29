@@ -243,7 +243,7 @@ public class SCEventHandler {
 			String name = event.getPlayer().getName().getFormattedText();
 			String uuid = event.getPlayer().getGameProfile().getId().toString();
 
-			((IOwnable)te).getOwner().set(uuid, name);
+			((IOwnable)te).setOwner(uuid, name);
 		}
 	}
 

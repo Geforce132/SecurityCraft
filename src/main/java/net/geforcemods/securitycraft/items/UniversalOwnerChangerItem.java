@@ -93,7 +93,7 @@ public class UniversalOwnerChangerItem extends Item
 
 		if(block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock)
 		{
-			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			//check if the above block is a door, and if not (tryUpdateBlock returned false), try the same thing with the block below
 			if(!tryUpdateBlock(world, pos.up(), newOwner))
@@ -101,7 +101,7 @@ public class UniversalOwnerChangerItem extends Item
 		}
 
 		if(te instanceof IOwnable)
-			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 		if (!world.isRemote)
 			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
@@ -145,7 +145,7 @@ public class UniversalOwnerChangerItem extends Item
 		{
 			OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(pos);
 
-			te.getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 			return true;
 		}

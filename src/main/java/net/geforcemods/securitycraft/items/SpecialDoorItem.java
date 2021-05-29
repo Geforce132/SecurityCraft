@@ -62,8 +62,8 @@ public abstract class SpecialDoorItem extends Item
 				CustomizableTileEntity lowerTe = ((CustomizableTileEntity) world.getTileEntity(pos));
 				CustomizableTileEntity upperTe = ((CustomizableTileEntity) world.getTileEntity(pos.up()));
 
-				lowerTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-				upperTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+				lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				CustomizableTileEntity.link(lowerTe, upperTe);
 			}
 
