@@ -163,7 +163,7 @@ public class BlockAlarm extends BlockOwnable {
 				world.setBlockState(pos, SCContent.alarmLit.getDefaultState());
 				BlockUtils.setFacingProperty(world, pos, FACING, dir);
 				te = (TileEntityAlarm)world.getTileEntity(pos);
-				te.getOwner().set(owner);
+				te.setOwner(owner.getUUID(), owner.getName());
 				te.setPowered(true);
 				te.range.copy(range);
 			}
@@ -178,7 +178,7 @@ public class BlockAlarm extends BlockOwnable {
 				world.setBlockState(pos, SCContent.alarm.getDefaultState());
 				BlockUtils.setFacingProperty(world, pos, FACING, dir);
 				te = (TileEntityAlarm)world.getTileEntity(pos);
-				te.getOwner().set(owner);
+				te.setOwner(owner.getUUID(), owner.getName());
 				te.setPowered(false);
 				te.range.copy(range);
 			}

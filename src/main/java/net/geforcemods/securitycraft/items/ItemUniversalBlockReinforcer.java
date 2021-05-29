@@ -78,7 +78,7 @@ public class ItemUniversalBlockReinforcer extends Item
 						if(tag != null)
 							te.readFromNBT(tag);
 
-						((IOwnable)te).getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+						((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName());
 						stack.damageItem(1, player);
 					}
 

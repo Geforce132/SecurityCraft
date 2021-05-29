@@ -562,7 +562,7 @@ public class BlockKeypadChest extends BlockContainer
 			world.setBlockState(pos, SCContent.keypadChest.getDefaultState().withProperty(FACING, facing));
 			newTe = world.getTileEntity(pos);
 			((TileEntityChest)newTe).readFromNBT(tag);
-			((IOwnable)newTe).getOwner().set(player.getUniqueID().toString(), player.getName());
+			((IOwnable)newTe).setOwner(player.getUniqueID().toString(), player.getName());
 		}
 
 		private EnumFacing getDoubleChestFacing(World world, BlockPos pos)

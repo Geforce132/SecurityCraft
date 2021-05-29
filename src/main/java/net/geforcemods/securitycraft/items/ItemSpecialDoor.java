@@ -53,8 +53,8 @@ public abstract class ItemSpecialDoor extends Item
 					CustomizableSCTE lowerTe = ((CustomizableSCTE) world.getTileEntity(pos));
 					CustomizableSCTE upperTe = ((CustomizableSCTE) world.getTileEntity(pos.up()));
 
-					lowerTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
-					upperTe.getOwner().set(player.getGameProfile().getId().toString(), player.getName());
+					lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
+					upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName());
 					CustomizableSCTE.link(lowerTe, upperTe);
 				}
 

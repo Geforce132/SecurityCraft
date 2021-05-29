@@ -216,7 +216,7 @@ public class BlockKeypad extends BlockDisguisable {
 			Owner oldOwner = ((IOwnable)world.getTileEntity(pos)).getOwner();
 
 			world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(BlockKeypad.FACING, world.getBlockState(pos).getValue(BlockFrame.FACING)).withProperty(BlockKeypad.POWERED, false));
-			((IOwnable) world.getTileEntity(pos)).getOwner().set(oldOwner);
+			((IOwnable) world.getTileEntity(pos)).setOwner(oldOwner.getUUID(), oldOwner.getName());
 			return true;
 		}
 	}

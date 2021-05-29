@@ -129,7 +129,7 @@ public class TileEntityBlockPocketManager extends CustomizableSCTE
 
 					//assigning the owner
 					if(te instanceof TileEntityOwnable)
-						((TileEntityOwnable)te).getOwner().set(getOwner());
+						((TileEntityOwnable)te).setOwner(getOwner().getUUID(), getOwner().getName());
 
 					continue;
 				}

@@ -70,14 +70,6 @@ public class Owner {
 	}
 
 	/**
-	 * Set the UUID and name of a new owner using another Owner object.
-	 */
-	public void set(Owner newOwner) {
-		playerName = newOwner.getName();
-		playerUUID = newOwner.getUUID();
-	}
-
-	/**
 	 * Set the owner's new name.
 	 *
 	 * @param name The new owner's name

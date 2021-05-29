@@ -71,7 +71,7 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 						stack.shrink(1);
 
 						if(owner != null)
-							((IOwnable) world.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+							((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 					}
 
 					return EnumActionResult.SUCCESS;
@@ -115,7 +115,7 @@ public class ItemBlockReinforcedCrystalQuartzSlab extends ItemBlock {
 				stack.shrink(1);
 
 				if(owner != null)
-					((IOwnable) world.getTileEntity(pos)).getOwner().set(owner.getUUID(), owner.getName());
+					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 			}
 
 			return true;

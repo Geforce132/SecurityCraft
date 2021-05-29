@@ -195,7 +195,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 			world.setBlockState(pos, SCContent.keypadFurnace.getDefaultState().withProperty(FACING, facing).withProperty(OPEN, false));
 			newTe = world.getTileEntity(pos);
 			((TileEntityKeypadFurnace)newTe).readFromNBT(tag);
-			((IOwnable)newTe).getOwner().set(player.getUniqueID().toString(), player.getName());
+			((IOwnable)newTe).setOwner(player.getUniqueID().toString(), player.getName());
 			return true;
 		}
 	}

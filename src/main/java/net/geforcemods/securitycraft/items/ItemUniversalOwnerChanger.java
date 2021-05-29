@@ -95,7 +95,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 		if(block instanceof BlockReinforcedDoor || block instanceof BlockSpecialDoor)
 		{
-			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 			//check if the above block is a door, and if not (tryUpdateBlock returned false), try the same thing with the block below
 			if(!tryUpdateBlock(world, pos.up(), newOwner))
@@ -103,7 +103,7 @@ public class ItemUniversalOwnerChanger extends Item
 		}
 
 		if(te instanceof IOwnable)
-			((IOwnable)te).getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			((IOwnable)te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 
 		if (!world.isRemote) {
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
@@ -148,7 +148,7 @@ public class ItemUniversalOwnerChanger extends Item
 		{
 			TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(pos);
 
-			te.getOwner().set(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
 			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 			return true;
 		}
