@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
@@ -79,6 +80,8 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 						reinforcedStairsBlock(block);
 					else if(block instanceof ReinforcedWallBlock)
 						reinforcedWallBlock(block);
+					else if(block instanceof ReinforcedCarpetBlock)
+						reinforcedCarpetBlock(block);
 				}
 				else if(field.isAnnotationPresent(RegisterItemBlock.class) && field.getAnnotation(RegisterItemBlock.class).value() == SCItemGroup.EXPLOSIVES)
 				{
@@ -186,6 +189,14 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 			builder.part().modelFile(model).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).addModel()
 			.condition(DIR_TO_WALL_HEIGHT.get(dir), height);
 		});
+	}
+
+	public void reinforcedCarpetBlock(Block block)
+	{
+		String name = name(block);
+		ModelFile model = models().reinforcedCarpet(name, mcLoc(ModelProvider.BLOCK_FOLDER + "/" + name.replace("reinforced_", "").replace("carpet", "wool")));
+
+		getVariantBuilder(block).forAllStates(state -> new ConfiguredModel[]{new ConfiguredModel(model)});
 	}
 
 	public void reinforcedPaneBlock(PaneBlock block)

@@ -15,6 +15,11 @@ public class SCBlockModelProvider extends BlockModelProvider
 		super(generator, SecurityCraft.MODID, existingFileHelper);
 	}
 
+	public BlockModelBuilder reinforcedCarpet(String name, ResourceLocation wool)
+	{
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_carpet"), "wool", wool);
+	}
+
 	public BlockModelBuilder reinforcedColumn(String name, String side, String end)
 	{
 		return withExistingParent(name, modLoc(BLOCK_FOLDER + "/reinforced_column"))

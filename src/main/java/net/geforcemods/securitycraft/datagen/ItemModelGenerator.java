@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
@@ -44,7 +45,7 @@ public class ItemModelGenerator extends ItemModelProvider
 				{
 					Block block = ((RegistryObject<Block>)field.get(null)).get();
 
-					if(block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
+					if(block instanceof ReinforcedCarpetBlock || block instanceof ReinforcedSlabBlock || block instanceof ReinforcedStainedGlassBlock || block instanceof ReinforcedStairsBlock)
 						simpleParent(block);
 					else if(block instanceof ReinforcedStainedGlassPaneBlock)
 						reinforcedPane(block);

@@ -11,5 +11,8 @@
                 "east":  { "uv": [ 0, 15, 16, 16 ], "texture": "#wool", "cullface": "east", "tintindex": 0 }
             }
         }
-    ]
+    ],
+    "textures": {
+    	"particle": "#wool"
+    }
 }
