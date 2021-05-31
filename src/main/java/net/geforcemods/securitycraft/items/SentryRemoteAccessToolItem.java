@@ -91,7 +91,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			return ActionResultType.SUCCESS;
 		}
 		else if (!world.isRemote)
-				SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 
 		return ActionResultType.SUCCESS;
 	}
