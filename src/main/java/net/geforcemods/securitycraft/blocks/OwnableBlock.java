@@ -28,7 +28,7 @@ public class OwnableBlock extends Block {
 
 		if (stack.hasDisplayName()) {
 			TileEntity te = world.getTileEntity(pos);
-			
+
 			if (te instanceof INameable && ((INameable)te).canBeNamed()) {
 				((INameable)te).setCustomSCName(stack.getDisplayName());
 			}
