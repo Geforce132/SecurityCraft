@@ -1,6 +1,16 @@
 {
     "variants": {
-        "powered=false": { "model": "securitycraft:block/portable_radar" },
-        "powered=true": { "model": "securitycraft:block/portable_radar" }
+        "facing=down,powered=false": { "model": "securitycraft:block/portable_radar", "x": 180 },
+        "facing=east,powered=false":  { "model": "securitycraft:block/portable_radar", "x": 90, "y": 90 },
+        "facing=west,powered=false":  { "model": "securitycraft:block/portable_radar", "x": 90, "y": 270 },
+        "facing=south,powered=false": { "model": "securitycraft:block/portable_radar", "x": 90, "y": 180 },
+        "facing=north,powered=false": { "model": "securitycraft:block/portable_radar", "x": 90 },
+        "facing=up,powered=false": { "model": "securitycraft:block/portable_radar"},
+        "facing=down,powered=true": { "model": "securitycraft:block/portable_radar", "x": 180 },
+        "facing=east,powered=true":  { "model": "securitycraft:block/portable_radar", "x": 90, "y": 90 },
+        "facing=west,powered=true":  { "model": "securitycraft:block/portable_radar", "x": 90, "y": 270 },
+        "facing=south,powered=true": { "model": "securitycraft:block/portable_radar", "x": 90, "y": 180 },
+        "facing=north,powered=true": { "model": "securitycraft:block/portable_radar", "x": 90 },
+        "facing=up,powered=true": { "model": "securitycraft:block/portable_radar"}
     }
 }
