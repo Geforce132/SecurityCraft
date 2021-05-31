@@ -47,7 +47,7 @@ public class Utils {
 			if(params[i] instanceof BlockPos)
 				params[i] = getFormattedCoordinates((BlockPos)params[i]);
 		}
-	
+
 		return new TextComponentTranslation(key, params);
 	}
 }

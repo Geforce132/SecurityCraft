@@ -28,7 +28,6 @@ import net.minecraftforge.common.MinecraftForge;
 public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
 
 	public BlockReinforcedWood(){
-		super();
 		setSoundType(SoundType.WOOD);
 	}
 

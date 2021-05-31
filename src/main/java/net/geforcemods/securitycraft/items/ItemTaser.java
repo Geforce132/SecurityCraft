@@ -186,7 +186,7 @@ public class ItemTaser extends Item {
 
 	private static Optional<Vec3d> rayTrace(AxisAlignedBB aabb, Vec3d startVec, Vec3d endVec)
 	{
-		double[] adouble = new double[]{1.0D};
+		double[] adouble = {1.0D};
 		double d0 = endVec.x - startVec.x;
 		double d1 = endVec.y - startVec.y;
 		double d2 = endVec.z - startVec.z;

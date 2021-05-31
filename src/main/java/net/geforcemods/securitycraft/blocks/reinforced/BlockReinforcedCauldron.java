@@ -53,10 +53,12 @@ public class BlockReinforcedCauldron extends BlockCauldron implements IReinforce
 		return false;
 	}
 
+	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(SCContent.reinforcedCauldron);
 	}
 
+	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(SCContent.reinforcedCauldron);
 	}

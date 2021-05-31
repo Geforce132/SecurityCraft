@@ -32,12 +32,14 @@ public class SyncTrophySystem implements IMessage {
 		this.allowed = allowed;
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(pos.toLong());
 		ByteBufUtils.writeUTF8String(buf, projectileType);
 		buf.writeBoolean(allowed);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		pos = BlockPos.fromLong(buf.readLong());
 		projectileType = ByteBufUtils.readUTF8String(buf);
@@ -45,6 +47,7 @@ public class SyncTrophySystem implements IMessage {
 	}
 
 	public static class Handler implements IMessageHandler<SyncTrophySystem, IMessage> {
+		@Override
 		public IMessage onMessage(SyncTrophySystem message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityEntry projectileType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(message.projectileType));

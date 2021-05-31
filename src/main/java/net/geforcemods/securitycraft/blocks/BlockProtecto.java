@@ -47,7 +47,7 @@ public class BlockProtecto extends BlockOwnable {
 	@Override
 	public int getMetaFromState(IBlockState state)
 	{
-		return state.getValue(ACTIVATED) == true ? 1 : 0;
+		return state.getValue(ACTIVATED) ? 1 : 0;
 	}
 
 	@Override

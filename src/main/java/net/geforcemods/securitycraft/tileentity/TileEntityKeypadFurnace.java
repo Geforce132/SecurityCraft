@@ -43,9 +43,9 @@ import net.minecraftforge.items.IItemHandler;
 public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISidedInventory, IPasswordProtected, ITickable, IModuleInventory, ICustomizable {
 
 	private IItemHandler insertOnlyHandler;
-	private static final int[] slotsTop = new int[] {0};
-	private static final int[] slotsBottom = new int[] {2, 1};
-	private static final int[] slotsSides = new int[] {1};
+	private static final int[] slotsTop = {0};
+	private static final int[] slotsBottom = {2, 1};
+	private static final int[] slotsSides = {1};
 	public NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(3, ItemStack.EMPTY);
 	public int furnaceBurnTime;
 	public int currentItemBurnTime;

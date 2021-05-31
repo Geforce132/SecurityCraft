@@ -24,7 +24,6 @@ import net.minecraftforge.common.MinecraftForge;
 public class BlockReinforcedSandstone extends BlockSandStone implements ITileEntityProvider, IReinforcedBlock {
 
 	public BlockReinforcedSandstone(){
-		super();
 		setSoundType(SoundType.STONE);
 	}
 

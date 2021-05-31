@@ -25,8 +25,6 @@ import net.minecraft.world.World;
 public class ItemAdminTool extends Item {
 
 	public ItemAdminTool() {
-		super();
-
 		if(ConfigHandler.allowAdminTool)
 			setCreativeTab(SecurityCraft.tabSCTechnical);
 	}

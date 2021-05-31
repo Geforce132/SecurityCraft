@@ -27,7 +27,6 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 {
 	public BlockReinforcedCarpet()
 	{
-		super();
 		setSoundType(SoundType.CLOTH);
 	}
 

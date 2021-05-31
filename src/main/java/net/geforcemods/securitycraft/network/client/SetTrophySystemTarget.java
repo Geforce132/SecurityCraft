@@ -22,11 +22,13 @@ public class SetTrophySystemTarget implements IMessage {
 		this.targetID = targetID;
 	}
 
+	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeLong(trophyPos.toLong());
 		buf.writeInt(targetID);
 	}
 
+	@Override
 	public void fromBytes(ByteBuf buf) {
 		trophyPos = BlockPos.fromLong(buf.readLong());
 		targetID = buf.readInt();

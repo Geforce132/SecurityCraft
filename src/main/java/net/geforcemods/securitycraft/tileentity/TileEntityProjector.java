@@ -86,7 +86,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	{
 		this.projectionHeight = projectionHeight;
 	}
-	
+
 	public int getProjectionRange()
 	{
 		return projectionRange;
@@ -126,7 +126,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	{
 		this.horizontal = horizontal;
 	}
-	
+
 	public boolean isActive()
 	{
 		return activatedByRedstone ? active : true;
