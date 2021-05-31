@@ -13,6 +13,7 @@
 - New: The Allowlist Module can now be used in the Cage Trap
 - New: Reinforced Cauldron
 - New: Speed Module. Can be used in an I.M.S., Protecto, Sentry, or Trophy System
+- New: The Portable Radar can now be placed on all sides of a block and will rotate accordingly
 - Change: The information on how to look around inside a camera is now displayed in the camera's overlay instead of being sent to the chat
 - Change: Messages sent due to changing a Sentry's mode will now show up above the hotbar to avoid spamming the chat
 - Change: The Whitelist Module has been renamed to "Allowlist Module" to be more clear about its function
