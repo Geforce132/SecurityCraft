@@ -38,7 +38,7 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TrophySystemTileEntity te) 
+	public boolean isGlobalRenderer(TrophySystemTileEntity te)
 	{
 		return true;
 	}

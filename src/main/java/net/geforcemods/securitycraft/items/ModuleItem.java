@@ -110,9 +110,9 @@ public class ModuleItem extends Item{
 
 						@Override
 						public ITextComponent getDisplayName()
-					{
-						return new TranslationTextComponent(getTranslationKey());
-					}
+						{
+							return new TranslationTextComponent(getTranslationKey());
+						}
 					});
 				}
 
