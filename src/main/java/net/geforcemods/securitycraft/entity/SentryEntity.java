@@ -36,6 +36,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
@@ -116,6 +117,12 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 			if(world.getBlockState(downPos).isAir() || world.hasNoCollisions(new AxisAlignedBB(downPos)))
 				remove();
+
+			BlockPos pos = new BlockPos(-174, 63, 70);
+			BlockState state = world.getBlockState(pos);
+			TileEntity te = world.getTileEntity(pos);
+
+			System.out.println("And the tileentity iiiis " + te);
 		}
 		else
 		{

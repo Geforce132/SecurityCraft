@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ObjectHolder;
@@ -18,11 +19,21 @@ public class Owner {
 	private String playerName = "owner";
 	private String playerUUID = "ownerUUID";
 
-	public Owner() {}
+	public Owner() {
+		System.out.println("owner without ctor");
+	}
 
 	public Owner(String playerName, String playerUUID) {
 		this.playerName = playerName;
 		this.playerUUID = playerUUID;
+	}
+
+	public static Owner fromCompound(CompoundNBT tag) {
+		if (tag != null && tag.contains("owner")){
+			return new Owner(tag.getString("owner"), tag.getString("ownerUUID"));
+		}
+
+		return new Owner();
 	}
 
 	/**
