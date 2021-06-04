@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.screen.components;
 
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -26,9 +25,9 @@ public class IngredientDisplay
 		if(stacks == null || stacks.length == 0)
 			return;
 
-		Item item = stacks[currentRenderingStack].getItem();
+		ItemStack stack = stacks[currentRenderingStack];
 
-		GuiUtils.drawItemToGui(item, x, y, !(item instanceof BlockItem));
+		GuiUtils.drawItemStackToGui(stack, x, y, !(stack.getItem() instanceof BlockItem));
 		ticksToChange -= partialTicks;
 
 		if(ticksToChange <= 0)

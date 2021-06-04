@@ -31,6 +31,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
@@ -157,7 +158,9 @@ public class SCManualScreen extends Screen {
 
 		if(currentPage > -1){
 			Item item = SCManualItem.PAGES.get(currentPage).getItem();
-			GuiUtils.drawItemToGui(item, startX + 19, 22, !(SCManualItem.PAGES.get(currentPage).getItem() instanceof BlockItem));
+			ItemStack stack = new ItemStack(item);
+
+			GuiUtils.drawItemStackToGui(stack, startX + 19, 22, !(SCManualItem.PAGES.get(currentPage).getItem() instanceof BlockItem));
 
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
@@ -166,32 +169,32 @@ public class SCManualScreen extends Screen {
 				TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
 				if(block instanceof IExplosive)
-					this.blit(startX + 107, 117, 54, 1, 18, 18);
+					blit(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te != null){
 					if(te instanceof IOwnable)
-						this.blit(startX + 29, 118, 1, 1, 16, 16);
+						blit(startX + 29, 118, 1, 1, 16, 16);
 
 					if(te instanceof IPasswordProtected)
-						this.blit(startX + 55, 118, 18, 1, 17, 16);
+						blit(startX + 55, 118, 18, 1, 17, 16);
 
 					if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-						this.blit(startX + 81, 118, 36, 1, 17, 16);
+						blit(startX + 81, 118, 36, 1, 17, 16);
 
 					if(te instanceof ICustomizable)
 					{
 						ICustomizable scte = (ICustomizable)te;
 
-						this.blit(startX + 213, 118, 72, 1, 16, 16);
+						blit(startX + 213, 118, 72, 1, 16, 16);
 
 						if(scte.customOptions() != null && scte.customOptions().length > 0)
-							this.blit(startX + 136, 118, 88, 1, 16, 16);
+							blit(startX + 136, 118, 88, 1, 16, 16);
 					}
 
 					if(te instanceof IModuleInventory)
 					{
 						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-							this.blit(startX + 163, 118, 105, 1, 16, 16);
+							blit(startX + 163, 118, 105, 1, 16, 16);
 					}
 				}
 			}

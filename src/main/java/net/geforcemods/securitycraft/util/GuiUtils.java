@@ -12,16 +12,11 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiUtils{
 	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png");
-
-	public static void drawItemToGui(Item item, int x, int y, boolean fixLighting){
-		drawItemStackToGui(new ItemStack(item), x, y, fixLighting);
-	}
 
 	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting){
 		if(fixLighting)

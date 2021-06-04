@@ -61,6 +61,7 @@ public class SCClientEventHandler {
 	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
 	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
+	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event)
@@ -284,6 +285,6 @@ public class SCClientEventHandler {
 		else if((state.getWeakPower(world, pos, state.get(SecurityCameraBlock.FACING)) == 0) && te.hasModule(ModuleType.REDSTONE))
 			gui.blit(12, 3, 90, 0, 12, 11);
 		else
-			GuiUtils.drawItemToGui(Items.REDSTONE, 10, 0, false);
+			GuiUtils.drawItemStackToGui(REDSTONE, 10, 0, false);
 	}
 }
