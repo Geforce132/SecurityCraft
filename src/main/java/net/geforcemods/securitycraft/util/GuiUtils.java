@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +33,7 @@ public class GuiUtils{
 	public static ResourceLocation potionIcons = new ResourceLocation("minecraft:textures/gui/container/inventory.png");
 	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/items/smart_module.png");
 	private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+	private static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 
 	public static void drawCameraOverlay(Minecraft mc, Gui gui, ScaledResolution resolution, EntityPlayer player, World world, BlockPos pos) {
 		TileEntitySecurityCamera te = (TileEntitySecurityCamera)world.getTileEntity(pos);
@@ -75,7 +75,7 @@ public class GuiUtils{
 		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.FACING)) == 0) && te.hasModule(EnumModuleType.REDSTONE))
 			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
 		else
-			drawItemToGui(Items.REDSTONE, 10, 0, false);
+			drawItemStackToGui(REDSTONE, 10, 0, false);
 	}
 
 	public static void drawItemStackToGui(ItemStack stack, int x, int y, boolean fixLighting)
@@ -90,14 +90,6 @@ public class GuiUtils{
 
 		GlStateManager.disableLighting();
 		GlStateManager.disableRescaleNormal();
-	}
-
-	public static void drawItemToGui(Item item, int itemDamage, int x, int y, boolean fixLighting){
-		drawItemStackToGui(new ItemStack(item, 1, itemDamage), x, y, fixLighting);
-	}
-
-	public static void drawItemToGui(Item item, int x, int y, boolean fixLighting){
-		drawItemToGui(item, 0, x, y, fixLighting);
 	}
 
 	public static void renderSmartModuleInfo(String moduleTooltip, String noModuleTooltip, boolean isSmart, int guiLeft, int guiTop, int screenWidth, int screenHeight, int mouseX, int mouseY)

@@ -106,7 +106,7 @@ public class GuiSCManual extends GuiScreen {
 		else
 			mc.getTextureManager().bindTexture(infoBookTextureSpecial);
 
-		this.drawTexturedModalRect(startX, 5, 0, 0, 256, 250);
+		drawTexturedModalRect(startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
 			if(ItemSCManual.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
@@ -145,26 +145,26 @@ public class GuiSCManual extends GuiScreen {
 
 		if(currentPage > -1){
 			Item item = ItemSCManual.PAGES.get(currentPage).getItem();
-			GuiUtils.drawItemToGui(item, startX + 19, 22, !(ItemSCManual.PAGES.get(currentPage).getItem() instanceof ItemBlock));
-
-			mc.getTextureManager().bindTexture(infoBookIcons);
-
-			TileEntity te = ((item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof ITileEntityProvider) ? ((ITileEntityProvider) ((ItemBlock) item).getBlock()).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null);
+			ItemStack stack = new ItemStack(item);
 			Block itemBlock = ((item instanceof ItemBlock) ? ((ItemBlock) item).getBlock() : null);
+			TileEntity te = itemBlock instanceof ITileEntityProvider ? ((ITileEntityProvider) itemBlock).createNewTileEntity(Minecraft.getMinecraft().world, 0) : null;
+
+			GuiUtils.drawItemStackToGui(stack, startX + 19, 22, !(ItemSCManual.PAGES.get(currentPage).getItem() instanceof ItemBlock));
+			mc.getTextureManager().bindTexture(infoBookIcons);
 
 			if(itemBlock != null){
 				if(itemBlock instanceof IExplosive)
-					this.drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
+					drawTexturedModalRect(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te != null){
 					if(te instanceof IOwnable)
-						this.drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
+						drawTexturedModalRect(startX + 29, 118, 1, 1, 16, 16);
 
 					if(te instanceof IPasswordProtected)
-						this.drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
+						drawTexturedModalRect(startX + 55, 118, 18, 1, 17, 16);
 
 					if(te instanceof TileEntitySCTE && ((TileEntitySCTE) te).isActivatedByView())
-						this.drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
+						drawTexturedModalRect(startX + 81, 118, 36, 1, 17, 16);
 
 					if(te instanceof ICustomizable)
 					{
@@ -173,13 +173,13 @@ public class GuiSCManual extends GuiScreen {
 						this.drawTexturedModalRect(startX + 213, 118, 72, 1, 16, 16);
 
 						if(scte.customOptions() != null && scte.customOptions().length > 0)
-							this.drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
+							drawTexturedModalRect(startX + 136, 118, 88, 1, 16, 16);
 					}
 
 					if(te instanceof IModuleInventory)
 					{
 						if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-							this.drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
+							drawTexturedModalRect(startX + 163, 118, 105, 1, 16, 16);
 					}
 				}
 			}
@@ -197,7 +197,7 @@ public class GuiSCManual extends GuiScreen {
 						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
-						GuiUtils.drawItemToGui(matchingStacks[0].getItem(), matchingStacks[0].getItemDamage(), (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof ItemBlock));
+						GuiUtils.drawItemStackToGui(matchingStacks[0], (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof ItemBlock));
 					}
 			}
 
