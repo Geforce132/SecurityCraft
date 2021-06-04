@@ -50,6 +50,7 @@
 - Fix: Rejoining a server/world while being mounted to a camera teleports the player to that camera
 - Fix: Trophy System has incorrect place/step/break sounds
 - Fix: Rightclicking a block while attempting to change a Briefcase's owner does not change the owner
+- Fix: Keypad Door recipe is incorrect
 - Removed: Ability to take screenshots via middle mouse click while being mounted to a camera, as it is unneeded due to Minecraft's own screenshot feature
 
 --------------------------Changelog for v1.8.21 of SecurityCraft--------------------------

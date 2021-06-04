@@ -9,7 +9,7 @@
     }
   ],
   "result": {
-    "item": "securitycraft:scanner_door_item",
+    "item": "securitycraft:keypad_door_item",
     "count": 1
   }
 }
