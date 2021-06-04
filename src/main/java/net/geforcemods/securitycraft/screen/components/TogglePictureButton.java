@@ -21,15 +21,17 @@ public class TogglePictureButton extends IdButton{
 	private final int drawOffset;
 	private final int drawWidth;
 	private final int drawHeight;
+	private final int uWidth;
+	private final int vHeight;
 	private final int textureWidth;
 	private final int textureHeight;
 
 	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int toggleCount, Consumer<IdButton> onClick)
 	{
-		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 256, 256, toggleCount, onClick);
+		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 16, 16, 256, 256, toggleCount, onClick);
 	}
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<IdButton> onClick)
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<IdButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
@@ -45,6 +47,8 @@ public class TogglePictureButton extends IdButton{
 		this.drawOffset = drawOffset;
 		this.drawWidth = drawWidth;
 		this.drawHeight = drawHeight;
+		this.uWidth = uWidth;
+		this.vHeight = vHeight;
 	}
 
 	@Override
@@ -59,7 +63,7 @@ public class TogglePictureButton extends IdButton{
 			if(getTextureLocation() != null)
 			{
 				Minecraft.getInstance().getTextureManager().bindTexture(getTextureLocation());
-				blit(x + drawOffset, y + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], drawWidth, drawHeight, textureWidth, textureHeight);
+				blit(x + drawOffset, y + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
 			}
 		}
 	}

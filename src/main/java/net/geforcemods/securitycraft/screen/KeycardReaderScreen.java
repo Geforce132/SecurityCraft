@@ -37,8 +37,7 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
-	private static final ResourceLocation CHECKMARK_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
-	private static final ResourceLocation CROSS_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
 	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
 	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
@@ -99,7 +98,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 		//keycard level buttons
 		for(int i = 0; i < 5; i++)
 		{
-			toggleButtons[i] = addButton(new TogglePictureButton(i, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, CROSS_TEXTURE, new int[]{0, 0}, new int[]{0, 0}, 1, 13, 13, 13, 13, 2, thisButton -> {
+			toggleButtons[i] = addButton(new TogglePictureButton(i, guiLeft + 100, guiTop + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if(!isSmart)
 				{
@@ -118,13 +117,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 				}
 				else
 					acceptedLevels[thisButton.id] = !acceptedLevels[thisButton.id];
-			}) {
-				@Override
-				public ResourceLocation getTextureLocation()
-				{
-					return getCurrentIndex() == 0 ? CROSS_TEXTURE : CHECKMARK_TEXTURE;
-				}
-			});
+			}));
 			toggleButtons[i].setCurrentIndex(acceptedLevels[i] ? 1 : 0); //set correct button state
 			toggleButtons[i].active = isOwner;
 
