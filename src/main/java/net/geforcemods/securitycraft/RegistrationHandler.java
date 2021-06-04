@@ -151,7 +151,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
-		registerBlock(event, SCContent.mine);
+		registerBlock(event, SCContent.mine, () -> ConfigHandler.ableToCraftMines);
 		event.getRegistry().register(SCContent.mineCut);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
