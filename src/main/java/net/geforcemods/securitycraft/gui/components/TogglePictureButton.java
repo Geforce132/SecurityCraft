@@ -17,15 +17,17 @@ public class TogglePictureButton extends ClickButton {
 	private final int drawOffset;
 	private final int drawWidth;
 	private final int drawHeight;
+	private final int uWidth;
+	private final int vHeight;
 	private final int textureWidth;
 	private final int textureHeight;
 
 	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int toggleCount, Consumer<ClickButton> onClick)
 	{
-		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 256, 256, toggleCount, onClick);
+		this(id, xPos, yPos, width, height, texture, textureX, textureY, drawOffset, 16, 16, 16, 16, 256, 256, toggleCount, onClick);
 	}
 
-	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<ClickButton> onClick)
+	public TogglePictureButton(int id, int xPos, int yPos, int width, int height, ResourceLocation texture, int[] textureX, int[] textureY, int drawOffset, int drawWidth, int drawHeight, int uWidth, int vHeight, int textureWidth, int textureHeight, int toggleCount, Consumer<ClickButton> onClick)
 	{
 		super(id, xPos, yPos, width, height, "", onClick);
 
@@ -41,6 +43,8 @@ public class TogglePictureButton extends ClickButton {
 		this.drawOffset = drawOffset;
 		this.drawWidth = drawWidth;
 		this.drawHeight = drawHeight;
+		this.uWidth = uWidth;
+		this.vHeight = vHeight;
 	}
 
 	@Override
@@ -55,7 +59,7 @@ public class TogglePictureButton extends ClickButton {
 			if(getTextureLocation() != null)
 			{
 				mc.getTextureManager().bindTexture(getTextureLocation());
-				drawModalRectWithCustomSizedTexture(x + drawOffset, y + drawOffset, u[currentIndex], v[currentIndex], drawWidth, drawHeight, textureWidth, textureHeight);
+				drawScaledCustomSizeModalRect(x + drawOffset, y + drawOffset, u[currentIndex], v[currentIndex], uWidth, vHeight, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
 		}
 	}

@@ -25,8 +25,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 
 public class GuiTrophySystem extends GuiContainer {
 
-	private static final ResourceLocation FILTER_ENABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_bound.png");
-	private static final ResourceLocation FILTER_DISABLED_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/item_not_bound.png");
+	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
 	private final String projectiles = Utils.localize("gui.securitycraft:trophy_system.targetableProjectiles").getFormattedText();
 	private final String moduleRequired = Utils.localize("gui.securitycraft:trophy_system.moduleRequired").getFormattedText();
@@ -158,8 +157,8 @@ public class GuiTrophySystem extends GuiContainer {
 
 			projectileName = projectileName.replace("entity.", "").replace(".name", "");
 			fontRenderer.drawString(projectileName, left + listWidth / 2 - fontRenderer.getStringWidth(projectileName) / 2, slotTop, 0xC6C6C6);
-			mc.getTextureManager().bindTexture(tileEntity.getFilter(projectileType) ? FILTER_ENABLED_TEXTURE : FILTER_DISABLED_TEXTURE);
-			drawModalRectWithCustomSizedTexture(left, slotTop - 2, 0, 0, 12, 12, 12, 12);
+			mc.getTextureManager().bindTexture(BEACON_GUI);
+			drawScaledCustomSizeModalRect(left, slotTop - 3, tileEntity.getFilter(projectileType) ? 88 : 110, 219, 21, 22, 14, 14, 256, 256);
 		}
 	}
 }

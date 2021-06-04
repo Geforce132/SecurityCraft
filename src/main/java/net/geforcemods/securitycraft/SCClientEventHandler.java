@@ -41,6 +41,8 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(value=Side.CLIENT, modid=SecurityCraft.MODID)
 public class SCClientEventHandler
 {
+	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+
 	@SubscribeEvent
 	public static void onScreenshot(ScreenshotEvent event)
 	{
@@ -85,7 +87,7 @@ public class SCClientEventHandler
 
 			for (EnumHand hand : EnumHand.values()) {
 				ItemStack stack = player.getHeldItem(hand);
-				String textureToUse = null;
+				int uCoord = 0;
 
 				if(stack.getItem() == SCContent.cameraMonitor)
 				{
@@ -95,7 +97,7 @@ public class SCClientEventHandler
 
 					if(mop != null && mop.typeOfHit == Type.BLOCK && world.getTileEntity(mop.getBlockPos()) instanceof TileEntitySecurityCamera)
 					{
-						textureToUse = "item_not_bound";
+						uCoord = 110;
 						NBTTagCompound cameras = stack.getTagCompound();
 
 						if(cameras != null) {
@@ -108,7 +110,7 @@ public class SCClientEventHandler
 
 								if(Integer.parseInt(coords[0]) == mop.getBlockPos().getX() && Integer.parseInt(coords[1]) == mop.getBlockPos().getY() && Integer.parseInt(coords[2]) == mop.getBlockPos().getZ())
 								{
-									textureToUse = "item_bound";
+									uCoord = 88;
 									break;
 								}
 							}
@@ -123,7 +125,7 @@ public class SCClientEventHandler
 
 					if(mop != null && mop.typeOfHit == Type.BLOCK && world.getBlockState(mop.getBlockPos()).getBlock() instanceof IExplosive)
 					{
-						textureToUse = "item_not_bound";
+						uCoord = 110;
 						NBTTagCompound mines = stack.getTagCompound();
 
 						if(mines != null) {
@@ -135,7 +137,7 @@ public class SCClientEventHandler
 
 									if(coords[0] == mop.getBlockPos().getX() && coords[1] == mop.getBlockPos().getY() && coords[2] == mop.getBlockPos().getZ())
 									{
-										textureToUse = "item_bound";
+										uCoord = 88;
 										break;
 									}
 								}
@@ -149,7 +151,7 @@ public class SCClientEventHandler
 
 					if(hitEntity instanceof EntitySentry)
 					{
-						textureToUse = "item_not_bound";
+						uCoord = 110;
 						NBTTagCompound sentries = stack.getTagCompound();
 
 						if(sentries != null) {
@@ -160,7 +162,7 @@ public class SCClientEventHandler
 									int[] coords = sentries.getIntArray("sentry" + i);
 									if(coords[0] == hitEntity.getPosition().getX() && coords[1] == hitEntity.getPosition().getY() && coords[2] == hitEntity.getPosition().getZ())
 									{
-										textureToUse = "item_bound";
+										uCoord = 88;
 										break;
 									}
 								}
@@ -169,10 +171,10 @@ public class SCClientEventHandler
 					}
 				}
 
-				if (textureToUse != null) {
+				if (uCoord != 0) {
 					GlStateManager.enableAlpha();
-					Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(SecurityCraft.MODID, "textures/gui/" + textureToUse + ".png"));
-					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + (hand == EnumHand.MAIN_HAND ? player.inventory.currentItem * 20 : -29) + 2, event.getResolution().getScaledHeight() - 16 - 3, 0, 0, 16, 16, 16, 16);
+					Minecraft.getMinecraft().renderEngine.bindTexture(BEACON_GUI);
+					drawNonStandardTexturedRect(event.getResolution().getScaledWidth() / 2 - 90 + (hand == EnumHand.MAIN_HAND ? player.inventory.currentItem * 20 : -29), event.getResolution().getScaledHeight() - 22, uCoord, 219, 21, 22, 256, 256);
 					GlStateManager.disableAlpha();
 				}
 			}
