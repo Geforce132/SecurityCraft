@@ -275,7 +275,7 @@ public class RegistrationHandler
 		registerBlock(event, SCContent.reinforcedHopper);
 		registerBlock(event, SCContent.projector);
 		event.getRegistry().register(SCContent.keypadDoor);
-		registerBlock(event, SCContent.reinforcedCauldron);
+		registerBlock(event, SCContent.reinforcedCauldron, false);
 
 		//block mines
 		registerBlock(event, SCContent.stoneMine, false);
