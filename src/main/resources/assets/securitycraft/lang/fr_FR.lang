@@ -300,7 +300,7 @@ item.securitycraft:scannerDoorItem.name=Porte scanner
 item.securitycraft:secretSignItem.name=Panneau en chêne à secret
 item.securitycraft:sentry.name=Sentinelle
 item.securitycraft:crystalQuartzItem.name=Cristal de Quartz
-item.securitycraft:keypad_door_item=Porte du clavier à code
+item.securitycraft:keypad_door_item.name=Porte du clavier à code
 
 entity.securitycraft:sentry.name=Sentinelle
 entity.securitycraft:bullet.name=Balle

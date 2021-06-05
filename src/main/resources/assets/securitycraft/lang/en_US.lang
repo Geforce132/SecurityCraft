@@ -716,6 +716,7 @@ module.securitycraft:blockPocketManager.whitelistModule.description=Adding an al
 module.securitycraft:reinforced_stone_pressure_plate.whitelistModule.description=Adding an allowlist module to a Reinforced Stone Pressure Plate will allow players on the list to activate it.
 module.securitycraft:usernameLogger.disguiseModule.description=Adding a disguise module to a username logger will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
 module.securitycraft:cageTrap.disguiseModule.description=Adding a disguise module to a cage trap will cause the texture & model of it to change to the texture & model of the block that is added to the disguise module.
+module.securitycraft:cageTrap.whitelistModule.description=Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.
 module.securitycraft:reinforced_wooden_pressure_plate.whitelistModule.description=Adding an allowlist module to a Reinforced Oak Pressure Plate will allow players on the list to activate it.
 module.securitycraft:reinforced_stone_button.whitelistModule.description=Adding an allowlist module to a Reinforced Button will allow players on the list to activate it.
 module.securitycraft:reinforced_wooden_button.whitelistModule.description=Adding an allowlist module to a Reinforced Button will allow players on the list to activate it.
@@ -735,7 +736,6 @@ module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowl
 module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
 module.securitycraft:trophy_system.speed_module.description=Adding a speed module to a Trophy System allows it to destroy targets twice as fast.
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Adding an allowlist module to a Reinforced Cauldron will allow players on the list to interact with the Reinforced Cauldron.
-module.securitycraft:cageTrap.whitelistModule.description=Adding an allowlist module to a Cage Trap will prevent the players on the list from being trapped.
 
 config.securitycraft:isCodebreakerAllowed=Is codebreaker allowed?
 config.securitycraft:isCodebreakerAllowed.tooltip=Can the codebreaker be used?
