@@ -519,7 +519,7 @@ public class RegistrationHandler
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
 	{
 		event.getRegistry().register(new DyeBriefcaseRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
-		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard")));
+		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_conversion")));
 	}
 
 	@SideOnly(Side.CLIENT)
