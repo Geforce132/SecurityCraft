@@ -905,7 +905,7 @@
 	"option.securitycraft.keypad_door.sendMessage.description": "Does this keypad door send a message upon activation (when using allowlist/denylist modules)?",
 	"option.securitycraft.keypad_door.signalLength": "Signal length: #",
 	"option.securitycraft.keypad_door.signalLength.description": "How long should the door stay open? (In Ticks, 20 ticks = 1 second. Set to 0 to have the door stay open)",
-	"option.securitycraft.reinforced_cauldron.isPublic": "Public: %s",
+	"option.securitycraft.reinforced_cauldron.isPublic": "Public: #",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Should every player be able to interact with this block?",
 
 	"securitycraft.subtitle.alarm": "Alarm sounding",
