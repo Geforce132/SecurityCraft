@@ -20,12 +20,15 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBriefcase extends Item {
+
+	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
 
 	@Override
 	public boolean isFull3D() {
@@ -90,8 +93,10 @@ public class ItemBriefcase extends Item {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<String> tooltip, ITooltipFlag flag)
 	{
-		if (briefcase.hasTagCompound() && briefcase.getTagCompound().hasKey("owner"))
-			tooltip.add(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTagCompound().getString("owner")).getFormattedText());
+		String ownerName = getOwnerName(briefcase);
+
+		if(!ownerName.isEmpty())
+			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(GRAY_STYLE).getFormattedText());
 	}
 
 	public boolean hasColor(ItemStack stack)
@@ -147,6 +152,22 @@ public class ItemBriefcase extends Item {
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, EntityPlayer player) {
-		return !briefcase.hasTagCompound() || !briefcase.getTagCompound().hasKey("owner") || briefcase.getTagCompound().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTagCompound().getString("ownerUUID").equals("ownerUUID") && briefcase.getTagCompound().getString("owner").equals(player.getName()));
+		if(!briefcase.hasTagCompound())
+			return true;
+
+		String ownerName = getOwnerName(briefcase);
+		String ownerUUID = getOwnerUUID(briefcase);
+
+		return ownerName.isEmpty() || ownerUUID.equals(player.getUniqueID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName()));
+	}
+
+	public static String getOwnerName(ItemStack briefcase)
+	{
+		return briefcase.hasTagCompound() ? briefcase.getTagCompound().getString("owner") : "";
+	}
+
+	public static String getOwnerUUID(ItemStack briefcase)
+	{
+		return briefcase.hasTagCompound() ? briefcase.getTagCompound().getString("ownerUUID") : "";
 	}
 }

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.items;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -13,12 +14,15 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -38,8 +42,14 @@ public class ItemAdminTool extends Item {
 				return EnumActionResult.SUCCESS;
 			}
 
-			if(world.getTileEntity(pos) != null) {
-				TileEntity te = world.getTileEntity(pos);
+			EnumActionResult briefcaseResult = handleBriefcase(player, hand).getType();
+
+			if(briefcaseResult != EnumActionResult.PASS)
+				return briefcaseResult;
+
+			TileEntity te = world.getTileEntity(pos);
+
+			if(te != null) {
 				boolean hasInfo = false;
 
 				if(te instanceof IOwnable) {
@@ -93,4 +103,32 @@ public class ItemAdminTool extends Item {
 		return EnumActionResult.SUCCESS;
 	}
 
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if(!player.isCreative())
+		{
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
+			return ActionResult.newResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+		}
+		else return handleBriefcase(player, hand);
+	}
+
+	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, EnumHand hand)
+	{
+		ItemStack adminTool = player.getHeldItem(hand);
+
+		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
+			ItemStack briefcase = player.getHeldItemOffhand();
+			TextComponentTranslation adminToolName = Utils.localize(getTranslationKey());
+			String ownerName = ItemBriefcase.getOwnerName(briefcase);
+			String ownerUUID = ItemBriefcase.getOwnerUUID(briefcase);
+
+			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", ownerName.isEmpty() ? "????" : ownerName), TextFormatting.DARK_PURPLE);
+			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", ownerUUID.isEmpty() ? "????" : ownerUUID), TextFormatting.DARK_PURPLE);
+			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", briefcase.hasTagCompound() ? briefcase.getTagCompound().getString("passcode") : "????"), TextFormatting.DARK_PURPLE);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, adminTool);
+		}
+
+		return ActionResult.newResult(EnumActionResult.PASS, adminTool);
+	}
 }
