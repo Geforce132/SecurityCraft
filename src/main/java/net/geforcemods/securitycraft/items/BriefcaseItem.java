@@ -74,11 +74,29 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
-		if (briefcase.hasTag() && briefcase.getTag().contains("owner"))
-			tooltip.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:briefcase.owner", briefcase.getTag().getString("owner")).getFormattedText()));
+		String ownerName = getOwnerName(briefcase);
+
+		if(!ownerName.isEmpty())
+			tooltip.add(new StringTextComponent(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).getFormattedText()));
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, PlayerEntity player) {
-		return !briefcase.hasTag() || !briefcase.getTag().contains("owner") || briefcase.getTag().getString("ownerUUID").equals(player.getUniqueID().toString()) || (briefcase.getTag().getString("ownerUUID").equals("ownerUUID") && briefcase.getTag().getString("owner").equals(player.getName().getString()));
+		if(!briefcase.hasTag())
+			return true;
+
+		String ownerName = getOwnerName(briefcase);
+		String ownerUUID = getOwnerUUID(briefcase);
+
+		return ownerName.isEmpty() || ownerUUID.equals(player.getUniqueID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+	}
+
+	public static String getOwnerName(ItemStack briefcase)
+	{
+		return briefcase.hasTag() ? briefcase.getTag().getString("owner") : "";
+	}
+
+	public static String getOwnerUUID(ItemStack briefcase)
+	{
+		return briefcase.hasTag() ? briefcase.getTag().getString("ownerUUID") : "";
 	}
 }
