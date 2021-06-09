@@ -690,7 +690,7 @@
 	"messages.securitycraft:codebreakerDisabled": "Le déchiffreur de code a été désactivé via le fichier de configuration.",
 	"messages.securitycraft:codebreaker.failed": "La tentative de la chute de code a échoué, veuillez réessayez.",
 	"messages.securitycraft:keycardReader.differentOwner": "Le lecteur de carte d’accès auquel cette carte était liée appartient à un joueur différent de celui que vous essayez d’utiliser !",
-	"messages.securitycraft:keycardReader.wrongSignature": "La signature sauvé dans cette carte ne correspond pas à la signature du lecteur de carte d’accès ! ",
+	"messages.securitycraft:keycardReader.wrongSignature": "La signature sauvé dans cette carte ne correspond pas à la signature du lecteur de carte d’accès !",
 	"messages.securitycraft:keycardReader.wrongLevel": "Ce lecteur de carte d’accès ne permet pas les cartes d’accès de niveau %s !",
 	"messages.securitycraft:keycardReader.noUses": "Cette carte d’accès n’a plus des utilisations !",
 	"messages.securitycraft:invScan.notConnected": "Pas de connexions à un autre bloc de scanner d’inventaire !",
@@ -982,5 +982,5 @@
 	"securitycraft.subtitle.camerasnap": "Obturateur de la caméra",
 	"securitycraft.subtitle.taserfire": "Tir de taser",
 	"securitycraft.subtitle.lock": "Verrouillage du conteneur",
-	"securitycraft.subtitle.get_item": "Objet obtenu ! "
+	"securitycraft.subtitle.get_item": "Objet obtenu !"
 }
