@@ -981,5 +981,6 @@
 	"securitycraft.subtitle.camerazoomin": "La camera sta zoomando",
 	"securitycraft.subtitle.camerasnap": "La camera si spegne",
 	"securitycraft.subtitle.taserfire": "Il taser sta sparando",
-	"securitycraft.subtitle.lock": "Il contenitore si sta bloccando"
+	"securitycraft.subtitle.lock": "Il contenitore si sta bloccando",
+	"securitycraft.subtitle.get_item": "Oggetto preso!"
 }
