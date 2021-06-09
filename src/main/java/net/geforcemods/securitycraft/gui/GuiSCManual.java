@@ -81,8 +81,8 @@ public class GuiSCManual extends GuiScreen {
 		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
 		ItemSCManual.PAGES.sort((page1, page2) -> {
-			String key1 = Utils.localize(page1.getItem().getTranslationKey()).getFormattedText();
-			String key2 = Utils.localize(page2.getItem().getTranslationKey()).getFormattedText();
+			String key1 = Utils.localize(page1.getItem().getTranslationKey() + ".name").getFormattedText();
+			String key2 = Utils.localize(page2.getItem().getTranslationKey() + ".name").getFormattedText();
 
 			return key1.compareTo(key2);
 		});
