@@ -788,6 +788,8 @@ config.securitycraft:ableToCraftMines=Mine craftabili?
 config.securitycraft:ableToCraftMines.tooltip=Dovrebbero essere craftabili tutte le mine (Mina saltante/Claymore/Mina (Terra)/Mina (Pietra)/...)?
 config.securitycraft:retinalScannerFace=Mostrare la faccia sullo scanner della retina?
 config.securitycraft:retinalScannerFace.tooltip=Lo scanner della retina dovrebbe mostrare il volto del possessore? (Disattiva se hai problemi con i server auth di Mojang)
+config.securitycraft:mineExplosionsBreakBlocks=Le esplosioni delle mine devono rompere i blocchi?
+config.securitycraft:mineExplosionsBreakBlocks.tooltip=Imposta a falso se vuoi che le mine non rompano blocchi all'esplosione.
 
 option.securitycraft:portableRadar.searchRadius=Range di ricerca: #
 option.securitycraft:portableRadar.searchRadius.description=Il range in cui il radar ricerca.
