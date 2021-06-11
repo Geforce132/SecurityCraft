@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.lycanitesmobs.LycanitesMobsCompat;
 import net.geforcemods.securitycraft.compat.quark.QuarkCompat;
 import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
-import net.geforcemods.securitycraft.compat.versionchecker.VersionUpdateChecker;
 import net.geforcemods.securitycraft.itemgroups.SCDecorationGroup;
 import net.geforcemods.securitycraft.itemgroups.SCExplosivesGroup;
 import net.geforcemods.securitycraft.itemgroups.SCTechnicalGroup;
@@ -31,10 +30,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.conditions.LootConditionManager;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -103,12 +100,6 @@ public class SecurityCraft {
 		if(ModList.get().isLoaded("quark"))
 			QuarkCompat.registerChestConversions();
 
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			CompoundNBT vcUpdateTag = VersionUpdateChecker.getCompoundNBT();
-
-			if(vcUpdateTag != null)
-				InterModComms.sendTo("versionchecker", "addUpdate", () -> vcUpdateTag);
-		});
 		proxy.tint();
 	}
 
