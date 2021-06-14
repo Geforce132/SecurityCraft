@@ -1,6 +1,6 @@
 {
-	"version": "v1.8.21.1",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3205008",
-	"fileName": "[1.15.2] SecurityCraft v1.8.21.1",
-	"changelog": "Sentry & Block Pocket Manager overhaul, configuration file restructure, other new features, lots of fixes."
+	"version": "v1.8.22",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/3351697",
+	"fileName": "[1.15.2] SecurityCraft v1.8.22",
+	"changelog": "Keycard overhaul, new Speed Module, module renames, proper offhand support, quality of life changes and a bunch of fixes."
 }
