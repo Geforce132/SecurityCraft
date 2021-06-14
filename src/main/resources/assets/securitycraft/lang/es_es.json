@@ -687,7 +687,6 @@
 	"messages.securitycraft:portableRadar.withName": "%1$s está cerca de tu radar portátil llamado %2$s.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s está cerca de tu radar portátil en %2$s.",
 	"messages.securitycraft:codebreakerDisabled": "El descifrador de contraseñas se ha desactivado en el archivo de configuración.",
-	"messages.securitycraft:codebreaker.failed": "Code breaking attempt failed, please try again.",
 	"messages.securitycraft:keycardReader.differentOwner": "¡El lector de tarjetas al que se vinculó esta tarjeta pertenece a un jugador diferente al que estás intentando usar!",
 	"messages.securitycraft:keycardReader.wrongSignature": "¡La firma guardada en esta tarjeta no coincide con la firma del lector de tarjetas!",
 	"messages.securitycraft:keycardReader.wrongLevel": "¡Este lector de tarjetas no admite tarjetas de nivel %s!",
