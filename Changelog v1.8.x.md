@@ -1,4 +1,4 @@
---------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
+--------------------------Changelog for v1.8.22.1 of SecurityCraft--------------------------
 
 - Fix: The level 4 keycard is treated as a level 5 keycard by the Keycard Reader
 - Fix: Putting a level 5 keycard into a Keycard Reader crashes the game
