@@ -283,8 +283,8 @@ public class SetupHandler
 		SCContent.keycardLvl1 = new ItemKeycard(0).setRegistryName("keycard_lv1").setTranslationKey("securitycraft:keycardLV1");
 		SCContent.keycardLvl2 = new ItemKeycard(1).setRegistryName("keycard_lv2").setTranslationKey("securitycraft:keycardLV2");
 		SCContent.keycardLvl3 = new ItemKeycard(2).setRegistryName("keycard_lv3").setTranslationKey("securitycraft:keycardLV3");
-		SCContent.keycardLvl4 = new ItemKeycard(4).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
-		SCContent.keycardLvl5 = new ItemKeycard(5).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
+		SCContent.keycardLvl4 = new ItemKeycard(3).setRegistryName("keycard_lv4").setTranslationKey("securitycraft:keycardLV4");
+		SCContent.keycardLvl5 = new ItemKeycard(4).setRegistryName("keycard_lv5").setTranslationKey("securitycraft:keycardLV5");
 		SCContent.limitedUseKeycard = new ItemKeycard(-1).setRegistryName("limited_use_keycard").setTranslationKey("securitycraft:limitedUseKeycard");
 		SCContent.reinforcedDoorItem = new ItemReinforcedDoor().setRegistryName("door_indestructible_iron_item").setTranslationKey("securitycraft:doorIndestructibleIronItem").setCreativeTab(SecurityCraft.tabSCDecoration);
 		SCContent.universalBlockRemover = new ItemUniversalBlockRemover().setMaxStackSize(1).setMaxDamage(476).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("universal_block_remover").setTranslationKey("securitycraft:universalBlockRemover");

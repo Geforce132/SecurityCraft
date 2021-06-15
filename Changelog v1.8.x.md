@@ -1,5 +1,10 @@
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
+- Fix: The level 4 keycard is treated as a level 5 keycard by the Keycard Reader
+- Fix: Putting a level 5 keycard into a Keycard Reader crashes the game
+
+--------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
+
 - New: SecurityCraft's blocks and items can now properly be used by the offhand
 - New: The Codebreaker will now send a message when it failed to break a code
 - New: The Admin Tool will now send a message when used while it has been disabled in the config
