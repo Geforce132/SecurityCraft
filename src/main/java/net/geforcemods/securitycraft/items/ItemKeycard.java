@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
@@ -26,6 +27,7 @@ public class ItemKeycard extends Item
 	public ItemKeycard(int level)
 	{
 		this.level = level;
+		setCreativeTab(SecurityCraft.tabSCTechnical);
 	}
 
 	/**
