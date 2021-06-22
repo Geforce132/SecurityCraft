@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.22.1 of SecurityCraft--------------------------
+
+- Fix: Players cannot open other players' Password-protected Chests/Furnaces, or Keypads with the correct code
+
 --------------------------Changelog for v1.8.22 of SecurityCraft--------------------------
 
 - New: SecurityCraft's blocks and items can now properly be used by the offhand

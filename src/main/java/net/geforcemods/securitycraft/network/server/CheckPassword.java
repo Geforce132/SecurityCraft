@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,7 +54,7 @@ public class CheckPassword {
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(pos);
 
-			if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(password) && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
+			if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(password))
 			{
 				((ServerPlayerEntity) player).closeScreen();
 				((IPasswordProtected)te).activate(player);
