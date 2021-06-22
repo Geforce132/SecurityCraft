@@ -1,5 +1,9 @@
 --------------------------Changelog for v1.8.22.1 of SecurityCraft--------------------------
 
+- Fix: Players cannot open other players' Password-protected Chests/Furnaces, or Keypads with the correct code
+
+--------------------------Changelog for v1.8.22.1 of SecurityCraft--------------------------
+
 - Fix: The level 4 keycard is treated as a level 5 keycard by the Keycard Reader
 - Fix: Putting a level 5 keycard into a Keycard Reader crashes the game
 - Fix: Keycards don't show up in the creative tab

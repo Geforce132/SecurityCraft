@@ -17,7 +17,7 @@ import groovy.json.JsonSlurper
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "v1.8.22.1"
+version = "v1.8.22.2"
 group= "net.geforcemods.securitycraft"
 archivesBaseName = "securitycraft"
 

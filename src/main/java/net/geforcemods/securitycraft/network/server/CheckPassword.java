@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -55,7 +54,7 @@ public class CheckPassword implements IMessage{
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(message.password) && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player)))
+				if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(message.password))
 				{
 					((EntityPlayerMP) player).closeScreen();
 					((IPasswordProtected)te).activate(player);
