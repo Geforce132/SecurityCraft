@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
+
+- New: The Frame block will now send a message when getting rightclicked by a Camera Monitor notifying the player that viewing a Camera Monitor in a Frame is currently disabled
+
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
 - Fix: Players cannot open other players' Password-protected Chests/Furnaces, or Keypads with the correct code
