@@ -733,7 +733,7 @@
 	"messages.securitycraft:universalOwnerChanger.briefcase.notOwned": "This is not your briefcase, you cannot change its owner.",
 	"messages.securitycraft:irc.connected": "IRC chat is no longer supported as of v1.8.3 of SecurityCraft. If you need help, please refer to the #help channel on SecurityCraft's Discord!",
 	"messages.securitycraft:cageTrap.captured": "%1$s got captured at %2$s.",
-	"messages.securitycraft:frame.rightclick": "Viewing a camera monitor in a frame is currently disabled because LookingGlass has not been ported to any version newer than 1.7.10. In a future update, this feature might return without depending on any library mod like LookingGlass, however it is unknown when exactly.",
+	"messages.securitycraft:frame.rightclick": "Viewing a camera monitor in a frame is currently not possible because LookingGlass has not been ported to any version newer than 1.7.10. In a future update, this feature might return without depending on any library mod like LookingGlass, however it is unknown when exactly.",
 	"messages.securitycraft:command.sc.usage": "Usage: /sc connect OR /sc disconnect OR /sc contact OR /sc resume",
 	"messages.securitycraft:naming.alreadyMatches": "This block's name already matches '%s'.",
 	"messages.securitycraft:naming.named": "This block has been renamed to '%s'.",
