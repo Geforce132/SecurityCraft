@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -19,6 +22,7 @@ import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
@@ -55,7 +59,14 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		return player.getHeldItem(hand).getItem() == SCContent.KEY_PANEL.get() ? ActionResultType.SUCCESS : ActionResultType.PASS;
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getTranslationKey()), Utils.localize("messages.securitycraft:frame.rightclick"), TextFormatting.RED);
+			return ActionResultType.SUCCESS;
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override
