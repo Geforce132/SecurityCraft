@@ -24,8 +24,13 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean attackEntity(Entity entity){
 		if (entity instanceof LivingEntity && !(entity instanceof SentryEntity) && !EntityUtils.isInvisible(((LivingEntity)entity))) {
-			if (entity instanceof PlayerEntity && (getOwner().isOwner((PlayerEntity) entity) || ModuleUtils.isAllowed(this, entity)))
-				return false;
+			if (entity instanceof PlayerEntity)
+			{
+				PlayerEntity player = (PlayerEntity)entity;
+
+				if(player.isCreative() || player.isSpectator() || getOwner().isOwner(player) || ModuleUtils.isAllowed(this, entity))
+					return false;
+			}
 
 			if(!world.isRemote)
 				((ServerWorld)world).addLightningBolt(new LightningBoltEntity(world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), false));
@@ -52,7 +57,7 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean shouldAttackEntityType(Entity entity)
 	{
-		return !(entity instanceof PlayerEntity) && entity instanceof LivingEntity;
+		return entity instanceof LivingEntity;
 	}
 
 	@Override
