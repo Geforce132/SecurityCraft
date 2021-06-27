@@ -39,6 +39,8 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 			BlockState state = te.getProjectedBlock().getDefaultState();
 			BlockPos pos;
 
+			RenderSystem.disableCull();
+
 			for(int x = 0; x < te.getProjectionWidth(); x++) {
 				for(int y = 0; y < te.getProjectionHeight(); y++) {
 					stack.push();
@@ -50,7 +52,6 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 
 					if(pos != null && te.getWorld().isAirBlock(pos))
 					{
-						RenderSystem.disableCull();
 
 						switch (state.getRenderType()) {
 							case MODEL:
@@ -59,18 +60,22 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 										Minecraft.getInstance().getBlockRendererDispatcher().renderModel(state, pos, te.getWorld(), stack, buffer.getBuffer(rendertype), true, random);
 									}
 								}
+
 								break;
 							case ENTITYBLOCK_ANIMATED:
 								ItemStack tileEntityStack = new ItemStack(state.getBlock());
 								tileEntityStack.getItem().getItemStackTileEntityRenderer().func_239207_a_(tileEntityStack, ItemCameraTransforms.TransformType.NONE, stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+								break;
+							default:
+								break;
 						}
-
-						RenderSystem.enableCull();
 					}
 
 					stack.pop();
 				}
 			}
+
+			RenderSystem.enableCull();
 		}
 	}
 
