@@ -363,7 +363,7 @@ public class ClientProxy implements IProxy {
 
 		specialBlockTint.put(SCContent.reinforcedGrass, (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(BlockReinforcedGrass.SNOWY)) {
-				int grassTint = BiomeColorHelper.getGrassColorAtPos(world, pos);
+				int grassTint = world != null && pos != null ? BiomeColorHelper.getGrassColorAtPos(world, pos) : ColorizerGrass.getGrassColor(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
@@ -394,9 +394,6 @@ public class ClientProxy implements IProxy {
 
 					//registering reinforced blocks color overlay for world
 					Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> {
-						if(world == null || pos == null)
-							return tint;
-
 						if (tintIndex == 0)
 							return hasReinforcedTint ? mixWithReinforcedTintIfEnabled(tint) : tint;
 						else if (specialBlockTint.containsKey(block))
