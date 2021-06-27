@@ -35,12 +35,13 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	{
 		if(te.isActive() && !te.isEmpty())
 		{
+			Random random = new Random();
+			BlockState state = te.getProjectedBlock().getDefaultState();
+			BlockPos pos;
+
 			for(int x = 0; x < te.getProjectionWidth(); x++) {
 				for(int y = 0; y < te.getProjectionHeight(); y++) {
 					stack.push();
-
-					BlockState state = te.getProjectedBlock().getDefaultState();
-					BlockPos pos;
 
 					if(!te.isHorizontal())
 						pos = translateProjection(te.getPos(), stack, te.getBlockState().get(ProjectorBlock.FACING), x, y, te.getProjectionRange(), te.getProjectionOffset());
@@ -55,9 +56,10 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 							case MODEL:
 								for (RenderType rendertype : RenderType.getBlockRenderTypes()) {
 									if (RenderTypeLookup.canRenderInLayer(state, rendertype)) {
-										Minecraft.getInstance().getBlockRendererDispatcher().renderModel(state, pos, te.getWorld(), stack, buffer.getBuffer(rendertype), true, new Random());
+										Minecraft.getInstance().getBlockRendererDispatcher().renderModel(state, pos, te.getWorld(), stack, buffer.getBuffer(rendertype), true, random);
 									}
 								}
+								break;
 							case ENTITYBLOCK_ANIMATED:
 								ItemStack tileEntityStack = new ItemStack(state.getBlock());
 								tileEntityStack.getItem().getItemStackTileEntityRenderer().func_239207_a_(tileEntityStack, ItemCameraTransforms.TransformType.NONE, stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
