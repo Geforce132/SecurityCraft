@@ -1,19 +1,23 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.util.Random;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.tileentity.ProjectorTileEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,11 +34,15 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	{
 		if(te.isActive() && !te.isEmpty())
 		{
+			Random random = new Random();
+			BlockState state = te.getProjectedBlock().getDefaultState();
+			BlockPos pos;
+
+			RenderSystem.disableCull();
+
 			for(int x = 0; x < te.getProjectionWidth(); x++) {
 				for(int y = 0; y < te.getProjectionHeight(); y++) {
 					stack.push();
-
-					BlockPos pos;
 
 					if(!te.isHorizontal())
 						pos = translateProjection(te.getPos(), stack, te.getBlockState().get(ProjectorBlock.FACING), x, y, te.getProjectionRange(), te.getProjectionOffset());
@@ -43,21 +51,37 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 
 					if(pos != null && te.getWorld().isAirBlock(pos))
 					{
-						RenderSystem.disableCull();
-						Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(te.getProjectedBlock().getDefaultState(), stack, buffer, LightTexture.packLight(te.getWorld().getLightFor(LightType.BLOCK, pos), te.getWorld().getLightFor(LightType.SKY, pos)), OverlayTexture.NO_OVERLAY);
-						RenderSystem.enableCull();
+
+						switch (state.getRenderType()) {
+							case MODEL:
+								for (RenderType rendertype : RenderType.getBlockRenderTypes()) {
+									if (RenderTypeLookup.canRenderInLayer(state, rendertype)) {
+										Minecraft.getInstance().getBlockRendererDispatcher().renderModel(state, pos, te.getWorld(), stack, buffer.getBuffer(rendertype), true, random);
+									}
+								}
+
+								break;
+							case ENTITYBLOCK_ANIMATED:
+								ItemStack tileEntityStack = new ItemStack(state.getBlock());
+								tileEntityStack.getItem().getItemStackTileEntityRenderer().render(tileEntityStack, stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+								break;
+							default:
+								break;
+						}
 					}
 
 					stack.pop();
 				}
 			}
+
+			RenderSystem.enableCull();
 		}
 	}
 
 	/**
 	 * Shifts the projection depending on the offset and range set in the projector
 	 *
-	 * @param pos The position of the projector which draws the fake block
+	 * @param tePos The position of the projector which draws the fake block
 	 * @param stack the MatrixStack of the current render context
 	 * @param direction The direction the projector is facing
 	 * @param x The offset from the projectors position on the x axis of the position at which to draw the fake block

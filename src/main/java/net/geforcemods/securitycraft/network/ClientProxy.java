@@ -320,7 +320,7 @@ public class ClientProxy implements IProxy
 
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.get(ReinforcedSnowyDirtBlock.SNOWY)) {
-				int grassTint = BiomeColors.getGrassColor(world, pos);
+				int grassTint = world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
@@ -329,7 +329,7 @@ public class ClientProxy implements IProxy
 		});
 		specialBlockTint.put(SCContent.REINFORCED_CAULDRON.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1)
-				return BiomeColors.getWaterColor(world, pos);
+				return world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1;
 
 			return noTint;
 		});
@@ -345,9 +345,6 @@ public class ClientProxy implements IProxy
 		});
 
 		toTint.forEach((block, tint) -> Minecraft.getInstance().getBlockColors().register((state, world, pos, tintIndex) -> {
-			if(world == null || pos == null)
-				return tint;
-
 			if (tintIndex == 0)
 				return reinforcedTint.contains(block) ? mixWithReinforcedTintIfEnabled(tint) : tint;
 			else if (specialBlockTint.containsKey(block))
