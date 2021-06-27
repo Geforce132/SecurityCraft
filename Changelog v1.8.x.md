@@ -3,6 +3,7 @@
 - New: The Frame block will now send a message when being rightclicked with a Camera Monitor, notifying the player that viewing a Camera Monitor in a Frame is currently not possible
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: Blocks projected by the projector have incorrect lighting
+- Fix: The Protecto does not attack players
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
