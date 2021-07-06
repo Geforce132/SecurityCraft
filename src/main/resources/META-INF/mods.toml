@@ -1,6 +1,7 @@
 modLoader="javafml" #mandatory
 loaderVersion="[31,)" #mandatory
 logoFile="scLogo.png"
+issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
 [[mods]] #mandatory
 	modId="securitycraft" #mandatory
@@ -8,7 +9,6 @@ logoFile="scLogo.png"
 	displayName="SecurityCraft" #mandatory
 	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.''' #mandatory
-	issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 	displayURL="https://discord.gg/U8DvBAW"
 	credits="Thanks to all of you guys for your support!"
 	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
