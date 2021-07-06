@@ -2,6 +2,7 @@ modLoader="javafml" #mandatory
 loaderVersion="[34,)" #mandatory
 logoFile="scLogo.png"
 license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.16.2/LICENSE"
+issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
 [[mods]] #mandatory
 	modId="securitycraft" #mandatory
@@ -9,7 +10,6 @@ license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.16.2/LI
 	displayName="SecurityCraft" #mandatory
 	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
 	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.''' #mandatory
-	issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 	displayURL="https://discord.gg/U8DvBAW"
 	credits="Thanks to all of you guys for your support!"
 	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
