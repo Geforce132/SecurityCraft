@@ -88,12 +88,12 @@ public class BlockProjector extends BlockDisguisable {
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 
-		if (tileentity instanceof TileEntityProjector)
+		if(te instanceof TileEntityProjector)
 		{
 			// Drop the block being projected
-			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityProjector) world.getTileEntity(pos)).getStackInSlot(36));
+			EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), ((TileEntityProjector)te).getStackInSlot(36));
 			WorldUtils.addScheduledTask(world, () -> world.spawnEntity(item));
 		}
 
@@ -105,10 +105,17 @@ public class BlockProjector extends BlockDisguisable {
 	{
 		if(!world.isRemote)
 		{
-			if(world.getTileEntity(pos) instanceof TileEntityProjector && ((TileEntityProjector) world.getTileEntity(pos)).isActivatedByRedstone())
+			TileEntity tile = world.getTileEntity(pos);
+
+			if(tile instanceof TileEntityProjector)
 			{
-				((TileEntityProjector) world.getTileEntity(pos)).setActive(world.isBlockPowered(pos));
-				((TileEntityProjector) world.getTileEntity(pos)).sync();
+				TileEntityProjector te = (TileEntityProjector)tile;
+
+				if(te.isActivatedByRedstone())
+				{
+					te.setActive(world.isBlockPowered(pos));
+					te.sync();
+				}
 			}
 		}
 	}
@@ -116,9 +123,17 @@ public class BlockProjector extends BlockDisguisable {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
 	{
-		if (!world.isBlockPowered(pos) && world.getTileEntity(pos) instanceof TileEntityProjector && ((TileEntityProjector) world.getTileEntity(pos)).isActivatedByRedstone())
+		if(!world.isBlockPowered(pos))
 		{
-			((TileEntityProjector) world.getTileEntity(pos)).setActive(false);
+			TileEntity tile = world.getTileEntity(pos);
+
+			if(tile instanceof TileEntityProjector)
+			{
+				TileEntityProjector te = (TileEntityProjector)tile;
+
+				if(te.isActivatedByRedstone())
+					te.setActive(false);
+			}
 		}
 	}
 
