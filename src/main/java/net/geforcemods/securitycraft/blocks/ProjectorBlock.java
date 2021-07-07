@@ -99,12 +99,12 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity te = world.getTileEntity(pos);
 
-		if (tileentity instanceof ProjectorTileEntity)
+		if(te instanceof ProjectorTileEntity)
 		{
 			// Drop the block being projected
-			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity) world.getTileEntity(pos)).getStackInSlot(36));
+			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity)te).getStackInSlot(36));
 			WorldUtils.addScheduledTask(world, () -> world.addEntity(item));
 		}
 
@@ -116,10 +116,17 @@ public class ProjectorBlock extends DisguisableBlock {
 	{
 		if(!world.isRemote)
 		{
-			if(world.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) world.getTileEntity(pos)).isActivatedByRedstone())
+			TileEntity tile = world.getTileEntity(pos);
+
+			if(tile instanceof ProjectorTileEntity)
 			{
-				((ProjectorTileEntity) world.getTileEntity(pos)).setActive(world.isBlockPowered(pos));
-				((ProjectorTileEntity) world.getTileEntity(pos)).sync();
+				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
+
+				if(te.isActivatedByRedstone())
+				{
+					te.setActive(world.isBlockPowered(pos));
+					te.sync();
+				}
 			}
 		}
 	}
@@ -127,9 +134,17 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
-		if (!world.isBlockPowered(pos) && world.getTileEntity(pos) instanceof ProjectorTileEntity && ((ProjectorTileEntity) world.getTileEntity(pos)).isActivatedByRedstone())
+		if(!world.isBlockPowered(pos))
 		{
-			((ProjectorTileEntity) world.getTileEntity(pos)).setActive(false);
+			TileEntity tile = world.getTileEntity(pos);
+
+			if(tile instanceof ProjectorTileEntity)
+			{
+				ProjectorTileEntity te =  (ProjectorTileEntity)tile;
+
+				if(te.isActivatedByRedstone())
+					te.setActive(false);
+			}
 		}
 	}
 
