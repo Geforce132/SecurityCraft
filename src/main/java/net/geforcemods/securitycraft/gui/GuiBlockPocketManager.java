@@ -165,12 +165,15 @@ public class GuiBlockPocketManager extends GuiContainer implements ISlider
 	{
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
-		for(StackHoverChecker shc : hoverCheckers)
+		if(!te.enabled && isOwner)
 		{
-			if(shc.checkHover(mouseX, mouseY))
+			for(StackHoverChecker shc : hoverCheckers)
 			{
-				renderToolTip(shc.getStack(), mouseX, mouseY);
-				return;
+				if(shc.checkHover(mouseX, mouseY))
+				{
+					renderToolTip(shc.getStack(), mouseX, mouseY);
+					return;
+				}
 			}
 		}
 

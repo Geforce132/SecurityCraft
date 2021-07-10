@@ -4,6 +4,7 @@
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: The Protecto does not attack players
 - Fix: The Frame's model does not match up with the vanilla iron block (this fix may break resource packs slightly)
+- Fix: Tooltips in the Block Pocket Manager's GUI still show up even if the block pocket is activated or not owned by the player looking at it
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
