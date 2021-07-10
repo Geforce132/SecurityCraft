@@ -550,6 +550,7 @@
 	"gui.securitycraft:invScan.mode.admin": "Admin-Modus",
 	"gui.securitycraft:invScan.mode.view": "Ansichtsmodus",
 	"gui.securitycraft:invScan.storage": "Lager",
+	"gui.securitycraft:invScan.notInstalled": "Das %s ist nicht installiert.",
 	"gui.securitycraft:protectedFurnace.name": "Passwortgesicherter Ofen",
 	"gui.securitycraft:logger.logged": "Protokollierte Spieler:",
 	"gui.securitycraft:logger.date": "Datum: %s",

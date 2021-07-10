@@ -2,9 +2,11 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.containers.InventoryScannerContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,17 +22,19 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	private static final ResourceLocation ENHANCED_INVENTORY = new ResourceLocation("securitycraft:textures/gui/container/inventory_scanner_enhanced_gui.png");
 	private InventoryScannerTileEntity tileEntity;
 	private boolean owns = false;
-	private boolean hasStorageModule = false;
-	private String infoString;
+	private boolean hasRedstoneModule = false, hasStorageModule = false;
+	private String infoStringRedstone, infoStringStorage;
+	private final String redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getTranslationKey())).getFormattedText();
+	private final String storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getTranslationKey())).getFormattedText();
 
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		tileEntity = container.te;
 		owns = tileEntity.getOwner().isOwner(inv.player);
+		hasRedstoneModule = tileEntity.hasModule(ModuleType.REDSTONE);
 		hasStorageModule = tileEntity.hasModule(ModuleType.STORAGE);
-		infoString = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (tileEntity.hasModule(ModuleType.REDSTONE) ? "yes" : "no")))
-				.appendText("\n\n")
-				.appendSibling(Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")))).getFormattedText();
+		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no"))).getFormattedText();
+		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no"))).getFormattedText();
 
 		if(hasStorageModule)
 			xSize = 246;
@@ -49,9 +53,12 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks){
 		super.render(mouseX, mouseY, partialTicks);
-		RenderSystem.disableLighting();
 
-		font.drawSplitString(infoString, guiLeft + 8, guiTop + 40, 170, 4210752);
+		RenderSystem.disableLighting();
+		font.drawSplitString(infoStringRedstone, guiLeft + 28, guiTop + 45, 150, 4210752);
+		font.drawSplitString(infoStringStorage, guiLeft + 28, guiTop + 75, 150, 4210752);
+		ClientUtils.renderModuleInfo(ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, guiLeft + 8, guiTop + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, guiLeft + 8, guiTop + 75, width, height, mouseX, mouseY);
 
 		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
 			renderTooltip(getSlotUnderMouse().getStack(), mouseX, mouseY);
@@ -63,9 +70,6 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		minecraft.keyboardListener.enableRepeatEvents(false);
 	}
 
-	/**
-	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
-	 */
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
@@ -82,12 +86,7 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		renderBackground();
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		if(hasStorageModule && owns)
-			minecraft.getTextureManager().bindTexture(ENHANCED_INVENTORY);
-		else
-			minecraft.getTextureManager().bindTexture(REGULAR_INVENTORY);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(startX, startY, 0, 0, xSize, ySize + 30);
+		minecraft.getTextureManager().bindTexture(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
+		blit((width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize + 30);
 	}
 }

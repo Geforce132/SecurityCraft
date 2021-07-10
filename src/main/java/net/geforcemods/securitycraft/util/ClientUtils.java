@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.UpdateNBTTagOnServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -18,7 +19,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.gui.GuiUtils;
 
 public class ClientUtils{
-	private static final ResourceLocation SMART_MODULE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png");
+	private static final ResourceLocation[] MODULE_TEXTURES = {
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/whitelist_module.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/blacklist_module.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/harming_module.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/storage_module.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/disguise_module.png"),
+			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png")
+	};
+	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/item/redstone.png");
+	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/item/sugar.png");
 
 	public static void closePlayerScreen(){
 		Minecraft.getInstance().player.closeScreen();
@@ -44,13 +56,11 @@ public class ClientUtils{
 		SecurityCraft.channel.sendToServer(new UpdateNBTTagOnServer(item));
 	}
 
-	public static void renderSmartModuleInfo(String moduleTooltip, String noModuleTooltip, boolean isSmart, int guiLeft, int guiTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
+	public static void renderModuleInfo(ModuleType module, String moduleTooltip, String noModuleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int screenWidth, int screenHeight, int mouseX, int mouseY)
 	{
 		Minecraft mc = Minecraft.getInstance();
-		float alpha = isSmart ? 1.0F : 0.5F;
-		int moduleLeft = guiLeft + 5;
+		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
-		int moduleTop = guiTop + 5;
 		int moduleBottom = moduleTop + 16;
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
 
@@ -58,7 +68,34 @@ public class ClientUtils{
 		RenderSystem.enableBlend();
 		RenderSystem.defaultAlphaFunc();
 		RenderSystem.defaultBlendFunc();
-		mc.getTextureManager().bindTexture(SMART_MODULE_TEXTURE);
+
+		mc.getTextureManager().bindTexture(MODULE_TEXTURES[module.ordinal()]);
+		drawTexture(bufferBuilder, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+
+		if(module == ModuleType.REDSTONE)
+		{
+			mc.getTextureManager().bindTexture(REDSTONE_TEXTURE);
+			drawTexture(bufferBuilder, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+		}
+		else if(module == ModuleType.SPEED)
+		{
+			mc.getTextureManager().bindTexture(SUGAR_TEXTURE);
+			drawTexture(bufferBuilder, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+		}
+
+		RenderSystem.disableBlend();
+
+		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
+		{
+			String text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
+
+			if(text != null && !text.isEmpty())
+				GuiUtils.drawHoveringText(Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
+		}
+	}
+
+	private static void drawTexture(BufferBuilder bufferBuilder, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha)
+	{
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
 		bufferBuilder.pos(moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
 		bufferBuilder.pos(moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();
@@ -66,14 +103,5 @@ public class ClientUtils{
 		bufferBuilder.pos(moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 0).endVertex();
 		bufferBuilder.finishDrawing();
 		WorldVertexBufferUploader.draw(bufferBuilder);
-		RenderSystem.disableBlend();
-
-		if(mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom)
-		{
-			String text = isSmart ? moduleTooltip : noModuleTooltip;
-
-			if(text != null && !text.isEmpty())
-				GuiUtils.drawHoveringText(Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
-		}
 	}
 }
