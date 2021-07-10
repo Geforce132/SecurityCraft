@@ -79,7 +79,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		if(projectileList != null)
 			projectileList.render(matrix, mouseX, mouseY, partialTicks);
 
-		ClientUtils.renderSmartModuleInfo(matrix, toggle, moduleRequired, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

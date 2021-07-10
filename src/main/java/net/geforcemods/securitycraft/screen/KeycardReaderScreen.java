@@ -298,7 +298,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderContainer>
 			GuiUtils.drawHoveringText(matrix, usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, font);
 
 		renderHoveredTooltip(matrix, mouseX, mouseY);
-		ClientUtils.renderSmartModuleInfo(matrix, smartModule, noSmartModule, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, smartModule, noSmartModule, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

@@ -603,6 +603,7 @@
 	"gui.securitycraft:invScan.mode.admin": "Admin Mode",
 	"gui.securitycraft:invScan.mode.view": "View Mode",
 	"gui.securitycraft:invScan.storage": "Storage",
+	"gui.securitycraft:invScan.notInstalled": "The %s is not installed.",
 	"gui.securitycraft:protectedFurnace.name": "Protected Furnace",
 	"gui.securitycraft:logger.logged": "Logged players:",
 	"gui.securitycraft:logger.date": "Date: %s",
