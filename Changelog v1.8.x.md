@@ -4,6 +4,7 @@
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: Blocks projected by the projector have incorrect lighting
 - Fix: The Protecto does not attack players
+- Fix: The Frame's model does not match up with the vanilla iron block (this fix may break resource packs slightly)
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
