@@ -735,6 +735,7 @@ module.securitycraft:keypad_door.whitelistModule.description=Adding an allowlist
 module.securitycraft:keypad_door.blacklistModule.description=Adding a denylist module to a keypad door will ban players on the list from interacting with the block.
 module.securitycraft:usernameLogger.whitelistModule.description=Adding an allowlist module to a Username Logger will prevent the players on the list from being logged.
 module.securitycraft:trophy_system.smartModule.description=Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.
+module.securitycraft:trophy_system.whitelistModule.description=Adding an allowlist module to a Trophy System will make it ignore projectiles thrown by players on the list, as well as their Sentries' bullets and I.M.S.' bombs.
 module.securitycraft:trophy_system.speed_module.description=Adding a speed module to a Trophy System allows it to destroy targets twice as fast.
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Adding an allowlist module to a Reinforced Cauldron will allow players on the list to interact with the Reinforced Cauldron.
 
