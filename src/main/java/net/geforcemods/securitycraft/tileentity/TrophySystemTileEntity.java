@@ -5,19 +5,21 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceBottleEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
@@ -76,11 +78,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 				ProjectileEntity target = getPotentialTarget();
 
 				if(target != null) {
-					UUID shooterUUID = getShooterUUID(target);
+					Entity shooter = target.getShooter();
 
-					if (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID())) {
+					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
+					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
 						setTarget(target);
-					}
 				}
 			}
 		}
@@ -178,7 +180,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 		potentialTargets.addAll(world.getEntitiesWithinAABB(ProjectileEntity.class, area, this::isAllowedToTarget));
 
-		//remove bullets shot by sentries of this trophy system's owner
+		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
@@ -199,23 +201,14 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	private boolean filterSCProjectiles(ProjectileEntity projectile) {
+		Owner owner = null;
+
 		if (projectile instanceof BulletEntity)
-			return !((BulletEntity)projectile).getOwner().equals(getOwner());
+			owner = ((BulletEntity)projectile).getOwner();
 		else if (projectile instanceof IMSBombEntity)
-			return !((IMSBombEntity)projectile).getOwner().equals(getOwner());
+			owner = ((IMSBombEntity)projectile).getOwner();
 
-		return true;
-	}
-
-	/**
-	 * Returns the UUID of the player who shot the given Entity
-	 */
-	public UUID getShooterUUID(ProjectileEntity projectile) {
-		if (projectile.getShooter() != null) {
-			return projectile.getShooter().getUniqueID();
-		} else {
-			return null;
-		}
+		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {
@@ -255,7 +248,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED};
+		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST};
 	}
 
 	@Override

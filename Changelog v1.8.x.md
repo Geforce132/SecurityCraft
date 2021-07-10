@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.8.23 of SecurityCraft--------------------------
 
 - New: The Frame block will now send a message when being rightclicked with a Camera Monitor, notifying the player that viewing a Camera Monitor in a Frame is currently not possible
+- New: The Trophy System now supports the Allowlist Module. Projectiles by listed players (as well as their Sentries' and I.M.S.' projectiles) will be ignored
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: Blocks projected by the projector have incorrect lighting
 - Fix: The Protecto does not attack players
