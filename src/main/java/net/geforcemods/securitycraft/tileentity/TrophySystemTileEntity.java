@@ -5,22 +5,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableTileEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
+import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ExperienceBottleEntity;
 import net.minecraft.entity.item.FireworkRocketEntity;
 import net.minecraft.entity.passive.PigEntity;
@@ -37,6 +37,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
@@ -82,11 +83,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 				Entity target = getPotentialTarget();
 
 				if(target != null) {
-					UUID shooterUUID = getShooterUUID(target);
+					Entity shooter = getShooter(target);
 
-					if (shooterUUID == null || !shooterUUID.toString().equals(getOwner().getUUID())) {
+					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
+					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
 						setTarget(target);
-					}
 				}
 			}
 		}
@@ -184,7 +185,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 		potentialTargets.addAll(world.getEntitiesWithinAABB(Entity.class, area, this::isAllowedToTarget));
 
-		//remove bullets shot by sentries of this trophy system's owner
+		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
@@ -209,31 +210,29 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	private boolean filterSCProjectiles(Entity projectile) {
-		if (projectile instanceof BulletEntity)
-			return !((BulletEntity)projectile).getOwner().equals(getOwner());
-		else if (projectile instanceof IMSBombEntity)
-			return !((IMSBombEntity)projectile).getOwner().equals(getOwner());
+		Owner owner = null;
 
-		return true;
+		if (projectile instanceof BulletEntity)
+			owner = ((BulletEntity)projectile).getOwner();
+		else if (projectile instanceof IMSBombEntity)
+			owner = ((IMSBombEntity)projectile).getOwner();
+
+		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	/**
 	 * Returns the UUID of the player who shot the given Entity
 	 */
-	public UUID getShooterUUID(Entity projectile) {
+	public Entity getShooter(Entity projectile) {
 		if(projectile instanceof AbstractArrowEntity) //arrows, spectral arrows and sentry bullets
-			return ((AbstractArrowEntity) projectile).shootingEntity;
-
-		LivingEntity shooter = null;
-
-		if(projectile instanceof DamagingProjectileEntity) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
-			shooter = ((DamagingProjectileEntity) projectile).shootingEntity;
+			return ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(((AbstractArrowEntity) projectile).shootingEntity);
+		else if(projectile instanceof DamagingProjectileEntity) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
+			return ((DamagingProjectileEntity) projectile).shootingEntity;
 		else if (projectile instanceof FireworkRocketEntity)
-			shooter = ((FireworkRocketEntity)projectile).boostedEntity;
+			return ((FireworkRocketEntity)projectile).boostedEntity;
 		else if (projectile instanceof ThrowableEntity) //eggs, snowballs and ender pearls
-			shooter = ((ThrowableEntity)projectile).getThrower();
-
-		return shooter != null ? shooter.getUniqueID() : null;
+			return ((ThrowableEntity)projectile).getThrower();
+		else return null;
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {
@@ -273,7 +272,7 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public ModuleType[] acceptedModules() {
-		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED};
+		return new ModuleType[]{ModuleType.SMART, ModuleType.SPEED, ModuleType.ALLOWLIST};
 	}
 
 	@Override
