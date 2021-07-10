@@ -12,6 +12,7 @@ public class SCContent
 {
 	//Blocks
 	public static Block alarm;
+	@Deprecated //use alarm and its lit property
 	public static Block alarmLit;
 	@Tinted(customTint = 0x15b3a2) public static Block blockPocketManager;
 	@Tinted(customTint = 0x15b3a2) public static Block blockPocketWall;

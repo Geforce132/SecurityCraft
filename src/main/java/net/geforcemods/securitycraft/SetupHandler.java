@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.blocks.BlockLaserBlock;
 import net.geforcemods.securitycraft.blocks.BlockLaserField;
 import net.geforcemods.securitycraft.blocks.BlockLogger;
 import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
+import net.geforcemods.securitycraft.blocks.BlockOldLitAlarm;
 import net.geforcemods.securitycraft.blocks.BlockPanicButton;
 import net.geforcemods.securitycraft.blocks.BlockPortableRadar;
 import net.geforcemods.securitycraft.blocks.BlockProjector;
@@ -147,8 +148,8 @@ public class SetupHandler
 		SCContent.reinforcedIronBars = new BlockReinforcedIronBars(Material.IRON, true).setCreativeTab(SecurityCraft.tabSCDecoration).setBlockUnbreakable().setResistance(6000000.0F).setRegistryName("reinforced_iron_bars").setTranslationKey("securitycraft:reinforcedIronBars");
 		SCContent.keypadChest = new BlockKeypadChest().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("keypad_chest").setTranslationKey("securitycraft:keypadChest");
 		SCContent.usernameLogger = new BlockLogger(Material.ROCK).setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("username_logger").setTranslationKey("securitycraft:usernameLogger");
-		SCContent.alarm = new BlockAlarm(Material.IRON, false).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("alarm").setTranslationKey("securitycraft:alarm");
-		SCContent.alarmLit = new BlockAlarm(Material.IRON, true).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setRegistryName("alarm_lit").setTranslationKey("securitycraft:alarmLit");
+		SCContent.alarm = new BlockAlarm(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setCreativeTab(SecurityCraft.tabSCTechnical).setRegistryName("alarm").setTranslationKey("securitycraft:alarm");
+		SCContent.alarmLit = new BlockOldLitAlarm(Material.IRON).setBlockUnbreakable().setResistance(6000000.0F).setTickRandomly(true).setRegistryName("alarm_lit").setTranslationKey("securitycraft:alarmLit");
 		SCContent.reinforcedStone = new BlockReinforcedStone().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_stone").setTranslationKey("securitycraft:reinforcedStone");
 		SCContent.reinforcedFencegate = new BlockReinforcedFenceGate().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_fence_gate").setTranslationKey("securitycraft:reinforcedFenceGate");
 		SCContent.reinforcedWoodPlanks = new BlockReinforcedWood().setBlockUnbreakable().setResistance(6000000.0F).setCreativeTab(SecurityCraft.tabSCDecoration).setRegistryName("reinforced_planks").setTranslationKey("securitycraft:reinforcedPlanks");

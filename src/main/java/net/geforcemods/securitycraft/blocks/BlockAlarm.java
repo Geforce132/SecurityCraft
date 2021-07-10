@@ -3,18 +3,14 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.Option.OptionInt;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityAlarm;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
@@ -25,20 +21,22 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAlarm extends BlockOwnable {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+	public static final PropertyBool LIT = PropertyBool.create("lit");
 
-	public BlockAlarm(Material material, boolean isLit) {
+	public BlockAlarm(Material material) {
 		super(material);
 
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+	}
 
-		if(isLit)
-			setLightLevel(1.0F);
+	@Override
+	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+	{
+		return state.getValue(LIT) ? 15 : 0;
 	}
 
 	/**
@@ -75,7 +73,7 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
 	{
-		return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? getDefaultState().withProperty(FACING, facing) : getDefaultState().withProperty(FACING, EnumFacing.DOWN);
+		return getDefaultState().withProperty(FACING, world.isSideSolid(pos.offset(facing.getOpposite()), facing, true) ? facing : EnumFacing.DOWN).withProperty(LIT, false);
 	}
 
 	/**
@@ -83,9 +81,7 @@ public class BlockAlarm extends BlockOwnable {
 	 */
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		if(world.isRemote)
-			return;
-		else
+		if(!world.isRemote)
 			world.scheduleUpdate(pos, state.getBlock(), 5);
 	}
 
@@ -95,20 +91,19 @@ public class BlockAlarm extends BlockOwnable {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
 		if(!world.isRemote){
-			playSoundAndUpdate(world, pos);
-
+			updateState(world, pos, state);
 			world.scheduleUpdate(pos, state.getBlock(), 5);
 		}
 	}
 
 	@Override
 	public void onNeighborChange(IBlockAccess w, BlockPos pos, BlockPos neighbor){
-		World world = ((World)w);
+		World world = (World)w;
 
 		if(world.isRemote)
 			return;
 
-		playSoundAndUpdate((world), pos);
+		updateState(world, pos, world.getBlockState(pos));
 
 		EnumFacing facing = world.getBlockState(pos).getValue(FACING);
 
@@ -148,57 +143,42 @@ public class BlockAlarm extends BlockOwnable {
 		return state.getBoundingBox(source, pos);
 	}
 
-	private void playSoundAndUpdate(World world, BlockPos pos){
-		if(!(world.getBlockState(pos).getBlock() instanceof BlockAlarm) || !(world.getTileEntity(pos) instanceof TileEntityAlarm)) return;
+	private void updateState(World world, BlockPos pos, IBlockState state){
+		if(state.getBlock() != SCContent.alarm)
+			return;
 
-		TileEntityAlarm te = (TileEntityAlarm)world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if(world.getRedstonePowerFromNeighbors(pos) > 0){
-			boolean isPowered = te.isPowered();
+		if(tile instanceof TileEntityAlarm)
+		{
+			TileEntityAlarm te = (TileEntityAlarm)tile;
 
-			if(!isPowered){
-				Owner owner = te.getOwner();
-				EnumFacing dir = BlockUtils.getBlockProperty(world, pos, FACING);
-				OptionInt range = te.range;
-				world.setBlockState(pos, SCContent.alarmLit.getDefaultState());
-				BlockUtils.setFacingProperty(world, pos, FACING, dir);
-				te = (TileEntityAlarm)world.getTileEntity(pos);
-				te.setOwner(owner.getUUID(), owner.getName());
-				te.setPowered(true);
-				te.range.copy(range);
-			}
+			if(world.getRedstonePowerFromNeighbors(pos) > 0){
+				boolean isPowered = te.isPowered();
 
-		}else{
-			boolean isPowered = te.isPowered();
+				if(!isPowered){
+					world.setBlockState(pos, state.withProperty(LIT, true));
+					te.setPowered(true);
+				}
 
-			if(isPowered){
-				Owner owner = te.getOwner();
-				EnumFacing dir = BlockUtils.getBlockProperty(world, pos, FACING);
-				OptionInt range = te.range;
-				world.setBlockState(pos, SCContent.alarm.getDefaultState());
-				BlockUtils.setFacingProperty(world, pos, FACING, dir);
-				te = (TileEntityAlarm)world.getTileEntity(pos);
-				te.setOwner(owner.getUUID(), owner.getName());
-				te.setPowered(false);
-				te.range.copy(range);
+			}else{
+				boolean isPowered = te.isPowered();
+
+				if(isPowered){
+					world.setBlockState(pos, state.withProperty(LIT, false));
+					te.setPowered(false);
+				}
 			}
 		}
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.alarm));
-	}
-
-	@Override
-	public Item getItemDropped(IBlockState state, Random p_149650_2_, int p_149650_3_){
-		return Item.getItemFromBlock(SCContent.alarm);
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta){
 		EnumFacing facing;
+		boolean lit = meta > 6;
+
+		if(lit)
+			meta = meta - 6;
 
 		switch (meta & 7){
 			case 0:
@@ -221,7 +201,7 @@ public class BlockAlarm extends BlockOwnable {
 				facing = EnumFacing.UP;
 		}
 
-		return getDefaultState().withProperty(FACING, facing);
+		return getDefaultState().withProperty(FACING, facing).withProperty(LIT, lit);
 	}
 
 	@Override
@@ -249,12 +229,15 @@ public class BlockAlarm extends BlockOwnable {
 				meta = 0;
 		}
 
+		if(state.getValue(LIT))
+			meta += 6;
+
 		return meta;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState(){
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, LIT);
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockAlarm;
+import net.geforcemods.securitycraft.blocks.BlockOldLitAlarm;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,18 +25,29 @@ public class TileEntityAlarm extends CustomizableSCTE {
 		if(cooldown > 0)
 			cooldown--;
 
+		//convert the old lit alarm block to the old unlit alarm block, which now has a LIT property
+		if(getBlockType() == SCContent.alarmLit)
+		{
+			world.setBlockState(pos, SCContent.alarm.getDefaultState().withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockOldLitAlarm.FACING)).withProperty(BlockAlarm.LIT, false));
+
+			TileEntityAlarm newTe = (TileEntityAlarm)world.getTileEntity(pos);
+
+			newTe.getOwner().set(getOwner().getUUID(), getOwner().getName());
+			newTe.range.copy(range);
+			newTe.delay.copy(delay);
+			newTe.setPowered(false);
+			invalidate();
+			return;
+		}
+
 		if(isPowered && cooldown == 0)
 		{
-			TileEntityAlarm te = (TileEntityAlarm) world.getTileEntity(pos);
-
 			for(EntityPlayer player : world.getPlayers(EntityPlayer.class, p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
 			{
 				world.playSound(player, player.getPosition(), SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 			}
 
-			te.setCooldown(delay.get() * 20);
-			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockAlarm.FACING, world.getBlockState(pos).getValue(BlockAlarm.FACING)), 2);
-			world.setTileEntity(pos, te);
+			setCooldown(delay.get() * 20);
 		}
 	}
 

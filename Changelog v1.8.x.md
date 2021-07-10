@@ -6,6 +6,8 @@
 - Fix: The Protecto does not attack players
 - Fix: The Frame's model does not match up with the vanilla iron block (this fix may break resource packs slightly)
 - Fix: Tooltips in the Block Pocket Manager's GUI still show up even if the block pocket is activated or not owned by the player looking at it
+- Fix: Alarm crash
+- Misc.: The block "securitycraft:alarm_lit" is no longer in use. It is kept for backwards compatibility, and any existing blocks will automatically be converted to "securitycraft:alarm". The latter now has a "lit" block property.
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
