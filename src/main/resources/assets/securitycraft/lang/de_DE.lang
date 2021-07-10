@@ -734,12 +734,12 @@ module.securitycraft:scannerDoor.whitelistModule.description=Ein Zulassungsliste
 module.securitycraft:reinforced_hopper.whitelistModule.description=Ein Zulassungslisten-Modul in einem verstärkten Trichter erlaubt zugelassenen Spielern, den Trichter zu benutzen, sowie ihn zum Extrahieren von Items aus ihren passwortgesicherten Truhen/Öfen/... zu verwenden.
 module.securitycraft:keypad_door.whitelistModule.description=Ein Zulassungslisten-Modul in einer Nummernschloss-Tür erlaubt zugelassenen Spielern, die Tür zu aktivieren, ohne den Code zu kennen.
 module.securitycraft:keypad_door.blacklistModule.description=Ein Sperrlisten-Modul in einer Nummernschloss-Tür verhindert, dass gesperrte Spieler mit der Tür interagieren können.
-module.securitycraft:usernameLogger.whitelistModule.description=Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die Spieler auf der Liste protokolliert werden.
+module.securitycraft:usernameLogger.whitelistModule.description=Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die zugelassenen Spieler protokolliert werden.
 module.securitycraft:trophy_system.smartModule.description=Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.
 module.securitycraft:trophy_system.speed_module.description=Ein Schnelligkeits-Modul in einem Trophy-System erlaubt es seine Ziele doppelt so schnell zu zerstören.
 module.securitycraft:trophy_system.whitelistModule.description=Ein Zulassungslisten-Modul in einem Trophy-System lässt es Projektile, die von zugelassenen Spielern geworfen wurden, sowie Kugeln ihrer Geschütze und Bomben ihrer I.M.S. ignorieren.
 module.securitycraft:reinforced_cauldron.whitelistModule.description=Ein Zulassungslisten-Modul in einem Verstärkten Kessel erlaubt zugelassenen Spielern, mit dem Verstärkten Kessel zu interagieren.
-module.securitycraft:cageTrap.whitelistModule.description=Ein Zulassungslisten-Modul in einer Käfigfalle verhindert, dass die Spieler auf der Liste gefangen genommen werden.
+module.securitycraft:cageTrap.whitelistModule.description=Ein Zulassungslisten-Modul in einer Käfigfalle verhindert, dass die zugelassenen Spieler gefangen genommen werden.
 
 config.securitycraft:isCodebreakerAllowed=Ist der Codebrecher erlaubt?
 config.securitycraft:isCodebreakerAllowed.tooltip=Kann der Codebrecher benutzt werden?
