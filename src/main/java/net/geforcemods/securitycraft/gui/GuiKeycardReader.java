@@ -309,7 +309,7 @@ public class GuiKeycardReader extends GuiContainer
 			GuiUtils.drawHoveringText(usesHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 
 		renderHoveredToolTip(mouseX, mouseY);
-		net.geforcemods.securitycraft.util.GuiUtils.renderSmartModuleInfo(smartModule, noSmartModule, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
+		net.geforcemods.securitycraft.util.GuiUtils.renderModuleInfo(EnumModuleType.SMART, smartModule, noSmartModule, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override

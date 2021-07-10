@@ -73,7 +73,7 @@ public class GuiTrophySystem extends GuiContainer {
 		if(projectileList != null)
 			projectileList.drawScreen(mouseX, mouseY, partialTicks);
 
-		GuiUtils.renderSmartModuleInfo(toggle, moduleRequired, isSmart, guiLeft, guiTop, width, height, mouseX, mouseY);
+		GuiUtils.renderModuleInfo(EnumModuleType.SMART, toggle, moduleRequired, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
