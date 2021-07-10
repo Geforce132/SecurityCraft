@@ -166,7 +166,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		if(!te.enabled)
+		if(!te.enabled && isOwner)
 		{
 			for(StackHoverChecker shc : hoverCheckers)
 			{
