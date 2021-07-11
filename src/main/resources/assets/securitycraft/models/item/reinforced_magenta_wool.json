@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_wool_magenta",
+    "parent": "securitycraft:block/reinforced_magenta_wool",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

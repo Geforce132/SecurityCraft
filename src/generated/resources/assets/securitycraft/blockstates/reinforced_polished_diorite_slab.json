@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_polished_diorite_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_stone_smooth_diorite"
+      "model": "securitycraft:block/reinforced_polished_diorite"
     }
   }
 }

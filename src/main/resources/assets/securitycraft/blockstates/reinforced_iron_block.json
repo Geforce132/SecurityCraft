@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_metals_iron" }
+        "":  { "model": "securitycraft:block/reinforced_iron_block" }
     }
 }

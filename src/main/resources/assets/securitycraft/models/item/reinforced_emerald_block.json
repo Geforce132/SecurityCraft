@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_metals_emerald",
+    "parent": "securitycraft:block/reinforced_emerald_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

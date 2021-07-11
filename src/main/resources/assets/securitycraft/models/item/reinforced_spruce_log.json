@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_logs_spruce",
+    "parent": "securitycraft:block/reinforced_spruce_log",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

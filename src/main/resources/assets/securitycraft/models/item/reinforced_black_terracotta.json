@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_stained_hardened_clay_black",
+    "parent": "securitycraft:block/reinforced_black_terracotta",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

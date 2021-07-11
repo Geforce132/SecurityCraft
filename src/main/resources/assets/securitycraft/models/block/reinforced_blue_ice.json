@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_block_all",
+    "parent": "securitycraft:block/reinforced_cube_all",
     "textures": {
         "all": "block/blue_ice"
     }

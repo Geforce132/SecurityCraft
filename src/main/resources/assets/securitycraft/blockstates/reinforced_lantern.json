@@ -4,7 +4,7 @@
       "model": "securitycraft:block/reinforced_lantern" 
     }, 
     "hanging=true": { 
-      "model": "securitycraft:block/reinforced_lantern_hanging" 
+      "model": "securitycraft:block/reinforced_hanging_lantern"
     } 
   } 
 }

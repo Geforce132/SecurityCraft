@@ -1,5 +1,5 @@
 {
-  "parent": "securitycraft:block/reinforced_wall_side",
+  "parent": "securitycraft:block/template_reinforced_wall_side",
   "textures": {
     "wall": "block/granite"
   }

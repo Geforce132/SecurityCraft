@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_stone_granite" }
+        "":  { "model": "securitycraft:block/reinforced_granite" }
     }
 }

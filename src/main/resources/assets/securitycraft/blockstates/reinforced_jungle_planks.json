@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_planks_jungle" }
+            { "model": "securitycraft:block/reinforced_jungle_planks" }
         ]
     }
 }
