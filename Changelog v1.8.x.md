@@ -10,6 +10,7 @@
 - Fix: Crash when trying to change the owner of a door
 - Fix: Pick block does not work on SecurityCraft's double slabs
 - Fix: Some reinforced planks' textures don't match up with their vanilla counterpart
+- Fix: Motion Activated Light can be placed in midair
 - Misc.: The block "securitycraft:alarm_lit" is no longer in use. It is kept for backwards compatibility, and any existing blocks will automatically be converted to "securitycraft:alarm". The latter now has a "lit" block property.
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------

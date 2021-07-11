@@ -98,7 +98,7 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer){
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing()).withProperty(LIT, false);
+		return getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(LIT, false);
 	}
 
 	@Override
