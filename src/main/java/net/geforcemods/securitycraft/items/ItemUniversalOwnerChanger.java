@@ -149,7 +149,10 @@ public class ItemUniversalOwnerChanger extends Item
 			TileEntityOwnable te = (TileEntityOwnable)world.getTileEntity(pos);
 
 			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-			world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+
+			if(!world.isRemote)
+				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+
 			return true;
 		}
 
