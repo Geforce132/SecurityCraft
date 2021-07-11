@@ -77,7 +77,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				if(stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.fromPos(pos2));
+				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(pos2));
 
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));

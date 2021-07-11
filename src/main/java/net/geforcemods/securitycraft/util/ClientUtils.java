@@ -35,10 +35,6 @@ public class ClientUtils{
 	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/item/redstone.png");
 	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/item/sugar.png");
 
-	public static void closePlayerScreen(){
-		Minecraft.getInstance().player.closeScreen();
-	}
-
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */

@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.tileentity.InventoryScannerTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -146,7 +145,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			{
 				BlockPos offsetIPos = pos.offset(facing, i);
 
-				if(BlockUtils.getBlock(world, offsetIPos) == SCContent.INVENTORY_SCANNER.get())
+				if(world.getBlockState(offsetIPos).getBlock() == SCContent.INVENTORY_SCANNER.get())
 				{
 					for(int j = 1; j < i; j++)
 					{

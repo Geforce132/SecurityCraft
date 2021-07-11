@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
@@ -73,7 +72,7 @@ public class KeypadTileEntity extends DisguisableTileEntity implements IPassword
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeypadBlock)
+		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadBlock)
 			KeypadBlock.activate(world, pos, signalLength.get());
 	}
 

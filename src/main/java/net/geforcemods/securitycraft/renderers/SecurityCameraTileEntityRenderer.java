@@ -6,8 +6,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.tileentity.SecurityCameraTileEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -46,16 +46,21 @@ public class SecurityCameraTileEntityRenderer extends TileEntityRenderer<Securit
 
 		matrix.translate(0.5D, 1.5D, 0.5D);
 
-		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.SECURITY_CAMERA.get())
+		if(te.hasWorld())
 		{
-			Direction side = te.getWorld().getBlockState(te.getPos()).get(SecurityCameraBlock.FACING);
+			BlockState state = te.getWorld().getBlockState(te.getPos());
 
-			if(side == Direction.NORTH)
-				matrix.rotate(POSITIVE_Y_180);
-			else if(side == Direction.EAST)
-				matrix.rotate(POSITIVE_Y_90);
-			else if(side == Direction.WEST)
-				matrix.rotate(NEGATIVE_Y_90);
+			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
+			{
+				Direction side = state.get(SecurityCameraBlock.FACING);
+
+				if(side == Direction.NORTH)
+					matrix.rotate(POSITIVE_Y_180);
+				else if(side == Direction.EAST)
+					matrix.rotate(POSITIVE_Y_90);
+				else if(side == Direction.WEST)
+					matrix.rotate(NEGATIVE_Y_90);
+			}
 		}
 
 		matrix.rotate(POSITIVE_X_180);
