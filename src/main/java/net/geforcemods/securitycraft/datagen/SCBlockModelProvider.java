@@ -64,7 +64,7 @@ public class SCBlockModelProvider extends BlockModelProvider
 
 	public BlockModelBuilder reinforcedWallInventory(String name, ResourceLocation wall)
 	{
-		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/template_reinforced_wall_inventory"), "wall", wall);
+		return uncheckedSingleTexture(name, modLoc(BLOCK_FOLDER + "/reinforced_wall_inventory"), "wall", wall);
 	}
 
 	public BlockModelBuilder uncheckedSingleTexture(String name, ResourceLocation parent, String textureKey, ResourceLocation texture)

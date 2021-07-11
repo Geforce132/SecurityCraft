@@ -1,5 +1,5 @@
 {
-  "parent": "securitycraft:block/template_reinforced_wall_inventory",
+  "parent": "securitycraft:block/reinforced_wall_inventory",
   "textures": {
     "wall": "minecraft:block/mossy_stone_bricks"
   }
