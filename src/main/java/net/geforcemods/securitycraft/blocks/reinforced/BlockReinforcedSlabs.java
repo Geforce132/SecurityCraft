@@ -26,8 +26,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
 
@@ -69,12 +67,6 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 		if(!isDouble)
 			for (EnumType et : EnumType.values())
 				list.add(new ItemStack(this, 1, et.getMetadata()));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedStoneSlabs));
 	}
 
 	@Override
@@ -135,7 +127,7 @@ public class BlockReinforcedSlabs extends BlockSlab implements ITileEntityProvid
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 	{
-		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
+		return new ItemStack(SCContent.reinforcedStoneSlabs, 1, damageDropped(state));
 	}
 
 	public static enum EnumType implements IStringSerializable{

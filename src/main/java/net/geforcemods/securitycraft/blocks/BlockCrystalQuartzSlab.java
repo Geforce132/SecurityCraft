@@ -16,12 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay {
-
+public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay
+{
 	private final boolean isDouble;
+
 	public BlockCrystalQuartzSlab(boolean isDouble, Material blockMaterial){
 		super(blockMaterial);
 
@@ -35,12 +34,6 @@ public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
 		return Item.getItemFromBlock(SCContent.crystalQuartzSlab);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.crystalQuartzSlab));
 	}
 
 	@Override
@@ -86,7 +79,7 @@ public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 	{
-		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
+		return new ItemStack(SCContent.crystalQuartzSlab);
 	}
 
 	@Override

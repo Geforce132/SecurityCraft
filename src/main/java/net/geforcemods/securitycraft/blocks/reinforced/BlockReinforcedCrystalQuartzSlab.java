@@ -22,8 +22,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITileEntityProvider, IOverlayDisplay {
 
@@ -49,12 +47,6 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 	@Override
 	public Item getItemDropped(IBlockState state, Random rand, int fortune){
 		return Item.getItemFromBlock(SCContent.reinforcedCrystalQuartzSlab);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartzSlab));
 	}
 
 	@Override
@@ -105,7 +97,7 @@ public class BlockReinforcedCrystalQuartzSlab extends BlockSlab implements ITile
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 	{
-		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
+		return new ItemStack(SCContent.reinforcedCrystalQuartzSlab);
 	}
 
 	@Override

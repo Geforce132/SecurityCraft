@@ -19,8 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEntityProvider, IOverlayDisplay {
 
@@ -56,12 +54,6 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state){
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs));
-	}
-
-	@Override
 	public boolean isDouble(){
 		return isDouble;
 	}
@@ -74,7 +66,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
 	{
-		return new ItemStack(Item.getItemFromBlock(state.getBlock()), 1, damageDropped(state));
+		return new ItemStack(SCContent.reinforcedWoodSlabs, 1, damageDropped(state));
 	}
 
 	@Override
