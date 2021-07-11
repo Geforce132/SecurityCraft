@@ -147,7 +147,10 @@ public class UniversalOwnerChangerItem extends Item
 			OwnableTileEntity te = (OwnableTileEntity)world.getTileEntity(pos);
 
 			te.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+
+			if(!world.isRemote)
 			world.getServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
+
 			return true;
 		}
 
