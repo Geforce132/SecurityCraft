@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockQuartz;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -29,7 +28,9 @@ public class BlockCrystalQuartz extends BlockQuartz implements IOverlayDisplay
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.crystalQuartz), 1, BlockUtils.getBlockMeta(world, pos) > 1 ? 2 : BlockUtils.getBlockMeta(world, pos));
+		int meta = getMetaFromState(state);
+
+		return new ItemStack(Item.getItemFromBlock(SCContent.crystalQuartz), 1, meta > 1 ? 2 : meta);
 	}
 
 	@Override

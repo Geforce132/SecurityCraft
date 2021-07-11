@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityCageTrap;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
 import net.geforcemods.securitycraft.tileentity.TileEntityReinforcedIronBars;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -66,11 +65,10 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess world, BlockPos pos){
-		if(BlockUtils.getBlock(world, pos) == SCContent.cageTrap && !BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
-			return null;
-		else
-			return super.getCollisionBoundingBox(blockState, world, pos);
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos){
+		if(state.getValue(DEACTIVATED))
+			return super.getCollisionBoundingBox(state, world, pos);
+		else return null;
 	}
 
 	@Override
@@ -119,20 +117,20 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!world.isRemote){
+			if(state.getValue(DEACTIVATED))
+				return;
+
 			TileEntityCageTrap tileEntity = (TileEntityCageTrap) world.getTileEntity(pos);
 			boolean isPlayer = entity instanceof EntityPlayer;
 
 			if(isPlayer || (entity instanceof EntityMob && tileEntity.capturesMobs())){
-				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((EntityPlayer)entity)))
-					return;
-
-				if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
+				if((isPlayer && tileEntity.getOwner().isOwner((EntityPlayer)entity)))
 					return;
 
 				BlockPos topMiddle = pos.up(4);
-				String ownerName = ((IOwnable)world.getTileEntity(pos)).getOwner().getName();
+				String ownerName = tileEntity.getOwner().getName();
 				BlockModifier placer = new BlockModifier(world, new MutableBlockPos(pos), tileEntity.getOwner());
 
 				placer.loop((w, p, o) -> {
@@ -153,7 +151,7 @@ public class BlockCageTrap extends BlockDisguisable implements IIntersectable {
 					if(te instanceof TileEntityReinforcedIronBars)
 						((TileEntityReinforcedIronBars)te).setCanDrop(false);
 				});
-				BlockUtils.setBlockProperty(world, pos, DEACTIVATED, true);
+				world.setBlockState(pos, getDefaultState().withProperty(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))

@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityMotionLight;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -72,34 +70,14 @@ public class BlockMotionActivatedLight extends BlockOwnable {
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if(BlockUtils.getBlock(world, pos) != SCContent.motionActivatedLight)
-			return 0; //Weird if statement I had to include because Waila kept
-		//crashing if I looked at one of these lights then looked away quickly.
-
-		return world.getBlockState(pos).getValue(LIT) ? 15 : 0;
+		return state.getValue(LIT) ? 15 : 0;
 	}
 
-	public static void toggleLight(World world, BlockPos pos, Owner owner, boolean isLit) {
+	public static void toggleLight(World world, BlockPos pos, IBlockState state, Owner owner, boolean isLit) {
 		if(!world.isRemote)
 		{
-			if(isLit)
-			{
-				BlockUtils.setBlockProperty(world, pos, LIT, true);
-
-				if(((IOwnable) world.getTileEntity(pos)) != null)
-					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
-
-				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
-			}
-			else
-			{
-				BlockUtils.setBlockProperty(world, pos, LIT, false);
-
-				if(((IOwnable) world.getTileEntity(pos)) != null)
-					((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
-
-				BlockUtils.updateAndNotify(world, pos, SCContent.motionActivatedLight, 1, false);
-			}
+			world.setBlockState(pos, state.withProperty(LIT, isLit));
+			world.notifyNeighborsOfStateChange(pos, SCContent.motionActivatedLight, false);
 		}
 	}
 

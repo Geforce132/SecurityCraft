@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityClaymore;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -107,12 +106,17 @@ public class BlockClaymore extends BlockExplosive {
 	@Override
 	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!world.isRemote && BlockUtils.hasBlockProperty(world, pos, BlockClaymore.DEACTIVATED) && !world.getBlockState(pos).getValue(BlockClaymore.DEACTIVATED))
+		if (!world.isRemote)
 		{
-			if(pos.equals(new BlockPos(explosion.getPosition())))
-				return;
+			IBlockState state = world.getBlockState(pos);
 
-			explode(world, pos);
+			if(state.getPropertyKeys().contains(BlockClaymore.DEACTIVATED) && !state.getValue(BlockClaymore.DEACTIVATED))
+			{
+				if(pos.equals(new BlockPos(explosion.getPosition())))
+					return;
+
+				explode(world, pos);
+			}
 		}
 	}
 

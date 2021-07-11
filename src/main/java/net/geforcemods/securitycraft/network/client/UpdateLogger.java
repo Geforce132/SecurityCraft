@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -61,7 +60,7 @@ public class UpdateLogger implements IMessage{
 		@SideOnly(Side.CLIENT)
 		public IMessage onMessage(UpdateLogger message, MessageContext context) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				int i = message.i;
 				TileEntityLogger te = (TileEntityLogger) Minecraft.getMinecraft().player.world.getTileEntity(pos);
 

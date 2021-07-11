@@ -485,8 +485,8 @@ public class TileEntityKeypadFurnace extends TileEntityOwnable implements ISided
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadFurnace)
-			BlockKeypadFurnace.activate(world, pos, player);
+		if(!world.isRemote)
+			BlockKeypadFurnace.activate(world, pos, world.getBlockState(pos), player);
 	}
 
 	@Override

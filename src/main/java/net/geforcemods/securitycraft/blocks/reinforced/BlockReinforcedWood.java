@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.ITileEntityProvider;
@@ -58,7 +57,7 @@ public class BlockReinforcedWood extends BlockPlanks implements ITileEntityProvi
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodPlanks), 1, BlockUtils.getBlockMeta(world, pos));
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodPlanks), 1, getMetaFromState(state));
 	}
 
 	@Override

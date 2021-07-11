@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -45,7 +44,7 @@ public class BlockReinforcedLog extends BlockOwnable implements IOverlayDisplay
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(this instanceof BlockReinforcedOldLog ? SCContent.reinforcedOldLogs : SCContent.reinforcedNewLogs), 1, BlockUtils.getBlockMeta(world, pos) & 3);
+		return new ItemStack(Item.getItemFromBlock(this instanceof BlockReinforcedOldLog ? SCContent.reinforcedOldLogs : SCContent.reinforcedNewLogs), 1, getMetaFromState(state) & 3);
 	}
 
 	@Override

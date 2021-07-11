@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
@@ -27,7 +26,7 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 		public void toggle() {
 			super.toggle();
 
-			BlockUtils.setBlockProperty(world, pos, BlockKeypad.POWERED, get());
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockKeypad.POWERED, get()));
 			world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
 		}
 	};
@@ -61,8 +60,8 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypad)
-			BlockKeypad.activate(world, pos, signalLength.get());
+		if(!world.isRemote)
+			BlockKeypad.activate(world, pos, world.getBlockState(pos), signalLength.get());
 	}
 
 	@Override
@@ -79,8 +78,8 @@ public class TileEntityKeypad extends TileEntityDisguisable implements IPassword
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
-		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypad.POWERED)) {
+	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
+		if(!state.getValue(BlockKeypad.POWERED)) {
 			activate(player);
 			return true;
 		}

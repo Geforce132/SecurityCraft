@@ -9,17 +9,12 @@ import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockLever;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.EmptyHandler;
@@ -34,52 +29,6 @@ public class BlockUtils{
 		world.notifyNeighborsOfStateChange(pos, block, false);
 	}
 
-	public static int getBlockMeta(World world, BlockPos pos){
-		return world.getBlockState(pos).getBlock().getMetaFromState(world.getBlockState(pos));
-	}
-
-	public static Block getBlock(IBlockAccess world, BlockPos pos){
-		return world.getBlockState(pos).getBlock();
-	}
-
-	public static Block getBlock(World world, int x, int y, int z){
-		return world.getBlockState(toPos(x, y, z)).getBlock();
-	}
-
-	public static void setBlockProperty(World world, BlockPos pos, PropertyBool property, boolean value) {
-		IBlockState state = world.getBlockState(pos);
-
-		if(state.getProperties().containsKey(property))
-			world.setBlockState(pos, state.withProperty(property, value));
-	}
-
-	public static void setBlockProperty(World world, BlockPos pos, PropertyInteger property, int value) {
-		IBlockState state = world.getBlockState(pos);
-
-		if(state.getProperties().containsKey(property))
-			world.setBlockState(pos, state.withProperty(property, value));
-	}
-
-	public static void setFacingProperty(World world, BlockPos pos, PropertyEnum<EnumFacing> property, EnumFacing value) {
-		IBlockState state = world.getBlockState(pos);
-
-		if(state.getProperties().containsKey(property))
-			world.setBlockState(pos, state.withProperty(property, value));
-	}
-
-	public static boolean hasBlockProperty(World world, BlockPos pos, IProperty<?> property){
-		try{
-			world.getBlockState(pos).getValue(property);
-			return true;
-		}catch(IllegalArgumentException e){
-			return false;
-		}
-	}
-
-	public static <T extends Comparable<T>> T getBlockProperty(IBlockAccess world, BlockPos pos, IProperty<T> property){
-		return world.getBlockState(pos).getValue(property);
-	}
-
 	public static AxisAlignedBB fromBounds(double x1, double y1, double z1, double x2, double y2, double z2)
 	{
 		double d6 = Math.min(x1, x2);
@@ -91,11 +40,7 @@ public class BlockUtils{
 		return new AxisAlignedBB(d6, d7, d8, d9, d10, d11);
 	}
 
-	public static BlockPos toPos(int x, int y, int z){
-		return new BlockPos(x, y, z);
-	}
-
-	public static int[] fromPos(BlockPos pos){
+	public static int[] posToIntArray(BlockPos pos){
 		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
 	}
 

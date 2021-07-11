@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -315,12 +314,12 @@ public class TileEntityInventoryScanner extends TileEntityDisguisable implements
 				for(int i = 0; i <= ConfigHandler.inventoryScannerRange; i++)
 				{
 					BlockPos offsetPos = pos.offset(facing, i);
-					Block block = BlockUtils.getBlock(world, offsetPos);
 					IBlockState state = world.getBlockState(offsetPos);
+					Block block = state.getBlock();
 
 					if(block == SCContent.inventoryScannerField)
 						world.setBlockState(offsetPos, state.withProperty(BlockInventoryScannerField.HORIZONTAL, bo.get()));
-					else if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+					else if(!block.isAir(thisState, world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
 						break;
 					else if(block == SCContent.inventoryScanner && state.getValue(BlockInventoryScanner.FACING) == facing.getOpposite())
 						break;

@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,18 +13,13 @@ public class LinkedBlock {
 		blockPos = pos;
 	}
 
-	public LinkedBlock(String name, int x, int y, int z) {
-		blockName = name;
-		blockPos = BlockUtils.toPos(x, y, z);
-	}
-
-	public LinkedBlock(CustomizableSCTE tileEntity) {
-		blockName = BlockUtils.getBlock(tileEntity.getWorld(), tileEntity.getPos()).getTranslationKey();
-		blockPos = tileEntity.getPos();
+	public LinkedBlock(CustomizableSCTE te) {
+		blockPos = te.getPos();
+		blockName = te.getWorld().getBlockState(blockPos).getBlock().getTranslationKey();
 	}
 
 	public boolean validate(World world) {
-		return !(world == null || (world.isAirBlock(blockPos) || !BlockUtils.getBlock(world, blockPos).getTranslationKey().equals(blockName)));
+		return !(world == null || (world.isAirBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getTranslationKey().equals(blockName)));
 	}
 
 	public CustomizableSCTE asTileEntity(World world) {
@@ -65,16 +59,10 @@ public class LinkedBlock {
 	@Override
 	public boolean equals(Object o) {
 		if(o instanceof LinkedBlock) {
-			LinkedBlock block = (LinkedBlock) o;
-			return (block.getPos().getX() == blockPos.getX() && block.getPos().getY() == blockPos.getY() && block.getPos().getZ() == blockPos.getZ());
+			return ((LinkedBlock) o).getPos().equals(blockPos);
 		}
 
 		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return blockPos.getX() + blockPos.getY() + blockPos.getZ();
 	}
 
 	@Override

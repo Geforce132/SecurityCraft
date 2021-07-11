@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -30,9 +31,11 @@ public class TileEntityClaymore extends CustomizableSCTE
 
 	@Override
 	public void update() {
-		if(!getWorld().isRemote)
+		if(!world.isRemote)
 		{
-			if(getWorld().getBlockState(getPos()).getValue(BlockClaymore.DEACTIVATED))
+			IBlockState state = world.getBlockState(pos);
+
+			if(state.getValue(BlockClaymore.DEACTIVATED))
 				return;
 
 			if(cooldown > 0){
@@ -45,7 +48,7 @@ public class TileEntityClaymore extends CustomizableSCTE
 				return;
 			}
 
-			EnumFacing dir = BlockUtils.getBlockProperty(getWorld(), getPos(), BlockClaymore.FACING);
+			EnumFacing dir = state.getValue(BlockClaymore.FACING);
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
 
 			if(dir == EnumFacing.NORTH)

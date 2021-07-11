@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -50,7 +49,7 @@ public class ToggleOption implements IMessage{
 				int x = packet.x;
 				int y = packet.y;
 				int z = packet.z;
-				BlockPos pos = BlockUtils.toPos(x, y, z);
+				BlockPos pos = new BlockPos(x, y, z);
 				int id = packet.id;
 				EntityPlayer player = message.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);

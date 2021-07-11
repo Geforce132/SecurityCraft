@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -43,7 +44,7 @@ public class ItemMineRemoteAccessTool extends Item {
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
 		ItemStack stack = player.getHeldItem(hand);
 
-		if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
+		if(world.getBlockState(pos).getBlock() instanceof IExplosive){
 			if(!isMineAdded(stack, pos)){
 				int availSlot = getNextAvailableSlot(stack);
 
@@ -52,7 +53,9 @@ public class ItemMineRemoteAccessTool extends Item {
 					return EnumActionResult.SUCCESS;
 				}
 
-				if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)){
+				TileEntity te = world.getTileEntity(pos);
+
+				if(te instanceof IOwnable && !((IOwnable)te).getOwner().isOwner(player)){
 					player.openGui(SecurityCraft.instance, GuiHandler.MRAT_MENU_ID, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 					return EnumActionResult.SUCCESS;
 				}
@@ -60,7 +63,7 @@ public class ItemMineRemoteAccessTool extends Item {
 				if(stack.getTagCompound() == null)
 					stack.setTagCompound(new NBTTagCompound());
 
-				stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
+				stack.getTagCompound().setIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
 				if (!world.isRemote)
 					SecurityCraft.network.sendTo(new UpdateNBTTagOnClient(stack), (EntityPlayerMP)player);

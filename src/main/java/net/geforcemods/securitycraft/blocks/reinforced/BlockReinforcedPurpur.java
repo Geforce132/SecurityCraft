@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -155,7 +154,7 @@ public class BlockReinforcedPurpur extends BlockOwnable implements IOverlayDispl
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedPurpur), 1, BlockUtils.getBlockMeta(world, pos) != 0 ? 1 : 0);
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedPurpur), 1, getMetaFromState(state) != 0 ? 1 : 0);
 	}
 
 	@Override

@@ -13,8 +13,8 @@ import net.geforcemods.securitycraft.network.server.GiveNightVision;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetCameraRotation;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,10 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntitySecurityCamera extends Entity{
 
 	private final float CAMERA_SPEED = ConfigHandler.cameraSpeed;
-
-	public int blockPosX;
-	public int blockPosY;
-	public int blockPosZ;
 
 	private double cameraUseX;
 	private double cameraUseY;
@@ -62,9 +58,6 @@ public class EntitySecurityCamera extends Entity{
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntityPlayer player){
 		this(world);
-		blockPosX = (int) x;
-		blockPosY = (int) y;
-		blockPosZ = (int) z;
 		cameraUseX = player.posX;
 		cameraUseY = player.posY;
 		cameraUseZ = player.posZ;
@@ -82,9 +75,6 @@ public class EntitySecurityCamera extends Entity{
 
 	public EntitySecurityCamera(World world, double x, double y, double z, int id, EntitySecurityCamera camera){
 		this(world);
-		blockPosX = (int) x;
-		blockPosY = (int) y;
-		blockPosZ = (int) z;
 		cameraUseX = camera.cameraUseX;
 		cameraUseY = camera.cameraUseY;
 		cameraUseZ = camera.cameraUseZ;
@@ -111,7 +101,7 @@ public class EntitySecurityCamera extends Entity{
 		{
 			rotationPitch = 30F;
 
-			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+			EnumFacing facing = world.getBlockState(getPosition()).getValue(BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.NORTH)
 				rotationYaw = 180F;
@@ -176,7 +166,7 @@ public class EntitySecurityCamera extends Entity{
 		}
 
 		if(!world.isRemote)
-			if(getPassengers().size() == 0 || BlockUtils.getBlock(world, blockPosX, blockPosY, blockPosZ) != SCContent.securityCamera){
+			if(getPassengers().size() == 0 || world.getBlockState(getPosition()).getBlock() != SCContent.securityCamera){
 				setDead();
 				return;
 			}
@@ -243,8 +233,10 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void moveViewLeft() {
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		IBlockState state = world.getBlockState(getPosition());
+
+		if(state.getPropertyKeys().contains(BlockSecurityCamera.FACING)) {
+			EnumFacing facing = state.getValue(BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.EAST)
 			{
@@ -275,8 +267,10 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void moveViewRight(){
-		if(BlockUtils.hasBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING)) {
-			EnumFacing facing = BlockUtils.getBlockProperty(world, BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ)), BlockSecurityCamera.FACING);
+		IBlockState state = world.getBlockState(getPosition());
+
+		if(state.getPropertyKeys().contains(BlockSecurityCamera.FACING)) {
+			EnumFacing facing = state.getValue(BlockSecurityCamera.FACING);
 
 			if(facing == EnumFacing.EAST)
 			{
@@ -322,13 +316,10 @@ public class EntitySecurityCamera extends Entity{
 	}
 
 	public void setRedstonePower() {
-		BlockPos pos = BlockUtils.toPos((int) Math.floor(posX), (int) posY, (int) Math.floor(posZ));
+		BlockPos pos = getPosition();
 
 		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(EnumModuleType.REDSTONE))
-			if(BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new SetCameraPowered(pos, false));
-			else if(!BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.POWERED))
-				SecurityCraft.network.sendToServer(new SetCameraPowered(pos, true));
+			SecurityCraft.network.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).getValue(BlockSecurityCamera.POWERED)));
 	}
 
 	public void enableNightVision() {

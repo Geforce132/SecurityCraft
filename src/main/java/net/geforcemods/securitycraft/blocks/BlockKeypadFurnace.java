@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -97,7 +96,7 @@ public class BlockKeypadFurnace extends BlockOwnable {
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, player);
+				activate(world, pos, state, player);
 			}
 			else if(!PlayerUtils.isHoldingItem(player, SCContent.codebreaker, hand))
 				te.openPasswordGUI(player);
@@ -106,9 +105,12 @@ public class BlockKeypadFurnace extends BlockOwnable {
 		return true;
 	}
 
-	public static void activate(World world, BlockPos pos, EntityPlayer player){
-		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypadFurnace.OPEN))
-			BlockUtils.setBlockProperty(world, pos, BlockKeypadFurnace.OPEN, true);
+	public static void activate(World world, BlockPos pos, IBlockState state, EntityPlayer player){
+		if(state.getBlock() != SCContent.keypadFurnace)
+			return;
+
+		if(!state.getValue(OPEN))
+			world.setBlockState(pos, state.withProperty(OPEN, true));
 
 		world.playEvent((EntityPlayer)null, 1006, pos, 0);
 		player.openGui(SecurityCraft.instance, GuiHandler.KEYPAD_FURNACE_GUI_ID, world, pos.getX(), pos.getY(), pos.getZ());

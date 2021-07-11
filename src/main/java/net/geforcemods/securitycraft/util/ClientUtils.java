@@ -9,10 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class ClientUtils{
-	public static void closePlayerScreen(){
-		Minecraft.getMinecraft().player.closeScreen();
-	}
-
 	/**
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */

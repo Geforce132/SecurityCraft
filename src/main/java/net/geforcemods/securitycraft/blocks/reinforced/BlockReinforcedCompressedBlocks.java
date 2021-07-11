@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -80,7 +79,7 @@ public class BlockReinforcedCompressedBlocks extends BlockOwnable implements IOv
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCompressedBlocks), 1, BlockUtils.getBlockMeta(world, pos));
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCompressedBlocks), 1, getMetaFromState(state));
 	}
 
 	@Override

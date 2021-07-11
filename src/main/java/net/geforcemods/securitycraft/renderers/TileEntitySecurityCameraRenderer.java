@@ -4,8 +4,8 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.models.ModelSecurityCamera;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -24,7 +24,7 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 		if(te.down || (Minecraft.getMinecraft().gameSettings.thirdPersonView == 0 && PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().player.getRidingEntity().getPosition().equals(te.getPos())))
 			return;
 
-		float rotation = 0F;
+		float rotation = -10000F;
 
 		if(te.hasWorld()){
 			Tessellator tessellator = Tessellator.getInstance();
@@ -32,35 +32,33 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 			int skyBrightness = te.getWorld().getCombinedLight(te.getPos(), 0);
 			int lightmapX = skyBrightness % 65536;
 			int lightmapY = skyBrightness / 65536;
-			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
 
+			tessellator.getBuffer().putColorRGBA(0, (int)(brightness * 255.0F), (int)(brightness * 255.0F), (int)(brightness * 255.0F), 255);
 			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightmapX, lightmapY);
 		}
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-
 		Minecraft.getMinecraft().renderEngine.bindTexture(cameraTexture);
-
 		GlStateManager.pushMatrix();
 
-		if(te.hasWorld() && BlockUtils.getBlock(te.getWorld(), te.getPos()) == SCContent.securityCamera){
-			EnumFacing side = BlockUtils.getBlockProperty(getWorld(), te.getPos(), BlockSecurityCamera.FACING);
+		if(te.hasWorld())
+		{
+			IBlockState state = te.getWorld().getBlockState(te.getPos());
 
-			if(side == EnumFacing.EAST)
-				rotation = -1F;
-			else if(side == EnumFacing.SOUTH)
-				rotation = -10000F;
-			else if(side == EnumFacing.WEST)
-				rotation = 1F;
-			else if(side == EnumFacing.NORTH)
-				rotation = 0F;
+			if(state.getBlock() == SCContent.securityCamera){
+				EnumFacing side = state.getValue(BlockSecurityCamera.FACING);
+
+				if(side == EnumFacing.EAST)
+					rotation = -1F;
+				else if(side == EnumFacing.WEST)
+					rotation = 1F;
+				else if(side == EnumFacing.NORTH)
+					rotation = 0F;
+			}
 		}
-		else
-			rotation = -10000F;
 
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
-
 		modelSecurityCamera.cameraRotationPoint.rotateAngleY = (float)te.cameraRotation;
 
 		if(te.isShutDown())
@@ -69,7 +67,6 @@ public class TileEntitySecurityCameraRenderer extends TileEntitySpecialRenderer<
 			modelSecurityCamera.cameraRotationPoint.rotateAngleX = 0.2617993877991494F;
 
 		modelSecurityCamera.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-
 		GlStateManager.popMatrix();
 		GlStateManager.popMatrix();
 	}

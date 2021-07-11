@@ -14,9 +14,9 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -25,7 +25,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class GuiCameraMonitor extends GuiContainer {
 
@@ -100,16 +100,17 @@ public class GuiCameraMonitor extends GuiContainer {
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				TileEntity te = Minecraft.getMinecraft().world.getTileEntity(view.getLocation());
+				World world = Minecraft.getMinecraft().world;
+				TileEntity te = world.getTileEntity(view.getLocation());
 
-				if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) != SCContent.securityCamera || (te instanceof TileEntitySecurityCamera && (!((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player) && !((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART)) || (((TileEntitySecurityCamera)te).isShutDown())))
+				if(world.getBlockState(view.getLocation()).getBlock() != SCContent.securityCamera || (te instanceof TileEntitySecurityCamera && (!((TileEntitySecurityCamera)te).getOwner().isOwner(Minecraft.getMinecraft().player) && !((TileEntitySecurityCamera)te).hasModule(EnumModuleType.SMART)) || (((TileEntitySecurityCamera)te).isShutDown())))
 				{
 					button.enabled = false;
 					cameraTEs[button.id - 1] = null;
 					continue;
 				}
 
-				cameraTEs[button.id - 1] = (TileEntitySCTE) Minecraft.getMinecraft().world.getTileEntity(view.getLocation());
+				cameraTEs[button.id - 1] = (TileEntitySecurityCamera) te;
 				hoverCheckers[button.id - 1] = new HoverChecker(button);
 			}
 			else
@@ -159,10 +160,11 @@ public class GuiCameraMonitor extends GuiContainer {
 			int camID = button.id + ((page - 1) * 10);
 
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
+			Block block = Minecraft.getMinecraft().world.getBlockState(view.getLocation()).getBlock();
 
-			if(BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation()) == SCContent.securityCamera) {
-				((BlockSecurityCamera) BlockUtils.getBlock(Minecraft.getMinecraft().world, view.getLocation())).mountCamera(Minecraft.getMinecraft().world, view.x, view.y, view.z, camID, Minecraft.getMinecraft().player);
-				SecurityCraft.network.sendToServer(new MountCamera(new BlockPos(view.x, view.y, view.z), camID));
+			if(block == SCContent.securityCamera) {
+				((BlockSecurityCamera)block).mountCamera(Minecraft.getMinecraft().world, view.x, view.y, view.z, camID, Minecraft.getMinecraft().player);
+				SecurityCraft.network.sendToServer(new MountCamera(view.getLocation(), camID));
 				Minecraft.getMinecraft().player.closeScreen();
 			}
 			else

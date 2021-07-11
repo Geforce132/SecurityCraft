@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.SetPassword;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -147,7 +146,7 @@ public class GuiKeyChanger extends GuiContainer {
 			((IPasswordProtected) tileEntity).setPassword(textboxNewPasscode.getText());
 			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), textboxNewPasscode.getText()));
 
-			ClientUtils.closePlayerScreen();
+			Minecraft.getMinecraft().player.closeScreen();
 			PlayerUtils.sendMessageToPlayer(Minecraft.getMinecraft().player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), TextFormatting.GREEN, true);
 		}
 	}

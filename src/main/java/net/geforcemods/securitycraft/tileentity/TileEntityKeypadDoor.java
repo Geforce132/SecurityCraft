@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.blocks.BlockKeypad;
 import net.geforcemods.securitycraft.blocks.BlockKeypadDoor;
 import net.geforcemods.securitycraft.gui.GuiHandler;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockDoor;
@@ -73,8 +72,8 @@ public class TileEntityKeypadDoor extends TileEntitySpecialDoor implements IPass
 	}
 
 	@Override
-	public boolean onCodebreakerUsed(IBlockState blockState, EntityPlayer player) {
-		if(!BlockUtils.getBlockProperty(world, pos, BlockKeypad.POWERED)) {
+	public boolean onCodebreakerUsed(IBlockState state, EntityPlayer player) {
+		if(!state.getValue(BlockKeypad.POWERED)) {
 			activate(player);
 			return true;
 		}

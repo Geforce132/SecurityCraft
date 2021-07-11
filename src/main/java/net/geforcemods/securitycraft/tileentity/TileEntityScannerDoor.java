@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.tileentity;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -36,7 +35,7 @@ public class TileEntityScannerDoor extends TileEntitySpecialDoor
 				return;
 			}
 
-			boolean open = !BlockUtils.getBlockProperty(world, pos.down(), BlockDoor.OPEN);
+			boolean open = !lowerState.getValue(BlockDoor.OPEN);
 			int length = getSignalLength();
 
 			world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, !upperState.getValue(BlockDoor.OPEN)), 3);

@@ -6,9 +6,9 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionDouble;
 import net.geforcemods.securitycraft.blocks.BlockMotionActivatedLight;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,17 +20,25 @@ public class TileEntityMotionLight extends CustomizableSCTE {
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera((EntityPlayer)entity))
-			BlockMotionActivatedLight.toggleLight(world, pos, getOwner(), false);
-		else if(entity instanceof EntityLivingBase && BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && !BlockUtils.getBlockProperty(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
-			BlockMotionActivatedLight.toggleLight(world, pos, getOwner(), !EntityUtils.isInvisible((EntityLivingBase)entity)); //also automatically switches on/off based on if the entity turns (in-)visible
+			BlockMotionActivatedLight.toggleLight(world, pos, world.getBlockState(pos), getOwner(), false);
+		else if(entity instanceof EntityLivingBase)
+		{
+			IBlockState state = world.getBlockState(pos);
+
+			//also automatically switches on/off based on if the entity turns (in-)visible
+			if(state.getBlock() == SCContent.motionActivatedLight && !state.getValue(BlockMotionActivatedLight.LIT))
+				BlockMotionActivatedLight.toggleLight(world, pos, state, getOwner(), !EntityUtils.isInvisible((EntityLivingBase)entity));
+		}
 
 		return false;
 	}
 
 	@Override
 	public void attackFailed() {
-		if(BlockUtils.getBlock(getWorld(), pos) == SCContent.motionActivatedLight && BlockUtils.getBlockProperty(getWorld(), getPos(), BlockMotionActivatedLight.LIT))
-			BlockMotionActivatedLight.toggleLight(world, pos, getOwner(), false);
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getBlock() == SCContent.motionActivatedLight && state.getValue(BlockMotionActivatedLight.LIT))
+			BlockMotionActivatedLight.toggleLight(world, pos, state, getOwner(), false);
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
 import net.minecraft.block.ITileEntityProvider;
@@ -52,7 +51,7 @@ public class BlockReinforcedCarpet extends BlockCarpet implements ITileEntityPro
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCarpet), 1, BlockUtils.getBlockMeta(world, pos));
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCarpet), 1, getMetaFromState(state));
 	}
 
 	@Override

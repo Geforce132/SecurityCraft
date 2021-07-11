@@ -11,7 +11,6 @@ import net.geforcemods.securitycraft.blocks.BlockSpecialDoor;
 import net.geforcemods.securitycraft.blocks.reinforced.BlockReinforcedDoor;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityDisguisable;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -142,7 +141,7 @@ public class ItemUniversalOwnerChanger extends Item
 
 	private boolean tryUpdateBlock(World world, BlockPos pos, String newOwner)
 	{
-		Block block = BlockUtils.getBlock(world, pos);
+		Block block = world.getBlockState(pos).getBlock();
 
 		if(block instanceof BlockReinforcedDoor || block instanceof BlockSpecialDoor)
 		{

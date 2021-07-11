@@ -19,18 +19,17 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Option.OptionInt;
 import net.geforcemods.securitycraft.blocks.BlockRetinalScanner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.server.management.PlayerProfileCache;
 import net.minecraft.util.StringUtils;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -47,23 +46,29 @@ public class TileEntityRetinalScanner extends TileEntityDisguisable {
 
 	@Override
 	public void entityViewed(EntityLivingBase entity){
-		if(!world.isRemote && !BlockUtils.getBlockProperty(world, pos, BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity)){
-			if(!(entity instanceof EntityPlayer) && !activatedByEntities.get())
-				return;
+		if(!world.isRemote)
+		{
+			IBlockState state = world.getBlockState(pos);
 
-			if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
-				return;
+			if(!state.getValue(BlockRetinalScanner.POWERED) && !EntityUtils.isInvisible(entity))
+			{
+				if(!(entity instanceof EntityPlayer) && !activatedByEntities.get())
+					return;
 
-			if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.isAllowed(this, entity)) {
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
-				return;
+				if(entity instanceof EntityPlayer && PlayerUtils.isPlayerMountedOnCamera(entity))
+					return;
+
+				if(entity instanceof EntityPlayer && !getOwner().isOwner((EntityPlayer) entity) && !ModuleUtils.isAllowed(this, entity)) {
+					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+					return;
+				}
+
+				world.setBlockState(pos, state.withProperty(BlockRetinalScanner.POWERED, true));
+				world.scheduleUpdate(pos, SCContent.retinalScanner, getSignalLength());
+
+				if(entity instanceof EntityPlayer && sendMessage.get())
+					PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
 			}
-
-			BlockUtils.setBlockProperty(world, pos, BlockRetinalScanner.POWERED, true);
-			world.scheduleUpdate(new BlockPos(pos), SCContent.retinalScanner, getSignalLength());
-
-			if(entity instanceof EntityPlayer && sendMessage.get())
-				PlayerUtils.sendMessageToPlayer((EntityPlayer) entity, Utils.localize("tile.securitycraft:retinalScanner.name"), Utils.localize("messages.securitycraft:retinalScanner.hello", entity.getName()), TextFormatting.GREEN);
 		}
 	}
 

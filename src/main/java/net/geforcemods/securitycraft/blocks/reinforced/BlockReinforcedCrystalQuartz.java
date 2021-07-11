@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityBlockPocket;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockQuartz;
 import net.minecraft.block.ITileEntityProvider;
@@ -52,7 +51,9 @@ public class BlockReinforcedCrystalQuartz extends BlockQuartz implements ITileEn
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartz), 1, BlockUtils.getBlockMeta(world, pos) > 1 ? 2 : BlockUtils.getBlockMeta(world, pos));
+		int meta = getMetaFromState(state);
+
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedCrystalQuartz), 1, meta > 1 ? 2 : meta);
 	}
 
 	@Override

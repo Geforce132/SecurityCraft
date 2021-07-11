@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.blocks.BlockSecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -81,10 +82,15 @@ public class GuiUtils{
 			mc.getTextureManager().bindTexture(cameraDashboard);
 		}
 
-		if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.FACING)) == 0) && !te.hasModule(EnumModuleType.REDSTONE))
-			gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
-		else if((world.getBlockState(pos).getWeakPower(world, pos, BlockUtils.getBlockProperty(world, pos, BlockSecurityCamera.FACING)) == 0) && te.hasModule(EnumModuleType.REDSTONE))
-			gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
+		IBlockState state = world.getBlockState(pos);
+
+		if(state.getWeakPower(world, pos, state.getValue(BlockSecurityCamera.FACING)) == 0)
+		{
+			if(!te.hasModule(EnumModuleType.REDSTONE))
+				gui.drawTexturedModalRect(12, 2, 104, 0, 12, 12);
+			else
+				gui.drawTexturedModalRect(12, 3, 90, 0, 12, 11);
+		}
 		else
 			drawItemStackToGui(REDSTONE, 10, 0, false);
 	}

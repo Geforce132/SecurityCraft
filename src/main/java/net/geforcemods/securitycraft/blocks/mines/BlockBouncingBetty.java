@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IIntersectable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.entity.EntityBouncingBetty;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
@@ -72,7 +71,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(!EntityUtils.doesEntityOwn(entity, world, pos))
 			if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity))
 				explode(world, pos);
@@ -112,9 +111,7 @@ public class BlockBouncingBetty extends BlockExplosive implements IIntersectable
 
 	@Override
 	public void explode(World world, BlockPos pos){
-		if(world.isRemote)
-			return;
-		if(BlockUtils.getBlockProperty(world, pos, DEACTIVATED))
+		if(world.isRemote || world.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
 		world.setBlockToAir(pos);

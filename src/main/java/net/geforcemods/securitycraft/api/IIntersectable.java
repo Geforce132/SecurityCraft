@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -20,8 +20,5 @@ public interface IIntersectable extends ITileEntityProvider {
 	/**
 	 * Called when an Entity collides with a Block's bounding box.
 	 */
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity);
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta);
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity);
 }

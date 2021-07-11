@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityInventoryScanner;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -27,7 +26,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -193,7 +191,7 @@ public class BlockInventoryScanner extends BlockDisguisable {
 			{
 				BlockPos offsetIPos = pos.offset(facing, i);
 
-				if(BlockUtils.getBlock(world, offsetIPos) == SCContent.inventoryScanner)
+				if(world.getBlockState(offsetIPos).getBlock() == SCContent.inventoryScanner)
 				{
 					for(int j = 1; j < i; j++)
 					{
@@ -257,10 +255,10 @@ public class BlockInventoryScanner extends BlockDisguisable {
 		for(int i = 0; i <= ConfigHandler.inventoryScannerRange; i++)
 		{
 			BlockPos offsetPos = pos.offset(facing, i);
-			Block block = BlockUtils.getBlock(world, offsetPos);
 			IBlockState state = world.getBlockState(offsetPos);
+			Block block = state.getBlock();
 
-			if(block != Blocks.AIR && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
+			if(!state.getBlock().isAir(state, world, offsetPos) && block != SCContent.inventoryScannerField && block != SCContent.inventoryScanner)
 				return null;
 
 			if(block == SCContent.inventoryScanner && state.getValue(FACING) == facing.getOpposite())

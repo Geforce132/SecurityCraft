@@ -8,9 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.SetPassword;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
@@ -33,10 +31,10 @@ public class GuiSetPassword extends GuiContainer implements GuiResponder {
 	private GuiTextField keycodeTextbox;
 	private GuiButton saveAndContinueButton;
 
-	public GuiSetPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
+	public GuiSetPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity){
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
-		blockName = Utils.localize(block.getTranslationKey() + ".name").getFormattedText();
+		blockName = Utils.localize(tileEntity.getBlockType().getTranslationKey() + ".name").getFormattedText();
 	}
 
 	@Override
@@ -129,7 +127,7 @@ public class GuiSetPassword extends GuiContainer implements GuiResponder {
 			((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
 			SecurityCraft.network.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
 
-			ClientUtils.closePlayerScreen();
+			Minecraft.getMinecraft().player.closeScreen();
 			Minecraft.getMinecraft().player.openGui(SecurityCraft.instance, GuiHandler.INSERT_PASSWORD_ID, tileEntity.getWorld(), tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
 		}
 	}

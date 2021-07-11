@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.PlaySoundAtPos;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +21,7 @@ public class ItemKeyPanel extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		for (IPasswordConvertible pc : SecurityCraftAPI.getRegisteredPasswordConvertibles()) {
-			if(BlockUtils.getBlock(world, pos) == pc.getOriginalBlock())
+			if(world.getBlockState(pos).getBlock() == pc.getOriginalBlock())
 			{
 				if(pc.convert(player, world, pos))
 				{

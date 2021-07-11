@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.TileEntityOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockWoodSlab;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -81,7 +80,7 @@ public class BlockReinforcedWoodSlabs extends BlockWoodSlab implements ITileEnti
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs), 1, BlockUtils.getBlockMeta(world, pos) % 8);
+		return new ItemStack(Item.getItemFromBlock(SCContent.reinforcedWoodSlabs), 1, getMetaFromState(state) % 8);
 	}
 
 	@Override

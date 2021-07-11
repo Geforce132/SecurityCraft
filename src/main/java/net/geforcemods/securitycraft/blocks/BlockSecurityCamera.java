@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.entity.EntitySecurityCamera;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntitySecurityCamera;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -75,8 +74,8 @@ public class BlockSecurityCamera extends BlockOwnable{
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
-		EnumFacing dir = BlockUtils.getBlockProperty(source, pos, FACING);
-		float px = 1.0F/16.0F; //one sixteenth of a block
+		EnumFacing dir = state.getValue(FACING);
+		float px = 1.0F / 16.0F; //one sixteenth of a block
 
 		if(dir == EnumFacing.SOUTH)
 			return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);

@@ -4,10 +4,10 @@ import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -52,7 +52,7 @@ public class SetPassword implements IMessage{
 		@Override
 		public IMessage onMessage(SetPassword message, MessageContext ctx) {
 			WorldUtils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				String password = message.password;
 				EntityPlayer player = ctx.getServerHandler().player;
 				World world = player.world;
@@ -62,22 +62,24 @@ public class SetPassword implements IMessage{
 					((IPasswordProtected)te).setPassword(password);
 
 					if(te instanceof TileEntityKeypadChest)
-						checkForAdjacentChest(world, pos, password, player);
+						checkAndUpdateAdjacentChest(world, pos, password, player);
 				}
 			});
 
 			return null;
 		}
 
-		private void checkForAdjacentChest(World world, BlockPos pos, String codeToSet, EntityPlayer player) {
-			if(world.getTileEntity(pos.east()) instanceof TileEntityKeypadChest)
-				((IPasswordProtected) world.getTileEntity(pos.east())).setPassword(codeToSet);
-			else if(world.getTileEntity(pos.west()) instanceof TileEntityKeypadChest)
-				((IPasswordProtected) world.getTileEntity(pos.west())).setPassword(codeToSet);
-			else if(world.getTileEntity(pos.south()) instanceof TileEntityKeypadChest)
-				((IPasswordProtected) world.getTileEntity(pos.south())).setPassword(codeToSet);
-			else if(world.getTileEntity(pos.north()) instanceof TileEntityKeypadChest)
-				((IPasswordProtected) world.getTileEntity(pos.north())).setPassword(codeToSet);
+		private void checkAndUpdateAdjacentChest(World world, BlockPos pos, String codeToSet, EntityPlayer player) {
+			for(EnumFacing facing : EnumFacing.HORIZONTALS)
+			{
+				TileEntity te = world.getTileEntity(pos.offset(facing));
+
+				if(te instanceof TileEntityKeypadChest)
+				{
+					((IPasswordProtected)te).setPassword(codeToSet);
+					break;
+				}
+			}
 		}
 	}
 

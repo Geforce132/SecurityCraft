@@ -55,8 +55,8 @@ public class BlockReinforcedFenceGate extends BlockFenceGate implements ITileEnt
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(BlockUtils.getBlockProperty(world, pos, OPEN))
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if(state.getValue(OPEN))
 			return;
 
 		if(entity instanceof EntityItem)

@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.items.ItemKeycard;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeycardReader;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -111,11 +110,11 @@ public class BlockKeycardReader extends BlockDisguisable  {
 							stack.damageItem(1, player);
 
 						if(new Random().nextInt(3) == 1)
-							activate(world, pos, te.getSignalLength());
+							activate(world, pos, state, te.getSignalLength());
 					}
 					else
 					{
-						ITextComponent feedback = insertCard(world, pos, te, stack, player);
+						ITextComponent feedback = insertCard(world, pos, state, te, stack, player);
 
 						if(feedback != null)
 							PlayerUtils.sendMessageToPlayer(player, new TextComponentTranslation(getTranslationKey() + ".name"), feedback, TextFormatting.RED);
@@ -127,7 +126,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 		return true;
 	}
 
-	public ITextComponent insertCard(World world, BlockPos pos, TileEntityKeycardReader te, ItemStack stack, EntityPlayer player)
+	public ITextComponent insertCard(World world, BlockPos pos, IBlockState state, TileEntityKeycardReader te, ItemStack stack, EntityPlayer player)
 	{
 		NBTTagCompound tag = stack.getTagCompound();
 
@@ -159,13 +158,13 @@ public class BlockKeycardReader extends BlockDisguisable  {
 		}
 
 		if(!powered)
-			activate(world, pos, te.getSignalLength());
+			activate(world, pos, state, te.getSignalLength());
 
 		return null;
 	}
 
-	public static void activate(World world, BlockPos pos, int signalLength){
-		BlockUtils.setBlockProperty(world, pos, POWERED, true);
+	public static void activate(World world, BlockPos pos, IBlockState state, int signalLength){
+		world.setBlockState(pos, state.withProperty(POWERED, true));
 		world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader, false);
 		world.scheduleUpdate(pos, SCContent.keycardReader, signalLength);
 	}
@@ -173,7 +172,7 @@ public class BlockKeycardReader extends BlockDisguisable  {
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
 		if(!world.isRemote){
-			BlockUtils.setBlockProperty(world, pos, POWERED, false);
+			world.setBlockState(pos, state.withProperty(POWERED, false));
 			world.notifyNeighborsOfStateChange(pos, SCContent.keycardReader, false);
 		}
 	}

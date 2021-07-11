@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -93,7 +92,7 @@ public class BlockCrystalQuartzSlab extends BlockSlab implements IOverlayDisplay
 	@Override
 	public ItemStack getDisplayStack(World world, IBlockState state, BlockPos pos)
 	{
-		return new ItemStack(Item.getItemFromBlock(SCContent.crystalQuartzSlab), 1, BlockUtils.getBlockMeta(world, pos) % 8);
+		return new ItemStack(Item.getItemFromBlock(SCContent.crystalQuartzSlab), 1, getMetaFromState(state) % 8);
 	}
 
 	@Override

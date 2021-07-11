@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.containers.ContainerGeneric;
 import net.geforcemods.securitycraft.network.server.CheckPassword;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -32,10 +31,10 @@ public class GuiCheckPassword extends GuiContainer {
 	private String currentString = "";
 	private static final int MAX_CHARS = 11;
 
-	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity, Block block){
+	public GuiCheckPassword(InventoryPlayer inventoryPlayer, TileEntity tileEntity){
 		super(new ContainerGeneric(inventoryPlayer, tileEntity));
 		this.tileEntity = tileEntity;
-		blockName = Utils.localize(block.getTranslationKey() + ".name").getFormattedText();
+		blockName = Utils.localize(tileEntity.getBlockType().getTranslationKey() + ".name").getFormattedText();
 	}
 
 	@Override

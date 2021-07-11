@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityIMS;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,7 +65,7 @@ public class EntityIMSBomb extends EntityFireball {
 
 	@Override
 	protected void onImpact(RayTraceResult result){
-		if(!world.isRemote && result.typeOfHit == Type.BLOCK && BlockUtils.getBlock(world, result.getBlockPos()) != SCContent.ims){
+		if(!world.isRemote && result.typeOfHit == Type.BLOCK && world.getBlockState(result.getBlockPos()).getBlock() != SCContent.ims){
 			world.newExplosion(this, result.getBlockPos().getX(), result.getBlockPos().getY() + 1D, result.getBlockPos().getZ(), ConfigHandler.smallerMineExplosion ? 3.5F : 7F, ConfigHandler.shouldSpawnFire, ConfigHandler.mineExplosionsBreakBlocks);
 			setDead();
 		}

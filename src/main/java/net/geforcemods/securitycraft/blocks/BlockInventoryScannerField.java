@@ -133,7 +133,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		TileEntityInventoryScanner connectedScanner = BlockInventoryScanner.getConnectedInventoryScanner(world, pos);
 
@@ -325,7 +325,7 @@ public class BlockInventoryScannerField extends BlockContainer implements IInter
 		{
 			BlockPos modifiedPos = posModifier.apply(pos, i);
 
-			if(BlockUtils.getBlock(world, modifiedPos) == SCContent.inventoryScanner)
+			if(world.getBlockState(modifiedPos) == SCContent.inventoryScanner)
 			{
 				for(int j = 1; j < i; j++)
 				{

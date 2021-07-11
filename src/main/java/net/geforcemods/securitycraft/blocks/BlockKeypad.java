@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypad;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -60,7 +59,7 @@ public class BlockKeypad extends BlockDisguisable {
 				if(te.sendsMessages())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey() + ".name"), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
-				activate(world, pos, te.getSignalLength());
+				activate(world, pos, state, te.getSignalLength());
 				return true;
 			}
 
@@ -71,15 +70,18 @@ public class BlockKeypad extends BlockDisguisable {
 		return true;
 	}
 
-	public static void activate(World world, BlockPos pos, int signalLength){
-		BlockUtils.setBlockProperty(world, pos, POWERED, true);
+	public static void activate(World world, BlockPos pos, IBlockState state, int signalLength){
+		if(state.getBlock() != SCContent.keypad)
+			return;
+
+		world.setBlockState(pos, state.withProperty(POWERED, true));
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
 		world.scheduleUpdate(pos, SCContent.keypad, signalLength);
 	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random random){
-		BlockUtils.setBlockProperty(world, pos, POWERED, false);
+		world.setBlockState(pos, state.withProperty(POWERED, false));
 		world.notifyNeighborsOfStateChange(pos, SCContent.keypad, false);
 	}
 

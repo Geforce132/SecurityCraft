@@ -75,7 +75,7 @@ public class BlockFullMineBase extends BlockExplosive implements IIntersectable,
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity){
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity){
 		if(entity instanceof EntityItem)
 			return;
 		else if(entity instanceof EntityLivingBase && !PlayerUtils.isPlayerMountedOnCamera((EntityLivingBase)entity) && !EntityUtils.doesEntityOwn(entity, world, pos))

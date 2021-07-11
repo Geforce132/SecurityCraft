@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants;
@@ -111,8 +112,8 @@ public abstract class CustomizableSCTE extends TileEntitySCTE implements IModule
 			int x = list.getCompoundTagAt(i).getInteger("blockX");
 			int y = list.getCompoundTagAt(i).getInteger("blockY");
 			int z = list.getCompoundTagAt(i).getInteger("blockZ");
+			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
 
-			LinkedBlock block = new LinkedBlock(name, x, y, z);
 			if(hasWorld() && !block.validate(world)) {
 				list.removeTag(i);
 				continue;

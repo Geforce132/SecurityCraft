@@ -5,9 +5,9 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blocks.BlockProtecto;
 import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -29,7 +29,7 @@ public class TileEntityProtecto extends CustomizableSCTE {
 			EntityLightningBolt lightning = new EntityLightningBolt(world, entity.posX, entity.posY, entity.posZ, false);
 
 			world.addWeatherEffect(lightning);
-			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockProtecto.ACTIVATED, false));
 			return true;
 		}
 
@@ -38,12 +38,14 @@ public class TileEntityProtecto extends CustomizableSCTE {
 
 	@Override
 	public boolean canAttack() {
+		IBlockState state = world.getBlockState(pos);
+		boolean activated = state.getValue(BlockProtecto.ACTIVATED);
 		boolean canAttack = (getAttackCooldown() == getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
 
-		if(canAttack && !BlockUtils.getBlockProperty(world, pos, BlockProtecto.ACTIVATED))
-			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, true);
-		else if(!canAttack && BlockUtils.getBlockProperty(world, pos, BlockProtecto.ACTIVATED))
-			BlockUtils.setBlockProperty(world, pos, BlockProtecto.ACTIVATED, false);
+		if(canAttack && !activated)
+			world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, true));
+		else if(!canAttack && activated)
+			world.setBlockState(pos, state.withProperty(BlockProtecto.ACTIVATED, false));
 
 		return canAttack;
 	}

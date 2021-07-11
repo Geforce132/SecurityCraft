@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.TileEntitySCTE;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
@@ -101,7 +100,7 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		if(!world.isRemote && entity instanceof EntityLivingBase && !EntityUtils.isInvisible((EntityLivingBase)entity))
 		{
@@ -112,14 +111,14 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 					BlockPos offsetPos = pos.offset(facing, i);
 					Block block = world.getBlockState(offsetPos).getBlock();
 
-					if(block == SCContent.laserBlock && !BlockUtils.getBlockProperty(world, offsetPos, BlockLaserBlock.POWERED))
+					if(block == SCContent.laserBlock && !state.getValue(BlockLaserBlock.POWERED))
 					{
 						TileEntity te = world.getTileEntity(offsetPos);
 
 						if(te instanceof IModuleInventory && ModuleUtils.isAllowed((IModuleInventory)te, entity))
 							return;
 
-						world.setBlockState(offsetPos, world.getBlockState(offsetPos).withProperty(BlockLaserBlock.POWERED, true));
+						world.setBlockState(offsetPos, state.withProperty(BlockLaserBlock.POWERED, true));
 						world.scheduleUpdate(offsetPos, SCContent.laserBlock, 50);
 
 						if(te instanceof IModuleInventory && ((IModuleInventory)te).hasModule(EnumModuleType.HARMING))
@@ -147,12 +146,13 @@ public class BlockLaserField extends BlockContainer implements IIntersectable{
 			{
 				for(int i = 0; i < ConfigHandler.laserBlockRange; i++)
 				{
-					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.laserBlock)
+					if(world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.laserBlock)
 					{
 						for(int j = 1; j < i; j++)
 						{
 							world.destroyBlock(pos.offset(facing, j), false);
 						}
+
 						break;
 					}
 				}

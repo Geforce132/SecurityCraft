@@ -16,7 +16,6 @@ import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -144,7 +143,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	@Override
 	public void activate(EntityPlayer player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof BlockKeypadChest && !isBlocked())
+		if(!world.isRemote && world.getBlockState(pos).getBlock() instanceof BlockKeypadChest && !isBlocked())
 			BlockKeypadChest.activate(world, pos, player);
 	}
 
@@ -295,20 +294,15 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 
 	public boolean isBlocked()
 	{
-		Block east = BlockUtils.getBlock(getWorld(), getPos().east());
-		Block south = BlockUtils.getBlock(getWorld(), getPos().south());
-		Block west = BlockUtils.getBlock(getWorld(), getPos().west());
-		Block north = BlockUtils.getBlock(getWorld(), getPos().north());
+		for(EnumFacing facing : EnumFacing.HORIZONTALS)
+		{
+			BlockPos pos = getPos().offset(facing);
 
-		if(east instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().east()))
-			return true;
-		else if(south instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().south()))
-			return true;
-		else if(west instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().west()))
-			return true;
-		else if(north instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(getWorld(), getPos().north()))
-			return true;
-		else return isSingleBlocked();
+			if(world.getBlockState(pos).getBlock() instanceof BlockKeypadChest && BlockKeypadChest.isBlocked(world, pos))
+				return true;
+		}
+
+		return isSingleBlocked();
 	}
 
 	public boolean isSingleBlocked()

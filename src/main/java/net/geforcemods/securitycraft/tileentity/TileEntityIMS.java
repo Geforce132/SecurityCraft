@@ -12,14 +12,15 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 
 public class TileEntityIMS extends CustomizableSCTE {
 
@@ -36,7 +37,7 @@ public class TileEntityIMS extends CustomizableSCTE {
 		super.update();
 
 		if(!world.isRemote && updateBombCount){
-			BlockUtils.setBlockProperty(world, pos, BlockIMS.MINES, BlockUtils.getBlockProperty(world, pos, BlockIMS.MINES) - 1);
+			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockIMS.MINES, bombsRemaining));
 			updateBombCount = false;
 		}
 
@@ -101,10 +102,13 @@ public class TileEntityIMS extends CustomizableSCTE {
 		int height;
 
 		for(height = 1; height <= 9; height++)
-			if(BlockUtils.getBlock(getWorld(), getPos().up(height)) == null || BlockUtils.getBlock(getWorld(), getPos().up(height)) == Blocks.AIR)
-				continue;
-			else
+		{
+			BlockPos upPos = pos.up(height);
+			IBlockState state = world.getBlockState(upPos);
+
+			if(!state.getBlock().isAir(state, world, upPos))
 				break;
+		}
 
 		return height;
 	}

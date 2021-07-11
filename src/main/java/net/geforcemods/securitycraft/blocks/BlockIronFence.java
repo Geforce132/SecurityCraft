@@ -67,7 +67,7 @@ public class BlockIronFence extends BlockFence implements IIntersectable {
 	}
 
 	@Override
-	public void onEntityIntersected(World world, BlockPos pos, Entity entity)
+	public void onEntityIntersected(World world, BlockPos pos, IBlockState state, Entity entity)
 	{
 		//so dropped items don't get destroyed
 		if(entity instanceof EntityItem)

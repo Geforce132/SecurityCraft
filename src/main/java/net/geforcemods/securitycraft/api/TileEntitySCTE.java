@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -130,9 +131,10 @@ public class TileEntitySCTE extends TileEntityOwnable implements ITickable, INam
 	}
 
 	public void entityIntersecting(Entity entity) {
-		if(!(world.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
+		IBlockState state = world.getBlockState(pos);
 
-		((IIntersectable) world.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
+		if(state.getBlock() instanceof IIntersectable)
+			((IIntersectable)state.getBlock()).onEntityIntersected(world, pos, state, entity);
 	}
 
 	/**

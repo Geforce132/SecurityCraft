@@ -24,11 +24,11 @@ import net.geforcemods.securitycraft.tileentity.TileEntityKeypadFurnace;
 import net.geforcemods.securitycraft.tileentity.TileEntityLogger;
 import net.geforcemods.securitycraft.tileentity.TileEntityProjector;
 import net.geforcemods.securitycraft.tileentity.TileEntityTrophySystem;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
@@ -58,7 +58,7 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(BlockUtils.toPos(x, y, z));
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
 		switch(id)
 		{
@@ -125,7 +125,7 @@ public class GuiHandler implements IGuiHandler {
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(BlockUtils.toPos(x, y, z));
+		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));
 
 		switch(id)
 		{
@@ -146,9 +146,9 @@ public class GuiHandler implements IGuiHandler {
 			case KEYPAD_FURNACE_GUI_ID:
 				return new GuiKeypadFurnaceInventory(player.inventory, (TileEntityKeypadFurnace) te);
 			case SETUP_PASSWORD_ID:
-				return new GuiSetPassword(player.inventory, te, BlockUtils.getBlock(world, x, y, z));
+				return new GuiSetPassword(player.inventory, te);
 			case INSERT_PASSWORD_ID:
-				return new GuiCheckPassword(player.inventory, te, BlockUtils.getBlock(world, x, y, z));
+				return new GuiCheckPassword(player.inventory, te);
 			case IMS_GUI_ID:
 				return new GuiIMS(player.inventory, (TileEntityIMS) te);
 			case CAMERA_MONITOR_GUI_ID:
