@@ -1,8 +1,7 @@
 {
-    "parent": "securitycraft:block/reinforced_block_bottom_top",
+    "parent": "securitycraft:block/reinforced_cube_column",
     "textures": {
-        "top": "block/bone_block_top",
-        "bottom": "block/bone_block_top",
+        "end": "block/bone_block_top",
         "side": "block/bone_block_side"
     }
 }

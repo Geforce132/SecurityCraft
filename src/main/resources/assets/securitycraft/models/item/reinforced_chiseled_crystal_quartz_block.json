@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_quartz_chiseled",
+    "parent": "securitycraft:block/reinforced_chiseled_quartz_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_stone_andesite" }
+        "":  { "model": "securitycraft:block/reinforced_andesite" }
     }
 }

@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_polished_andesite_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_stone_smooth_andesite"
+      "model": "securitycraft:block/reinforced_polished_andesite"
     }
   }
 }

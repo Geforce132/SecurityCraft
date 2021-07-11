@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_quartz_chiseled" }
+        "":  { "model": "securitycraft:block/reinforced_chiseled_quartz_block" }
     }
 }

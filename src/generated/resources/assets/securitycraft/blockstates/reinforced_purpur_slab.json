@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_purpur_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_purpur_default"
+      "model": "securitycraft:block/reinforced_purpur_block"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_stone_diorite" }
+        "":  { "model": "securitycraft:block/reinforced_diorite" }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_stained_hardened_clay_lime",
+    "parent": "securitycraft:block/reinforced_lime_terracotta",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_prismarine_dark" }
+        "":  { "model": "securitycraft:block/reinforced_dark_prismarine" }
     }
 }

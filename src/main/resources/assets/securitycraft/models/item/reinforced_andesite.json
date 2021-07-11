@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_stone_andesite",
+    "parent": "securitycraft:block/reinforced_andesite",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

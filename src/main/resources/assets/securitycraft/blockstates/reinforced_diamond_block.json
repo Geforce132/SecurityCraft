@@ -1,7 +1,7 @@
 {
     "variants": {
         "": [
-            { "model": "securitycraft:block/reinforced_metals_diamond" }
+            { "model": "securitycraft:block/reinforced_diamond_block" }
         ]
     }
 }

@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_stone_brick_chiseled",
+    "parent": "securitycraft:block/reinforced_chiseled_stone_bricks",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

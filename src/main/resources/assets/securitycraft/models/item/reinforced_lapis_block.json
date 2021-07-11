@@ -1,5 +1,5 @@
 {
-    "parent": "securitycraft:block/reinforced_compressed_blocks_lapis",
+    "parent": "securitycraft:block/reinforced_lapis_block",
     "display": {
         "thirdperson": {
             "rotation": [ 10, -45, 170 ],

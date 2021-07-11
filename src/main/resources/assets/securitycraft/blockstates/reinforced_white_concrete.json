@@ -1,5 +1,5 @@
 {
     "variants": {
-        "":  { "model": "securitycraft:block/reinforced_concrete_white" }
+        "":  { "model": "securitycraft:block/reinforced_white_concrete" }
     }
 }

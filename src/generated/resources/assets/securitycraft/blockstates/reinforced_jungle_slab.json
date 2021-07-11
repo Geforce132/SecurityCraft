@@ -7,7 +7,7 @@
       "model": "securitycraft:block/reinforced_jungle_slab"
     },
     "type=double": {
-      "model": "securitycraft:block/reinforced_planks_jungle"
+      "model": "securitycraft:block/reinforced_jungle_planks"
     }
   }
 }
