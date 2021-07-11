@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.tileentity;
 
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Streams;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -18,7 +22,6 @@ import net.geforcemods.securitycraft.network.server.RequestTEOwnableUpdate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
@@ -148,7 +151,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && BlockUtils.getBlock(getWorld(), getPos()) instanceof KeypadChestBlock && !isBlocked())
+		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
 			KeypadChestBlock.activate(world, pos, player);
 	}
 
@@ -301,20 +304,15 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 	public boolean isBlocked()
 	{
-		Block east = BlockUtils.getBlock(getWorld(), getPos().east());
-		Block south = BlockUtils.getBlock(getWorld(), getPos().south());
-		Block west = BlockUtils.getBlock(getWorld(), getPos().west());
-		Block north = BlockUtils.getBlock(getWorld(), getPos().north());
+		for(Direction dir : Streams.stream(Direction.Plane.HORIZONTAL.iterator()).collect(Collectors.toList()))
+		{
+			BlockPos pos = getPos().offset(dir);
 
-		if(east instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().east()))
-			return true;
-		else if(south instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().south()))
-			return true;
-		else if(west instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().west()))
-			return true;
-		else if(north instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(getWorld(), getPos().north()))
-			return true;
-		else return isSingleBlocked();
+			if(world.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(world, pos))
+				return true;
+		}
+
+		return isSingleBlocked();
 	}
 
 	public boolean isSingleBlocked()

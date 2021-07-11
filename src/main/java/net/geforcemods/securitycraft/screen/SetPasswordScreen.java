@@ -7,8 +7,8 @@ import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
 import net.geforcemods.securitycraft.network.server.SetPassword;
 import net.geforcemods.securitycraft.screen.components.IdButton;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -86,6 +86,6 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	protected void actionPerformed(IdButton button){
 		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
 		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
-		ClientUtils.closePlayerScreen();
+		Minecraft.getInstance().player.closeScreen();
 	}
 }

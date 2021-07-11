@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasswordProtected;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -49,7 +48,7 @@ public class CheckPassword {
 	public static void onMessage(CheckPassword message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			BlockPos pos = BlockUtils.toPos(message.x, message.y, message.z);
+			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
 			TileEntity te = player.world.getTileEntity(pos);

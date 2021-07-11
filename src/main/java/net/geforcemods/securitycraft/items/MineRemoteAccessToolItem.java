@@ -49,7 +49,7 @@ public class MineRemoteAccessToolItem extends Item {
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		if(BlockUtils.getBlock(world, pos) instanceof IExplosive){
+		if(world.getBlockState(pos).getBlock() instanceof IExplosive){
 			if(!isMineAdded(stack, pos)){
 				int availSlot = getNextAvaliableSlot(stack);
 
@@ -67,7 +67,7 @@ public class MineRemoteAccessToolItem extends Item {
 				if(stack.getTag() == null)
 					stack.setTag(new CompoundNBT());
 
-				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.fromPos(pos));
+				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
 				if (!world.isRemote)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));

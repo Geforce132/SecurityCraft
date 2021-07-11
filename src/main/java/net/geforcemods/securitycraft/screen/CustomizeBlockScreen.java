@@ -17,9 +17,7 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IdButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.Rectangle2d;
@@ -55,7 +53,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	{
 		super(container, inv, name);
 		moduleInv = container.moduleInv;
-		blockName = BlockUtils.getBlock(Minecraft.getInstance().world, moduleInv.getTileEntity().getPos()).getTranslationKey().substring(5);
+		blockName = container.moduleInv.getTileEntity().getBlockState().getBlock().getTranslationKey().substring(5);
 	}
 
 	@Override

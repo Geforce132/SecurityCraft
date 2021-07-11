@@ -11,6 +11,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 /**
@@ -116,7 +117,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 			int y = list.getCompound(i).getInt("blockY");
 			int z = list.getCompound(i).getInt("blockZ");
 
-			LinkedBlock block = new LinkedBlock(name, x, y, z);
+			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
 			if(hasWorld() && !block.validate(world)) {
 				list.remove(i);
 				continue;

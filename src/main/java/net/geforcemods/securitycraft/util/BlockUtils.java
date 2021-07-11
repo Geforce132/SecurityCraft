@@ -16,7 +16,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion.Mode;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -38,19 +37,7 @@ public class BlockUtils{
 		world.notifyNeighborsOfStateChange(pos, block);
 	}
 
-	public static Block getBlock(IBlockReader world, BlockPos pos){
-		return world.getBlockState(pos).getBlock();
-	}
-
-	public static Block getBlock(World world, int x, int y, int z){
-		return world.getBlockState(toPos(x, y, z)).getBlock();
-	}
-
-	public static BlockPos toPos(int x, int y, int z){
-		return new BlockPos(x, y, z);
-	}
-
-	public static int[] fromPos(BlockPos pos){
+	public static int[] posToIntArray(BlockPos pos){
 		return new int[]{pos.getX(), pos.getY(), pos.getZ()};
 	}
 

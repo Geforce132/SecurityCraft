@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.SecurityCraftTileEntity;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.EntityUtils;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.minecraft.block.Block;
@@ -99,12 +98,13 @@ public class LaserFieldBlock extends OwnableBlock implements IIntersectable{
 			{
 				for(int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++)
 				{
-					if(BlockUtils.getBlock(world, pos.offset(facing, i)) == SCContent.LASER_BLOCK.get())
+					if(world.getBlockState(pos.offset(facing, i)).getBlock() == SCContent.LASER_BLOCK.get())
 					{
 						for(int j = 1; j < i; j++)
 						{
 							world.destroyBlock(pos.offset(facing, j), false);
 						}
+
 						break;
 					}
 				}
