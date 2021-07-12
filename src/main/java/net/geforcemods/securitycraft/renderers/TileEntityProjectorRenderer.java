@@ -41,7 +41,7 @@ public class TileEntityProjectorRenderer extends TileEntitySpecialRenderer<TileE
 					if(pos != null && te.getWorld().isAirBlock(pos))
 					{
 						BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
-						IBlockState state = te.getProjectedBlock().getDefaultState();
+						IBlockState state = te.getProjectedBlock().getStateFromMeta(te.getStackInSlot(36).getMetadata());
 
 						GlStateManager.disableCull();
 						GlStateManager.scale(0.9999D, 0.9999D, 0.9999D); //counteract z-fighting between fake blocks
