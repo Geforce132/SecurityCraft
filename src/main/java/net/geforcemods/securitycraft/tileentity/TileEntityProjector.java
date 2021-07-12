@@ -19,9 +19,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public static final int MAX_RANGE = 30;
 	public static final int MIN_OFFSET = -10;
 	public static final int MAX_OFFSET = 10;
-
 	public static final int RENDER_DISTANCE = 100;
-
 	private int projectionWidth = 1;
 	private int projectionHeight = 1;
 	private int projectionRange = 5;
@@ -29,7 +27,6 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public boolean activatedByRedstone = false;
 	public boolean active = false;
 	private boolean horizontal = false;
-
 	private ItemStack projectedBlock = ItemStack.EMPTY;
 
 	@Override
@@ -75,6 +72,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setProjectionWidth(int width)
 	{
 		projectionWidth = width;
+		markDirty();
 	}
 
 	public int getProjectionHeight()
@@ -85,6 +83,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setProjectionHeight(int projectionHeight)
 	{
 		this.projectionHeight = projectionHeight;
+		markDirty();
 	}
 
 	public int getProjectionRange()
@@ -95,6 +94,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setProjectionRange(int range)
 	{
 		projectionRange = range;
+		markDirty();
 	}
 
 	public int getProjectionOffset()
@@ -105,6 +105,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setProjectionOffset(int offset)
 	{
 		projectionOffset = offset;
+		markDirty();
 	}
 
 	public boolean isActivatedByRedstone()
@@ -115,6 +116,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setActivatedByRedstone(boolean redstone)
 	{
 		activatedByRedstone = redstone;
+		markDirty();
 	}
 
 	public boolean isHorizontal()
@@ -125,6 +127,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setHorizontal(boolean horizontal)
 	{
 		this.horizontal = horizontal;
+		markDirty();
 	}
 
 	public boolean isActive()
@@ -135,6 +138,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	public void setActive(boolean isOn)
 	{
 		active = isOn;
+		markDirty();
 	}
 
 	public Block getProjectedBlock() {
@@ -248,12 +252,10 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player)
-	{}
+	public void openInventory(EntityPlayer player) {}
 
 	@Override
-	public void closeInventory(EntityPlayer player)
-	{}
+	public void closeInventory(EntityPlayer player) {}
 
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack)
@@ -268,8 +270,7 @@ public class TileEntityProjector extends TileEntityDisguisable implements IInven
 	}
 
 	@Override
-	public void setField(int id, int value)
-	{}
+	public void setField(int id, int value) {}
 
 	@Override
 	public int getFieldCount()

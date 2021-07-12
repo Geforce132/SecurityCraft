@@ -135,7 +135,7 @@ public class GuiProjector extends GuiContainer implements ISlider {
 			te.setProjectionWidth(data = projectionWidthSlider.getValueInt());
 			dataType = DataType.WIDTH;
 		}
-		if(id == projectionHeightSlider.id)
+		else if(id == projectionHeightSlider.id)
 		{
 			te.setProjectionHeight(data = projectionHeightSlider.getValueInt());
 			dataType = DataType.HEIGHT;
