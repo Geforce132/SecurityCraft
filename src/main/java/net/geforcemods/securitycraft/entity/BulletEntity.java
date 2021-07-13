@@ -11,6 +11,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -55,6 +57,40 @@ public class BulletEntity extends AbstractArrowEntity
 	{
 		super.registerData();
 		dataManager.register(OWNER, new Owner());
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+
+		if (!this.potionEffects.isEmpty()) {
+			ListNBT list = new ListNBT();
+
+			for(EffectInstance effect : this.potionEffects) {
+				list.add(effect.write(new CompoundNBT()));
+			}
+
+			compound.put("PotionEffects", list);
+		}
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+
+		if (compound.contains("PotionEffects", 9)) {
+			ListNBT potionList = compound.getList("PotionEffects", 10);
+
+			if (!potionList.isEmpty()) {
+				for (int i = 0; i < potionList.size(); ++i) {
+					EffectInstance effect = EffectInstance.read(potionList.getCompound(i));
+
+					if (effect != null) {
+						potionEffects.add(effect);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
