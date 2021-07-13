@@ -1,7 +1,12 @@
 package net.geforcemods.securitycraft.entity;
 
+import java.util.Collection;
+
+import com.google.common.collect.Sets;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
@@ -9,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
@@ -20,6 +26,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class BulletEntity extends AbstractArrowEntity
 {
 	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(BulletEntity.class, Owner.getSerializer());
+	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
 
 	public BulletEntity(EntityType<BulletEntity> type, World world)
 	{
@@ -32,6 +39,7 @@ public class BulletEntity extends AbstractArrowEntity
 
 		Owner owner =  shooter.getOwner();
 
+		this.potionEffects = shooter.getActivePotionEffects();
 		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 	}
 
@@ -53,10 +61,21 @@ public class BulletEntity extends AbstractArrowEntity
 	@Override
 	protected void onHit(RayTraceResult raytraceResult)
 	{
-		if(raytraceResult.getType() == Type.ENTITY && !(((EntityRayTraceResult)raytraceResult).getEntity() instanceof SentryEntity))
+		if(raytraceResult.getType() == Type.ENTITY)
 		{
-			((EntityRayTraceResult)raytraceResult).getEntity().attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
-			remove();
+			Entity target = ((EntityRayTraceResult)raytraceResult).getEntity();
+
+			if (!(target instanceof SentryEntity)) {
+				target.attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
+
+				if (target instanceof LivingEntity && !potionEffects.isEmpty()) {
+					for (EffectInstance effect : potionEffects) {
+						((LivingEntity)target).addPotionEffect(effect);
+					}
+				}
+
+				remove();
+			}
 		}
 		else if(raytraceResult.getType() == Type.BLOCK)
 			remove();
