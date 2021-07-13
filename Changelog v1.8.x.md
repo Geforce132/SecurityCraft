@@ -2,6 +2,7 @@
 
 - New: The Frame block will now send a message when being rightclicked with a Camera Monitor, notifying the player that viewing a Camera Monitor in a Frame is currently not possible
 - New: The Trophy System now supports the Allowlist Module. Projectiles by listed players (as well as their Sentries' and I.M.S.' projectiles) will be ignored
+- New: Sentry bullets will now apply the Sentry's potion effects to their target
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: The Protecto does not attack players
 - Fix: The Frame's model does not match up with the vanilla iron block (this fix may break resource packs slightly)
