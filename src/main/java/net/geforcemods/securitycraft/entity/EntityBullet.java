@@ -9,6 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
@@ -52,6 +54,40 @@ public class EntityBullet extends EntityArrow
 	{
 		super.entityInit();
 		dataManager.register(OWNER, new Owner());
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		super.writeEntityToNBT(compound);
+
+		if (!this.potionEffects.isEmpty()) {
+			NBTTagList list = new NBTTagList();
+
+			for(PotionEffect effect : this.potionEffects) {
+				list.appendTag(effect.writeCustomPotionEffectToNBT(new NBTTagCompound()));
+			}
+
+			compound.setTag("PotionEffects", list);
+		}
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+
+		if (compound.hasKey("PotionEffects", 9)) {
+			NBTTagList potionList = compound.getTagList("PotionEffects", 10);
+
+			if (!potionList.isEmpty()) {
+				for (int i = 0; i < potionList.tagCount(); ++i) {
+					PotionEffect effect = PotionEffect.readCustomPotionEffectFromNBT(potionList.getCompoundTagAt(i));
+
+					if (effect != null) {
+						potionEffects.add(effect);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
