@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Streams;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
+import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -64,22 +64,23 @@ public class SetPassword {
 				((IPasswordProtected)te).setPassword(password);
 
 				if(te instanceof KeypadChestTileEntity)
-					checkAndUpdateAdjacentChest(world, pos, password, player);
+					checkAndUpdateAdjacentChest((KeypadChestTileEntity)te, world, pos, password, player);
 			}
 		});
 
 		ctx.get().setPacketHandled(true);
 	}
 
-	private static void checkAndUpdateAdjacentChest(World world, BlockPos pos, String codeToSet, PlayerEntity player) {
-		for(Direction dir : Streams.stream(Direction.Plane.HORIZONTAL.iterator()).collect(Collectors.toList()))
+	private static void checkAndUpdateAdjacentChest(KeypadChestTileEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
+		if(te.getBlockState().get(KeypadChestBlock.TYPE) != ChestType.SINGLE)
 		{
-			TileEntity te = world.getTileEntity(pos.offset(dir));
+			BlockPos offsetPos = pos.offset(KeypadChestBlock.getDirectionToAttached(te.getBlockState()));
+			TileEntity otherTe = world.getTileEntity(offsetPos);
 
-			if(te instanceof KeypadChestTileEntity)
+			if(otherTe instanceof KeypadChestTileEntity && te.getOwner().owns((KeypadChestTileEntity)otherTe))
 			{
-				((IPasswordProtected)te).setPassword(codeToSet);
-				return;
+				((KeypadChestTileEntity)otherTe).setPassword(codeToSet);
+				world.notifyBlockUpdate(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);
 			}
 		}
 	}

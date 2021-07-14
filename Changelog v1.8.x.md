@@ -10,6 +10,7 @@
 - Fix: Tooltips in the Block Pocket Manager's GUI still show up even if the block pocket is activated or not owned by the player looking at it
 - Fix: Reinforced Lanterns don't have a reinforced block tint
 - Fix: Crash when trying to change the owner of a door
+- Fix: Placing a Password-protected Chest or setting/changing its passcode can lead to the wrong chest's passcode being changed
 - Misc.: Some SecurityCraft model files have been renamed to better fit Minecraft's model name structure. This will break resourcepacks
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
