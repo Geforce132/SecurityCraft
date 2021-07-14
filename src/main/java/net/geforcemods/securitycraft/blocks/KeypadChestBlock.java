@@ -140,16 +140,18 @@ public class KeypadChestBlock extends ChestBlock {
 		boolean isPlayer = entity instanceof PlayerEntity;
 
 		if(isPlayer)
+		{
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)entity));
 
-		if(world.getTileEntity(pos.east()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.east())).getOwner().isOwner((PlayerEntity) entity))
-			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.east())).getPassword());
-		else if(world.getTileEntity(pos.west()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.west())).getOwner().isOwner((PlayerEntity) entity))
-			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.west())).getPassword());
-		else if(world.getTileEntity(pos.south()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.south())).getOwner().isOwner((PlayerEntity) entity))
-			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.south())).getPassword());
-		else if(world.getTileEntity(pos.north()) instanceof KeypadChestTileEntity && isPlayer && ((KeypadChestTileEntity) world.getTileEntity(pos.north())).getOwner().isOwner((PlayerEntity) entity))
-			((KeypadChestTileEntity)(world.getTileEntity(pos))).setPassword(((KeypadChestTileEntity) world.getTileEntity(pos.north())).getPassword());
+			if(state.get(KeypadChestBlock.TYPE) != ChestType.SINGLE)
+			{
+				KeypadChestTileEntity thisTe = (KeypadChestTileEntity)world.getTileEntity(pos);
+				TileEntity otherTe = world.getTileEntity(pos.offset(getDirectionToAttached(state)));
+
+				if(otherTe instanceof KeypadChestTileEntity && thisTe.getOwner().owns((KeypadChestTileEntity)otherTe))
+					thisTe.setPassword(((KeypadChestTileEntity)otherTe).getPassword());
+			}
+		}
 	}
 
 	@Override
