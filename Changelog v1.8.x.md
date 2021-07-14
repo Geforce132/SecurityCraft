@@ -14,6 +14,7 @@
 - Fix: Motion Activated Light can be placed in midair
 - Fix: The Projector does not save its settings
 - Fix: The Projector cannot project blocks with a metadata value greater than 0 (example: granite, colored wool, ...)
+- Fix: Sentry animation does not work properly
 - Misc.: The block "securitycraft:alarm_lit" is no longer in use. It is kept for backwards compatibility, and any existing blocks will automatically be converted to "securitycraft:alarm". The latter now has a "lit" block property.
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------

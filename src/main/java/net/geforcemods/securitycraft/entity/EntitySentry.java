@@ -117,9 +117,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		}
 		else
 		{
-			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
+			if(!animate && headYTranslation > 0.0F)
 			{
-				animateUpwards = true;
+				animateUpwards = getMode().isAggressive(); 
 				animate = true;
 			}
 
