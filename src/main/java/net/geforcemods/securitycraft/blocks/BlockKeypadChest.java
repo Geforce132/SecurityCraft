@@ -161,12 +161,13 @@ public class BlockKeypadChest extends BlockContainer
 		state = state.withProperty(FACING, facing);
 		BlockPos northPos = pos.north();
 		BlockPos southPos = pos.south();
-		BlockPos westPost = pos.west();
+		BlockPos westPos = pos.west();
 		BlockPos eastPos = pos.east();
 		boolean isNorthPPC = this == world.getBlockState(northPos).getBlock();
 		boolean isSouthPPC = this == world.getBlockState(southPos).getBlock();
-		boolean isWestPPC = this == world.getBlockState(westPost).getBlock();
+		boolean isWestPPC = this == world.getBlockState(westPos).getBlock();
 		boolean isEastPPC = this == world.getBlockState(eastPos).getBlock();
+		BlockPos otherChestPos = null;
 
 		if(!isNorthPPC && !isSouthPPC && !isWestPPC && !isEastPPC)
 			world.setBlockState(pos, state, 3);
@@ -175,9 +176,15 @@ public class BlockKeypadChest extends BlockContainer
 			if(facing.getAxis() == EnumFacing.Axis.Z && (isWestPPC || isEastPPC))
 			{
 				if(isWestPPC)
-					world.setBlockState(westPost, state, 3);
+				{
+					world.setBlockState(westPos, state, 3);
+					otherChestPos = westPos;
+				}
 				else
+				{
 					world.setBlockState(eastPos, state, 3);
+					otherChestPos = eastPos;
+				}
 
 				world.setBlockState(pos, state, 3);
 			}
@@ -185,34 +192,36 @@ public class BlockKeypadChest extends BlockContainer
 		else
 		{
 			if(isNorthPPC)
+			{
 				world.setBlockState(northPos, state, 3);
+				otherChestPos = northPos;
+			}
 			else
+			{
 				world.setBlockState(southPos, state, 3);
+				otherChestPos = southPos;
+			}
 
 			world.setBlockState(pos, state, 3);
 		}
 
+		TileEntityKeypadChest te = (TileEntityKeypadChest)world.getTileEntity(pos);
+
 		if(stack.hasDisplayName())
+			te.setCustomName(stack.getDisplayName());
+
+		if(entity instanceof EntityPlayer)
 		{
-			TileEntity te = world.getTileEntity(pos);
-
-			if(te instanceof TileEntityKeypadChest)
-				((TileEntityKeypadChest)te).setCustomName(stack.getDisplayName());
-		}
-
-		boolean isPlayer = entity instanceof EntityPlayer;
-
-		if(world.getTileEntity(eastPos) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(eastPos)).getOwner().isOwner((EntityPlayer) entity))
-			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(eastPos)).getPassword());
-		else if(world.getTileEntity(westPost) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(westPost)).getOwner().isOwner((EntityPlayer) entity))
-			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(westPost)).getPassword());
-		else if(world.getTileEntity(southPos) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(southPos)).getOwner().isOwner((EntityPlayer) entity))
-			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(southPos)).getPassword());
-		else if(world.getTileEntity(northPos) instanceof TileEntityKeypadChest && isPlayer && ((TileEntityKeypadChest) world.getTileEntity(northPos)).getOwner().isOwner((EntityPlayer) entity))
-			((TileEntityKeypadChest)(world.getTileEntity(pos))).setPassword(((TileEntityKeypadChest) world.getTileEntity(northPos)).getPassword());
-
-		if(isPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer)entity));
+
+			if(otherChestPos != null)
+			{
+				TileEntity otherTe = world.getTileEntity(otherChestPos);
+
+				if(otherTe instanceof TileEntityKeypadChest && te.getOwner().owns((TileEntityKeypadChest)otherTe))
+					te.setPassword(((TileEntityKeypadChest)otherTe).getPassword());
+			}
+		}
 	}
 
 	public IBlockState checkForSurroundingChests(World world, BlockPos pos, IBlockState state)

@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordProtected;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.WorldUtils;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -72,11 +73,15 @@ public class SetPassword implements IMessage{
 		private void checkAndUpdateAdjacentChest(World world, BlockPos pos, String codeToSet, EntityPlayer player) {
 			for(EnumFacing facing : EnumFacing.HORIZONTALS)
 			{
-				TileEntity te = world.getTileEntity(pos.offset(facing));
+				BlockPos offsetPos = pos.offset(facing);
+				TileEntity te = world.getTileEntity(offsetPos);
 
 				if(te instanceof TileEntityKeypadChest)
 				{
+					IBlockState state = world.getBlockState(offsetPos);
+
 					((IPasswordProtected)te).setPassword(codeToSet);
+					world.notifyBlockUpdate(offsetPos, state, state, 2);
 					break;
 				}
 			}
