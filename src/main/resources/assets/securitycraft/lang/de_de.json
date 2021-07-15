@@ -628,6 +628,7 @@
 	"gui.securitycraft:keycard_reader.noSmartModule": "Du musst ein schlaues Modul installieren, um die Schlüsselkarten-Level individuell zu kontrollieren.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individuelle Kontrolle von Schlüsselkarten-Level aktiv!",
 	"gui.securitycraft:keycard_reader.level_mismatch": "Der Level dieser Schlüsselkarte ist in diesem Schlüsselkarten-Leser nicht aktiviert!",
+	"gui.securitycraft:customize.currentSetting": "Momentan: %s",
 
 	"messages.securitycraft:bugReport": "Bitte melde Bugs im #bugreport Channel auf unserem Discord Server. Lies bitte zuerst die Regeln",
 	"messages.securitycraft:retinalScanner.hello": "Hallo %s.",

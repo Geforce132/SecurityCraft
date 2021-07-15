@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.containers.CustomizeBlockContainer;
@@ -27,6 +28,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.Slider;
@@ -171,13 +173,22 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockContaine
 	}
 
 	private String getOptionDescription(int buttonID) {
-		String optionDescription = "option" + blockName + "." +  ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()].getName() + ".description";
+		Option<?> option = ((ICustomizable)moduleInv.getTileEntity()).customOptions()[buttonID - moduleInv.getSlots()];
+		String optionDescription = "option" + blockName + "." +  option.getName() + ".description";
 
-		return Utils.localize(optionDescription).getFormattedText();
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(optionDescription), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option))).getFormattedText();
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return (Utils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", option.toString());
+		return (Utils.localize("option" + blockName + "." + option.getName()).getFormattedText() + " ").replace("#", getValueText(option));
+	}
+
+	private String getValueText(Option<?> option)
+	{
+		if(option instanceof BooleanOption)
+			return new TranslationTextComponent(((BooleanOption)option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no").getFormattedText();
+		else
+			return option.toString();
 	}
 
 	public List<Rectangle2d> getGuiExtraAreas()
