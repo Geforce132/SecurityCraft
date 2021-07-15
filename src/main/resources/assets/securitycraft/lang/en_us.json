@@ -681,6 +681,8 @@
 	"gui.securitycraft:keycard_reader.noSmartModule": "You need a Smart Module to control the keycard levels individually.",
 	"gui.securitycraft:keycard_reader.smartModule": "Individual keycard level control active!",
 	"gui.securitycraft:keycard_reader.level_mismatch": "The level of this keycard is not enabled in this keycard reader!",
+	"gui.securitycraft:customize.tooltip": "%s (%s)",
+	"gui.securitycraft:customize.currentSetting": "Currently: %s",
 
 	"messages.securitycraft:bugReport": "Please report bugs in the #bugreport channel on our Discord server. Read the rules first, please",
 	"messages.securitycraft:retinalScanner.hello": "Hello %s.",
