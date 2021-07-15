@@ -119,10 +119,9 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		}
 		else
 		{
-			animate = false;
-			if(!animate && headYTranslation > 0.0F)
+			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
 			{
-				animateUpwards = getMode().isAggressive();
+				animateUpwards = true;
 				animate = true;
 			}
 
@@ -331,7 +330,8 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 
 		if(sendMessage)
 			player.sendStatusMessage(Utils.localize(SentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(SentryMode.values()[mode].getDescriptionKey())), true);
-		else if(!player.world.isRemote)
+
+		if(!player.world.isRemote)
 			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new InitSentryAnimation(getPosition(), true, SentryMode.values()[mode].isAggressive()));
 	}
 
