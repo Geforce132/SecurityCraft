@@ -12,6 +12,7 @@
 - Fix: Crash when trying to change the owner of a door
 - Fix: Placing a Password-protected Chest or setting/changing its passcode can lead to the wrong chest's passcode being changed
 - Fix: Sentry animation does not work properly when changing modes
+- Fix: Lasers cannot be toggled properly
 - Misc.: Some SecurityCraft model files have been renamed to better fit Minecraft's model name structure. This will break resourcepacks
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
