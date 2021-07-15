@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableSCTE;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.tileentity.TileEntityLaserBlock;
@@ -87,8 +86,6 @@ public class BlockLaserBlock extends BlockDisguisable {
 						{
 							thisTe.insertModule(thatTe.getModule(type));
 						}
-
-						((OptionBoolean)thisTe.customOptions()[0]).setValue(thatTe.isEnabled());
 
 						if (thisTe.isEnabled() && thatTe.isEnabled())
 						{
