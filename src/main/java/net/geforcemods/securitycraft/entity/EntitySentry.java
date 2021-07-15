@@ -117,9 +117,9 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		}
 		else
 		{
-			if(!animate && headYTranslation > 0.0F)
+			if(!animate && headYTranslation > 0.0F && getMode().isAggressive())
 			{
-				animateUpwards = getMode().isAggressive(); 
+				animateUpwards = true;
 				animate = true;
 			}
 
@@ -328,7 +328,8 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 
 		if(sendMessage)
 			player.sendStatusMessage(Utils.localize(EnumSentryMode.values()[mode].getModeKey()).appendSibling(Utils.localize(EnumSentryMode.values()[mode].getDescriptionKey())), true);
-		else if(!player.world.isRemote)
+
+		if(!player.world.isRemote)
 			SecurityCraft.network.sendToAll(new InitSentryAnimation(getPosition(), true, EnumSentryMode.values()[mode].isAggressive()));
 	}
 
