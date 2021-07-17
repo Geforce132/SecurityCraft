@@ -156,6 +156,6 @@ public class PlayerUtils{
 	 * Args: entity.
 	 */
 	public static boolean isPlayerMountedOnCamera(EntityLivingBase entity) {
-		return entity.getRidingEntity() instanceof EntitySecurityCamera;
+		return entity != null && entity.getRidingEntity() instanceof EntitySecurityCamera;
 	}
 }
