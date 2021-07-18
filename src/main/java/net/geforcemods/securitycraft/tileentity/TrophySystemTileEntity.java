@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -203,10 +204,12 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	private boolean filterSCProjectiles(ProjectileEntity projectile) {
 		Owner owner = null;
 
-		if (projectile instanceof BulletEntity)
+		if(projectile instanceof BulletEntity)
 			owner = ((BulletEntity)projectile).getOwner();
-		else if (projectile instanceof IMSBombEntity)
+		else if(projectile instanceof IMSBombEntity)
 			owner = ((IMSBombEntity)projectile).getOwner();
+		else if(projectile.getShooter() instanceof SentryEntity)
+			owner = ((SentryEntity)projectile.getShooter()).getOwner();
 
 		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}

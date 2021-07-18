@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.containers.GenericTEContainer;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -133,6 +134,14 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 			insertOnlyHandler = LazyOptional.of(() -> new InsertOnlyInvWrapper(KeypadChestTileEntity.this));
 
 		return insertOnlyHandler;
+	}
+
+	public LazyOptional<IItemHandler> getHandlerForSentry(SentryEntity entity)
+	{
+		if(entity.getOwner().owns(this))
+			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+		else
+			return LazyOptional.empty();
 	}
 
 	@Override
