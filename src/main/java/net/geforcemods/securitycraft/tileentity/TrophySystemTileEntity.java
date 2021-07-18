@@ -39,7 +39,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class TrophySystemTileEntity extends CustomizableTileEntity implements ITickableTileEntity {
 
@@ -87,8 +86,14 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 				if(target != null) {
 					Entity shooter = getShooter(target);
 
+					if(shooter == null)
+						setTarget(target);
+
+					UUID uuid = shooter instanceof SentryEntity ? UUID.fromString(((SentryEntity)shooter).getOwner().getUUID()) : shooter.getUniqueID();
+					String name = shooter instanceof SentryEntity ? ((SentryEntity)shooter).getOwner().getName() : shooter.getName().getString();
+
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+					if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
 						setTarget(target);
 				}
 			}
@@ -236,9 +241,6 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 			shooter = ((FireworkRocketEntity)projectile).boostedEntity;
 		else if (projectile instanceof ThrowableEntity) //eggs, snowballs and ender pearls
 			shooter = ((ThrowableEntity)projectile).getThrower();
-
-		if(shooter instanceof SentryEntity)
-			shooter = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(UUID.fromString(((SentryEntity)shooter).getOwner().getUUID()));
 
 		return shooter;
 	}
