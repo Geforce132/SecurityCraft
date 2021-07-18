@@ -4,6 +4,7 @@
 - New: The Trophy System now supports the Allowlist Module. Projectiles by listed players (as well as their Sentries' and I.M.S.' projectiles) will be ignored
 - New: Sentry bullets will now apply the Sentry's potion effects to their target
 - New: The value of per-block customization options is now shown in the tooltip, "true" and "false" have also been changed to "Yes" and "No" for clarity
+- New: Sentries can now use more projectiles to shoot. Place a chest below the Sentry and put arrows, tipped arrows, snowballs, or eggs into the chest to let the sentry use them
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: The Protecto does not attack players
 - Fix: The Frame's model does not match up with the vanilla iron block (this fix may break resource packs slightly)

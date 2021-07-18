@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.OptionBoolean;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.BlockKeypadChest;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.gui.GuiHandler;
 import net.geforcemods.securitycraft.inventory.InsertOnlyDoubleChestHandler;
 import net.geforcemods.securitycraft.items.ItemModule;
@@ -33,6 +34,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityKeypadChest extends TileEntityChest implements IPasswordProtected, IOwnable, IModuleInventory, ICustomizable {
 
@@ -127,6 +129,14 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			insertOnlyHandler = InsertOnlyDoubleChestHandler.get(this);
 
 		return insertOnlyHandler;
+	}
+
+	public IItemHandler getHandlerForSentry(EntitySentry entity)
+	{
+		if(entity.getOwner().owns(this))
+			return super.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+		else
+			return null;
 	}
 
 	@Override

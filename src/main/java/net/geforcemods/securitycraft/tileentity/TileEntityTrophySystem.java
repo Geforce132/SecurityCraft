@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -13,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.EntityBullet;
 import net.geforcemods.securitycraft.entity.EntityIMSBomb;
+import net.geforcemods.securitycraft.entity.EntitySentry;
 import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -84,8 +86,14 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 				if (target != null) {
 					Entity shooter = getShooter(target);
 
+					if(shooter == null)
+						setTarget(target);
+
+					UUID uuid = shooter instanceof EntitySentry ? UUID.fromString(((EntitySentry)shooter).getOwner().getUUID()) : shooter.getUniqueID();
+					String name = shooter instanceof EntitySentry ? ((EntitySentry)shooter).getOwner().getName() : shooter.getName();
+
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName()))))
+					if(!((uuid != null && uuid.toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, name)))
 						setTarget(target);
 				}
 			}
@@ -212,9 +220,9 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 	private boolean filterSCProjectiles(Entity projectile) {
 		Owner owner = null;
 
-		if (projectile instanceof EntityBullet)
+		if(projectile instanceof EntityBullet)
 			owner = ((EntityBullet)projectile).getOwner();
-		else if (projectile instanceof EntityIMSBomb)
+		else if(projectile instanceof EntityIMSBomb)
 			owner = ((EntityIMSBomb)projectile).getOwner();
 
 		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
@@ -228,11 +236,11 @@ public class TileEntityTrophySystem extends CustomizableSCTE implements ITickabl
 
 		if(projectile instanceof EntityArrow) //arrows, spectral arrows and sentry bullets
 			shooter = (EntityLivingBase)((EntityArrow) projectile).shootingEntity;
-		if(projectile instanceof EntityFireball) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
+		else if(projectile instanceof EntityFireball) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
 			shooter = ((EntityFireball) projectile).shootingEntity;
-		else if (projectile instanceof EntityFireworkRocket)
+		else if(projectile instanceof EntityFireworkRocket)
 			shooter = ((EntityFireworkRocket)projectile).boostedEntity;
-		else if (projectile instanceof EntityThrowable) //eggs, snowballs and ender pearls
+		else if(projectile instanceof EntityThrowable) //eggs, snowballs and ender pearls
 			shooter = ((EntityThrowable)projectile).getThrower();
 
 		return shooter;

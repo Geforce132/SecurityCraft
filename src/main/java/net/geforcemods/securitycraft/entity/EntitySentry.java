@@ -10,19 +10,28 @@ import net.geforcemods.securitycraft.entity.ai.EntityAIAttackRangedIfEnabled;
 import net.geforcemods.securitycraft.entity.ai.EntityAITargetNearestPlayerOrMob;
 import net.geforcemods.securitycraft.items.ItemModule;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
+import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.geforcemods.securitycraft.util.WorldUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockSourceImpl;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.dispenser.PositionImpl;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -33,15 +42,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class EntitySentry extends EntityCreature implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
@@ -364,17 +378,67 @@ public class EntitySentry extends EntityCreature implements IRangedAttackMob //n
 		if(getDistanceSq(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
 			return;
 
-		EntityBullet throwableEntity = new EntityBullet(world, this);
+		TileEntity te = world.getTileEntity(getPosition().down());
+		IProjectile throwableEntity = null;
+		SoundEvent shootSound = SoundEvents.ENTITY_ARROW_SHOOT;
+		BehaviorProjectileDispense pdb = null;
+		IItemHandler handler = null;
+
+		if(te instanceof TileEntityKeypadChest)
+			handler = ((TileEntityKeypadChest)te).getHandlerForSentry(this);
+		else if(te != null)
+			handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+
+		if(handler != null)
+		{
+			for(int i = 0; i < handler.getSlots(); i++)
+			{
+				ItemStack stack = handler.getStackInSlot(i);
+
+				if(!stack.isEmpty())
+				{
+					IBehaviorDispenseItem dispenseBehavior = ((BlockDispenser)Blocks.DISPENSER).getBehavior(stack);
+
+					if(dispenseBehavior instanceof BehaviorProjectileDispense)
+					{
+						ItemStack extracted = handler.extractItem(i, 1, false);
+						Vec3d vec = getPositionVector();
+
+						pdb = ((BehaviorProjectileDispense)dispenseBehavior);
+						throwableEntity = pdb.getProjectileEntity(world, new PositionImpl(vec.x, vec.y + 1.6D, vec.z), extracted);
+
+						if(throwableEntity instanceof EntityArrow)
+							((EntityArrow)throwableEntity).shootingEntity = this;
+						else if(throwableEntity instanceof EntityThrowable)
+							((EntityThrowable)throwableEntity).thrower = this;
+
+						shootSound = null;
+						break;
+					}
+				}
+			}
+		}
+
+		if(throwableEntity == null)
+			throwableEntity = new EntityBullet(world, this);
+
 		double baseY = target.posY + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.posX - posX;
-		double y = baseY - throwableEntity.posY;
+		double y = baseY - ((Entity)throwableEntity).posY;
 		double z = target.posZ - posZ;
 		float yOffset = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
-		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
-		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(throwableEntity));
+
+		if(shootSound == null)
+			pdb.playDispenseSound(new BlockSourceImpl(world, getPosition()));
+		else
+			playSound(shootSound, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+
+		final Entity entity = (Entity)throwableEntity; //reee
+
+		WorldUtils.addScheduledTask(world, () -> world.spawnEntity(entity));
 	}
 
 	@Override
