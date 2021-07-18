@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -14,6 +15,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.BulletEntity;
 import net.geforcemods.securitycraft.entity.IMSBombEntity;
+import net.geforcemods.securitycraft.entity.SentryEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
@@ -212,27 +214,33 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	private boolean filterSCProjectiles(Entity projectile) {
 		Owner owner = null;
 
-		if (projectile instanceof BulletEntity)
+		if(projectile instanceof BulletEntity)
 			owner = ((BulletEntity)projectile).getOwner();
-		else if (projectile instanceof IMSBombEntity)
+		else if(projectile instanceof IMSBombEntity)
 			owner = ((IMSBombEntity)projectile).getOwner();
 
 		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
 
 	/**
-	 * Returns the UUID of the player who shot the given Entity
+	 * Returns the entity who shot the given Entity
 	 */
 	public Entity getShooter(Entity projectile) {
+		Entity shooter = null;
+
 		if(projectile instanceof AbstractArrowEntity) //arrows, spectral arrows and sentry bullets
-			return ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(((AbstractArrowEntity) projectile).shootingEntity);
+			shooter = ((AbstractArrowEntity)projectile).getShooter();
 		else if(projectile instanceof DamagingProjectileEntity) //small fireballs, fireballs, dragon fireballs, wither skulls and IMS bombs
-			return ((DamagingProjectileEntity) projectile).shootingEntity;
+			shooter = ((DamagingProjectileEntity) projectile).shootingEntity;
 		else if (projectile instanceof FireworkRocketEntity)
-			return ((FireworkRocketEntity)projectile).boostedEntity;
+			shooter = ((FireworkRocketEntity)projectile).boostedEntity;
 		else if (projectile instanceof ThrowableEntity) //eggs, snowballs and ender pearls
-			return ((ThrowableEntity)projectile).getThrower();
-		else return null;
+			shooter = ((ThrowableEntity)projectile).getThrower();
+
+		if(shooter instanceof SentryEntity)
+			shooter = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayerByUUID(UUID.fromString(((SentryEntity)shooter).getOwner().getUUID()));
+
+		return shooter;
 	}
 
 	public void toggleFilter(EntityType<?> projectileType) {

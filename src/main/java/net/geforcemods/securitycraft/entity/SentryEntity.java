@@ -10,22 +10,30 @@ import net.geforcemods.securitycraft.entity.ai.AttackRangedIfEnabledGoal;
 import net.geforcemods.securitycraft.entity.ai.TargetNearestPlayerOrMobGoal;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.network.client.InitSentryAnimation;
+import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.material.PushReaction;
+import net.minecraft.dispenser.IDispenseItemBehavior;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.dispenser.ProxyBlockSource;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,9 +44,11 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -50,8 +60,11 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class SentryEntity extends CreatureEntity implements IRangedAttackMob //needs to be a creature so it can target a player, ai is also only given to living entities
 {
@@ -365,18 +378,66 @@ public class SentryEntity extends CreatureEntity implements IRangedAttackMob //n
 		if(getDistanceSq(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE)
 			return;
 
-		BulletEntity throwableEntity = new BulletEntity(world, this);
+		TileEntity te = world.getTileEntity(getPosition().down());
+		IProjectile throwableEntity = null;
+		SoundEvent shootSound = SoundEvents.ENTITY_ARROW_SHOOT;
+		ProjectileDispenseBehavior pdb = null;
+		LazyOptional<IItemHandler> optional = LazyOptional.empty();
+
+		if(te instanceof KeypadChestTileEntity)
+			optional = ((KeypadChestTileEntity)te).getHandlerForSentry(this);
+		else if(te != null)
+			optional = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.UP);
+
+		if(optional.isPresent())
+		{
+			IItemHandler handler = optional.orElse(null); //this is safe, because the presence was checked beforehand
+
+			for(int i = 0; i < handler.getSlots(); i++)
+			{
+				ItemStack stack = handler.getStackInSlot(i);
+
+				if(!stack.isEmpty())
+				{
+					IDispenseItemBehavior dispenseBehavior = ((DispenserBlock)Blocks.DISPENSER).getBehavior(stack);
+
+					if(dispenseBehavior instanceof ProjectileDispenseBehavior)
+					{
+						ItemStack extracted = handler.extractItem(i, 1, false);
+
+						pdb = ((ProjectileDispenseBehavior)dispenseBehavior);
+						throwableEntity = pdb.getProjectileEntity(world, getPositionVec().add(0.0D, 1.6D, 0.0D), extracted);
+
+						if(throwableEntity instanceof AbstractArrowEntity)
+							((AbstractArrowEntity)throwableEntity).setShooter(this);
+						else if(throwableEntity instanceof ThrowableEntity)
+							((ThrowableEntity)throwableEntity).owner = this;
+
+						shootSound = null;
+						break;
+					}
+				}
+			}
+		}
+
+		if(throwableEntity == null)
+			throwableEntity = new BulletEntity(world, this);
+
 		double baseY = target.getPosY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getPosX() - getPosX();
-		double y = baseY - throwableEntity.getPosY();
+		double y = baseY - ((Entity)throwableEntity).getPosY();
 		double z = target.getPosZ() - getPosZ();
 		float yOffset = MathHelper.sqrt(x * x + z * z) * 0.2F;
 
-		throwableEntity.setRawPosition(throwableEntity.getPosX(), throwableEntity.getPosY() - 0.1F, throwableEntity.getPosZ());
 		dataManager.set(HEAD_ROTATION, (float)(MathHelper.atan2(x, -z) * (180D / Math.PI)));
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
-		playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
-		world.addEntity(throwableEntity);
+
+		if(shootSound == null)
+			pdb.playDispenseSound(new ProxyBlockSource(world, getPosition()));
+		else
+			playSound(shootSound, 1.0F, 1.0F / (getRNG().nextFloat() * 0.4F + 0.8F));
+
+		world.addEntity((Entity)throwableEntity);
 	}
 
 	@Override
