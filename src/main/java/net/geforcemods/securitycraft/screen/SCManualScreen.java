@@ -85,8 +85,8 @@ public class SCManualScreen extends Screen {
 		startX = (width - 256) / 2;
 		minecraft.keyboardListener.enableRepeatEvents(true);
 
-		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 158, true, this::actionPerformed)); //next page
-		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 158, false, this::actionPerformed)); //previous page
+		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
+		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
 		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
 		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
 
@@ -94,7 +94,7 @@ public class SCManualScreen extends Screen {
 		{
 			for(int j = 0; j < 3; j++)
 			{
-				displays[(i * 3) + j] = new IngredientDisplay((startX + 100) + (j * 20), 144 + (i * 20));
+				displays[(i * 3) + j] = new IngredientDisplay((startX + 101) + (j * 19), 144 + (i * 19));
 			}
 		}
 
@@ -138,7 +138,7 @@ public class SCManualScreen extends Screen {
 			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
-				font.func_238418_a_(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 180, 75, 0);
+				font.func_238418_a_(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
 		}else{
 			font.drawText(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
 			font.drawText(matrix, intro2, width / 2 - font.getStringPropertyWidth(intro2) / 2, 142, 0);
@@ -159,7 +159,15 @@ public class SCManualScreen extends Screen {
 			if(subpages.size() > 1)
 				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			font.drawString(matrix, (currentPage + 1) + "/" + SCManualItem.PAGES.size(), startX + 195, 192, 0x8E8270);
+			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
+		}
+		else //render page number on the "welcome" page as well
+		{
+			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
 		}
 
 		if(currentPage > -1){
@@ -383,7 +391,7 @@ public class SCManualScreen extends Screen {
 			{
 				for(int j = 0; j < 3; j++)
 				{
-					hoverCheckers.add(new HoverChecker(144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16));
+					hoverCheckers.add(new HoverChecker(144 + (i * 19), 144 + (i * 19) + 16, (startX + 101) + (j * 19), (startX + 101) + (j * 19) + 16));
 				}
 			}
 		}

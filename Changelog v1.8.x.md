@@ -16,6 +16,7 @@
 - Fix: Sentry animation does not work properly when changing modes
 - Fix: Lasers cannot be toggled properly
 - Misc.: Some SecurityCraft model files have been renamed to better fit Minecraft's model name structure. This will break resourcepacks
+- Misc.: The SecurityCraft Manual's textures have been modified, and buttons as well as items were moved around. Not bringing resourcepacks up to date with these changes may lead to buttons and items not fitting the textures
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
