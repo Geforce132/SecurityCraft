@@ -19,6 +19,7 @@
 - Fix: Sentry animation does not work properly when changing modes
 - Fix: Lasers cannot be toggled properly
 - Misc.: The block "securitycraft:alarm_lit" is no longer in use. It is kept for backwards compatibility, and any existing blocks will automatically be converted to "securitycraft:alarm". The latter now has a "lit" block property.
+- Misc.: The SecurityCraft Manual's textures have been modified, and buttons as well as items were moved around. Not bringing resourcepacks up to date with these changes may lead to buttons and items not fitting the textures
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 

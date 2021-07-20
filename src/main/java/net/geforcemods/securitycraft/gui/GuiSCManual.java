@@ -75,8 +75,8 @@ public class GuiSCManual extends GuiScreen {
 		startX = (width - 256) / 2;
 		Keyboard.enableRepeatEvents(true);
 
-		buttonList.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 158, true)); //next page
-		buttonList.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 158, false)); //previous page
+		buttonList.add(new GuiSCManual.ChangePageButton(1, startX + 210, startY + 188, true)); //next page
+		buttonList.add(new GuiSCManual.ChangePageButton(2, startX + 16, startY + 188, false)); //previous page
 		buttonList.add(new GuiSCManual.ChangePageButton(3, startX + 180, startY + 97, true)); //next subpage
 		buttonList.add(new GuiSCManual.ChangePageButton(4, startX + 155, startY + 97, false)); //previous subpage
 		updateRecipeAndIcons();
@@ -119,7 +119,7 @@ public class GuiSCManual extends GuiScreen {
 			String designedBy = ItemSCManual.PAGES.get(currentPage).getDesignedBy();
 
 			if(designedBy != null && !designedBy.isEmpty())
-				fontRenderer.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 180, 75, 0);
+				fontRenderer.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 150, 75, 0);
 		}else{
 			fontRenderer.drawString(intro1, width / 2 - fontRenderer.getStringWidth(intro1) / 2, 22, 0, false);
 			fontRenderer.drawString(intro2, width / 2 - fontRenderer.getStringWidth(intro2) / 2, 142, 0, false);
@@ -140,7 +140,15 @@ public class GuiSCManual extends GuiScreen {
 			if(subpages.size() > 1)
 				fontRenderer.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
-			fontRenderer.drawString((currentPage + 1) + "/" + ItemSCManual.PAGES.size(), startX + 195, 192, 0x8E8270);
+			String pageNumberText = (currentPage + 2) + "/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
+		}
+		else //render page number on the "welcome" page as well
+		{
+			String pageNumberText = "1/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
 		}
 
 		if(currentPage > -1){
@@ -197,7 +205,7 @@ public class GuiSCManual extends GuiScreen {
 						if(matchingStacks.length == 0 || matchingStacks[0].isEmpty())
 							continue;
 
-						GuiUtils.drawItemStackToGui(matchingStacks[0], (startX + 100) + (j * 20), 144 + (i * 20), !(matchingStacks[0].getItem() instanceof ItemBlock));
+						GuiUtils.drawItemStackToGui(matchingStacks[0], (startX + 101) + (j * 19), 144 + (i * 19), !(matchingStacks[0].getItem() instanceof ItemBlock));
 					}
 			}
 
@@ -368,7 +376,7 @@ public class GuiSCManual extends GuiScreen {
 						break outer;
 
 					if(recipe.get((i * 3) + j).getMatchingStacks().length > 0 && !recipe.get((i * 3) + j).getMatchingStacks()[0].isEmpty())
-						hoverCheckers.add(new StackHoverChecker(recipe.get((i * 3) + j).getMatchingStacks()[0], 144 + (i * 20), 144 + (i * 20) + 16, (startX + 100) + (j * 20), (startX + 100) + (j * 20) + 16));
+						hoverCheckers.add(new StackHoverChecker(recipe.get((i * 3) + j).getMatchingStacks()[0], 144 + (i * 19), 144 + (i * 19) + 16, (startX + 101) + (j * 19), (startX + 100) + (j * 19) + 16));
 				}
 			}
 		}
