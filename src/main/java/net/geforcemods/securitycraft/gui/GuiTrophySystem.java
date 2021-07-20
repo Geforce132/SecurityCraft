@@ -70,6 +70,8 @@ public class GuiTrophySystem extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+		GlStateManager.disableLighting();
+
 		if(projectileList != null)
 			projectileList.drawScreen(mouseX, mouseY, partialTicks);
 
