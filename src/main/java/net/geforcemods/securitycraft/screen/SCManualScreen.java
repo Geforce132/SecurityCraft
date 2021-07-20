@@ -90,6 +90,7 @@ public class SCManualScreen extends Screen {
 	private final TranslationTextComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<IReorderingProcessor> intro2;
 	private PatronList patronList;
+	private Button patreonLinkButton;
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -108,7 +109,7 @@ public class SCManualScreen extends Screen {
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
 		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
 		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
-		addButton(new HyperlinkButton(startX + 225, 143, 16, 16, StringTextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, StringTextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for(int i = 0; i < 3; i++)
@@ -354,6 +355,7 @@ public class SCManualScreen extends Screen {
 	private void updateRecipeAndIcons(){
 		currentSubpage = 0;
 		hoverCheckers.clear();
+		patreonLinkButton.visible = currentPage == -1;
 
 		if(currentPage < 0){
 			recipe = null;
