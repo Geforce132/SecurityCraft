@@ -179,9 +179,6 @@ public class SCManualScreen extends Screen {
 			}
 
 			font.drawText(matrix, ourPatrons, width / 2 - font.getStringPropertyWidth(ourPatrons) / 2 + 30, 40, 0);
-
-			if(patronList != null)
-				patronList.render(matrix, mouseX, mouseY, partialTicks);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
@@ -253,9 +250,13 @@ public class SCManualScreen extends Screen {
 				}
 			}
 		}
-		else //render page number on the "welcome" page as well
+		else //"welcome" page
 		{
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
+			if(patronList != null)
+				patronList.render(matrix, mouseX, mouseY, partialTicks);
 
 			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
 		}
