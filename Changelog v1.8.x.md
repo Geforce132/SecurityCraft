@@ -5,6 +5,7 @@
 - New: Sentry bullets will now apply the Sentry's potion effects to their target
 - New: The value of per-block customization options is now shown in the tooltip, "true" and "false" have also been changed to "Yes" and "No" for clarity
 - New: Sentries can now use more projectiles to shoot. Place a chest below the Sentry and put arrows, tipped arrows, snowballs, or eggs into the chest to let the sentry use them
+- New: SecurityCraft's Patrons (people who pledge over on our Patreon page) are now being displayed in the SecurityCraft Manual. Resourcepacks should be adjusted for the new page layout
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: Blocks projected by the projector have incorrect lighting
 - Fix: The Protecto does not attack players
@@ -16,7 +17,7 @@
 - Fix: Sentry animation does not work properly when changing modes
 - Fix: Lasers cannot be toggled properly
 - Misc.: Some SecurityCraft model files have been renamed to better fit Minecraft's model name structure. This will break resourcepacks
-- Misc.: The SecurityCraft Manual's textures have been modified, and buttons as well as items were moved around. Not bringing resourcepacks up to date with these changes may lead to buttons and items not fitting the textures
+- Misc.: The SecurityCraft Manual's textures have been modified, and buttons as well as items were moved around. Not bringing resourcepacks up to date with these changes may lead to buttons and items not fitting the textures properly
 
 --------------------------Changelog for v1.8.22.2 of SecurityCraft--------------------------
 
