@@ -1,10 +1,20 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -27,6 +37,10 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -38,9 +52,14 @@ import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.gui.ScrollPanel;
 
 @OnlyIn(Dist.CLIENT)
 public class SCManualScreen extends Screen {
@@ -58,10 +77,14 @@ public class SCManualScreen extends Screen {
 	private int startX = -1;
 	private boolean update = false;
 	private List<String> subpages = new ArrayList<>();
+	private List<String> author = new ArrayList<>();
 	private int currentSubpage = 0;
 	private final int subpageLength = 1285;
-	private final String intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").getFormattedText();
-	private final String intro2 = Utils.localize("gui.securitycraft:scManual.intro.2").getFormattedText();
+	private final String intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(new Style().setUnderlined(true)).getFormattedText();
+	private final String ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title").getFormattedText();
+	private List<String> intro2;
+	private PatronList patronList;
+	private Button patreonLinkButton;
 
 	public SCManualScreen() {
 		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
@@ -76,11 +99,12 @@ public class SCManualScreen extends Screen {
 
 		startX = (width - 256) / 2;
 		minecraft.keyboardListener.enableRepeatEvents(true);
-
 		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
 		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
 		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
+		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, "", b -> handleComponentClicked(new StringTextComponent("").setStyle(new Style().setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce"))))));
+		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for(int i = 0; i < 3; i++)
 		{
@@ -117,7 +141,7 @@ public class SCManualScreen extends Screen {
 		else
 			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
 
-		this.blit(startX, 5, 0, 0, 256, 250);
+		blit(startX, 5, 0, 0, 256, 250);
 
 		if(currentPage > -1){
 			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().equals("help.securitycraft:reinforced.info"))
@@ -133,38 +157,41 @@ public class SCManualScreen extends Screen {
 				font.drawSplitString(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy).getFormattedText(), startX + 18, 150, 75, 0);
 		}else{
 			font.drawString(intro1, width / 2 - font.getStringWidth(intro1) / 2, 22, 0);
-			font.drawString(intro2, width / 2 - font.getStringWidth(intro2) / 2, 142, 0);
 
-
-			if(I18n.hasKey("gui.securitycraft:scManual.author"))
+			for(int i = 0; i < intro2.size(); i++)
 			{
-				String text = Utils.localize("gui.securitycraft:scManual.author").getFormattedText();
+				String text = intro2.get(i);
 
-				font.drawSplitString(text, width / 2 - 175 / 2, 155, 175, 0);
+				font.drawString(text, width / 2 - font.getStringWidth(text) / 2, 150 + 10 * i, 0);
 			}
+
+			for(int i = 0; i < author.size(); i++)
+			{
+				String text = author.get(i);
+
+				font.drawString(text, width / 2 - font.getStringWidth(text) / 2, 180 + 10 * i, 0);
+			}
+
+			font.drawString(ourPatrons, width / 2 - font.getStringWidth(ourPatrons) / 2 + 30, 40, 0);
+
+			if(patronList != null)
+				patronList.render(mouseX, mouseY, partialTicks);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
 			buttons.get(i).render(mouseX, mouseY, partialTicks);
 
-		if(currentPage != -1)
+		if(currentPage > -1)
 		{
+			Item item = SCManualItem.PAGES.get(currentPage).getItem();
+
+			//draw page numbers
 			if(subpages.size() > 1)
 				font.drawString((currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			font.drawString(pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
-		}
-		else //render page number on the "welcome" page as well
-		{
-			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
-
-			font.drawString(pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
-		}
-
-		if(currentPage > -1){
-			Item item = SCManualItem.PAGES.get(currentPage).getItem();
 
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
@@ -174,31 +201,31 @@ public class SCManualScreen extends Screen {
 				TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
 				if(block instanceof IExplosive)
-					this.blit(startX + 107, 117, 54, 1, 18, 18);
+					blit(startX + 107, 117, 54, 1, 18, 18);
 
 				if(te instanceof IOwnable)
-					this.blit(startX + 29, 118, 1, 1, 16, 16);
+					blit(startX + 29, 118, 1, 1, 16, 16);
 
 				if(te instanceof IPasswordProtected)
-					this.blit(startX + 55, 118, 18, 1, 17, 16);
+					blit(startX + 55, 118, 18, 1, 17, 16);
 
 				if(te instanceof SecurityCraftTileEntity && ((SecurityCraftTileEntity) te).isActivatedByView())
-					this.blit(startX + 81, 118, 36, 1, 17, 16);
+					blit(startX + 81, 118, 36, 1, 17, 16);
 
 				if(te instanceof ICustomizable)
 				{
 					ICustomizable scte = (ICustomizable)te;
 
-					this.blit(startX + 213, 118, 72, 1, 16, 16);
+					blit(startX + 213, 118, 72, 1, 16, 16);
 
 					if(scte.customOptions() != null && scte.customOptions().length > 0)
-						this.blit(startX + 136, 118, 88, 1, 16, 16);
+						blit(startX + 136, 118, 88, 1, 16, 16);
 				}
 
 				if(te instanceof IModuleInventory)
 				{
 					if(((IModuleInventory)te).acceptedModules() != null && ((IModuleInventory)te).acceptedModules().length > 0)
-						this.blit(startX + 163, 118, 105, 1, 16, 16);
+						blit(startX + 163, 118, 105, 1, 16, 16);
 				}
 			}
 
@@ -219,6 +246,12 @@ public class SCManualScreen extends Screen {
 						renderTooltip(displays[i].getCurrentStack(), mouseX, mouseY);
 				}
 			}
+		}
+		else //render page number on the "welcome" page as well
+		{
+			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			font.drawString(pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
 		}
 	}
 
@@ -255,11 +288,17 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseScrolled(double aDouble, double p_mouseScrolled_3_, double p_mouseScrolled_5_)
+	public boolean mouseScrolled(double mouseX, double mouseY, double scroll)
 	{
-		super.mouseScrolled(aDouble, p_mouseScrolled_3_, p_mouseScrolled_5_);
+		super.mouseScrolled(mouseX, mouseY, scroll);
 
-		switch((int)Math.signum(p_mouseScrolled_5_))
+		if(currentPage == -1 && patronList != null && patronList.isMouseOver(mouseX, mouseY))
+		{
+			patronList.mouseScrolled(mouseX, mouseY, scroll);
+			return true;
+		}
+
+		switch((int)Math.signum(scroll))
 		{
 			case -1: nextPage(); break;
 			case 1: previousPage(); break;
@@ -310,11 +349,20 @@ public class SCManualScreen extends Screen {
 	private void updateRecipeAndIcons(){
 		currentSubpage = 0;
 		hoverCheckers.clear();
+		patreonLinkButton.visible = currentPage == -1;
 
 		if(currentPage < 0){
 			recipe = null;
 			buttons.get(2).visible = false;
 			buttons.get(3).visible = false;
+
+			if(I18n.hasKey("gui.securitycraft:scManual.author"))
+				author = font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.author").getFormattedText(), 180);
+			else
+				author.clear();
+
+			intro2 = font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.intro.2").getFormattedText(), 225);
+			patronList.fetchPatrons();
 			return;
 		}
 
@@ -497,6 +545,208 @@ public class SCManualScreen extends Screen {
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
 
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button)
+	{
+		if(patronList != null)
+			patronList.mouseClicked(mouseX, mouseY, button);
+
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button)
+	{
+		if(patronList != null)
+			patronList.mouseReleased(mouseX, mouseY, button);
+
+		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
+	{
+		if(patronList != null)
+			patronList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+
+		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
+
+	class PatronList extends ScrollPanel
+	{
+		private final int slotHeight = 12;
+		private final ExecutorService executor = Executors.newSingleThreadExecutor();
+		private Future<List<String>> patronRequestFuture;
+		private List<String> patrons = new ArrayList<>();
+		private boolean patronsAvailable = false;
+		private boolean error = false;
+		private boolean patronsRequested;
+		private final int barWidth = 6;
+		private final int barLeft;
+		private final List<String> fetchErrorLines;
+		private final String loadingText = Utils.localize("gui.securitycraft:scManual.patreon.loading").getFormattedText();
+
+		public PatronList(Minecraft client, int width, int height, int top, int left)
+		{
+			super(client, width, height, top, left);
+
+			barLeft = left + width - barWidth;
+			fetchErrorLines = font.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error").getFormattedText(), width);
+		}
+
+		@Override
+		protected int getContentHeight()
+		{
+			int height = 50 + (patrons.size() * font.FONT_HEIGHT);
+
+			if(height < bottom - top - 8)
+				height = bottom - top - 8;
+
+			return height;
+		}
+
+		@Override
+		public void render(int mouseX, int mouseY, float partialTicks)
+		{
+			if(patronsAvailable) //code from ScrollPanel to be able to change colors
+			{
+				Tessellator tess = Tessellator.getInstance();
+				BufferBuilder buffer = tess.getBuffer();
+				Minecraft client = Minecraft.getInstance();
+				double scale = client.getMainWindow().getGuiScaleFactor();
+				int baseY = top + border - (int)scrollDistance;
+				int extraHeight = getContentHeight() + border - height;
+
+				GL11.glEnable(GL11.GL_SCISSOR_TEST);
+				GL11.glScissor((int)(left  * scale), (int)(client.getMainWindow().getFramebufferHeight() - (bottom * scale)),
+						(int)(width * scale), (int)(height * scale));
+				drawGradientRect(left, top, right, bottom, 0xC0BFBBB2, 0xD0BFBBB2); //list background
+				drawPanel(right, baseY, tess, mouseX, mouseY);
+				RenderSystem.disableDepthTest();
+
+				if(extraHeight > 0)
+				{
+					int barHeight = getBarHeight();
+					int barTop = (int)scrollDistance * (height - barHeight) / extraHeight + top;
+
+					if(barTop < top)
+						barTop = top;
+
+					//scrollbar background
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					buffer.pos(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					buffer.pos(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					buffer.pos(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					buffer.pos(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					tess.draw();
+					//scrollbar border
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					buffer.pos(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					buffer.pos(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					buffer.pos(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					buffer.pos(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					tess.draw();
+					//scrollbar
+					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+					buffer.pos(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					buffer.pos(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					buffer.pos(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					buffer.pos(barLeft,                barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					tess.draw();
+				}
+
+				RenderSystem.enableTexture();
+				RenderSystem.shadeModel(GL11.GL_FLAT);
+				RenderSystem.enableAlphaTest();
+				RenderSystem.disableBlend();
+				GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
+				//draw tooltip for long patron names
+				int mouseListY = (int)(mouseY - top + scrollDistance - border);
+				int slotIndex = mouseListY / slotHeight;
+
+				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom)
+				{
+					String patron = patrons.get(slotIndex);
+					int length = font.getStringWidth(patron);
+
+					if(length >= width - barWidth)
+						renderTooltip(patron, left - 10, baseY + (slotHeight * slotIndex + slotHeight));
+				}
+			}
+			else if(error)
+			{
+				for(int i = 0; i < fetchErrorLines.size(); i++)
+				{
+					String line = fetchErrorLines.get(i);
+
+					font.drawString(line, left + width / 2 - font.getStringWidth(line) / 2, top + 30 + i * 10, 0xFFB00101);
+				}
+			}
+			else if(patronRequestFuture != null && patronRequestFuture.isDone())
+			{
+				try
+				{
+					patrons = patronRequestFuture.get();
+					executor.shutdown();
+					patronsAvailable = true;
+				}
+				catch(InterruptedException | ExecutionException e)
+				{
+					error = true;
+				}
+			}
+			else
+				font.drawString(loadingText, left + width / 2 - font.getStringWidth(loadingText) / 2, top + 30, 0);
+		}
+
+		@Override
+		protected void drawPanel(int entryRight, int relativeY, Tessellator tesselator, int mouseX, int mouseY)
+		{
+			//draw entry strings
+			for(int i = 0; i < patrons.size(); i++)
+			{
+				String patron = patrons.get(i);
+
+				if(patron != null && !patron.isEmpty())
+					font.drawString(patron, left + 2, relativeY + (slotHeight * i), 0);
+			}
+		}
+
+		public void fetchPatrons()
+		{
+			if(!patronsRequested)
+			{
+				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
+				patronRequestFuture = executor.submit(() -> {
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
+					{
+						return reader.lines().collect(Collectors.toList());
+					}
+					catch(IOException e)
+					{
+						error = true;
+						return new ArrayList<>();
+					}
+				});
+				patronsRequested = true;
+			}
+		}
+
+		public int getBarHeight()
+		{
+			int barHeight = (height * height) / getContentHeight();
+
+			if(barHeight < 32)
+				barHeight = 32;
+
+			if(barHeight > height - border * 2)
+				barHeight = height - border * 2;
+
+			return barHeight;
+		}
+	}
+
 	static class ChangePageButton extends IdButton {
 		private final boolean isForward;
 
@@ -512,10 +762,11 @@ public class SCManualScreen extends Screen {
 		public void render(int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
 				int textureX = 0;
 				int textureY = 192;
+
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
 
 				if(isHovering)
 					textureX += 23;
@@ -523,8 +774,28 @@ public class SCManualScreen extends Screen {
 				if(!isForward)
 					textureY += 13;
 
-				this.blit(x, y, textureX, textureY, 23, 13);
+				blit(x, y, textureX, textureY, 23, 13);
 			}
+		}
+	}
+
+	class HyperlinkButton extends Button
+	{
+		public HyperlinkButton(int xPos, int yPos, int width, int height, String displayString, IPressable handler)
+		{
+			super(xPos, yPos, width, height, displayString, handler);
+		}
+
+		@Override
+		public void renderButton(int mouseX, int mouseY, float partial)
+		{
+			minecraft.getTextureManager().bindTexture(infoBookIcons);
+			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+
+			if(isHovered)
+				blit(x, y, 138, 1, 16, 16);
+			else
+				blit(x, y, 122, 1, 16, 16);
 		}
 	}
 
