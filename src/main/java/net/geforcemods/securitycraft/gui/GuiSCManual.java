@@ -159,9 +159,6 @@ public class GuiSCManual extends GuiScreen {
 		for(int i = 0; i < buttonList.size(); i++)
 			buttonList.get(i).drawButton(mc, mouseX, mouseY, 0);
 
-		if(currentPage == -1 && patronList != null) //the patreon link button may overlap with a name tooltip, so draw the list after the buttons
-			patronList.drawScreen(mouseX, mouseY, partialTicks);
-
 		if(currentPage > -1)
 		{
 			Item item = ItemSCManual.PAGES.get(currentPage).getItem();
@@ -240,9 +237,13 @@ public class GuiSCManual extends GuiScreen {
 				}
 			}
 		}
-		else //render page number on the "welcome" page as well
+		else //"welcome" page
 		{
 			String pageNumberText = "1/" + (ItemSCManual.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
+			if(patronList != null)
+				patronList.drawScreen(mouseX, mouseY, partialTicks);
 
 			fontRenderer.drawString(pageNumberText, startX + 240 - fontRenderer.getStringWidth(pageNumberText), 182, 0x8E8270);
 		}
@@ -627,7 +628,7 @@ public class GuiSCManual extends GuiScreen {
 			{
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw").openStream())))
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
 					{
 						return reader.lines().collect(Collectors.toList());
 					}
