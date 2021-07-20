@@ -173,9 +173,6 @@ public class SCManualScreen extends Screen {
 			}
 
 			font.drawString(ourPatrons, width / 2 - font.getStringWidth(ourPatrons) / 2 + 30, 40, 0);
-
-			if(patronList != null)
-				patronList.render(mouseX, mouseY, partialTicks);
 		}
 
 		for(int i = 0; i < buttons.size(); i++)
@@ -247,9 +244,13 @@ public class SCManualScreen extends Screen {
 				}
 			}
 		}
-		else //render page number on the "welcome" page as well
+		else //"welcome" page
 		{
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
+
+			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
+			if(patronList != null)
+				patronList.render(mouseX, mouseY, partialTicks);
 
 			font.drawString(pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
 		}
@@ -719,7 +720,7 @@ public class SCManualScreen extends Screen {
 			{
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
-					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/bdda6596012b1206816db034350b5717/raw").openStream())))
+					try(BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("https://gist.githubusercontent.com/bl4ckscor3/3196e6740774e386871a74a9606eaa61/raw").openStream())))
 					{
 						return reader.lines().collect(Collectors.toList());
 					}
