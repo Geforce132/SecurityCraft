@@ -643,30 +643,21 @@ public class GuiSCManual extends GuiScreen {
 	}
 
 	static class ChangePageButton extends GuiButton {
-		private final boolean isForward;
+		private final int textureY;
 
 		public ChangePageButton(int index, int xPos, int yPos, boolean forward){
 			super(index, xPos, yPos, 23, 13, "");
-			isForward = forward;
+			textureY = forward ? 192 : 205;
 		}
 
 		@Override
 		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-				int textureX = 0;
-				int textureY = 192;
 
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 				mc.getTextureManager().bindTexture(bookGuiTextures);
-
-				if(isHovering)
-					textureX += 23;
-
-				if(!isForward)
-					textureY += 13;
-
-				drawTexturedModalRect(x, y, textureX, textureY, 23, 13);
+				drawTexturedModalRect(x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
