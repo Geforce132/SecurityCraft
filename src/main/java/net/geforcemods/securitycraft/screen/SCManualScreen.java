@@ -748,11 +748,11 @@ public class SCManualScreen extends Screen {
 	}
 
 	static class ChangePageButton extends IdButton {
-		private final boolean isForward;
+		private final int textureY;
 
 		public ChangePageButton(int index, int xPos, int yPos, boolean forward, Consumer<IdButton> onClick){
 			super(index, xPos, yPos, 23, 13, "", onClick);
-			isForward = forward;
+			textureY = forward ? 192 : 205;
 		}
 
 		/**
@@ -762,19 +762,10 @@ public class SCManualScreen extends Screen {
 		public void render(int mouseX, int mouseY, float partialTicks){
 			if(visible){
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-				int textureX = 0;
-				int textureY = 192;
 
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
-
-				if(isHovering)
-					textureX += 23;
-
-				if(!isForward)
-					textureY += 13;
-
-				blit(x, y, textureX, textureY, 23, 13);
+				blit(x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
 	}
