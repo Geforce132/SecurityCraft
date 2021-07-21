@@ -6,6 +6,7 @@
 - New: The value of per-block customization options is now shown in the tooltip, "true" and "false" have also been changed to "Yes" and "No" for clarity
 - New: Sentries can now use more projectiles to shoot. Place a chest below the Sentry and put arrows, tipped arrows, snowballs, or eggs into the chest to let the sentry use them
 - New: SecurityCraft's Patrons (people who pledge over on our Patreon page) are now being displayed in the SecurityCraft Manual. Resourcepacks should be adjusted for the new page layout
+- New: Inserting a Redstone Module into a Password-protected Chest now makes the chest output a redstone signal while being open, with a strength depending on how many players are simultaneously looking into the chest
 - Fix: Blocks with a tint (Grass, leaves, reinforced blocks, ...) projected by the Projector are not tinted correctly
 - Fix: Blocks projected by the projector have incorrect lighting
 - Fix: The Protecto does not attack players

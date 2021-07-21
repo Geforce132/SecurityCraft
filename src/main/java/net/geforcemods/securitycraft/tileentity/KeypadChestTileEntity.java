@@ -120,6 +120,13 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		return Utils.localize("block.securitycraft.keypad_chest");
 	}
 
+	protected void onOpenOrClose() {
+		super.onOpenOrClose();
+
+		if (hasModule(ModuleType.REDSTONE))
+			this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockState().getBlock());
+	}
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side)
 	{
@@ -349,7 +356,7 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public ModuleType[] acceptedModules()
 	{
-		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST};
+		return new ModuleType[] {ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE};
 	}
 
 	@Override
