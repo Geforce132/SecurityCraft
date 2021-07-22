@@ -1,7 +1,7 @@
 modLoader="javafml" #mandatory
-loaderVersion="[34,)" #mandatory
+loaderVersion="[37,)" #mandatory
 logoFile="scLogo.png"
-license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.16.2/LICENSE"
+license="GNU GPL v3.0 https://github.com/Geforce132/SecurityCraft/blob/1.17.1/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
 [[mods]] #mandatory
@@ -17,13 +17,13 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 [[dependencies.securitycraft]]
     modId="forge"
     mandatory=true
-    versionRange="[36.0.42,)"
+    versionRange="[37,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.securitycraft]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16,1.17)"
+    versionRange="[1.17,1.18)"
     ordering="NONE"
     side="BOTH"

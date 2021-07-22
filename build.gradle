@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -19,7 +18,8 @@ version = 'v1.8.22.2'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 processResources { 
 	exclude ".cache"
@@ -45,19 +45,15 @@ processResources {
     }
 }
 
-sourceSets {
-	main {
-		resources {
-			srcDirs += "src/generated/resources" //include generated files
-		}
-	}
+sourceSets.main.resources {
+	srcDir 'src/generated/resources' //include generated files
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'official', version: '1.17.1'
     //accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-	
-    runs {
+
+	runs {
         client {
             workingDirectory project.file('run/client')
             property 'forge.logging.console.level', 'debug'
@@ -95,7 +91,7 @@ minecraft {
 	}
 }
 
-repositories { 
+repositories {
 	maven { // TOP
 		name 'tterrag maven'
 		url "https://maven.tterrag.com/"
@@ -110,12 +106,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.2.0'
+    minecraft 'net.minecraftforge:forge:1.17.1-37.0.0'
     
-	implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
-	implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
-    implementation fg.deobf("curse.maven:hwyla-253449:3033593")
-	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
+	//implementation fg.deobf("mezz.jei:jei-1.16.5:7.7.1.110")
+	//implementation fg.deobf("mcjty.theoneprobe:TheOneProbe-1.16:1.16-3.1.4-22")
+    //implementation fg.deobf("curse.maven:hwyla-253449:3033593")
+	//compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3358847") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
 }
 
 jar {
