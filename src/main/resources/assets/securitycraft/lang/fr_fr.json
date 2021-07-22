@@ -485,8 +485,6 @@
 	"key.securitycraft.cameraEmitRedstone": "Basculer la sortie de redstone",
 	"key.securitycraft.cameraZoomIn": "Zoomer",
 	"key.securitycraft.cameraZoomOut": "Dézoomer",
-	"key.securitycraft.cameraPrevious": "Caméra précédente",
-	"key.securitycraft.cameraNext": "Caméra suivante",
 
 	"help.securitycraft.laser_block.info": "Le bloc laser est utilisé en plaçant deux d´entre eux à moins de cinq blocs l´un de l´autre. Lorsque les blocs sont correctement placés, un laser devrait se former entre eux. Chaque fois qu´un joueur traverse le laser, les deux blocs laser émettent un signal redstone de 15 blocs.",
 	"help.securitycraft.keypad.info": "Le clavier à code est utilisé par le placement, le cliquant avec le bouton droit, et la définition d’un code numérique. On initialise le clavier à code en le posant, en cliquant avec le bouton droit et en définissant un code d’accès numérique. Une fois le code défini, un clic droit sur le clavier vous permettra de saisir le code. S’il est correct, le clavier émet de l’énergie redstone pendant trois secondes.",

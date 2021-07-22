@@ -485,8 +485,6 @@
 	"key.securitycraft.cameraEmitRedstone": "Redstone-Output",
 	"key.securitycraft.cameraZoomIn": "Reinzoomen",
 	"key.securitycraft.cameraZoomOut": "Rauszoomen",
-	"key.securitycraft.cameraPrevious": "Vorherige Kamera",
-	"key.securitycraft.cameraNext": "Nächste Kamera",
 
 	"help.securitycraft.laser_block.info": "Der Laser wird aktiviert, indem man 2 Laserblöcke innerhalb 5 Blöcke Abstand hinsetzt. Ein Laser sollte nun erscheinen. Sobald ein Spieler durchläuft, geben beide Blöcke ein 15 Block langes Redstonesignal ab.",
 	"help.securitycraft.keypad.info": "Das Nummernschloss wird verwendet, indem man es rechtsklickt und einen numerischen Code eingibt. Sobald dies getan wurde, fragt das Nummernschloss durch erneutes Rechtsklicken nach diesem Code. Wenn er korrekt eingegeben wurde, gibt das Nummernschloss ein 3-sekündiges Redstonesignal ab.",
@@ -590,7 +588,6 @@
 	"gui.securitycraft:scManual.recipe.keypad_furnace": "Platziere einen Ofen und rechtsklicke ihn mit einem Nummernfeld.",
 	"gui.securitycraft:scManual.recipe.reinforced": "Jeder verstärkte Block kann wie folgt hergestellt werden, wenn nicht anders in diesem Buch erwähnt: Platziere einen normalen Block (z.B. Verstärkter Stein -> Stein) und baue ihn mit einem Universellen Block Verstärker ab, oder rechtsklicke den Universellen Blockverstärker, lege ihn in den Slot und schließe das GUI.",
 	"gui.securitycraft:scManual.recipe.reinforced_iron_trapdoor": "Jeder verstärkte Block kann wie folgt hergestellt werden, wenn nicht anders in diesem Buch erwähnt. Platziere einen normalen Block (z.B. Verstärkter Stein -> Stein) und zerbreche ihn mit einem Universellen Block Verstärker, oder rechtsklicke den Universellen Blockverstärker, lege ihn in den Slot und schließe das GUI.",
-	"gui.securitycraft:scManual.recipe.adminTool": "Das Admin-Werkzeug ist nur durch das Kreativinventar erhältlich, falls es in der Konfigurationsdatei aktiviert ist.",
 	"gui.securitycraft:scManual.recipe.admin_tool": "Das Admin-Werkzeug ist nur durch das Kreativinventar erhältlich, falls es in der Konfigurationsdatei aktiviert ist.",
 	"gui.securitycraft:scManual.recipe.sc_manual": "Die SecurityCraft Anleitung ist durch das Kreativinventar oder via \"/sc help\" (ohne Anführungszeichen) erhältlich. Alternativ kann man ein Buch mit einem Eisengitter in eine Werkbank legen, um die Anleitung zu bekommen.",
 	"gui.securitycraft:scManual.recipe.reinforced_crystal_quartz": "Herstellbar durch normale Kristallquartz-Blöcke in einem Universellen Block Verstärker.",

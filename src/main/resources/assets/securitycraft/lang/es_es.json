@@ -485,8 +485,6 @@
 	"key.securitycraft.cameraEmitRedstone": "Alternar salida de redstone",
 	"key.securitycraft.cameraZoomIn": "Acercar",
 	"key.securitycraft.cameraZoomOut": "Alejar",
-	"key.securitycraft.cameraPrevious": "Cámara anterior",
-	"key.securitycraft.cameraNext": "Cámara siguiente",
 
 	"help.securitycraft.laser_block.info": "El bloque láser se utiliza colocando dos de ellos con una distancia entre sí igual o menor a 5 bloques. Al colocarlos correctamente debe aparecer un láser entre ellos. Cuando un jugador cruza el láser, ambos bloques emitirán una señal de redstone con 15 bloques de alcance.",
 	"help.securitycraft.keypad.info": "El teclado se utiliza colocándolo, haciendo clic derecho y estableciendo una contraseña numérica. Una vez establecida, al hacer clic derecho podrás introducirla. Si es correcta, el teclado emitirá una señal de redstone durante 3 segundos.",
