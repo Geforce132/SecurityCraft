@@ -81,7 +81,6 @@ public class SCManualScreen extends Screen {
 	private NonNullList<Ingredient> recipe;
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
-	private boolean update = false;
 	private List<ITextProperties> subpages = new ArrayList<>();
 	private List<IReorderingProcessor> author = new ArrayList<>();
 	private int currentSubpage = 0;
@@ -99,9 +98,6 @@ public class SCManualScreen extends Screen {
 	@Override
 	public void init(){
 		byte startY = 2;
-
-		if((width - 256) / 2 != startX && startX != -1)
-			update = true;
 
 		startX = (width - 256) / 2;
 		minecraft.keyboardListener.enableRepeatEvents(true);
@@ -134,12 +130,6 @@ public class SCManualScreen extends Screen {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if(update)
-		{
-			updateRecipeAndIcons();
-			update = false;
-		}
-
 		if(currentPage == -1)
 			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
 		else if(recipe != null && recipe.size() > 0)
@@ -149,53 +139,30 @@ public class SCManualScreen extends Screen {
 
 		blit(matrix, startX, 5, 0, 0, 256, 250);
 
-		if(currentPage > -1){
+		for(int i = 0; i < buttons.size(); i++)
+		{
+			buttons.get(i).render(matrix, mouseX, mouseY, partialTicks);
+		}
+
+		if(currentPage > -1)
+		{
+			Item item = SCManualItem.PAGES.get(currentPage).getItem();
+			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
+			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
+
+			if(subpages.size() > 1)
+				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+
+			if(designedBy != null && !designedBy.isEmpty())
+				font.func_238418_a_(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
+
 			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
 				font.drawText(matrix, Utils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
 				font.drawText(matrix, Utils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
 
 			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
-
-			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
-
-			if(designedBy != null && !designedBy.isEmpty())
-				font.func_238418_a_(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
-		}else{
-			font.drawText(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
-
-			for(int i = 0; i < intro2.size(); i++)
-			{
-				IReorderingProcessor text = intro2.get(i);
-
-				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 150 + 10 * i, 0);
-			}
-
-			for(int i = 0; i < author.size(); i++)
-			{
-				IReorderingProcessor text = author.get(i);
-
-				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 180 + 10 * i, 0);
-			}
-
-			font.drawText(matrix, ourPatrons, width / 2 - font.getStringPropertyWidth(ourPatrons) / 2 + 30, 40, 0);
-		}
-
-		for(int i = 0; i < buttons.size(); i++)
-			buttons.get(i).render(matrix, mouseX, mouseY, partialTicks);
-
-		if(currentPage > -1)
-		{
-			Item item = SCManualItem.PAGES.get(currentPage).getItem();
-
-			//draw page numbers
-			if(subpages.size() > 1)
-				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
-
-			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
-
 			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
-
 			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
 			minecraft.getTextureManager().bindTexture(infoBookIcons);
 
@@ -254,11 +221,28 @@ public class SCManualScreen extends Screen {
 		{
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
+			font.drawText(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
+
+			for(int i = 0; i < intro2.size(); i++)
+			{
+				IReorderingProcessor text = intro2.get(i);
+
+				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 150 + 10 * i, 0);
+			}
+
+			for(int i = 0; i < author.size(); i++)
+			{
+				IReorderingProcessor text = author.get(i);
+
+				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 180 + 10 * i, 0);
+			}
+
 			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
 			if(patronList != null)
 				patronList.render(matrix, mouseX, mouseY, partialTicks);
 
 			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
+			font.drawText(matrix, ourPatrons, width / 2 - font.getStringPropertyWidth(ourPatrons) / 2 + 30, 40, 0);
 		}
 	}
 
@@ -445,12 +429,14 @@ public class SCManualScreen extends Screen {
 
 		if(item instanceof BlockItem){
 			Block block = ((BlockItem) item).getBlock();
-			TileEntity te = block.hasTileEntity(block.getDefaultState()) ? block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world) : null;
 
-			if(block instanceof IExplosive)
-				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
+			if(block.hasTileEntity(block.getDefaultState()))
+			{
+				TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
 
-			if(te != null){
+				if(block instanceof IExplosive)
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
+
 				if(te instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
 
