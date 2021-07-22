@@ -283,7 +283,7 @@ public class SCManualScreen extends Screen {
 	{
 		super.mouseScrolled(mouseX, mouseY, scroll);
 
-		if(currentPage == -1 && patronList != null && patronList.isMouseOver(mouseX, mouseY))
+		if(currentPage == -1 && patronList != null && patronList.isMouseOver(mouseX, mouseY) && !patronList.patrons.isEmpty())
 		{
 			patronList.mouseScrolled(mouseX, mouseY, scroll);
 			return true;
