@@ -5,6 +5,7 @@ import java.util.Optional;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.KeypadChestTileEntity;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -36,6 +37,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
@@ -152,6 +154,27 @@ public class KeypadChestBlock extends ChestBlock {
 					thisTe.setPassword(((KeypadChestTileEntity)otherTe).getPassword());
 			}
 		}
+	}
+
+	@Override
+	public boolean canProvidePower(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getWeakPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (te instanceof KeypadChestTileEntity) {
+			return ((KeypadChestTileEntity)te).hasModule(ModuleType.REDSTONE) ? MathHelper.clamp(((KeypadChestTileEntity)te).getNumPlayersUsing(), 0, 15) : 0;
+		}
+
+		return 0;
+	}
+
+	@Override
+	public int getStrongPower(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+		return side == Direction.UP ? state.getWeakPower(world, pos, side) : 0;
 	}
 
 	@Override
