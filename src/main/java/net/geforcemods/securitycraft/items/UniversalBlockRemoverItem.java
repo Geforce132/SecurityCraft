@@ -44,11 +44,11 @@ public class UniversalBlockRemoverItem extends Item
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		TileEntity tileEntity = world.getTileEntity(pos);
+		TileEntity tileEntity = world.getBlockEntity(pos);
 		PlayerEntity player = ctx.getPlayer();
 
 		if(tileEntity != null && isOwnableBlock(block, tileEntity))
@@ -56,7 +56,7 @@ public class UniversalBlockRemoverItem extends Item
 			if(!((IOwnable) tileEntity).getOwner().isOwner(player))
 			{
 				if(!(block instanceof IBlockMine) && (!(tileEntity instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)tileEntity).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) tileEntity).getOwner().getName()), TextFormatting.RED);
 
 				return ActionResultType.FAIL;
 			}
@@ -70,13 +70,13 @@ public class UniversalBlockRemoverItem extends Item
 					if(isChest)
 						((KeypadChestTileEntity)tileEntity).addOrRemoveModuleFromAttached(module, true);
 
-					Block.spawnAsEntity(world, pos, module);
+					Block.popResource(world, pos, module);
 				}
 			}
 
 			if(block == SCContent.LASER_BLOCK.get())
 			{
-				CustomizableTileEntity te = (CustomizableTileEntity)world.getTileEntity(pos);
+				CustomizableTileEntity te = (CustomizableTileEntity)world.getBlockEntity(pos);
 
 				for(ItemStack module : te.getInventory())
 				{
@@ -84,20 +84,20 @@ public class UniversalBlockRemoverItem extends Item
 						te.createLinkedBlockAction(LinkedAction.MODULE_REMOVED, new Object[] {module, ((ModuleItem)module.getItem()).getModuleType()}, te);
 				}
 
-				if (!world.isRemote) {
+				if (!world.isClientSide) {
 					world.destroyBlock(pos, true);
 					LaserBlock.destroyAdjacentLasers(world, pos);
-					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 				}
 			}
-			else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(pos).get(CageTrapBlock.DEACTIVATED))
+			else if(block == SCContent.CAGE_TRAP.get() && world.getBlockState(pos).getValue(CageTrapBlock.DEACTIVATED))
 			{
 				BlockPos originalPos = pos;
-				BlockPos middlePos = originalPos.up(4);
+				BlockPos middlePos = originalPos.above(4);
 
-				if (!world.isRemote) {
-					new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable().setPos(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
-						TileEntity te = w.getTileEntity(p);
+				if (!world.isClientSide) {
+					new CageTrapBlock.BlockModifier(world, new BlockPos.Mutable().set(originalPos), ((IOwnable)tileEntity).getOwner()).loop((w, p, o) -> {
+						TileEntity te = w.getBlockEntity(p);
 
 						if(te instanceof IOwnable && ((IOwnable)te).getOwner().equals(o))
 						{
@@ -109,13 +109,13 @@ public class UniversalBlockRemoverItem extends Item
 					});
 
 					world.destroyBlock(originalPos, false);
-					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 				}
 			}
 			else
 			{
-				if((block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock) && state.get(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
-					pos = pos.down();
+				if((block instanceof ReinforcedDoorBlock || block instanceof SpecialDoorBlock) && state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER)
+					pos = pos.below();
 
 				if(block == SCContent.INVENTORY_SCANNER.get())
 				{
@@ -125,10 +125,10 @@ public class UniversalBlockRemoverItem extends Item
 						te.getInventory().clear();
 				}
 
-				if (!world.isRemote) {
+				if (!world.isClientSide) {
 					world.destroyBlock(pos, true);
-					world.removeTileEntity(pos);
-					stack.damageItem(1, player, p -> p.sendBreakAnimation(ctx.getHand()));
+					world.removeBlockEntity(pos);
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 				}
 			}
 

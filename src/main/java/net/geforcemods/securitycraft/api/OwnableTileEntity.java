@@ -32,9 +32,9 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		if(owner != null){
 			tag.putString("owner", owner.getName());
@@ -48,9 +48,9 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		if (tag.contains("owner"))
 			owner.setOwnerName(tag.getString("owner"));
@@ -62,17 +62,17 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	@Override
 	public CompoundNBT getUpdateTag()
 	{
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(getBlockState(), packet.getNbtCompound());
+		load(getBlockState(), packet.getTag());
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class OwnableTileEntity extends TileEntity implements IOwnable {
 	@Override
 	public void onLoad()
 	{
-		if(world.isRemote)
+		if(level.isClientSide)
 			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(this));
 	}
 }

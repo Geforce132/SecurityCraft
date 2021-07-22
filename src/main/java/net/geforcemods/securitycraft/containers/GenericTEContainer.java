@@ -16,12 +16,12 @@ public class GenericTEContainer extends Container {
 	{
 		super(type, windowId);
 
-		te = world.getTileEntity(pos);
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		te = world.getBlockEntity(pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return isWithinUsableDistance(worldPosCallable, player, te.getBlockState().getBlock());
+	public boolean stillValid(PlayerEntity player) {
+		return stillValid(worldPosCallable, player, te.getBlockState().getBlock());
 	}
 }

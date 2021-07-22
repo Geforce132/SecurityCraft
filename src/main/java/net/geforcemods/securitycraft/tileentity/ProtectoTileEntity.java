@@ -31,10 +31,10 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 					return false;
 			}
 
-			if(!world.isRemote)
-				WorldUtils.spawnLightning(world, entity.getPositionVec(), false);
+			if(!level.isClientSide)
+				WorldUtils.spawnLightning(level, entity.position(), false);
 
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
 			return true;
 		}
 
@@ -43,12 +43,12 @@ public class ProtectoTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public boolean canAttack() {
-		boolean canAttack = (getAttackCooldown() >= getTicksBetweenAttacks() && world.canBlockSeeSky(pos) && world.isRaining());
+		boolean canAttack = (getAttackCooldown() >= getTicksBetweenAttacks() && level.canSeeSkyFromBelowWater(worldPosition) && level.isRaining());
 
-		if(canAttack && !getBlockState().get(ProtectoBlock.ACTIVATED))
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, true));
-		else if(!canAttack && getBlockState().get(ProtectoBlock.ACTIVATED))
-			world.setBlockState(pos, getBlockState().with(ProtectoBlock.ACTIVATED, false));
+		if(canAttack && !getBlockState().getValue(ProtectoBlock.ACTIVATED))
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, true));
+		else if(!canAttack && getBlockState().getValue(ProtectoBlock.ACTIVATED))
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
 
 		return canAttack;
 	}

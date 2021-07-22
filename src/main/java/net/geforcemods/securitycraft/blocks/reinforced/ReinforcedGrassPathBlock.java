@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockReader;
 
 public class ReinforcedGrassPathBlock extends BaseReinforcedBlock
 {
-	public static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
+	public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.0D, 16.0D);
 
 	public ReinforcedGrassPathBlock(Properties properties, Block vB)
 	{

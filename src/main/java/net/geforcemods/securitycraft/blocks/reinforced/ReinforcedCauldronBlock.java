@@ -34,23 +34,23 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity player = ((PlayerEntity)entity);
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player))
 				return SHAPE;
 			else
-				return VoxelShapes.fullCube();
+				return VoxelShapes.block();
 		}
 
 		return SHAPE;
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		TileEntity te = world.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		TileEntity te = world.getBlockEntity(pos);
 
 		if (te instanceof ReinforcedCauldronTileEntity && ((ReinforcedCauldronTileEntity)te).isAllowedToInteract(player)) {
-			return super.onBlockActivated(state, world, pos, player, hand, hit);
+			return super.use(state, world, pos, player, hand, hit);
 		}
 
 		return ActionResultType.PASS;
@@ -63,11 +63,11 @@ public class ReinforcedCauldronBlock extends CauldronBlock implements IReinforce
 
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState) {
-		return getDefaultState().with(LEVEL, vanillaState.get(LEVEL));
+		return defaultBlockState().setValue(LEVEL, vanillaState.getValue(LEVEL));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}

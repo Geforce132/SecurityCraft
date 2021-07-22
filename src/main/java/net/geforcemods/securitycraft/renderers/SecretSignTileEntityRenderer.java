@@ -38,54 +38,54 @@ public class SecretSignTileEntityRenderer extends TileEntityRenderer<SecretSignT
 	{
 		BlockState state = te.getBlockState();
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
-		FontRenderer font = renderDispatcher.getFontRenderer();
+		FontRenderer font = renderer.getFont();
 		IVertexBuilder builder;
 
-		matrix.push();
+		matrix.pushPose();
 
 		if(state.getBlock() instanceof SecretStandingSignBlock)
 		{
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.rotate(Vector3f.YP.rotationDegrees(-(state.get(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
-			model.signStick.showModel = true;
+			matrix.mulPose(Vector3f.YP.rotationDegrees(-(state.getValue(SecretStandingSignBlock.ROTATION) * 360 / 16.0F)));
+			model.stick.visible = true;
 		}
 		else
 		{
 			matrix.translate(0.5D, 0.5D, 0.5D);
-			matrix.rotate(Vector3f.YP.rotationDegrees(-state.get(SecretWallSignBlock.FACING).getHorizontalAngle()));
+			matrix.mulPose(Vector3f.YP.rotationDegrees(-state.getValue(SecretWallSignBlock.FACING).toYRot()));
 			matrix.translate(0.0D, -0.3125D, -0.4375D);
-			model.signStick.showModel = false;
+			model.stick.visible = false;
 		}
 
-		matrix.push();
+		matrix.pushPose();
 		matrix.scale(0.6666667F, -0.6666667F, -0.6666667F);
-		builder = material.getBuffer(buffer, model::getRenderType);
-		model.signBoard.render(matrix, builder, combinedLight, combinedOverlay);
-		model.signStick.render(matrix, builder, combinedLight, combinedOverlay);
-		matrix.pop();
+		builder = material.buffer(buffer, model::renderType);
+		model.sign.render(matrix, builder, combinedLight, combinedOverlay);
+		model.stick.render(matrix, builder, combinedLight, combinedOverlay);
+		matrix.popPose();
 		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
 		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
 		if(te.isPlayerAllowedToSeeText(Minecraft.getInstance().player))
 		{
-			int textColor = te.getTextColor().getTextColor();
-			int r = (int)(NativeImage.getRed(textColor) * 0.4D);
-			int g = (int)(NativeImage.getGreen(textColor) * 0.4D);
-			int b = (int)(NativeImage.getBlue(textColor) * 0.4D);
-			int argb = NativeImage.getCombined(0, b, g, r);
+			int textColor = te.getColor().getTextColor();
+			int r = (int)(NativeImage.getR(textColor) * 0.4D);
+			int g = (int)(NativeImage.getG(textColor) * 0.4D);
+			int b = (int)(NativeImage.getB(textColor) * 0.4D);
+			int argb = NativeImage.combine(0, b, g, r);
 
 			for(int line = 0; line < 4; ++line)
 			{
-				IReorderingProcessor rp = te.reorderText(line, (p_243502_1_) -> {
-					List<IReorderingProcessor> list = font.trimStringToWidth(p_243502_1_, 90);
-					return list.isEmpty() ? IReorderingProcessor.field_242232_a : list.get(0);
+				IReorderingProcessor rp = te.getRenderMessage(line, (p_243502_1_) -> {
+					List<IReorderingProcessor> list = font.split(p_243502_1_, 90);
+					return list.isEmpty() ? IReorderingProcessor.EMPTY : list.get(0);
 				});
 
 				if(rp != null)
-					font.drawEntityText(rp, -font.func_243245_a(rp) / 2, line * 10 - 20, argb, false, matrix.getLast().getMatrix(), buffer, false, 0, combinedLight);
+					font.drawInBatch(rp, -font.width(rp) / 2, line * 10 - 20, argb, false, matrix.last().pose(), buffer, false, 0, combinedLight);
 			}
 		}
 
-		matrix.pop();
+		matrix.popPose();
 	}
 }

@@ -31,12 +31,12 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> connect()
 	{
 		return Commands.literal("connect").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new StringTextComponent("[")
-					.appendSibling(new StringTextComponent("IRC").mergeStyle(TextFormatting.GREEN))
-					.appendSibling(new StringTextComponent("] "))
-					.appendSibling(Utils.localize("messages.securitycraft:irc.connected"))
-					.appendSibling(new StringTextComponent(" "))
-					.appendSibling(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))), Util.DUMMY_UUID); //appendSibling
+			ctx.getSource().getPlayerOrException().sendMessage(new StringTextComponent("[")
+					.append(new StringTextComponent("IRC").withStyle(TextFormatting.GREEN))
+					.append(new StringTextComponent("] "))
+					.append(Utils.localize("messages.securitycraft:irc.connected"))
+					.append(new StringTextComponent(" "))
+					.append(ForgeHooks.newChatWithLinks(SendTip.tipsWithLink.get("discord"))), Util.NIL_UUID); //appendSibling
 			return 0;
 		});
 	}
@@ -44,10 +44,10 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> help()
 	{
 		return Commands.literal("help").executes(ctx -> {
-			ctx.getSource().asPlayer().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
-					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getTranslationKey()),
-					new TranslationTextComponent(Items.BOOK.getTranslationKey()),
-					new TranslationTextComponent(Items.IRON_BARS.getTranslationKey())), Util.DUMMY_UUID);
+			ctx.getSource().getPlayerOrException().sendMessage(new TranslationTextComponent("messages.securitycraft:sc_help",
+					new TranslationTextComponent(Blocks.CRAFTING_TABLE.getDescriptionId()),
+					new TranslationTextComponent(Items.BOOK.getDescriptionId()),
+					new TranslationTextComponent(Items.IRON_BARS.getDescriptionId())), Util.NIL_UUID);
 			return 0;
 		});
 	}
@@ -55,7 +55,7 @@ public class SCCommand {
 	private static ArgumentBuilder<CommandSource, ?> bug()
 	{
 		return Commands.literal("bug").executes(ctx -> {
-			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().asPlayer(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
+			PlayerUtils.sendMessageEndingWithLink(ctx.getSource().getPlayerOrException(), new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:bugReport"), SendTip.tipsWithLink.get("discord"), TextFormatting.GOLD);
 			return 0;
 		});
 	}

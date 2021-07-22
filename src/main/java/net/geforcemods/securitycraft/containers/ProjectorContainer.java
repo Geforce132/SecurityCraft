@@ -22,10 +22,10 @@ public class ProjectorContainer extends Container {
 	{
 		super(SCContent.cTypeProjector, windowId);
 
-		if(world.getTileEntity(pos) instanceof ProjectorTileEntity)
-			te = (ProjectorTileEntity) world.getTileEntity(pos);
+		if(world.getBlockEntity(pos) instanceof ProjectorTileEntity)
+			te = (ProjectorTileEntity) world.getBlockEntity(pos);
 
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		for(int y = 0; y < 3; y++)
 			for(int x = 0; x < 9; ++x)
@@ -38,7 +38,7 @@ public class ProjectorContainer extends Container {
 		addSlot(new Slot(te, 36, 79, 23)
 		{
 			@Override
-			public boolean isItemValid(ItemStack stack)
+			public boolean mayPlace(ItemStack stack)
 			{
 				return stack.getItem() instanceof BlockItem;
 			}
@@ -46,28 +46,28 @@ public class ProjectorContainer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(PlayerEntity player, int index)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(index);
+		Slot slot = slots.get(index);
 
-		if(slot != null && slot.getHasStack()) {
-			ItemStack slotStack = slot.getStack();
+		if(slot != null && slot.hasItem()) {
+			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
 			if(index == 36) {
-				if(!mergeItemStack(slotStack, 0, 36, false))
+				if(!moveItemStackTo(slotStack, 0, 36, false))
 					return ItemStack.EMPTY;
 			}
 			else {
-				if(!mergeItemStack(slotStack, 36, 37, false))
+				if(!moveItemStackTo(slotStack, 36, 37, false))
 					return ItemStack.EMPTY;
 			}
 
 			if(slotStack.getCount() == 0)
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 
 			if(slotStack.getCount() == slotStack.getCount())
 				return ItemStack.EMPTY;
@@ -79,8 +79,8 @@ public class ProjectorContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player)
+	public boolean stillValid(PlayerEntity player)
 	{
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.PROJECTOR.get());
+		return stillValid(worldPosCallable, player, SCContent.PROJECTOR.get());
 	}
 }

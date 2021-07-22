@@ -39,9 +39,9 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -58,9 +58,9 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -100,19 +100,19 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	@Override
 	public void onOptionChanged(Option<?> option)
 	{
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 2);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
+		save(tag);
+		return new SUpdateTileEntityPacket(worldPosition, 1, tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(getBlockState(), packet.getNbtCompound());
+		load(getBlockState(), packet.getTag());
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class SecretSignTileEntity extends SignTileEntity implements IOwnable, IM
 	@Override
 	public void onLoad()
 	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getPos()));
+		if(level.isClientSide)
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(getBlockPos()));
 	}
 }

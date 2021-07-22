@@ -40,9 +40,9 @@ public class SetCameraRotation {
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
 
-			if(player.getRidingEntity() instanceof SecurityCameraEntity){
-				player.getRidingEntity().rotationYaw = message.rotationYaw;
-				player.getRidingEntity().rotationPitch = message.rotationPitch;
+			if(player.getVehicle() instanceof SecurityCameraEntity){
+				player.getVehicle().yRot = message.rotationYaw;
+				player.getVehicle().xRot = message.rotationPitch;
 			}
 		});
 

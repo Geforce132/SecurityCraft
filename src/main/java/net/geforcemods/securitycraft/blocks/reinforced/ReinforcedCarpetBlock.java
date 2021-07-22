@@ -12,7 +12,7 @@ import net.minecraft.world.IWorld;
 
 public class ReinforcedCarpetBlock extends BaseReinforcedBlock
 {
-	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
+	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
 	public ReinforcedCarpetBlock(Block.Properties properties, Block block)
 	{
@@ -26,7 +26,7 @@ public class ReinforcedCarpetBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
-		return !stateIn.isValidPosition(world, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, world, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos) {
+		return !stateIn.canSurvive(world, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, world, currentPos, facingPos);
 	}
 }

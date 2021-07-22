@@ -51,7 +51,7 @@ public class CameraMonitorScreen extends Screen {
 	private int page = 1;
 
 	public CameraMonitorScreen(PlayerInventory inventory, CameraMonitorItem item, CompoundNBT itemNBTTag) {
-		super(new TranslationTextComponent(SCContent.CAMERA_MONITOR.get().getTranslationKey()));
+		super(new TranslationTextComponent(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
 		playerInventory = inventory;
 		cameraMonitor = item;
 		nbtTag = itemNBTTag;
@@ -97,17 +97,17 @@ public class CameraMonitorScreen extends Screen {
 			ArrayList<CameraView> views = cameraMonitor.getCameraPositions(nbtTag);
 			CameraView view;
 
-			button.setMessage(button.getMessage().copyRaw().appendSibling(new StringTextComponent("" + camID)));
+			button.setMessage(button.getMessage().plainCopy().append(new StringTextComponent("" + camID)));
 			addButton(button);
 
 			if((view = views.get(camID - 1)) != null) {
-				if(!view.dimension.equals(Minecraft.getInstance().player.world.getDimensionKey().getLocation())) {
+				if(!view.dimension.equals(Minecraft.getInstance().player.level.dimension().location())) {
 					hoverCheckers[button.id - 1] = new HoverChecker(button);
 					cameraViewDim[button.id - 1] = view.dimension;
 				}
 
-				World world = Minecraft.getInstance().world;
-				TileEntity te = world.getTileEntity(view.getLocation());
+				World world = Minecraft.getInstance().level;
+				TileEntity te = world.getBlockEntity(view.getLocation());
 
 				if(world.getBlockState(view.getLocation()).getBlock() != SCContent.SECURITY_CAMERA.get() || (te instanceof SecurityCameraTileEntity && !((SecurityCameraTileEntity)te).getOwner().isOwner(Minecraft.getInstance().player) && !((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
 				{
@@ -146,40 +146,40 @@ public class CameraMonitorScreen extends Screen {
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		int startX = (width - xSize) / 2;
 		int startY = (height - ySize) / 2;
 		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
 
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		font.drawText(matrix, selectCameras, startX + xSize / 2 - font.getStringPropertyWidth(selectCameras) / 2, startY + 6, 4210752);
+		font.draw(matrix, selectCameras, startX + xSize / 2 - font.width(selectCameras) / 2, startY + 6, 4210752);
 
 		for(int i = 0; i < hoverCheckers.length; i++)
 			if(hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)){
 				if(cameraTEs[i] == null)
-					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraInDifferentDim", cameraViewDim[i]), 150), mouseX, mouseY);
 
 				if(cameraTEs[i] != null && cameraTEs[i].hasCustomSCName())
-					renderTooltip(matrix, font.trimStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
+					renderTooltip(matrix, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraTEs[i].getCustomSCName()), 150), mouseX, mouseY);
 			}
 	}
 
 	protected void actionPerformed(IdButton button) {
 		if(button.id == prevPageButton.id)
-			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
+			minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1));
 		else if(button.id == nextPageButton.id)
-			minecraft.displayGuiScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
+			minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1));
 		else if (button.id < 11){
 			int camID = button.id + ((page - 1) * 10);
 
 			CameraView view = (cameraMonitor.getCameraPositions(nbtTag).get(camID - 1));
-			Block block = Minecraft.getInstance().world.getBlockState(view.getLocation()).getBlock();
+			Block block = Minecraft.getInstance().level.getBlockState(view.getLocation()).getBlock();
 
 			if(block == SCContent.SECURITY_CAMERA.get()) {
-				((SecurityCameraBlock)block).mountCamera(Minecraft.getInstance().world, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
+				((SecurityCameraBlock)block).mountCamera(Minecraft.getInstance().level, view.x, view.y, view.z, camID, Minecraft.getInstance().player);
 				SecurityCraft.channel.sendToServer(new MountCamera(view.getLocation(), camID));
-				Minecraft.getInstance().player.closeScreen();
+				Minecraft.getInstance().player.closeContainer();
 			}
 			else
 				button.active = false;

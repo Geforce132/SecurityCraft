@@ -28,9 +28,9 @@ public class ReinforcedDoorItem extends Item
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType useOn(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx);
+		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, ItemUseContext ctx)
@@ -38,14 +38,14 @@ public class ReinforcedDoorItem extends Item
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (!block.isReplaceable(world.getBlockState(pos), new BlockItemUseContext(ctx)))
-			pos = pos.offset(facing);
+		if (!block.canBeReplaced(world.getBlockState(pos), new BlockItemUseContext(ctx)))
+			pos = pos.relative(facing);
 
-		if (player.canPlayerEdit(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.down(), Direction.UP))
+		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.below(), Direction.UP))
 		{
-			Direction angleFacing = Direction.fromAngle(player.rotationYaw);
-			int offsetX = angleFacing.getXOffset();
-			int offsetZ = angleFacing.getZOffset();
+			Direction angleFacing = Direction.fromYRot(player.yRot);
+			int offsetX = angleFacing.getStepX();
+			int offsetZ = angleFacing.getStepZ();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
 			if(!placeDoor(world, pos, angleFacing, SCContent.REINFORCED_DOOR.get(), flag, ctx))
@@ -58,10 +58,10 @@ public class ReinforcedDoorItem extends Item
 			if(!player.isCreative())
 				stack.shrink(1);
 
-			if(world.getTileEntity(pos) != null)
+			if(world.getBlockEntity(pos) != null)
 			{
-				((OwnableTileEntity) world.getTileEntity(pos)).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				((OwnableTileEntity) world.getTileEntity(pos.up())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((OwnableTileEntity) world.getBlockEntity(pos)).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				((OwnableTileEntity) world.getBlockEntity(pos.above())).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 			}
 
 			return ActionResultType.SUCCESS;
@@ -72,17 +72,17 @@ public class ReinforcedDoorItem extends Item
 
 	public boolean placeDoor(World world, BlockPos pos, Direction facing, Block door, boolean isRightHinge, ItemUseContext ctx) //naming might not be entirely correct, but it's giving a rough idea
 	{
-		BlockPos posAbove = pos.up();
+		BlockPos posAbove = pos.above();
 
-		if(!world.getBlockState(posAbove).isReplaceable(new BlockItemUseContext(ctx)))
+		if(!world.getBlockState(posAbove).canBeReplaced(new BlockItemUseContext(ctx)))
 			return false;
 
-		BlockPos left = pos.offset(facing.rotateY());
-		BlockPos right = pos.offset(facing.rotateYCCW());
-		int rightNormalCubeAmount = (world.getBlockState(right).isNormalCube(world, pos) ? 1 : 0) + (world.getBlockState(right.up()).isNormalCube(world, pos) ? 1 : 0);
-		int leftNormalCubeAmount = (world.getBlockState(left).isNormalCube(world, pos) ? 1 : 0) + (world.getBlockState(left.up()).isNormalCube(world, pos) ? 1 : 0);
-		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.up()).getBlock() == door;
-		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.up()).getBlock() == door;
+		BlockPos left = pos.relative(facing.getClockWise());
+		BlockPos right = pos.relative(facing.getCounterClockWise());
+		int rightNormalCubeAmount = (world.getBlockState(right).isRedstoneConductor(world, pos) ? 1 : 0) + (world.getBlockState(right.above()).isRedstoneConductor(world, pos) ? 1 : 0);
+		int leftNormalCubeAmount = (world.getBlockState(left).isRedstoneConductor(world, pos) ? 1 : 0) + (world.getBlockState(left.above()).isRedstoneConductor(world, pos) ? 1 : 0);
+		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.above()).getBlock() == door;
+		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.above()).getBlock() == door;
 
 		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount)
 		{
@@ -93,12 +93,12 @@ public class ReinforcedDoorItem extends Item
 			isRightHinge = true;
 
 		boolean isAnyPowered = BlockUtils.hasActiveSCBlockNextTo(world, pos) || BlockUtils.hasActiveSCBlockNextTo(world, posAbove);
-		BlockState state = door.getDefaultState().with(ReinforcedDoorBlock.FACING, facing).with(ReinforcedDoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).with(ReinforcedDoorBlock.OPEN, isAnyPowered);
+		BlockState state = door.defaultBlockState().setValue(ReinforcedDoorBlock.FACING, facing).setValue(ReinforcedDoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT).setValue(ReinforcedDoorBlock.OPEN, isAnyPowered);
 
-		world.setBlockState(pos, state.with(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
-		world.setBlockState(posAbove, state.with(ReinforcedDoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
-		world.notifyNeighborsOfStateChange(pos, door);
-		world.notifyNeighborsOfStateChange(posAbove, door);
+		world.setBlock(pos, state.setValue(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
+		world.setBlock(posAbove, state.setValue(ReinforcedDoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
+		world.updateNeighborsAt(pos, door);
+		world.updateNeighborsAt(posAbove, door);
 		return true;
 	}
 }

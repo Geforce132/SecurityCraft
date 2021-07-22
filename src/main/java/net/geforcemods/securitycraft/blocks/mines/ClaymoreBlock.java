@@ -32,37 +32,37 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
-	private static final VoxelShape NORTH_OFF = VoxelShapes.or(Block.makeCuboidShape(4, 0, 5, 12, 4, 7), VoxelShapes.or(Block.makeCuboidShape(4, 4, 5, 12, 5, 6), VoxelShapes.or(Block.makeCuboidShape(5, 4, 4, 6, 5, 5), VoxelShapes.or(Block.makeCuboidShape(10, 4, 4, 11, 5, 5), VoxelShapes.or(Block.makeCuboidShape(4, 4, 3, 5, 5, 4), Block.makeCuboidShape(11, 4, 3, 12, 5, 4))))));
-	private static final VoxelShape NORTH_ON = VoxelShapes.or(NORTH_OFF, VoxelShapes.or(Block.makeCuboidShape(3, 4, 2, 4, 5, 3), Block.makeCuboidShape(12, 4, 2, 13, 5, 3)));
-	private static final VoxelShape EAST_OFF = VoxelShapes.or(Block.makeCuboidShape(9, 0, 4, 11, 4, 12), VoxelShapes.or(Block.makeCuboidShape(10, 4, 4, 11, 5, 12), VoxelShapes.or(Block.makeCuboidShape(11, 4, 5, 12, 5, 6), VoxelShapes.or(Block.makeCuboidShape(11, 4, 10, 12, 5, 11), VoxelShapes.or(Block.makeCuboidShape(12, 4, 4, 13, 5, 5), Block.makeCuboidShape(12, 4, 11, 13, 5, 12))))));
-	private static final VoxelShape EAST_ON = VoxelShapes.or(EAST_OFF, VoxelShapes.or(Block.makeCuboidShape(13, 4, 3, 14, 5, 4), Block.makeCuboidShape(13, 4, 12, 14, 5, 13)));
-	private static final VoxelShape SOUTH_OFF = VoxelShapes.or(Block.makeCuboidShape(4, 0, 9, 12, 4, 11), VoxelShapes.or(Block.makeCuboidShape(4, 4, 10, 12, 5, 11), VoxelShapes.or(Block.makeCuboidShape(5, 4, 11, 6, 5, 12), VoxelShapes.or(Block.makeCuboidShape(10, 4, 11, 11, 5, 12), VoxelShapes.or(Block.makeCuboidShape(4, 4, 12, 5, 5, 13), Block.makeCuboidShape(11, 4, 12, 12, 5, 13))))));
-	private static final VoxelShape SOUTH_ON = VoxelShapes.or(SOUTH_OFF, VoxelShapes.or(Block.makeCuboidShape(3, 4, 13, 4, 5, 14), Block.makeCuboidShape(12, 4, 13, 13, 5, 14)));
-	private static final VoxelShape WEST_OFF = VoxelShapes.or(Block.makeCuboidShape(7, 0, 4, 5, 4, 12), VoxelShapes.or(Block.makeCuboidShape(6, 4, 4, 5, 5, 12), VoxelShapes.or(Block.makeCuboidShape(5, 4, 5, 4, 5, 6), VoxelShapes.or(Block.makeCuboidShape(5, 4, 10, 4, 5, 11), VoxelShapes.or(Block.makeCuboidShape(4, 4, 4, 3, 5, 5), Block.makeCuboidShape(4, 4, 11, 3, 5, 12))))));
-	private static final VoxelShape WEST_ON = VoxelShapes.or(WEST_OFF, VoxelShapes.or(Block.makeCuboidShape(3, 4, 3, 2, 5, 4), Block.makeCuboidShape(3, 4, 12, 2, 5, 13)));
+	private static final VoxelShape NORTH_OFF = VoxelShapes.or(Block.box(4, 0, 5, 12, 4, 7), VoxelShapes.or(Block.box(4, 4, 5, 12, 5, 6), VoxelShapes.or(Block.box(5, 4, 4, 6, 5, 5), VoxelShapes.or(Block.box(10, 4, 4, 11, 5, 5), VoxelShapes.or(Block.box(4, 4, 3, 5, 5, 4), Block.box(11, 4, 3, 12, 5, 4))))));
+	private static final VoxelShape NORTH_ON = VoxelShapes.or(NORTH_OFF, VoxelShapes.or(Block.box(3, 4, 2, 4, 5, 3), Block.box(12, 4, 2, 13, 5, 3)));
+	private static final VoxelShape EAST_OFF = VoxelShapes.or(Block.box(9, 0, 4, 11, 4, 12), VoxelShapes.or(Block.box(10, 4, 4, 11, 5, 12), VoxelShapes.or(Block.box(11, 4, 5, 12, 5, 6), VoxelShapes.or(Block.box(11, 4, 10, 12, 5, 11), VoxelShapes.or(Block.box(12, 4, 4, 13, 5, 5), Block.box(12, 4, 11, 13, 5, 12))))));
+	private static final VoxelShape EAST_ON = VoxelShapes.or(EAST_OFF, VoxelShapes.or(Block.box(13, 4, 3, 14, 5, 4), Block.box(13, 4, 12, 14, 5, 13)));
+	private static final VoxelShape SOUTH_OFF = VoxelShapes.or(Block.box(4, 0, 9, 12, 4, 11), VoxelShapes.or(Block.box(4, 4, 10, 12, 5, 11), VoxelShapes.or(Block.box(5, 4, 11, 6, 5, 12), VoxelShapes.or(Block.box(10, 4, 11, 11, 5, 12), VoxelShapes.or(Block.box(4, 4, 12, 5, 5, 13), Block.box(11, 4, 12, 12, 5, 13))))));
+	private static final VoxelShape SOUTH_ON = VoxelShapes.or(SOUTH_OFF, VoxelShapes.or(Block.box(3, 4, 13, 4, 5, 14), Block.box(12, 4, 13, 13, 5, 14)));
+	private static final VoxelShape WEST_OFF = VoxelShapes.or(Block.box(7, 0, 4, 5, 4, 12), VoxelShapes.or(Block.box(6, 4, 4, 5, 5, 12), VoxelShapes.or(Block.box(5, 4, 5, 4, 5, 6), VoxelShapes.or(Block.box(5, 4, 10, 4, 5, 11), VoxelShapes.or(Block.box(4, 4, 4, 3, 5, 5), Block.box(4, 4, 11, 3, 5, 12))))));
+	private static final VoxelShape WEST_ON = VoxelShapes.or(WEST_OFF, VoxelShapes.or(Block.box(3, 4, 3, 2, 5, 4), Block.box(3, 4, 12, 2, 5, 13)));
 
 	public ClaymoreBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(DEACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(DEACTIVATED, false));
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
 			return;
 		else
 			world.destroyBlock(pos, true);
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos)
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos)
 	{
-		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
+		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
 	}
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
-		if (!player.isCreative() && !world.isRemote && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
+		if (!player.isCreative() && !world.isClientSide && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED))
 		{
 			world.destroyBlock(pos, false);
 
@@ -74,9 +74,9 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
+	public void wasExploded(World world, BlockPos pos, Explosion explosion)
 	{
-		if (!world.isRemote && world.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).get(ClaymoreBlock.DEACTIVATED))
+		if (!world.isClientSide && world.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED))
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
@@ -88,21 +88,21 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing()).with(DEACTIVATED, false);
+		return defaultBlockState().setValue(FACING, placer.getDirection()).setValue(DEACTIVATED, false);
 	}
 
 	@Override
 	public boolean activateMine(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(state.get(DEACTIVATED))
+		if(state.getValue(DEACTIVATED))
 		{
-			world.setBlockState(pos, state.with(DEACTIVATED, false));
+			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -113,9 +113,9 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	public boolean defuseMine(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(!state.get(DEACTIVATED))
+		if(!state.getValue(DEACTIVATED))
 		{
-			world.setBlockState(pos, state.with(DEACTIVATED, true));
+			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -124,43 +124,43 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if(!world.isRemote){
+		if(!world.isClientSide){
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.5F : 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			world.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.5F : 3.5F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		switch(state.get(FACING))
+		switch(state.getValue(FACING))
 		{
 			case NORTH:
-				if(state.get(DEACTIVATED))
+				if(state.getValue(DEACTIVATED))
 					return NORTH_OFF;
 				else
 					return NORTH_ON;
 			case EAST:
-				if(state.get(DEACTIVATED))
+				if(state.getValue(DEACTIVATED))
 					return EAST_OFF;
 				else
 					return EAST_ON;
 			case SOUTH:
-				if(state.get(DEACTIVATED))
+				if(state.getValue(DEACTIVATED))
 					return SOUTH_OFF;
 				else
 					return SOUTH_ON;
 			case WEST:
-				if(state.get(DEACTIVATED))
+				if(state.getValue(DEACTIVATED))
 					return WEST_OFF;
 				else
 					return WEST_ON;
-			default: return VoxelShapes.fullCube();
+			default: return VoxelShapes.block();
 		}
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(DEACTIVATED);
@@ -168,7 +168,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).get(DEACTIVATED);
+		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override
@@ -184,12 +184,12 @@ public class ClaymoreBlock extends ExplosiveBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

@@ -52,10 +52,10 @@ public class SyncBlockPocketManager
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
-			World world = player.world;
-			TileEntity te = world.getTileEntity(pos);
+			World world = player.level;
+			TileEntity te = world.getBlockEntity(pos);
 
-			if(world.isBlockPresent(pos) && te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
+			if(world.isLoaded(pos) && te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
 			{
 				BlockPocketManagerTileEntity bpm = (BlockPocketManagerTileEntity)te;
 				BlockState state = world.getBlockState(pos);
@@ -63,7 +63,7 @@ public class SyncBlockPocketManager
 				bpm.size = message.size;
 				bpm.showOutline = message.showOutline;
 				bpm.autoBuildOffset = message.autoBuildOffset;
-				world.notifyBlockUpdate(pos, state, state, 2);
+				world.sendBlockUpdated(pos, state, state, 2);
 			}
 		});
 

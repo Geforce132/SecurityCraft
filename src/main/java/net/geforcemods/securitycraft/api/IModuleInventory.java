@@ -52,8 +52,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	{
 		TileEntity te = getTileEntity();
 
-		if(!te.getWorld().isRemote)
-			te.getWorld().notifyBlockUpdate(te.getPos(), te.getBlockState(), te.getBlockState(), 3);
+		if(!te.getLevel().isClientSide)
+			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
 	}
 
 	/**
@@ -66,8 +66,8 @@ public interface IModuleInventory extends IItemHandlerModifiable
 	{
 		TileEntity te = getTileEntity();
 
-		if(!te.getWorld().isRemote)
-			te.getWorld().notifyBlockUpdate(te.getPos(), te.getBlockState(), te.getBlockState(), 3);
+		if(!te.getLevel().isClientSide)
+			te.getLevel().sendBlockUpdated(te.getBlockPos(), te.getBlockState(), te.getBlockState(), 3);
 	}
 
 	/**
@@ -386,7 +386,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 			byte slot = stackTag.getByte("ModuleSlot");
 
 			if(slot >= 0 && slot < modules.size())
-				modules.set(slot, ItemStack.read(stackTag));
+				modules.set(slot, ItemStack.of(stackTag));
 		}
 
 		return modules;
@@ -409,7 +409,7 @@ public interface IModuleInventory extends IItemHandlerModifiable
 				CompoundNBT stackTag = new CompoundNBT();
 
 				stackTag.putByte("ModuleSlot", (byte)i);
-				modules.get(i).write(stackTag);
+				modules.get(i).save(stackTag);
 				list.add(stackTag);
 			}
 		}

@@ -24,14 +24,14 @@ public class UpdateNBTTagOnClient{
 
 	public static void encode(UpdateNBTTagOnClient message, PacketBuffer buf)
 	{
-		buf.writeItemStack(message.stack);
+		buf.writeItem(message.stack);
 	}
 
 	public static UpdateNBTTagOnClient decode(PacketBuffer buf)
 	{
 		UpdateNBTTagOnClient message = new UpdateNBTTagOnClient();
 
-		message.stack = buf.readItemStack();
+		message.stack = buf.readItem();
 		return message;
 	}
 

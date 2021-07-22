@@ -24,9 +24,9 @@ public class SentryItem extends Item
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType useOn(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
+		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ)
@@ -34,18 +34,18 @@ public class SentryItem extends Item
 		boolean replacesTargetedBlock = world.getBlockState(pos).getMaterial().isReplaceable();
 
 		if (!replacesTargetedBlock) {
-			pos = pos.offset(facing); //if the block is not replaceable, place sentry next to targeted block
+			pos = pos.relative(facing); //if the block is not replaceable, place sentry next to targeted block
 		}
 
-		if(!world.isAirBlock(pos) && !replacesTargetedBlock)
+		if(!world.isEmptyBlock(pos) && !replacesTargetedBlock)
 			return ActionResultType.PASS;
 		else
 		{
-			BlockPos downPos = pos.down();
+			BlockPos downPos = pos.below();
 
-			if(world.isAirBlock(downPos) || world.hasNoCollisions(new AxisAlignedBB(downPos)))
+			if(world.isEmptyBlock(downPos) || world.noCollision(new AxisAlignedBB(downPos)))
 			{
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:sentry.needsBlockBelow"), TextFormatting.DARK_RED);
 				return ActionResultType.FAIL;
 			}
 		}
@@ -53,17 +53,17 @@ public class SentryItem extends Item
 		SentryEntity entity = SCContent.eTypeSentry.create(world);
 
 		entity.setupSentry(player);
-		entity.setPosition(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
+		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 
-		if (stack.hasDisplayName())
-			entity.setCustomName(stack.getDisplayName());
+		if (stack.hasCustomHoverName())
+			entity.setCustomName(stack.getHoverName());
 
 		if (replacesTargetedBlock) {
 			world.removeBlock(pos, false);
 		}
 
-		world.addEntity(entity);
-		player.sendStatusMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).appendSibling(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
+		world.addFreshEntity(entity);
+		player.displayClientMessage(Utils.localize(SentryMode.CAMOUFLAGE_HP.getModeKey()).append(Utils.localize(SentryMode.CAMOUFLAGE_HP.getDescriptionKey())), true);
 
 		if(!player.isCreative())
 			stack.shrink(1);

@@ -37,13 +37,13 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public CheckPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
 	}
 
 	@Override
 	public void init(){
 		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
 		addButton(new IdButton(0, width / 2 - 38, height / 2 + 30 + 10, 80, 20, "0", this::actionPerformed));
 		addButton(new IdButton(1, width / 2 - 38, height / 2 - 60 + 10, 20, 20, "1", this::actionPerformed));
@@ -58,30 +58,30 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 		addButton(new IdButton(10, width / 2 + 48, height / 2 + 30 + 10, 25, 20, "<-", this::actionPerformed));
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 67, 77, 12, StringTextComponent.EMPTY));
-		keycodeTextbox.setMaxStringLength(MAX_CHARS);
-		keycodeTextbox.setValidator(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
-		setFocusedDefault(keycodeTextbox);
+		keycodeTextbox.setMaxLength(MAX_CHARS);
+		keycodeTextbox.setFilter(s -> s.matches("[0-9]*\\**")); //allow any amount of numbers and any amount of asterisks
+		setInitialFocus(keycodeTextbox);
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+	public void removed(){
+		super.removed();
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
-		font.drawText(matrix, blockName, xSize / 2 - font.getStringPropertyWidth(blockName) / 2, 6, 4210752);
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY){
+		font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		int startX = (width - imageWidth) / 2;
+		int startY = (height - imageHeight) / 2;
+		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -142,10 +142,10 @@ public class CheckPasswordScreen extends ContainerScreen<GenericTEContainer> {
 			x += "*";
 		}
 
-		textField.setText(x);
+		textField.setValue(x);
 	}
 
 	public void checkCode(String code) {
-		SecurityCraft.channel.sendToServer(new CheckPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), code));
+		SecurityCraft.channel.sendToServer(new CheckPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), code));
 	}
 }

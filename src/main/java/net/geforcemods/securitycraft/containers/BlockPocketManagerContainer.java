@@ -25,12 +25,12 @@ public class BlockPocketManagerContainer extends Container
 	{
 		super(SCContent.cTypeBlockPocketManager, windowId);
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof BlockPocketManagerTileEntity)
 			te = (BlockPocketManagerTileEntity)tile;
 
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 		isOwner = te.getOwner().isOwner(inventory.player);
 		storage = te != null && te.hasModule(ModuleType.STORAGE) && isOwner;
 
@@ -64,40 +64,40 @@ public class BlockPocketManagerContainer extends Container
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(PlayerEntity player, int index)
 	{
 		ItemStack copy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(index);
+		Slot slot = slots.get(index);
 
-		if(slot != null && slot.getHasStack())
+		if(slot != null && slot.hasItem())
 		{
-			ItemStack slotStack = slot.getStack();
+			ItemStack slotStack = slot.getItem();
 
 			copy = slotStack.copy();
 
 			if(index >= 36) //block pocket manager slots
 			{
-				if(!mergeItemStack(slotStack, 0, 36, true))
+				if(!moveItemStackTo(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
 			}
 			else if(index >= 0 && index <= 35) //main inventory and hotbar
 			{
-				if(!mergeItemStack(slotStack, 36, inventorySlots.size(), false))
+				if(!moveItemStackTo(slotStack, 36, slots.size(), false))
 					return ItemStack.EMPTY;
 			}
 
 			if(slotStack.isEmpty())
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 		}
 
 		return copy;
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player)
+	public boolean stillValid(PlayerEntity player)
 	{
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.BLOCK_POCKET_MANAGER.get());
+		return stillValid(worldPosCallable, player, SCContent.BLOCK_POCKET_MANAGER.get());
 	}
 }

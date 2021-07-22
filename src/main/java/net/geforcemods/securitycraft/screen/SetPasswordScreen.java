@@ -36,30 +36,30 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	public SetPasswordScreen(GenericTEContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
 		this.tileEntity = container.te;
-		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getTranslationKey());
+		blockName = Utils.localize(tileEntity.getBlockState().getBlock().getDescriptionId());
 		setup = Utils.localize("gui.securitycraft:password.setup");
-		combined = blockName.copyRaw().appendSibling(new StringTextComponent(" ")).appendSibling(setup);
+		combined = blockName.plainCopy().append(new StringTextComponent(" ")).append(setup);
 	}
 
 	@Override
 	public void init(){
 		super.init();
 
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(saveAndContinueButton = new IdButton(0, width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:password.save"), this::actionPerformed));
 		saveAndContinueButton.active = false;
 
 		addButton(keycodeTextbox = new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
-		keycodeTextbox.setMaxStringLength(20);
-		keycodeTextbox.setValidator(s -> s.matches("[0-9]*"));
+		keycodeTextbox.setMaxLength(20);
+		keycodeTextbox.setFilter(s -> s.matches("[0-9]*"));
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
-		setFocusedDefault(keycodeTextbox);
+		setInitialFocus(keycodeTextbox);
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+	public void removed(){
+		super.removed();
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -69,29 +69,29 @@ public class SetPasswordScreen extends ContainerScreen<GenericTEContainer> {
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY){
-		if(font.getStringPropertyWidth(combined) < xSize - 10)
-			font.drawText(matrix, combined, xSize / 2 - font.getStringPropertyWidth(combined) / 2, 6, 4210752);
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY){
+		if(font.width(combined) < imageWidth - 10)
+			font.draw(matrix, combined, imageWidth / 2 - font.width(combined) / 2, 6, 4210752);
 		else
 		{
-			font.drawText(matrix, blockName, xSize / 2 - font.getStringPropertyWidth(blockName) / 2, 6.0F, 4210752);
-			font.drawText(matrix, setup, xSize / 2 - font.getStringPropertyWidth(setup) / 2, 16, 4210752);
+			font.draw(matrix, blockName, imageWidth / 2 - font.width(blockName) / 2, 6.0F, 4210752);
+			font.draw(matrix, setup, imageWidth / 2 - font.width(setup) / 2, 16, 4210752);
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY){
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		int startX = (width - imageWidth) / 2;
+		int startY = (height - imageHeight) / 2;
+		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	protected void actionPerformed(IdButton button){
-		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getText());
-		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), keycodeTextbox.getText()));
-		Minecraft.getInstance().player.closeScreen();
+		((IPasswordProtected) tileEntity).setPassword(keycodeTextbox.getValue());
+		SecurityCraft.channel.sendToServer(new SetPassword(tileEntity.getBlockPos().getX(), tileEntity.getBlockPos().getY(), tileEntity.getBlockPos().getZ(), keycodeTextbox.getValue()));
+		Minecraft.getInstance().player.closeContainer();
 	}
 }

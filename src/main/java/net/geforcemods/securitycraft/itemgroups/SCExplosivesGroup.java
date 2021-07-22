@@ -12,12 +12,12 @@ public class SCExplosivesGroup extends ItemGroup
 	public SCExplosivesGroup()
 	{
 		super(SecurityCraft.MODID + ".explosives");
-		setGroupPath(SecurityCraft.MODID);
+		setRecipeFolderName(SecurityCraft.MODID);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon()
+	public ItemStack makeIcon()
 	{
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}

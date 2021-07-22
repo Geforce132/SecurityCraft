@@ -55,6 +55,6 @@ public class ModuleUtils{
 			te.createLinkedBlockAction(action, new Object[] {stack, ((ModuleItem)stack.getItem()).getModuleType()}, te);
 
 		if(te instanceof SecurityCameraTileEntity)
-			te.getWorld().notifyNeighborsOfStateChange(te.getPos().offset(te.getBlockState().get(SecurityCameraBlock.FACING), -1), te.getBlockState().getBlock());
+			te.getLevel().updateNeighborsAt(te.getBlockPos().relative(te.getBlockState().getValue(SecurityCameraBlock.FACING), -1), te.getBlockState().getBlock());
 	}
 }

@@ -25,8 +25,8 @@ public class CustomizeBlockContainer extends Container{
 
 	public CustomizeBlockContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
 		super(SCContent.cTypeCustomizeBlock, windowId);
-		this.moduleInv = (IModuleInventory)world.getTileEntity(pos);
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		this.moduleInv = (IModuleInventory)world.getBlockEntity(pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		int slotId = 0;
 
@@ -66,65 +66,68 @@ public class CustomizeBlockContainer extends Container{
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index)
+	public ItemStack quickMoveStack(PlayerEntity player, int index)
 	{
 		ItemStack copy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(index);
+		Slot slot = slots.get(index);
 
-		if(slot != null && slot.getHasStack())
+		if(slot != null && slot.hasItem())
 		{
-			ItemStack slotStack = slot.getStack();
+			ItemStack slotStack = slot.getItem();
 			boolean isModule = slotStack.getItem() instanceof ModuleItem;
 
 			copy = slotStack.copy();
 
 			if(index >= 36 && index <= maxSlots) //module slots
 			{
-				if(!mergeItemStack(slotStack, 0, 36, true)) //main inventory + hotbar
+				if(!moveItemStackTo(slotStack, 0, 36, true)) //main inventory + hotbar
 					return ItemStack.EMPTY;
 			}
 			else if(index >= 27 && index <= 35) //hotbar
 			{
-				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
+				if(isModule && !moveItemStackTo(slotStack, 36, maxSlots, false)) //module slots
 					return ItemStack.EMPTY;
-				else if(!mergeItemStack(slotStack, 0, 27, false)) //main inventory
+				else if(!moveItemStackTo(slotStack, 0, 27, false)) //main inventory
 					return ItemStack.EMPTY;
 			}
 			else if(index <= 26) //main inventory
 			{
-				if(isModule && !mergeItemStack(slotStack, 36, maxSlots, false)) //module slots
+				if(isModule && !moveItemStackTo(slotStack, 36, maxSlots, false)) //module slots
 					return ItemStack.EMPTY;
-				else if(!mergeItemStack(slotStack, 27, 36, false)) //hotbar
+				else if(!moveItemStackTo(slotStack, 27, 36, false)) //hotbar
 					return ItemStack.EMPTY;
 			}
 
-			slot.onSlotChange(slotStack, copy);
+			slot.onQuickCraft(slotStack, copy);
 
 			if(slotStack.isEmpty())
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 		}
 
 		return copy;
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
-		return isWithinUsableDistance(worldPosCallable, player, moduleInv.getTileEntity().getBlockState().getBlock());
+	public boolean stillValid(PlayerEntity player) {
+		return stillValid(worldPosCallable, player, moduleInv.getTileEntity().getBlockState().getBlock());
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler
 	{
+		private final int index;
+
 		public CustomSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition)
 		{
 			super(itemHandler, index, xPosition, yPosition);
+			this.index = index;
 		}
 
 		@Override
-		public void onSlotChange(ItemStack newStack, ItemStack oldStack)
+		public void onQuickCraft(ItemStack newStack, ItemStack oldStack)
 		{
-			if((slotNumber >= 36 || slotNumber < maxSlots) && oldStack.getItem() instanceof ModuleItem)
+			if((index >= 36 || index < maxSlots) && oldStack.getItem() instanceof ModuleItem)
 			{
 				moduleInv.onModuleRemoved(oldStack, ((ModuleItem)oldStack.getItem()).getModuleType());
 

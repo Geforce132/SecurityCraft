@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
 
 	public SpecialDoorTileEntity(TileEntityType<?> type)
 	{
@@ -42,19 +42,19 @@ public abstract class SpecialDoorTileEntity extends CustomizableTileEntity
 
 	private void handleModule(ItemStack stack, ModuleType module, boolean removed)
 	{
-		DoubleBlockHalf myHalf = getBlockState().get(DoorBlock.HALF);
+		DoubleBlockHalf myHalf = getBlockState().getValue(DoorBlock.HALF);
 		BlockPos otherPos;
 
 		if(myHalf == DoubleBlockHalf.UPPER)
-			otherPos = getPos().down();
+			otherPos = getBlockPos().below();
 		else
-			otherPos = getPos().up();
+			otherPos = getBlockPos().above();
 
-		BlockState other = world.getBlockState(otherPos);
+		BlockState other = level.getBlockState(otherPos);
 
-		if(other.get(DoorBlock.HALF) != myHalf)
+		if(other.getValue(DoorBlock.HALF) != myHalf)
 		{
-			TileEntity otherTe = world.getTileEntity(otherPos);
+			TileEntity otherTe = level.getBlockEntity(otherPos);
 
 			if(otherTe instanceof SpecialDoorTileEntity)
 			{

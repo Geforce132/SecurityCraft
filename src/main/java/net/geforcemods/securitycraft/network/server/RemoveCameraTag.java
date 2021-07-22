@@ -24,7 +24,7 @@ public class RemoveCameraTag
 
 	public static void encode(RemoveCameraTag message, PacketBuffer buf)
 	{
-		buf.writeItemStack(message.heldItem);
+		buf.writeItem(message.heldItem);
 		buf.writeInt(message.camID);
 	}
 
@@ -32,7 +32,7 @@ public class RemoveCameraTag
 	{
 		RemoveCameraTag message = new RemoveCameraTag();
 
-		message.heldItem = buf.readItemStack();
+		message.heldItem = buf.readItem();
 		message.camID = buf.readInt();
 		return message;
 	}

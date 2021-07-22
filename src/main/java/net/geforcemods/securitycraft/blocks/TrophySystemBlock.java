@@ -34,37 +34,37 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class TrophySystemBlock extends OwnableBlock {
 
 	private static final VoxelShape SHAPE = Stream.of(
-			Block.makeCuboidShape(6.5, 0, 12, 9.5, 1.5, 15),
-			Block.makeCuboidShape(5.5, 7, 5.5, 10.5, 11, 10.5),
-			Block.makeCuboidShape(7, 12, 7, 9, 13, 9),
-			Block.makeCuboidShape(6.5, 12.5, 6.5, 9.5, 15, 9.5),
-			Block.makeCuboidShape(7, 14.5, 7, 9, 15.5, 9),
-			Block.makeCuboidShape(7.25, 9, 7.25, 8.75, 12, 8.75),
-			Block.makeCuboidShape(1, 0, 6.5, 4, 1.5, 9.5),
-			Block.makeCuboidShape(12, 0, 6.5, 15, 1.5, 9.5),
-			Block.makeCuboidShape(6.5, 0, 1, 9.5, 1.5, 4)
-			).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
+			Block.box(6.5, 0, 12, 9.5, 1.5, 15),
+			Block.box(5.5, 7, 5.5, 10.5, 11, 10.5),
+			Block.box(7, 12, 7, 9, 13, 9),
+			Block.box(6.5, 12.5, 6.5, 9.5, 15, 9.5),
+			Block.box(7, 14.5, 7, 9, 15.5, 9),
+			Block.box(7.25, 9, 7.25, 8.75, 12, 8.75),
+			Block.box(1, 0, 6.5, 4, 1.5, 9.5),
+			Block.box(12, 0, 6.5, 15, 1.5, 9.5),
+			Block.box(6.5, 0, 1, 9.5, 1.5, 4)
+			).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
 
 	public TrophySystemBlock(Block.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
-		if(!isValidPosition(state, world, pos)) {
+		if(!canSurvive(state, world, pos)) {
 			world.destroyBlock(pos, true);
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player)) {
-			if (!world.isRemote)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (((IOwnable) world.getBlockEntity(pos)).getOwner().isOwner(player)) {
+			if (!world.isClientSide)
 				NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
@@ -73,7 +73,7 @@ public class TrophySystemBlock extends OwnableBlock {
 
 					@Override
 					public ITextComponent getDisplayName() {
-						return new TranslationTextComponent(getTranslationKey());
+						return new TranslationTextComponent(getDescriptionId());
 					}
 				}, pos);
 

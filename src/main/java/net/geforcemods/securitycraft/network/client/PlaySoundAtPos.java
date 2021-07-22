@@ -41,9 +41,9 @@ public class PlaySoundAtPos{
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
-		buf.writeString(message.sound);
+		buf.writeUtf(message.sound);
 		buf.writeDouble(message.volume);
-		buf.writeString(message.category);
+		buf.writeUtf(message.category);
 	}
 
 	public static PlaySoundAtPos decode(PacketBuffer buf)
@@ -53,9 +53,9 @@ public class PlaySoundAtPos{
 		message.x = buf.readInt();
 		message.y = buf.readInt();
 		message.z = buf.readInt();
-		message.sound = buf.readString(Integer.MAX_VALUE / 4);
+		message.sound = buf.readUtf(Integer.MAX_VALUE / 4);
 		message.volume = buf.readDouble();
-		message.category = buf.readString(Integer.MAX_VALUE / 4);
+		message.category = buf.readUtf(Integer.MAX_VALUE / 4);
 		return message;
 	}
 
@@ -63,12 +63,12 @@ public class PlaySoundAtPos{
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = SecurityCraft.proxy.getClientPlayer();
-			BlockPos pos = player.getPosition();
+			BlockPos pos = player.blockPosition();
 			BlockPos origin = new BlockPos(message.x, message.y, message.z);
-			int dist = Math.max(0, Math.min(pos.manhattanDistance(origin), 20)); //clamp between 0 and 20
+			int dist = Math.max(0, Math.min(pos.distManhattan(origin), 20)); //clamp between 0 and 20
 			float volume = (float)(message.volume * (1 - ((float)dist / 20))); //the further away the quieter
 
-			Minecraft.getInstance().world.playSound(player, origin, new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), volume, 1.0F);
+			Minecraft.getInstance().level.playSound(player, origin, new SoundEvent(new ResourceLocation(message.sound)), SoundCategory.valueOf(message.category.toUpperCase()), volume, 1.0F);
 		});
 
 		ctx.get().setPacketHandled(true);

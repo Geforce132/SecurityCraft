@@ -22,7 +22,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class ClaymoreTileEntity extends CustomizableTileEntity
 {
-	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1, true);
+	private IntOption range = new IntOption(this::getBlockPos, "range", 5, 1, 10, 1, true);
 	private double entityX = -1D;
 	private double entityY = -1D;
 	private double entityZ = -1D;
@@ -35,9 +35,9 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 
 	@Override
 	public void tick() {
-		if(!getWorld().isRemote)
+		if(!getLevel().isClientSide)
 		{
-			if(getBlockState().get(ClaymoreBlock.DEACTIVATED))
+			if(getBlockState().getValue(ClaymoreBlock.DEACTIVATED))
 				return;
 
 			if(cooldown > 0){
@@ -46,12 +46,12 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 			}
 
 			if(cooldown == 0){
-				((ClaymoreBlock)getBlockState().getBlock()).explode(world, pos);
+				((ClaymoreBlock)getBlockState().getBlock()).explode(level, worldPosition);
 				return;
 			}
 
-			Direction dir = getBlockState().get(ClaymoreBlock.FACING);
-			AxisAlignedBB area = new AxisAlignedBB(pos);
+			Direction dir = getBlockState().getValue(ClaymoreBlock.FACING);
+			AxisAlignedBB area = new AxisAlignedBB(worldPosition);
 
 			if(dir == Direction.NORTH)
 				area = area.contract(-0, -0, range.get());
@@ -62,21 +62,21 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 			else if(dir == Direction.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			List<?> entities = getWorld().getEntitiesWithinAABB(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
+			List<?> entities = getLevel().getEntitiesOfClass(LivingEntity.class, area, e -> !EntityUtils.isInvisible(e));
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 
 			while(iterator.hasNext()){
 				entity = (LivingEntity) iterator.next();
 
-				if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, world, pos))
+				if(PlayerUtils.isPlayerMountedOnCamera(entity) || EntityUtils.doesEntityOwn(entity, level, worldPosition))
 					continue;
 
-				entityX = entity.getPosX();
-				entityY = entity.getPosY();
-				entityZ = entity.getPosZ();
+				entityX = entity.getX();
+				entityY = entity.getY();
+				entityZ = entity.getZ();
 				cooldown = 20;
-				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
+				getLevel().playSound(null, new BlockPos(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D), SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 				break;
 			}
 		}
@@ -88,9 +88,9 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 		writeOptions(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.putDouble("entityX", entityX);
@@ -103,9 +103,9 @@ public class ClaymoreTileEntity extends CustomizableTileEntity
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		readOptions(tag);
 		cooldown = tag.getInt("cooldown");

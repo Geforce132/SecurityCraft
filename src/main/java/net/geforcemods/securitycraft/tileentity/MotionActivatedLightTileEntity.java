@@ -14,7 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 
-	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
+	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D, true);
 
 	public MotionActivatedLightTileEntity()
 	{
@@ -24,17 +24,17 @@ public class MotionActivatedLightTileEntity extends CustomizableTileEntity {
 	@Override
 	public boolean attackEntity(Entity entity) {
 		if(entity instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera((PlayerEntity)entity))
-			MotionActivatedLightBlock.toggleLight(world, pos, getBlockState(), getOwner(), false);
+			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), false);
 		else if(entity instanceof LivingEntity && getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get())
-			MotionActivatedLightBlock.toggleLight(world, pos, getBlockState(), getOwner(), !EntityUtils.isInvisible((LivingEntity)entity)); //also automatically switches on/off based on if the entity turns (in-)visible
+			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), !EntityUtils.isInvisible((LivingEntity)entity)); //also automatically switches on/off based on if the entity turns (in-)visible
 
 		return false;
 	}
 
 	@Override
 	public void attackFailed() {
-		if(getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get() && getBlockState().get(MotionActivatedLightBlock.LIT))
-			MotionActivatedLightBlock.toggleLight(world, pos, getBlockState(), getOwner(), false);
+		if(getBlockState().getBlock() == SCContent.MOTION_ACTIVATED_LIGHT.get() && getBlockState().getValue(MotionActivatedLightBlock.LIT))
+			MotionActivatedLightBlock.toggleLight(level, worldPosition, getBlockState(), getOwner(), false);
 	}
 
 	@Override

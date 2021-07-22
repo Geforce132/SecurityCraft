@@ -33,26 +33,26 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 
-		if(stack.hasDisplayName())
+		if(stack.hasCustomHoverName())
 		{
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof ReinforcedHopperTileEntity)
-				((ReinforcedHopperTileEntity)te).setCustomName(stack.getDisplayName());
+				((ReinforcedHopperTileEntity)te).setCustomName(stack.getHoverName());
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
+		if(!world.isClientSide)
 		{
-			TileEntity tileEntity = world.getTileEntity(pos);
+			TileEntity tileEntity = world.getBlockEntity(pos);
 
 			if(tileEntity instanceof ReinforcedHopperTileEntity)
 			{
@@ -60,7 +60,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 				//only allow the owner or players on the allowlist to access a reinforced hopper
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
-					player.openContainer(te);
+					player.openMenu(te);
 			}
 		}
 
@@ -68,39 +68,39 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
 		{
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof ReinforcedHopperTileEntity)
 			{
-				InventoryHelper.dropInventoryItems(world, pos, (ReinforcedHopperTileEntity)te);
-				world.updateComparatorOutputLevel(pos, this);
+				InventoryHelper.dropContents(world, pos, (ReinforcedHopperTileEntity)te);
+				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onReplaced(state, world, pos, newState, isMoving);
+			super.onRemove(state, world, pos, newState, isMoving);
 		}
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity)
 	{
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		if(te instanceof ReinforcedHopperTileEntity)
 			((ReinforcedHopperTileEntity)te).onEntityCollision(entity);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
+	public TileEntity newBlockEntity(IBlockReader world)
 	{
 		return new ReinforcedHopperTileEntity();
 	}
 
 	@Override
-	public boolean matchesBlock(Block block)
+	public boolean is(Block block)
 	{
 		return block == this || block == Blocks.HOPPER;
 	}
@@ -114,7 +114,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return getDefaultState().with(ENABLED, vanillaState.get(ENABLED)).with(FACING, vanillaState.get(FACING));
+		return defaultBlockState().setValue(ENABLED, vanillaState.getValue(ENABLED)).setValue(FACING, vanillaState.getValue(FACING));
 	}
 
 	public static class ExtractionBlock implements IExtractionBlock
@@ -122,7 +122,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 		@Override
 		public boolean canExtract(IOwnable te, World world, BlockPos pos, BlockState state)
 		{
-			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getTileEntity(pos);
+			ReinforcedHopperTileEntity hopperTe = (ReinforcedHopperTileEntity)world.getBlockEntity(pos);
 
 			if(!te.getOwner().owns(hopperTe))
 			{

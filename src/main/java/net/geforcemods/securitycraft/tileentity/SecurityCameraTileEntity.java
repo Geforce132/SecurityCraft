@@ -19,9 +19,9 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	public boolean down = false, downSet = false;
 	public float lastPitch = Float.MAX_VALUE;
 	public float lastYaw = Float.MAX_VALUE;
-	private DoubleOption rotationSpeedOption = new DoubleOption(this::getPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
+	private DoubleOption rotationSpeedOption = new DoubleOption(this::getBlockPos, "rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption(this::getPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption(this::getBlockPos, "customRotation", cameraRotation, 1.55D, -1.55D, rotationSpeedOption.get(), true);
 
 	public SecurityCameraTileEntity()
 	{
@@ -34,7 +34,7 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 
 		if(!downSet)
 		{
-			down = getBlockState().get(SecurityCameraBlock.FACING) == Direction.DOWN;
+			down = getBlockState().getValue(SecurityCameraBlock.FACING) == Direction.DOWN;
 			downSet = true;
 		}
 
@@ -56,17 +56,17 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
 		tag.putFloat("LastPitch", lastPitch);
 		tag.putFloat("LastYaw", lastYaw);
-		return super.write(tag);
+		return super.save(tag);
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 		lastPitch = tag.getFloat("LastPitch");
 		lastYaw = tag.getFloat("LastYaw");
 	}
@@ -87,6 +87,6 @@ public class SecurityCameraTileEntity extends CustomizableTileEntity {
 		super.onModuleRemoved(stack, module);
 
 		if(module == ModuleType.REDSTONE)
-			world.setBlockState(pos, getBlockState().with(SecurityCameraBlock.POWERED, false));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
 	}
 }

@@ -63,7 +63,7 @@ public class SyncKeycardSettings
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.world.getTileEntity(pos);
+			TileEntity tile = player.level.getBlockEntity(pos);
 
 			if(tile instanceof KeycardReaderTileEntity)
 			{
@@ -80,7 +80,7 @@ public class SyncKeycardSettings
 
 					if(message.link)
 					{
-						Container container = player.openContainer;
+						Container container = player.containerMenu;
 
 						if(container instanceof KeycardReaderContainer)
 							((KeycardReaderContainer)container).link();

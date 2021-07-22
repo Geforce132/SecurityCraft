@@ -32,19 +32,19 @@ public class RetinalScannerBlock extends DisguisableBlock {
 
 	public RetinalScannerBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(POWERED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
 	}
 
 	/**
 	 * Called when the block is placed in the world.
 	 */
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack)
 	{
 		if (entity instanceof PlayerEntity)
 		{
-			TileEntity tileentity = world.getTileEntity(pos);
-			if (!world.isRemote && tileentity instanceof RetinalScannerTileEntity)
+			TileEntity tileentity = world.getBlockEntity(pos);
+			if (!world.isClientSide && tileentity instanceof RetinalScannerTileEntity)
 			{
 				((RetinalScannerTileEntity)tileentity).setPlayerProfile(((PlayerEntity)entity).getGameProfile());
 			}
@@ -58,15 +58,15 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random)
 	{
-		if (!world.isRemote && state.get(POWERED))
-			world.setBlockState(pos, state.with(POWERED, false));
+		if (!world.isClientSide && state.getValue(POWERED))
+			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 	}
 
 	/**
 	 * Can this block provide power. Only wire currently seems to have this change based on its state.
 	 */
 	@Override
-	public boolean canProvidePower(BlockState state)
+	public boolean isSignalSource(BlockState state)
 	{
 		return true;
 	}
@@ -83,9 +83,9 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	 * Y, Z, side. Note that the side is reversed - eg it is 1 (up) when checking the bottom of the block.
 	 */
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
+	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 	{
-		if(blockState.get(POWERED))
+		if(blockState.getValue(POWERED))
 			return 15;
 		else
 			return 0;
@@ -94,16 +94,16 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(POWERED, false);
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(POWERED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 		builder.add(POWERED);
@@ -117,12 +117,12 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

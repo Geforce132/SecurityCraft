@@ -34,7 +34,7 @@ public enum ModuleType {
 	}
 
 	public String getTranslationKey() {
-		return getItem().getTranslationKey();
+		return getItem().getDescriptionId();
 	}
 
 }

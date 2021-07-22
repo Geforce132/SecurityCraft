@@ -51,16 +51,16 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 			cooldown--;
 		else if(isProvidingPower){
 			isProvidingPower = false;
-			BlockUtils.updateAndNotify(getWorld(), pos, getWorld().getBlockState(pos).getBlock(), 1, true);
+			BlockUtils.updateAndNotify(getLevel(), worldPosition, getLevel().getBlockState(worldPosition).getBlock(), 1, true);
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag){
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag){
+		super.load(state, tag);
 
 		ListNBT list = tag.getList("Items", 10);
-		inventoryContents = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
+		inventoryContents = NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i)
 		{
@@ -68,15 +68,15 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 			int slot = stackTag.getByte("Slot") & 255;
 
 			if (slot >= 0 && slot < inventoryContents.size())
-				inventoryContents.set(slot, ItemStack.read(stackTag));
+				inventoryContents.set(slot, ItemStack.of(stackTag));
 		}
 
 		cooldown = tag.getInt("cooldown");
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag){
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag){
+		super.save(tag);
 
 		ListNBT list = new ListNBT();
 
@@ -85,7 +85,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 			{
 				CompoundNBT stackTag = new CompoundNBT();
 				stackTag.putByte("Slot", (byte)i);
-				inventoryContents.get(i).write(stackTag);
+				inventoryContents.get(i).save(stackTag);
 				list.add(stackTag);
 			}
 
@@ -95,12 +95,12 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return 37;
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int count)
+	public ItemStack removeItem(int index, int count)
 	{
 		if (!inventoryContents.get(index).isEmpty())
 		{
@@ -110,7 +110,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 			{
 				stack = inventoryContents.get(index);
 				inventoryContents.set(index, ItemStack.EMPTY);
-				markDirty();
+				setChanged();
 				return stack;
 			}
 			else
@@ -120,7 +120,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 				if (inventoryContents.get(index).getCount() == 0)
 					inventoryContents.set(index, ItemStack.EMPTY);
 
-				markDirty();
+				setChanged();
 				return stack;
 			}
 		}
@@ -140,6 +140,12 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		return slot >= 100 ? getModuleInSlot(slot) : inventoryContents.get(slot);
 	}
 
+	@Override
+	public ItemStack getItem(int slot)
+	{
+		return getStackInSlot(slot);
+	}
+
 	/**
 	 * Copy of getStackInSlot which doesn't get overrided by CustomizableSCTE.
 	 */
@@ -149,13 +155,13 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setItem(int index, ItemStack stack) {
 		inventoryContents.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack.setCount(getInventoryStackLimit());
+		if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+			stack.setCount(getMaxStackSize());
 
-		markDirty();
+		setChanged();
 	}
 
 	/**
@@ -185,7 +191,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 		if(slotStack.isEmpty())
 		{
-			setInventorySlotContents(slot, stackToInsert);
+			setItem(slot, stackToInsert);
 			return ItemStack.EMPTY;
 		}
 		else if(InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit)
@@ -222,23 +228,23 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return 64;
 	}
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
+	public boolean stillValid(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(PlayerEntity player) {}
+	public void startOpen(PlayerEntity player) {}
 
 	@Override
-	public void closeInventory(PlayerEntity player) {}
+	public void stopOpen(PlayerEntity player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int var1, ItemStack var2) {
+	public boolean canPlaceItem(int var1, ItemStack var2) {
 		return true;
 	}
 
@@ -267,7 +273,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	{
 		super.onModuleInserted(stack, module);
 
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 		if(connectedScanner != null && !connectedScanner.hasModule(module))
 			connectedScanner.insertModule(stack);
@@ -278,16 +284,16 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	{
 		super.onModuleRemoved(stack, module);
 
-		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+		InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 		if(connectedScanner != null && connectedScanner.hasModule(module))
 			connectedScanner.removeModule(module);
 
 		if(module == ModuleType.STORAGE)
 		{
-			for(int i = 10; i < getSizeInventory(); i++) //first 10 slots (0-9) are the prohibited slots
+			for(int i = 10; i < getContainerSize(); i++) //first 10 slots (0-9) are the prohibited slots
 			{
-				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), getContents().get(i));
+				InventoryHelper.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
 			}
 
 			if(connectedScanner != null)
@@ -311,32 +317,32 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 		if(option.getName().equals("horizontal")) {
 			BooleanOption bo = (BooleanOption)option;
 
-			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 			if (connectedScanner != null) {
-				Direction facing = getBlockState().get(InventoryScannerBlock.FACING);
+				Direction facing = getBlockState().getValue(InventoryScannerBlock.FACING);
 
 				for (int i = 0; i <= ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-					BlockPos offsetPos = pos.offset(facing, i);
-					BlockState state = world.getBlockState(offsetPos);
+					BlockPos offsetPos = worldPosition.relative(facing, i);
+					BlockState state = level.getBlockState(offsetPos);
 					Block block = state.getBlock();
 
 					if (block == SCContent.INVENTORY_SCANNER_FIELD.get())
-						world.setBlockState(offsetPos, state.with(InventoryScannerFieldBlock.HORIZONTAL, bo.get()));
-					else if (!state.isAir(world, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
+						level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get()));
+					else if (!state.isAir(level, offsetPos) && block != SCContent.INVENTORY_SCANNER_FIELD.get() && block != SCContent.INVENTORY_SCANNER.get())
 						break;
-					else if (block == SCContent.INVENTORY_SCANNER.get() && state.get(InventoryScannerBlock.FACING) == facing.getOpposite())
+					else if (block == SCContent.INVENTORY_SCANNER.get() && state.getValue(InventoryScannerBlock.FACING) == facing.getOpposite())
 						break;
 				}
 
 				connectedScanner.setHorizontal(bo.get());
 			}
 
-			world.setBlockState(pos, getBlockState().with(InventoryScannerBlock.HORIZONTAL, bo.get()));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
 		}
 		else if (option.getName().equals("solidifyField")) {
 			BooleanOption bo = (BooleanOption)option;
-			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(world, pos);
+			InventoryScannerTileEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 			connectedScanner.setSolidifyField(bo.get());
 		}
@@ -345,7 +351,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	public void setHorizontal(boolean isHorizontal)
 	{
 		horizontal.setValue(isHorizontal);
-		world.setBlockState(pos, getBlockState().with(InventoryScannerBlock.HORIZONTAL, isHorizontal));
+		level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, isHorizontal));
 	}
 
 	public boolean isHorizontal()
@@ -359,7 +365,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 
 	public void setSolidifyField(boolean shouldSolidify) {
 		solidifyField.setValue(shouldSolidify);
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3); //sync option change to client
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 	}
 
 	@Override
@@ -371,17 +377,17 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new InventoryScannerContainer(windowId, world, pos, inv);
+		return new InventoryScannerContainer(windowId, level, worldPosition, inv);
 	}
 
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getTranslationKey());
+		return new TranslationTextComponent(SCContent.INVENTORY_SCANNER.get().getDescriptionId());
 	}
 
 	@Override
-	public void clear()
+	public void clearContent()
 	{
 		inventoryContents.clear();
 	}
@@ -393,7 +399,7 @@ public class InventoryScannerTileEntity extends DisguisableTileEntity implements
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index)
+	public ItemStack removeItemNoUpdate(int index)
 	{
 		return inventoryContents.remove(index);
 	}

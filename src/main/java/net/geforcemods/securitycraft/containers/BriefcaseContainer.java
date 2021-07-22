@@ -28,28 +28,28 @@ public class BriefcaseContainer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int index) {
+	public ItemStack quickMoveStack(PlayerEntity player, int index) {
 		ItemStack slotStackCopy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(index);
+		Slot slot = slots.get(index);
 
-		if(slot != null && slot.getHasStack()) {
-			ItemStack slotStack = slot.getStack();
+		if(slot != null && slot.hasItem()) {
+			ItemStack slotStack = slot.getItem();
 			slotStackCopy = slotStack.copy();
 
 			if(index < BriefcaseInventory.SIZE) {
-				if(!mergeItemStack(slotStack, BriefcaseInventory.SIZE, 48, true))
+				if(!moveItemStackTo(slotStack, BriefcaseInventory.SIZE, 48, true))
 					return ItemStack.EMPTY;
 
-				slot.onSlotChange(slotStack, slotStackCopy);
+				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
 			else if(index >= BriefcaseInventory.SIZE)
-				if(!mergeItemStack(slotStack, 0, BriefcaseInventory.SIZE, false))
+				if(!moveItemStackTo(slotStack, 0, BriefcaseInventory.SIZE, false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 
 			if(slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
@@ -61,15 +61,15 @@ public class BriefcaseContainer extends Container {
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int dragType, ClickType clickType, PlayerEntity player) {
-		if(slot >= 0 && getSlot(slot) != null && (!player.getHeldItemMainhand().isEmpty() && getSlot(slot).getStack() == player.getHeldItemMainhand() && player.getHeldItemMainhand().getItem() instanceof BriefcaseItem))
+	public ItemStack clicked(int slot, int dragType, ClickType clickType, PlayerEntity player) {
+		if(slot >= 0 && getSlot(slot) != null && (!player.getMainHandItem().isEmpty() && getSlot(slot).getItem() == player.getMainHandItem() && player.getMainHandItem().getItem() instanceof BriefcaseItem))
 			return ItemStack.EMPTY;
 
-		return super.slotClick(slot, dragType, clickType, player);
+		return super.clicked(slot, dragType, clickType, player);
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player) {
+	public boolean stillValid(PlayerEntity player) {
 		return true;
 	}
 

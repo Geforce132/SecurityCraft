@@ -44,16 +44,16 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ProjectorBlock extends DisguisableBlock {
 
-	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	private static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape NORTH = Stream.of(Block.makeCuboidShape(3, 5, 0.9, 6, 8, 1.9), Block.makeCuboidShape(0, 3, 1, 16, 10, 16), Block.makeCuboidShape(2, 8, 0.5, 7, 9, 1), Block.makeCuboidShape(2, 4, 0.5, 7, 5, 1), Block.makeCuboidShape(6, 5, 0.5, 7, 8, 1), Block.makeCuboidShape(2, 5, 0.5, 3, 8, 1), Block.makeCuboidShape(0, 0, 1, 2, 3, 3), Block.makeCuboidShape(14, 0, 1, 16, 3, 3), Block.makeCuboidShape(14, 0, 14, 16, 3, 16), Block.makeCuboidShape(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
-	private static final VoxelShape SOUTH = Stream.of(Block.makeCuboidShape(0, 3, 0, 16, 10, 15), Block.makeCuboidShape(10, 5, 14.1, 13, 8, 15.100000000000001), Block.makeCuboidShape(9, 8, 15, 14, 9, 15.5), Block.makeCuboidShape(9, 4, 15, 14, 5, 15.5), Block.makeCuboidShape(9, 5, 15, 10, 8, 15.5), Block.makeCuboidShape(13, 5, 15, 14, 8, 15.5), Block.makeCuboidShape(14, 0, 13, 16, 3, 15), Block.makeCuboidShape(0, 0, 13, 2, 3, 15), Block.makeCuboidShape(0, 0, 0, 2, 3, 2), Block.makeCuboidShape(14, 0, 0, 16, 3, 2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
-	private static final VoxelShape WEST = Stream.of(Block.makeCuboidShape(0.5, 5, 13, 1, 8, 14), Block.makeCuboidShape(0.5, 5, 9, 1, 8, 10), Block.makeCuboidShape(0.5, 4, 9, 1, 5, 14), Block.makeCuboidShape(0.5, 8, 9, 1, 9, 14), Block.makeCuboidShape(0.75, 5, 10, 1.75, 8, 13), Block.makeCuboidShape(1, 0, 14, 3, 3, 16), Block.makeCuboidShape(14, 0, 14, 16, 3, 16), Block.makeCuboidShape(14, 0, 0, 16, 3, 2), Block.makeCuboidShape(1, 0, 0, 3, 3, 2), Block.makeCuboidShape(1, 3, 0, 16, 10, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
-	private static final VoxelShape EAST = Stream.of(Block.makeCuboidShape(15, 5, 2, 15.5, 8, 3), Block.makeCuboidShape(15, 5, 6, 15.5, 8, 7), Block.makeCuboidShape(15, 4, 2, 15.5, 5, 7), Block.makeCuboidShape(15, 8, 2, 15.5, 9, 7), Block.makeCuboidShape(14.25, 5, 3, 15.25, 8, 6), Block.makeCuboidShape(13, 0, 0, 15, 3, 2), Block.makeCuboidShape(0, 0, 0, 2, 3, 2), Block.makeCuboidShape(0, 0, 14, 2, 3, 16), Block.makeCuboidShape(13, 0, 14, 15, 3, 16), Block.makeCuboidShape(0, 3, 0, 15, 10, 16)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.fullCube());
+	private static final VoxelShape NORTH = Stream.of(Block.box(3, 5, 0.9, 6, 8, 1.9), Block.box(0, 3, 1, 16, 10, 16), Block.box(2, 8, 0.5, 7, 9, 1), Block.box(2, 4, 0.5, 7, 5, 1), Block.box(6, 5, 0.5, 7, 8, 1), Block.box(2, 5, 0.5, 3, 8, 1), Block.box(0, 0, 1, 2, 3, 3), Block.box(14, 0, 1, 16, 3, 3), Block.box(14, 0, 14, 16, 3, 16), Block.box(0, 0, 14, 2, 3, 16)).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
+	private static final VoxelShape SOUTH = Stream.of(Block.box(0, 3, 0, 16, 10, 15), Block.box(10, 5, 14.1, 13, 8, 15.100000000000001), Block.box(9, 8, 15, 14, 9, 15.5), Block.box(9, 4, 15, 14, 5, 15.5), Block.box(9, 5, 15, 10, 8, 15.5), Block.box(13, 5, 15, 14, 8, 15.5), Block.box(14, 0, 13, 16, 3, 15), Block.box(0, 0, 13, 2, 3, 15), Block.box(0, 0, 0, 2, 3, 2), Block.box(14, 0, 0, 16, 3, 2)).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
+	private static final VoxelShape WEST = Stream.of(Block.box(0.5, 5, 13, 1, 8, 14), Block.box(0.5, 5, 9, 1, 8, 10), Block.box(0.5, 4, 9, 1, 5, 14), Block.box(0.5, 8, 9, 1, 9, 14), Block.box(0.75, 5, 10, 1.75, 8, 13), Block.box(1, 0, 14, 3, 3, 16), Block.box(14, 0, 14, 16, 3, 16), Block.box(14, 0, 0, 16, 3, 2), Block.box(1, 0, 0, 3, 3, 2), Block.box(1, 3, 0, 16, 10, 16)).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
+	private static final VoxelShape EAST = Stream.of(Block.box(15, 5, 2, 15.5, 8, 3), Block.box(15, 5, 6, 15.5, 8, 7), Block.box(15, 4, 2, 15.5, 5, 7), Block.box(15, 8, 2, 15.5, 9, 7), Block.box(14.25, 5, 3, 15.25, 8, 6), Block.box(13, 0, 0, 15, 3, 2), Block.box(0, 0, 0, 2, 3, 2), Block.box(0, 0, 14, 2, 3, 16), Block.box(13, 0, 14, 15, 3, 16), Block.box(0, 3, 0, 15, 10, 16)).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).orElse(VoxelShapes.block());
 
 	public ProjectorBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class ProjectorBlock extends DisguisableBlock {
 			return disguisedState.getShape(world, pos, ctx);
 		else
 		{
-			switch(state.get(FACING))
+			switch(state.getValue(FACING))
 			{
 				case NORTH:
 					return SOUTH;
@@ -75,48 +75,48 @@ public class ProjectorBlock extends DisguisableBlock {
 					return NORTH;
 				case WEST:
 					return EAST;
-				default: return VoxelShapes.fullCube();
+				default: return VoxelShapes.block();
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		if(!(te instanceof ProjectorTileEntity))
 			return ActionResultType.FAIL;
 
 		boolean isOwner = ((IOwnable)te).getOwner().isOwner(player);
 
-		if(!world.isRemote && isOwner)
+		if(!world.isClientSide && isOwner)
 			NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider) te, pos);
 
 		return isOwner ? ActionResultType.SUCCESS : ActionResultType.FAIL;
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		if(te instanceof ProjectorTileEntity)
 		{
 			// Drop the block being projected
 			ItemEntity item = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), ((ProjectorTileEntity)te).getStackInSlot(36));
-			WorldUtils.addScheduledTask(world, () -> world.addEntity(item));
+			WorldUtils.addScheduledTask(world, () -> world.addFreshEntity(item));
 		}
 
-		super.onReplaced(state, world, pos, newState, isMoving);
+		super.onRemove(state, world, pos, newState, isMoving);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
 	{
-		if(!world.isRemote)
+		if(!world.isClientSide)
 		{
-			TileEntity tile = world.getTileEntity(pos);
+			TileEntity tile = world.getBlockEntity(pos);
 
 			if(tile instanceof ProjectorTileEntity)
 			{
@@ -124,7 +124,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 				if(te.isActivatedByRedstone())
 				{
-					te.setActive(world.isBlockPowered(pos));
+					te.setActive(world.hasNeighborSignal(pos));
 					te.sync();
 				}
 			}
@@ -134,9 +134,9 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
-		if(!world.isBlockPowered(pos))
+		if(!world.hasNeighborSignal(pos))
 		{
-			TileEntity tile = world.getTileEntity(pos);
+			TileEntity tile = world.getBlockEntity(pos);
 
 			if(tile instanceof ProjectorTileEntity)
 			{
@@ -151,16 +151,16 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 	}
@@ -173,18 +173,18 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag)
+	public void appendHoverText(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag)
 	{
 		tooltip.add(new TranslationTextComponent("tooltip.securitycraft:projector").setStyle(GRAY_STYLE));
 	}

@@ -134,7 +134,7 @@ public class SecurityCraft {
 					}
 
 					if(hmp.specialInfoKey().isEmpty())
-						key = (isBlock ? "help" : "help.") + item.getTranslationKey().substring(5) + ".info";
+						key = (isBlock ? "help" : "help.") + item.getDescriptionId().substring(5) + ".info";
 					else
 						key = hmp.specialInfoKey();
 

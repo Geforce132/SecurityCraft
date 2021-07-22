@@ -29,7 +29,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class IMSTileEntity extends CustomizableTileEntity implements INamedContainerProvider {
 
-	private IntOption range = new IntOption(this::getPos, "range", 12, 1, 30, 1, true);
+	private IntOption range = new IntOption(this::getBlockPos, "range", 12, 1, 30, 1, true);
 	/** Number of bombs remaining in storage. **/
 	private int bombsRemaining = 4;
 	/** The targeting option currently selected for this IMS. PLAYERS = players, PLAYERS_AND_MOBS = hostile mobs & players, MOBS = hostile mobs.**/
@@ -46,11 +46,11 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	public void tick(){
 		super.tick();
 
-		if(!world.isRemote && updateBombCount){
-			int mineCount = getBlockState().get(IMSBlock.MINES);
+		if(!level.isClientSide && updateBombCount){
+			int mineCount = getBlockState().getValue(IMSBlock.MINES);
 
 			if(!(mineCount - 1 < 0 || mineCount > 4))
-				world.setBlockState(pos, getBlockState().with(IMSBlock.MINES, mineCount - 1));
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(IMSBlock.MINES, mineCount - 1));
 
 			updateBombCount = false;
 		}
@@ -67,12 +67,12 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 */
 	private void launchMine() {
 		if(bombsRemaining > 0){
-			AxisAlignedBB area = new AxisAlignedBB(pos).grow(range.get());
+			AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range.get());
 			LivingEntity target = null;
 
 			if(targetingMode == IMSTargetingMode.MOBS || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS)
 			{
-				List<MonsterEntity> mobs = world.<MonsterEntity>getEntitiesWithinAABB(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<MonsterEntity> mobs = level.<MonsterEntity>getEntitiesOfClass(MonsterEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!mobs.isEmpty())
 					target = mobs.get(0);
@@ -80,7 +80,7 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 			if(target == null && (targetingMode == IMSTargetingMode.PLAYERS  || targetingMode == IMSTargetingMode.PLAYERS_AND_MOBS))
 			{
-				List<PlayerEntity> players = world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
+				List<PlayerEntity> players = level.<PlayerEntity>getEntitiesOfClass(PlayerEntity.class, area, e -> !EntityUtils.isInvisible(e) && canAttackEntity(e));
 
 				if(!players.isEmpty())
 					target = players.get(0);
@@ -90,14 +90,14 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
-				double accelerationX = target.getPosX() - pos.getX();
-				double accelerationY = target.getBoundingBox().minY + target.getHeight() / 2.0F - pos.getY() - launchHeight;
-				double accelerationZ = target.getPosZ() - pos.getZ();
+				double accelerationX = target.getX() - worldPosition.getX();
+				double accelerationY = target.getBoundingBox().minY + target.getBbHeight() / 2.0F - worldPosition.getY() - launchHeight;
+				double accelerationZ = target.getZ() - worldPosition.getZ();
 
-				world.addEntity(new IMSBombEntity(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
+				level.addFreshEntity(new IMSBombEntity(level, worldPosition.getX() + addToX, worldPosition.getY(), worldPosition.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
 
-				if (!world.isRemote)
-					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+				if (!level.isClientSide)
+					level.playSound(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 				bombsRemaining--;
 				updateBombCount = true;
@@ -120,9 +120,9 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 
 		for(height = 1; height <= 9; height++)
 		{
-			BlockState state = getWorld().getBlockState(getPos().up(height));
+			BlockState state = getLevel().getBlockState(getBlockPos().above(height));
 
-			if(state == null || state.isAir(getWorld(), getPos()))
+			if(state == null || state.isAir(getLevel(), getBlockPos()))
 				continue;
 			else
 				break;
@@ -136,8 +136,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag){
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag){
+		super.save(tag);
 
 		tag.putInt("bombsRemaining", bombsRemaining);
 		tag.putInt("targetingOption", targetingMode.ordinal());
@@ -149,8 +149,8 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag){
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag){
+		super.load(state, tag);
 
 		bombsRemaining = tag.getInt("bombsRemaining");
 		targetingMode = IMSTargetingMode.values()[tag.getInt("targetingOption")];
@@ -182,13 +182,13 @@ public class IMSTileEntity extends CustomizableTileEntity implements INamedConta
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new GenericTEContainer(SCContent.cTypeIMS, windowId, world, pos);
+		return new GenericTEContainer(SCContent.cTypeIMS, windowId, level, worldPosition);
 	}
 
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.IMS.get().getTranslationKey());
+		return new TranslationTextComponent(SCContent.IMS.get().getDescriptionId());
 	}
 
 	public int getAttackInterval()

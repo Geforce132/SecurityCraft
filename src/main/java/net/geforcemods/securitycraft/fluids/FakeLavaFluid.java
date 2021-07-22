@@ -33,19 +33,19 @@ import net.minecraftforge.fluids.FluidAttributes;
 public abstract class FakeLavaFluid extends FlowingFluid
 {
 	@Override
-	public Fluid getFlowingFluid()
+	public Fluid getFlowing()
 	{
 		return SCContent.FLOWING_FAKE_LAVA.get();
 	}
 
 	@Override
-	public Fluid getStillFluid()
+	public Fluid getSource()
 	{
 		return SCContent.FAKE_LAVA.get();
 	}
 
 	@Override
-	public Item getFilledBucket()
+	public Item getBucket()
 	{
 		return SCContent.FAKE_LAVA_BUCKET.get();
 	}
@@ -64,9 +64,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public void animateTick(World world, BlockPos pos, FluidState state, Random random)
 	{
-		BlockPos blockpos = pos.up();
+		BlockPos blockpos = pos.above();
 
-		if(world.getBlockState(blockpos).isAir() && !world.getBlockState(blockpos).isOpaqueCube(world, blockpos))
+		if(world.getBlockState(blockpos).isAir() && !world.getBlockState(blockpos).isSolidRender(world, blockpos))
 		{
 			if(random.nextInt(100) == 0)
 			{
@@ -75,11 +75,11 @@ public abstract class FakeLavaFluid extends FlowingFluid
 				double z = pos.getZ() + random.nextFloat();
 
 				world.addParticle(ParticleTypes.LAVA, x, y, z, 0.0D, 0.0D, 0.0D);
-				world.playSound(x, y, z, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
+				world.playLocalSound(x, y, z, SoundEvents.LAVA_POP, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
 			}
 
 			if(random.nextInt(200) == 0)
-				world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
+				world.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
 		}
 
 	}
@@ -87,7 +87,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public void randomTick(World world, BlockPos pos, FluidState state, Random random)
 	{
-		if (world.getGameRules().getBoolean(GameRules.DO_FIRE_TICK))
+		if (world.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
 		{
 			int i = random.nextInt(3);
 
@@ -97,9 +97,9 @@ public abstract class FakeLavaFluid extends FlowingFluid
 
 				for(int j = 0; j < i; ++j)
 				{
-					blockpos = blockpos.add(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
+					blockpos = blockpos.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
 
-					if(!world.isBlockPresent(blockpos))
+					if(!world.isLoaded(blockpos))
 						return;
 
 					BlockState blockState = world.getBlockState(blockpos);
@@ -108,11 +108,11 @@ public abstract class FakeLavaFluid extends FlowingFluid
 					{
 						if(isSurroundingBlockFlammable(world, blockpos))
 						{
-							world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
+							world.setBlockAndUpdate(blockpos, Blocks.FIRE.defaultBlockState());
 							return;
 						}
 					}
-					else if(blockState.getMaterial().blocksMovement())
+					else if(blockState.getMaterial().blocksMotion())
 						return;
 				}
 			}
@@ -120,13 +120,13 @@ public abstract class FakeLavaFluid extends FlowingFluid
 			{
 				for(int k = 0; k < 3; ++k)
 				{
-					BlockPos blockpos1 = pos.add(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
+					BlockPos blockpos1 = pos.offset(random.nextInt(3) - 1, 0, random.nextInt(3) - 1);
 
-					if(!world.isBlockPresent(blockpos1))
+					if(!world.isLoaded(blockpos1))
 						return;
 
-					if(world.isAirBlock(blockpos1.up()) && this.getCanBlockBurn(world, blockpos1))
-						world.setBlockState(blockpos1.up(), Blocks.FIRE.getDefaultState());
+					if(world.isEmptyBlock(blockpos1.above()) && this.getCanBlockBurn(world, blockpos1))
+						world.setBlockAndUpdate(blockpos1.above(), Blocks.FIRE.defaultBlockState());
 				}
 			}
 		}
@@ -136,7 +136,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	{
 		for(Direction Direction : Direction.values())
 		{
-			if(this.getCanBlockBurn(world, pos.offset(Direction)))
+			if(this.getCanBlockBurn(world, pos.relative(Direction)))
 				return true;
 		}
 
@@ -145,19 +145,19 @@ public abstract class FakeLavaFluid extends FlowingFluid
 
 	private boolean getCanBlockBurn(World world, BlockPos pos)
 	{
-		return !world.isBlockPresent(pos) ? false : world.getBlockState(pos).getMaterial().isFlammable();
+		return !world.isLoaded(pos) ? false : world.getBlockState(pos).getMaterial().isFlammable();
 	}
 
 	@Nullable
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public IParticleData getDripParticleData()
+	public IParticleData getDripParticle()
 	{
 		return ParticleTypes.DRIPPING_LAVA;
 	}
 
 	@Override
-	protected void beforeReplacingBlock(IWorld world, BlockPos pos, BlockState state)
+	protected void beforeDestroyingBlock(IWorld world, BlockPos pos, BlockState state)
 	{
 		triggerEffects(world, pos);
 	}
@@ -165,45 +165,45 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	@Override
 	public int getSlopeFindDistance(IWorldReader world)
 	{
-		return world.getDimensionType().isUltrawarm() ? 4 : 2;
+		return world.dimensionType().ultraWarm() ? 4 : 2;
 	}
 
 	@Override
-	public BlockState getBlockState(FluidState state)
+	public BlockState createLegacyBlock(FluidState state)
 	{
-		return SCContent.FAKE_LAVA_BLOCK.get().getDefaultState().with(FlowingFluidBlock.LEVEL, getLevelFromState(state));
+		return SCContent.FAKE_LAVA_BLOCK.get().defaultBlockState().setValue(FlowingFluidBlock.LEVEL, getLegacyLevel(state));
 	}
 
 	@Override
-	public boolean isEquivalentTo(Fluid fluid)
+	public boolean isSame(Fluid fluid)
 	{
 		return fluid == SCContent.FAKE_LAVA.get() || fluid == SCContent.FLOWING_FAKE_LAVA.get();
 	}
 
 	@Override
-	public int getLevelDecreasePerBlock(IWorldReader world)
+	public int getDropOff(IWorldReader world)
 	{
-		return world.getDimensionType().isUltrawarm() ? 1 : 2;
+		return world.dimensionType().ultraWarm() ? 1 : 2;
 	}
 
 	@Override
-	public boolean canDisplace(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
+	public boolean canBeReplacedWith(FluidState fluidState, IBlockReader world, BlockPos pos, Fluid fluid, Direction dir)
 	{
-		return fluidState.getActualHeight(world, pos) >= 0.44444445F && fluid.isIn(FluidTags.WATER);
+		return fluidState.getHeight(world, pos) >= 0.44444445F && fluid.is(FluidTags.WATER);
 	}
 
 	@Override
-	public int getTickRate(IWorldReader world)
+	public int getTickDelay(IWorldReader world)
 	{
-		return world.getDimensionType().isUltrawarm() ? 10 : 30;
+		return world.dimensionType().ultraWarm() ? 10 : 30;
 	}
 
 	@Override
-	public int func_215667_a(World world, BlockPos pos, FluidState fluidState1, FluidState fluidState2)
+	public int getSpreadDelay(World world, BlockPos pos, FluidState fluidState1, FluidState fluidState2)
 	{
-		int i = getTickRate(world);
+		int i = getTickDelay(world);
 
-		if(!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.get(FALLING) && !fluidState2.get(FALLING) && fluidState2.getActualHeight(world, pos) > fluidState1.getActualHeight(world, pos) && world.getRandom().nextInt(4) != 0)
+		if(!fluidState1.isEmpty() && !fluidState2.isEmpty() && !fluidState1.getValue(FALLING) && !fluidState2.getValue(FALLING) && fluidState2.getHeight(world, pos) > fluidState1.getHeight(world, pos) && world.getRandom().nextInt(4) != 0)
 			i *= 4;
 
 		return i;
@@ -211,37 +211,37 @@ public abstract class FakeLavaFluid extends FlowingFluid
 
 	protected void triggerEffects(IWorld world, BlockPos pos)
 	{
-		world.playEvent(1501, pos, 0);
+		world.levelEvent(1501, pos, 0);
 	}
 
 	@Override
-	protected boolean canSourcesMultiply()
+	protected boolean canConvertToSource()
 	{
 		return false;
 	}
 
 	@Override
-	protected void flowInto(IWorld world, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState)
+	protected void spreadTo(IWorld world, BlockPos pos, BlockState blockState, Direction direction, FluidState fluidState)
 	{
 		if(direction == Direction.DOWN)
 		{
 			FluidState ifluidstate = world.getFluidState(pos);
 
-			if(isIn(FluidTags.LAVA) && ifluidstate.isTagged(FluidTags.WATER))
+			if(is(FluidTags.LAVA) && ifluidstate.is(FluidTags.WATER))
 			{
 				if(blockState.getBlock() instanceof FlowingFluidBlock)
-					world.setBlockState(pos, Blocks.STONE.getDefaultState(), 3);
+					world.setBlock(pos, Blocks.STONE.defaultBlockState(), 3);
 
 				triggerEffects(world, pos);
 				return;
 			}
 		}
 
-		super.flowInto(world, pos, blockState, direction, fluidState);
+		super.spreadTo(world, pos, blockState, direction, fluidState);
 	}
 
 	@Override
-	protected boolean ticksRandomly()
+	protected boolean isRandomlyTicking()
 	{
 		return true;
 	}
@@ -255,16 +255,16 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	public static class Flowing extends FakeLavaFluid
 	{
 		@Override
-		protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder)
+		protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder)
 		{
-			super.fillStateContainer(builder);
-			builder.add(LEVEL_1_8);
+			super.createFluidStateDefinition(builder);
+			builder.add(LEVEL);
 		}
 
 		@Override
-		public int getLevel(FluidState state)
+		public int getAmount(FluidState state)
 		{
-			return state.get(LEVEL_1_8);
+			return state.getValue(LEVEL);
 		}
 
 		@Override
@@ -277,7 +277,7 @@ public abstract class FakeLavaFluid extends FlowingFluid
 	public static class Source extends FakeLavaFluid
 	{
 		@Override
-		public int getLevel(FluidState state)
+		public int getAmount(FluidState state)
 		{
 			return 8;
 		}

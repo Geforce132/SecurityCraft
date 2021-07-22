@@ -37,45 +37,45 @@ public class BlockReinforcerScreen extends ContainerScreen<BlockReinforcerContai
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
+		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		NonNullList<ItemStack> inv = container.getInventory();
+		NonNullList<ItemStack> inv = menu.getItems();
 
-		font.drawText(matrix, ubr, (xSize - font.getStringPropertyWidth(ubr)) / 2, 5, 4210752);
-		font.drawText(matrix, Utils.localize("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		font.draw(matrix, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752);
+		font.draw(matrix, Utils.localize("container.inventory"), 8, imageHeight - 96 + 2, 4210752);
 
 		if(!inv.get(36).isEmpty())
 		{
-			font.drawText(matrix, output, 50, 25, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.reinforcingSlot.getOutput(), 116, 20);
-			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.reinforcingSlot.getOutput(), 116, 20, null);
+			font.draw(matrix, output, 50, 25, 4210752);
+			minecraft.getItemRenderer().renderAndDecorateItem(menu.reinforcingSlot.getOutput(), 116, 20);
+			minecraft.getItemRenderer().renderGuiItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
-			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 17 && mouseY < guiTop + 39)
-				renderTooltip(matrix, container.reinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
+			if(mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 17 && mouseY < topPos + 39)
+				renderTooltip(matrix, menu.reinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
 		}
 
 		if(!isLvl1 && !inv.get(37).isEmpty())
 		{
-			font.drawText(matrix, output, 50, 50, 4210752);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(container.unreinforcingSlot.getOutput(), 116, 46);
-			minecraft.getItemRenderer().renderItemOverlayIntoGUI(minecraft.fontRenderer, container.unreinforcingSlot.getOutput(), 116, 46, null);
+			font.draw(matrix, output, 50, 50, 4210752);
+			minecraft.getItemRenderer().renderAndDecorateItem(menu.unreinforcingSlot.getOutput(), 116, 46);
+			minecraft.getItemRenderer().renderGuiItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 
-			if(mouseX >= guiLeft + 114 && mouseX < guiLeft + 134 && mouseY >= guiTop + 43 && mouseY < guiTop + 64)
-				renderTooltip(matrix, container.unreinforcingSlot.getOutput(), mouseX - guiLeft, mouseY - guiTop);
+			if(mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 43 && mouseY < topPos + 64)
+				renderTooltip(matrix, menu.unreinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos);
 		}
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
-		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(isLvl1 ? TEXTURE_LVL1 : TEXTURE);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 }

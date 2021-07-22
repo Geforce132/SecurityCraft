@@ -39,38 +39,38 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand){
+		ItemStack stack = player.getItemInHand(hand);
 
-		if (!world.isRemote)
+		if (!world.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 
-		return ActionResult.resultConsume(stack);
+		return ActionResult.consume(stack);
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType useOn(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
+		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
-		List<SentryEntity> sentries = world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(pos));
+		List<SentryEntity> sentries = world.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(pos));
 
 		if(!sentries.isEmpty()) {
 			SentryEntity sentry = sentries.get(0);
-			BlockPos pos2 = sentry.getPosition();
+			BlockPos pos2 = sentry.blockPosition();
 
 			if(!isSentryAdded(stack, pos2)){
 				int availSlot = getNextAvaliableSlot(stack);
 
 				if(availSlot == 0){
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.noSlots"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
 
 				if(!sentry.getOwner().isOwner(player)){
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.cantBind"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
 
@@ -79,18 +79,18 @@ public class SentryRemoteAccessToolItem extends Item {
 
 				stack.getTag().putIntArray(("sentry" + availSlot), BlockUtils.posToIntArray(pos2));
 
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.bound", pos2), TextFormatting.GREEN);
 			}else{
 				removeTagFromItemAndUpdate(stack, pos2, player);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), Utils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), Utils.localize("messages.securitycraft:srat.unbound", pos2), TextFormatting.RED);
 			}
 
 			return ActionResultType.SUCCESS;
 		}
-		else if (!world.isRemote)
+		else if (!world.isClientSide)
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new OpenSRATGui((player.getServer().getPlayerList().getViewDistance() - 1) * 16));
 
 		return ActionResultType.SUCCESS;
@@ -98,7 +98,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		if(stack.getTag() == null)
 			return;
 
@@ -113,7 +113,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				else
 				{
 					BlockPos pos = new BlockPos(coords[0], coords[1], coords[2]);
-					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(pos));
+					List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(pos));
 					String nameToShow;
 
 					if(!sentries.isEmpty() && sentries.get(0).hasCustomName())
@@ -138,7 +138,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTag().putIntArray("sentry" + i, new int[]{0, 0, 0});
-					if (!player.world.isRemote)
+					if (!player.level.isClientSide)
 						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
 					return;

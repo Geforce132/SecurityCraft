@@ -23,24 +23,24 @@ public class BouncingBettyEntity extends Entity {
 
 	public BouncingBettyEntity(World world, double x, double y, double z){
 		this(SCContent.eTypeBouncingBetty, world);
-		setPosition(x, y, z);
+		setPos(x, y, z);
 		float f = (float)(Math.random() * Math.PI * 2.0D);
-		setMotion(-((float)Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float)Math.cos(f)) * 0.02F);
+		setDeltaMovement(-((float)Math.sin(f)) * 0.02F, 0.20000000298023224D, -((float)Math.cos(f)) * 0.02F);
 		fuse = 80;
-		prevPosX = x;
-		prevPosY = y;
-		prevPosZ = z;
+		xo = x;
+		yo = y;
+		zo = z;
 	}
 
 	@Override
-	protected void registerData() {}
+	protected void defineSynchedData() {}
 
 	/**
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
 	 * prevent them from trampling crops
 	 */
 	@Override
-	protected boolean canTriggerWalking()
+	protected boolean isMovementNoisy()
 	{
 		return false;
 	}
@@ -49,7 +49,7 @@ public class BouncingBettyEntity extends Entity {
 	 * Returns true if other Entities should be prevented from moving through this Entity.
 	 */
 	@Override
-	public boolean canBeCollidedWith()
+	public boolean isPickable()
 	{
 		return !removed;
 	}
@@ -60,35 +60,35 @@ public class BouncingBettyEntity extends Entity {
 	@Override
 	public void tick()
 	{
-		prevPosX = getPosX();
-		prevPosY = getPosY();
-		prevPosZ = getPosZ();
-		setMotion(getMotion().add(0, -0.03999999910593033D, 0));
-		move(MoverType.SELF, getMotion());
-		setMotion(getMotion().mul(0.9800000190734863D, 0.9800000190734863D, 0.9800000190734863D));
+		xo = getX();
+		yo = getY();
+		zo = getZ();
+		setDeltaMovement(getDeltaMovement().add(0, -0.03999999910593033D, 0));
+		move(MoverType.SELF, getDeltaMovement());
+		setDeltaMovement(getDeltaMovement().multiply(0.9800000190734863D, 0.9800000190734863D, 0.9800000190734863D));
 
 		if (onGround)
-			setMotion(getMotion().mul(0.699999988079071D, 0.699999988079071D, -0.5D));
+			setDeltaMovement(getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, -0.5D));
 
-		if (!world.isRemote && fuse-- <= 0)
+		if (!level.isClientSide && fuse-- <= 0)
 		{
 			remove();
 			explode();
 		}
-		else if(world.isRemote)
-			world.addParticle(ParticleTypes.SMOKE, false, getPosX(), getPosY() + 0.5D, getPosZ(), 0.0D, 0.0D, 0.0D);
+		else if(level.isClientSide)
+			level.addParticle(ParticleTypes.SMOKE, false, getX(), getY() + 0.5D, getZ(), 0.0D, 0.0D, 0.0D);
 	}
 
 	private void explode()
 	{
-		world.createExplosion(this, getPosX(), getPosY(), getPosZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+		level.explode(this, getX(), getY(), getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
 	@Override
-	protected void writeAdditional(CompoundNBT tag)
+	protected void addAdditionalSaveData(CompoundNBT tag)
 	{
 		tag.putByte("Fuse", (byte)fuse);
 	}
@@ -97,13 +97,13 @@ public class BouncingBettyEntity extends Entity {
 	 * (abstract) Protected helper method to read subclass entity data from NBT.
 	 */
 	@Override
-	protected void readAdditional(CompoundNBT tag)
+	protected void readAdditionalSaveData(CompoundNBT tag)
 	{
 		fuse = tag.getByte("Fuse");
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket()
+	public IPacket<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

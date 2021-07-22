@@ -46,7 +46,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
 
 	public SentryRemoteAccessToolScreen(ItemStack item, int viewDistance) {
-		super(new TranslationTextComponent(item.getTranslationKey()));
+		super(new TranslationTextComponent(item.getDescriptionId()));
 
 		srat = item;
 		this.viewDistance = viewDistance;
@@ -101,8 +101,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
 
-				if (Minecraft.getInstance().player.world.isBlockPresent(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
-					List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(sentryPos));
+				if (Minecraft.getInstance().player.level.isLoaded(sentryPos) && isSentryVisibleToPlayer(sentryPos)) {
+					List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(sentryPos));
 
 					if (!sentries.isEmpty()) {
 						SentryEntity sentry = sentries.get(0);
@@ -111,7 +111,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						if(sentry.hasCustomName())
 						{
 							TranslationTextComponent line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
-							int nameWidth = font.getStringPropertyWidth(sentry.getCustomName());
+							int nameWidth = font.width(sentry.getCustomName());
 							int nameX = startX + xSize / 4 - nameWidth + 33 + (i / 6) * xSize / 2;
 							int nameY = startY + (i % 6) * 30 + 7;
 							TextHoverChecker posTooltipText = new TextHoverChecker(nameY + 4, nameY + 18, nameX, nameX + nameWidth + 2, line);
@@ -171,10 +171,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
+		minecraft.getTextureManager().bind(TEXTURE);
 		blit(matrix, startX, startY, 0, 0, xSize, ySize, 512, 256);
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		font.drawText(matrix, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getTranslationKey()), startX + 5, startY - 25 + 13, 0xFF0000);
+		font.draw(matrix, Utils.localize(SCContent.REMOTE_ACCESS_SENTRY.get().getDescriptionId()), startX + 5, startY - 25 + 13, 0xFF0000);
 
 		for (int i = 0; i < 12; i++) {
 			int[] coords = getSentryCoordinates(i);
@@ -187,10 +187,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			else
 				line = Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]));
 
-			font.drawText(matrix, line, startX + xSize / 4 - font.getStringPropertyWidth(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
+			font.draw(matrix, line, startX + xSize / 4 - font.width(line) + 35 + (i / 6) * xSize / 2, startY + (i % 6) * 30 + 13, 4210752);
 		}
 
-		font.drawText(matrix, modifyAll, startX + xSize / 2 - font.getStringPropertyWidth(modifyAll) + 25, startY + 194, 4210752);
+		font.draw(matrix, modifyAll, startX + xSize / 2 - font.width(modifyAll) + 25, startY + 194, 4210752);
 
 		for(TextHoverChecker chc : hoverCheckers)
 		{
@@ -204,14 +204,14 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 */
 	protected void performSingleAction(int sentry, int mode, int targets){
 		int[] coords = getSentryCoordinates(sentry);
-		List<SentryEntity> sentries = Minecraft.getInstance().player.world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
+		List<SentryEntity> sentries = Minecraft.getInstance().player.level.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(new BlockPos(coords[0], coords[1], coords[2])));
 
 		if(!sentries.isEmpty()) {
 			int resultingMode = Math.max(0, Math.min(targets + mode * 3, 6)); //bind between 0 and 6
 
 			guiButtons[sentry][TARGETS].active = SentryMode.values()[resultingMode] != SentryMode.IDLE;
 			sentries.get(0).toggleMode(Minecraft.getInstance().player, resultingMode, false);
-			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).getPosition(), resultingMode));
+			SecurityCraft.channel.sendToServer(new SetSentryMode(sentries.get(0).blockPosition(), resultingMode));
 		}
 	}
 
@@ -315,8 +315,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	// Based on ChunkManager$EntityTrackerEntry#updateTrackingState
 	private boolean isSentryVisibleToPlayer(BlockPos sentryPos){
 		PlayerEntity player = Minecraft.getInstance().player;
-		double d0 = player.getPosX() - sentryPos.getX();
-		double d1 = player.getPosZ() - sentryPos.getZ();
+		double d0 = player.getX() - sentryPos.getX();
+		double d1 = player.getZ() - sentryPos.getZ();
 		int i = Math.min(SENTRY_TRACKING_RANGE, viewDistance) - 1;
 		return d0 >= (-i) && d0 <= i && d1 >= (-i) && d1 <= i;
 	}
@@ -328,8 +328,8 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int p_keyPressed_1_, int p_keyPressed_2_, int p_keyPressed_3_) {
-		if (minecraft.gameSettings.keyBindInventory.isActiveAndMatches(InputMappings.getInputByCode(p_keyPressed_1_, p_keyPressed_2_))) {
-			this.onClose();
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputMappings.getKey(p_keyPressed_1_, p_keyPressed_2_))) {
+			this.removed();
 			return true;
 		}
 		return super.keyPressed(p_keyPressed_1_, p_keyPressed_2_, p_keyPressed_3_);

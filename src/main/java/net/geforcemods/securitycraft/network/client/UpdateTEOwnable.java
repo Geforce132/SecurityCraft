@@ -31,26 +31,26 @@ public class UpdateTEOwnable
 
 	public static void encode(UpdateTEOwnable message, PacketBuffer buf)
 	{
-		buf.writeLong(message.pos.toLong());
-		buf.writeString(message.name);
-		buf.writeString(message.uuid);
+		buf.writeLong(message.pos.asLong());
+		buf.writeUtf(message.name);
+		buf.writeUtf(message.uuid);
 		buf.writeBoolean(message.syncTag);
 
 		if(message.syncTag)
-			buf.writeCompoundTag(message.tag);
+			buf.writeNbt(message.tag);
 	}
 
 	public static UpdateTEOwnable decode(PacketBuffer buf)
 	{
 		UpdateTEOwnable message = new UpdateTEOwnable();
 
-		message.pos = BlockPos.fromLong(buf.readLong());
-		message.name = buf.readString(Integer.MAX_VALUE / 4);
-		message.uuid = buf.readString(Integer.MAX_VALUE / 4);
+		message.pos = BlockPos.of(buf.readLong());
+		message.name = buf.readUtf(Integer.MAX_VALUE / 4);
+		message.uuid = buf.readUtf(Integer.MAX_VALUE / 4);
 		message.syncTag = buf.readBoolean();
 
 		if(message.syncTag)
-			message.tag = buf.readCompoundTag();
+			message.tag = buf.readNbt();
 
 		return message;
 	}
@@ -58,7 +58,7 @@ public class UpdateTEOwnable
 	public static void onMessage(UpdateTEOwnable message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = Minecraft.getInstance().world.getTileEntity(message.pos);
+			TileEntity te = Minecraft.getInstance().level.getBlockEntity(message.pos);
 
 			if(!(te instanceof IOwnable))
 				return;
@@ -66,7 +66,7 @@ public class UpdateTEOwnable
 			((IOwnable)te).setOwner(message.uuid, message.name);
 
 			if(message.syncTag)
-				te.read(Minecraft.getInstance().world.getBlockState(message.pos), message.tag);
+				te.load(Minecraft.getInstance().level.getBlockState(message.pos), message.tag);
 		});
 
 		ctx.get().setPacketHandled(true);

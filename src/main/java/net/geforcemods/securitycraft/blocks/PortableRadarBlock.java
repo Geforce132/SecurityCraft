@@ -29,23 +29,23 @@ public class PortableRadarBlock extends OwnableBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	private static final VoxelShape SHAPE_UP = Block.makeCuboidShape(5, 0, 5, 11, 7, 11);
-	private static final VoxelShape SHAPE_DOWN = Block.makeCuboidShape(5, 9, 5, 11, 16, 11);
-	private static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(0, 5, 5, 7, 11, 11);
-	private static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(9, 5, 5, 16, 11, 11);
-	private static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(5, 5, 9, 11, 11, 16);
-	private static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(5, 5, 0, 11, 11, 7);
+	private static final VoxelShape SHAPE_UP = Block.box(5, 0, 5, 11, 7, 11);
+	private static final VoxelShape SHAPE_DOWN = Block.box(5, 9, 5, 11, 16, 11);
+	private static final VoxelShape SHAPE_EAST = Block.box(0, 5, 5, 7, 11, 11);
+	private static final VoxelShape SHAPE_WEST = Block.box(9, 5, 5, 16, 11, 11);
+	private static final VoxelShape SHAPE_NORTH = Block.box(5, 5, 9, 11, 11, 16);
+	private static final VoxelShape SHAPE_SOUTH = Block.box(5, 5, 0, 11, 11, 7);
 
 	public PortableRadarBlock(Block.Properties properties) {
 		super(properties);
 
-		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(FACING, Direction.UP));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.UP));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		Direction facing = state.get(FACING);
+		Direction facing = state.getValue(FACING);
 
 		switch(facing)
 		{
@@ -63,58 +63,58 @@ public class PortableRadarBlock extends OwnableBlock {
 				return SHAPE_DOWN;
 		}
 
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		Direction facing = ctx.getFace();
+		Direction facing = ctx.getClickedFace();
 
-		return BlockUtils.isSideSolid(ctx.getWorld(), ctx.getPos().offset(facing.getOpposite()), facing) ? getDefaultState().with(FACING, facing) : null;
+		return BlockUtils.isSideSolid(ctx.getLevel(), ctx.getClickedPos().relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing) : null;
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		Direction facing = state.get(FACING);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+		Direction facing = state.getValue(FACING);
 
-		return BlockUtils.isSideSolid(world, pos.offset(facing.getOpposite()), facing);
+		return BlockUtils.isSideSolid(world, pos.relative(facing.getOpposite()), facing);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		if (!isValidPosition(state, world, pos))
+		if (!canSurvive(state, world, pos))
 			world.destroyBlock(pos, true);
 	}
 
 	public static void togglePowerOutput(World world, BlockPos pos, boolean par5) {
 		BlockState state = world.getBlockState(pos);
 
-		if(par5 && !state.get(POWERED)){
-			world.setBlockState(pos, state.with(POWERED, true));
+		if(par5 && !state.getValue(POWERED)){
+			world.setBlockAndUpdate(pos, state.setValue(POWERED, true));
 			BlockUtils.updateAndNotify(world, pos, SCContent.PORTABLE_RADAR.get(), 1, false);
-		}else if(!par5 && state.get(POWERED)){
-			world.setBlockState(pos, state.with(POWERED, false));
+		}else if(!par5 && state.getValue(POWERED)){
+			world.setBlockAndUpdate(pos, state.setValue(POWERED, false));
 			BlockUtils.updateAndNotify(world, pos, SCContent.PORTABLE_RADAR.get(), 1, false);
 		}
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state)
+	public boolean isSignalSource(BlockState state)
 	{
 		return true;
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
-		if(blockState.get(POWERED) && ((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
+	public int getSignal(BlockState blockState, IBlockReader world, BlockPos pos, Direction side){
+		if(blockState.getValue(POWERED) && ((IModuleInventory) world.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
 			return 15;
 		else
 			return 0;
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(POWERED, FACING);
 	}
@@ -127,23 +127,23 @@ public class PortableRadarBlock extends OwnableBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		Direction facing = state.get(FACING);
+		Direction facing = state.getValue(FACING);
 
 		switch(mirror)
 		{
 			case LEFT_RIGHT:
 				if(facing.getAxis() == Axis.Z)
-					return state.with(FACING, facing.getOpposite());
+					return state.setValue(FACING, facing.getOpposite());
 				break;
 			case FRONT_BACK:
 				if(facing.getAxis() == Axis.X)
-					return state.with(FACING, facing.getOpposite());
+					return state.setValue(FACING, facing.getOpposite());
 				break;
 			case NONE: break;
 		}

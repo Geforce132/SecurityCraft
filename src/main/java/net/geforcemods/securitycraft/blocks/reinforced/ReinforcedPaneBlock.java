@@ -31,7 +31,7 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getStateForPlacement(context.getWorld(), context.getPos());
+		return getStateForPlacement(context.getLevel(), context.getClickedPos());
 	}
 
 	public BlockState getStateForPlacement(IBlockReader world, BlockPos pos)
@@ -45,7 +45,7 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 		BlockState southState = world.getBlockState(southPos);
 		BlockState westState = world.getBlockState(westPos);
 		BlockState eastState = world.getBlockState(eastPos);
-		return getDefaultState().with(NORTH, canAttachTo(northState, northState.isSolidSide(world, northPos, Direction.SOUTH))).with(SOUTH, canAttachTo(southState, southState.isSolidSide(world, southPos, Direction.NORTH))).with(WEST, canAttachTo(westState, westState.isSolidSide(world, westPos, Direction.EAST))).with(EAST, canAttachTo(eastState, eastState.isSolidSide(world, eastPos, Direction.WEST))).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+		return defaultBlockState().setValue(NORTH, attachsTo(northState, northState.isFaceSturdy(world, northPos, Direction.SOUTH))).setValue(SOUTH, attachsTo(southState, southState.isFaceSturdy(world, southPos, Direction.NORTH))).setValue(WEST, attachsTo(westState, westState.isFaceSturdy(world, westPos, Direction.EAST))).setValue(EAST, attachsTo(eastState, eastState.isFaceSturdy(world, eastPos, Direction.WEST))).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -57,11 +57,11 @@ public class ReinforcedPaneBlock extends PaneBlock implements IReinforcedBlock
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return getDefaultState().with(NORTH, vanillaState.get(PaneBlock.NORTH)).with(EAST, vanillaState.get(PaneBlock.EAST)).with(WEST, vanillaState.get(PaneBlock.WEST)).with(SOUTH, vanillaState.get(PaneBlock.SOUTH)).with(WATERLOGGED, vanillaState.get(PaneBlock.WATERLOGGED));
+		return defaultBlockState().setValue(NORTH, vanillaState.getValue(PaneBlock.NORTH)).setValue(EAST, vanillaState.getValue(PaneBlock.EAST)).setValue(WEST, vanillaState.getValue(PaneBlock.WEST)).setValue(SOUTH, vanillaState.getValue(PaneBlock.SOUTH)).setValue(WATERLOGGED, vanillaState.getValue(PaneBlock.WATERLOGGED));
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));

@@ -23,10 +23,10 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 	@Override
 	public void entityViewed(LivingEntity entity)
 	{
-		BlockState upperState = world.getBlockState(pos);
-		BlockState lowerState = world.getBlockState(pos.down());
+		BlockState upperState = level.getBlockState(worldPosition);
+		BlockState lowerState = level.getBlockState(worldPosition.below());
 
-		if(!world.isRemote && upperState.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
+		if(!level.isClientSide && upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !EntityUtils.isInvisible(entity))
 		{
 			if(!(entity instanceof PlayerEntity))
 				return;
@@ -38,22 +38,22 @@ public class ScannerDoorTileEntity extends SpecialDoorTileEntity
 
 			if(!getOwner().isOwner(player) && !ModuleUtils.isAllowed(this, player))
 			{
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", getOwner().getName()), TextFormatting.RED);
 				return;
 			}
 
-			boolean open = !lowerState.get(DoorBlock.OPEN);
+			boolean open = !lowerState.getValue(DoorBlock.OPEN);
 			int length = getSignalLength();
 
-			world.setBlockState(pos, upperState.with(DoorBlock.OPEN, !upperState.get(DoorBlock.OPEN)), 3);
-			world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, !lowerState.get(DoorBlock.OPEN)), 3);
-			world.playEvent(null, open ? 1005 : 1011, pos, 0);
+			level.setBlock(worldPosition, upperState.setValue(DoorBlock.OPEN, !upperState.getValue(DoorBlock.OPEN)), 3);
+			level.setBlock(worldPosition.below(), lowerState.setValue(DoorBlock.OPEN, !lowerState.getValue(DoorBlock.OPEN)), 3);
+			level.levelEvent(null, open ? 1005 : 1011, worldPosition, 0);
 
 			if(open && length > 0)
-				world.getPendingBlockTicks().scheduleTick(pos, SCContent.SCANNER_DOOR.get(), length);
+				level.getBlockTicks().scheduleTick(worldPosition, SCContent.SCANNER_DOOR.get(), length);
 
 			if(open && sendsMessages())
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getTranslationKey()), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", player.getName()), TextFormatting.GREEN);
 		}
 	}
 

@@ -24,7 +24,7 @@ public class ReinforcedGlassBlock extends BaseReinforcedBlock
 	}
 
 	@Override
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader world, BlockPos pos)
+	public float getShadeBrightness(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return 1.0F;
 	}
@@ -37,8 +37,8 @@ public class ReinforcedGlassBlock extends BaseReinforcedBlock
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side)
 	{
-		return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}
 }

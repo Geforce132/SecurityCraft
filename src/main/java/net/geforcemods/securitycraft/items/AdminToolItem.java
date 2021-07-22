@@ -35,10 +35,10 @@ public class AdminToolItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
-		World world = ctx.getWorld();
-		BlockPos pos = ctx.getPos();
+		World world = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
 		PlayerEntity player = ctx.getPlayer();
-		IFormattableTextComponent adminToolName = Utils.localize(getTranslationKey());
+		IFormattableTextComponent adminToolName = Utils.localize(getDescriptionId());
 
 		if(ConfigHandler.SERVER.allowAdminTool.get()) {
 			if(!player.isCreative())
@@ -47,12 +47,12 @@ public class AdminToolItem extends Item {
 				return ActionResultType.FAIL;
 			}
 
-			ActionResultType briefcaseResult = handleBriefcase(player, ctx.getHand()).getType();
+			ActionResultType briefcaseResult = handleBriefcase(player, ctx.getHand()).getResult();
 
 			if(briefcaseResult != ActionResultType.PASS)
 				return briefcaseResult;
 
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if(te != null) {
 				boolean hasInfo = false;
@@ -75,7 +75,7 @@ public class AdminToolItem extends Item {
 						PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.equippedModules"), TextFormatting.DARK_PURPLE);
 
 						for(ModuleType module : modules)
-							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
+							PlayerUtils.sendMessageToPlayer(player, adminToolName, new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())), TextFormatting.DARK_PURPLE);
 
 						hasInfo = true;
 					}
@@ -87,7 +87,7 @@ public class AdminToolItem extends Item {
 
 					for(int i = 0; i < 4; i++)
 					{
-						ITextProperties text = ((SecretSignTileEntity)te).signText[i];
+						ITextProperties text = ((SecretSignTileEntity)te).messages[i];
 
 						if(text instanceof IFormattableTextComponent)
 							PlayerUtils.sendMessageToPlayer(player, adminToolName, (IFormattableTextComponent)text, TextFormatting.DARK_PURPLE);
@@ -112,31 +112,31 @@ public class AdminToolItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		if(!player.isCreative())
 		{
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
-			return ActionResult.resultFail(player.getHeldItem(hand));
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:adminTool.needCreative"), TextFormatting.DARK_PURPLE);
+			return ActionResult.fail(player.getItemInHand(hand));
 		}
 		else return handleBriefcase(player, hand);
 	}
 
 	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, Hand hand)
 	{
-		ItemStack adminTool = player.getHeldItem(hand);
+		ItemStack adminTool = player.getItemInHand(hand);
 
-		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
-			ItemStack briefcase = player.getHeldItemOffhand();
-			IFormattableTextComponent adminToolName = Utils.localize(getTranslationKey());
+		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
+			ItemStack briefcase = player.getOffhandItem();
+			IFormattableTextComponent adminToolName = Utils.localize(getDescriptionId());
 			String ownerName = BriefcaseItem.getOwnerName(briefcase);
 			String ownerUUID = BriefcaseItem.getOwnerUUID(briefcase);
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", ownerName.isEmpty() ? "????" : ownerName), TextFormatting.DARK_PURPLE);
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", ownerUUID.isEmpty() ? "????" : ownerUUID), TextFormatting.DARK_PURPLE);
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.password", briefcase.hasTag() ? briefcase.getTag().getString("passcode") : "????"), TextFormatting.DARK_PURPLE);
-			return ActionResult.resultSuccess(adminTool);
+			return ActionResult.success(adminTool);
 		}
 
-		return ActionResult.resultPass(adminTool);
+		return ActionResult.pass(adminTool);
 	}
 }

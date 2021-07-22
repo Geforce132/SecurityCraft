@@ -15,7 +15,7 @@ public class ItemKeypadChestRenderer extends ItemStackTileEntityRenderer
 	private static KeypadChestTileEntityRenderer dummyRenderer = null;
 
 	@Override
-	public void func_239207_a_(ItemStack stack, TransformType transformType, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
+	public void renderByItem(ItemStack stack, TransformType transformType, MatrixStack matrix, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay)
 	{
 		if(dummyRenderer == null)
 			dummyRenderer = new KeypadChestTileEntityRenderer(TileEntityRendererDispatcher.instance);

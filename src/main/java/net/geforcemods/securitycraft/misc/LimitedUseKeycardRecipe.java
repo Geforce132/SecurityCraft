@@ -30,9 +30,9 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;
 
-		for(int i = 0; i < inv.getSizeInventory(); ++i)
+		for(int i = 0; i < inv.getContainerSize(); ++i)
 		{
-			ItemStack stack = inv.getStackInSlot(i);
+			ItemStack stack = inv.getItem(i);
 			Item item = stack.getItem();
 
 			if(item instanceof KeycardItem)
@@ -62,13 +62,13 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 	}
 
 	@Override
-	public ItemStack getCraftingResult(CraftingInventory inv)
+	public ItemStack assemble(CraftingInventory inv)
 	{
 		ItemStack keycard = ItemStack.EMPTY;
 
-		for(int i = 0; i < inv.getSizeInventory(); ++i)
+		for(int i = 0; i < inv.getContainerSize(); ++i)
 		{
-			ItemStack stack = inv.getStackInSlot(i);
+			ItemStack stack = inv.getItem(i);
 			Item item = stack.getItem();
 
 			if(item instanceof KeycardItem && item != SCContent.LIMITED_USE_KEYCARD.get())
@@ -90,7 +90,7 @@ public class LimitedUseKeycardRecipe extends SpecialRecipe
 	}
 
 	@Override
-	public boolean canFit(int width, int height)
+	public boolean canCraftInDimensions(int width, int height)
 	{
 		return width * height >= 2;
 	}

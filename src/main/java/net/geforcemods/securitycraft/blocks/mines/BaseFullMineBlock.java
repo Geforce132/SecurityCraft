@@ -44,17 +44,17 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 			Entity entity = ((EntitySelectionContext)ctx).getEntity();
 
 			if(entity instanceof ItemEntity)
-				return VoxelShapes.fullCube();
+				return VoxelShapes.block();
 			else if(entity instanceof PlayerEntity)
 			{
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof OwnableTileEntity)
 				{
 					OwnableTileEntity ownableTe = (OwnableTileEntity) te;
 
 					if(ownableTe.getOwner().isOwner((PlayerEntity)entity))
-						return VoxelShapes.fullCube();
+						return VoxelShapes.block();
 				}
 			}
 		}
@@ -74,8 +74,8 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	 * Called upon the block being destroyed by an explosion
 	 */
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion){
-		if (!world.isRemote)
+	public void wasExploded(World world, BlockPos pos, Explosion explosion){
+		if (!world.isClientSide)
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
@@ -86,7 +86,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
-		if(!world.isRemote)
+		if(!world.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
@@ -112,14 +112,14 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IIntersectable,
 	@Override
 	public void explode(World world, BlockPos pos) {
 		world.destroyBlock(pos, false);
-		world.createExplosion((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+		world.explode((Entity)null, pos.getX(), pos.getY() + 0.5D, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 	}
 
 	/**
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion explosion){
+	public boolean dropFromExplosion(Explosion explosion){
 		return false;
 	}
 

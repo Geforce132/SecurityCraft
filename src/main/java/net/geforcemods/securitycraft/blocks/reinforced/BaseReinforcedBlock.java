@@ -40,29 +40,29 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable)
 	{
-		BlockState plant = plantable.getPlant(world, pos.offset(facing));
-		PlantType type = plantable.getPlantType(world, pos.offset(facing));
+		BlockState plant = plantable.getPlant(world, pos.relative(facing));
+		PlantType type = plantable.getPlantType(world, pos.relative(facing));
 
 		if(plant.getBlock() == Blocks.CACTUS)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 
 		if (plantable instanceof BushBlock) //a workaround because BaseReinforcedBlock can't use isValidGround because it is protected
 		{
-			boolean bushCondition = state.matchesBlock(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.matchesBlock(SCContent.REINFORCED_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_COARSE_DIRT.get()) || state.matchesBlock(SCContent.REINFORCED_PODZOL.get());
+			boolean bushCondition = state.is(SCContent.REINFORCED_GRASS_BLOCK.get()) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
 
 			if (plantable instanceof NetherSproutsBlock || plantable instanceof NetherRootsBlock || plantable instanceof FungusBlock)
-				return state.isIn(SCTags.Blocks.REINFORCED_NYLIUM) || state.matchesBlock(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+				return state.is(SCTags.Blocks.REINFORCED_NYLIUM) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 		}
 
 		if(type == PlantType.DESERT)
 			return this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 		else if(type == PlantType.CAVE)
-			return state.isSolidSide(world, pos, Direction.UP);
+			return state.isFaceSturdy(world, pos, Direction.UP);
 		else if(type == PlantType.PLAINS)
-			return isIn(SCTags.Blocks.REINFORCED_DIRT);
+			return is(SCTags.Blocks.REINFORCED_DIRT);
 		else if(type == PlantType.BEACH)
 		{
-			boolean isBeach = isIn(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
+			boolean isBeach = is(SCTags.Blocks.REINFORCED_DIRT) || this == SCContent.REINFORCED_SAND.get() || this == SCContent.REINFORCED_RED_SAND.get();
 			boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER ||
 					world.getBlockState(pos.west()).getMaterial() == Material.WATER ||
 					world.getBlockState(pos.north()).getMaterial() == Material.WATER ||
@@ -79,9 +79,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	}
 
 	@Override
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side) {
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		if (this.getVanillaBlock() instanceof BreakableBlock)
-			return adjacentBlockState.getBlock() == this ? true : super.isSideInvisible(state, adjacentBlockState, side);
+			return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 		return false;
 	}
 
@@ -94,6 +94,6 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return getDefaultState();
+		return defaultBlockState();
 	}
 }

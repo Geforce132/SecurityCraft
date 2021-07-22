@@ -18,19 +18,19 @@ public class FakeLiquidBucketItem extends BucketItem
 	{
 		super(supplier, builder);
 
-		DispenserBlock.registerDispenseBehavior(this, new DefaultDispenseItemBehavior() {
+		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
 			private final DefaultDispenseItemBehavior instance = new DefaultDispenseItemBehavior();
 
 			@Override
-			public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
+			public ItemStack execute(IBlockSource source, ItemStack stack)
 			{
 				BucketItem bucket = (BucketItem)stack.getItem();
-				BlockPos pos = source.getBlockPos().offset(source.getBlockState().get(DispenserBlock.FACING));
-				World world = source.getWorld();
+				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				World world = source.getLevel();
 
-				if(bucket.tryPlaceContainedLiquid(null, world, pos, null))
+				if(bucket.emptyBucket(null, world, pos, null))
 				{
-					bucket.onLiquidPlaced(world, stack, pos);
+					bucket.checkExtraContent(world, stack, pos);
 					return new ItemStack(Items.BUCKET);
 				}
 				else return instance.dispense(source, stack);

@@ -42,7 +42,7 @@ public class PictureButton extends IdButton{
 		itemRenderer = par7;
 
 		if(!itemToRender.isEmpty() && itemToRender.getItem() instanceof BlockItem)
-			blockToRender = Block.getBlockFromItem(itemToRender.getItem());
+			blockToRender = Block.byItem(itemToRender.getItem());
 		else
 			this.itemToRender = itemToRender.getItem();
 	}
@@ -72,7 +72,7 @@ public class PictureButton extends IdButton{
 		if (visible)
 		{
 			Minecraft mc = Minecraft.getInstance();
-			FontRenderer font = mc.fontRenderer;
+			FontRenderer font = mc.font;
 
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
@@ -80,18 +80,18 @@ public class PictureButton extends IdButton{
 
 			if(blockToRender != null){
 				RenderSystem.enableRescaleNormal();
-				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(blockToRender), x + 2, y + 3);
-				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(blockToRender), x + 2, y + 3, "");
+				itemRenderer.renderAndDecorateItem(new ItemStack(blockToRender), x + 2, y + 3);
+				itemRenderer.renderGuiItemDecorations(font, new ItemStack(blockToRender), x + 2, y + 3, "");
 			}else if(itemToRender != null){
 				RenderSystem.enableRescaleNormal();
-				itemRenderer.renderItemAndEffectIntoGUI(new ItemStack(itemToRender), x + 2, y + 2);
-				itemRenderer.renderItemOverlayIntoGUI(font, new ItemStack(itemToRender), x + 2, y + 2, "");
+				itemRenderer.renderAndDecorateItem(new ItemStack(itemToRender), x + 2, y + 2);
+				itemRenderer.renderGuiItemDecorations(font, new ItemStack(itemToRender), x + 2, y + 2, "");
 				RenderSystem.disableLighting();
 			}
 			else if(getTextureLocation() != null)
 			{
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				mc.getTextureManager().bindTexture(getTextureLocation());
+				mc.getTextureManager().bind(getTextureLocation());
 				blit(matrix, x + drawOffsetX, y + drawOffsetY, drawWidth, drawHeight, u, v, drawWidth, drawHeight, textureWidth, textureHeight);
 			}
 		}

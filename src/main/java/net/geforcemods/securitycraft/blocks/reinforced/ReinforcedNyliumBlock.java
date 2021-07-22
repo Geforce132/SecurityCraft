@@ -27,41 +27,41 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements IGrowa
 	@Override
 	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!hasLightAbove(state, world, pos)) {
-			world.setBlockState(pos, Blocks.NETHERRACK.getDefaultState());
+			world.setBlockAndUpdate(pos, Blocks.NETHERRACK.defaultBlockState());
 		}
 	}
 
 	private static boolean hasLightAbove(BlockState state, IWorldReader world, BlockPos pos) {
-		BlockPos upperPos = pos.up();
+		BlockPos upperPos = pos.above();
 		BlockState upperState = world.getBlockState(upperPos);
-		int lightLevel = LightEngine.func_215613_a(world, state, pos, upperState, upperPos, Direction.UP, upperState.getOpacity(world, upperPos));
+		int lightLevel = LightEngine.getLightBlockInto(world, state, pos, upperState, upperPos, Direction.UP, upperState.getLightBlock(world, upperPos));
 		return lightLevel < world.getMaxLightLevel();
 	}
 
 	@Override
-	public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean flag) {
-		return world.getBlockState(pos.up()).isAir(world, pos);
+	public boolean isValidBonemealTarget(IBlockReader world, BlockPos pos, BlockState state, boolean flag) {
+		return world.getBlockState(pos.above()).isAir(world, pos);
 	}
 
 	@Override
-	public boolean canUseBonemeal(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(World world, Random random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState blockState) {
+	public void performBonemeal(ServerWorld world, Random random, BlockPos pos, BlockState blockState) {
 		BlockState state = world.getBlockState(pos);
-		BlockPos upperPos = pos.up();
+		BlockPos upperPos = pos.above();
 
-		if (state.matchesBlock(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
-			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.CRIMSON_FOREST_VEGETATION_CONFIG, 3, 1);
+		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get())) {
+			NetherVegetationFeature.place(world, random, upperPos, Features.Configs.CRIMSON_FOREST_CONFIG, 3, 1);
 		}
-		else if (state.matchesBlock(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
-			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.WARPED_FOREST_VEGETATION_CONFIG, 3, 1);
-			NetherVegetationFeature.func_236325_a_(world, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
+		else if (state.is(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
+			NetherVegetationFeature.place(world, random, upperPos, Features.Configs.WARPED_FOREST_CONFIG, 3, 1);
+			NetherVegetationFeature.place(world, random, upperPos, Features.Configs.NETHER_SPROUTS_CONFIG, 3, 1);
 
 			if (random.nextInt(8) == 0) {
-				TwistingVineFeature.func_236423_a_(world, random, upperPos, 3, 1, 2);
+				TwistingVineFeature.place(world, random, upperPos, 3, 1, 2);
 			}
 		}
 	}

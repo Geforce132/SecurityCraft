@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class KeycardItem extends Item
 {
-	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	private static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 	private static final ITextComponent LINK_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.link_info").setStyle(GRAY_STYLE);
 	public static final ITextComponent LIMITED_INFO = new TranslationTextComponent("tooltip.securitycraft:keycard.limited_info").setStyle(GRAY_STYLE);
 	private final int level; //0-indexed
@@ -40,7 +40,7 @@ public class KeycardItem extends Item
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag)
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag)
 	{
 		if(this == SCContent.LIMITED_USE_KEYCARD.get())
 			return;

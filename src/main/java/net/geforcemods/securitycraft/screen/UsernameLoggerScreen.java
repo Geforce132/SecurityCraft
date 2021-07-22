@@ -46,23 +46,23 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	{
 		super.init();
 
-		addButton(new IdButton(0, guiLeft + 4, guiTop + 4, 8, 8, "x", b -> {
+		addButton(new IdButton(0, leftPos + 4, topPos + 4, 8, 8, "x", b -> {
 			tileEntity.players = new String[100];
-			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getPos()));
+			SecurityCraft.channel.sendToServer(new ClearLoggerServer(tileEntity.getBlockPos()));
 		})).active = tileEntity.getOwner().isOwner(minecraft.player);
-		children.add(playerList = new PlayerList(minecraft, xSize - 24, ySize - 40, guiTop + 20, guiLeft + 12));
+		children.add(playerList = new PlayerList(minecraft, imageWidth - 24, imageHeight - 40, topPos + 20, leftPos + 12));
 	}
 
 	/**
 	 * Draw the foreground layer for the GuiContainer (everything in front of the items)
 	 */
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawText(matrix, logged, xSize / 2 - font.getStringPropertyWidth(logged) / 2, 6, 4210752);
+		font.draw(matrix, logged, imageWidth / 2 - font.width(logged) / 2, 6, 4210752);
 
-		if(mouseX >= guiLeft + 4 && mouseY >= guiTop + 4 && mouseX < guiLeft + 4 + 8 && mouseY < guiTop + 4 + 8)
-			renderTooltip(matrix, clear, mouseX - guiLeft, mouseY - guiTop);
+		if(mouseX >= leftPos + 4 && mouseY >= topPos + 4 && mouseX < leftPos + 4 + 8 && mouseY < topPos + 4 + 8)
+			renderTooltip(matrix, clear, mouseX - leftPos, mouseY - topPos);
 	}
 
 	@Override
@@ -75,13 +75,13 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(TEXTURE);
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(TEXTURE);
+		int startX = (width - imageWidth) / 2;
+		int startY = (height - imageHeight) / 2;
+		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 		@Override
 		protected int getContentHeight()
 		{
-			int height = 50 + (tileEntity.players.length * font.FONT_HEIGHT);
+			int height = 50 + (tileEntity.players.length * font.lineHeight);
 
 			if(height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -160,7 +160,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 						if(tileEntity.uuids[slotIndex] != null && !tileEntity.uuids[slotIndex].isEmpty())
 							renderTooltip(matrix, new StringTextComponent(tileEntity.uuids[slotIndex]), mouseX, mouseY);
 
-						font.drawText(matrix, localized, guiLeft + (xSize / 2 - font.getStringPropertyWidth(localized) / 2), bottom + 5, 4210752);
+						font.draw(matrix, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752);
 					}
 				}
 			}
@@ -182,22 +182,22 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * slotHeight;
-					BufferBuilder bufferBuilder = tess.getBuffer();
+					BufferBuilder bufferBuilder = tess.getBuilder();
 
 					RenderSystem.enableBlend();
 					RenderSystem.disableTexture();
 					RenderSystem.defaultBlendFunc();
 					bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-					bufferBuilder.pos(min, slotTop + slotBuffer + 2, 0).tex(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(max, slotTop + slotBuffer + 2, 0).tex(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(max, slotTop - 2, 0).tex(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(min, slotTop - 2, 0).tex(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.pos(min + 1, slotTop + slotBuffer + 1, 0).tex(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.pos(max - 1, slotTop + slotBuffer + 1, 0).tex(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.pos(max - 1, slotTop - 1, 0).tex(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.pos(min + 1, slotTop - 1, 0).tex(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.finishDrawing();
-					WorldVertexBufferUploader.draw(bufferBuilder);
+					bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+					bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+					bufferBuilder.end();
+					WorldVertexBufferUploader.end(bufferBuilder);
 					RenderSystem.enableTexture();
 					RenderSystem.disableBlend();
 				}
@@ -207,7 +207,7 @@ public class UsernameLoggerScreen extends ContainerScreen<GenericTEContainer>{
 			for(int i = 0; i < tileEntity.players.length; i++)
 			{
 				if(tileEntity.players[i] != null && !tileEntity.players[i].equals(""))
-					font.drawString(matrix, tileEntity.players[i], left + width / 2 - font.getStringWidth(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
+					font.draw(matrix, tileEntity.players[i], left + width / 2 - font.width(tileEntity.players[i]) / 2, relativeY + (slotHeight * i), 0xC6C6C6);
 			}
 		}
 	}

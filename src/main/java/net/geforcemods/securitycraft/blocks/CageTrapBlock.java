@@ -48,12 +48,12 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 	public CageTrapBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx){
-		TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof CageTrapTileEntity)
 		{
@@ -66,13 +66,13 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 				if(entity instanceof PlayerEntity && (te.getOwner().isOwner((PlayerEntity)entity) || ModuleUtils.isAllowed(te, entity)))
 					return getCorrectShape(state, world, pos, ctx, te);
-				if(entity instanceof MobEntity && !state.get(DEACTIVATED))
+				if(entity instanceof MobEntity && !state.getValue(DEACTIVATED))
 					return te.capturesMobs() ? VoxelShapes.empty() : getCorrectShape(state, world, pos, ctx, te);
 				else if(entity instanceof ItemEntity)
 					return getCorrectShape(state, world, pos, ctx, te);
 			}
 
-			return state.get(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : VoxelShapes.empty();
+			return state.getValue(DEACTIVATED) ? getCorrectShape(state, world, pos, ctx, te) : VoxelShapes.empty();
 		}
 		else return VoxelShapes.empty(); //shouldn't happen
 	}
@@ -83,40 +83,40 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 
 		if(!moduleStack.isEmpty() && (((ModuleItem)moduleStack.getItem()).getBlockAddons(moduleStack.getTag()).size() > 0))
 			return super.getCollisionShape(state, world, pos, ctx);
-		else return VoxelShapes.fullCube();
+		else return VoxelShapes.block();
 	}
 
 	@Override
 	public void onEntityIntersected(World world, BlockPos pos, Entity entity) {
-		if(!world.isRemote){
-			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getTileEntity(pos);
+		if(!world.isClientSide){
+			CageTrapTileEntity tileEntity = (CageTrapTileEntity) world.getBlockEntity(pos);
 			boolean isPlayer = entity instanceof PlayerEntity;
 
 			if(isPlayer || (entity instanceof MobEntity && tileEntity.capturesMobs())){
-				if((isPlayer && ((IOwnable)world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
+				if((isPlayer && ((IOwnable)world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity)entity)))
 					return;
 
 				BlockState state = world.getBlockState(pos);
 
-				if(state.get(DEACTIVATED))
+				if(state.getValue(DEACTIVATED))
 					return;
 
-				BlockPos topMiddle = pos.up(4);
-				String ownerName = ((IOwnable)world.getTileEntity(pos)).getOwner().getName();
+				BlockPos topMiddle = pos.above(4);
+				String ownerName = ((IOwnable)world.getBlockEntity(pos)).getOwner().getName();
 
-				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable().setPos(pos), tileEntity.getOwner());
+				BlockModifier placer = new BlockModifier(world, new BlockPos.Mutable().set(pos), tileEntity.getOwner());
 
 				placer.loop((w, p, o) -> {
-					if(w.isAirBlock(p))
+					if(w.isEmptyBlock(p))
 					{
 						if(p.equals(topMiddle))
-							w.setBlockState(p, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().getDefaultState());
+							w.setBlockAndUpdate(p, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
-							w.setBlockState(p, ((ReinforcedPaneBlock)SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(w, p));
+							w.setBlockAndUpdate(p, ((ReinforcedPaneBlock)SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(w, p));
 					}
 				});
 				placer.loop((w, p, o) -> {
-					TileEntity te = w.getTileEntity(p);
+					TileEntity te = w.getBlockEntity(p);
 
 					if(te instanceof IOwnable)
 						((IOwnable)te).setOwner(o.getUUID(), o.getName());
@@ -124,43 +124,43 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 					if(te instanceof ReinforcedIronBarsTileEntity)
 						((ReinforcedIronBarsTileEntity)te).setCanDrop(false);
 				});
-				world.setBlockState(pos, state.with(DEACTIVATED, true));
-				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
+				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
+				world.playSound(null, pos, SoundEvents.ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
 
 				if(isPlayer && PlayerUtils.isPlayerOnline(ownerName))
-					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getTranslationKey()), Utils.localize("messages.securitycraft:cageTrap.captured", ((PlayerEntity) entity).getName(), Utils.getFormattedCoordinates(pos)), TextFormatting.BLACK);
+					PlayerUtils.sendMessageToPlayer(ownerName, Utils.localize(SCContent.CAGE_TRAP.get().getDescriptionId()), Utils.localize("messages.securitycraft:cageTrap.captured", ((PlayerEntity) entity).getName(), Utils.getFormattedCoordinates(pos)), TextFormatting.BLACK);
 			}
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 
 		if(stack.getItem() == SCContent.WIRE_CUTTERS.get())
 		{
-			if(!state.get(DEACTIVATED))
+			if(!state.getValue(DEACTIVATED))
 			{
-				world.setBlockState(pos, state.with(DEACTIVATED, true));
+				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 
 				if(!player.isCreative())
-					stack.damageItem(1, player, p -> p.sendBreakAnimation(hand));
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				world.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				return ActionResultType.SUCCESS;
 			}
 		}
 		else if(stack.getItem() == Items.REDSTONE)
 		{
-			if(state.get(DEACTIVATED))
+			if(state.getValue(DEACTIVATED))
 			{
-				world.setBlockState(pos, state.with(DEACTIVATED, false));
+				world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 
 				if(!player.isCreative())
 					stack.shrink(1);
 
-				world.playSound(null, pos, SoundEvents.BLOCK_TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				world.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -171,16 +171,16 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity player)
 	{
-		return getDefaultState().with(DEACTIVATED, false);
+		return defaultBlockState().setValue(DEACTIVATED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(DEACTIVATED);
 	}
@@ -201,7 +201,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 		{
 			this.world = world;
 			pos = origin.move(-1, 1, -1);
-			this.origin = origin.toImmutable();
+			this.origin = origin.immutable();
 			this.owner = owner;
 		}
 
@@ -226,7 +226,7 @@ public class CageTrapBlock extends DisguisableBlock implements IIntersectable {
 				pos.move(-3, 1, 0);
 			}
 
-			pos.setPos(origin); //reset the mutable block pos for the next usage
+			pos.set(origin); //reset the mutable block pos for the next usage
 		}
 	}
 }

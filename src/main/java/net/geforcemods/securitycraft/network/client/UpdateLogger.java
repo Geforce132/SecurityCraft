@@ -35,8 +35,8 @@ public class UpdateLogger {
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
 		buf.writeInt(message.i);
-		buf.writeString(message.username);
-		buf.writeString(message.uuid);
+		buf.writeUtf(message.username);
+		buf.writeUtf(message.uuid);
 		buf.writeLong(message.timestamp);
 	}
 
@@ -48,8 +48,8 @@ public class UpdateLogger {
 		message.y = buf.readInt();
 		message.z = buf.readInt();
 		message.i = buf.readInt();
-		message.username = buf.readString(Integer.MAX_VALUE / 4);
-		message.uuid = buf.readString(Integer.MAX_VALUE / 4);
+		message.username = buf.readUtf(Integer.MAX_VALUE / 4);
+		message.uuid = buf.readUtf(Integer.MAX_VALUE / 4);
 		message.timestamp = buf.readLong();
 		return message;
 	}
@@ -60,7 +60,7 @@ public class UpdateLogger {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			int i = message.i;
 
-			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) Minecraft.getInstance().player.world.getTileEntity(pos);
+			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity) Minecraft.getInstance().player.level.getBlockEntity(pos);
 
 			if(te != null)
 			{

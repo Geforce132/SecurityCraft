@@ -31,7 +31,7 @@ public class CheckPassword {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
-		buf.writeString(message.password);
+		buf.writeUtf(message.password);
 	}
 
 	public static CheckPassword decode(PacketBuffer buf)
@@ -41,7 +41,7 @@ public class CheckPassword {
 		message.x = buf.readInt();
 		message.y = buf.readInt();
 		message.z = buf.readInt();
-		message.password = buf.readString(Integer.MAX_VALUE / 4);
+		message.password = buf.readUtf(Integer.MAX_VALUE / 4);
 		return message;
 	}
 
@@ -51,11 +51,11 @@ public class CheckPassword {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(pos);
+			TileEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof IPasswordProtected && ((IPasswordProtected)te).getPassword().equals(password))
 			{
-				((ServerPlayerEntity) player).closeScreen();
+				((ServerPlayerEntity) player).closeContainer();
 				((IPasswordProtected)te).activate(player);
 			}
 		});

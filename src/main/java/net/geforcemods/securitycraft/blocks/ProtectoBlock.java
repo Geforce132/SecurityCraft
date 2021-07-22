@@ -22,11 +22,11 @@ import net.minecraft.world.World;
 public class ProtectoBlock extends OwnableBlock {
 
 	public static final BooleanProperty ACTIVATED = BlockStateProperties.ENABLED;
-	public static final VoxelShape SHAPE = VoxelShapes.or(Block.makeCuboidShape(0, 0, 5, 16, 16, 11), Block.makeCuboidShape(5, 0, 0, 11, 16, 16));
+	public static final VoxelShape SHAPE = VoxelShapes.or(Block.box(0, 0, 5, 16, 16, 11), Block.box(5, 0, 0, 11, 16, 16));
 
 	public ProtectoBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(ACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(ACTIVATED, false));
 	}
 
 	@Override
@@ -36,23 +36,23 @@ public class ProtectoBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		return world.getBlockState(pos.down()).isSolidSide(world, pos.down(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+		return world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(ACTIVATED, false);
+		return defaultBlockState().setValue(ACTIVATED, false);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(ACTIVATED);
 	}

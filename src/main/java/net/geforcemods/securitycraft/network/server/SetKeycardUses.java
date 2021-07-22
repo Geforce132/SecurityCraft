@@ -45,7 +45,7 @@ public class SetKeycardUses
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity tile = player.world.getTileEntity(pos);
+			TileEntity tile = player.level.getBlockEntity(pos);
 
 			if(tile instanceof KeycardReaderTileEntity)
 			{
@@ -53,7 +53,7 @@ public class SetKeycardUses
 
 				if(te.getOwner().isOwner(player) || ModuleUtils.isAllowed(te, player))
 				{
-					Container container = player.openContainer;
+					Container container = player.containerMenu;
 
 					if(container instanceof KeycardReaderContainer)
 						((KeycardReaderContainer)container).setKeycardUses(message.uses);

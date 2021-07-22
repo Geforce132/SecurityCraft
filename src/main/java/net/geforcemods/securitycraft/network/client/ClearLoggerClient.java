@@ -35,7 +35,7 @@ public class ClearLoggerClient
 	public static void onMessage(ClearLoggerClient message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity)Minecraft.getInstance().world.getTileEntity(message.pos);
+			UsernameLoggerTileEntity te = (UsernameLoggerTileEntity)Minecraft.getInstance().level.getBlockEntity(message.pos);
 
 			if(te != null)
 				te.players = new String[100];

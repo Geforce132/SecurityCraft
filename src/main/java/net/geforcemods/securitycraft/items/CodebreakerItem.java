@@ -34,19 +34,19 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack codebreaker = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack codebreaker = player.getItemInHand(hand);
 
-		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
+		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			if(!ConfigHandler.SERVER.allowCodebreakerItem.get()) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-				return ActionResult.resultSuccess(codebreaker);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.BRIEFCASE.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				return ActionResult.success(codebreaker);
 			}
 			else {
-				codebreaker.damageItem(1, player, p -> p.sendBreakAnimation(hand));
+				codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
-				if (!world.isRemote && new Random().nextInt(3) == 1) {
-					ItemStack briefcase = player.getHeldItemOffhand();
+				if (!world.isClientSide && new Random().nextInt(3) == 1) {
+					ItemStack briefcase = player.getOffhandItem();
 
 					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 						@Override
@@ -58,23 +58,23 @@ public class CodebreakerItem extends Item {
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return briefcase.getDisplayName();
+							return briefcase.getHoverName();
 						}
-					}, player.getPosition());
+					}, player.blockPosition());
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(SCContent.CODEBREAKER.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, new TranslationTextComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 			}
 
-			return ActionResult.resultSuccess(codebreaker);
+			return ActionResult.success(codebreaker);
 		}
 
-		return ActionResult.resultPass(codebreaker);
+		return ActionResult.pass(codebreaker);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean hasEffect(ItemStack stack){
+	public boolean isFoil(ItemStack stack){
 		return true;
 	}
 

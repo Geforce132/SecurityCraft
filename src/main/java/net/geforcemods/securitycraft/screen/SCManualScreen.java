@@ -92,7 +92,7 @@ public class SCManualScreen extends Screen {
 	private Button patreonLinkButton;
 
 	public SCManualScreen() {
-		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getTranslationKey()));
+		super(new TranslationTextComponent(SCContent.SC_MANUAL.get().getDescriptionId()));
 	}
 
 	@Override
@@ -100,12 +100,12 @@ public class SCManualScreen extends Screen {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(new SCManualScreen.ChangePageButton(1, startX + 210, startY + 188, true, this::actionPerformed)); //next page
 		addButton(new SCManualScreen.ChangePageButton(2, startX + 16, startY + 188, false, this::actionPerformed)); //previous page
 		addButton(new SCManualScreen.ChangePageButton(3, startX + 180, startY + 97, true, this::actionPerformed)); //next subpage
 		addButton(new SCManualScreen.ChangePageButton(4, startX + 155, startY + 97, false, this::actionPerformed)); //previous subpage
-		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, StringTextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.setClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		addButton(patreonLinkButton = new HyperlinkButton(startX + 225, 143, 16, 16, StringTextComponent.EMPTY, b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
 		children.add(patronList = new PatronList(minecraft, 115, 90, 50, startX + 125));
 
 		for(int i = 0; i < 3; i++)
@@ -118,8 +118,8 @@ public class SCManualScreen extends Screen {
 
 		updateRecipeAndIcons();
 		SCManualItem.PAGES.sort((page1, page2) -> {
-			String key1 = Utils.localize(page1.getItem().getTranslationKey()).getString();
-			String key2 = Utils.localize(page2.getItem().getTranslationKey()).getString();
+			String key1 = Utils.localize(page1.getItem().getDescriptionId()).getString();
+			String key2 = Utils.localize(page2.getItem().getDescriptionId()).getString();
 
 			return key1.compareTo(key2);
 		});
@@ -131,11 +131,11 @@ public class SCManualScreen extends Screen {
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 		if(currentPage == -1)
-			minecraft.getTextureManager().bindTexture(infoBookTitlePage);
+			minecraft.getTextureManager().bind(infoBookTitlePage);
 		else if(recipe != null && recipe.size() > 0)
-			minecraft.getTextureManager().bindTexture(infoBookTexture);
+			minecraft.getTextureManager().bind(infoBookTexture);
 		else
-			minecraft.getTextureManager().bindTexture(infoBookTextureSpecial);
+			minecraft.getTextureManager().bind(infoBookTextureSpecial);
 
 		blit(matrix, startX, 5, 0, 0, 256, 250);
 
@@ -151,20 +151,20 @@ public class SCManualScreen extends Screen {
 			String designedBy = SCManualItem.PAGES.get(currentPage).getDesignedBy();
 
 			if(subpages.size() > 1)
-				font.drawString(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
+				font.draw(matrix, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 102, 0x8E8270);
 
 			if(designedBy != null && !designedBy.isEmpty())
-				font.func_238418_a_(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
+				font.drawWordWrap(Utils.localize("gui.securitycraft:scManual.designedBy", designedBy), startX + 18, 150, 75, 0);
 
 			if(SCManualItem.PAGES.get(currentPage).getHelpInfo().getKey().equals("help.securitycraft:reinforced.info"))
-				font.drawText(matrix, Utils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
+				font.draw(matrix, Utils.localize("gui.securitycraft:scManual.reinforced"), startX + 39, 27, 0);
 			else
-				font.drawText(matrix, Utils.localize(SCManualItem.PAGES.get(currentPage).getItem().getTranslationKey()), startX + 39, 27, 0);
+				font.draw(matrix, Utils.localize(SCManualItem.PAGES.get(currentPage).getItem().getDescriptionId()), startX + 39, 27, 0);
 
-			font.func_238418_a_(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
-			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
-			minecraft.getItemRenderer().renderItemAndEffectIntoGUI(new ItemStack(item), startX + 19, 22);
-			minecraft.getTextureManager().bindTexture(infoBookIcons);
+			font.drawWordWrap(subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
+			minecraft.getItemRenderer().renderAndDecorateItem(new ItemStack(item), startX + 19, 22);
+			minecraft.getTextureManager().bind(infoBookIcons);
 
 			if(item instanceof BlockItem){
 				Block block = ((BlockItem) item).getBlock();
@@ -172,9 +172,9 @@ public class SCManualScreen extends Screen {
 				if(block instanceof IExplosive)
 					blit(matrix, startX + 107, 117, 54, 1, 18, 18);
 
-				if(block.hasTileEntity(block.getDefaultState()))
+				if(block.hasTileEntity(block.defaultBlockState()))
 				{
-					TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
+					TileEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
 
 					if(te instanceof IOwnable)
 						blit(matrix, startX + 29, 118, 1, 1, 16, 16);
@@ -225,36 +225,36 @@ public class SCManualScreen extends Screen {
 		{
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
-			font.drawText(matrix, intro1, width / 2 - font.getStringPropertyWidth(intro1) / 2, 22, 0);
+			font.draw(matrix, intro1, width / 2 - font.width(intro1) / 2, 22, 0);
 
 			for(int i = 0; i < intro2.size(); i++)
 			{
 				IReorderingProcessor text = intro2.get(i);
 
-				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 150 + 10 * i, 0);
+				font.draw(matrix, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
 			}
 
 			for(int i = 0; i < author.size(); i++)
 			{
 				IReorderingProcessor text = author.get(i);
 
-				font.func_238422_b_(matrix, text, width / 2 - font.func_243245_a(text) / 2, 180 + 10 * i, 0);
+				font.draw(matrix, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
 
 			//the patreon link button may overlap with a name tooltip from the list, so draw the list after the buttons
 			if(patronList != null)
 				patronList.render(matrix, mouseX, mouseY, partialTicks);
 
-			font.drawString(matrix, pageNumberText, startX + 240 - font.getStringWidth(pageNumberText), 182, 0x8E8270);
-			font.drawText(matrix, ourPatrons, width / 2 - font.getStringPropertyWidth(ourPatrons) / 2 + 30, 40, 0);
+			font.draw(matrix, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270);
+			font.draw(matrix, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0);
 		}
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
+	public void removed(){
+		super.removed();
 		lastPage = currentPage;
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
@@ -351,12 +351,12 @@ public class SCManualScreen extends Screen {
 			buttons.get(2).visible = false;
 			buttons.get(3).visible = false;
 
-			if(I18n.hasKey("gui.securitycraft:scManual.author"))
-				author = font.trimStringToWidth(Utils.localize("gui.securitycraft:scManual.author"), 180);
+			if(I18n.exists("gui.securitycraft:scManual.author"))
+				author = font.split(Utils.localize("gui.securitycraft:scManual.author"), 180);
 			else
 				author.clear();
 
-			intro2 = font.trimStringToWidth(Utils.localize("gui.securitycraft:scManual.intro.2"), 225);
+			intro2 = font.split(Utils.localize("gui.securitycraft:scManual.intro.2"), 225);
 
 			patronList.fetchPatrons();
 			return;
@@ -366,12 +366,12 @@ public class SCManualScreen extends Screen {
 
 		recipe = null;
 
-		for(IRecipe<?> object : Minecraft.getInstance().world.getRecipeManager().getRecipes())
+		for(IRecipe<?> object : Minecraft.getInstance().level.getRecipeManager().getRecipes())
 		{
 			if(object instanceof ShapedRecipe){
 				ShapedRecipe recipe = (ShapedRecipe) object;
 
-				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
+				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()){
 					NonNullList<Ingredient> ingredients = recipe.getIngredients();
 					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
 
@@ -386,7 +386,7 @@ public class SCManualScreen extends Screen {
 			}else if(object instanceof ShapelessRecipe){
 				ShapelessRecipe recipe = (ShapelessRecipe) object;
 
-				if(!recipe.getRecipeOutput().isEmpty() && recipe.getRecipeOutput().getItem() == page.getItem()){
+				if(!recipe.getResultItem().isEmpty() && recipe.getResultItem().getItem() == page.getItem()){
 					//don't show keycard reset recipes
 					if(recipe.getId().getPath().endsWith("_reset"))
 						continue;
@@ -437,9 +437,9 @@ public class SCManualScreen extends Screen {
 			if(block instanceof IExplosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
-			if(block.hasTileEntity(block.getDefaultState()))
+			if(block.hasTileEntity(block.defaultBlockState()))
 			{
-				TileEntity te = block.createTileEntity(block.getDefaultState(), Minecraft.getInstance().world);
+				TileEntity te = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
 
 				if(te instanceof IOwnable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
@@ -465,7 +465,7 @@ public class SCManualScreen extends Screen {
 
 						for(Option<?> option : scte.customOptions())
 						{
-							display.add(new StringTextComponent("- ").appendSibling(Utils.localize("option" + block.getTranslationKey().substring(5) + "." + option.getName() + ".description")));
+							display.add(new StringTextComponent("- ").append(Utils.localize("option" + block.getDescriptionId().substring(5) + "." + option.getName() + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
 
@@ -487,7 +487,7 @@ public class SCManualScreen extends Screen {
 
 						for(ModuleType module : moduleInv.acceptedModules())
 						{
-							display.add(new StringTextComponent("- ").appendSibling(Utils.localize("module" + block.getTranslationKey().substring(5) + "." + module.getItem().getTranslationKey().substring(5).replace("securitycraft.", "") + ".description")));
+							display.add(new StringTextComponent("- ").append(Utils.localize("module" + block.getDescriptionId().substring(5) + "." + module.getItem().getDescriptionId().substring(5).replace("securitycraft.", "") + ".description")));
 							display.add(StringTextComponent.EMPTY);
 						}
 
@@ -522,7 +522,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		//set up subpages
-		subpages = font.getCharacterManager().func_238362_b_(helpInfo, subpageLength, Style.EMPTY);
+		subpages = font.getSplitter().splitLines(helpInfo, subpageLength, Style.EMPTY);
 		buttons.get(2).visible = currentPage != -1 && subpages.size() > 1;
 		buttons.get(3).visible = currentPage != -1 && subpages.size() > 1;
 	}
@@ -574,14 +574,14 @@ public class SCManualScreen extends Screen {
 			super(client, width, height, top, left);
 
 			barLeft = left + width - barWidth;
-			fetchErrorLines = font.trimStringToWidth(Utils.localize("gui.securitycraft:scManual.patreon.error"), width);
-			noPatronsLines = font.trimStringToWidth(Utils.localize("advancements.empty"), width - 10);
+			fetchErrorLines = font.split(Utils.localize("gui.securitycraft:scManual.patreon.error"), width);
+			noPatronsLines = font.split(Utils.localize("advancements.empty"), width - 10);
 		}
 
 		@Override
 		protected int getContentHeight()
 		{
-			int height = 50 + (patrons.size() * font.FONT_HEIGHT);
+			int height = 50 + (patrons.size() * font.lineHeight);
 
 			if(height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -595,14 +595,14 @@ public class SCManualScreen extends Screen {
 			if(patronsAvailable) //code from ScrollPanel to be able to change colors
 			{
 				Tessellator tess = Tessellator.getInstance();
-				BufferBuilder buffer = tess.getBuffer();
+				BufferBuilder buffer = tess.getBuilder();
 				Minecraft client = Minecraft.getInstance();
-				double scale = client.getMainWindow().getGuiScaleFactor();
+				double scale = client.getWindow().getGuiScale();
 				int baseY = top + border - (int)scrollDistance;
 				int extraHeight = getContentHeight() + border - height;
 
 				GL11.glEnable(GL11.GL_SCISSOR_TEST);
-				GL11.glScissor((int)(left  * scale), (int)(client.getMainWindow().getFramebufferHeight() - (bottom * scale)),
+				GL11.glScissor((int)(left  * scale), (int)(client.getWindow().getHeight() - (bottom * scale)),
 						(int)(width * scale), (int)(height * scale));
 				drawGradientRect(matrix, left, top, right, bottom, 0xC0BFBBB2, 0xD0BFBBB2); //list background
 				drawPanel(matrix, right, baseY, tess, mouseX, mouseY);
@@ -618,25 +618,25 @@ public class SCManualScreen extends Screen {
 
 					//scrollbar background
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-					buffer.pos(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					buffer.pos(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					buffer.pos(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					buffer.pos(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
-					tess.draw();
+					buffer.vertex(barLeft,            bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					buffer.vertex(barLeft + barWidth, bottom, 0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					buffer.vertex(barLeft + barWidth, top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					buffer.vertex(barLeft,            top,    0.0D).color(0x8E, 0x82, 0x70, 0xFF).endVertex();
+					tess.end();
 					//scrollbar border
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-					buffer.pos(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					buffer.pos(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					buffer.pos(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					buffer.pos(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
-					tess.draw();
+					buffer.vertex(barLeft,            barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					buffer.vertex(barLeft + barWidth, barTop + barHeight, 0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					buffer.vertex(barLeft + barWidth, barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					buffer.vertex(barLeft,            barTop,             0.0D).color(0x80, 0x70, 0x55, 0xFF).endVertex();
+					tess.end();
 					//scrollbar
 					buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-					buffer.pos(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					buffer.pos(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					buffer.pos(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					buffer.pos(barLeft,                barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
-					tess.draw();
+					buffer.vertex(barLeft,                barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					buffer.vertex(barLeft + barWidth - 1, barTop + barHeight - 1, 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					buffer.vertex(barLeft + barWidth - 1, barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					buffer.vertex(barLeft,                barTop,                 0.0D).color(0xD1, 0xBF, 0xA1, 0xFF).endVertex();
+					tess.end();
 				}
 
 				RenderSystem.enableTexture();
@@ -652,7 +652,7 @@ public class SCManualScreen extends Screen {
 				if(mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < patrons.size() && mouseY >= top && mouseY <= bottom)
 				{
 					String patron = patrons.get(slotIndex);
-					int length = font.getStringWidth(patron);
+					int length = font.width(patron);
 
 					if(length >= width - barWidth)
 						renderTooltip(matrix, new StringTextComponent(patron), left - 10, baseY + (slotHeight * slotIndex + slotHeight));
@@ -662,7 +662,7 @@ public class SCManualScreen extends Screen {
 					for(int i = 0; i < noPatronsLines.size(); i++) {
 						IReorderingProcessor line = noPatronsLines.get(i);
 
-						font.func_238422_b_(matrix, line, left + width / 2 - font.func_243245_a(line) / 2, top + 30 + i * 10, 0xFF333333);
+						font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333);
 					}
 				}
 			}
@@ -672,7 +672,7 @@ public class SCManualScreen extends Screen {
 				{
 					IReorderingProcessor line = fetchErrorLines.get(i);
 
-					font.func_238422_b_(matrix, line, left + width / 2 - font.func_243245_a(line) / 2, top + 30 + i * 10, 0xFFB00101);
+					font.draw(matrix, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101);
 				}
 			}
 			else if(patronRequestFuture != null && patronRequestFuture.isDone())
@@ -689,7 +689,7 @@ public class SCManualScreen extends Screen {
 				}
 			}
 			else
-				font.drawText(matrix, loadingText, left + width / 2 - font.getStringPropertyWidth(loadingText) / 2, top + 30, 0);
+				font.draw(matrix, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0);
 		}
 
 		@Override
@@ -701,7 +701,7 @@ public class SCManualScreen extends Screen {
 				String patron = patrons.get(i);
 
 				if(patron != null && !patron.isEmpty())
-					font.drawString(matrix, patron, left + 2, relativeY + (slotHeight * i), 0);
+					font.draw(matrix, patron, left + 2, relativeY + (slotHeight * i), 0);
 			}
 		}
 
@@ -756,7 +756,7 @@ public class SCManualScreen extends Screen {
 				boolean isHovering = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				Minecraft.getInstance().getTextureManager().bindTexture(bookGuiTextures);
+				Minecraft.getInstance().getTextureManager().bind(bookGuiTextures);
 				blit(matrix, x, y, isHovering ? 23 : 0, textureY, 23, 13);
 			}
 		}
@@ -770,9 +770,9 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void renderWidget(MatrixStack matrix, int mouseX, int mouseY, float partial)
+		public void renderButton(MatrixStack matrix, int mouseX, int mouseY, float partial)
 		{
-			minecraft.getTextureManager().bindTexture(infoBookIcons);
+			minecraft.getTextureManager().bind(infoBookIcons);
 			isHovered = mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
 
 			if(isHovered)

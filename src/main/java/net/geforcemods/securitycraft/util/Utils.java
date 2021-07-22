@@ -45,7 +45,7 @@ public class Utils {
 		for(int i = 0; i < params.length; i++)
 		{
 			if(params[i] instanceof TranslationTextComponent)
-				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getFormatArgs());
+				params[i] = localize(((TranslationTextComponent)params[i]).getKey(), ((TranslationTextComponent)params[i]).getArgs());
 			else if(params[i] instanceof BlockPos)
 				params[i] = getFormattedCoordinates((BlockPos)params[i]);
 		}

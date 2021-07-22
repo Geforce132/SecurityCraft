@@ -20,7 +20,7 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	public void setManager(BlockPocketManagerTileEntity manager)
 	{
 		this.manager = manager;
-		managerPos = manager.getPos();
+		managerPos = manager.getBlockPos();
 	}
 
 	public void removeManager()
@@ -41,7 +41,7 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 
 		if(manager == null && managerPos != null)
 		{
-			TileEntity te = world.getTileEntity(managerPos);
+			TileEntity te = level.getBlockEntity(managerPos);
 
 			if(te instanceof BlockPocketManagerTileEntity)
 				manager = (BlockPocketManagerTileEntity)te;
@@ -53,26 +53,26 @@ public class BlockPocketTileEntity extends SecurityCraftTileEntity
 	{
 		super.onTileEntityDestroyed();
 
-		BlockState state = world.getBlockState(pos);
+		BlockState state = level.getBlockState(worldPosition);
 
 		if(manager != null && state.getBlock() != SCContent.BLOCK_POCKET_WALL.get() && state.getBlock() != SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get() && state.getBlock() != SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get())
 			manager.disableMultiblock();
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
 		if(manager != null)
-			tag.putLong("ManagerPos", manager.getPos().toLong());
-		return super.write(tag);
+			tag.putLong("ManagerPos", manager.getBlockPos().asLong());
+		return super.save(tag);
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		if(tag.contains("ManagerPos"))
-			managerPos = BlockPos.fromLong(tag.getLong("ManagerPos"));
+			managerPos = BlockPos.of(tag.getLong("ManagerPos"));
 	}
 }

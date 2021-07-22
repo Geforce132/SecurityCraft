@@ -38,21 +38,21 @@ public class UniversalKeyChangerItem extends Item {
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getItem(), ctx.getHand());
+		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getItemInHand(), ctx.getHand());
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, ItemStack stack, Hand hand) {
-		ActionResultType briefcaseResult = handleBriefcase(player, hand).getType();
+		ActionResultType briefcaseResult = handleBriefcase(player, hand).getResult();
 
 		if(briefcaseResult != ActionResultType.PASS)
 			return briefcaseResult;
 
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		if(te instanceof IPasswordProtected) {
 			if(((IOwnable) te).getOwner().isOwner(player))
 			{
-				if(!world.isRemote)
+				if(!world.isClientSide)
 					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
@@ -63,14 +63,14 @@ public class UniversalKeyChangerItem extends Item {
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(getTranslationKey());
+							return new TranslationTextComponent(getDescriptionId());
 						}
 					}, pos);
 
 				return ActionResultType.SUCCESS;
 			}
 			else if(!(te instanceof DisguisableTileEntity) || (((BlockItem)((DisguisableBlock)((DisguisableTileEntity)te).getBlockState().getBlock()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)world.getTileEntity(pos)).getOwner().getName()), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable)world.getBlockEntity(pos)).getOwner().getName()), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}
 		}
@@ -79,32 +79,32 @@ public class UniversalKeyChangerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
 		return handleBriefcase(player, hand);
 	}
 
 	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, Hand hand)
 	{
-		ItemStack keyChanger = player.getHeldItem(hand);
+		ItemStack keyChanger = player.getItemInHand(hand);
 
-		if (hand == Hand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.BRIEFCASE.get()) {
-			ItemStack briefcase = player.getHeldItemOffhand();
+		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
+			ItemStack briefcase = player.getOffhandItem();
 
 			if (BriefcaseItem.isOwnedBy(briefcase, player)) {
 				if (briefcase.hasTag() && briefcase.getTag().contains("passcode")) {
 					briefcase.getTag().remove("passcode");
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
-					return ActionResult.resultSuccess(keyChanger);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), TextFormatting.GREEN);
+					return ActionResult.success(keyChanger);
 				}
 				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.noPasscode"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.noPasscode"), TextFormatting.RED);
 			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getTranslationKey()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), TextFormatting.RED);
 
-			return ActionResult.resultConsume(keyChanger);
+			return ActionResult.consume(keyChanger);
 		}
 
-		return ActionResult.resultPass(keyChanger);
+		return ActionResult.pass(keyChanger);
 	}
 }

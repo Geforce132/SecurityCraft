@@ -21,28 +21,28 @@ public class OwnerRestrictedSlot extends Slot {
 	 * Return whether this slot's stack can be taken from this slot.
 	 */
 	@Override
-	public boolean canTakeStack(PlayerEntity player){
+	public boolean mayPickup(PlayerEntity player){
 		return tileEntity.getOwner().isOwner(player) && !isGhostSlot; //the !isGhostSlot check helps to prevent double clicking a stack to pull all items towards the stack
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack)
+	public boolean mayPlace(ItemStack stack)
 	{
 		return !isGhostSlot; //prevents shift clicking into ghost slot
 	}
 
 	@Override
-	public void putStack(ItemStack stack)
+	public void set(ItemStack stack)
 	{
-		if(isItemValid(stack))
+		if(mayPlace(stack))
 		{
-			inventory.setInventorySlotContents(getSlotIndex(), stack);
-			onSlotChanged();
+			container.setItem(getSlotIndex(), stack);
+			setChanged();
 		}
 	}
 
 	@Override
-	public int getSlotStackLimit(){
+	public int getMaxStackSize(){
 		return 1;
 	}
 

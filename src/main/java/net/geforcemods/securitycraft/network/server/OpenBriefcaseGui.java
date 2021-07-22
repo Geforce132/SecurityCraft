@@ -34,7 +34,7 @@ public class OpenBriefcaseGui {
 	public static void encode(OpenBriefcaseGui message, PacketBuffer buf)
 	{
 		buf.writeResourceLocation(message.id);
-		buf.writeTextComponent(message.name);
+		buf.writeComponent(message.name);
 	}
 
 	public static OpenBriefcaseGui decode(PacketBuffer buf)
@@ -42,7 +42,7 @@ public class OpenBriefcaseGui {
 		OpenBriefcaseGui message = new OpenBriefcaseGui();
 
 		message.id = buf.readResourceLocation();
-		message.name = buf.readTextComponent();
+		message.name = buf.readComponent();
 		return message;
 	}
 
@@ -51,7 +51,7 @@ public class OpenBriefcaseGui {
 		ctx.get().enqueueWork(() -> {
 			ResourceLocation id = message.id;
 			ServerPlayerEntity player = ctx.get().getSender();
-			BlockPos pos = player.getPosition();
+			BlockPos pos = player.blockPosition();
 
 			if(PlayerUtils.isHoldingItem(player, SCContent.BRIEFCASE.get(), null))
 			{

@@ -35,12 +35,12 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 
-		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		super.setPlacedBy(world, pos, state, placer, stack);
 	}
 
 	/**
@@ -54,9 +54,9 @@ public abstract class SpecialDoorBlock extends DoorBlock
 		BlockState state = world.getBlockState(pos);
 		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
-		if(state.get(HALF) == DoubleBlockHalf.UPPER)
+		if(state.getValue(HALF) == DoubleBlockHalf.UPPER)
 		{
-			BlockPos blockBelow = pos.down();
+			BlockPos blockBelow = pos.below();
 			BlockState stateBelow = world.getBlockState(blockBelow);
 
 			if(stateBelow.getBlock() != this)
@@ -67,7 +67,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 		else
 		{
 			boolean drop = false;
-			BlockPos blockBelow = pos.up();
+			BlockPos blockBelow = pos.above();
 			BlockState stateBelow = world.getBlockState(blockBelow);
 
 			if(stateBelow.getBlock() != this)
@@ -76,7 +76,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 				drop = true;
 			}
 
-			if(!world.getBlockState(pos.down()).isSolidSide(world, pos.down(), Direction.UP))
+			if(!world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP))
 			{
 				world.destroyBlock(pos, false);
 				drop = true;
@@ -87,10 +87,10 @@ public abstract class SpecialDoorBlock extends DoorBlock
 
 			if(drop)
 			{
-				if(!world.isRemote)
+				if(!world.isClientSide)
 				{
 					world.destroyBlock(pos, false);
-					Block.spawnAsEntity(world, pos, new ItemStack(getDoorItem()));
+					Block.popResource(world, pos, new ItemStack(getDoorItem()));
 				}
 			}
 		}
@@ -102,37 +102,37 @@ public abstract class SpecialDoorBlock extends DoorBlock
 		BlockState upperState = world.getBlockState(pos);
 		BlockState lowerState;
 
-		if(upperState.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
+		if(upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER)
 		{
 			lowerState = upperState;
-			pos = pos.up();
+			pos = pos.above();
 			upperState = world.getBlockState(pos);
 		}
 		else
-			lowerState = world.getBlockState(pos.down());
+			lowerState = world.getBlockState(pos.below());
 
-		world.setBlockState(pos, upperState.with(DoorBlock.OPEN, false), 3);
-		world.setBlockState(pos.down(), lowerState.with(DoorBlock.OPEN, false), 3);
-		world.playEvent(null, 1011, pos, 0);
+		world.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
+		world.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
+		world.levelEvent(null, 1011, pos, 0);
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		super.onReplaced(state, world, pos, newState, isMoving);
+		super.onRemove(state, world, pos, newState, isMoving);
 
 		if(state.getBlock() != newState.getBlock())
-			world.removeTileEntity(pos);
+			world.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param)
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param)
 	{
-		super.eventReceived(state, world, pos, id, param);
+		super.triggerEvent(state, world, pos, id, param);
 
-		TileEntity tileentity = world.getTileEntity(pos);
+		TileEntity tileentity = world.getBlockEntity(pos);
 
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public abstract class SpecialDoorBlock extends DoorBlock
 	}
 
 	@Override
-	public PushReaction getPushReaction(BlockState state)
+	public PushReaction getPistonPushReaction(BlockState state)
 	{
 		return PushReaction.BLOCK;
 	}

@@ -33,22 +33,22 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class MineRemoteAccessToolItem extends Item {
 
-	private static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	private static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 
 	public MineRemoteAccessToolItem(Item.Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
-		SecurityCraft.proxy.displayMRATGui(player.getHeldItem(hand));
-		return ActionResult.resultConsume(player.getHeldItem(hand));
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand){
+		SecurityCraft.proxy.displayMRATGui(player.getItemInHand(hand));
+		return ActionResult.consume(player.getItemInHand(hand));
 	}
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx)
 	{
-		return onItemUseFirst(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), stack, ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z);
+		return onItemUseFirst(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), stack, ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z);
 	}
 
 	public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ){
@@ -57,11 +57,11 @@ public class MineRemoteAccessToolItem extends Item {
 				int availSlot = getNextAvaliableSlot(stack);
 
 				if(availSlot == 0){
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), Utils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.noSlots"), TextFormatting.RED);
 					return ActionResultType.FAIL;
 				}
 
-				if(world.getTileEntity(pos) instanceof IOwnable && !((IOwnable) world.getTileEntity(pos)).getOwner().isOwner(player))
+				if(world.getBlockEntity(pos) instanceof IOwnable && !((IOwnable) world.getBlockEntity(pos)).getOwner().isOwner(player))
 				{
 					SecurityCraft.proxy.displayMRATGui(stack);
 					return ActionResultType.SUCCESS;
@@ -72,14 +72,14 @@ public class MineRemoteAccessToolItem extends Item {
 
 				stack.getTag().putIntArray(("mine" + availSlot), BlockUtils.posToIntArray(pos));
 
-				if (!world.isRemote)
+				if (!world.isClientSide)
 					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.bound", Utils.getFormattedCoordinates(pos)), TextFormatting.GREEN);
 				return ActionResultType.SUCCESS;
 			}else{
 				removeTagFromItemAndUpdate(stack, pos, player);
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getTranslationKey()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.REMOTE_ACCESS_MINE.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), TextFormatting.RED);
 				return ActionResultType.SUCCESS;
 			}
 		}
@@ -89,7 +89,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(stack.getTag() == null)
 			return;
 
@@ -102,7 +102,7 @@ public class MineRemoteAccessToolItem extends Item {
 					continue;
 				}
 				else
-					list.add(Utils.localize("tooltip.securitycraft:mine").appendSibling(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine").append(new StringTextComponent(" " + i + ": X:" + coords[0] + " Y:" + coords[1] + " Z:" + coords[2])).setStyle(GRAY_STYLE));
 			}
 			else
 				list.add(new StringTextComponent(TextFormatting.GRAY + "---"));
@@ -118,7 +118,7 @@ public class MineRemoteAccessToolItem extends Item {
 
 				if(coords[0] == pos.getX() && coords[1] == pos.getY() && coords[2] == pos.getZ()){
 					stack.getTag().putIntArray("mine" + i, new int[]{0, 0, 0});
-					if (!player.world.isRemote)
+					if (!player.level.isClientSide)
 						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new UpdateNBTTagOnClient(stack));
 					return;
 				}

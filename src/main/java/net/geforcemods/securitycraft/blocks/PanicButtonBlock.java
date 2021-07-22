@@ -25,47 +25,47 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class PanicButtonBlock extends AbstractButtonBlock {
-	private static final VoxelShape FLOOR_NS_POWERED = Block.makeCuboidShape(3, 0, 5, 13, 1, 11);
-	private static final VoxelShape FLOOR_NS_UNPOWERED = Block.makeCuboidShape(3, 0, 5, 13, 2, 11);
-	private static final VoxelShape FLOOR_EW_POWERED = Block.makeCuboidShape(5, 0, 3, 11, 1, 13);
-	private static final VoxelShape FLOOR_EW_UNPOWERED = Block.makeCuboidShape(5, 0, 3, 11, 2, 13);
-	private static final VoxelShape WALL_N_POWERED = Block.makeCuboidShape(3, 5, 15, 13, 11, 16);
-	private static final VoxelShape WALL_N_UNPOWERED = Block.makeCuboidShape(3, 5, 14, 13, 11, 16);
-	private static final VoxelShape WALL_S_POWERED = Block.makeCuboidShape(3, 5, 1, 13, 11, 0);
-	private static final VoxelShape WALL_S_UNPOWERED = Block.makeCuboidShape(3, 5, 2, 13, 11, 0);
-	private static final VoxelShape WALL_E_POWERED = Block.makeCuboidShape(1, 5, 3, 0, 11, 13);
-	private static final VoxelShape WALL_E_UNPOWERED = Block.makeCuboidShape(2, 5, 3, 0, 11, 13);
-	private static final VoxelShape WALL_W_POWERED = Block.makeCuboidShape(15, 5, 3, 16, 11, 13);
-	private static final VoxelShape WALL_W_UNPOWERED = Block.makeCuboidShape(14, 5, 3, 16, 11, 13);
-	private static final VoxelShape CEILING_NS_POWERED = Block.makeCuboidShape(3, 15, 5, 13, 16, 11);
-	private static final VoxelShape CEILING_NS_UNPOWERED = Block.makeCuboidShape(3, 14, 5, 13, 16, 11);
-	private static final VoxelShape CEILING_EW_POWERED = Block.makeCuboidShape(5, 15, 3, 11, 16, 13);
-	private static final VoxelShape CEILING_EW_UNPOWERED = Block.makeCuboidShape(5, 14, 3, 11, 16, 13);
+	private static final VoxelShape FLOOR_NS_POWERED = Block.box(3, 0, 5, 13, 1, 11);
+	private static final VoxelShape FLOOR_NS_UNPOWERED = Block.box(3, 0, 5, 13, 2, 11);
+	private static final VoxelShape FLOOR_EW_POWERED = Block.box(5, 0, 3, 11, 1, 13);
+	private static final VoxelShape FLOOR_EW_UNPOWERED = Block.box(5, 0, 3, 11, 2, 13);
+	private static final VoxelShape WALL_N_POWERED = Block.box(3, 5, 15, 13, 11, 16);
+	private static final VoxelShape WALL_N_UNPOWERED = Block.box(3, 5, 14, 13, 11, 16);
+	private static final VoxelShape WALL_S_POWERED = Block.box(3, 5, 1, 13, 11, 0);
+	private static final VoxelShape WALL_S_UNPOWERED = Block.box(3, 5, 2, 13, 11, 0);
+	private static final VoxelShape WALL_E_POWERED = Block.box(1, 5, 3, 0, 11, 13);
+	private static final VoxelShape WALL_E_UNPOWERED = Block.box(2, 5, 3, 0, 11, 13);
+	private static final VoxelShape WALL_W_POWERED = Block.box(15, 5, 3, 16, 11, 13);
+	private static final VoxelShape WALL_W_UNPOWERED = Block.box(14, 5, 3, 16, 11, 13);
+	private static final VoxelShape CEILING_NS_POWERED = Block.box(3, 15, 5, 13, 16, 11);
+	private static final VoxelShape CEILING_NS_UNPOWERED = Block.box(3, 14, 5, 13, 16, 11);
+	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
+	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
 
 	public PanicButtonBlock(boolean isWooden, Block.Properties properties) {
 		super(isWooden, properties);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		boolean newPowered = !state.get(POWERED);
+		boolean newPowered = !state.getValue(POWERED);
 
-		world.setBlockState(pos, state.with(POWERED, newPowered));
+		world.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
 		playSound(player, world, pos, newPowered);
 
-		if(state.get(FACE) == AttachFace.WALL)
-			notifyNeighbors(world, pos, state.get(HORIZONTAL_FACING));
-		else if(state.get(FACE) == AttachFace.CEILING)
+		if(state.getValue(FACE) == AttachFace.WALL)
+			notifyNeighbors(world, pos, state.getValue(FACING));
+		else if(state.getValue(FACE) == AttachFace.CEILING)
 			notifyNeighbors(world, pos, Direction.DOWN);
-		else if(state.get(FACE) == AttachFace.FLOOR)
+		else if(state.getValue(FACE) == AttachFace.FLOOR)
 			notifyNeighbors(world, pos, Direction.UP);
 
 		return ActionResultType.SUCCESS;
@@ -73,39 +73,39 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 
 	private void notifyNeighbors(World world, BlockPos pos, Direction facing)
 	{
-		world.notifyNeighborsOfStateChange(pos, this);
-		world.notifyNeighborsOfStateChange(pos.offset(facing.getOpposite()), this);
+		world.updateNeighborsAt(pos, this);
+		world.updateNeighborsAt(pos.relative(facing.getOpposite()), this);
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
-		super.onReplaced(state, world, pos, newState, isMoving);
-		world.removeTileEntity(pos);
+		super.onRemove(state, world, pos, newState, isMoving);
+		world.removeBlockEntity(pos);
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int id, int param){
-		super.eventReceived(state, world, pos, id, param);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(id, param);
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int id, int param){
+		super.triggerEvent(state, world, pos, id, param);
+		TileEntity tileentity = world.getBlockEntity(pos);
+		return tileentity == null ? false : tileentity.triggerEvent(id, param);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader source, BlockPos pos, ISelectionContext ctx)
 	{
-		switch(state.get(FACE))
+		switch(state.getValue(FACE))
 		{
 			case FLOOR:
-				switch(state.get(HORIZONTAL_FACING))
+				switch(state.getValue(FACING))
 				{
 					case NORTH: case SOUTH:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return FLOOR_NS_POWERED;
 						else
 							return FLOOR_NS_UNPOWERED;
 					case EAST: case WEST:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return FLOOR_EW_POWERED;
 						else
 							return FLOOR_EW_UNPOWERED;
@@ -113,25 +113,25 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 				}
 				break;
 			case WALL:
-				switch(state.get(HORIZONTAL_FACING))
+				switch(state.getValue(FACING))
 				{
 					case NORTH:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return WALL_N_POWERED;
 						else
 							return WALL_N_UNPOWERED;
 					case SOUTH:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return WALL_S_POWERED;
 						else
 							return WALL_S_UNPOWERED;
 					case EAST:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return WALL_E_POWERED;
 						else
 							return WALL_E_UNPOWERED;
 					case WEST:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return WALL_W_POWERED;
 						else
 							return WALL_W_UNPOWERED;
@@ -139,15 +139,15 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 				}
 				break;
 			case CEILING:
-				switch(state.get(HORIZONTAL_FACING))
+				switch(state.getValue(FACING))
 				{
 					case NORTH: case SOUTH:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return CEILING_NS_POWERED;
 						else
 							return CEILING_NS_UNPOWERED;
 					case EAST: case WEST:
-						if(state.get(POWERED))
+						if(state.getValue(POWERED))
 							return CEILING_EW_POWERED;
 						else
 							return CEILING_EW_UNPOWERED;
@@ -155,7 +155,7 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 				}
 		}
 
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
@@ -176,8 +176,8 @@ public class PanicButtonBlock extends AbstractButtonBlock {
 	}
 
 	@Override
-	protected SoundEvent getSoundEvent(boolean turningOn)
+	protected SoundEvent getSound(boolean turningOn)
 	{
-		return turningOn ? SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON : SoundEvents.BLOCK_STONE_BUTTON_CLICK_OFF;
+		return turningOn ? SoundEvents.STONE_BUTTON_CLICK_ON : SoundEvents.STONE_BUTTON_CLICK_OFF;
 	}
 }

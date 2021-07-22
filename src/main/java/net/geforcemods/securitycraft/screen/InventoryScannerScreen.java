@@ -26,9 +26,9 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
 	private ITextComponent infoStringRedstone, infoStringStorage;
-	private static final Style UNDERLINE = Style.EMPTY.applyFormatting(TextFormatting.UNDERLINE);
-	private final ITextComponent redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getTranslationKey()));
-	private final ITextComponent storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getTranslationKey()));
+	private static final Style UNDERLINE = Style.EMPTY.applyFormat(TextFormatting.UNDERLINE);
+	private final ITextComponent redstoneModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
+	private final ITextComponent storageModuleNotInstalled = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
 
 	public InventoryScannerScreen(InventoryScannerContainer container, PlayerInventory inv, ITextComponent name){
 		super(container, inv, name);
@@ -40,17 +40,17 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 
 		if(hasStorageModule)
-			xSize = 246;
+			imageWidth = 246;
 		else
-			xSize = 190;
+			imageWidth = 190;
 
-		ySize = 196;
+		imageHeight = 196;
 	}
 
 	@Override
 	public void init(){
 		super.init();
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 	}
 
 	@Override
@@ -58,38 +58,38 @@ public class InventoryScannerScreen extends ContainerScreen<InventoryScannerCont
 		super.render(matrix, mouseX, mouseY, partialTicks);
 
 		RenderSystem.disableLighting();
-		font.func_238418_a_(infoStringRedstone, guiLeft + 28, guiTop + 45, 150, 4210752);
-		font.func_238418_a_(infoStringStorage, guiLeft + 28, guiTop + 75, 150, 4210752);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, guiLeft + 8, guiTop + 45, width, height, mouseX, mouseY);
-		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, guiLeft + 8, guiTop + 75, width, height, mouseX, mouseY);
+		font.drawWordWrap(infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
+		font.drawWordWrap(infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.REDSTONE, null, redstoneModuleNotInstalled, hasRedstoneModule, leftPos + 8, topPos + 45, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.STORAGE, null, storageModuleNotInstalled, hasStorageModule, leftPos + 8, topPos + 75, width, height, mouseX, mouseY);
 
-		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getStack().isEmpty())
-			renderTooltip(matrix, getSlotUnderMouse().getStack(), mouseX, mouseY);
+		if(getSlotUnderMouse() != null && !getSlotUnderMouse().getItem().isEmpty())
+			renderTooltip(matrix, getSlotUnderMouse().getItem(), mouseX, mouseY);
 	}
 
 	@Override
-	public void onClose(){
-		super.onClose();
-		minecraft.keyboardListener.enableRepeatEvents(false);
+	public void removed(){
+		super.removed();
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawText(matrix, Utils.localize("gui.securitycraft:invScan.prohibitedItems"), 8, 6, 4210752);
-		font.drawText(matrix, Utils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
+		font.draw(matrix, Utils.localize("gui.securitycraft:invScan.prohibitedItems"), 8, 6, 4210752);
+		font.draw(matrix, Utils.localize("gui.securitycraft:invScan.mode." + (tileEntity.getOwner().isOwner(minecraft.player) ? "admin" : "view")).setStyle(UNDERLINE), 112, 6, 4210752);
 
 		if(hasStorageModule && owns)
-			font.drawText(matrix, Utils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
+			font.draw(matrix, Utils.localize("gui.securitycraft:invScan.storage"), 188, 18, 4210752);
 
-		font.drawText(matrix, Utils.localize("container.inventory"), 15, ySize - 93, 4210752);
+		font.draw(matrix, Utils.localize("container.inventory"), 15, imageHeight - 93, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
-		blit(matrix, (width - xSize) / 2, (height - ySize) / 2, 0, 0, xSize, ySize + 30);
+		minecraft.getTextureManager().bind(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY);
+		blit(matrix, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

@@ -66,9 +66,9 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -88,9 +88,9 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -102,13 +102,13 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT tag = new CompoundNBT();
-		write(tag);
-		return new SUpdateTileEntityPacket(pos, 1, tag);
+		save(tag);
+		return new SUpdateTileEntityPacket(worldPosition, 1, tag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		read(getBlockState(), packet.getNbtCompound());
+		load(getBlockState(), packet.getTag());
 	}
 
 	/**
@@ -120,15 +120,15 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 		return Utils.localize("block.securitycraft.keypad_chest");
 	}
 
-	protected void onOpenOrClose() {
-		super.onOpenOrClose();
+	protected void signalOpenCount() {
+		super.signalOpenCount();
 
 		if (hasModule(ModuleType.REDSTONE))
-			this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockState().getBlock());
+			this.level.updateNeighborsAt(this.worldPosition.below(), this.getBlockState().getBlock());
 	}
 
 	public int getNumPlayersUsing() {
-		return numPlayersUsing;
+		return openCount;
 	}
 
 	@Override
@@ -162,15 +162,15 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
+	public ItemStack getItem(int slot)
 	{
-		return slot >= 100 ? getModuleInSlot(slot) : super.getStackInSlot(slot);
+		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
-			KeypadChestBlock.activate(world, pos, player);
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock && !isBlocked())
+			KeypadChestBlock.activate(level, worldPosition, player);
 	}
 
 	@Override
@@ -186,15 +186,15 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 					{
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
+						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
+						return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
 					}
-				}, pos);
+				}, worldPosition);
 			}
 		}
 		else
@@ -207,15 +207,15 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 						{
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
+							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getTranslationKey());
+							return new TranslationTextComponent(SCContent.KEYPAD_CHEST.get().getDescriptionId());
 						}
-					}, pos);
+					}, worldPosition);
 				}
 			}
 			else
@@ -276,20 +276,20 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public KeypadChestTileEntity findOther()
 	{
 		BlockState state = getBlockState();
-		ChestType type = state.get(KeypadChestBlock.TYPE);
+		ChestType type = state.getValue(KeypadChestBlock.TYPE);
 
 		if(type != ChestType.SINGLE)
 		{
-			BlockPos offsetPos = pos.offset(ChestBlock.getDirectionToAttached(state));
-			BlockState offsetState = world.getBlockState(offsetPos);
+			BlockPos offsetPos = worldPosition.relative(ChestBlock.getConnectedDirection(state));
+			BlockState offsetState = level.getBlockState(offsetPos);
 
 			if(state.getBlock() == offsetState.getBlock())
 			{
-				ChestType offsetType = offsetState.get(KeypadChestBlock.TYPE);
+				ChestType offsetType = offsetState.getValue(KeypadChestBlock.TYPE);
 
-				if(offsetType != ChestType.SINGLE && type != offsetType && state.get(KeypadChestBlock.FACING) == offsetState.get(KeypadChestBlock.FACING))
+				if(offsetType != ChestType.SINGLE && type != offsetType && state.getValue(KeypadChestBlock.FACING) == offsetState.getValue(KeypadChestBlock.FACING))
 				{
-					TileEntity offsetTe = world.getTileEntity(offsetPos);
+					TileEntity offsetTe = level.getBlockEntity(offsetPos);
 
 					if(offsetTe instanceof KeypadChestTileEntity)
 						return (KeypadChestTileEntity)offsetTe;
@@ -322,11 +322,11 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 	public boolean isBlocked()
 	{
-		for(Direction dir : Direction.Plane.HORIZONTAL.getDirectionValues().collect(Collectors.toList()))
+		for(Direction dir : Direction.Plane.HORIZONTAL.stream().collect(Collectors.toList()))
 		{
-			BlockPos pos = getPos().offset(dir);
+			BlockPos pos = getBlockPos().relative(dir);
 
-			if(world.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(world, pos))
+			if(level.getBlockState(pos).getBlock() instanceof KeypadChestBlock && KeypadChestBlock.isBlocked(level, pos))
 				return true;
 		}
 
@@ -335,14 +335,14 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 
 	public boolean isSingleBlocked()
 	{
-		return KeypadChestBlock.isBlocked(getWorld(), getPos());
+		return KeypadChestBlock.isBlocked(getLevel(), getBlockPos());
 	}
 
 	@Override
 	public void onLoad()
 	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
+		if(level.isClientSide)
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(worldPosition));
 	}
 
 	@Override
@@ -377,6 +377,6 @@ public class KeypadChestTileEntity extends ChestTileEntity implements IPasswordP
 	public void setSendsMessages(boolean value)
 	{
 		sendMessage.setValue(value);
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3); //sync option change to client
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
 	}
 }

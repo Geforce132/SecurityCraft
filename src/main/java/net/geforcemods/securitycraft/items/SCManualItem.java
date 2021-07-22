@@ -24,11 +24,11 @@ public class SCManualItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		if(world.isRemote)
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		if(world.isClientSide)
 			SecurityCraft.proxy.displaySCManualGui();
 
-		return ActionResult.resultConsume(player.getHeldItem(hand));
+		return ActionResult.consume(player.getItemInHand(hand));
 	}
 
 	@Override
@@ -36,9 +36,9 @@ public class SCManualItem extends Item {
 		if(stack.getTag() == null){
 			ListNBT bookPages = new ListNBT();
 
-			stack.setTagInfo("pages", bookPages);
-			stack.setTagInfo("author", StringNBT.valueOf("Geforce"));
-			stack.setTagInfo("title", StringNBT.valueOf("SecurityCraft"));
+			stack.addTagElement("pages", bookPages);
+			stack.addTagElement("author", StringNBT.valueOf("Geforce"));
+			stack.addTagElement("title", StringNBT.valueOf("SecurityCraft"));
 		}
 	}
 

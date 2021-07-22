@@ -29,7 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BriefcaseItem extends Item implements IDyeableArmorItem {
 
-	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 
 	public BriefcaseItem(Item.Properties properties)
 	{
@@ -37,9 +37,9 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType useOn(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getHand());
+		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getHand());
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, Hand hand) {
@@ -51,31 +51,31 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
 		handle(stack, world, player, hand);
-		return ActionResult.resultConsume(stack);
+		return ActionResult.consume(stack);
 	}
 
 	private void handle(ItemStack stack, World world, PlayerEntity player, Hand hand)
 	{
-		if(world.isRemote) {
+		if(world.isClientSide) {
 			if(!stack.hasTag()) {
 				stack.setTag(new CompoundNBT());
 				ClientUtils.syncItemNBT(stack);
 			}
 
 			if(!stack.getTag().contains("passcode"))
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcaseSetup.getRegistryName(), stack.getHoverName()));
 			else
-				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getDisplayName()));
+				SecurityCraft.channel.sendToServer(new OpenBriefcaseGui(SCContent.cTypeBriefcase.getRegistryName(), stack.getHoverName()));
 		}
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack briefcase, World world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		String ownerName = getOwnerName(briefcase);
 
 		if(!ownerName.isEmpty())
@@ -89,7 +89,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		String ownerName = getOwnerName(briefcase);
 		String ownerUUID = getOwnerUUID(briefcase);
 
-		return ownerName.isEmpty() || ownerUUID.equals(player.getUniqueID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+		return ownerName.isEmpty() || ownerUUID.equals(player.getUUID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
 	}
 
 	public static String getOwnerName(ItemStack briefcase)

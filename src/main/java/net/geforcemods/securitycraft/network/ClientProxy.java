@@ -164,7 +164,7 @@ public class ClientProxy implements IProxy
 	@SubscribeEvent
 	public static void onTextureStitchPre(TextureStitchEvent.Pre event)
 	{
-		if(event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS))
+		if(event.getMap().location().equals(Atlases.CHEST_SHEET))
 		{
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/active"));
 			event.addSprite(new ResourceLocation("securitycraft", "entity/chest/inactive"));
@@ -181,9 +181,9 @@ public class ClientProxy implements IProxy
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event)
 	{
-		RenderType cutout = RenderType.getCutout();
-		RenderType cutoutMipped = RenderType.getCutoutMipped();
-		RenderType translucent = RenderType.getTranslucent();
+		RenderType cutout = RenderType.cutout();
+		RenderType cutoutMipped = RenderType.cutoutMipped();
+		RenderType translucent = RenderType.translucent();
 
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_MANAGER.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(SCContent.BLOCK_POCKET_WALL.get(), translucent);
@@ -260,23 +260,23 @@ public class ClientProxy implements IProxy
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeSecretSign, SecretSignTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeTrophySystem, TrophySystemTileEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.teTypeProjector, ProjectorTileEntityRenderer::new);
-		ScreenManager.registerFactory(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeSetPassword, SetPasswordScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeIMS, IMSScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeProjector, ProjectorScreen::new);
-		ScreenManager.registerFactory(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
+		ScreenManager.register(SCContent.cTypeBlockReinforcer, BlockReinforcerScreen::new);
+		ScreenManager.register(SCContent.cTypeBriefcase, BriefcasePasswordScreen::new);
+		ScreenManager.register(SCContent.cTypeBriefcaseInventory, BriefcaseInventoryScreen::new);
+		ScreenManager.register(SCContent.cTypeBriefcaseSetup, BriefcaseSetupScreen::new);
+		ScreenManager.register(SCContent.cTypeCustomizeBlock, CustomizeBlockScreen::new);
+		ScreenManager.register(SCContent.cTypeDisguiseModule, DisguiseModuleScreen::new);
+		ScreenManager.register(SCContent.cTypeInventoryScanner, InventoryScannerScreen::new);
+		ScreenManager.register(SCContent.cTypeKeypadFurnace, KeypadFurnaceScreen::new);
+		ScreenManager.register(SCContent.cTypeCheckPassword, CheckPasswordScreen::new);
+		ScreenManager.register(SCContent.cTypeSetPassword, SetPasswordScreen::new);
+		ScreenManager.register(SCContent.cTypeUsernameLogger, UsernameLoggerScreen::new);
+		ScreenManager.register(SCContent.cTypeIMS, IMSScreen::new);
+		ScreenManager.register(SCContent.cTypeKeycardReader, KeycardReaderScreen::new);
+		ScreenManager.register(SCContent.cTypeKeyChanger, KeyChangerScreen::new);
+		ScreenManager.register(SCContent.cTypeBlockPocketManager, BlockPocketManagerScreen::new);
+		ScreenManager.register(SCContent.cTypeProjector, ProjectorScreen::new);
+		ScreenManager.register(SCContent.cTypeTrophySystem, TrophySystemScreen::new);
 		KeyBindings.init();
 	}
 
@@ -321,8 +321,8 @@ public class ClientProxy implements IProxy
 		toTint.put(SCContent.STAIRS_CRYSTAL_QUARTZ.get(), crystalQuartzTint);
 
 		specialBlockTint.put(SCContent.REINFORCED_GRASS_BLOCK.get(), (state, world, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.get(ReinforcedSnowyDirtBlock.SNOWY)) {
-				int grassTint = world != null && pos != null ? BiomeColors.getGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
+			if (tintIndex == 1 && !state.getValue(ReinforcedSnowyDirtBlock.SNOWY)) {
+				int grassTint = world != null && pos != null ? BiomeColors.getAverageGrassColor(world, pos) : GrassColors.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
@@ -331,7 +331,7 @@ public class ClientProxy implements IProxy
 		});
 		specialBlockTint.put(SCContent.REINFORCED_CAULDRON.get(), (state, world, pos, tintIndex) -> {
 			if (tintIndex == 1)
-				return world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1;
+				return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
 
 			return noTint;
 		});
@@ -367,10 +367,10 @@ public class ClientProxy implements IProxy
 
 			if(block instanceof DisguisableBlock)
 			{
-				Block blockFromItem = Block.getBlockFromItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
+				Block blockFromItem = Block.byItem(((DisguisableBlock)block).getDisguisedStack(world, pos).getItem());
 
 				if(blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
-					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.getDefaultState(), world, pos, tintIndex);
+					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), world, pos, tintIndex);
 			}
 
 			return noTint;
@@ -380,7 +380,7 @@ public class ClientProxy implements IProxy
 			{
 				IDyeableArmorItem item = ((IDyeableArmorItem)stack.getItem());
 
-				if(item.hasColor(stack))
+				if(item.hasCustomColor(stack))
 					return item.getColor(stack);
 				else
 					return 0x333333;
@@ -418,36 +418,36 @@ public class ClientProxy implements IProxy
 	@Override
 	public void displayMRATGui(ItemStack stack)
 	{
-		Minecraft.getInstance().displayGuiScreen(new MineRemoteAccessToolScreen(stack));
+		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
 	@Override
 	public void displaySRATGui(ItemStack stack, int viewDistance)
 	{
-		Minecraft.getInstance().displayGuiScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
+		Minecraft.getInstance().setScreen(new SentryRemoteAccessToolScreen(stack, viewDistance));
 	}
 
 	@Override
 	public void displayEditModuleGui(ItemStack stack)
 	{
-		Minecraft.getInstance().displayGuiScreen(new EditModuleScreen(stack));
+		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
 	@Override
 	public void displayCameraMonitorGui(PlayerInventory inv, CameraMonitorItem item, CompoundNBT stackTag)
 	{
-		Minecraft.getInstance().displayGuiScreen(new CameraMonitorScreen(inv, item, stackTag));
+		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
 	}
 
 	@Override
 	public void displaySCManualGui()
 	{
-		Minecraft.getInstance().displayGuiScreen(new SCManualScreen());
+		Minecraft.getInstance().setScreen(new SCManualScreen());
 	}
 
 	@Override
 	public void displayEditSecretSignGui(SecretSignTileEntity te)
 	{
-		Minecraft.getInstance().displayGuiScreen(new EditSecretSignScreen(te));
+		Minecraft.getInstance().setScreen(new EditSecretSignScreen(te));
 	}
 }

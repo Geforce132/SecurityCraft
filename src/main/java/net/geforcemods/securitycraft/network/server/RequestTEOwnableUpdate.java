@@ -26,7 +26,7 @@ public class RequestTEOwnableUpdate
 	 */
 	public RequestTEOwnableUpdate(OwnableTileEntity te)
 	{
-		this(te.getPos());
+		this(te.getBlockPos());
 	}
 
 	/**
@@ -54,12 +54,12 @@ public class RequestTEOwnableUpdate
 	public static void onMessage(RequestTEOwnableUpdate message, Supplier<NetworkEvent.Context> ctx)
 	{
 		ctx.get().enqueueWork(() -> {
-			TileEntity te = ctx.get().getSender().world.getTileEntity(message.pos);
+			TileEntity te = ctx.get().getSender().level.getBlockEntity(message.pos);
 			boolean syncTag = te instanceof CustomizableTileEntity || te instanceof IPasswordProtected;
-			CompoundNBT tag = syncTag ? te.write(new CompoundNBT()) : null;
+			CompoundNBT tag = syncTag ? te.save(new CompoundNBT()) : null;
 
 			if(te instanceof IOwnable)
-				SecurityCraft.channel.reply(new UpdateTEOwnable(te.getPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), syncTag, tag), ctx.get());
+				SecurityCraft.channel.reply(new UpdateTEOwnable(te.getBlockPos(), ((IOwnable)te).getOwner().getName(), ((IOwnable)te).getOwner().getUUID(), syncTag, tag), ctx.get());
 		});
 
 		ctx.get().setPacketHandled(true);

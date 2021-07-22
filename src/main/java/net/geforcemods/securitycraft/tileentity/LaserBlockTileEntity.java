@@ -29,9 +29,9 @@ public class LaserBlockTileEntity extends DisguisableTileEntity {
 
 	private void toggleLaser(BooleanOption option) {
 		if(option.get())
-			((LaserBlock)getBlockState().getBlock()).setLaser(world, pos);
+			((LaserBlock)getBlockState().getBlock()).setLaser(level, worldPosition);
 		else
-			LaserBlock.destroyAdjacentLasers(world, pos);
+			LaserBlock.destroyAdjacentLasers(level, worldPosition);
 	}
 
 	@Override

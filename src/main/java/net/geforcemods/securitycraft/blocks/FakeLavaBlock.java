@@ -23,22 +23,22 @@ public class FakeLavaBlock extends FlowingFluidBlock
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity)
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity)
 	{
-		super.onEntityCollision(state, world, pos, entity);
+		super.entityInside(state, world, pos, entity);
 
 		if(entity instanceof LivingEntity)
 		{
 			LivingEntity lEntity = (LivingEntity)entity;
 
-			lEntity.extinguish();
+			lEntity.clearFire();
 
-			if(!world.isRemote)
+			if(!world.isClientSide)
 			{
-				lEntity.addPotionEffect(SHORT_FIRE_RESISTANCE);
+				lEntity.addEffect(SHORT_FIRE_RESISTANCE);
 
-				if(!lEntity.isPotionActive(Effects.REGENERATION))
-					lEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 20, 2));
+				if(!lEntity.hasEffect(Effects.REGENERATION))
+					lEntity.addEffect(new EffectInstance(Effects.REGENERATION, 20, 2));
 			}
 		}
 	}

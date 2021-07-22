@@ -45,7 +45,7 @@ public class CommonDoorActivator implements IDoorActivator
 	@Override
 	public boolean isPowering(World world, BlockPos pos, BlockState state, TileEntity te)
 	{
-		return state.get(BlockStateProperties.POWERED);
+		return state.getValue(BlockStateProperties.POWERED);
 	}
 
 	@Override

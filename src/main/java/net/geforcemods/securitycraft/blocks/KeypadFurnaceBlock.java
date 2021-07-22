@@ -50,84 +50,84 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	private static final VoxelShape NORTH_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 3, 16, 16, 16), Block.makeCuboidShape(1, 1, 2, 15, 2, 3)), VoxelShapes.combine(Block.makeCuboidShape(4, 1, 0, 12, 2, 2), Block.makeCuboidShape(5, 1, 1, 11, 2, 2), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(1, 2, 3, 15, 15, 4), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape NORTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 3, 16, 16, 16), Block.makeCuboidShape(1, 1, 2, 15, 15, 3)), VoxelShapes.combine(Block.makeCuboidShape(4, 14, 0, 12, 15, 2), Block.makeCuboidShape(5, 14, 1, 11, 15, 2), IBooleanFunction.ONLY_FIRST));
-	private static final VoxelShape EAST_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 13, 16, 16), Block.makeCuboidShape(13, 1, 1, 14, 2, 15)), VoxelShapes.combine(Block.makeCuboidShape(14, 1, 4, 16, 2, 12), Block.makeCuboidShape(14, 1, 5, 15, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(12, 2, 1, 13, 15, 15), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape EAST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 13, 16, 16), Block.makeCuboidShape(13, 1, 1, 14, 15, 15)), VoxelShapes.combine(Block.makeCuboidShape(14, 14, 4, 16, 15, 12), Block.makeCuboidShape(14, 14, 5, 15, 15, 11), IBooleanFunction.ONLY_FIRST));
-	private static final VoxelShape SOUTH_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 16, 16, 13), Block.makeCuboidShape(1, 1, 13, 15, 2, 14)), VoxelShapes.combine(Block.makeCuboidShape(4, 1, 14, 12, 2, 16), Block.makeCuboidShape(5, 1, 14, 11, 2, 15), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(1, 2, 12, 15, 15, 13), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape SOUTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(0, 0, 0, 16, 16, 13), Block.makeCuboidShape(1, 1, 13, 15, 15, 14)), VoxelShapes.combine(Block.makeCuboidShape(4, 14, 14, 12, 15, 16), Block.makeCuboidShape(5, 14, 14, 11, 15, 15), IBooleanFunction.ONLY_FIRST));
-	private static final VoxelShape WEST_OPEN = VoxelShapes.combine(VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(3, 0, 0, 16, 16, 16), Block.makeCuboidShape(2, 1, 1, 3, 2, 15)), VoxelShapes.combine(Block.makeCuboidShape(0, 1, 4, 2, 2, 12), Block.makeCuboidShape(1, 1, 5, 2, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.makeCuboidShape(3, 2, 1, 4, 15, 15), IBooleanFunction.ONLY_FIRST);
-	private static final VoxelShape WEST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.makeCuboidShape(3, 0, 0, 16, 16, 16), Block.makeCuboidShape(2, 1, 1, 3, 15, 15)), VoxelShapes.combine(Block.makeCuboidShape(0, 14, 4, 2, 15, 12), Block.makeCuboidShape(1, 14, 5, 2, 15, 11), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape NORTH_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 3, 16, 16, 16), Block.box(1, 1, 2, 15, 2, 3)), VoxelShapes.joinUnoptimized(Block.box(4, 1, 0, 12, 2, 2), Block.box(5, 1, 1, 11, 2, 2), IBooleanFunction.ONLY_FIRST)), Block.box(1, 2, 3, 15, 15, 4), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape NORTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 3, 16, 16, 16), Block.box(1, 1, 2, 15, 15, 3)), VoxelShapes.joinUnoptimized(Block.box(4, 14, 0, 12, 15, 2), Block.box(5, 14, 1, 11, 15, 2), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape EAST_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 13, 16, 16), Block.box(13, 1, 1, 14, 2, 15)), VoxelShapes.joinUnoptimized(Block.box(14, 1, 4, 16, 2, 12), Block.box(14, 1, 5, 15, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.box(12, 2, 1, 13, 15, 15), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape EAST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 13, 16, 16), Block.box(13, 1, 1, 14, 15, 15)), VoxelShapes.joinUnoptimized(Block.box(14, 14, 4, 16, 15, 12), Block.box(14, 14, 5, 15, 15, 11), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape SOUTH_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 16, 16, 13), Block.box(1, 1, 13, 15, 2, 14)), VoxelShapes.joinUnoptimized(Block.box(4, 1, 14, 12, 2, 16), Block.box(5, 1, 14, 11, 2, 15), IBooleanFunction.ONLY_FIRST)), Block.box(1, 2, 12, 15, 15, 13), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape SOUTH_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(0, 0, 0, 16, 16, 13), Block.box(1, 1, 13, 15, 15, 14)), VoxelShapes.joinUnoptimized(Block.box(4, 14, 14, 12, 15, 16), Block.box(5, 14, 14, 11, 15, 15), IBooleanFunction.ONLY_FIRST));
+	private static final VoxelShape WEST_OPEN = VoxelShapes.joinUnoptimized(VoxelShapes.or(VoxelShapes.or(Block.box(3, 0, 0, 16, 16, 16), Block.box(2, 1, 1, 3, 2, 15)), VoxelShapes.joinUnoptimized(Block.box(0, 1, 4, 2, 2, 12), Block.box(1, 1, 5, 2, 2, 11), IBooleanFunction.ONLY_FIRST)), Block.box(3, 2, 1, 4, 15, 15), IBooleanFunction.ONLY_FIRST);
+	private static final VoxelShape WEST_CLOSED = VoxelShapes.or(VoxelShapes.or(Block.box(3, 0, 0, 16, 16, 16), Block.box(2, 1, 1, 3, 15, 15)), VoxelShapes.joinUnoptimized(Block.box(0, 14, 4, 2, 15, 12), Block.box(1, 14, 5, 2, 15, 11), IBooleanFunction.ONLY_FIRST));
 
 	public KeypadFurnaceBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(OPEN, false).with(LIT, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(OPEN, false).setValue(LIT, false));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		switch(state.get(FACING))
+		switch(state.getValue(FACING))
 		{
 			case NORTH:
-				if(state.get(OPEN))
+				if(state.getValue(OPEN))
 					return NORTH_OPEN;
 				else
 					return NORTH_CLOSED;
 			case EAST:
-				if(state.get(OPEN))
+				if(state.getValue(OPEN))
 					return EAST_OPEN;
 				else
 					return EAST_CLOSED;
 			case SOUTH:
-				if(state.get(OPEN))
+				if(state.getValue(OPEN))
 					return SOUTH_OPEN;
 				else
 					return SOUTH_CLOSED;
 			case WEST:
-				if(state.get(OPEN))
+				if(state.getValue(OPEN))
 					return WEST_OPEN;
 				else
 					return WEST_CLOSED;
-			default: return VoxelShapes.fullCube();
+			default: return VoxelShapes.block();
 		}
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(!(newState.getBlock() instanceof KeypadFurnaceBlock))
 		{
-			TileEntity tileentity = world.getTileEntity(pos);
+			TileEntity tileentity = world.getBlockEntity(pos);
 
 			if (tileentity instanceof IInventory)
 			{
-				InventoryHelper.dropInventoryItems(world, pos, (IInventory)tileentity);
-				world.updateComparatorOutputLevel(pos, this);
+				InventoryHelper.dropContents(world, pos, (IInventory)tileentity);
+				world.updateNeighbourForOutputSignal(pos, this);
 			}
 
-			super.onReplaced(state, world, pos, newState, isMoving);
+			super.onRemove(state, world, pos, newState, isMoving);
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote)
+		if(!world.isClientSide)
 		{
-			KeypadFurnaceTileEntity te = (KeypadFurnaceTileEntity)world.getTileEntity(pos);
+			KeypadFurnaceTileEntity te = (KeypadFurnaceTileEntity)world.getBlockEntity(pos);
 
 			if(ModuleUtils.isDenied(te, player))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), TextFormatting.RED);
 
 				return ActionResultType.FAIL;
 			}
 			else if(ModuleUtils.isAllowed(te, player))
 			{
 				if(te.sendsMessages())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getTranslationKey()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), TextFormatting.GREEN);
 
 				activate(world, pos, player);
 			}
@@ -140,16 +140,16 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 
 	public static void activate(World world, BlockPos pos, PlayerEntity player){
 		BlockState state = world.getBlockState(pos);
-		if(!state.get(KeypadFurnaceBlock.OPEN))
-			world.setBlockState(pos, state.with(KeypadFurnaceBlock.OPEN, true));
+		if(!state.getValue(KeypadFurnaceBlock.OPEN))
+			world.setBlockAndUpdate(pos, state.setValue(KeypadFurnaceBlock.OPEN, true));
 
 		if(player instanceof ServerPlayerEntity)
 		{
-			TileEntity te = world.getTileEntity(pos);
+			TileEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof INamedContainerProvider)
 			{
-				world.playEvent((PlayerEntity)null, 1006, pos, 0);
+				world.levelEvent((PlayerEntity)null, 1006, pos, 0);
 				NetworkHooks.openGui((ServerPlayerEntity)player, (INamedContainerProvider)te, pos);
 			}
 		}
@@ -158,32 +158,32 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite()).with(OPEN, false).with(LIT, false);
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite()).setValue(OPEN, false).setValue(LIT, false);
 	}
 
 	@Override
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand)
 	{
-		if(state.get(OPEN) && state.get(LIT))
+		if(state.getValue(OPEN) && state.getValue(LIT))
 		{
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
 			double z = pos.getZ() + 0.5D;
 
 			if(rand.nextDouble() < 0.1D)
-				world.playSound(x, y, z, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 
-			Direction direction = state.get(FACING);
+			Direction direction = state.getValue(FACING);
 			Axis axis = direction.getAxis();
 			double randomNumber = rand.nextDouble() * 0.6D - 0.3D;
-			double xOffset = axis == Axis.X ? direction.getXOffset() * 0.52D : randomNumber;
+			double xOffset = axis == Axis.X ? direction.getStepX() * 0.52D : randomNumber;
 			double yOffset = rand.nextDouble() * 6.0D / 16.0D;
-			double zOffset = axis == Axis.Z ? direction.getZOffset() * 0.52D : randomNumber;
+			double zOffset = axis == Axis.Z ? direction.getStepZ() * 0.52D : randomNumber;
 
 			world.addParticle(ParticleTypes.SMOKE, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
 			world.addParticle(ParticleTypes.FLAME, x + xOffset, y + yOffset, z + zOffset, 0.0D, 0.0D, 0.0D);
@@ -191,7 +191,7 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING, OPEN, LIT);
 	}
@@ -204,13 +204,13 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	public static class Convertible implements IPasswordConvertible
@@ -225,15 +225,15 @@ public class KeypadFurnaceBlock extends OwnableBlock {
 		public boolean convert(PlayerEntity player, World world, BlockPos pos)
 		{
 			BlockState state = world.getBlockState(pos);
-			Direction facing = state.get(FACING);
-			boolean lit = state.get(LIT);
-			FurnaceTileEntity furnace = (FurnaceTileEntity)world.getTileEntity(pos);
-			CompoundNBT tag = furnace.write(new CompoundNBT());
+			Direction facing = state.getValue(FACING);
+			boolean lit = state.getValue(LIT);
+			FurnaceTileEntity furnace = (FurnaceTileEntity)world.getBlockEntity(pos);
+			CompoundNBT tag = furnace.save(new CompoundNBT());
 
-			furnace.clear();
-			world.setBlockState(pos, SCContent.KEYPAD_FURNACE.get().getDefaultState().with(FACING, facing).with(OPEN, false).with(LIT, lit));
-			((KeypadFurnaceTileEntity)world.getTileEntity(pos)).read(world.getBlockState(pos), tag);
-			((IOwnable) world.getTileEntity(pos)).setOwner(player.getUniqueID().toString(), player.getName().getString());
+			furnace.clearContent();
+			world.setBlockAndUpdate(pos, SCContent.KEYPAD_FURNACE.get().defaultBlockState().setValue(FACING, facing).setValue(OPEN, false).setValue(LIT, lit));
+			((KeypadFurnaceTileEntity)world.getBlockEntity(pos)).load(world.getBlockState(pos), tag);
+			((IOwnable) world.getBlockEntity(pos)).setOwner(player.getUUID().toString(), player.getName().getString());
 			return true;
 		}
 	}

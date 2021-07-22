@@ -35,12 +35,12 @@ public class ModuleItemInventory implements IInventory {
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return SIZE;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		return moduleInventory.get(index);
 	}
 
@@ -51,19 +51,19 @@ public class ModuleItemInventory implements IInventory {
 			CompoundNBT item = items.getCompound(i);
 			int slot = item.getInt("Slot");
 
-			if(slot < getSizeInventory())
-				moduleInventory.set(slot, ItemStack.read(item));
+			if(slot < getContainerSize())
+				moduleInventory.set(slot, ItemStack.of(item));
 		}
 	}
 
 	public void writeToNBT(CompoundNBT tag) {
 		ListNBT items = new ListNBT();
 
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(!getStackInSlot(i).isEmpty()) {
+		for(int i = 0; i < getContainerSize(); i++)
+			if(!getItem(i).isEmpty()) {
 				CompoundNBT item = new CompoundNBT();
 				item.putInt("Slot", i);
-				getStackInSlot(i).write(item);
+				getItem(i).save(item);
 
 				items.add(item);
 			}
@@ -72,69 +72,69 @@ public class ModuleItemInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int size) {
-		ItemStack stack = getStackInSlot(index);
+	public ItemStack removeItem(int index, int size) {
+		ItemStack stack = getItem(index);
 
 		if(!stack.isEmpty())
 			if(stack.getCount() > size) {
 				stack = stack.split(size);
-				markDirty();
+				setChanged();
 			}
 			else
-				setInventorySlotContents(index, ItemStack.EMPTY);
+				setItem(index, ItemStack.EMPTY);
 
 		return stack;
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
-		ItemStack stack = getStackInSlot(index);
-		setInventorySlotContents(index, ItemStack.EMPTY);
+	public ItemStack removeItemNoUpdate(int index) {
+		ItemStack stack = getItem(index);
+		setItem(index, ItemStack.EMPTY);
 		return stack;
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setItem(int index, ItemStack stack) {
 		moduleInventory.set(index, stack);
 
-		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack.setCount(getInventoryStackLimit());
+		if(!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+			stack.setCount(getMaxStackSize());
 
-		markDirty();
+		setChanged();
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return 64;
 	}
 
 	@Override
-	public void markDirty() {
-		for(int i = 0; i < getSizeInventory(); i++)
-			if(!getStackInSlot(i).isEmpty() && getStackInSlot(i).getCount() == 0)
+	public void setChanged() {
+		for(int i = 0; i < getContainerSize(); i++)
+			if(!getItem(i).isEmpty() && getItem(i).getCount() == 0)
 				moduleInventory.set(i, ItemStack.EMPTY);
 
 		writeToNBT(module.getTag());
 	}
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
+	public boolean stillValid(PlayerEntity player) {
 		return true;
 	}
 
 	@Override
-	public void openInventory(PlayerEntity player) {}
+	public void startOpen(PlayerEntity player) {}
 
 	@Override
-	public void closeInventory(PlayerEntity player) {}
+	public void stopOpen(PlayerEntity player) {}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public void clear() {}
+	public void clearContent() {}
 
 	@Override
 	public boolean isEmpty()

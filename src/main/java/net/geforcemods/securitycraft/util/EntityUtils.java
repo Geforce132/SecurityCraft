@@ -21,13 +21,13 @@ public class EntityUtils{
 
 	public static boolean doesPlayerOwn(PlayerEntity player, World world, BlockPos pos)
 	{
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = world.getBlockEntity(pos);
 
 		return te instanceof IOwnable && ((IOwnable)te).getOwner().isOwner(player);
 	}
 
 	public static boolean isInvisible(LivingEntity entity)
 	{
-		return ConfigHandler.SERVER.respectInvisibility.get() && entity.isPotionActive(Effects.INVISIBILITY);
+		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(Effects.INVISIBILITY);
 	}
 }

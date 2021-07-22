@@ -25,29 +25,29 @@ public class SecretSignItem extends WallOrFloorItem
 	}
 
 	@Override
-	public String getTranslationKey()
+	public String getDescriptionId()
 	{
 		return translationKey;
 	}
 
 	@Override
-	public String getTranslationKey(ItemStack stack)
+	public String getDescriptionId(ItemStack stack)
 	{
-		return getTranslationKey();
+		return getDescriptionId();
 	}
 
 	@Override
-	public boolean onBlockPlaced(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state)
+	public boolean updateCustomBlockEntityTag(BlockPos pos, World world, @Nullable PlayerEntity player, ItemStack stack, BlockState state)
 	{
-		boolean flag = super.onBlockPlaced(pos, world, player, stack, state);
+		boolean flag = super.updateCustomBlockEntityTag(pos, world, player, stack, state);
 
 		if(!flag && player != null)
 		{
-			SecretSignTileEntity te = (SecretSignTileEntity)world.getTileEntity(pos);
+			SecretSignTileEntity te = (SecretSignTileEntity)world.getBlockEntity(pos);
 
-			te.setPlayer(player);
+			te.setAllowedPlayerEditor(player);
 
-			if(world.isRemote)
+			if(world.isClientSide)
 				SecurityCraft.proxy.displayEditSecretSignGui(te);
 		}
 

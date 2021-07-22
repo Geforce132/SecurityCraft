@@ -22,28 +22,28 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 	{
 		super(properties, vB);
 
-		setDefaultState(getDefaultState().with(LIT, false));
+		registerDefaultState(defaultBlockState().setValue(LIT, false));
 	}
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getDefaultState().with(LIT, ctx.getWorld().isBlockPowered(ctx.getPos()));
+		return defaultBlockState().setValue(LIT, ctx.getLevel().hasNeighborSignal(ctx.getClickedPos()));
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
 	{
-		if(!world.isRemote)
+		if(!world.isClientSide)
 		{
-			boolean isLit = state.get(LIT);
+			boolean isLit = state.getValue(LIT);
 
-			if(isLit != world.isBlockPowered(pos))
+			if(isLit != world.hasNeighborSignal(pos))
 			{
 				if(isLit)
-					world.getPendingBlockTicks().scheduleTick(pos, this, 4);
+					world.getBlockTicks().scheduleTick(pos, this, 4);
 				else
-					world.setBlockState(pos, state.cycleValue(LIT), 2);
+					world.setBlock(pos, state.cycle(LIT), 2);
 			}
 
 		}
@@ -52,12 +52,12 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand)
 	{
-		if(state.get(LIT) && !world.isBlockPowered(pos))
-			world.setBlockState(pos, state.cycleValue(LIT), 2);
+		if(state.getValue(LIT) && !world.hasNeighborSignal(pos))
+			world.setBlock(pos, state.cycle(LIT), 2);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(LIT);
 	}

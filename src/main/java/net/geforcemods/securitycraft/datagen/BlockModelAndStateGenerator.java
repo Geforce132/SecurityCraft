@@ -46,10 +46,10 @@ import net.minecraftforge.fml.RegistryObject;
 public class BlockModelAndStateGenerator extends BlockStateProvider
 {
 	private static final Map<Direction,EnumProperty<WallHeight>> DIR_TO_WALL_HEIGHT = ImmutableMap.of(
-			Direction.EAST, BlockStateProperties.WALL_HEIGHT_EAST,
-			Direction.NORTH, BlockStateProperties.WALL_HEIGHT_NORTH,
-			Direction.SOUTH, BlockStateProperties.WALL_HEIGHT_SOUTH,
-			Direction.WEST, BlockStateProperties.WALL_HEIGHT_WEST);
+			Direction.EAST, BlockStateProperties.EAST_WALL,
+			Direction.NORTH, BlockStateProperties.NORTH_WALL,
+			Direction.SOUTH, BlockStateProperties.SOUTH_WALL,
+			Direction.WEST, BlockStateProperties.WEST_WALL);
 	private final SCBlockModelProvider scModels;
 
 	public BlockModelAndStateGenerator(DataGenerator gen, ExistingFileHelper exFileHelper)
@@ -186,7 +186,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 	public void fourWayWallHeight(MultiPartBlockStateBuilder builder, ModelFile model, WallHeight height)
 	{
 		Arrays.stream(Direction.values()).filter(dir -> dir.getAxis().isHorizontal()).forEach(dir -> {
-			builder.part().modelFile(model).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).addModel()
+			builder.part().modelFile(model).rotationY((((int) dir.toYRot()) + 180) % 360).uvLock(true).addModel()
 			.condition(DIR_TO_WALL_HEIGHT.get(dir), height);
 		});
 	}
@@ -275,10 +275,10 @@ public class BlockModelAndStateGenerator extends BlockStateProvider
 		ModelFile stairsOuter = models().reinforcedStairsOuter(baseName + "_outer", side, bottom, top);
 
 		getVariantBuilder(block).forAllStatesExcept(state -> {
-			Direction facing = state.get(StairsBlock.FACING);
-			Half half = state.get(StairsBlock.HALF);
-			StairsShape shape = state.get(StairsBlock.SHAPE);
-			int yRot = (int)facing.rotateY().getHorizontalAngle();
+			Direction facing = state.getValue(StairsBlock.FACING);
+			Half half = state.getValue(StairsBlock.HALF);
+			StairsShape shape = state.getValue(StairsBlock.SHAPE);
+			int yRot = (int)facing.getClockWise().toYRot();
 
 			if(shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT)
 				yRot += 270;

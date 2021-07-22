@@ -12,12 +12,12 @@ public class SCTechnicalGroup extends ItemGroup
 	public SCTechnicalGroup()
 	{
 		super(SecurityCraft.MODID + ".technical");
-		setGroupPath(SecurityCraft.MODID);
+		setRecipeFolderName(SecurityCraft.MODID);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ItemStack createIcon()
+	public ItemStack makeIcon()
 	{
 		return new ItemStack(SCContent.USERNAME_LOGGER.get().asItem());
 	}

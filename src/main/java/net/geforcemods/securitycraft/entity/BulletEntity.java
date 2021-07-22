@@ -26,7 +26,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BulletEntity extends AbstractArrowEntity
 {
-	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>createKey(BulletEntity.class, Owner.getSerializer());
+	private static final DataParameter<Owner> OWNER = EntityDataManager.<Owner>defineId(BulletEntity.class, Owner.getSerializer());
 	private Collection<EffectInstance> potionEffects = Sets.newHashSet();
 
 	public BulletEntity(EntityType<BulletEntity> type, World world)
@@ -40,34 +40,34 @@ public class BulletEntity extends AbstractArrowEntity
 
 		Owner owner =  shooter.getOwner();
 
-		this.potionEffects = shooter.getActivePotionEffects();
-		dataManager.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
+		this.potionEffects = shooter.getActiveEffects();
+		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
 	}
 
 	/**
 	 * @return The owner of the sentry which shot this bullet
 	 */
-	public Owner getOwner()
+	public Owner getSCOwner()
 	{
-		return dataManager.get(OWNER);
+		return entityData.get(OWNER);
 	}
 
 	@Override
-	protected void registerData()
+	protected void defineSynchedData()
 	{
-		super.registerData();
-		dataManager.register(OWNER, new Owner());
+		super.defineSynchedData();
+		entityData.define(OWNER, new Owner());
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
 
 		if (!this.potionEffects.isEmpty()) {
 			ListNBT list = new ListNBT();
 
 			for(EffectInstance effect : this.potionEffects) {
-				list.add(effect.write(new CompoundNBT()));
+				list.add(effect.save(new CompoundNBT()));
 			}
 
 			compound.put("PotionEffects", list);
@@ -75,15 +75,15 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
 
 		if (compound.contains("PotionEffects", 9)) {
 			ListNBT potionList = compound.getList("PotionEffects", 10);
 
 			if (!potionList.isEmpty()) {
 				for (int i = 0; i < potionList.size(); ++i) {
-					EffectInstance effect = EffectInstance.read(potionList.getCompound(i));
+					EffectInstance effect = EffectInstance.load(potionList.getCompound(i));
 
 					if (effect != null) {
 						potionEffects.add(effect);
@@ -94,17 +94,17 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	protected void onEntityHit(EntityRayTraceResult raytraceResult)
+	protected void onHitEntity(EntityRayTraceResult raytraceResult)
 	{
 		Entity target = raytraceResult.getEntity();
 
 		if(!(target instanceof SentryEntity))
 		{
-			target.attackEntityFrom(DamageSource.causeArrowDamage(this, getShooter()), MathHelper.ceil(getMotion().length()));
+			target.hurt(DamageSource.arrow(this, getOwner()), MathHelper.ceil(getDeltaMovement().length()));
 
 			if (target instanceof LivingEntity && !potionEffects.isEmpty()) {
 				for (EffectInstance effect : potionEffects) {
-					((LivingEntity)target).addPotionEffect(effect);
+					((LivingEntity)target).addEffect(effect);
 				}
 			}
 
@@ -113,25 +113,25 @@ public class BulletEntity extends AbstractArrowEntity
 	}
 
 	@Override
-	protected void func_230299_a_(BlockRayTraceResult raytraceResult) //onBlockHit
+	protected void onHitBlock(BlockRayTraceResult raytraceResult) //onBlockHit
 	{
 		remove();
 	}
 
 	@Override
-	protected void arrowHit(LivingEntity entity)
+	protected void doPostHurtEffects(LivingEntity entity)
 	{
 		remove();
 	}
 
 	@Override
-	protected ItemStack getArrowStack()
+	protected ItemStack getPickupItem()
 	{
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket()
+	public IPacket<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

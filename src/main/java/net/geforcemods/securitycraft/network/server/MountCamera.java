@@ -48,12 +48,12 @@ public class MountCamera
 			BlockPos pos = message.pos;
 			int id = message.id;
 			ServerPlayerEntity player = ctx.get().getSender();
-			World world = player.world;
+			World world = player.level;
 			BlockState state = world.getBlockState(pos);
 
 			if(state.getBlock() == SCContent.SECURITY_CAMERA.get())
 			{
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 
 				if(te instanceof SecurityCameraTileEntity && (((SecurityCameraTileEntity)te).getOwner().isOwner(player) || ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART)))
 					((SecurityCameraBlock)state.getBlock()).mountCamera(world, pos.getX(), pos.getY(), pos.getZ(), id, player);

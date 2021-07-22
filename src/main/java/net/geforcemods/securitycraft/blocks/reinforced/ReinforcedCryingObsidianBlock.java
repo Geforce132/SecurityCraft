@@ -24,18 +24,18 @@ public class ReinforcedCryingObsidianBlock extends BaseReinforcedBlock
 	{
 		if(rand.nextInt(5) == 0)
 		{
-			Direction direction = Direction.getRandomDirection(rand);
+			Direction direction = Direction.getRandom(rand);
 
 			if(direction != Direction.UP)
 			{
-				BlockPos offsetPos = pos.offset(direction);
+				BlockPos offsetPos = pos.relative(direction);
 				BlockState offsetState = world.getBlockState(offsetPos);
 
-				if(!state.isSolid() || !offsetState.isSolidSide(world, offsetPos, direction.getOpposite()))
+				if(!state.canOcclude() || !offsetState.isFaceSturdy(world, offsetPos, direction.getOpposite()))
 				{
-					double xOffset = direction.getXOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getXOffset() * 0.6D;
-					double yOffset = direction.getYOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getYOffset() * 0.6D;
-					double zOffset = direction.getZOffset() == 0 ? rand.nextDouble() : 0.5D + direction.getZOffset() * 0.6D;
+					double xOffset = direction.getStepX() == 0 ? rand.nextDouble() : 0.5D + direction.getStepX() * 0.6D;
+					double yOffset = direction.getStepY() == 0 ? rand.nextDouble() : 0.5D + direction.getStepY() * 0.6D;
+					double zOffset = direction.getStepZ() == 0 ? rand.nextDouble() : 0.5D + direction.getStepZ() * 0.6D;
 
 					world.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0.0D, 0.0D, 0.0D);
 				}

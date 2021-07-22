@@ -48,20 +48,20 @@ public class SecurityCameraEntity extends Entity{
 
 	public SecurityCameraEntity(EntityType<SecurityCameraEntity> type, World world){
 		super(SCContent.eTypeSecurityCamera, world);
-		noClip = true;
+		noPhysics = true;
 	}
 
 	public SecurityCameraEntity(World world, double x, double y, double z, int id, PlayerEntity player){
 		this(SCContent.eTypeSecurityCamera, world);
-		cameraUseX = player.getPosX();
-		cameraUseY = player.getPosY();
-		cameraUseZ = player.getPosZ();
-		cameraUseYaw = player.rotationYaw;
-		cameraUsePitch = player.rotationPitch;
+		cameraUseX = player.getX();
+		cameraUseY = player.getY();
+		cameraUseZ = player.getZ();
+		cameraUseYaw = player.yRot;
+		cameraUsePitch = player.xRot;
 		this.id = id;
-		setPosition(x + 0.5D, y, z + 0.5D);
+		setPos(x + 0.5D, y, z + 0.5D);
 
-		TileEntity te = world.getTileEntity(getPosition());
+		TileEntity te = world.getBlockEntity(blockPosition());
 
 		if(te instanceof SecurityCameraTileEntity)
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
@@ -75,9 +75,9 @@ public class SecurityCameraEntity extends Entity{
 		cameraUseYaw = camera.cameraUseYaw;
 		cameraUsePitch = camera.cameraUsePitch;
 		this.id = id;
-		setPosition(x + 0.5D, y, z + 0.5D);
+		setPos(x + 0.5D, y, z + 0.5D);
 
-		TileEntity te = world.getTileEntity(getPosition());
+		TileEntity te = world.getBlockEntity(blockPosition());
 
 		if(te instanceof SecurityCameraTileEntity)
 			setInitialPitchYaw((SecurityCameraTileEntity)te);
@@ -87,35 +87,35 @@ public class SecurityCameraEntity extends Entity{
 	{
 		if(te != null && te.hasModule(ModuleType.SMART) && te.lastPitch != Float.MAX_VALUE && te.lastYaw != Float.MAX_VALUE)
 		{
-			rotationPitch = te.lastPitch;
-			rotationYaw = te.lastYaw;
+			xRot = te.lastPitch;
+			yRot = te.lastYaw;
 		}
 		else
 		{
-			rotationPitch = 30F;
+			xRot = 30F;
 
-			Direction facing = world.getBlockState(getPosition()).get(SecurityCameraBlock.FACING);
+			Direction facing = level.getBlockState(blockPosition()).getValue(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.NORTH)
-				rotationYaw = 180F;
+				yRot = 180F;
 			else if(facing == Direction.WEST)
-				rotationYaw = 90F;
+				yRot = 90F;
 			else if(facing == Direction.SOUTH)
-				rotationYaw = 0F;
+				yRot = 0F;
 			else if(facing == Direction.EAST)
-				rotationYaw = 270F;
+				yRot = 270F;
 			else if(facing == Direction.DOWN)
-				rotationPitch = 75;
+				xRot = 75;
 		}
 	}
 
 	@Override
-	public double getMountedYOffset(){
+	public double getPassengersRidingOffset(){
 		return -0.75D;
 	}
 
 	@Override
-	protected boolean shouldSetPosAfterLoading(){
+	protected boolean repositionEntityAfterLoad(){
 		return false;
 	}
 
@@ -126,7 +126,7 @@ public class SecurityCameraEntity extends Entity{
 
 	@Override
 	public void tick(){
-		if(world.isRemote && isBeingRidden()){
+		if(level.isClientSide && isVehicle()){
 			PlayerEntity lowestEntity = (PlayerEntity)getPassengers().get(0);
 
 			if(lowestEntity != Minecraft.getInstance().player)
@@ -144,13 +144,13 @@ public class SecurityCameraEntity extends Entity{
 			if(toggleLightCooldown > 0)
 				toggleLightCooldown -= 1;
 
-			if(lowestEntity.rotationYaw != rotationYaw){
-				lowestEntity.setPositionAndRotation(lowestEntity.getPosX(), lowestEntity.getPosY(), lowestEntity.getPosZ(), rotationYaw, rotationPitch);
-				lowestEntity.rotationYaw = rotationYaw;
+			if(lowestEntity.yRot != yRot){
+				lowestEntity.absMoveTo(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ(), yRot, xRot);
+				lowestEntity.yRot = yRot;
 			}
 
-			if(lowestEntity.rotationPitch != rotationPitch)
-				lowestEntity.setPositionAndRotation(lowestEntity.getPosX(), lowestEntity.getPosY(), lowestEntity.getPosZ(), rotationYaw, rotationPitch);
+			if(lowestEntity.xRot != xRot)
+				lowestEntity.absMoveTo(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ(), yRot, xRot);
 
 			checkKeysPressed();
 
@@ -158,40 +158,40 @@ public class SecurityCameraEntity extends Entity{
 				SecurityCraft.channel.sendToServer(new GiveNightVision());
 		}
 
-		if(!world.isRemote)
-			if(getPassengers().size() == 0 || world.getBlockState(getPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
+		if(!level.isClientSide)
+			if(getPassengers().size() == 0 || level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get()){
 				remove();
 				return;
 			}
 	}
 
 	private void checkKeysPressed() {
-		if(Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
+		if(Minecraft.getInstance().options.keyUp.isDown())
 			moveViewUp();
 
-		if(Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown())
+		if(Minecraft.getInstance().options.keyDown.isDown())
 			moveViewDown();
 
-		if(Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown())
+		if(Minecraft.getInstance().options.keyLeft.isDown())
 			moveViewLeft();
 
-		if(Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown())
+		if(Minecraft.getInstance().options.keyRight.isDown())
 			moveViewRight();
 
-		if(KeyBindings.cameraEmitRedstone.isPressed() && redstoneCooldown == 0){
+		if(KeyBindings.cameraEmitRedstone.consumeClick() && redstoneCooldown == 0){
 			setRedstonePower();
 			redstoneCooldown = 30;
 		}
 
-		if(KeyBindings.cameraActivateNightVision.isPressed() && toggleNightVisionCooldown == 0)
+		if(KeyBindings.cameraActivateNightVision.consumeClick() && toggleNightVisionCooldown == 0)
 			enableNightVision();
 
-		if(KeyBindings.cameraZoomIn.isPressed())
+		if(KeyBindings.cameraZoomIn.consumeClick())
 		{
 			zoomIn();
 			zooming = true;
 		}
-		else if(KeyBindings.cameraZoomOut.isPressed())
+		else if(KeyBindings.cameraZoomOut.consumeClick())
 		{
 			zoomOut();
 			zooming = true;
@@ -203,11 +203,11 @@ public class SecurityCameraEntity extends Entity{
 	public void moveViewUp() {
 		if(isCameraDown())
 		{
-			if(rotationPitch > 40F)
-				setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
+			if(xRot > 40F)
+				setRot(yRot, xRot -= CAMERA_SPEED);
 		}
-		else if(rotationPitch > -25F)
-			setRotation(rotationYaw, rotationPitch -= CAMERA_SPEED);
+		else if(xRot > -25F)
+			setRot(yRot, xRot -= CAMERA_SPEED);
 
 		updateServerRotation();
 	}
@@ -215,77 +215,77 @@ public class SecurityCameraEntity extends Entity{
 	public void moveViewDown(){
 		if(isCameraDown())
 		{
-			if(rotationPitch < 100F)
-				setRotation(rotationYaw, rotationPitch += CAMERA_SPEED);
+			if(xRot < 100F)
+				setRot(yRot, xRot += CAMERA_SPEED);
 		}
-		else if(rotationPitch < 60F)
-			setRotation(rotationYaw, rotationPitch += CAMERA_SPEED);
+		else if(xRot < 60F)
+			setRot(yRot, xRot += CAMERA_SPEED);
 
 		updateServerRotation();
 	}
 
 	public void moveViewLeft() {
-		BlockState state = world.getBlockState(getPosition());
+		BlockState state = level.getBlockState(blockPosition());
 
 		if(state.hasProperty(SecurityCameraBlock.FACING)) {
-			Direction facing = state.get(SecurityCameraBlock.FACING);
+			Direction facing = state.getValue(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
 			{
-				if((rotationYaw - CAMERA_SPEED) > -180F)
-					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+				if((yRot - CAMERA_SPEED) > -180F)
+					setRot(yRot -= CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.WEST)
 			{
-				if((rotationYaw - CAMERA_SPEED) > 0F)
-					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+				if((yRot - CAMERA_SPEED) > 0F)
+					setRot(yRot -= CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.NORTH)
 			{
 				// Handles some problems the occurs from the way the rotationYaw value works in MC
-				if((((rotationYaw - CAMERA_SPEED) > 90F) && ((rotationYaw - CAMERA_SPEED) < 185F)) || (((rotationYaw - CAMERA_SPEED) > -190F) && ((rotationYaw - CAMERA_SPEED) < -90F)))
-					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+				if((((yRot - CAMERA_SPEED) > 90F) && ((yRot - CAMERA_SPEED) < 185F)) || (((yRot - CAMERA_SPEED) > -190F) && ((yRot - CAMERA_SPEED) < -90F)))
+					setRot(yRot -= CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.SOUTH)
 			{
-				if((rotationYaw - CAMERA_SPEED) > -90F)
-					setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+				if((yRot - CAMERA_SPEED) > -90F)
+					setRot(yRot -= CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.DOWN)
-				setRotation(rotationYaw -= CAMERA_SPEED, rotationPitch);
+				setRot(yRot -= CAMERA_SPEED, xRot);
 
 			updateServerRotation();
 		}
 	}
 
 	public void moveViewRight(){
-		BlockState state = world.getBlockState(getPosition());
+		BlockState state = level.getBlockState(blockPosition());
 
 		if(state.hasProperty(SecurityCameraBlock.FACING)) {
-			Direction facing = state.get(SecurityCameraBlock.FACING);
+			Direction facing = state.getValue(SecurityCameraBlock.FACING);
 
 			if(facing == Direction.EAST)
 			{
-				if((rotationYaw + CAMERA_SPEED) < 0F)
-					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+				if((yRot + CAMERA_SPEED) < 0F)
+					setRot(yRot += CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.WEST)
 			{
-				if((rotationYaw + CAMERA_SPEED) < 180F)
-					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+				if((yRot + CAMERA_SPEED) < 180F)
+					setRot(yRot += CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.NORTH)
 			{
-				if((((rotationYaw + CAMERA_SPEED) > 85F) && ((rotationYaw + CAMERA_SPEED) < 185F)) || ((rotationYaw + CAMERA_SPEED) < -95F) && ((rotationYaw + CAMERA_SPEED) > -180F))
-					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+				if((((yRot + CAMERA_SPEED) > 85F) && ((yRot + CAMERA_SPEED) < 185F)) || ((yRot + CAMERA_SPEED) < -95F) && ((yRot + CAMERA_SPEED) > -180F))
+					setRot(yRot += CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.SOUTH)
 			{
-				if((rotationYaw + CAMERA_SPEED) < 90F)
-					setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+				if((yRot + CAMERA_SPEED) < 90F)
+					setRot(yRot += CAMERA_SPEED, xRot);
 			}
 			else if(facing == Direction.DOWN)
-				setRotation(rotationYaw += CAMERA_SPEED, rotationPitch);
+				setRot(yRot += CAMERA_SPEED, xRot);
 
 			updateServerRotation();
 		}
@@ -296,7 +296,7 @@ public class SecurityCameraEntity extends Entity{
 		zoomAmount = Math.max(zoomAmount - 0.1F, 0.1F);
 
 		if(!zooming)
-			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().level.playLocalSound(blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void zoomOut()
@@ -304,14 +304,14 @@ public class SecurityCameraEntity extends Entity{
 		zoomAmount = Math.min(zoomAmount + 0.1F, 1.5F);
 
 		if(!zooming)
-			Minecraft.getInstance().world.playSound(getPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
+			Minecraft.getInstance().level.playLocalSound(blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 	}
 
 	public void setRedstonePower() {
-		BlockPos pos = getPosition();
+		BlockPos pos = blockPosition();
 
-		if(((IModuleInventory) world.getTileEntity(pos)).hasModule(ModuleType.REDSTONE))
-			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !world.getBlockState(pos).get(SecurityCameraBlock.POWERED)));
+		if(((IModuleInventory) level.getBlockEntity(pos)).hasModule(ModuleType.REDSTONE))
+			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public void enableNightVision() {
@@ -324,21 +324,21 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	private void updateServerRotation(){
-		SecurityCraft.channel.sendToServer(new SetCameraRotation(rotationYaw, rotationPitch));
+		SecurityCraft.channel.sendToServer(new SetCameraRotation(yRot, xRot));
 	}
 
 	private boolean isCameraDown()
 	{
-		return world.getTileEntity(getPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)world.getTileEntity(getPosition())).down;
+		return level.getBlockEntity(blockPosition()) instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)level.getBlockEntity(blockPosition())).down;
 	}
 
 	@Override
-	public Vector3d getDismountPosition(LivingEntity livingEntity)
+	public Vector3d getDismountLocationForPassenger(LivingEntity livingEntity)
 	{
-		livingEntity.rotationYaw = cameraUseYaw % 360.0F;
-		livingEntity.rotationPitch = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
-		livingEntity.prevRotationYaw = livingEntity.rotationYaw;
-		livingEntity.prevRotationPitch = livingEntity.rotationPitch;
+		livingEntity.yRot = cameraUseYaw % 360.0F;
+		livingEntity.xRot = MathHelper.clamp(cameraUsePitch, -90.0F, 90.0F) % 360.0F;
+		livingEntity.yRotO = livingEntity.yRot;
+		livingEntity.xRotO = livingEntity.xRot;
 		return getPreviousPlayerPos();
 	}
 
@@ -348,10 +348,10 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	protected void registerData(){}
+	protected void defineSynchedData(){}
 
 	@Override
-	public void writeAdditional(CompoundNBT tag){
+	public void addAdditionalSaveData(CompoundNBT tag){
 		tag.putInt("CameraID", id);
 		tag.putDouble("cameraUseX", cameraUseX);
 		tag.putDouble("cameraUseY", cameraUseY);
@@ -361,7 +361,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT tag){
+	public void readAdditionalSaveData(CompoundNBT tag){
 		id = tag.getInt("CameraID");
 		cameraUseX = tag.getDouble("cameraUseX");
 		cameraUseY = tag.getDouble("cameraUseY");
@@ -371,7 +371,7 @@ public class SecurityCameraEntity extends Entity{
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket()
+	public IPacket<?> getAddEntityPacket()
 	{
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

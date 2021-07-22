@@ -40,7 +40,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	public void tick() {
 		super.tick();
 
-		if(hasWorld() && nbtTagStorage != null) {
+		if(hasLevel() && nbtTagStorage != null) {
 			readLinkedBlocks(nbtTagStorage);
 			sync();
 			nbtTagStorage = null;
@@ -48,9 +48,9 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -60,7 +60,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 
 		if (linkable && tag.contains("linkedBlocks"))
 		{
-			if(!hasWorld()) {
+			if(!hasLevel()) {
 				nbtTagStorage = tag.getList("linkedBlocks", Constants.NBT.TAG_COMPOUND);
 				return;
 			}
@@ -70,25 +70,25 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
 		tag.putBoolean("linkable", linkable);
 
-		if(linkable && hasWorld() && linkedBlocks.size() > 0) {
+		if(linkable && hasLevel() && linkedBlocks.size() > 0) {
 			ListNBT tagList = new ListNBT();
 
-			WorldUtils.addScheduledTask(world, () -> {
+			WorldUtils.addScheduledTask(level, () -> {
 				for(int i = linkedBlocks.size() - 1; i >= 0; i--)
 				{
 					LinkedBlock block = linkedBlocks.get(i);
 					CompoundNBT toAppend = new CompoundNBT();
 
 					if(block != null) {
-						if(!block.validate(world)) {
+						if(!block.validate(level)) {
 							linkedBlocks.remove(i);
 							continue;
 						}
@@ -119,13 +119,13 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 			int z = list.getCompound(i).getInt("blockZ");
 
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
-			if(hasWorld() && !block.validate(world)) {
+			if(hasLevel() && !block.validate(level)) {
 				list.remove(i);
 				continue;
 			}
 
 			if(!linkedBlocks.contains(block))
-				link(this, block.asTileEntity(world));
+				link(this, block.asTileEntity(level));
 		}
 	}
 
@@ -138,7 +138,7 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 	public void onTileEntityDestroyed() {
 		if(linkable)
 			for(LinkedBlock block : linkedBlocks)
-				CustomizableTileEntity.unlink(block.asTileEntity(world), this);
+				CustomizableTileEntity.unlink(block.asTileEntity(level), this);
 	}
 
 	@Override
@@ -264,11 +264,11 @@ public abstract class CustomizableTileEntity extends SecurityCraftTileEntity imp
 		if(!linkable) return;
 
 		for(LinkedBlock block : linkedBlocks)
-			if(excludedTEs.contains(block.asTileEntity(world)))
+			if(excludedTEs.contains(block.asTileEntity(level)))
 				continue;
 			else {
-				block.asTileEntity(world).onLinkedBlockAction(action, parameters, excludedTEs);
-				block.asTileEntity(world).sync();
+				block.asTileEntity(level).onLinkedBlockAction(action, parameters, excludedTEs);
+				block.asTileEntity(level).sync();
 			}
 	}
 

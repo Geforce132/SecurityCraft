@@ -17,7 +17,7 @@ public class ItemTagGenerator extends ItemTagsProvider
 	}
 
 	@Override
-	protected void registerTags()
+	protected void addTags()
 	{
 		//securitycraft tags
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
@@ -46,7 +46,7 @@ public class ItemTagGenerator extends ItemTagsProvider
 		copy(SCTags.Blocks.REINFORCED_WOODEN_SLABS, SCTags.Items.REINFORCED_WOODEN_SLABS);
 		copy(SCTags.Blocks.REINFORCED_WOODEN_STAIRS, SCTags.Items.REINFORCED_WOODEN_STAIRS);
 		copy(SCTags.Blocks.REINFORCED_WOOL, SCTags.Items.REINFORCED_WOOL);
-		getOrCreateBuilder(SCTags.Items.SECRET_SIGNS).add(
+		tag(SCTags.Items.SECRET_SIGNS).add(
 				SCContent.SECRET_ACACIA_SIGN_ITEM.get(),
 				SCContent.SECRET_BIRCH_SIGN_ITEM.get(),
 				SCContent.SECRET_CRIMSON_SIGN_ITEM.get(),
@@ -57,19 +57,19 @@ public class ItemTagGenerator extends ItemTagsProvider
 				SCContent.SECRET_WARPED_SIGN_ITEM.get());
 
 		//minecraft tags
-		getOrCreateBuilder(ItemTags.CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
-		getOrCreateBuilder(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
-		getOrCreateBuilder(ItemTags.PIGLIN_LOVED).add(
+		tag(ItemTags.CARPETS).addTag(SCTags.Items.REINFORCED_CARPETS);
+		tag(ItemTags.FENCES).add(SCContent.IRON_FENCE.get().asItem());
+		tag(ItemTags.PIGLIN_LOVED).add(
 				SCContent.REINFORCED_GOLD_BLOCK.get().asItem(),
 				SCContent.GOLD_ORE_MINE.get().asItem(),
 				SCContent.GILDED_BLACKSTONE_MINE.get().asItem(),
 				SCContent.NETHER_GOLD_ORE_MINE.get().asItem());
-		getOrCreateBuilder(ItemTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get().asItem());
-		getOrCreateBuilder(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
-		getOrCreateBuilder(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
-		getOrCreateBuilder(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
-		getOrCreateBuilder(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
-		getOrCreateBuilder(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
+		tag(ItemTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get().asItem());
+		tag(ItemTags.RAILS).add(SCContent.TRACK_MINE.get().asItem());
+		tag(ItemTags.SLABS).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem());
+		tag(ItemTags.STAIRS).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.STAIRS_CRYSTAL_QUARTZ.get().asItem());
+		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
+		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem());
 	}
 
 	@Override

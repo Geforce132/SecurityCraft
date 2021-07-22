@@ -35,7 +35,7 @@ public class SetPassword {
 		buf.writeInt(message.x);
 		buf.writeInt(message.y);
 		buf.writeInt(message.z);
-		buf.writeString(message.password);
+		buf.writeUtf(message.password);
 	}
 
 	public static SetPassword decode(PacketBuffer buf)
@@ -45,7 +45,7 @@ public class SetPassword {
 		message.x = buf.readInt();
 		message.y = buf.readInt();
 		message.z = buf.readInt();
-		message.password = buf.readString(Integer.MAX_VALUE / 4);
+		message.password = buf.readUtf(Integer.MAX_VALUE / 4);
 		return message;
 	}
 
@@ -55,8 +55,8 @@ public class SetPassword {
 			BlockPos pos = new BlockPos(message.x, message.y, message.z);
 			String password = message.password;
 			PlayerEntity player = ctx.get().getSender();
-			World world = player.world;
-			TileEntity te = world.getTileEntity(pos);
+			World world = player.level;
+			TileEntity te = world.getBlockEntity(pos);
 
 			if(te instanceof IPasswordProtected && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))){
 				((IPasswordProtected)te).setPassword(password);
@@ -70,15 +70,15 @@ public class SetPassword {
 	}
 
 	private static void checkAndUpdateAdjacentChest(KeypadChestTileEntity te, World world, BlockPos pos, String codeToSet, PlayerEntity player) {
-		if(te.getBlockState().get(KeypadChestBlock.TYPE) != ChestType.SINGLE)
+		if(te.getBlockState().getValue(KeypadChestBlock.TYPE) != ChestType.SINGLE)
 		{
-			BlockPos offsetPos = pos.offset(KeypadChestBlock.getDirectionToAttached(te.getBlockState()));
-			TileEntity otherTe = world.getTileEntity(offsetPos);
+			BlockPos offsetPos = pos.relative(KeypadChestBlock.getConnectedDirection(te.getBlockState()));
+			TileEntity otherTe = world.getBlockEntity(offsetPos);
 
 			if(otherTe instanceof KeypadChestTileEntity && te.getOwner().owns((KeypadChestTileEntity)otherTe))
 			{
 				((KeypadChestTileEntity)otherTe).setPassword(codeToSet);
-				world.notifyBlockUpdate(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);
+				world.sendBlockUpdated(offsetPos, otherTe.getBlockState(), otherTe.getBlockState(), 2);
 			}
 		}
 	}

@@ -52,7 +52,7 @@ public class UpdateSliderValue {
 			int id = message.id;
 			double value = message.value;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(pos);
+			TileEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof ICustomizable && (!(te instanceof IOwnable) || ((IOwnable)te).getOwner().isOwner(player))) {
 				Option<?> o = ((ICustomizable)te).customOptions()[id];

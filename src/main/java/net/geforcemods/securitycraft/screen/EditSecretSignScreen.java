@@ -51,22 +51,22 @@ public class EditSecretSignScreen extends Screen
 	@Override
 	protected void init()
 	{
-		minecraft.keyboardListener.enableRepeatEvents(true);
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		addButton(new Button(width / 2 - 100, height / 4 + 120, 200, 20, DialogTexts.GUI_DONE, button -> close()));
 		te.setEditable(false);
 		textInputUtil = new TextInputUtil(() -> signText[editLine], s -> {
 			signText[editLine] = s;
-			te.setText(editLine, new StringTextComponent(s));
-		}, TextInputUtil.getClipboardTextSupplier(minecraft), TextInputUtil.getClipboardTextSetter(minecraft), t -> minecraft.fontRenderer.getStringWidth(t) <= 90);
+			te.setMessage(editLine, new StringTextComponent(s));
+		}, TextInputUtil.createClipboardGetter(minecraft), TextInputUtil.createClipboardSetter(minecraft), t -> minecraft.font.width(t) <= 90);
 	}
 
 	@Override
-	public void onClose()
+	public void removed()
 	{
-		minecraft.keyboardListener.enableRepeatEvents(false);
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 
 		if(minecraft.getConnection() != null)
-			minecraft.getConnection().sendPacket(new CUpdateSignPacket(te.getPos(), signText[0], signText[1], signText[2], signText[3]));
+			minecraft.getConnection().send(new CUpdateSignPacket(te.getBlockPos(), signText[0], signText[1], signText[2], signText[3]));
 
 		te.setEditable(true);
 	}
@@ -76,25 +76,25 @@ public class EditSecretSignScreen extends Screen
 	{
 		++updateCounter;
 
-		if(!te.getType().isValidBlock(te.getBlockState().getBlock()))
+		if(!te.getType().isValid(te.getBlockState().getBlock()))
 			close();
 	}
 
 	private void close()
 	{
-		te.markDirty();
-		minecraft.displayGuiScreen((Screen)null);
+		te.setChanged();
+		minecraft.setScreen((Screen)null);
 	}
 
 	@Override
 	public boolean charTyped(char typedChar, int keyCode)
 	{
-		textInputUtil.putChar(typedChar);
+		textInputUtil.charTyped(typedChar);
 		return true;
 	}
 
 	@Override
-	public void closeScreen()
+	public void onClose()
 	{
 		close();
 	}
@@ -105,15 +105,15 @@ public class EditSecretSignScreen extends Screen
 		if(keyCode == 265)
 		{
 			editLine = editLine - 1 & 3;
-			textInputUtil.moveCursorToEnd();
+			textInputUtil.setCursorToEnd();
 			return true;
 		}
 		else if(keyCode != 264 && keyCode != 257 && keyCode != 335)
-			return textInputUtil.specialKeyPressed(keyCode) ? true : super.keyPressed(keyCode, p_keyPressed_2_, p_keyPressed_3_);
+			return textInputUtil.keyPressed(keyCode) ? true : super.keyPressed(keyCode, p_keyPressed_2_, p_keyPressed_3_);
 		else
 		{
 			editLine = editLine + 1 & 3;
-			textInputUtil.moveCursorToEnd();
+			textInputUtil.setCursorToEnd();
 			return true;
 		}
 	}
@@ -125,18 +125,18 @@ public class EditSecretSignScreen extends Screen
 		boolean isStanding = state.getBlock() instanceof StandingSignBlock;
 		boolean update = updateCounter / 6 % 2 == 0;
 		RenderMaterial material = SignTileEntityRenderer.getMaterial(state.getBlock());
-		int textColor = te.getTextColor().getTextColor();
-		int k = textInputUtil.getSelectionEnd();
-		int l = textInputUtil.getSelectionStart();
+		int textColor = te.getColor().getTextColor();
+		int k = textInputUtil.getCursorPos();
+		int l = textInputUtil.getSelectionPos();
 		int j1 = editLine * 10 - signText.length * 5;
 		IRenderTypeBuffer.Impl buffer;
 		IVertexBuilder builder;
 		Matrix4f positionMatrix;
 
-		RenderHelper.setupGuiFlatDiffuseLighting();
+		RenderHelper.setupForFlatItems();
 		renderBackground(matrix);
 		drawCenteredString(matrix, font, title, width / 2, 40, 16777215);
-		matrix.push();
+		matrix.pushPose();
 		matrix.translate(width / 2, 0.0D, 50.0D);
 		matrix.scale(93.75F, -93.75F, 93.75F);
 		matrix.translate(0.0D, -1.3125D, 0.0D);
@@ -144,20 +144,20 @@ public class EditSecretSignScreen extends Screen
 		if(!isStanding)
 			matrix.translate(0.0D, -0.3125D, 0.0D);
 
-		matrix.push();
+		matrix.pushPose();
 		matrix.scale(0.6666667F, -0.6666667F, -0.6666667F);
-		buffer = minecraft.getRenderTypeBuffers().getBufferSource();
-		builder = material.getBuffer(buffer, signModel::getRenderType);
-		signModel.signBoard.render(matrix, builder, 15728880, OverlayTexture.NO_OVERLAY);
+		buffer = minecraft.renderBuffers().bufferSource();
+		builder = material.buffer(buffer, signModel::renderType);
+		signModel.sign.render(matrix, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
 		if(isStanding)
-			signModel.signStick.render(matrix, builder, 15728880, OverlayTexture.NO_OVERLAY);
+			signModel.stick.render(matrix, builder, 15728880, OverlayTexture.NO_OVERLAY);
 
-		matrix.pop();
+		matrix.popPose();
 		matrix.translate(0.0D, 0.33333334F, 0.046666667F);
 		matrix.scale(0.010416667F, -0.010416667F, 0.010416667F);
 
-		positionMatrix = matrix.getLast().getMatrix();
+		positionMatrix = matrix.last().pose();
 
 		for(int k1 = 0; k1 < signText.length; ++k1)
 		{
@@ -165,25 +165,25 @@ public class EditSecretSignScreen extends Screen
 
 			if(s != null)
 			{
-				if (font.getBidiFlag())
-					s = font.bidiReorder(s);
+				if (font.isBidirectional())
+					s = font.bidirectionalShaping(s);
 
-				float f3 = -minecraft.fontRenderer.getStringWidth(s) / 2;
+				float f3 = -minecraft.font.width(s) / 2;
 
-				minecraft.fontRenderer.renderString(s, f3, k1 * 10 - signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
+				minecraft.font.drawInBatch(s, f3, k1 * 10 - signText.length * 5, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 
 				if(k1 == editLine && k >= 0 && update)
 				{
-					int l1 = minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
-					int i2 = l1 - minecraft.fontRenderer.getStringWidth(s) / 2;
+					int l1 = minecraft.font.width(s.substring(0, Math.max(Math.min(k, s.length()), 0)));
+					int i2 = l1 - minecraft.font.width(s) / 2;
 
 					if(k >= s.length())
-						minecraft.fontRenderer.renderString("_", i2, j1, textColor, false, positionMatrix, buffer, false, 0, 15728880);
+						minecraft.font.drawInBatch("_", i2, j1, textColor, false, positionMatrix, buffer, false, 0, 15728880);
 				}
 			}
 		}
 
-		buffer.finish();
+		buffer.endBatch();
 
 		for(int k3 = 0; k3 < signText.length; ++k3)
 		{
@@ -191,8 +191,8 @@ public class EditSecretSignScreen extends Screen
 
 			if(s1 != null && k3 == editLine && k >= 0)
 			{
-				int l3 = minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(k, s1.length()), 0)));
-				int i4 = l3 - minecraft.fontRenderer.getStringWidth(s1) / 2;
+				int l3 = minecraft.font.width(s1.substring(0, Math.max(Math.min(k, s1.length()), 0)));
+				int i4 = l3 - minecraft.font.width(s1) / 2;
 
 				if(update && k < s1.length())
 					fill(matrix, i4, j1 - 1, i4 + 1, j1 + 9, -16777216 | textColor);
@@ -201,30 +201,30 @@ public class EditSecretSignScreen extends Screen
 				{
 					int j4 = Math.min(k, l);
 					int j2 = Math.max(k, l);
-					int k2 = minecraft.fontRenderer.getStringWidth(s1.substring(0, j4)) - minecraft.fontRenderer.getStringWidth(s1) / 2;
-					int l2 = minecraft.fontRenderer.getStringWidth(s1.substring(0, j2)) - minecraft.fontRenderer.getStringWidth(s1) / 2;
+					int k2 = minecraft.font.width(s1.substring(0, j4)) - minecraft.font.width(s1) / 2;
+					int l2 = minecraft.font.width(s1.substring(0, j2)) - minecraft.font.width(s1) / 2;
 					int i3 = Math.min(k2, l2);
 					int j3 = Math.max(k2, l2);
-					BufferBuilder buf = Tessellator.getInstance().getBuffer();
+					BufferBuilder buf = Tessellator.getInstance().getBuilder();
 
 					RenderSystem.disableTexture();
 					RenderSystem.enableColorLogicOp();
 					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 					buf.begin(7, DefaultVertexFormats.POSITION_COLOR);
-					buf.pos(positionMatrix, i3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
-					buf.pos(positionMatrix, j3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
-					buf.pos(positionMatrix, j3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
-					buf.pos(positionMatrix, i3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
-					buf.finishDrawing();
-					WorldVertexBufferUploader.draw(buf);
+					buf.vertex(positionMatrix, i3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.vertex(positionMatrix, j3, j1 + 9, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.vertex(positionMatrix, j3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.vertex(positionMatrix, i3, j1, 0.0F).color(0, 0, 255, 255).endVertex();
+					buf.end();
+					WorldVertexBufferUploader.end(buf);
 					RenderSystem.disableColorLogicOp();
 					RenderSystem.enableTexture();
 				}
 			}
 		}
 
-		matrix.pop();
-		RenderHelper.setupGui3DDiffuseLighting();
+		matrix.popPose();
+		RenderHelper.setupFor3DItems();
 		super.render(matrix, mouseX, mouseY, partialTicks);
 	}
 }

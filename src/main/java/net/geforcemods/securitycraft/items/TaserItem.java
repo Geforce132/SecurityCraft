@@ -38,9 +38,9 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items)
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items)
 	{
-		if((group == SecurityCraft.groupSCTechnical || group == ItemGroup.SEARCH) && !powered)
+		if((group == SecurityCraft.groupSCTechnical || group == ItemGroup.TAB_SEARCH) && !powered)
 			items.add(new ItemStack(this));
 	}
 
@@ -51,8 +51,8 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand){
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand){
+		ItemStack stack = player.getItemInHand(hand);
 
 		if(!stack.isDamaged()){
 			if(player.isCrouching() && (player.isCreative() || !powered))
@@ -61,49 +61,49 @@ public class TaserItem extends Item {
 
 				if(player.isCreative())
 				{
-					if(player.getHeldItem(hand).getItem() == SCContent.TASER.get())
+					if(player.getItemInHand(hand).getItem() == SCContent.TASER.get())
 						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
 					else
 						setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER.get(), 1));
 
-					return ActionResult.resultSuccess(stack);
+					return ActionResult.success(stack);
 				}
-				else if(player.inventory.hasItemStack(oneRedstone))
+				else if(player.inventory.contains(oneRedstone))
 				{
 					int redstoneSlot = player.inventory.findSlotMatchingUnusedItem(oneRedstone);
-					ItemStack redstoneStack = player.inventory.getStackInSlot(redstoneSlot);
+					ItemStack redstoneStack = player.inventory.getItem(redstoneSlot);
 
 					redstoneStack.setCount(redstoneStack.getCount() - 1);
-					player.inventory.setInventorySlotContents(redstoneSlot, redstoneStack);
+					player.inventory.setItem(redstoneSlot, redstoneStack);
 					setSlotBasedOnHand(player, hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
-					return ActionResult.resultSuccess(stack);
+					return ActionResult.success(stack);
 				}
 
-				return ActionResult.resultPass(stack);
+				return ActionResult.pass(stack);
 			}
 
 			int range = 11;
 			Vector3d startVec = player.getEyePosition(1.0F);
-			Vector3d lookVec = player.getLook(1.0F).scale(range);
+			Vector3d lookVec = player.getViewVector(1.0F).scale(range);
 			Vector3d endVec = startVec.add(lookVec);
-			AxisAlignedBB boundingBox = player.getBoundingBox().expand(lookVec).grow(1, 1, 1);
+			AxisAlignedBB boundingBox = player.getBoundingBox().expandTowards(lookVec).inflate(1, 1, 1);
 			EntityRayTraceResult entityRayTraceResult = rayTraceEntities(player, startVec, endVec, boundingBox, s -> s instanceof LivingEntity, range * range);
 
-			if (!world.isRemote)
-				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.getPosX(), player.getPosY(), player.getPosZ(), SCSounds.TASERFIRED.path, 1.0F, "players"));
+			if (!world.isClientSide)
+				SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(player.getX(), player.getY(), player.getZ(), SCSounds.TASERFIRED.path, 1.0F, "players"));
 
 			if (entityRayTraceResult != null)
 			{
 				LivingEntity entity = (LivingEntity)entityRayTraceResult.getEntity();
 
-				if(!entity.isActiveItemStackBlocking() && entity.attackEntityFrom(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
+				if(!entity.isBlocking() && entity.hurt(CustomDamageSources.TASER, powered ? 2.0F : 1.0F))
 				{
 					int strength = powered ? 4 : 1;
 					int length = powered ? 400 : 200;
 
-					entity.addPotionEffect(new EffectInstance(Effects.WEAKNESS, length, strength));
-					entity.addPotionEffect(new EffectInstance(Effects.NAUSEA, length, strength));
-					entity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, length, strength));
+					entity.addEffect(new EffectInstance(Effects.WEAKNESS, length, strength));
+					entity.addEffect(new EffectInstance(Effects.CONFUSION, length, strength));
+					entity.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN, length, strength));
 				}
 			}
 
@@ -113,31 +113,31 @@ public class TaserItem extends Item {
 				{
 					ItemStack taser = new ItemStack(SCContent.TASER.get(), 1);
 
-					taser.damageItem(150, player, p -> p.sendBreakAnimation(hand));
+					taser.hurtAndBreak(150, player, p -> p.broadcastBreakEvent(hand));
 					setSlotBasedOnHand(player, hand, taser);
 				}
 				else
-					stack.damageItem(150, player, p -> p.sendBreakAnimation(hand));
+					stack.hurtAndBreak(150, player, p -> p.broadcastBreakEvent(hand));
 			}
 
-			return ActionResult.resultConsume(stack);
+			return ActionResult.consume(stack);
 		}
 
-		return ActionResult.resultPass(stack);
+		return ActionResult.pass(stack);
 	}
 
 	//Copied from ProjectileHelper to get rid of the @OnlyIn(Dist.CLIENT) annotation
 	private static EntityRayTraceResult rayTraceEntities(Entity shooter, Vector3d startVec, Vector3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double dist)
 	{
-		World world = shooter.world;
+		World world = shooter.level;
 		double distance = dist;
 		Entity rayTracedEntity = null;
 		Vector3d hitVec = null;
 
-		for(Entity entity : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter))
+		for(Entity entity : world.getEntities(shooter, boundingBox, filter))
 		{
-			AxisAlignedBB boxToCheck = entity.getBoundingBox().grow(entity.getCollisionBorderSize());
-			Optional<Vector3d> optional = boxToCheck.rayTrace(startVec, endVec);
+			AxisAlignedBB boxToCheck = entity.getBoundingBox().inflate(entity.getPickRadius());
+			Optional<Vector3d> optional = boxToCheck.clip(startVec, endVec);
 
 			if(boxToCheck.contains(startVec))
 			{
@@ -151,11 +151,11 @@ public class TaserItem extends Item {
 			else if(optional.isPresent())
 			{
 				Vector3d vector = optional.get();
-				double sqDist = startVec.squareDistanceTo(vector);
+				double sqDist = startVec.distanceToSqr(vector);
 
 				if(sqDist < distance || distance == 0.0D)
 				{
-					if(entity.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity.canRiderInteract())
+					if(entity.getRootVehicle() == shooter.getRootVehicle() && !entity.canRiderInteract())
 					{
 						if(distance == 0.0D)
 						{
@@ -179,16 +179,16 @@ public class TaserItem extends Item {
 	private void setSlotBasedOnHand(PlayerEntity player, Hand hand, ItemStack taser)
 	{
 		if(hand == Hand.MAIN_HAND)
-			player.setItemStackToSlot(EquipmentSlotType.MAINHAND, taser);
+			player.setItemSlot(EquipmentSlotType.MAINHAND, taser);
 		else
-			player.setItemStackToSlot(EquipmentSlotType.OFFHAND, taser);
+			player.setItemSlot(EquipmentSlotType.OFFHAND, taser);
 	}
 
 	@Override
 	public void inventoryTick(ItemStack par1ItemStack, World world, Entity entity, int slotIndex, boolean isSelected){
-		if(!world.isRemote)
-			if(par1ItemStack.getDamage() >= 1)
-				par1ItemStack.setDamage(par1ItemStack.getDamage() - 1);
+		if(!world.isClientSide)
+			if(par1ItemStack.getDamageValue() >= 1)
+				par1ItemStack.setDamageValue(par1ItemStack.getDamageValue() - 1);
 	}
 
 	@Override

@@ -88,33 +88,33 @@ public class BlockLootTableGenerator implements IDataProvider
 		putMineLootTable(SCContent.ANCIENT_DEBRIS_MINE);
 		putSlabLootTable(SCContent.CRYSTAL_QUARTZ_SLAB);
 
-		StandaloneLootEntry.Builder<?> imsLootEntryBuilder = ItemLootEntry.builder(SCContent.BOUNCING_BETTY.get());
+		StandaloneLootEntry.Builder<?> imsLootEntryBuilder = ItemLootEntry.lootTableItem(SCContent.BOUNCING_BETTY.get());
 
 		for(int i = 0; i <= 4; i++)
 		{
 			if(i == 1) //default
 				continue;
 
-			imsLootEntryBuilder.acceptFunction(SetCount.builder(ConstantRange.of(i))
-					.acceptCondition(BlockStateProperty.builder(SCContent.IMS.get())
-							.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
-									.withIntProp(IMSBlock.MINES, i))));
+			imsLootEntryBuilder.apply(SetCount.setCount(ConstantRange.exactly(i))
+					.when(BlockStateProperty.hasBlockStateProperties(SCContent.IMS.get())
+							.setProperties(StatePropertiesPredicate.Builder.properties()
+									.hasProperty(IMSBlock.MINES, i))));
 		}
 
-		lootTables.put(SCContent.IMS, LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(imsLootEntryBuilder)));
+		lootTables.put(SCContent.IMS, LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantRange.exactly(1))
+						.add(imsLootEntryBuilder)));
 		putStandardBlockLootTable(SCContent.KEYPAD_CHEST);
 		putDoorLootTable(SCContent.KEYPAD_DOOR, SCContent.KEYPAD_DOOR_ITEM);
 		putDoorLootTable(SCContent.REINFORCED_DOOR, SCContent.REINFORCED_DOOR_ITEM);
 		lootTables.put(SCContent.REINFORCED_IRON_BARS,
-				LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(SCContent.REINFORCED_IRON_BARS.get())
-								.acceptCondition(TileEntityNBTCondition.builder().equals("canDrop", true)))
-						.acceptCondition(SurvivesExplosion.builder())));
+				LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
+								.when(TileEntityNBTCondition.builder().equals("canDrop", true)))
+						.when(SurvivesExplosion.survivesExplosion())));
 		putDoorLootTable(SCContent.SCANNER_DOOR, SCContent.SCANNER_DOOR_ITEM);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_SIGN);
 		putStandardBlockLootTable(SCContent.SECRET_ACACIA_WALL_SIGN);
@@ -138,23 +138,23 @@ public class BlockLootTableGenerator implements IDataProvider
 
 	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> block)
 	{
-		return LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(block.get()))
-						.acceptCondition(SurvivesExplosion.builder()));
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(block.get()))
+						.when(SurvivesExplosion.survivesExplosion()));
 	}
 
 	protected final void putDoorLootTable(Supplier<Block> door, Supplier<Item> doorItem)
 	{
-		lootTables.put(door, LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(doorItem.get())
-								.acceptCondition(BlockStateProperty.builder(door.get())
-										.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
-												.withProp(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
-								.acceptCondition(SurvivesExplosion.builder()))));
+		lootTables.put(door, LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(doorItem.get())
+								.when(BlockStateProperty.hasBlockStateProperties(door.get())
+										.setProperties(StatePropertiesPredicate.Builder.properties()
+												.hasProperty(ReinforcedDoorBlock.HALF, DoubleBlockHalf.LOWER)))
+								.when(SurvivesExplosion.survivesExplosion()))));
 	}
 
 	protected final void putStandardBlockLootTable(Supplier<Block> block)
@@ -164,29 +164,29 @@ public class BlockLootTableGenerator implements IDataProvider
 
 	protected final void putMineLootTable(Supplier<Block> mine)
 	{
-		lootTables.put(mine, LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(mine.get()))
-						.acceptCondition(SurvivesExplosion.builder())
-						.acceptCondition(Inverted.builder(EntityHasProperty.builder(EntityTarget.THIS)))));
+		lootTables.put(mine, LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(mine.get()))
+						.when(SurvivesExplosion.survivesExplosion())
+						.when(Inverted.invert(EntityHasProperty.entityPresent(EntityTarget.THIS)))));
 	}
 
 	protected final void putSlabLootTable(Supplier<Block> slab)
 	{
-		lootTables.put(slab, LootTable.builder()
-				.addLootPool(LootPool.builder()
-						.rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(slab.get())
-								.acceptFunction(SetCount.builder(ConstantRange.of(2))
-										.acceptCondition(BlockStateProperty.builder(slab.get())
-												.fromProperties(StatePropertiesPredicate.Builder.newBuilder()
-														.withProp(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE))))
-								.acceptFunction(ExplosionDecay.builder()))));
+		lootTables.put(slab, LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(slab.get())
+								.apply(SetCount.setCount(ConstantRange.exactly(2))
+										.when(BlockStateProperty.hasBlockStateProperties(slab.get())
+												.setProperties(StatePropertiesPredicate.Builder.properties()
+														.hasProperty(BlockStateProperties.SLAB_TYPE, SlabType.DOUBLE))))
+								.apply(ExplosionDecay.explosionDecay()))));
 	}
 
 	@Override
-	public void act(DirectoryCache cache) throws IOException
+	public void run(DirectoryCache cache) throws IOException
 	{
 		Map<ResourceLocation,LootTable> tables = new HashMap<>();
 
@@ -194,13 +194,13 @@ public class BlockLootTableGenerator implements IDataProvider
 
 		for(Map.Entry<Supplier<Block>,LootTable.Builder> entry : lootTables.entrySet())
 		{
-			tables.put(entry.getKey().get().getLootTable(), entry.getValue().setParameterSet(LootParameterSets.BLOCK).build());
+			tables.put(entry.getKey().get().getLootTable(), entry.getValue().setParamSet(LootParameterSets.BLOCK).build());
 		}
 
 		tables.forEach((key, lootTable) -> {
 			try
 			{
-				IDataProvider.save(GSON, cache, LootTableManager.toJson(lootTable), generator.getOutputFolder().resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json"));
+				IDataProvider.save(GSON, cache, LootTableManager.serialize(lootTable), generator.getOutputFolder().resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json"));
 			}
 			catch (IOException e)
 			{

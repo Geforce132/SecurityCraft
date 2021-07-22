@@ -28,8 +28,8 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	{
 		super.onModuleInserted(stack, module);
 
-		if(!world.isRemote && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, true, stack));
+		if(!level.isClientSide && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, true, stack));
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	{
 		super.onModuleRemoved(stack, module);
 
-		if(!world.isRemote && module == ModuleType.DISGUISE)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(pos, false, stack));
+		if(!level.isClientSide && module == ModuleType.DISGUISE)
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new RefreshDisguisableModel(worldPosition, false, stack));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	{
 		super.onLoad();
 
-		if(world != null && world.isRemote)
+		if(level != null && level.isClientSide)
 			refreshModel();
 	}
 
@@ -72,7 +72,7 @@ public class DisguisableTileEntity extends CustomizableTileEntity
 	{
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			ModelDataManager.requestModelDataRefresh(this);
-			Minecraft.getInstance().worldRenderer.markBlockRangeForRenderUpdate(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+			Minecraft.getInstance().levelRenderer.setBlocksDirty(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 		});
 	}
 }

@@ -21,7 +21,7 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	private boolean[] acceptedLevels = {true, false, false, false, false};
 	private int signature = 0;
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private IntOption signalLength = new IntOption(this::getPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
+	private IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 60, 5, 400, 5, true); //20 seconds max
 
 	public KeycardReaderTileEntity()
 	{
@@ -29,8 +29,8 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag){
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag){
+		super.save(tag);
 
 		CompoundNBT acceptedLevelsTag = new CompoundNBT();
 
@@ -45,8 +45,8 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag){
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag){
+		super.load(state, tag);
 
 		//carry over old data
 		if(tag.contains("passLV"))
@@ -120,12 +120,12 @@ public class KeycardReaderTileEntity extends DisguisableTileEntity implements IN
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new KeycardReaderContainer(windowId, inv, world, pos);
+		return new KeycardReaderContainer(windowId, inv, level, worldPosition);
 	}
 
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.KEYCARD_READER.get().getTranslationKey());
+		return new TranslationTextComponent(SCContent.KEYCARD_READER.get().getDescriptionId());
 	}
 }

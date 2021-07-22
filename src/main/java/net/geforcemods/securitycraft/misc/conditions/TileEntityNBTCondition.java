@@ -31,7 +31,7 @@ public class TileEntityNBTCondition implements ILootCondition
 	}
 
 	@Override
-	public Set<LootParameter<?>> getRequiredParameters()
+	public Set<LootParameter<?>> getReferencedContextParams()
 	{
 		return ImmutableSet.of(LootParameters.ORIGIN);
 	}
@@ -39,14 +39,14 @@ public class TileEntityNBTCondition implements ILootCondition
 	@Override
 	public boolean test(LootContext lootContext)
 	{
-		TileEntity te = lootContext.getWorld().getTileEntity(new BlockPos(lootContext.get(LootParameters.ORIGIN)));
-		CompoundNBT nbt = te.write(new CompoundNBT());
+		TileEntity te = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootParameters.ORIGIN)));
+		CompoundNBT nbt = te.save(new CompoundNBT());
 
 		return nbt.contains(key) && nbt.getBoolean(key) == value;
 	}
 
 	@Override
-	public LootConditionType getConditionType()
+	public LootConditionType getType()
 	{
 		return SecurityCraft.TILE_ENTITY_NBT_LOOT_CONDITION;
 	}
@@ -87,7 +87,7 @@ public class TileEntityNBTCondition implements ILootCondition
 		@Override
 		public TileEntityNBTCondition deserialize(JsonObject json, JsonDeserializationContext ctx)
 		{
-			return new TileEntityNBTCondition(JSONUtils.getString(json, "key"), JSONUtils.getBoolean(json, "value"));
+			return new TileEntityNBTCondition(JSONUtils.getAsString(json, "key"), JSONUtils.getAsBoolean(json, "value"));
 		}
 	}
 }

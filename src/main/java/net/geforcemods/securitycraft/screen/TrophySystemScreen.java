@@ -54,7 +54,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 				return 1;
 			else if(e2 == EntityType.PIG)
 				return -1;
-			else return e1.getName().getString().compareTo(e2.getName().getString());
+			else return e1.getDescription().getString().compareTo(e2.getDescription().getString());
 		});
 	}
 
@@ -62,13 +62,13 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 	protected void init() {
 		super.init();
 
-		children.add(projectileList = new ProjectileScrollList(minecraft, xSize - 24, ySize - 60, guiTop + 40, guiLeft + 12));
+		children.add(projectileList = new ProjectileScrollList(minecraft, imageWidth - 24, imageHeight - 60, topPos + 40, leftPos + 12));
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY) {
-		font.drawText(matrix, title, xSize / 2 - font.getStringPropertyWidth(title) / 2, titleY, 4210752);
-		font.drawText(matrix, projectiles, xSize / 2 - font.getStringPropertyWidth(projectiles) / 2, titleY + 25, 4210752);
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY) {
+		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, titleLabelY, 4210752);
+		font.draw(matrix, projectiles, imageWidth / 2 - font.width(projectiles) / 2, titleLabelY + 25, 4210752);
 	}
 
 	@Override
@@ -79,18 +79,18 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		if(projectileList != null)
 			projectileList.render(matrix, mouseX, mouseY, partialTicks);
 
-		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
+		ClientUtils.renderModuleInfo(matrix, ModuleType.SMART, toggle, moduleRequired, isSmart, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
-		int startX = (width - xSize) / 2;
-		int startY = (height - ySize) / 2;
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY) {
+		int startX = (width - imageWidth) / 2;
+		int startY = (height - imageHeight) / 2;
 
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
-		this.blit(matrix, startX, startY, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(GUI_TEXTURE);
+		this.blit(matrix, startX, startY, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 		@Override
 		protected int getContentHeight()
 		{
-			int height = 50 + (listLength * font.FONT_HEIGHT);
+			int height = 50 + (listLength * font.lineHeight);
 
 			if(height < bottom - top - 8)
 				height = bottom - top - 8;
@@ -128,7 +128,7 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 			if(isSmart && slotIndex >= 0 && mouseY >= 0 && slotIndex < listLength) {
 				tileEntity.toggleFilter(orderedFilterList.get(slotIndex));
-				Minecraft.getInstance().getSoundHandler().play(SimpleSound.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+				Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 				return true;
 			}
 
@@ -148,22 +148,22 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 				int min = left;
 				int max = entryRight - 6; //6 is the width of the scrollbar
 				int slotTop = baseY + slotIndex * slotHeight;
-				BufferBuilder bufferBuilder = tess.getBuffer();
+				BufferBuilder bufferBuilder = tess.getBuilder();
 
 				RenderSystem.enableBlend();
 				RenderSystem.disableTexture();
 				RenderSystem.defaultBlendFunc();
 				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-				bufferBuilder.pos(min, slotTop + slotBuffer + 2, 0).tex(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-				bufferBuilder.pos(max, slotTop + slotBuffer + 2, 0).tex(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-				bufferBuilder.pos(max, slotTop - 2, 0).tex(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-				bufferBuilder.pos(min, slotTop - 2, 0).tex(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-				bufferBuilder.pos(min + 1, slotTop + slotBuffer + 1, 0).tex(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-				bufferBuilder.pos(max - 1, slotTop + slotBuffer + 1, 0).tex(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-				bufferBuilder.pos(max - 1, slotTop - 1, 0).tex(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-				bufferBuilder.pos(min + 1, slotTop - 1, 0).tex(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-				bufferBuilder.finishDrawing();
-				WorldVertexBufferUploader.draw(bufferBuilder);
+				bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
+				bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
+				bufferBuilder.end();
+				WorldVertexBufferUploader.end(bufferBuilder);
 				RenderSystem.enableTexture();
 				RenderSystem.disableBlend();
 			}
@@ -172,11 +172,11 @@ public class TrophySystemScreen extends ContainerScreen<GenericTEContainer> {
 
 			//draw entry strings and indicators whether the filter is enabled
 			for(EntityType<?> projectileType : orderedFilterList) {
-				ITextComponent projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getName();
+				ITextComponent projectileName = projectileType == EntityType.PIG ? moddedProjectiles : projectileType.getDescription();
 				int yStart = relativeY + (slotHeight * i);
 
-				font.drawText(matrix, projectileName, left + width / 2 - font.getStringPropertyWidth(projectileName) / 2, yStart, 0xC6C6C6);
-				minecraft.getTextureManager().bindTexture(BEACON_GUI);
+				font.draw(matrix, projectileName, left + width / 2 - font.width(projectileName) / 2, yStart, 0xC6C6C6);
+				minecraft.getTextureManager().bind(BEACON_GUI);
 				blit(matrix, left, yStart - 3, 14, 14, tileEntity.getFilter(projectileType) ? 88 : 110, 219, 21, 22, 256, 256);
 				i++;
 			}

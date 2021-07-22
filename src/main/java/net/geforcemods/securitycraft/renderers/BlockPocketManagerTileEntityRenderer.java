@@ -30,9 +30,9 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 		if(!te.showOutline)
 			return;
 
-		Matrix4f positionMatrix = matrix.getLast().getMatrix();
-		Direction facing = te.getBlockState().get(BlockPocketManagerBlock.FACING);
-		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
+		Matrix4f positionMatrix = matrix.last().pose();
+		Direction facing = te.getBlockState().getValue(BlockPocketManagerBlock.FACING);
+		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
 		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -te.autoBuildOffset : te.autoBuildOffset; //keep negative values moving the offset to the left consistent
 		int size = te.size;
 		int half = (size - 1) / 2;
@@ -50,36 +50,36 @@ public class BlockPocketManagerTileEntityRenderer extends TileEntityRenderer<Blo
 		}
 
 		//bottom lines
-		builder.pos(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
 		//top lines
-		builder.pos(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
 		//corner edge lines
-		builder.pos(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
-		builder.pos(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, leftX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, size, backZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, 0.0F, frontZ).color(0, 0, 255, 255).endVertex();
+		builder.vertex(positionMatrix, rightX, size, frontZ).color(0, 0, 255, 255).endVertex();
 	}
 
 	@Override
-	public boolean isGlobalRenderer(BlockPocketManagerTileEntity te)
+	public boolean shouldRenderOffScreen(BlockPocketManagerTileEntity te)
 	{
 		return te.showOutline;
 	}

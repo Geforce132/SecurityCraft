@@ -63,7 +63,7 @@ public class TogglePictureButton extends IdButton{
 
 			if(getTextureLocation() != null)
 			{
-				Minecraft.getInstance().getTextureManager().bindTexture(getTextureLocation());
+				Minecraft.getInstance().getTextureManager().bind(getTextureLocation());
 				blit(matrix, x + drawOffset, y + drawOffset, drawWidth, drawHeight, u[currentIndex], v[currentIndex], uWidth, vHeight, textureWidth, textureHeight);
 			}
 		}

@@ -27,7 +27,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class UsernameLoggerTileEntity extends DisguisableTileEntity implements INamedContainerProvider {
 
-	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1, true);
+	private IntOption searchRadius = new IntOption(this::getBlockPos, "searchRadius", 3, 1, 20, 1, true);
 	public String[] players = new String[100];
 	public String[] uuids = new String[100];
 	public long[] timestamps = new long[100];
@@ -39,7 +39,7 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public boolean attackEntity(Entity entity) {
-		if (!world.isRemote && entity instanceof PlayerEntity) {
+		if (!level.isClientSide && entity instanceof PlayerEntity) {
 			addPlayer((PlayerEntity)entity);
 			sendChangeToClient(false);
 		}
@@ -49,14 +49,14 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 
 	@Override
 	public boolean canAttack() {
-		return world.getRedstonePowerFromNeighbors(pos) > 0;
+		return level.getBestNeighborSignal(worldPosition) > 0;
 	}
 
 	public void logPlayers(){
 		int range = searchRadius.get();
 
-		AxisAlignedBB area = new AxisAlignedBB(pos).grow(range);
-		List<?> entities = world.getEntitiesWithinAABB(PlayerEntity.class, area);
+		AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(range);
+		List<?> entities = level.getEntitiesOfClass(PlayerEntity.class, area);
 		Iterator<?> iterator = entities.iterator();
 
 		while(iterator.hasNext())
@@ -98,8 +98,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag){
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag){
+		super.save(tag);
 
 		for(int i = 0; i < players.length; i++)
 		{
@@ -112,8 +112,8 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag){
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag){
+		super.load(state, tag);
 
 		for(int i = 0; i < players.length; i++)
 		{
@@ -129,23 +129,23 @@ public class UsernameLoggerTileEntity extends DisguisableTileEntity implements I
 			for(int i = 0; i < players.length; i++)
 			{
 				if(players[i] != null)
-					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(pos.getX(), pos.getY(), pos.getZ(), i, players[i], uuids[i], timestamps[i]));
+					SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new UpdateLogger(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), i, players[i], uuids[i], timestamps[i]));
 			}
 		}
 		else
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(pos));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new ClearLoggerClient(worldPosition));
 	}
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, world, pos);
+		return new GenericTEContainer(SCContent.cTypeUsernameLogger, windowId, level, worldPosition);
 	}
 
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getTranslationKey());
+		return new TranslationTextComponent(SCContent.USERNAME_LOGGER.get().getDescriptionId());
 	}
 
 	@Override

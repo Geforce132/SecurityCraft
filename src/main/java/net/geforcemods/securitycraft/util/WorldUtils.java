@@ -16,7 +16,7 @@ public class WorldUtils{
 	 */
 	public static void addScheduledTask(IWorld w, Runnable r)
 	{
-		if(w.isRemote()) //clientside
+		if(w.isClientSide()) //clientside
 			Minecraft.getInstance().execute(r);
 		else //serverside
 			ServerLifecycleHooks.getCurrentServer().execute(r);
@@ -24,15 +24,15 @@ public class WorldUtils{
 
 	public static void spawnLightning(World world, Vector3d pos, boolean effectOnly)
 	{
-		world.addEntity(createLightning(world, pos, effectOnly));
+		world.addFreshEntity(createLightning(world, pos, effectOnly));
 	}
 
 	public static LightningBoltEntity createLightning(World world, Vector3d pos, boolean effectOnly)
 	{
 		LightningBoltEntity lightning = EntityType.LIGHTNING_BOLT.create(world);
 
-		lightning.moveForced(pos);
-		lightning.setEffectOnly(effectOnly);
+		lightning.moveTo(pos);
+		lightning.setVisualOnly(effectOnly);
 		return lightning;
 	}
 }

@@ -36,24 +36,24 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 	{
 		super(properties);
 
-		setDefaultState(stateContainer.getBaseState().with(SEE_THROUGH, true).with(SOLID, false));
+		registerDefaultState(stateDefinition.any().setValue(SEE_THROUGH, true).setValue(SOLID, false));
 	}
 
 	public static boolean causesSuffocation(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		return state.get(SOLID);
+		return state.getValue(SOLID);
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx)
 	{
-		if(!state.get(SOLID) && ctx instanceof EntitySelectionContext)
+		if(!state.getValue(SOLID) && ctx instanceof EntitySelectionContext)
 		{
 			Entity entity = ((EntitySelectionContext)ctx).getEntity();
 
 			if(entity instanceof PlayerEntity)
 			{
-				TileEntity te1 = world.getTileEntity(pos);
+				TileEntity te1 = world.getBlockEntity(pos);
 
 				if(te1 instanceof BlockPocketTileEntity)
 				{
@@ -65,14 +65,14 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 					if(ModuleUtils.isAllowed(te.getManager(), entity))
 						return VoxelShapes.empty();
 					else if(!te.getOwner().isOwner((PlayerEntity)entity))
-						return VoxelShapes.fullCube();
+						return VoxelShapes.block();
 					else
 						return VoxelShapes.empty();
 				}
 			}
 		}
 
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
@@ -83,19 +83,19 @@ public class BlockPocketWallBlock extends OwnableBlock implements IOverlayDispla
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public boolean isSideInvisible(BlockState state, BlockState adjacentBlockState, Direction side)
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side)
 	{
-		return state.get(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
+		return state.getValue(SEE_THROUGH) && adjacentBlockState.getBlock() == SCContent.BLOCK_POCKET_WALL.get();
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context)
 	{
-		return super.getStateForPlacement(context).with(SEE_THROUGH, true);
+		return super.getStateForPlacement(context).setValue(SEE_THROUGH, true);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(SEE_THROUGH, SOLID);
 	}

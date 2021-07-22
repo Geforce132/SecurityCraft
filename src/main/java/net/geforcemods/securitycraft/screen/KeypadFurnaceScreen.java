@@ -34,31 +34,31 @@ public class KeypadFurnaceScreen extends ContainerScreen<KeypadFurnaceContainer>
 	public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
 	{
 		super.render(matrix, mouseX, mouseY, partialTicks);
-		renderHoveredTooltip(matrix, mouseX, mouseY);
+		renderTooltip(matrix, mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerForegroundLayer(MatrixStack matrix, int mouseX, int mouseY)
+	protected void renderLabels(MatrixStack matrix, int mouseX, int mouseY)
 	{
-		font.drawText(matrix, title, xSize / 2 - font.getStringPropertyWidth(title) / 2, 6.0F, 4210752);
-		font.drawString(matrix, playerInventory.getDisplayName().getString(), 8.0F, ySize - 96 + 2, 4210752);
+		font.draw(matrix, title, imageWidth / 2 - font.width(title) / 2, 6.0F, 4210752);
+		font.draw(matrix, inventory.getDisplayName().getString(), 8.0F, imageHeight - 96 + 2, 4210752);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
+	protected void renderBg(MatrixStack matrix, float partialTicks, int mouseX, int mouseY)
 	{
 		renderBackground(matrix);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
-		blit(matrix, guiLeft, guiTop, 0, 0, xSize, ySize);
+		minecraft.getTextureManager().bind(FURNACE_GUI_TEXTURES);
+		blit(matrix, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
-		if(((AbstractFurnaceContainer)container).isBurning())
+		if(((AbstractFurnaceContainer)menu).isLit())
 		{
-			int burnLeftScaled = ((AbstractFurnaceContainer)container).getBurnLeftScaled();
+			int burnLeftScaled = ((AbstractFurnaceContainer)menu).getLitProgress();
 
-			blit(matrix, guiLeft + 56, guiTop + 36 + 12 - burnLeftScaled, 176, 12 - burnLeftScaled, 14, burnLeftScaled + 1);
+			blit(matrix, leftPos + 56, topPos + 36 + 12 - burnLeftScaled, 176, 12 - burnLeftScaled, 14, burnLeftScaled + 1);
 		}
 
-		blit(matrix, guiLeft + 79, guiTop + 34, 176, 14, ((AbstractFurnaceContainer)container).getCookProgressionScaled() + 1, 16);
+		blit(matrix, leftPos + 79, topPos + 34, 176, 14, ((AbstractFurnaceContainer)menu).getBurnProgress() + 1, 16);
 	}
 }

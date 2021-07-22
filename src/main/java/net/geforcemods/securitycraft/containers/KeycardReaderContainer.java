@@ -26,12 +26,12 @@ public class KeycardReaderContainer extends Container
 	{
 		super(SCContent.cTypeKeycardReader, windowId);
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getBlockEntity(pos);
 
 		if(tile instanceof KeycardReaderTileEntity)
 			te = (KeycardReaderTileEntity)tile;
 
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 
 		//main player inventory
 		for(int i = 0; i < 3; i++)
@@ -44,7 +44,7 @@ public class KeycardReaderContainer extends Container
 
 		keycardSlot = addSlot(new Slot(itemInventory, 0, 35, 86) {
 			@Override
-			public boolean isItemValid(ItemStack stack)
+			public boolean mayPlace(ItemStack stack)
 			{
 				//only allow keycards
 				//do not allow limited use keycards as they are only crafting components
@@ -62,7 +62,7 @@ public class KeycardReaderContainer extends Container
 
 	public void link()
 	{
-		ItemStack keycard = keycardSlot.getStack();
+		ItemStack keycard = keycardSlot.getItem();
 
 		if(!keycard.isEmpty())
 		{
@@ -77,7 +77,7 @@ public class KeycardReaderContainer extends Container
 
 	public void setKeycardUses(int uses)
 	{
-		ItemStack keycard = keycardSlot.getStack();
+		ItemStack keycard = keycardSlot.getItem();
 
 		if(!keycard.isEmpty())
 		{
@@ -89,38 +89,38 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player)
+	public void removed(PlayerEntity player)
 	{
-		super.onContainerClosed(player);
-		clearContainer(player, te.getWorld(), itemInventory);
+		super.removed(player);
+		clearContainer(player, te.getLevel(), itemInventory);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity player, int id)
+	public ItemStack quickMoveStack(PlayerEntity player, int id)
 	{
 		ItemStack slotStackCopy = ItemStack.EMPTY;
-		Slot slot = inventorySlots.get(id);
+		Slot slot = slots.get(id);
 
-		if(slot != null && slot.getHasStack())
+		if(slot != null && slot.hasItem())
 		{
-			ItemStack slotStack = slot.getStack();
+			ItemStack slotStack = slot.getItem();
 
 			slotStackCopy = slotStack.copy();
 
 			if(id >= 36)
 			{
-				if(!mergeItemStack(slotStack, 0, 36, true))
+				if(!moveItemStackTo(slotStack, 0, 36, true))
 					return ItemStack.EMPTY;
-				slot.onSlotChange(slotStack, slotStackCopy);
+				slot.onQuickCraft(slotStack, slotStackCopy);
 			}
 			else if(id < 36)
-				if(!mergeItemStack(slotStack, 36, 37, false))
+				if(!moveItemStackTo(slotStack, 36, 37, false))
 					return ItemStack.EMPTY;
 
 			if(slotStack.getCount() == 0)
-				slot.putStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			else
-				slot.onSlotChanged();
+				slot.setChanged();
 
 			if(slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
@@ -131,8 +131,8 @@ public class KeycardReaderContainer extends Container
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player)
+	public boolean stillValid(PlayerEntity player)
 	{
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYCARD_READER.get());
+		return stillValid(worldPosCallable, player, SCContent.KEYCARD_READER.get());
 	}
 }

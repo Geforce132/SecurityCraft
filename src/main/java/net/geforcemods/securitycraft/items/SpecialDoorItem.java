@@ -27,9 +27,9 @@ public abstract class SpecialDoorItem extends Item
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType useOn(ItemUseContext ctx)
 	{
-		return onItemUse(ctx.getPlayer(), ctx.getWorld(), ctx.getPos(), ctx.getItem(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx);
+		return onItemUse(ctx.getPlayer(), ctx.getLevel(), ctx.getClickedPos(), ctx.getItemInHand(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx);
 	}
 
 	public ActionResultType onItemUse(PlayerEntity player, World world, BlockPos pos, ItemStack stack, Direction facing, double hitX, double hitY, double hitZ, ItemUseContext ctx)
@@ -37,14 +37,14 @@ public abstract class SpecialDoorItem extends Item
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (!block.isReplaceable(state, new BlockItemUseContext(ctx)))
-			pos = pos.offset(facing);
+		if (!block.canBeReplaced(state, new BlockItemUseContext(ctx)))
+			pos = pos.relative(facing);
 
-		if (player.canPlayerEdit(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.down(), Direction.UP))
+		if (player.mayUseItemAt(pos, facing, stack) && BlockUtils.isSideSolid(world, pos.below(), Direction.UP))
 		{
-			Direction angleFacing = Direction.fromAngle(player.rotationYaw);
-			int offsetX = angleFacing.getXOffset();
-			int offsetZ = angleFacing.getZOffset();
+			Direction angleFacing = Direction.fromYRot(player.yRot);
+			int offsetX = angleFacing.getStepX();
+			int offsetZ = angleFacing.getStepZ();
 			boolean flag = offsetX < 0 && hitZ < 0.5F || offsetX > 0 && hitZ > 0.5F || offsetZ < 0 && hitX > 0.5F || offsetZ > 0 && hitX < 0.5F;
 
 			if(!placeDoor(world, pos, angleFacing, getDoorBlock(), flag, ctx))
@@ -57,10 +57,10 @@ public abstract class SpecialDoorItem extends Item
 			if(!player.isCreative())
 				stack.shrink(1);
 
-			if(world.getTileEntity(pos) != null)
+			if(world.getBlockEntity(pos) != null)
 			{
-				CustomizableTileEntity lowerTe = ((CustomizableTileEntity) world.getTileEntity(pos));
-				CustomizableTileEntity upperTe = ((CustomizableTileEntity) world.getTileEntity(pos.up()));
+				CustomizableTileEntity lowerTe = ((CustomizableTileEntity) world.getBlockEntity(pos));
+				CustomizableTileEntity upperTe = ((CustomizableTileEntity) world.getBlockEntity(pos.above()));
 
 				lowerTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 				upperTe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
@@ -75,17 +75,17 @@ public abstract class SpecialDoorItem extends Item
 
 	public boolean placeDoor(World world, BlockPos pos, Direction facing, Block door, boolean isRightHinge, ItemUseContext ctx) //naming might not be entirely correct, but it's giving a rough idea
 	{
-		BlockPos posAbove = pos.up();
+		BlockPos posAbove = pos.above();
 
-		if(!world.getBlockState(posAbove).isReplaceable(new BlockItemUseContext(ctx)))
+		if(!world.getBlockState(posAbove).canBeReplaced(new BlockItemUseContext(ctx)))
 			return false;
 
-		BlockPos left = pos.offset(facing.rotateY());
-		BlockPos right = pos.offset(facing.rotateYCCW());
-		int rightNormalCubeAmount = (world.getBlockState(right).isNormalCube(world, pos) ? 1 : 0) + (world.getBlockState(right.up()).isNormalCube(world, pos) ? 1 : 0);
-		int leftNormalCubeAmount = (world.getBlockState(left).isNormalCube(world, pos) ? 1 : 0) + (world.getBlockState(left.up()).isNormalCube(world, pos) ? 1 : 0);
-		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.up()).getBlock() == door;
-		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.up()).getBlock() == door;
+		BlockPos left = pos.relative(facing.getClockWise());
+		BlockPos right = pos.relative(facing.getCounterClockWise());
+		int rightNormalCubeAmount = (world.getBlockState(right).isRedstoneConductor(world, pos) ? 1 : 0) + (world.getBlockState(right.above()).isRedstoneConductor(world, pos) ? 1 : 0);
+		int leftNormalCubeAmount = (world.getBlockState(left).isRedstoneConductor(world, pos) ? 1 : 0) + (world.getBlockState(left.above()).isRedstoneConductor(world, pos) ? 1 : 0);
+		boolean isRightDoor = world.getBlockState(right).getBlock() == door || world.getBlockState(right.above()).getBlock() == door;
+		boolean isLeftDoor = world.getBlockState(left).getBlock() == door || world.getBlockState(left.above()).getBlock() == door;
 
 		if ((!isRightDoor || isLeftDoor) && leftNormalCubeAmount <= rightNormalCubeAmount)
 		{
@@ -95,12 +95,12 @@ public abstract class SpecialDoorItem extends Item
 		else
 			isRightHinge = true;
 
-		BlockState state = door.getDefaultState().with(DoorBlock.FACING, facing).with(DoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT);
+		BlockState state = door.defaultBlockState().setValue(DoorBlock.FACING, facing).setValue(DoorBlock.HINGE, isRightHinge ? DoorHingeSide.RIGHT : DoorHingeSide.LEFT);
 
-		world.setBlockState(pos, state.with(DoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
-		world.setBlockState(posAbove, state.with(DoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
-		world.notifyNeighborsOfStateChange(pos, door);
-		world.notifyNeighborsOfStateChange(posAbove, door);
+		world.setBlock(pos, state.setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 2);
+		world.setBlock(posAbove, state.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 2);
+		world.updateNeighborsAt(pos, door);
+		world.updateNeighborsAt(posAbove, door);
 		return true;
 	}
 

@@ -44,7 +44,7 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	public static final BooleanProperty EAST = SixWayBlock.EAST;
 	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
 	public static final BooleanProperty WEST = SixWayBlock.WEST;
-	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().stream().filter(entry -> entry.getKey().getAxis().isHorizontal()).collect(Util.toMapCollector());
+	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream().filter(entry -> entry.getKey().getAxis().isHorizontal()).collect(Util.toMap());
 	protected final VoxelShape[] collisionShapes;
 	protected final VoxelShape[] shapes;
 	private final VoxelShape[] renderShapes;
@@ -53,29 +53,29 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	{
 		super(properties);
 
-		setDefaultState(stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false));
-		renderShapes = func_196408_a(2.0F, 1.0F, 16.0F, 6.0F, 15.0F);
-		collisionShapes = func_196408_a(2.0F, 2.0F, 24.0F, 0.0F, 24.0F);
-		shapes = func_196408_a(2.0F, 2.0F, 16.0F, 0.0F, 16.0F);
+		registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false));
+		renderShapes = makeShapes(2.0F, 1.0F, 16.0F, 6.0F, 15.0F);
+		collisionShapes = makeShapes(2.0F, 2.0F, 24.0F, 0.0F, 24.0F);
+		shapes = makeShapes(2.0F, 2.0F, 16.0F, 0.0F, 16.0F);
 	}
 
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader world, BlockPos pos)
+	public VoxelShape getOcclusionShape(BlockState state, IBlockReader world, BlockPos pos)
 	{
 		return renderShapes[getIndex(state)];
 	}
 
-	protected VoxelShape[] func_196408_a(float p_196408_1_, float p_196408_2_, float p_196408_3_, float p_196408_4_, float p_196408_5_)
+	protected VoxelShape[] makeShapes(float p_196408_1_, float p_196408_2_, float p_196408_3_, float p_196408_4_, float p_196408_5_)
 	{
 		float f = 8.0F - p_196408_1_;
 		float f1 = 8.0F + p_196408_1_;
 		float f2 = 8.0F - p_196408_2_;
 		float f3 = 8.0F + p_196408_2_;
-		VoxelShape voxelshape = Block.makeCuboidShape(f, 0.0D, f, f1, p_196408_3_, f1);
-		VoxelShape voxelshape1 = Block.makeCuboidShape(f2, p_196408_4_, 0.0D, f3, p_196408_5_, f3);
-		VoxelShape voxelshape2 = Block.makeCuboidShape(f2, p_196408_4_, f2, f3, p_196408_5_, 16.0D);
-		VoxelShape voxelshape3 = Block.makeCuboidShape(0.0D, p_196408_4_, f2, f3, p_196408_5_, f3);
-		VoxelShape voxelshape4 = Block.makeCuboidShape(f2, p_196408_4_, f2, 16.0D, p_196408_5_, f3);
+		VoxelShape voxelshape = Block.box(f, 0.0D, f, f1, p_196408_3_, f1);
+		VoxelShape voxelshape1 = Block.box(f2, p_196408_4_, 0.0D, f3, p_196408_5_, f3);
+		VoxelShape voxelshape2 = Block.box(f2, p_196408_4_, f2, f3, p_196408_5_, 16.0D);
+		VoxelShape voxelshape3 = Block.box(0.0D, p_196408_4_, f2, f3, p_196408_5_, f3);
+		VoxelShape voxelshape4 = Block.box(f2, p_196408_4_, f2, 16.0D, p_196408_5_, f3);
 		VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
 		VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
 		VoxelShape[] returnValue = {VoxelShapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1), VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1), voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4), VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4), voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5), VoxelShapes.or(voxelshape3, voxelshape5), VoxelShapes.or(voxelshape6, voxelshape5)};
@@ -100,41 +100,41 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		return collisionShapes[getIndex(state)];
 	}
 
-	public boolean func_220111_a(BlockState state, boolean p_220111_2_, Direction direction)
+	public boolean connectsTo(BlockState state, boolean p_220111_2_, Direction direction)
 	{
 		Block block = state.getBlock();
-		boolean flag = block.isIn(BlockTags.FENCES) && state.getMaterial() == material;
-		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.isParallel(state, direction);
+		boolean flag = block.is(BlockTags.FENCES) && state.getMaterial() == material;
+		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, direction);
 
-		return !cannotAttach(block) && p_220111_2_ || flag || flag1;
+		return !isExceptionForConnection(block) && p_220111_2_ || flag || flag1;
 	}
 
 	private static int getMask(Direction facing)
 	{
-		return 1 << facing.getHorizontalIndex();
+		return 1 << facing.get2DDataValue();
 	}
 
 	protected int getIndex(BlockState state)
 	{
 		int i = 0;
 
-		if (state.get(NORTH))
+		if (state.getValue(NORTH))
 			i |= getMask(Direction.NORTH);
 
-		if (state.get(EAST))
+		if (state.getValue(EAST))
 			i |= getMask(Direction.EAST);
 
-		if (state.get(SOUTH))
+		if (state.getValue(SOUTH))
 			i |= getMask(Direction.SOUTH);
 
-		if (state.get(WEST))
+		if (state.getValue(WEST))
 			i |= getMask(Direction.WEST);
 
 		return i;
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type)
 	{
 		return false;
 	}
@@ -145,11 +145,11 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		switch(rot)
 		{
 			case CLOCKWISE_180:
-				return state.with(NORTH, state.get(SOUTH)).with(EAST, state.get(WEST)).with(SOUTH, state.get(NORTH)).with(WEST, state.get(EAST));
+				return state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
 			case COUNTERCLOCKWISE_90:
-				return state.with(NORTH, state.get(EAST)).with(EAST, state.get(SOUTH)).with(SOUTH, state.get(WEST)).with(WEST, state.get(NORTH));
+				return state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
 			case CLOCKWISE_90:
-				return state.with(NORTH, state.get(WEST)).with(EAST, state.get(NORTH)).with(SOUTH, state.get(EAST)).with(WEST, state.get(SOUTH));
+				return state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
 			default:
 				return state;
 		}
@@ -161,9 +161,9 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		switch(mirror)
 		{
 			case LEFT_RIGHT:
-				return state.with(NORTH, state.get(SOUTH)).with(SOUTH, state.get(NORTH));
+				return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
 			case FRONT_BACK:
-				return state.with(EAST, state.get(WEST)).with(WEST, state.get(EAST));
+				return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
 			default:
 				return super.mirror(state, mirror);
 		}
@@ -172,8 +172,8 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		IBlockReader iblockreader = ctx.getWorld();
-		BlockPos blockpos = ctx.getPos();
+		IBlockReader iblockreader = ctx.getLevel();
+		BlockPos blockpos = ctx.getClickedPos();
 		BlockPos blockpos1 = blockpos.north();
 		BlockPos blockpos2 = blockpos.east();
 		BlockPos blockpos3 = blockpos.south();
@@ -182,23 +182,23 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
 		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
 		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-		return super.getStateForPlacement(ctx).with(NORTH, func_220111_a(blockstate, blockstate.isSolidSide(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)).with(EAST, func_220111_a(blockstate1, blockstate1.isSolidSide(iblockreader, blockpos2, Direction.WEST), Direction.WEST)).with(SOUTH, func_220111_a(blockstate2, blockstate2.isSolidSide(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)).with(WEST, func_220111_a(blockstate3, blockstate3.isSolidSide(iblockreader, blockpos4, Direction.EAST), Direction.EAST));
+		return super.getStateForPlacement(ctx).setValue(NORTH, connectsTo(blockstate, blockstate.isFaceSturdy(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)).setValue(EAST, connectsTo(blockstate1, blockstate1.isFaceSturdy(iblockreader, blockpos2, Direction.WEST), Direction.WEST)).setValue(SOUTH, connectsTo(blockstate2, blockstate2.isFaceSturdy(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH)).setValue(WEST, connectsTo(blockstate3, blockstate3.isFaceSturdy(iblockreader, blockpos4, Direction.EAST), Direction.EAST));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(NORTH, EAST, WEST, SOUTH);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.with(FACING_TO_PROPERTY_MAP.get(facing), func_220111_a(facingState, facingState.isSolidSide(world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? state.setValue(FACING_TO_PROPERTY_MAP.get(facing), connectsTo(facingState, facingState.isFaceSturdy(world, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
 		return ActionResultType.FAIL;
 	}
@@ -212,28 +212,28 @@ public class IronFenceBlock extends OwnableBlock implements IIntersectable {
 		//owner check
 		else if(entity instanceof PlayerEntity)
 		{
-			if(((OwnableTileEntity) world.getTileEntity(pos)).getOwner().isOwner((PlayerEntity)entity))
+			if(((OwnableTileEntity) world.getBlockEntity(pos)).getOwner().isOwner((PlayerEntity)entity))
 				return;
 		}
-		else if(!world.isRemote && entity instanceof CreeperEntity)
+		else if(!world.isClientSide && entity instanceof CreeperEntity)
 		{
 			CreeperEntity creeper = (CreeperEntity)entity;
-			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.copyCenteredHorizontally(pos), true);
+			LightningBoltEntity lightning = WorldUtils.createLightning(world, Vector3d.atBottomCenterOf(pos), true);
 
-			creeper.causeLightningStrike((ServerWorld)world, lightning);
-			creeper.extinguish();
+			creeper.thunderHit((ServerWorld)world, lightning);
+			creeper.clearFire();
 			return;
 		}
 
-		entity.attackEntityFrom(CustomDamageSources.ELECTRICITY, 6.0F); //3 hearts per attack
+		entity.hurt(CustomDamageSources.ELECTRICITY, 6.0F); //3 hearts per attack
 	}
 
 	@Override
-	public boolean eventReceived(BlockState state, World world, BlockPos pos, int eventID, int eventParam)
+	public boolean triggerEvent(BlockState state, World world, BlockPos pos, int eventID, int eventParam)
 	{
-		super.eventReceived(state, world, pos, eventID, eventParam);
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity == null ? false : tileentity.receiveClientEvent(eventID, eventParam);
+		super.triggerEvent(state, world, pos, eventID, eventParam);
+		TileEntity tileentity = world.getBlockEntity(pos);
+		return tileentity == null ? false : tileentity.triggerEvent(eventID, eventParam);
 	}
 
 	@Override

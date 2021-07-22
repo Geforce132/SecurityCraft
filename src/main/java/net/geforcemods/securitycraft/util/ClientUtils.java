@@ -39,7 +39,7 @@ public class ClientUtils{
 	 * Returns the current Minecraft in-game time, in a 12-hour AM/PM format.
 	 */
 	public static String getFormattedMinecraftTime(){
-		Long time = Minecraft.getInstance().world.getDayTime();
+		Long time = Minecraft.getInstance().level.getDayTime();
 
 		int hours24 = (int) ((float) time.longValue() / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
@@ -61,25 +61,25 @@ public class ClientUtils{
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
-		Matrix4f m4f = matrix.getLast().getMatrix();
-		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+		Matrix4f m4f = matrix.last().pose();
+		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuilder();
 
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultAlphaFunc();
 		RenderSystem.defaultBlendFunc();
 
-		mc.getTextureManager().bindTexture(MODULE_TEXTURES[module.ordinal()]);
+		mc.getTextureManager().bind(MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
 		if(module == ModuleType.REDSTONE)
 		{
-			mc.getTextureManager().bindTexture(REDSTONE_TEXTURE);
+			mc.getTextureManager().bind(REDSTONE_TEXTURE);
 			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 		else if(module == ModuleType.SPEED)
 		{
-			mc.getTextureManager().bindTexture(SUGAR_TEXTURE);
+			mc.getTextureManager().bind(SUGAR_TEXTURE);
 			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
@@ -90,18 +90,18 @@ public class ClientUtils{
 			ITextComponent text = isModuleInstalled ? moduleTooltip : noModuleTooltip;
 
 			if(text != null)
-				GuiUtils.drawHoveringText(matrix, Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.fontRenderer);
+				GuiUtils.drawHoveringText(matrix, Arrays.asList(text), mouseX, mouseY, screenWidth, screenHeight, -1, mc.font);
 		}
 	}
 
 	private static void drawTexture(BufferBuilder bufferBuilder, Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha)
 	{
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
-		bufferBuilder.pos(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 1).endVertex();
-		bufferBuilder.pos(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 1).endVertex();
-		bufferBuilder.pos(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(1, 0).endVertex();
-		bufferBuilder.pos(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).tex(0, 0).endVertex();
-		bufferBuilder.finishDrawing();
-		WorldVertexBufferUploader.draw(bufferBuilder);
+		bufferBuilder.vertex(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 1).endVertex();
+		bufferBuilder.vertex(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 1).endVertex();
+		bufferBuilder.vertex(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 0).endVertex();
+		bufferBuilder.vertex(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
+		bufferBuilder.end();
+		WorldVertexBufferUploader.end(bufferBuilder);
 	}
 }

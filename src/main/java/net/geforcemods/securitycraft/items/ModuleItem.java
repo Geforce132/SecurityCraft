@@ -39,7 +39,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ModuleItem extends Item{
 
-	public static final Style GRAY_STYLE = Style.EMPTY.setFormatting(TextFormatting.GRAY);
+	public static final Style GRAY_STYLE = Style.EMPTY.withColor(TextFormatting.GRAY);
 	public static final int MAX_PLAYERS = 50;
 	private final ModuleType module;
 	private final boolean nbtCanBeModified;
@@ -65,10 +65,10 @@ public class ModuleItem extends Item{
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext ctx)
+	public ActionResultType useOn(ItemUseContext ctx)
 	{
-		TileEntity te = ctx.getWorld().getTileEntity(ctx.getPos());
-		ItemStack stack = ctx.getItem();
+		TileEntity te = ctx.getLevel().getBlockEntity(ctx.getClickedPos());
+		ItemStack stack = ctx.getItemInHand();
 
 		if(te instanceof IModuleInventory)
 		{
@@ -91,43 +91,43 @@ public class ModuleItem extends Item{
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 
 		if(canBeCustomized())
 		{
 			if(module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
 				SecurityCraft.proxy.displayEditModuleGui(stack);
-				return ActionResult.resultConsume(stack);
+				return ActionResult.consume(stack);
 			}
 			else if(module == ModuleType.DISGUISE)
 			{
-				if (!world.isRemote) {
+				if (!world.isClientSide) {
 					NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 						{
-							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getHeldItem(hand)));
+							return new DisguiseModuleContainer(windowId, inv, new ModuleItemInventory(player.getItemInHand(hand)));
 						}
 
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(getTranslationKey());
+							return new TranslationTextComponent(getDescriptionId());
 						}
 					});
 				}
 
-				return ActionResult.resultConsume(stack);
+				return ActionResult.consume(stack);
 			}
 		}
 
-		return ActionResult.resultPass(stack);
+		return ActionResult.pass(stack);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, World world, List<ITextComponent> list, ITooltipFlag flag) {
 		if(nbtCanBeModified || canBeCustomized())
 			list.add(new TranslationTextComponent("tooltip.securitycraft:module.modifiable").setStyle(GRAY_STYLE));
 		else
@@ -149,7 +149,7 @@ public class ModuleItem extends Item{
 				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added").setStyle(GRAY_STYLE));
 
 				for(ItemStack addon : getAddons(stack.getTag()))
-					list.add(new StringTextComponent("- ").appendSibling(Utils.localize(addon.getTranslationKey())).setStyle(GRAY_STYLE));
+					list.add(new StringTextComponent("- ").append(Utils.localize(addon.getDescriptionId())).setStyle(GRAY_STYLE));
 			}
 		}
 	}
@@ -182,10 +182,10 @@ public class ModuleItem extends Item{
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons) {
-				ItemStack stack = ItemStack.read(item);
+				ItemStack stack = ItemStack.of(item);
 
 				if(stack.getItem() instanceof BlockItem)
-					list.add(Block.getBlockFromItem(stack.getItem()));
+					list.add(Block.byItem(stack.getItem()));
 			}
 		}
 
@@ -204,7 +204,7 @@ public class ModuleItem extends Item{
 			int slot = item.getInt("Slot");
 
 			if(slot < numberOfBlockAddons)
-				list.add(ItemStack.read(item));
+				list.add(ItemStack.of(item));
 		}
 
 		return list;

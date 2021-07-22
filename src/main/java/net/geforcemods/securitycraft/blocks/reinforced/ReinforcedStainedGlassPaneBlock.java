@@ -20,7 +20,7 @@ public class ReinforcedStainedGlassPaneBlock extends ReinforcedPaneBlock impleme
 	@Override
 	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader world, BlockPos pos, BlockPos beaconPos)
 	{
-		return color.getColorComponentValues();
+		return color.getTextureDiffuseColors();
 	}
 
 	@Override

@@ -29,14 +29,14 @@ import net.minecraft.world.World;
 public class FrameBlock extends OwnableBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(2, 2, 0, 14, 14, 1);
-	private static final VoxelShape SHAPE_EAST = Block.makeCuboidShape(15, 2, 2, 16, 14, 14);
-	private static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(2, 2, 15, 14, 14, 16);
-	private static final VoxelShape SHAPE_WEST = Block.makeCuboidShape(0, 2, 2, 1, 14, 14);
+	private static final VoxelShape SHAPE_NORTH = Block.box(2, 2, 0, 14, 14, 1);
+	private static final VoxelShape SHAPE_EAST = Block.box(15, 2, 2, 16, 14, 14);
+	private static final VoxelShape SHAPE_SOUTH = Block.box(2, 2, 15, 14, 14, 16);
+	private static final VoxelShape SHAPE_WEST = Block.box(0, 2, 2, 1, 14, 14);
 
 	public FrameBlock(Block.Properties properties){
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class FrameBlock extends OwnableBlock {
 	{
 		VoxelShape shape = null;
 
-		switch(state.get(FACING))
+		switch(state.getValue(FACING))
 		{
 			case NORTH: shape = SHAPE_NORTH; break;
 			case EAST: shape = SHAPE_EAST; break;
@@ -53,16 +53,16 @@ public class FrameBlock extends OwnableBlock {
 			default: shape = VoxelShapes.empty();
 		}
 
-		return VoxelShapes.combine(VoxelShapes.fullCube(), shape, IBooleanFunction.ONLY_FIRST); //subtract
+		return VoxelShapes.joinUnoptimized(VoxelShapes.block(), shape, IBooleanFunction.ONLY_FIRST); //subtract
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		ItemStack stack = player.getHeldItem(hand);
+		ItemStack stack = player.getItemInHand(hand);
 
 		if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getTranslationKey()), Utils.localize("messages.securitycraft:frame.rightclick"), TextFormatting.RED);
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.rightclick"), TextFormatting.RED);
 			return ActionResultType.SUCCESS;
 		}
 
@@ -72,16 +72,16 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 	}
@@ -89,12 +89,12 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

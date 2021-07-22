@@ -36,42 +36,42 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 		if(te.isActive() && !te.isEmpty())
 		{
 			Random random = new Random();
-			BlockState state = te.getProjectedBlock().getDefaultState();
+			BlockState state = te.getProjectedBlock().defaultBlockState();
 			BlockPos pos;
 
 			RenderSystem.disableCull();
 
 			for(int x = 0; x < te.getProjectionWidth(); x++) {
 				for(int y = 0; y < te.getProjectionHeight(); y++) {
-					stack.push();
+					stack.pushPose();
 
 					if(!te.isHorizontal())
-						pos = translateProjection(te.getPos(), stack, te.getBlockState().get(ProjectorBlock.FACING), x, y, te.getProjectionRange(), te.getProjectionOffset());
+						pos = translateProjection(te.getBlockPos(), stack, te.getBlockState().getValue(ProjectorBlock.FACING), x, y, te.getProjectionRange(), te.getProjectionOffset());
 					else
-						pos = translateProjection(te.getPos(), stack, te.getBlockState().get(ProjectorBlock.FACING), x, te.getProjectionRange() - 16, y + 1, te.getProjectionOffset());
+						pos = translateProjection(te.getBlockPos(), stack, te.getBlockState().getValue(ProjectorBlock.FACING), x, te.getProjectionRange() - 16, y + 1, te.getProjectionOffset());
 
-					if(pos != null && te.getWorld().isAirBlock(pos))
+					if(pos != null && te.getLevel().isEmptyBlock(pos))
 					{
 
-						switch (state.getRenderType()) {
+						switch (state.getRenderShape()) {
 							case MODEL:
-								for (RenderType rendertype : RenderType.getBlockRenderTypes()) {
+								for (RenderType rendertype : RenderType.chunkBufferLayers()) {
 									if (RenderTypeLookup.canRenderInLayer(state, rendertype)) {
-										Minecraft.getInstance().getBlockRendererDispatcher().renderModel(state, pos, te.getWorld(), stack, buffer.getBuffer(rendertype), true, random);
+										Minecraft.getInstance().getBlockRenderer().renderBatched(state, pos, te.getLevel(), stack, buffer.getBuffer(rendertype), true, random);
 									}
 								}
 
 								break;
 							case ENTITYBLOCK_ANIMATED:
 								ItemStack tileEntityStack = new ItemStack(state.getBlock());
-								tileEntityStack.getItem().getItemStackTileEntityRenderer().func_239207_a_(tileEntityStack, ItemCameraTransforms.TransformType.NONE, stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+								tileEntityStack.getItem().getItemStackTileEntityRenderer().renderByItem(tileEntityStack, ItemCameraTransforms.TransformType.NONE, stack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
 								break;
 							default:
 								break;
 						}
 					}
 
-					stack.pop();
+					stack.popPose();
 				}
 			}
 
@@ -117,7 +117,7 @@ public class ProjectorTileEntityRenderer extends TileEntityRenderer<ProjectorTil
 	}
 
 	@Override
-	public boolean isGlobalRenderer(ProjectorTileEntity te)
+	public boolean shouldRenderOffScreen(ProjectorTileEntity te)
 	{
 		return true;
 	}

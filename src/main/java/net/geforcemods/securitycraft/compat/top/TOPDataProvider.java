@@ -78,7 +78,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 				if(block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(world, blockState, data.getPos()))
 					return;
 
-				TileEntity te = world.getTileEntity(data.getPos());
+				TileEntity te = world.getBlockEntity(data.getPos());
 
 				if(te instanceof IOwnable)
 					probeInfo.vertical().text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:owner", ((IOwnable) te).getOwner().getName()).getString()));
@@ -91,7 +91,7 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
 
 						for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(module.getTranslationKey())));
 					}
 				}
 
@@ -130,19 +130,19 @@ public class TOPDataProvider implements Function<ITheOneProbe, Void>
 						probeInfo.text(new StringTextComponent(TextFormatting.GRAY + Utils.localize("waila.securitycraft:equipped").getString()));
 
 						if(!sentry.getAllowlistModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
 						if(!sentry.getDisguiseModule().isEmpty())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 
 						if(sentry.hasSpeedModule())
-							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").appendSibling(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
+							probeInfo.text(new StringTextComponent(TextFormatting.GRAY + "- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
 					}
 
 					IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
 
 					if(mode != SentryMode.IDLE)
-						modeDescription.appendString("- ").appendSibling(Utils.localize(mode.getTargetKey()));
+						modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
 					probeInfo.text(new StringTextComponent(TextFormatting.GRAY + modeDescription.getString()));
 				}

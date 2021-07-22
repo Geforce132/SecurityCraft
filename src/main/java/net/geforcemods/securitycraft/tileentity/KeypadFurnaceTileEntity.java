@@ -60,9 +60,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		writeModuleInventory(tag);
 		writeOptions(tag);
@@ -82,9 +82,9 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		modules = readModuleInventory(tag);
 		readOptions(tag);
@@ -97,19 +97,19 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public CompoundNBT getUpdateTag()
 	{
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket()
 	{
-		return new SUpdateTileEntityPacket(pos, 1, getUpdateTag());
+		return new SUpdateTileEntityPacket(worldPosition, 1, getUpdateTag());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
 	{
-		read(getBlockState(), packet.getNbtCompound());
+		load(getBlockState(), packet.getTag());
 	}
 
 	@Override
@@ -127,8 +127,8 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	public void onLoad()
 	{
-		if(world.isRemote)
-			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(pos));
+		if(level.isClientSide)
+			SecurityCraft.channel.sendToServer(new RequestTEOwnableUpdate(worldPosition));
 	}
 
 	@Override
@@ -154,15 +154,15 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
+	public ItemStack getItem(int slot)
 	{
 		return slot >= 100 ? getModuleInSlot(slot) : items.get(slot);
 	}
 
 	@Override
 	public void activate(PlayerEntity player) {
-		if(!world.isRemote && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
-			KeypadFurnaceBlock.activate(world, pos, player);
+		if(!level.isClientSide && getBlockState().getBlock() instanceof KeypadFurnaceBlock)
+			KeypadFurnaceBlock.activate(level, worldPosition, player);
 	}
 
 	@Override
@@ -175,15 +175,15 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 					{
-						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, world, pos);
+						return new GenericTEContainer(SCContent.cTypeCheckPassword, windowId, level, worldPosition);
 					}
 
 					@Override
 					public ITextComponent getDisplayName()
 					{
-						return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
+						return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
 					}
-				}, pos);
+				}, worldPosition);
 			}
 		}
 		else
@@ -196,15 +196,15 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 						@Override
 						public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 						{
-							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, world, pos);
+							return new GenericTEContainer(SCContent.cTypeSetPassword, windowId, level, worldPosition);
 						}
 
 						@Override
 						public ITextComponent getDisplayName()
 						{
-							return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
+							return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
 						}
-					}, pos);
+					}, worldPosition);
 				}
 			}
 			else
@@ -230,13 +230,13 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 
 	public IIntArray getFurnaceData()
 	{
-		return furnaceData;
+		return dataAccess;
 	}
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new KeypadFurnaceContainer(windowId, world, pos, inv, this, furnaceData);
+		return new KeypadFurnaceContainer(windowId, level, worldPosition, inv, this, dataAccess);
 	}
 
 	@Override
@@ -254,7 +254,7 @@ public class KeypadFurnaceTileEntity extends AbstractFurnaceTileEntity implement
 	@Override
 	protected ITextComponent getDefaultName()
 	{
-		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getTranslationKey());
+		return new TranslationTextComponent(SCContent.KEYPAD_FURNACE.get().getDescriptionId());
 	}
 
 	@Override

@@ -73,10 +73,10 @@ public class SCEventHandler {
 
 		if(player.getPersistentData().contains(PREVIOUS_PLAYER_POS_NBT))
 		{
-			BlockPos pos = BlockPos.fromLong(player.getPersistentData().getLong(PREVIOUS_PLAYER_POS_NBT));
+			BlockPos pos = BlockPos.of(player.getPersistentData().getLong(PREVIOUS_PLAYER_POS_NBT));
 
 			player.getPersistentData().remove(PREVIOUS_PLAYER_POS_NBT);
-			player.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+			player.teleportTo(pos.getX(), pos.getY(), pos.getZ());
 		}
 
 		SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity)player), new SendTip());
@@ -89,10 +89,10 @@ public class SCEventHandler {
 
 		if(PlayerUtils.isPlayerMountedOnCamera(player))
 		{
-			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getRidingEntity()).getPreviousPlayerPos());
+			BlockPos pos = new BlockPos(((SecurityCameraEntity)player.getVehicle()).getPreviousPlayerPos());
 
-			player.getRidingEntity().remove();
-			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.toLong());
+			player.getVehicle().remove();
+			player.getPersistentData().putLong(PREVIOUS_PLAYER_POS_NBT, pos.asLong());
 		}
 	}
 
@@ -105,7 +105,7 @@ public class SCEventHandler {
 		}
 
 		if(event.getSource() == CustomDamageSources.ELECTRICITY)
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getPosX(), event.getEntity().getPosY(), event.getEntity().getPosZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new PlaySoundAtPos(event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), SCSounds.ELECTRIFIED.path, 0.25F, "blocks"));
 	}
 
 	@SubscribeEvent
@@ -118,8 +118,8 @@ public class SCEventHandler {
 
 		World world = event.getWorld();
 
-		if(!world.isRemote){
-			TileEntity tileEntity = world.getTileEntity(event.getPos());
+		if(!world.isClientSide){
+			TileEntity tileEntity = world.getBlockEntity(event.getPos());
 			BlockState state  = world.getBlockState(event.getPos());
 			Block block = state.getBlock();
 
@@ -142,32 +142,32 @@ public class SCEventHandler {
 				return;
 			}
 
-			if(tileEntity instanceof INameable && ((INameable)tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getHeldItem(event.getHand()).hasDisplayName()){
-				ItemStack nametag = event.getPlayer().getHeldItem(event.getHand());
+			if(tileEntity instanceof INameable && ((INameable)tileEntity).canBeNamed() && PlayerUtils.isHoldingItem(event.getPlayer(), Items.NAME_TAG, event.getHand()) && event.getPlayer().getItemInHand(event.getHand()).hasCustomHoverName()){
+				ItemStack nametag = event.getPlayer().getItemInHand(event.getHand());
 
 				event.setCanceled(true);
 				event.setCancellationResult(ActionResultType.SUCCESS);
 
-				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getDisplayName())) {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+				if(((INameable) tileEntity).getCustomSCName().equals(nametag.getHoverName())) {
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.alreadyMatches", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
 					return;
 				}
 
 				if(!event.getPlayer().isCreative())
 					nametag.shrink(1);
 
-				((INameable) tileEntity).setCustomSCName(nametag.getDisplayName());
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getTranslationKey()), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
+				((INameable) tileEntity).setCustomSCName(nametag.getHoverName());
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(tileEntity.getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:naming.named", ((INameable)tileEntity).getCustomSCName()), TextFormatting.RED);
 				return;
 			}
 		}
 
 		//outside !world.isRemote for properly checking the interaction
 		//all the sentry functionality for when the sentry is diguised
-		List<SentryEntity> sentries = world.getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<SentryEntity> sentries = world.getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(event.getPos()));
 
 		if(!sentries.isEmpty())
-			event.setCanceled(sentries.get(0).getEntityInteractionResult(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
+			event.setCanceled(sentries.get(0).mobInteract(event.getPlayer(), event.getHand()) == ActionResultType.SUCCESS); //cancel if an action was taken
 	}
 
 	@SubscribeEvent
@@ -197,15 +197,15 @@ public class SCEventHandler {
 		if(!(event.getWorld() instanceof World))
 			return;
 
-		if(!event.getWorld().isRemote()) {
-			if(event.getWorld().getTileEntity(event.getPos()) instanceof IModuleInventory){
-				IModuleInventory te = (IModuleInventory) event.getWorld().getTileEntity(event.getPos());
+		if(!event.getWorld().isClientSide()) {
+			if(event.getWorld().getBlockEntity(event.getPos()) instanceof IModuleInventory){
+				IModuleInventory te = (IModuleInventory) event.getWorld().getBlockEntity(event.getPos());
 
 				for(int i = 0; i < te.getMaxNumberOfModules(); i++)
 					if(!te.getInventory().get(i).isEmpty()){
 						ItemStack stack = te.getInventory().get(i);
 						ItemEntity item = new ItemEntity((World)event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), stack);
-						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addEntity(item));
+						WorldUtils.addScheduledTask(event.getWorld(), () -> event.getWorld().addFreshEntity(item));
 
 						te.onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType());
 
@@ -216,13 +216,13 @@ public class SCEventHandler {
 						{
 							SecurityCameraTileEntity cam = (SecurityCameraTileEntity)te;
 
-							cam.getWorld().notifyNeighborsOfStateChange(cam.getPos().offset(cam.getWorld().getBlockState(cam.getPos()).get(SecurityCameraBlock.FACING), -1), cam.getWorld().getBlockState(cam.getPos()).getBlock());
+							cam.getLevel().updateNeighborsAt(cam.getBlockPos().relative(cam.getLevel().getBlockState(cam.getBlockPos()).getValue(SecurityCameraBlock.FACING), -1), cam.getLevel().getBlockState(cam.getBlockPos()).getBlock());
 						}
 					}
 			}
 		}
 
-		List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesWithinAABB(SentryEntity.class, new AxisAlignedBB(event.getPos()));
+		List<SentryEntity> sentries = ((World)event.getWorld()).getEntitiesOfClass(SentryEntity.class, new AxisAlignedBB(event.getPos()));
 
 		//don't let people break the disguise block
 		if(!sentries.isEmpty() && !sentries.get(0).getDisguiseModule().isEmpty())
@@ -241,7 +241,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onOwnership(OwnershipEvent event)
 	{
-		TileEntity te = event.getWorld().getTileEntity(event.getPos());
+		TileEntity te = event.getWorld().getBlockEntity(event.getPos());
 
 		if(te instanceof IOwnable) {
 			String name = event.getPlayer().getName().getString();
@@ -255,7 +255,7 @@ public class SCEventHandler {
 	public static void onLivingSetAttackTarget(LivingSetAttackTargetEvent event)
 	{
 		if((event.getTarget() instanceof PlayerEntity && PlayerUtils.isPlayerMountedOnCamera(event.getTarget())) || event.getTarget() instanceof SentryEntity)
-			((MobEntity)event.getEntity()).setAttackTarget(null);
+			((MobEntity)event.getEntity()).setTarget(null);
 	}
 
 	@SubscribeEvent
@@ -263,7 +263,7 @@ public class SCEventHandler {
 	{
 		if(event.getPlayer() != null)
 		{
-			Item held = event.getPlayer().getHeldItemMainhand().getItem();
+			Item held = event.getPlayer().getMainHandItem().getItem();
 
 			if(held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get())
 			{
@@ -287,12 +287,12 @@ public class SCEventHandler {
 		if(event.isDismounting() && event.getEntityBeingMounted() instanceof SecurityCameraEntity && event.getEntityMounting() instanceof PlayerEntity)
 		{
 			PlayerEntity player = (PlayerEntity)event.getEntityMounting();
-			TileEntity te = event.getWorldObj().getTileEntity(event.getEntityBeingMounted().getPosition());
+			TileEntity te = event.getWorldObj().getBlockEntity(event.getEntityBeingMounted().blockPosition());
 
 			if(PlayerUtils.isPlayerMountedOnCamera(player) && te instanceof SecurityCameraTileEntity && ((SecurityCameraTileEntity)te).hasModule(ModuleType.SMART))
 			{
-				((SecurityCameraTileEntity)te).lastPitch = player.rotationPitch;
-				((SecurityCameraTileEntity)te).lastYaw = player.rotationYaw;
+				((SecurityCameraTileEntity)te).lastPitch = player.xRot;
+				((SecurityCameraTileEntity)te).lastYaw = player.yRot;
 			}
 		}
 	}
@@ -314,27 +314,27 @@ public class SCEventHandler {
 	}
 
 	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		World world = event.getPlayer().world;
-		TileEntity tileEntity = world.getTileEntity(event.getPos());
+		World world = event.getPlayer().level;
+		TileEntity tileEntity = world.getBlockEntity(event.getPos());
 
 		if(tileEntity instanceof IPasswordProtected && ((IPasswordProtected)tileEntity).isCodebreakable())
 		{
 			if(ConfigHandler.SERVER.allowCodebreakerItem.get())
 			{
-				if(event.getPlayer().getHeldItem(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
-					event.getPlayer().getHeldItem(event.getHand()).damageItem(1, event.getPlayer(), p -> p.sendBreakAnimation(event.getHand()));
+				if(event.getPlayer().getItemInHand(event.getHand()).getItem() == SCContent.CODEBREAKER.get())
+					event.getPlayer().getItemInHand(event.getHand()).hurtAndBreak(1, event.getPlayer(), p -> p.broadcastBreakEvent(event.getHand()));
 
 				if(event.getPlayer().isCreative() || new Random().nextInt(3) == 1)
 					return ((IPasswordProtected) tileEntity).onCodebreakerUsed(world.getBlockState(event.getPos()), event.getPlayer());
 				else {
-					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(SCContent.CODEBREAKER.get().getTranslationKey()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(event.getPlayer(), new TranslationTextComponent(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
 					return true;
 				}
 			}
 			else {
 				Block block = world.getBlockState(event.getPos()).getBlock();
 
-				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getTranslationKey()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(event.getPlayer(), Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
 			}
 		}
 

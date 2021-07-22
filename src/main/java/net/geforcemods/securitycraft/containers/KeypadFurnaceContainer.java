@@ -20,23 +20,23 @@ public class KeypadFurnaceContainer extends AbstractFurnaceContainer{
 	private IWorldPosCallable worldPosCallable;
 
 	public KeypadFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory) {
-		this(windowId, world, pos, inventory, (KeypadFurnaceTileEntity)world.getTileEntity(pos), ((KeypadFurnaceTileEntity)world.getTileEntity(pos)).getFurnaceData());
+		this(windowId, world, pos, inventory, (KeypadFurnaceTileEntity)world.getBlockEntity(pos), ((KeypadFurnaceTileEntity)world.getBlockEntity(pos)).getFurnaceData());
 	}
 
 	public KeypadFurnaceContainer(int windowId, World world, BlockPos pos, PlayerInventory inventory, IInventory furnaceInv, IIntArray furnaceData) {
 		super(SCContent.cTypeKeypadFurnace, IRecipeType.SMELTING, RecipeBookCategory.FURNACE, windowId, inventory, furnaceInv, furnaceData);
-		this.te = (KeypadFurnaceTileEntity)world.getTileEntity(pos);
-		worldPosCallable = IWorldPosCallable.of(world, pos);
+		this.te = (KeypadFurnaceTileEntity)world.getBlockEntity(pos);
+		worldPosCallable = IWorldPosCallable.create(world, pos);
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity player){
-		return isWithinUsableDistance(worldPosCallable, player, SCContent.KEYPAD_FURNACE.get());
+	public boolean stillValid(PlayerEntity player){
+		return stillValid(worldPosCallable, player, SCContent.KEYPAD_FURNACE.get());
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity player)
+	public void removed(PlayerEntity player)
 	{
-		te.getWorld().setBlockState(te.getPos(), te.getBlockState().with(KeypadFurnaceBlock.OPEN, false));
+		te.getLevel().setBlockAndUpdate(te.getBlockPos(), te.getBlockState().setValue(KeypadFurnaceBlock.OPEN, false));
 	}
 }

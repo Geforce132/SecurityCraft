@@ -33,12 +33,12 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 
 	public FurnaceMineBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion) {
-		if (!world.isRemote)
+	public void wasExploded(World world, BlockPos pos, Explosion explosion) {
+		if (!world.isClientSide)
 		{
 			if(pos.equals(new BlockPos(explosion.getPosition())))
 				return;
@@ -49,7 +49,7 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
-		if(!world.isRemote)
+		if(!world.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
@@ -61,9 +61,9 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(player.getHeldItem(hand).getItem() != SCContent.REMOTE_ACCESS_MINE.get() && !EntityUtils.doesPlayerOwn(player, world, pos)){
+		if(player.getItemInHand(hand).getItem() != SCContent.REMOTE_ACCESS_MINE.get() && !EntityUtils.doesPlayerOwn(player, world, pos)){
 			explode(world, pos);
 			return ActionResultType.SUCCESS;
 		}
@@ -74,12 +74,12 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		return getStateForPlacement(ctx.getWorld(), ctx.getPos(), ctx.getFace(), ctx.getHitVec().x, ctx.getHitVec().y, ctx.getHitVec().z, ctx.getPlayer());
+		return getStateForPlacement(ctx.getLevel(), ctx.getClickedPos(), ctx.getClickedFace(), ctx.getClickLocation().x, ctx.getClickLocation().y, ctx.getClickLocation().z, ctx.getPlayer());
 	}
 
 	public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, double hitX, double hitY, double hitZ, PlayerEntity placer)
 	{
-		return getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(FACING, placer.getDirection().getOpposite());
 	}
 
 	@Override
@@ -96,11 +96,11 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if(world.isRemote)
+		if(world.isClientSide)
 			return;
 
 		world.destroyBlock(pos, false);
-		world.createExplosion((Entity)null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+		world.explode((Entity)null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 2.5F : 5.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 
 	}
 
@@ -108,12 +108,12 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	 * Return whether this block can drop from an explosion.
 	 */
 	@Override
-	public boolean canDropFromExplosion(Explosion explosion) {
+	public boolean dropFromExplosion(Explosion explosion) {
 		return false;
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING);
 	}
@@ -141,12 +141,12 @@ public class FurnaceMineBlock extends ExplosiveBlock implements IOverlayDisplay,
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		return state.rotate(mirror.toRotation(state.get(FACING)));
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 }

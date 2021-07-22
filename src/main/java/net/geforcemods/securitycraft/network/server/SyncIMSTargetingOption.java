@@ -26,7 +26,7 @@ public class SyncIMSTargetingOption
 	public static void encode(SyncIMSTargetingOption message, PacketBuffer buf)
 	{
 		buf.writeBlockPos(message.pos);
-		buf.writeEnumValue(message.targetingMode);
+		buf.writeEnum(message.targetingMode);
 	}
 
 	public static SyncIMSTargetingOption decode(PacketBuffer buf)
@@ -34,7 +34,7 @@ public class SyncIMSTargetingOption
 		SyncIMSTargetingOption message = new SyncIMSTargetingOption();
 
 		message.pos = buf.readBlockPos();
-		message.targetingMode = buf.readEnumValue(IMSTargetingMode.class);
+		message.targetingMode = buf.readEnum(IMSTargetingMode.class);
 		return message;
 	}
 
@@ -43,7 +43,7 @@ public class SyncIMSTargetingOption
 		ctx.get().enqueueWork(() -> {
 			BlockPos pos = message.pos;
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(pos);
+			TileEntity te = player.level.getBlockEntity(pos);
 
 			if(te instanceof IMSTileEntity && ((IMSTileEntity)te).getOwner().isOwner(player))
 				((IMSTileEntity)te).setTargetingMode(message.targetingMode);

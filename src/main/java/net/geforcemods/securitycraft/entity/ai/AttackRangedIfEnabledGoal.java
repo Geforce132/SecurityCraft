@@ -24,13 +24,13 @@ public class AttackRangedIfEnabledGoal extends Goal
 		rangedAttackTime = -1;
 		this.maxAttackTime = maxAttackTime;
 		attackRadius = maxAttackDistance;
-		setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute()
+	public boolean canUse()
 	{
-		LivingEntity potentialTarget = sentry.getAttackTarget();
+		LivingEntity potentialTarget = sentry.getTarget();
 
 		if(potentialTarget == null)
 			return false;
@@ -42,7 +42,7 @@ public class AttackRangedIfEnabledGoal extends Goal
 	}
 
 	@Override
-	public void resetTask()
+	public void stop()
 	{
 		attackTarget = null;
 		rangedAttackTime = -3;
@@ -51,19 +51,19 @@ public class AttackRangedIfEnabledGoal extends Goal
 	@Override
 	public void tick() //copied from vanilla to remove pathfinding code
 	{
-		double targetDistance = sentry.getDistanceSq(attackTarget.getPosX(), attackTarget.getBoundingBox().minY, attackTarget.getPosZ());
+		double targetDistance = sentry.distanceToSqr(attackTarget.getX(), attackTarget.getBoundingBox().minY, attackTarget.getZ());
 
-		sentry.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+		sentry.getLookControl().setLookAt(attackTarget, 30.0F, 30.0F);
 
 		if(--rangedAttackTime == 0)
 		{
-			if(!sentry.getEntitySenses().canSee(attackTarget))
+			if(!sentry.getSensing().canSee(attackTarget))
 				return;
 
 			float f = MathHelper.sqrt(targetDistance) / attackRadius;
 			float distanceFactor = MathHelper.clamp(f, 0.1F, 1.0F);
 
-			sentry.attackEntityWithRangedAttack(attackTarget, distanceFactor);
+			sentry.performRangedAttack(attackTarget, distanceFactor);
 			rangedAttackTime = MathHelper.floor(maxAttackTime.get());
 		}
 		else if(rangedAttackTime < 0)

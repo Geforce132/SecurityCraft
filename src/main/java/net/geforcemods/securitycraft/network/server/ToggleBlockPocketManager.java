@@ -19,14 +19,14 @@ public class ToggleBlockPocketManager
 
 	public ToggleBlockPocketManager(BlockPocketManagerTileEntity te, boolean enabling, int size)
 	{
-		pos = te.getPos();
+		pos = te.getBlockPos();
 		this.enabling = enabling;
 		this.size = size;
 	}
 
 	public static void encode(ToggleBlockPocketManager message, PacketBuffer buf)
 	{
-		buf.writeLong(message.pos.toLong());
+		buf.writeLong(message.pos.asLong());
 		buf.writeBoolean(message.enabling);
 		buf.writeInt(message.size);
 	}
@@ -35,7 +35,7 @@ public class ToggleBlockPocketManager
 	{
 		ToggleBlockPocketManager message = new ToggleBlockPocketManager();
 
-		message.pos = BlockPos.fromLong(buf.readLong());
+		message.pos = BlockPos.of(buf.readLong());
 		message.enabling = buf.readBoolean();
 		message.size = buf.readInt();
 		return message;
@@ -45,7 +45,7 @@ public class ToggleBlockPocketManager
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(message.pos);
+			TileEntity te = player.level.getBlockEntity(message.pos);
 
 			if(te instanceof BlockPocketManagerTileEntity && ((BlockPocketManagerTileEntity)te).getOwner().isOwner(player))
 			{

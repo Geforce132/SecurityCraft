@@ -43,23 +43,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWaterLoggable
 {
-	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = HorizontalBlock.FACING;
 	public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 	public static final EnumProperty<StairsShape> SHAPE = BlockStateProperties.STAIRS_SHAPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	protected static final VoxelShape AABB_SLAB_TOP = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape AABB_SLAB_BOTTOM = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
-	protected static final VoxelShape NWD_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 8.0D, 8.0D, 8.0D);
-	protected static final VoxelShape SWD_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 8.0D, 8.0D, 16.0D);
-	protected static final VoxelShape NWU_CORNER = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 8.0D, 16.0D, 8.0D);
-	protected static final VoxelShape SWU_CORNER = Block.makeCuboidShape(0.0D, 8.0D, 8.0D, 8.0D, 16.0D, 16.0D);
-	protected static final VoxelShape NED_CORNER = Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 16.0D, 8.0D, 8.0D);
-	protected static final VoxelShape SED_CORNER = Block.makeCuboidShape(8.0D, 0.0D, 8.0D, 16.0D, 8.0D, 16.0D);
-	protected static final VoxelShape NEU_CORNER = Block.makeCuboidShape(8.0D, 8.0D, 0.0D, 16.0D, 16.0D, 8.0D);
-	protected static final VoxelShape SEU_CORNER = Block.makeCuboidShape(8.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SLAB_TOP = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+	protected static final VoxelShape AABB_SLAB_BOTTOM = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+	protected static final VoxelShape NWD_CORNER = Block.box(0.0D, 0.0D, 0.0D, 8.0D, 8.0D, 8.0D);
+	protected static final VoxelShape SWD_CORNER = Block.box(0.0D, 0.0D, 8.0D, 8.0D, 8.0D, 16.0D);
+	protected static final VoxelShape NWU_CORNER = Block.box(0.0D, 8.0D, 0.0D, 8.0D, 16.0D, 8.0D);
+	protected static final VoxelShape SWU_CORNER = Block.box(0.0D, 8.0D, 8.0D, 8.0D, 16.0D, 16.0D);
+	protected static final VoxelShape NED_CORNER = Block.box(8.0D, 0.0D, 0.0D, 16.0D, 8.0D, 8.0D);
+	protected static final VoxelShape SED_CORNER = Block.box(8.0D, 0.0D, 8.0D, 16.0D, 8.0D, 16.0D);
+	protected static final VoxelShape NEU_CORNER = Block.box(8.0D, 8.0D, 0.0D, 16.0D, 16.0D, 8.0D);
+	protected static final VoxelShape SEU_CORNER = Block.box(8.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape[] SLAB_TOP_SHAPES = makeShapes(AABB_SLAB_TOP, NWD_CORNER, NED_CORNER, SWD_CORNER, SED_CORNER);
 	protected static final VoxelShape[] SLAB_BOTTOM_SHAPES = makeShapes(AABB_SLAB_BOTTOM, NWU_CORNER, NEU_CORNER, SWU_CORNER, SEU_CORNER);
-	private static final int[] field_196522_K = {12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
+	private static final int[] SHAPE_BY_STATE = {12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8};
 	private final Block modelBlock;
 	private final BlockState modelState;
 
@@ -72,9 +72,9 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	{
 		super(properties, vB);
 
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(SHAPE, StairsShape.STRAIGHT).with(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(SHAPE, StairsShape.STRAIGHT).setValue(WATERLOGGED, false));
 		modelBlock = getVanillaBlock();
-		modelState = modelBlock.getDefaultState();
+		modelState = modelBlock.defaultBlockState();
 	}
 
 	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner)
@@ -102,7 +102,7 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public boolean isTransparent(BlockState state)
+	public boolean useShapeForLightOcclusion(BlockState state)
 	{
 		return true;
 	}
@@ -110,12 +110,12 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 	{
-		return (state.get(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[field_196522_K[func_196511_x(state)]];
+		return (state.getValue(HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[SHAPE_BY_STATE[getShapeIndex(state)]];
 	}
 
-	private int func_196511_x(BlockState state)
+	private int getShapeIndex(BlockState state)
 	{
-		return state.get(SHAPE).ordinal() * 4 + state.get(FACING).getHorizontalIndex();
+		return state.getValue(SHAPE).ordinal() * 4 + state.getValue(FACING).get2DDataValue();
 	}
 
 	@Override
@@ -126,38 +126,38 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
+	public void attack(BlockState state, World worldIn, BlockPos pos, PlayerEntity player)
 	{
-		modelState.onBlockClicked(worldIn, pos, player);
+		modelState.attack(worldIn, pos, player);
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state)
+	public void destroy(IWorld worldIn, BlockPos pos, BlockState state)
 	{
-		modelBlock.onPlayerDestroy(worldIn, pos, state);
+		modelBlock.destroy(worldIn, pos, state);
 	}
 
 	@Override
-	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving)
+	public void onPlace(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving)
 	{
 		if(state.getBlock() != oldState.getBlock())
 		{
 			modelState.neighborChanged(world, pos, Blocks.AIR, pos, false);
-			modelBlock.onBlockAdded(modelState, world, pos, oldState, false);
+			modelBlock.onPlace(modelState, world, pos, oldState, false);
 		}
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
+	public void onRemove(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving)
 	{
 		if(state.getBlock() != newState.getBlock())
-			modelState.onReplaced(world, pos, newState, isMoving);
+			modelState.onRemove(world, pos, newState, isMoving);
 	}
 
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entity)
+	public void stepOn(World worldIn, BlockPos pos, Entity entity)
 	{
-		modelBlock.onEntityWalk(worldIn, pos, entity);
+		modelBlock.stepOn(worldIn, pos, entity);
 	}
 
 	@Override
@@ -167,63 +167,63 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		return modelState.onBlockActivated(world, player, hand, hit);
+		return modelState.use(world, player, hand, hit);
 	}
 
 	@Override
-	public void onExplosionDestroy(World world, BlockPos pos, Explosion explosion)
+	public void wasExploded(World world, BlockPos pos, Explosion explosion)
 	{
-		modelBlock.onExplosionDestroy(world, pos, explosion);
+		modelBlock.wasExploded(world, pos, explosion);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx)
 	{
-		Direction dir = ctx.getFace();
-		BlockPos pos = ctx.getPos();
-		FluidState fluidState = ctx.getWorld().getFluidState(pos);
-		BlockState state = this.getDefaultState().with(FACING, ctx.getPlacementHorizontalFacing()).with(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getHitVec().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+		Direction dir = ctx.getClickedFace();
+		BlockPos pos = ctx.getClickedPos();
+		FluidState fluidState = ctx.getLevel().getFluidState(pos);
+		BlockState state = this.defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(HALF, dir != Direction.DOWN && (dir == Direction.UP || !(ctx.getClickLocation().y - pos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 
-		return state.with(SHAPE, getShapeProperty(state, ctx.getWorld(), pos));
+		return state.setValue(SHAPE, getShapeProperty(state, ctx.getLevel(), pos));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld world, BlockPos currentPos, BlockPos facingPos)
 	{
-		if(state.get(WATERLOGGED))
-			world.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		if(state.getValue(WATERLOGGED))
+			world.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
-		return facing.getAxis().isHorizontal() ? state.with(SHAPE, getShapeProperty(state, world, currentPos)) : super.updatePostPlacement(state, facing, facingState, world, currentPos, facingPos);
+		return facing.getAxis().isHorizontal() ? state.setValue(SHAPE, getShapeProperty(state, world, currentPos)) : super.updateShape(state, facing, facingState, world, currentPos, facingPos);
 	}
 
 	private static StairsShape getShapeProperty(BlockState state, IBlockReader world, BlockPos pos)
 	{
-		Direction dir = state.get(FACING);
-		BlockState offsetState = world.getBlockState(pos.offset(dir));
+		Direction dir = state.getValue(FACING);
+		BlockState offsetState = world.getBlockState(pos.relative(dir));
 
-		if(isBlockStairs(offsetState) && state.get(HALF) == offsetState.get(HALF))
+		if(isBlockStairs(offsetState) && state.getValue(HALF) == offsetState.getValue(HALF))
 		{
-			Direction offsetDir = offsetState.get(FACING);
+			Direction offsetDir = offsetState.getValue(FACING);
 
-			if(offsetDir.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetDir.getOpposite()))
+			if(offsetDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetDir.getOpposite()))
 			{
-				if(offsetDir == dir.rotateYCCW())
+				if(offsetDir == dir.getCounterClockWise())
 					return StairsShape.OUTER_LEFT;
 				else return StairsShape.OUTER_RIGHT;
 			}
 		}
 
-		BlockState offsetOppositeState = world.getBlockState(pos.offset(dir.getOpposite()));
+		BlockState offsetOppositeState = world.getBlockState(pos.relative(dir.getOpposite()));
 
-		if (isBlockStairs(offsetOppositeState) && state.get(HALF) == offsetOppositeState.get(HALF))
+		if (isBlockStairs(offsetOppositeState) && state.getValue(HALF) == offsetOppositeState.getValue(HALF))
 		{
-			Direction offsetOppositeDir = offsetOppositeState.get(FACING);
+			Direction offsetOppositeDir = offsetOppositeState.getValue(FACING);
 
-			if(offsetOppositeDir.getAxis() != state.get(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetOppositeDir))
+			if(offsetOppositeDir.getAxis() != state.getValue(FACING).getAxis() && isDifferentStairs(state, world, pos, offsetOppositeDir))
 			{
-				if(offsetOppositeDir == dir.rotateYCCW())
+				if(offsetOppositeDir == dir.getCounterClockWise())
 					return StairsShape.INNER_LEFT;
 				else return StairsShape.INNER_RIGHT;
 			}
@@ -234,9 +234,9 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 
 	private static boolean isDifferentStairs(BlockState state, IBlockReader world, BlockPos pos, Direction face)
 	{
-		BlockState offsetState = world.getBlockState(pos.offset(face));
+		BlockState offsetState = world.getBlockState(pos.relative(face));
 
-		return !isBlockStairs(offsetState) || offsetState.get(FACING) != state.get(FACING) || offsetState.get(HALF) != state.get(HALF);
+		return !isBlockStairs(offsetState) || offsetState.getValue(FACING) != state.getValue(FACING) || offsetState.getValue(HALF) != state.getValue(HALF);
 	}
 
 	public static boolean isBlockStairs(BlockState state)
@@ -247,14 +247,14 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot)
 	{
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror)
 	{
-		Direction direction = state.get(FACING);
-		StairsShape shape = state.get(SHAPE);
+		Direction direction = state.getValue(FACING);
+		StairsShape shape = state.getValue(SHAPE);
 
 		switch(mirror)
 		{
@@ -264,13 +264,13 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 					switch(shape)
 					{
 						case INNER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.INNER_RIGHT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
 						case INNER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.INNER_LEFT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
 						case OUTER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.OUTER_RIGHT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
 						case OUTER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.OUTER_LEFT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
 						default:
 							return state.rotate(Rotation.CLOCKWISE_180);
 					}
@@ -282,13 +282,13 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 					switch(shape)
 					{
 						case INNER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.INNER_LEFT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_LEFT);
 						case INNER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.INNER_RIGHT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.INNER_RIGHT);
 						case OUTER_LEFT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.OUTER_RIGHT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_RIGHT);
 						case OUTER_RIGHT:
-							return state.rotate(Rotation.CLOCKWISE_180).with(SHAPE, StairsShape.OUTER_LEFT);
+							return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, StairsShape.OUTER_LEFT);
 						case STRAIGHT:
 							return state.rotate(Rotation.CLOCKWISE_180);
 					}
@@ -302,18 +302,18 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder)
 	{
 		builder.add(FACING, HALF, SHAPE, WATERLOGGED);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader world, BlockPos pos, PathType type)
+	public boolean isPathfindable(BlockState state, IBlockReader world, BlockPos pos, PathType type)
 	{
 		return false;
 	}
@@ -321,6 +321,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements IWater
 	@Override
 	public BlockState getConvertedState(BlockState vanillaState)
 	{
-		return getDefaultState().with(SHAPE, vanillaState.get(SHAPE)).with(FACING, vanillaState.get(FACING)).with(HALF, vanillaState.get(HALF)).with(WATERLOGGED, vanillaState.get(WATERLOGGED));
+		return defaultBlockState().setValue(SHAPE, vanillaState.getValue(SHAPE)).setValue(FACING, vanillaState.getValue(FACING)).setValue(HALF, vanillaState.getValue(HALF)).setValue(WATERLOGGED, vanillaState.getValue(WATERLOGGED));
 	}
 }

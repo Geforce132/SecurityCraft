@@ -14,18 +14,18 @@ public class LinkedBlock {
 	}
 
 	public LinkedBlock(CustomizableTileEntity tileEntity) {
-		blockName = tileEntity.getBlockState().getBlock().getTranslationKey();
-		blockPos = tileEntity.getPos();
+		blockName = tileEntity.getBlockState().getBlock().getDescriptionId();
+		blockPos = tileEntity.getBlockPos();
 	}
 
 	public boolean validate(World world) {
-		return !(world == null || (world.isAirBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getTranslationKey().equals(blockName)));
+		return !(world == null || (world.isEmptyBlock(blockPos) || !world.getBlockState(blockPos).getBlock().getDescriptionId().equals(blockName)));
 	}
 
 	public CustomizableTileEntity asTileEntity(World world) {
 		if(!validate(world)) return null;
 
-		return (CustomizableTileEntity) world.getTileEntity(blockPos);
+		return (CustomizableTileEntity) world.getBlockEntity(blockPos);
 	}
 
 	public String getBlockName() {

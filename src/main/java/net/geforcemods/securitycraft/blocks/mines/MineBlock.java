@@ -29,11 +29,11 @@ import net.minecraft.world.World;
 public class MineBlock extends ExplosiveBlock {
 
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
-	private static final VoxelShape SHAPE = Block.makeCuboidShape(5, 0, 5, 11, 3, 11);
+	private static final VoxelShape SHAPE = Block.box(5, 0, 5, 11, 3, 11);
 
 	public MineBlock(Block.Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(DEACTIVATED, false));
+		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false));
 	}
 
 	/**
@@ -42,9 +42,9 @@ public class MineBlock extends ExplosiveBlock {
 	 */
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag){
-		if (world.getBlockState(pos.down()).getMaterial() != Material.AIR)
+		if (world.getBlockState(pos.below()).getMaterial() != Material.AIR)
 			return;
-		else if (world.getBlockState(pos).get(DEACTIVATED))
+		else if (world.getBlockState(pos).getValue(DEACTIVATED))
 			world.destroyBlock(pos, true);
 		else
 			explode(world, pos);
@@ -54,13 +54,13 @@ public class MineBlock extends ExplosiveBlock {
 	 * Checks to see if its valid to put this block at the specified coordinates. Args: world, pos
 	 */
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos){
-		return BlockUtils.isSideSolid(world, pos.down(), Direction.UP);
+	public boolean canSurvive(BlockState state, IWorldReader world, BlockPos pos){
+		return BlockUtils.isSideSolid(world, pos.below(), Direction.UP);
 	}
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid){
-		if(!world.isRemote)
+		if(!world.isClientSide)
 			if(player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
 				return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 			else if(!EntityUtils.doesPlayerOwn(player, world, pos)){
@@ -81,8 +81,8 @@ public class MineBlock extends ExplosiveBlock {
 	 * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
 	 */
 	@Override
-	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity){
-		if(world.isRemote)
+	public void entityInside(BlockState state, World world, BlockPos pos, Entity entity){
+		if(world.isClientSide)
 			return;
 		else if(entity instanceof ItemEntity)
 			return;
@@ -94,9 +94,9 @@ public class MineBlock extends ExplosiveBlock {
 	public boolean activateMine(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(state.get(DEACTIVATED))
+		if(state.getValue(DEACTIVATED))
 		{
-			world.setBlockState(pos, state.with(DEACTIVATED, false));
+			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, false));
 			return true;
 		}
 
@@ -107,9 +107,9 @@ public class MineBlock extends ExplosiveBlock {
 	public boolean defuseMine(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 
-		if(!state.get(DEACTIVATED))
+		if(!state.getValue(DEACTIVATED))
 		{
-			world.setBlockState(pos, state.with(DEACTIVATED, true));
+			world.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 			return true;
 		}
 
@@ -118,12 +118,12 @@ public class MineBlock extends ExplosiveBlock {
 
 	@Override
 	public void explode(World world, BlockPos pos) {
-		if(world.isRemote)
+		if(world.isClientSide)
 			return;
 
-		if(!world.getBlockState(pos).get(DEACTIVATED)){
+		if(!world.getBlockState(pos).getValue(DEACTIVATED)){
 			world.destroyBlock(pos, false);
-			world.createExplosion((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
+			world.explode((Entity) null, pos.getX(), pos.getY(), pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 1.0F : 3.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionMode());
 		}
 	}
 
@@ -131,19 +131,19 @@ public class MineBlock extends ExplosiveBlock {
 	 * only called by clickMiddleMouseButton , and passed to inventory.setCurrentItem (along with isCreative)
 	 */
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state){
+	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state){
 		return new ItemStack(SCContent.MINE.get().asItem());
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		builder.add(DEACTIVATED);
 	}
 
 	@Override
 	public boolean isActive(World world, BlockPos pos) {
-		return !world.getBlockState(pos).get(DEACTIVATED);
+		return !world.getBlockState(pos).getValue(DEACTIVATED);
 	}
 
 	@Override

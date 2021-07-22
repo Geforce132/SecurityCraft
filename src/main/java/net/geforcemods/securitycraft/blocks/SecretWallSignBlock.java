@@ -38,34 +38,34 @@ public class SecretWallSignBlock extends WallSignBlock
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
+	public void setPlacedBy(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
 	{
 		if(placer instanceof PlayerEntity)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (PlayerEntity)placer));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
+	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit)
 	{
-		if(!world.isRemote && player.getHeldItem(hand).getItem() == SCContent.ADMIN_TOOL.get())
-			return SCContent.ADMIN_TOOL.get().onItemUse(new ItemUseContext(player, hand, hit));
+		if(!world.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
+			return SCContent.ADMIN_TOOL.get().useOn(new ItemUseContext(player, hand, hit));
 
-		SecretSignTileEntity te = (SecretSignTileEntity)world.getTileEntity(pos);
+		SecretSignTileEntity te = (SecretSignTileEntity)world.getBlockEntity(pos);
 
 		if (te != null && te.isPlayerAllowedToSeeText(player))
-			return super.onBlockActivated(state, world, pos, player, hand, hit);
+			return super.use(state, world, pos, player, hand, hit);
 
 		return ActionResultType.FAIL;
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader world)
+	public TileEntity newBlockEntity(IBlockReader world)
 	{
 		return new SecretSignTileEntity();
 	}
 
 	@Override
-	public String getTranslationKey() {
-		return Util.makeTranslationKey("block", this.getRegistryName()).replace("_wall", "");
+	public String getDescriptionId() {
+		return Util.makeDescriptionId("block", this.getRegistryName()).replace("_wall", "");
 	}
 }

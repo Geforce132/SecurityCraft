@@ -59,11 +59,11 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	@Override
 	public void tick() {
 		if(intersectsEntities){
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
+			int x = worldPosition.getX();
+			int y = worldPosition.getY();
+			int z = worldPosition.getZ();
 			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1));
-			List<?> entities = world.getEntitiesWithinAABB(Entity.class, area);
+			List<?> entities = level.getEntitiesOfClass(Entity.class, area);
 			Iterator<?> iterator = entities.iterator();
 			Entity entity;
 
@@ -80,11 +80,11 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 				return;
 			}
 
-			int x = pos.getX();
-			int y = pos.getY();
-			int z = pos.getZ();
-			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).grow(5, 5, 5));
-			List<?> entities = world.getEntitiesWithinAABB(LivingEntity.class, area, e -> !(e instanceof PlayerEntity) || !((PlayerEntity)e).isSpectator());
+			int x = worldPosition.getX();
+			int y = worldPosition.getY();
+			int z = worldPosition.getZ();
+			AxisAlignedBB area = (new AxisAlignedBB(x, y, z, (x), (y), (z)).inflate(5, 5, 5));
+			List<?> entities = level.getEntitiesOfClass(LivingEntity.class, area, e -> !(e instanceof PlayerEntity) || !((PlayerEntity)e).isSpectator());
 			Iterator<?> iterator = entities.iterator();
 			LivingEntity entity;
 
@@ -93,11 +93,11 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 				entity = (LivingEntity)iterator.next();
 				double eyeHeight = entity.getEyeHeight();
 				boolean isPlayer = (entity instanceof PlayerEntity);
-				Vector3d lookVec = new Vector3d((entity.getPosX() + (entity.getLookVec().x * 5)), ((eyeHeight + entity.getPosY()) + (entity.getLookVec().y * 5)), (entity.getPosZ() + (entity.getLookVec().z * 5)));
+				Vector3d lookVec = new Vector3d((entity.getX() + (entity.getLookAngle().x * 5)), ((eyeHeight + entity.getY()) + (entity.getLookAngle().y * 5)), (entity.getZ() + (entity.getLookAngle().z * 5)));
 
-				RayTraceResult mop = getWorld().rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + entity.getEyeHeight(), entity.getPosZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				RayTraceResult mop = getLevel().clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
 				if(mop != null && mop.getType() == Type.BLOCK)
-					if(((BlockRayTraceResult)mop).getPos().getX() == getPos().getX() && ((BlockRayTraceResult)mop).getPos().getY() == getPos().getY() && ((BlockRayTraceResult)mop).getPos().getZ() == getPos().getZ())
+					if(((BlockRayTraceResult)mop).getBlockPos().getX() == getBlockPos().getX() && ((BlockRayTraceResult)mop).getBlockPos().getY() == getBlockPos().getY() && ((BlockRayTraceResult)mop).getBlockPos().getZ() == getBlockPos().getZ())
 						if((isPlayer && activatedOnlyByPlayer()) || !activatedOnlyByPlayer()) {
 							entityViewed(entity);
 							viewCooldown = getViewCooldown();
@@ -112,11 +112,11 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 			}
 
 			if (canAttack()) {
-				AxisAlignedBB area = new AxisAlignedBB(pos).grow(getAttackRange(), getAttackRange(), getAttackRange());
-				List<?> entities = world.getEntitiesWithinAABB(entityTypeToAttack(), area);
+				AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(getAttackRange(), getAttackRange(), getAttackRange());
+				List<?> entities = level.getEntitiesOfClass(entityTypeToAttack(), area);
 				Iterator<?> iterator = entities.iterator();
 
-				if(!world.isRemote){
+				if(!level.isClientSide){
 					boolean attacked = false;
 
 					if(!iterator.hasNext())
@@ -143,9 +143,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	}
 
 	public void entityIntersecting(Entity entity) {
-		if(!(world.getBlockState(getPos()).getBlock() instanceof IIntersectable)) return;
+		if(!(level.getBlockState(getBlockPos()).getBlock() instanceof IIntersectable)) return;
 
-		((IIntersectable) world.getBlockState(getPos()).getBlock()).onEntityIntersected(getWorld(), getPos(), entity);
+		((IIntersectable) level.getBlockState(getBlockPos()).getBlock()).onEntityIntersected(getLevel(), getBlockPos(), entity);
 	}
 
 	/**
@@ -190,9 +190,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	 * Writes a tile entity to NBT.
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		tag.putBoolean("intersectsEntities", intersectsEntities);
 		tag.putBoolean("viewActivated", viewActivated);
@@ -209,9 +209,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		if (tag.contains("intersectsEntities"))
 			intersectsEntities = tag.getBoolean("intersectsEntities");
@@ -239,8 +239,8 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	}
 
 	@Override
-	public void remove() {
-		super.remove();
+	public void setRemoved() {
+		super.setRemoved();
 
 		onTileEntityDestroyed();
 	}
@@ -254,9 +254,9 @@ public class SecurityCraftTileEntity extends OwnableTileEntity implements ITicka
 	 * respectively.
 	 */
 	public void sync() {
-		if(world == null) return;
+		if(level == null) return;
 
-		world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
 	}
 
 	/**

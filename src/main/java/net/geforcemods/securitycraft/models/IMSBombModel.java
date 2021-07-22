@@ -18,19 +18,19 @@ public class IMSBombModel extends EntityModel<IMSBombEntity> {
 	public ModelRenderer shape1;
 
 	public IMSBombModel() {
-		textureWidth = 24;
-		textureHeight = 24;
+		texWidth = 24;
+		texHeight = 24;
 		shape1 = new ModelRenderer(this, 0, 0);
-		shape1.setRotationPoint(0.0F, 0.0F, 0.0F);
+		shape1.setPos(0.0F, 0.0F, 0.0F);
 		shape1.addBox(0.0F, 0.0F, 0.0F, 3, 4, 3);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+	public void renderToBuffer(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
 		shape1.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void setRotationAngles(IMSBombEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(IMSBombEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

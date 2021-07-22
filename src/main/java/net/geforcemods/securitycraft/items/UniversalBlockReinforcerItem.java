@@ -32,9 +32,9 @@ public class UniversalBlockReinforcerItem extends Item
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand)
 	{
-		if(!world.isRemote && player instanceof ServerPlayerEntity)
+		if(!world.isClientSide && player instanceof ServerPlayerEntity)
 		{
 			NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
 				@Override
@@ -46,18 +46,18 @@ public class UniversalBlockReinforcerItem extends Item
 				@Override
 				public ITextComponent getDisplayName()
 				{
-					return new TranslationTextComponent(getTranslationKey());
+					return new TranslationTextComponent(getDescriptionId());
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 
-		return ActionResult.resultConsume(player.getHeldItem(hand));
+		return ActionResult.consume(player.getItemInHand(hand));
 	}
 
 	@Override
-	public boolean canPlayerBreakBlockWhileHolding(BlockState vanillaState, World world, BlockPos pos, PlayerEntity player) //gets rid of the stuttering experienced with onBlockStartBreak
+	public boolean canAttackBlock(BlockState vanillaState, World world, BlockPos pos, PlayerEntity player) //gets rid of the stuttering experienced with onBlockStartBreak
 	{
-		if(!player.isCreative() && player.getHeldItemMainhand().getItem() == this)
+		if(!player.isCreative() && player.getMainHandItem().getItem() == this)
 		{
 			Block block = vanillaState.getBlock();
 			Block rb = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block);
@@ -65,25 +65,25 @@ public class UniversalBlockReinforcerItem extends Item
 			if(rb != null)
 			{
 				BlockState convertedState = ((IReinforcedBlock)rb).getConvertedState(vanillaState);
-				TileEntity te = world.getTileEntity(pos);
+				TileEntity te = world.getBlockEntity(pos);
 				CompoundNBT tag = null;
 
 				if(te != null)
 				{
-					tag = te.write(new CompoundNBT());
+					tag = te.save(new CompoundNBT());
 
 					if(te instanceof IInventory)
-						((IInventory)te).clear();
+						((IInventory)te).clearContent();
 				}
 
-				world.setBlockState(pos, convertedState);
-				te = world.getTileEntity(pos);
+				world.setBlockAndUpdate(pos, convertedState);
+				te = world.getBlockEntity(pos);
 
 				if(tag != null)
-					te.read(convertedState, tag);
+					te.load(convertedState, tag);
 
 				((IOwnable)te).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				player.getHeldItemMainhand().damageItem(1, player, p -> p.sendBreakAnimation(p.getActiveHand()));
+				player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				return false;
 			}
 		}

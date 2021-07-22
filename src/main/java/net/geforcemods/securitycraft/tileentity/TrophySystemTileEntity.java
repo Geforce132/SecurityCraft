@@ -73,16 +73,16 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public void tick() {
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			// If the trophy does not have a target, try looking for one
 			if(entityBeingTargeted == null) {
 				ProjectileEntity target = getPotentialTarget();
 
 				if(target != null) {
-					Entity shooter = target.getShooter();
+					Entity shooter = target.getOwner();
 
 					//only allow targeting projectiles that were not shot by the owner or a player on the allowlist
-					if(!(shooter != null && ((shooter.getUniqueID() != null && shooter.getUniqueID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
+					if(!(shooter != null && ((shooter.getUUID() != null && shooter.getUUID().toString().equals(getOwner().getUUID())) || ModuleUtils.isAllowed(this, shooter.getName().getString()))))
 						setTarget(target);
 				}
 			}
@@ -109,12 +109,12 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
+		return new AxisAlignedBB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag) {
-		super.write(tag);
+	public CompoundNBT save(CompoundNBT tag) {
+		super.save(tag);
 
 		CompoundNBT projectilesNBT = new CompoundNBT();
 		int i = 0;
@@ -129,8 +129,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag) {
-		super.read(state, tag);
+	public void load(BlockState state, CompoundNBT tag) {
+		super.load(state, tag);
 
 		if (tag.contains("projectiles", NBT.TAG_COMPOUND)) {
 			CompoundNBT projectilesNBT = tag.getCompound("projectiles");
@@ -146,8 +146,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	public void setTarget(ProjectileEntity target) {
 		this.entityBeingTargeted = target;
 
-		if (!world.isRemote) {
-			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(pos, target.getEntityId()));
+		if (!level.isClientSide) {
+			SecurityCraft.channel.send(PacketDistributor.ALL.noArg(), new SetTrophySystemTarget(worldPosition, target.getId()));
 		}
 	}
 
@@ -157,8 +157,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	private void destroyTarget() {
 		entityBeingTargeted.remove();
 
-		if(!world.isRemote)
-			world.createExplosion(null, entityBeingTargeted.getPosX(), entityBeingTargeted.getPosY(), entityBeingTargeted.getPosZ(), 0.1F, Explosion.Mode.NONE);
+		if(!level.isClientSide)
+			level.explode(null, entityBeingTargeted.getX(), entityBeingTargeted.getY(), entityBeingTargeted.getZ(), 0.1F, Explosion.Mode.NONE);
 
 		resetTarget();
 	}
@@ -177,9 +177,9 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 	 */
 	private ProjectileEntity getPotentialTarget() {
 		List<ProjectileEntity> potentialTargets = new ArrayList<>();
-		AxisAlignedBB area = new AxisAlignedBB(pos).grow(RANGE, RANGE, RANGE);
+		AxisAlignedBB area = new AxisAlignedBB(worldPosition).inflate(RANGE, RANGE, RANGE);
 
-		potentialTargets.addAll(world.getEntitiesWithinAABB(ProjectileEntity.class, area, this::isAllowedToTarget));
+		potentialTargets.addAll(level.getEntitiesOfClass(ProjectileEntity.class, area, this::isAllowedToTarget));
 
 		//remove bullets shot by sentries/IMSs of this trophy system's owner or players on the allowlist
 		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
@@ -205,11 +205,11 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		Owner owner = null;
 
 		if(projectile instanceof BulletEntity)
-			owner = ((BulletEntity)projectile).getOwner();
+			owner = ((BulletEntity)projectile).getSCOwner();
 		else if(projectile instanceof IMSBombEntity)
-			owner = ((IMSBombEntity)projectile).getOwner();
-		else if(projectile.getShooter() instanceof SentryEntity)
-			owner = ((SentryEntity)projectile.getShooter()).getOwner();
+			owner = ((IMSBombEntity)projectile).getSCOwner();
+		else if(projectile.getOwner() instanceof SentryEntity)
+			owner = ((SentryEntity)projectile.getOwner()).getOwner();
 
 		return owner == null || (!owner.equals(getOwner()) && !ModuleUtils.isAllowed(this, owner.getName()));
 	}
@@ -223,8 +223,8 @@ public class TrophySystemTileEntity extends CustomizableTileEntity implements IT
 		{
 			projectileFilter.put(projectileType, allowed);
 
-			if (world.isRemote) {
-				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(pos, projectileType, allowed));
+			if (level.isClientSide) {
+				SecurityCraft.channel.send(PacketDistributor.SERVER.noArg(), new SyncTrophySystem(worldPosition, projectileType, allowed));
 			}
 		}
 	}

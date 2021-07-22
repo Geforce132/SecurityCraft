@@ -16,8 +16,8 @@ import net.minecraft.world.server.ServerWorld;
 
 public class AlarmTileEntity extends CustomizableTileEntity {
 
-	private IntOption range = new IntOption(this::getPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
-	private IntOption delay = new IntOption(this::getPos, "delay", 2, 1, 30, 1, true);
+	private IntOption range = new IntOption(this::getBlockPos, "range", 17, 0, ConfigHandler.SERVER.maxAlarmRange.get(), 1, true);
+	private IntOption delay = new IntOption(this::getBlockPos, "delay", 2, 1, 30, 1, true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 
@@ -28,23 +28,23 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 
 	@Override
 	public void tick(){
-		if(!world.isRemote)
+		if(!level.isClientSide)
 		{
 			if(cooldown > 0)
 				cooldown--;
 
 			if(isPowered && cooldown == 0)
 			{
-				AlarmTileEntity te = (AlarmTileEntity) world.getTileEntity(pos);
+				AlarmTileEntity te = (AlarmTileEntity) level.getBlockEntity(worldPosition);
 
-				for(ServerPlayerEntity player : ((ServerWorld)world).getPlayers(p -> p.getPosition().distanceSq(pos) <= Math.pow(range.get(), 2)))
+				for(ServerPlayerEntity player : ((ServerWorld)level).getPlayers(p -> p.blockPosition().distSqr(worldPosition) <= Math.pow(range.get(), 2)))
 				{
-					player.playSound(SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
+					player.playNotifySound(SCSounds.ALARM.event, SoundCategory.BLOCKS, 0.3F, 1.0F);
 				}
 
 				te.setCooldown(delay.get() * 20);
-				world.setBlockState(pos, world.getBlockState(pos).with(AlarmBlock.FACING, world.getBlockState(pos).get(AlarmBlock.FACING)), 2);
-				world.setTileEntity(pos, te);
+				level.setBlock(worldPosition, level.getBlockState(worldPosition).setValue(AlarmBlock.FACING, level.getBlockState(worldPosition).getValue(AlarmBlock.FACING)), 2);
+				level.setBlockEntity(worldPosition, te);
 			}
 		}
 
@@ -56,9 +56,9 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	 * @return
 	 */
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
 		return tag;
@@ -68,9 +68,9 @@ public class AlarmTileEntity extends CustomizableTileEntity {
 	 * Reads a tile entity from NBT.
 	 */
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		cooldown = tag.getInt("cooldown");
 		isPowered = tag.getBoolean("isPowered");

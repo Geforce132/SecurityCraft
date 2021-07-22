@@ -45,13 +45,13 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return new AxisAlignedBB(getPos()).grow(RENDER_DISTANCE);
+		return new AxisAlignedBB(getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT tag)
+	public CompoundNBT save(CompoundNBT tag)
 	{
-		super.write(tag);
+		super.save(tag);
 
 		tag.putInt("width", projectionWidth);
 		tag.putInt("height", projectionHeight);
@@ -59,14 +59,14 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 		tag.putInt("offset", projectionOffset);
 		tag.putBoolean("active", active);
 		tag.putBoolean("horizontal", horizontal);
-		tag.put("storedItem", projectedBlock.write(new CompoundNBT()));
+		tag.put("storedItem", projectedBlock.save(new CompoundNBT()));
 		return tag;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT tag)
+	public void load(BlockState state, CompoundNBT tag)
 	{
-		super.read(state, tag);
+		super.load(state, tag);
 
 		projectionWidth = tag.getInt("width");
 		projectionHeight = tag.getInt("height");
@@ -75,7 +75,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 		activatedByRedstone = hasModule(ModuleType.REDSTONE);
 		active = tag.getBoolean("active");
 		horizontal = tag.getBoolean("horizontal");
-		projectedBlock = ItemStack.read(tag.getCompound("storedItem"));
+		projectedBlock = ItemStack.of(tag.getCompound("storedItem"));
 	}
 
 	public int getProjectionWidth()
@@ -149,7 +149,7 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	public Block getProjectedBlock() {
-		return Block.getBlockFromItem(projectedBlock.getItem());
+		return Block.byItem(projectedBlock.getItem());
 	}
 
 	@Override
@@ -185,23 +185,23 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player)
 	{
-		return new ProjectorContainer(windowId, world, pos, inv);
+		return new ProjectorContainer(windowId, level, worldPosition, inv);
 	}
 
 	@Override
 	public ITextComponent getDisplayName()
 	{
-		return new TranslationTextComponent(SCContent.PROJECTOR.get().getTranslationKey());
+		return new TranslationTextComponent(SCContent.PROJECTOR.get().getDescriptionId());
 	}
 
 	@Override
-	public void clear()
+	public void clearContent()
 	{
 		projectedBlock = ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int count)
+	public ItemStack removeItem(int index, int count)
 	{
 		ItemStack stack = projectedBlock;
 
@@ -212,13 +212,13 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
-	public int getSizeInventory()
+	public int getContainerSize()
 	{
 		return ProjectorContainer.SIZE;
 	}
 
 	@Override
-	public int getInventoryStackLimit()
+	public int getMaxStackSize()
 	{
 		return 1;
 	}
@@ -230,19 +230,25 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
+	public ItemStack getItem(int slot)
+	{
+		return getStackInSlot(slot);
+	}
+
+	@Override
 	public boolean isEmpty()
 	{
 		return projectedBlock.isEmpty();
 	}
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity arg0)
+	public boolean stillValid(PlayerEntity arg0)
 	{
 		return true;
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index)
+	public ItemStack removeItemNoUpdate(int index)
 	{
 		ItemStack stack = projectedBlock;
 		projectedBlock = ItemStack.EMPTY;
@@ -250,10 +256,10 @@ public class ProjectorTileEntity extends DisguisableTileEntity implements IInven
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack)
+	public void setItem(int index, ItemStack stack)
 	{
-		if(!stack.isEmpty() && stack.getCount() > getInventoryStackLimit())
-			stack = new ItemStack(stack.getItem(), getInventoryStackLimit());
+		if(!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+			stack = new ItemStack(stack.getItem(), getMaxStackSize());
 
 		projectedBlock = stack;
 	}

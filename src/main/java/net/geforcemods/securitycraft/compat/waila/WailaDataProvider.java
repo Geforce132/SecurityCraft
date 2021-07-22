@@ -96,7 +96,7 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 				body.add(Utils.localize("waila.securitycraft:equipped"));
 
 			for(ModuleType module : ((IModuleInventory) te).getInsertedModules())
-				body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(module.getTranslationKey())));
+				body.add(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())));
 		}
 
 		if(config.get(SHOW_PASSWORDS) && te instanceof IPasswordProtected && !(te instanceof KeycardReaderTileEntity) && ((IOwnable) te).getOwner().isOwner(data.getPlayer())){
@@ -131,20 +131,20 @@ public class WailaDataProvider implements IWailaPlugin, IComponentProvider, IEnt
 					body.add(Utils.localize("waila.securitycraft:equipped"));
 
 					if(!sentry.getAllowlistModule().isEmpty())
-						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
+						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.ALLOWLIST.getTranslationKey())));
 
 					if(!sentry.getDisguiseModule().isEmpty())
-						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
+						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.DISGUISE.getTranslationKey())));
 
 					if(sentry.hasSpeedModule())
-						body.add(new StringTextComponent("- ").appendSibling(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
+						body.add(new StringTextComponent("- ").append(new TranslationTextComponent(ModuleType.SPEED.getTranslationKey())));
 				}
 			}
 
 			IFormattableTextComponent modeDescription = Utils.localize(mode.getModeKey());
 
 			if(mode != SentryMode.IDLE)
-				modeDescription.appendString("- ").appendSibling(Utils.localize(mode.getTargetKey()));
+				modeDescription.append("- ").append(Utils.localize(mode.getTargetKey()));
 
 			body.add(modeDescription);
 		}

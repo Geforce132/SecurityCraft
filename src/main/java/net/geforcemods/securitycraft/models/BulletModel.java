@@ -16,19 +16,19 @@ public class BulletModel extends EntityModel<BulletEntity>
 
 	public BulletModel()
 	{
-		textureWidth = 8;
-		textureHeight = 4;
+		texWidth = 8;
+		texHeight = 4;
 		bullet = new ModelRenderer(this, 0, 0);
-		bullet.setRotationPoint(0.0F, 0.0F, 0.0F);
+		bullet.setPos(0.0F, 0.0F, 0.0F);
 		bullet.addBox(0.0F, 0.0F, 0.0F, 1, 1, 2);
 	}
 
 	@Override
-	public void render(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+	public void renderToBuffer(MatrixStack matrix, IVertexBuilder builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
 		bullet.render(matrix, builder, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void setRotationAngles(BulletEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public void setupAnim(BulletEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }

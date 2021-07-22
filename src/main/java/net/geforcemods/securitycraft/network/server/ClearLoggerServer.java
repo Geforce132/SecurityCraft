@@ -37,7 +37,7 @@ public class ClearLoggerServer
 	{
 		ctx.get().enqueueWork(() -> {
 			PlayerEntity player = ctx.get().getSender();
-			TileEntity te = player.world.getTileEntity(message.pos);
+			TileEntity te = player.level.getBlockEntity(message.pos);
 
 			if(te instanceof UsernameLoggerTileEntity && ((UsernameLoggerTileEntity)te).getOwner().isOwner(player))
 			{

@@ -73,7 +73,7 @@ public class ItemModelGenerator extends ItemModelProvider
 		.texture("overlay", modLoc(ITEM_FOLDER + "/block_mine_overlay"))
 		.texture("particle", "#north")
 		//normal block
-		.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, builder) -> builder.cullface(dir).texture("#" + dir.getName2()).end()).end()
+		.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, builder) -> builder.cullface(dir).texture("#" + dir.getName()).end()).end()
 		//overlay
 		.element().from(0, 0, 0).to(16, 16, 16).face(Direction.UP).cullface(Direction.UP).texture("#overlay").end().end();
 

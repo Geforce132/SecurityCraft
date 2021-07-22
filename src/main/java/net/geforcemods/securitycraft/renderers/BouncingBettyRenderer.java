@@ -22,13 +22,13 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 	public BouncingBettyRenderer(EntityRendererManager renderManager)
 	{
 		super(renderManager);
-		shadowSize = 0.5F;
+		shadowRadius = 0.5F;
 	}
 
 	@Override
 	public void render(BouncingBettyEntity entity, float entityYaw, float partialTicks, MatrixStack matrix, IRenderTypeBuffer buffer, int packedLight)
 	{
-		matrix.push();
+		matrix.pushPose();
 		matrix.translate(0.0D, 0.5D, 0.0D);
 
 		if(entity.fuse - partialTicks + 1.0F < 10.0F)
@@ -41,17 +41,17 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBettyEntity> {
 			matrix.scale(scale, scale, scale);
 		}
 
-		matrix.rotate(Vector3f.YP.rotationDegrees(-90.0F));
+		matrix.mulPose(Vector3f.YP.rotationDegrees(-90.0F));
 		matrix.translate(-0.5D, -0.5D, 0.5D);
-		matrix.rotate(Vector3f.YP.rotationDegrees(90.0F));
-		Minecraft.getInstance().getBlockRendererDispatcher().renderBlock(SCContent.BOUNCING_BETTY.get().getDefaultState(), matrix, buffer, packedLight, OverlayTexture.NO_OVERLAY);
-		matrix.pop();
+		matrix.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), matrix, buffer, packedLight, OverlayTexture.NO_OVERLAY);
+		matrix.popPose();
 		super.render(entity, entityYaw, partialTicks, matrix, buffer, packedLight);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(BouncingBettyEntity entity)
+	public ResourceLocation getTextureLocation(BouncingBettyEntity entity)
 	{
-		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+		return AtlasTexture.LOCATION_BLOCKS;
 	}
 }

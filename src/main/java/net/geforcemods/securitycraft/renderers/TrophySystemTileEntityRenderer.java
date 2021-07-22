@@ -28,17 +28,17 @@ public class TrophySystemTileEntityRenderer extends TileEntityRenderer<TrophySys
 
 		if(te.entityBeingTargeted == null) return;
 
-		IVertexBuilder builder = buffer.getBuffer(RenderType.getLines());
-		Matrix4f positionMatrix = matrix.getLast().getMatrix();
-		BlockPos pos = te.getPos();
+		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
+		Matrix4f positionMatrix = matrix.last().pose();
+		BlockPos pos = te.getBlockPos();
 
 		//pos, color
-		builder.pos(positionMatrix, 0.5F, 0.75F, 0.5F).color(255, 0, 0, 255).endVertex();
-		builder.pos(positionMatrix, (float)(te.entityBeingTargeted.getPosX() - pos.getX()), (float)(te.entityBeingTargeted.getPosY() - pos.getY()), (float)(te.entityBeingTargeted.getPosZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
+		builder.vertex(positionMatrix, 0.5F, 0.75F, 0.5F).color(255, 0, 0, 255).endVertex();
+		builder.vertex(positionMatrix, (float)(te.entityBeingTargeted.getX() - pos.getX()), (float)(te.entityBeingTargeted.getY() - pos.getY()), (float)(te.entityBeingTargeted.getZ() - pos.getZ())).color(255, 0, 0, 255).endVertex();
 	}
 
 	@Override
-	public boolean isGlobalRenderer(TrophySystemTileEntity te)
+	public boolean shouldRenderOffScreen(TrophySystemTileEntity te)
 	{
 		return true;
 	}
