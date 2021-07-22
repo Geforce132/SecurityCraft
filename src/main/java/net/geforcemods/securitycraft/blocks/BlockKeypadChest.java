@@ -5,6 +5,7 @@ import java.util.function.Function;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasswordConvertible;
+import net.geforcemods.securitycraft.misc.EnumModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.tileentity.TileEntityKeypadChest;
 import net.geforcemods.securitycraft.util.ModuleUtils;
@@ -421,16 +422,21 @@ public class BlockKeypadChest extends BlockContainer
 	}
 
 	@Override
-	public int getWeakPower(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side)
+	public boolean canProvidePower(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
-		if(!blockState.canProvidePower())
+		if(!state.canProvidePower())
 			return 0;
 		else
 		{
 			TileEntity te = world.getTileEntity(pos);
 			int numPlayersUsing = 0;
 
-			if(te instanceof TileEntityKeypadChest)
+			if(te instanceof TileEntityKeypadChest && ((TileEntityKeypadChest)te).hasModule(EnumModuleType.REDSTONE))
 				numPlayersUsing = ((TileEntityKeypadChest)te).numPlayersUsing;
 
 			return MathHelper.clamp(numPlayersUsing, 0, 15);
@@ -438,9 +444,9 @@ public class BlockKeypadChest extends BlockContainer
 	}
 
 	@Override
-	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
 	{
-		return side == EnumFacing.UP ? blockState.getWeakPower(blockAccess, pos, side) : 0;
+		return side == EnumFacing.UP ? state.getWeakPower(world, pos, side) : 0;
 	}
 
 	@Override

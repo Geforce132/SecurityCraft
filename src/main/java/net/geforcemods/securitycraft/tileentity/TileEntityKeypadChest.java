@@ -291,6 +291,26 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 		return world != null && world.getBlockState(pos).getBlock() instanceof BlockKeypadChest;
 	}
 
+	public void openInventory(EntityPlayer player)
+	{
+		if (!player.isSpectator())
+		{
+			if (this.numPlayersUsing < 0)
+			{
+				this.numPlayersUsing = 0;
+			}
+
+			++this.numPlayersUsing;
+			this.world.addBlockEvent(this.pos, this.getBlockType(), 1, this.numPlayersUsing);
+			this.world.notifyNeighborsOfStateChange(this.pos, this.getBlockType(), false);
+
+			if (hasModule(EnumModuleType.REDSTONE))
+			{
+				this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
+			}
+		}
+	}
+
 	@Override
 	public void closeInventory(EntityPlayer player)
 	{
@@ -299,6 +319,11 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 			--numPlayersUsing;
 			world.addBlockEvent(pos, getBlockType(), 1, numPlayersUsing);
 			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
+
+			if (hasModule(EnumModuleType.REDSTONE))
+			{
+				this.world.notifyNeighborsOfStateChange(this.pos.down(), this.getBlockType(), false);
+			}
 		}
 	}
 
@@ -335,7 +360,7 @@ public class TileEntityKeypadChest extends TileEntityChest implements IPasswordP
 	@Override
 	public EnumModuleType[] acceptedModules()
 	{
-		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST};
+		return new EnumModuleType[] {EnumModuleType.ALLOWLIST, EnumModuleType.DENYLIST, EnumModuleType.REDSTONE};
 	}
 
 	@Override
